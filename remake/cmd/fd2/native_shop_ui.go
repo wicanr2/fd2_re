@@ -1493,6 +1493,10 @@ func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool {
 	if job == nil {
 		return false
 	}
+	if g.drawModernHDFacilityList(screen, job) {
+		job.drawn = true
+		return true
+	}
 	if len(job.timeline) != 0 {
 		index, total := job.timelinePosition()
 		step := job.timeline[index]

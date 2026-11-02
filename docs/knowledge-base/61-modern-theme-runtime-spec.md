@@ -5914,3 +5914,19 @@ R52主收據hd1_facility_roster_followup_20261102：180完整Game.Draw／50PNG�
 R53主收據hd1_shop_comparison_followup_20261102：64完整Game.Draw／20PNG逐RGBA核對4202496標籤及箭頭像素，容差0；僅停用本層的控制組在實際標籤範圍外整幅逐byte相同，工具列遊戲區相同。基底字級另用獨立font.Drawer核對完整五種材質；首輪測試錯把177當最亮色，正式色盤證明169較亮，修正測試後通過，產品碼未因此改動。來源／尺寸、24目的覆蓋、owner／job／help／transient／DAC、font／palette回退與快取失效通過。
 
 82相關回歸通過，十可選GPU／oracle／匯出略過另列。1226份Go指紋601774cbf8a48cfe10d32dc49264bde9509c9961a745d3ba621fdf064f08f5be，21來源／416幀／19反例保持；160字串處置含原159及原圖右箭頭。正常START後F9接續既有hotel_ch02，普通布衣受領四種介面／美術與買賣14完整PNG、13動態裁圖接受／三拒收，1000→950→987。兩美術保存32c9cd02相同，F9與新程序標題LOAD通過。953清冊／6963私人檔、私人44636b94及原版包未變，沿R52已驗runtime素材，沒有新圖稿。設施動畫與其餘介面依#283續作，不外推完整HD1或原版E2。正常[裝備比較畫面](../figures/hd1-shop-equipment-comparison-game.png)沿實際存檔身份，不採fixture替代一般玩家證據。
+
+### HD1商店受領列表進出場
+
+狀態CONFORMED-SCOPED／RUNTIME-E1。三商店的recipient_consumable／recipient_equipment已接六個開框、五個收框與原source還原。固定輸入與READY契約見work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/ready-source.json。原始EXE／FDOTHER／FDICON／FDTXT沿同一固定清單與原版manifest；只重用已閉合typed消費端，沒有新二進位語意。
+
+job建立時核對完整source／final及原幀，再凍結明示producer的文字、數字值複本與raw MapSelectorKey／pose0／cycle。臨時font／digits／UI副本全部還原；前一Draw的文字物件可仍存在，不因此拒絕新job。原快取、Draw ACK、clock、after、交易及保存不改。
+
+以同一producer在literal0／255背景與主店員頭像重播取得實際opaque writer，沿原NativeClassListOpeningFrames／ClosingFrames的13像素位移與200底邊裁切。source仍有歡迎詞與古金框，僅露出未被移動列表覆蓋部分；final文字、細框、Q版與比較欄同位移裁切，字形先凍結原layout再裁切。還原只顯示source，不留列表人物。F2按當前完整主題驗144圖，獨立於F11；不依job建立時模式永久決定。完整原幀、owner／variant／locale／font／palette／job或主題不符，保留原快取且清舊計畫。
+
+實作入口modern_hd_facility_list_transition.go、native_shop_recipient_ui.go、native_shop_ui.go及共用modern_hd_facility_roster.go／modern_hd_service_icons.go；永久驗證modern_hd_facility_list_transition_test.go，前置蒐證modern_hd_facility_transition_prototype_test.go。原型24來源與72原生動畫畫格一致，核對2024760個opaque writer byte。原型／來源命令與收據均在同工作根。首輪來源編譯的palette型別已修正；兩輪GPU控制組把文字先掛再畫底圖，遭presentNativeClassFrameWithPalette清除，失敗不計通過。原因及完整差異圖保存於gpu-control-diagnostic.json，修正控制順序後維持逐byte標準。控制圖先呈現原生底圖，再發布同次擷取文字，並驗必要文字非空。
+
+主收據hd1_shop_recipient_transition_followup_20261102：兩套各216，共432完整Game.Draw／76PNG，與獨立source加普通穩定final的位移合成逐byte相同，共3981312000個RGBA byte，容差0；工具列遊戲區相同。含全部開收／還原、四組控制、四語、捲動與凍結三拍。85相關回歸通過，十一可選GPU／oracle／匯出略過另列。1229份Go指紋87f364216c1c8dfab52d279df3dfdbd0c2443bf74fbee1c9a0849017ac0dcd87，21來源／416幀／19反例及160字串處置保持。
+
+正常START後F9接續hotel_ch02，布衣買賣14、藥草受領18完整PNG通過。布衣有15、藥草18筆實際開／收Draw觀測；input_audit_trace.go的facility_list_presented明示最近一次Draw，Update可能已前進，不當PNG精確同幀或原版E2。tools/verify_fd2_hd_fonts_gui.py的--facility-list-transitions要求兩方向均觀測到。布衣1000→950→987，兩美術保存32c9cd02相同，F9及新程序標題LOAD通過；金幣動態裁圖八接受／四拒收。
+
+[開框首拍](../figures/hd1-shop-recipient-opening-game.png)是明示受控Game.Draw重播，金額1234及測試隊伍為構造值，並非一般玩家收據。953清冊／6963私人檔、私人44636b94與原版包未變，沿R52已驗runtime素材，沒有新增圖稿或格式。其餘商店與設施的列表／確認／回覆進出場、成功特效及尚未接介面依#283續作；完整地形仍#282，未宣稱全HD1完成。

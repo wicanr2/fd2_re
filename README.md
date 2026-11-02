@@ -309,6 +309,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 裝備受領的AP、DP、HIT、EV與箭頭已改用清晰字型，沿原座標顯示原比較數值與顏色。上圖為正常START後F9接續第2章存檔，再購買布衣時的選人畫面。四種介面／美術組合與保存讀取已抽驗，設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
+![HD商店受領列表的開框首拍](docs/figures/hd1-shop-recipient-opening-game.png)
+
+三類商店的裝備與消耗品受領列表已接HD開框、收框與還原，文字、框線和人物沿原位移裁切。上圖是受控Game.Draw重播的第一拍，金額與隊伍為測試資料。正常布衣與藥草受領已抽驗，布衣買賣另驗兩種美術保存及重新啟動讀檔；其餘設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 
 整備提示已接HD頭像、古金框與四語按鈕，沿原有開收框和選項操作。人物美術與介面可獨立切換。上圖為一般標題LOAD與鍵盤操作畫面；其餘介面仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。

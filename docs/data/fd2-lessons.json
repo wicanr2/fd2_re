@@ -5026,6 +5026,21 @@
         ],
         "pattern": "0x2d77a/0x2d8e4/0x2da7e"
       }
+    },
+    {
+      "id": "hd-reference-publishes-text-after-native-present",
+      "date": "2026-11-02",
+      "area": "HD驗證控制組",
+      "rule": "建立HD文字控制圖時，先呈現原生底圖，再發布同次擷取的文字，並檢查必要文字非空。底圖presentNativeClassFrameWithPalette會清除舊runs；入口為remake/cmd/fd2/native_class_ui.go及modern_hd_facility_list_transition_test.go的facilityListStaticReference，支援設施原生索引UI。驗證以FD2_HD_FACILITY_LIST_GPU=1、FD2_TEST_FACILITY_LIST_KIND=recipient_equipment或recipient_consumable執行TestModernHDFacilityListTransitionRuntimeGPU，Docker、pack與catalog參數依規格61。",
+      "why": "R54兩輪GPU比較最先在金額字形出現差異，完整差異圖顯示控制組漏了全部source文字。控制組先掛runs再呈現底圖，遭底圖清除；正式動畫原已於底圖之後發布。修正控制順序後維持逐byte標準，兩套432完整畫面通過。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1商店受領列表進出場R54；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_shop_recipient_transition_followup_20261102",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "控制圖先呈現原生底圖，再發布同次擷取文字"
+      }
     }
   ]
 }

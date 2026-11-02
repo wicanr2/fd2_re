@@ -19,6 +19,7 @@ type nativeClassUIJob struct {
 	elapsed         time.Duration
 	preparationText *nativePreparationTransitionText
 	goldText        *nativeGoldRollText
+	facilityList    *nativeFacilityListPresentation
 	statusText      *nativeStatusTransitionText
 	expiryText      *nativeTransientExpiryPresentation
 	// 0x196CB 的戰場關框 owner 才宣告 0x19742；城鎮共用 job 不推定重繪。

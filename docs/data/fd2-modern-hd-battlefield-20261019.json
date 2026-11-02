@@ -302723,5 +302723,317 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/final-validation.json",
       "sha256": "e0dd279017f0466ae71ac55a348518e1631a34130b9da2730797dae3f6aa9a06"
     }
+  },
+  "hd1_shop_recipient_transition_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "9a67f9e6344a1f06879cc20f401261e19e6780ea",
+    "scope": "三商店裝備／消耗品受領列表，六開、五收與還原；F2人物及背景、F11文字／框線／比較欄獨立。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1229,
+      "go_tree_sha256": "87f364216c1c8dfab52d279df3dfdbd0c2443bf74fbee1c9a0849017ac0dcd87",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/fd2-player-r1",
+        "sha256": "b81ec9f741743257a58a8a98d49dab118fef0e63f8e4f25fe2b9e2dfc3dad52d"
+      },
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/consumers-r1.json",
+        "sha256": "2f9e3ce61588e0f1b091e9346ae9b8dd76bafd0fdca9ced58897c6a2423a26ec"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/commands.json",
+        "sha256": "b451db53a5ade95d30175602aa6683a5d411d1119d192fe5696447ac6b896267"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/ready-source.json",
+        "sha256": "f1e8e5966769170d020805e2863b2a6b54e33cc06c84cf47110469680896095f"
+      },
+      "canonical_inputs": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition.go",
+          "sha256": "41d5e124dc096ef55e4f8adb61307a736bc3e0d2cc89e3c5306cdc0d84c3a78f"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition_test.go",
+          "sha256": "e73aadaef134f830eab2afb94f2de12fd15f47d63aa82a0033a97397c54f4d13"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_transition_prototype_test.go",
+          "sha256": "0d1a905f44660200091feb235f55d5f1e4c73e1e114b30fbdf50f786f76817e4"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_roster.go",
+          "sha256": "d884fe8d6c3f5954b8324adf294ae6d221f8ba7b9dca342aaa1c23d2bb18ccdc"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_recipient_ui.go",
+          "sha256": "8756a48320ab7fb59721c8f9672267ac010975391c05e643353669bda1ca6b43"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "2dae5c3e5ce93d65b402de491f729ca9f8c9e9ffb0730e918109df2fe80c58f0"
+        },
+        {
+          "file": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+          "sha256": "9f257c4a2c40c56b2414bca447b4d6d6f568b1a30938ab4ea345111d09e5fcae"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_icons.go",
+          "sha256": "e9078e61c9cac112c76def6f38a27685b3bd75def42cd1c21a816baee100bd49"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_presentation.go",
+          "sha256": "70facb67c3039c4d2cd2bab85d214af172c2dc2e51e3e60839c98bcecad7dab7"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "93c3c90752172b7fdd8d77168bb823c249cadbe41b84b5e8cde71d13c5c576d5"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "daef53b3e770be841e51ec9a9291bf837f5846a566c1ad2fd19a780231c38d37"
+        },
+        {
+          "file": "tools/verify_fd2_hd_fonts_gui.py",
+          "sha256": "f085c5fe94fc053412a2c7d41db874dfc08b2f1ea6a1f88f042ead8e16587855"
+        }
+      ],
+      "typed_geometry": {
+        "file": "remake/internal/campaign/native_class_list.go",
+        "sha256": "bc60d9092d114f1feb25858c2335c1ded79d0475d3773019da0554a79a58c871"
+      }
+    },
+    "rules": {
+      "modes": [
+        "recipient_consumable",
+        "recipient_equipment"
+      ],
+      "resources": [
+        12,
+        29,
+        63
+      ],
+      "native_panel": [
+        5,
+        112,
+        310,
+        86
+      ],
+      "opening": "i=5..0",
+      "closing": "i=1..5 then untouched source restore",
+      "shift": "13*i, clipped to320×200",
+      "raw_cache_ack_clock_after_transaction_save_unchanged": true,
+      "foreground": "同一來源producer用literal0／255背景及主店員頭像重播，再走同一typed幀；相等byte才屬opaque writer，不比較RGB。",
+      "text": "凍結source與final文字值複本；先存原layout再裁切。source歡迎詞／古金框只露未被列表蓋住部分；final文字／細框／Q版／比較欄同位移及裁切。",
+      "raw_q_source": "原始MapSelectorKey、pose0及凍結cycle；完整原24×24重播證明，HD圖在Draw按當前主題驗全組。",
+      "bind": "可保存前一Draw文字物件，所有臨時font／digits／UI副本還原；不以建立時F2/F11模式永久決定。",
+      "guards": "完整原快取幀、job／owner／variant／locale／font／palette與主題；錯來源／缺件／遮蓋不發布舊層。",
+      "new_assets": 0,
+      "new_schema": false
+    },
+    "prototype": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/prototype-r2.memory.json",
+        "sha256": "cd489abe5140c4dbc8feba124566af5615b203b33eda108adf8acf36a9246077"
+      },
+      "source_cases": 24,
+      "opaque_writer_bytes": 2024760,
+      "native_animation_frames": 72
+    },
+    "cpu": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/source-r4.memory.json",
+        "sha256": "22f08dd42003afa2a100b93c045da990ac03a26958ed2dec785bb0b240e18732"
+      },
+      "source_and_fallback_tests": 6,
+      "previous_draw_text_preserved": true,
+      "raw_job_buffers_independent": true,
+      "greeting_clip_partition_exact": true,
+      "invalid_owner_cache_palette_theme_fallback": true
+    },
+    "gpu": {
+      "matrices": {
+        "equipment": {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-equipment-r1-capture/receipt.json",
+            "sha256": "b6e1120fcf2593c79278c66831af75723f3a49d0f773c1e85430dc97b442fe1d"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-equipment-r1.memory.json",
+            "sha256": "8037cad4fd225e95ff976d95914003d551dc13693074d1476705f17acba20c69"
+          },
+          "cases": 216,
+          "png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "rgba_tolerance": 0
+        },
+        "consumable": {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-consumable-r1-capture/receipt.json",
+            "sha256": "254ac3891ceddcc69a1e774cb8d1461b6e14e6faf76684ce2011d0571ae8772f"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-consumable-r1.memory.json",
+            "sha256": "6593fbda8f9fee7ffacd03b79632329b10e3bfeb3df0e06194b7fa0d1b045ad6"
+          },
+          "cases": 216,
+          "png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "rgba_tolerance": 0
+        }
+      },
+      "cases": 432,
+      "png": 76,
+      "whole_game_rgba_bytes": 3981312000,
+      "rgba_tolerance": 0,
+      "independent_reference": "完整原source與普通Game.Draw的穩定final分別繪製，只依原native位移貼列表範圍；比較整幅遊戲區，工具列另比完整遊戲區。",
+      "styles": 4,
+      "locales": 4,
+      "scrolled_viewports": true,
+      "frozen_cycles": [
+        0,
+        1,
+        2
+      ],
+      "source_scope": "受控呈現fixture，不作身份、正常可達或原版oracle；公開首拍只露rawKey0索爾，金額1234為構造值。",
+      "smoke": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-smoke-r3-capture/receipt.json",
+        "sha256": "990230ce260c0978f9f87286f5c044c1d915105d2f7d3d4e91770908bce90135"
+      },
+      "failed_control_diagnostic": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-control-diagnostic.json",
+        "sha256": "53987333845c3e8d7cb93b39666796f722e70c8940c3785274e9bf4d6ecc24be"
+      },
+      "failed_runs_not_counted": [
+        "source-r1",
+        "gpu-smoke-r1",
+        "gpu-smoke-r2"
+      ]
+    },
+    "normal_gui": {
+      "gold": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/normal-gold-roll-r1-capture/receipt.json",
+          "sha256": "cf30486cb742f4e9286c67b840b8964cee51bbaa3fb4281ed606fc5cab32da6f"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/normal-gold-roll-r1.memory.json",
+          "sha256": "7e7d04c643443422c9f9d1d83907c50087ae568569f0471571b1c26a701b7c8f"
+        },
+        "full_png": 14,
+        "last_draw_observations": 15,
+        "opening_and_closing_observed": true,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。",
+        "observation_scope": "普通鍵盤的最近一次Draw記錄，Update可已前進，不當PNG精確同幀。",
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "gold": [
+          1000,
+          950,
+          987
+        ],
+        "accepted_dynamic_crops": 8,
+        "rejected_dynamic_crops": 4
+      },
+      "shop": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/normal-shop-r1-capture/receipt.json",
+          "sha256": "39d44224c9a8a3bc8dcd65b88674610854b3aa35edbb77e051effc0fa5e899a3"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/normal-shop-r1.memory.json",
+          "sha256": "4c291f9185759c4eb9f844ac8bd47cb05f24bd8ba379096895e97a6d0606f3ad"
+        },
+        "full_png": 18,
+        "last_draw_observations": 18,
+        "opening_and_closing_observed": true,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START序章首句四語、說明頁；明示F9接續hotel_ch02後正常城鎮與商店。非連續全戰役，不宣稱原版視覺對拍。",
+        "observation_scope": "普通鍵盤的最近一次Draw記錄，Update可已前進，不當PNG精確同幀。"
+      }
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/regression-r1.memory.json",
+        "sha256": "4289914ef9cf79399082a6585973c19568fdeec48a4b4bd347a8c3e77d18f090"
+      },
+      "pass": 85,
+      "skip": 11,
+      "skip_tests": [
+        "TestNativeHotelOriginalLoadSameSourceProbe",
+        "TestModernHDChurchRawServiceSourceGPU",
+        "TestModernHDFacilityDialogueRuntimeGPU",
+        "TestModernHDFacilityListTransitionRuntimeGPU",
+        "TestModernHDFacilityPortraitRuntimeGPU",
+        "TestModernHDFacilityFullSourceExport",
+        "TestModernHDFacilityRosterRuntimeGPU",
+        "TestModernHDFacilityRuntimeGPU",
+        "TestModernHDServiceIconsRuntimeGPU",
+        "TestModernHDShopComparisonRuntimeGPU",
+        "TestModernHDShopDialogueRuntimeGPU"
+      ],
+      "consumer_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/consumers-verified-r1.json",
+        "sha256": "52cfd2044f52b611b06120c1cdc607648296a3f5615fb9cbde6d34727ac84d87"
+      },
+      "string_review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "89cbd17e3a068920827a1f81dc6bbfd177c97f554ec94cc5be146a99cd12fa1a"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/string-migration-r1.json",
+        "sha256": "0270571376a6e85e0d6b9e9df6c45c055172fb6dee1f3b57084e6af4d374e637"
+      },
+      "reviewed_go_candidates": 160,
+      "all_prior_dispositions_preserved": true
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/asset-pack-unchanged.json",
+        "sha256": "c09535beb2cd381be0ba0bbbf126ea50303524350794149b4527295a5f4836fe"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "private_remote_verified": true,
+      "private_worktree_clean": true,
+      "private_is_private": true,
+      "original_and_modern_packs_unchanged": true
+    },
+    "public_pngs": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/public-pngs.json",
+        "sha256": "b2ab654b68b603cc01eff889c803d6a5ed2d46eee80be25502b85ffbb949dded"
+      },
+      "images": [
+        {
+          "file": "docs/figures/hd1-shop-recipient-opening-game.png",
+          "sha256": "004a1fca262da6cb76661fe5a55c6aef195305aca56ec5b7a9733cf96eee2d32",
+          "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-equipment-r1-capture/scene-003.png",
+          "source_kind": "controlled Game.Draw replay, first original opening step, HD art/UI; only actual raw-map-key0 Sol is visible; gold1234 and other hidden party fixture are constructed, not normal-player evidence",
+          "width": 1920,
+          "height": 1272,
+          "source_receipt": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/gpu-equipment-r1-capture/receipt.json",
+          "source_case": 3
+        }
+      ]
+    },
+    "remaining_ui": "其餘商店與設施的列表／確認／回覆進出場、成功特效及尚未接的介面；完整地形仍#282的3180缺槽／2033唯一來源。",
+    "limits": "僅本切片RUNTIME-E1及普通GUI抽樣；不新增原版E2、硬體逐週期、全HD1或人工造型接受聲明。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/final-validation.json",
+      "sha256": "2428d03c17cc1e6b97e9f0e6e5bb59f87f785bc7d57f9a62a26c51c0a5859242"
+    }
   }
 }

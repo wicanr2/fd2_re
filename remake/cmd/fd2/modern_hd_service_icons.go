@@ -34,6 +34,7 @@ type modernHDServiceIcon struct {
 type modernHDServiceIconPlacement struct {
 	icon   *modernHDServiceIcon
 	origin image.Point
+	clip   image.Rectangle
 }
 
 func loadModernHDServiceIcon(set *modernStoryPortraitSet, a modernThemeAsset, root string) error {
@@ -235,11 +236,22 @@ func (p *modernHDPresentation) drawModernHDServiceIcons(screen ebiten.FinalScree
 			icon.gpu = ebiten.NewImageFromImage(icon.picture)
 		}
 		options := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
+		picture := icon.gpu
+		at := placement.origin.Mul(6)
+		if !placement.clip.Empty() {
+			rect := image.Rectangle{Min: at, Max: at.Add(icon.picture.Bounds().Size())}
+			visible := rect.Intersect(image.Rectangle{Min: placement.clip.Min.Mul(6), Max: placement.clip.Max.Mul(6)})
+			if visible.Empty() {
+				continue
+			}
+			picture = picture.SubImage(visible.Sub(rect.Min)).(*ebiten.Image)
+			at = visible.Min
+		}
 		options.GeoM.Scale(1.0/3, 1.0/3)
-		options.GeoM.Translate(float64(placement.origin.X*2), float64(placement.origin.Y*2))
+		options.GeoM.Translate(float64(at.X)/3, float64(at.Y)/3)
 		options.GeoM.Concat(geometry)
 		value := float32(math.Max(0, math.Min(1, brightness)))
 		options.ColorScale.Scale(value, value, value, 1)
-		screen.DrawImage(icon.gpu, options)
+		screen.DrawImage(picture, options)
 	}
 }

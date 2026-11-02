@@ -38,6 +38,25 @@ def battle_advance_route(value):
     return [list(map(int, cell.split(','))) for cell in value.split(';')]
 
 
+def facility_list_observations(paths, mode):
+    samples = []
+    for path in paths:
+        for line in path.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                state = json.loads(line)
+            except json.JSONDecodeError:
+                continue  # A live audit can end with the next incomplete append.
+            presented = state.get('facility_list_presented')
+            if (presented and presented.get('mode') == mode and presented.get('live_job')
+                    and state.get('hd_theme') and state.get('shop_ui_busy')):
+                samples.append({'game_update_frame': state['frame'], **presented})
+    assert {row['closing'] for row in samples} == {False, True}, '未觀測到普通受領開框及收框的HD呈現'
+    return {'mode': mode, 'audit_files': [path.name for path in paths], 'samples': samples,
+            'scope': '正常鍵盤路徑的最近一次Draw描述；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -57,6 +76,7 @@ def main():
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
+    parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
     parser.add_argument('--town-departure', action='store_true', help='整備取消及保存後，再正常確認城鎮出口，核對凍結來源與十一個離城呈現步')
@@ -1568,6 +1588,7 @@ def main():
                     'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
                     'transaction_theme':args.gold_roll_theme,'theme_save_bytes_equal':True,
                     'equipment_comparison_four_styles':True,
+                    'facility_list_transitions':facility_list_observations([args.out/'input-audit-first-process.jsonl'], 'recipient_equipment') if args.facility_list_transitions else None,
                     'expected_save_changes':{'gold':[1000,987],'party_roster/0/InventorySlots/5':[255,0]},
                     'new_process_title_load':True,
                     'screenshots':shots,'gold_roll_screenshots':accepted,'gold_roll_rejected':rejected,
@@ -1779,6 +1800,7 @@ def main():
         key('F2');wait(lambda s:s.get('hd_theme') is True);shot('hd-shop-restored')
         assert digest(saved)==digest(args.town_save),'未保存前來源槽被改寫'
         report={'schema':'fd2-hd-font-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
+                'facility_list_transitions':facility_list_observations([audit], 'recipient_consumable') if args.facility_list_transitions else None,
                 'town_save_sha256':digest(args.town_save),'screenshots':shots,'operations':operations,
                 'scope':'正常START序章首句四語、說明頁；明示F9接續hotel_ch02後正常城鎮與商店。非連續全戰役，不宣稱原版視覺對拍。',
                 'recording_created':False,'elapsed_seconds':time.monotonic()-started}

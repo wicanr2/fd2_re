@@ -92,7 +92,27 @@ func (g *Game) modernFacilityRosterSource() (s modernFacilityRosterSource, ok bo
 // Rebuild each complete native sprite rectangle from the proven opaque panel
 // and the same actual raw sprite. A covered rectangle rejects the whole plan.
 func (g *Game) prepareModernHDFacilityRoster(frame []byte) *modernFacilityRoster {
-	if g.modernStoryPortraits == nil || len(frame) != 64000 {
+	if g.modernStoryPortraits == nil {
+		return nil
+	}
+	plan := g.prepareNativeFacilityRoster(frame)
+	if plan == nil {
+		return nil
+	}
+	plan.theme = g.modernStoryPortraits
+	for _, unit := range plan.units {
+		frames := plan.theme.mapSpritesHD[unit.group]
+		if unit.frame >= len(frames) || frames[unit.frame] == nil || frames[unit.frame].Bounds() != image.Rect(0, 0, 144, 144) {
+			return nil
+		}
+	}
+	return plan
+}
+
+// Animation jobs freeze the proven raw keys even when original art is active.
+// The complete current HD group is checked separately at presentation time.
+func (g *Game) prepareNativeFacilityRoster(frame []byte) *modernFacilityRoster {
+	if len(frame) != 64000 {
 		return nil
 	}
 	s, ok := g.modernFacilityRosterSource()
@@ -107,7 +127,7 @@ func (g *Game) prepareModernHDFacilityRoster(frame []byte) *modernFacilityRoster
 	if !ok {
 		return nil
 	}
-	plan := &modernFacilityRoster{theme: g.modernStoryPortraits, source: s,
+	plan := &modernFacilityRoster{source: s,
 		underlay: image.NewRGBA(image.Rect(0, 0, 320, 200))}
 	for row, id := range s.ids {
 		unit, exists := g.partyRoster[id]
@@ -138,10 +158,6 @@ func (g *Game) prepareModernHDFacilityRoster(frame []byte) *modernFacilityRoster
 		plan.groups = append(plan.groups, group)
 		if !fdicon.NativeSourceGroupHasPixels(group) {
 			continue
-		}
-		frames := plan.theme.mapSpritesHD[group]
-		if s.cycle >= len(frames) || frames[s.cycle] == nil || frames[s.cycle].Bounds() != image.Rect(0, 0, 144, 144) {
-			return nil
 		}
 		for y := 0; y < 24; y++ {
 			for x := 0; x < 24; x++ {

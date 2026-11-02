@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。主規格61，現況58，逐批證據與限制依HD主收據及WORKLOG。本工單列目前尚未接完的正式介面。\n\n已接古金故事／提示框、獨立F11／F2、城鎮人物與字型、離城、整備背景／提示／名冊／狀態卡／計數／游標、酒店／教堂同稿插畫與18穩定模式、三商店21穩定模式框線與三確認、五設施40來源／20張手繪服務圖示，以及商店六種／教會五種穩定名冊Q版。#288原圖解碼與#289受領歡迎詞殘留已修正關閉，沿既有主收據，不重開。\n\nR53補齊穩定裝備受領的AP／DP／HIT／EV與箭頭。FDOTHER12／29／63 entries18..22完整原圖相同，沿既有Noto呈現器、原色盤、原位置及三列窗口。完整來源SHA／尺寸與所有目的範圍逐byte相符後才整組發布，遮蓋／缺件／owner／job回退。F11獨立F2，數字、比較色、姓名、窗口、原幀與保存不改。\n\n64完整Game.Draw／20PNG逐RGBA核對4202496標籤像素，容差0；停用本層的控制組在實際替換範圍外整幅逐byte相同，工具列遊戲區一致。基底字級另用獨立font.Drawer核對。82相關回歸通過，十可選GPU／oracle／匯出略過不計。首輪測試錯認最亮色索引，依正式色盤修正測試後通過，產品碼未因此改動；失敗收據另存不計。\n\n正常START後F9接續hotel_ch02，普通布衣受領四種介面／美術與買賣14完整PNG通過；1000→950→987，兩美術保存32c9cd02相同，F9與新程序標題LOAD通過。動態裁圖13接受／三拒收。README使用實際存檔身份的裝備比較畫面，不採控制fixture作身份或一般玩家證據。\n\n1226份Go指紋601774cbf8a48cfe10d32dc49264bde9509c9961a745d3ba621fdf064f08f5be，21來源／416幀／19反例保持。160字串處置含原159及原圖右箭頭。953清冊／6963私人檔、原版包與私人44636b94未變，沒有新圖稿或清冊格式。主收據hd1_shop_comparison_followup_20261102，來源與命令由61索引。\n\n目前續作設施進出場、其他動畫及其餘未接介面。完整地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。",
+      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。主規格61，現況58，逐批證據與限制依HD主收據及WORKLOG。本工單列目前尚未接完的正式介面。\n\n已接古金故事／提示框、獨立F11／F2、城鎮人物與字型、離城、整備背景／提示／名冊／狀態卡／計數／游標、酒店／教堂同稿插畫與18穩定模式、三商店21穩定模式框線／三確認、五設施40來源服務圖示、商店六／教會五種穩定名冊Q版及裝備比較欄。#288原圖解碼與#289受領歡迎詞殘留已修正關閉，沿既有主收據，不重開。\n\nR54補上三商店裝備與消耗品受領列表的六開、五收與還原。job建立時核對完整source／final及原快取，凍結文字、數字與raw MapSelectorKey／pose0／cycle；所有臨時UI／font／digits副本還原。literal0／255重播同一producer取得opaque writer，保留source歡迎詞及古金框未被列表蓋住部分，final文字、細框、Q版及比較欄沿原13像素位移與底邊裁切。F2／F11四組獨立，原ACK、clock、after、交易及保存不改；來源、owner、job、locale、font、palette或主題不符保留原快取，不發布舊層。\n\n裝備與消耗品各216，共432完整Game.Draw／76PNG，與獨立完整source加普通穩定final的位移合成逐byte相同，共3981312000個RGBA byte，容差0；工具列遊戲區一致。含四組控制、四語、捲動與凍結三拍。85相關回歸通過，十一可選GPU／oracle／匯出略過不計。早期兩輪控制組在呈現底圖前掛文字，遭底圖函式清除；修正測具順序後維持原標準，失敗收據與差異圖保留，不計通過。\n\n正常START後F9接續hotel_ch02，布衣買賣14、藥草受領18完整PNG通過。布衣15、藥草18筆最近Draw觀測，兩者皆含開與收；Update可已前進，不宣稱PNG精確同幀。布衣1000→950→987，兩美術保存32c9cd02相同，F9與新程序標題LOAD通過。金幣動態裁圖八接受／四拒收。README新增明示受控來源的開框首拍，不把構造金額與測試隊伍當一般玩家或身份證據。\n\n1229份Go指紋87f364216c1c8dfab52d279df3dfdbd0c2443bf74fbee1c9a0849017ac0dcd87，21來源／416幀／19反例及160字串處置保持。953清冊／6963私人檔、原版包與私人44636b94未變，無新圖稿或清冊格式。主收據hd1_shop_recipient_transition_followup_20261102，來源、原型、命令與收據由61索引。\n\n目前續作其餘商店與設施的列表／確認／回覆進出場、成功特效及尚未接的介面。完整地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -488,7 +488,12 @@
         "remake/cmd/fd2/modern_hd_facility_roster_test.go",
         "remake/cmd/fd2/modern_hd_shop_comparison.go",
         "remake/cmd/fd2/modern_hd_shop_comparison_test.go",
-        "docs/figures/hd1-shop-equipment-comparison-game.png"
+        "docs/figures/hd1-shop-equipment-comparison-game.png",
+        "remake/cmd/fd2/modern_hd_facility_list_transition.go",
+        "remake/cmd/fd2/modern_hd_facility_list_transition_test.go",
+        "remake/cmd/fd2/modern_hd_facility_transition_prototype_test.go",
+        "remake/cmd/fd2/input_audit_trace.go",
+        "docs/figures/hd1-shop-recipient-opening-game.png"
       ],
       "verify": {
         "kind": "manual",
