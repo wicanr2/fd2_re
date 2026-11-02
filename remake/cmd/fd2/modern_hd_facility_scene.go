@@ -16,8 +16,11 @@ import (
 )
 
 type modernFacilityScene struct {
-	image image.Image
-	gpu   *ebiten.Image
+	image            image.Image
+	gpu              *ebiten.Image
+	pairedPortrait   *modernStoryPortraitFrame
+	pairedSceneImage image.Image
+	pairedHeadImage  image.Image
 }
 
 type modernFacilitySceneOverlay struct {
@@ -77,6 +80,8 @@ func (g *Game) modernTownCursorFor(variant, selection, pulse, group int) (*moder
 // Pinned original separated metadata, from manifest 5eec2ecacc4f and the
 // canonical FDOTHER fingerprint in fd2-reference-files.json.
 var modernFacilityMetadata = map[int]string{
+	13: "4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5",
+	14: "bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224",
 	11: "a2b971d3e390e737d119695e5623291481dd5f4a8c05c22338de6d7e819090f7",
 	61: "eba9d7756735ba4b782adc5d0e9f74d0a68923f643996071bbad3e3e1e168177",
 	62: "170feb1402119cfc491d7aed0682762897e23dcbcc58a37a304f91ba5b374689",
@@ -87,7 +92,7 @@ var modernFacilityMetadata = map[int]string{
 
 func loadModernFacilityScene(set *modernStoryPortraitSet, a modernThemeAsset, root string) error {
 	switch a.SourceResource {
-	case 11, 61, 62, 12, 29, 63:
+	case 11, 61, 62, 12, 29, 63, 13, 14:
 	default:
 		return fmt.Errorf("modern facility: unsupported source %d", a.SourceResource)
 	}

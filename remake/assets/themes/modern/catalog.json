@@ -71264,6 +71264,150 @@
         "tools/build_fd2_hd_preparation_count_icon.py",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.fdother.013.scene.hd6.v1",
+      "role": "facility_scene_hd",
+      "status": "runtime_candidate",
+      "file": "fdother-013-scene-handpainted-hd6-v1.png",
+      "width": 1920,
+      "height": 1200,
+      "sha256": "1ed556c36e655d411b2b7ab57eae27a15f85db8c86b3ad7879a06e9bc77acf1d",
+      "source_refs": [
+        "asset:FDOTHER_013",
+        "asset:DATO_129_m0",
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "tools/build_fd2_facility_portraits_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_facility_scene_hd6_v1",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 13,
+      "source_metadata_sha256": "4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5",
+      "master_file": "fdother-013-scene-handpainted-hd6-master-v1.png",
+      "source_files": [
+        "fdother-013-scene-handpainted-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "f2dc76f356452ea48c5b354d2f07952e959c3065d3889e1faac2421b4abdf8ef"
+      ]
+    },
+    {
+      "asset_id": "modern.dato.129.facility.portrait.80.v1",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "dato-129-facility-portrait-handpainted-v1-80.png",
+      "master_file": "fdother-013-scene-handpainted-hd6-master-v1.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "8e0ce7ea3caea627f5cb533183f4bc6b8ef92498c62bbe3f0f7a033874d0b2ce",
+      "source_refs": [
+        "asset:FDOTHER_013",
+        "asset:DATO_129_m0",
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "tools/build_fd2_facility_portraits_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "speaker_id": 129,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
+      "asset_id": "modern.dato.129.facility.portrait.480.v1",
+      "role": "story_portrait_hd_frame",
+      "status": "runtime_candidate",
+      "file": "dato-129-facility-portrait-handpainted-v1-480.png",
+      "master_file": "fdother-013-scene-handpainted-hd6-master-v1.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "98dbbcfa68e763c8b903a2791a861cb2662656f41e5b58734484571f0fef3fc3",
+      "source_refs": [
+        "asset:FDOTHER_013",
+        "asset:DATO_129_m0",
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "tools/build_fd2_facility_portraits_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_hd6_v1",
+      "speaker_id": 129,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
+      "asset_id": "modern.fdother.014.scene.hd6.v1",
+      "role": "facility_scene_hd",
+      "status": "runtime_candidate",
+      "file": "fdother-014-scene-handpainted-hd6-v1.png",
+      "width": 1920,
+      "height": 1200,
+      "sha256": "834368a54353154e2b65e6bb6ce64e8a8aad99f34201793d1fe3aaf6ecf8deab",
+      "source_refs": [
+        "asset:FDOTHER_014",
+        "asset:DATO_131_m0",
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "tools/build_fd2_facility_portraits_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_facility_scene_hd6_v1",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 14,
+      "source_metadata_sha256": "bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224",
+      "master_file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+      "source_files": [
+        "fdother-014-scene-handpainted-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "eb7eab3ea7478f3b1e916f272d2a25ce79e9b17ab8ecc7f8bcdff63641a7be35"
+      ]
+    },
+    {
+      "asset_id": "modern.dato.131.facility.portrait.80.v1",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "dato-131-facility-portrait-handpainted-v1-80.png",
+      "master_file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "1c398818af5d5850f6ef10f775ede3d4ae816cb17ca4bc6231177709a9eda7a4",
+      "source_refs": [
+        "asset:FDOTHER_014",
+        "asset:DATO_131_m0",
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "tools/build_fd2_facility_portraits_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "speaker_id": 131,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
+      "asset_id": "modern.dato.131.facility.portrait.480.v1",
+      "role": "story_portrait_hd_frame",
+      "status": "runtime_candidate",
+      "file": "dato-131-facility-portrait-handpainted-v1-480.png",
+      "master_file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "17d9735565de05e407033c650ab3bfeadec13dfd7fa5f2824c03c528287f8288",
+      "source_refs": [
+        "asset:FDOTHER_014",
+        "asset:DATO_131_m0",
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "tools/build_fd2_facility_portraits_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_hd6_v1",
+      "speaker_id": 131,
+      "frame": 0,
+      "mouth_state": "closed"
     }
   ]
 }

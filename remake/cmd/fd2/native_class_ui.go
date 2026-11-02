@@ -22,6 +22,7 @@ type nativeClassUIAssets struct {
 	dialogue   []fdother.RawCell
 	digits     []fdother.Frame
 	portrait   dato.Frame
+	portraits  []dato.Frame
 	units      *fdicon.Bank
 	strings    *fdtxt.Strings
 	font       *fdtxt.Font
@@ -90,7 +91,7 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	return &nativeClassUIAssets{
 		background: background, entries: churchAssets.Entries,
 		panel: churchAssets.Entries[16], priceCell: churchAssets.PriceCell, units: units,
-		choices: choices, dialogue: dialogue, digits: digits, portrait: portraits[0],
+		choices: choices, dialogue: dialogue, digits: digits, portrait: portraits[0], portraits: portraits,
 		strings: strings, font: font, palette: palette,
 		paletteDAC: append([]byte(nil), paletteRaw...), reviveFX: churchAssets.ReviveFX,
 	}, nil

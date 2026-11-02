@@ -85,11 +85,17 @@ func (g *Game) drawModernHDFacilityFrame(screen *ebiten.Image, compose func() ([
 			}
 		}
 	}
-	frame, ok := compose()
-	if !ok {
-		return false
+	frame, hdScene := g.drawModernHDStableFacilityScene(screen, compose, capture)
+	if !hdScene {
+		var ok bool
+		frame, ok = compose()
+		if !ok {
+			return false
+		}
+		g.presentNativeClassFrame(screen, frame)
+	} else {
+		g.appendModernHDFacilityPortrait(frame)
 	}
-	g.presentNativeClassFrame(screen, frame)
 	if capture != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
 	}

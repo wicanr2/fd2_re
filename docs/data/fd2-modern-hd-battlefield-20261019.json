@@ -300954,5 +300954,294 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-cursor-r46/final-validation-r1.json",
       "sha256": "21c67b1ec099afd35a07ce087c1e0f0f023738248236421a5975388ff95539ce"
     }
+  },
+  "hd1_facility_portraits_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "7c00162ead48db21fdf84ee181115da977184fe6",
+    "scope": "stable hotel FDOTHER13 / DATO129 and church FDOTHER14 / DATO131 same-master full illustrations with exact HD face crops",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "source_evidence": {
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/scene-ready-r2.json",
+        "sha256": "da411a81e7245d4575ce94ee4772523c0af498c1dbf0e7fcd3f5f83cf3f914ef"
+      },
+      "source_export": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/full-scene-source.json",
+        "sha256": "ead67978e71d027df7941c5c329b183350cadd99796bcc3012954d55e7bc5320"
+      },
+      "generation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/full-scene-generation-r2.json",
+        "sha256": "a713cc9f94a7e24f0a36b8e9d82e766cf5c944c1627f9c9962748ad26bc254ed"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_facility_portraits_hd.py",
+        "sha256": "d15a21715824fad0e7daefbe902643173aded04f9653b95ef3767c40052327f3"
+      },
+      "recipe": {
+        "file": "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "sha256": "eab35f5d5b055387576b810138bdfd76fc06e9730b276999a77993c6b0d6ba98"
+      },
+      "compiled": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/compile-scene-r2.json",
+        "sha256": "c6cee92414c565de6e7925fa314c6bb3a9ee3d83a224932880f7ccf1d0ce2d91"
+      },
+      "standalone_rejection": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/standalone-rejection.json",
+        "sha256": "f90aede8487634c4c735ae5176cdfd9a66e2298626ed79d369d7ddfa337a363d"
+      },
+      "standalone_incomplete_pair_rejected": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/rejected-standalone-contract-r2.json",
+        "sha256": "b301f708063df45b3e35a58e2499c348c98d87eb4818ffad7bb8cc53c06c244e"
+      },
+      "interpretation": "decoded original composition and known consumer offsets; no new EXE semantics or original runtime/oracle receipt",
+      "art_approximation": "source-bound full painted scenes; no inferred personal identity or original pixel-parity claim",
+      "portrait_crops_exact": {
+        "129": [
+          642,
+          30,
+          1122,
+          510
+        ],
+        "131": [
+          708,
+          24,
+          1188,
+          504
+        ]
+      },
+      "scene_source_native_rect": [
+        0,
+        0,
+        320,
+        200
+      ],
+      "fixed_head_contract": "existing closed-mouth story portrait contract; four native mouth frames remain source-checked"
+    },
+    "source": {
+      "go_files": 1215,
+      "go_tree_sha256": "78a186422a356aab92fa9682813cd5c00a5a309133dfeac00c3779e169fc7714",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/consumers-scene-r3.json",
+        "sha256": "462df48783b4b0a41658ae4e2c40c1c3b7b88303572d5eff4669c64cfb927f1d"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/fd2-player-r3",
+        "sha256": "02bd14b1fefb3d8027e820c37d10873b0f14e7d9bdbb8669baf97a524492c572"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/scene-commands-r3.json",
+        "sha256": "d9486d092583fe7455b10d889e41a7ebb28cf99efd302ff26b7fb7135e029127"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "3df572f0de94019e6fef99aa5c0e6731e19c387c6ac46a24d640b32d4f63db1b"
+      },
+      "registered_assets": 913,
+      "old_assets_unchanged": 907,
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "218bcbc32573fe1b1e76b8e0b89e51634d5e753250a52bc98f3fcd39cbac8e75"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_scene_pair.go",
+          "sha256": "641a9db98f2bf750140cc3fe9a8c29c334dffab79f8b04c9447401df9c99fcde"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_portrait.go",
+          "sha256": "1436dbdc2edeffe8f9958b65af23d0a1998f6cf3bd117b1c4af60697abb8033b"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "fea9930afd2d95ec8744b3aa30b8306f05d86cc4641620acb3d8cc44dc79c214"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_story_portrait.go",
+          "sha256": "972690efabd7dcc64f110ae645f1d7f4d08e089e25b633ad6e9f541fc3cb5d30"
+        },
+        {
+          "file": "remake/cmd/fd2/native_class_ui.go",
+          "sha256": "d29f1f9d734ea65c5a8f153b0866889031049c058c03d4f4e26cdcc3172933de"
+        }
+      ],
+      "loader_gate": "original six scenes mandatory individually; optional source-verified 13/14 scene+portrait groups; complete pixel crop check before publication"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/gpu-scene-r5-capture/receipt.json",
+        "sha256": "91786affa885024d8a06513044fe9fdc500b72743716b5d890eca6003328280b"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/gpu-scene-r5.memory.json",
+        "sha256": "2f426bc8baca58bc9522f973a4d07a72eee910f8a5e513e5bac13041b2aa7f8e"
+      },
+      "cases": 48,
+      "png": 16,
+      "source_pixels": {
+        "exposed_scene_pixels": 29301120,
+        "native_final_pixels": 4516160,
+        "portrait_pixels": 11059200
+      },
+      "reference": "complete Game.Draw and final presentation; full exposed scene RGB, exact paired head crop, native opaque UI writes and all four art/interface combinations",
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "hotel": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/normal-hotel-scene-r3-capture/receipt.json",
+          "sha256": "ad554359107ed755c804fdce6184a928ccb63dcd58d2042a9473119a64ea9672"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/normal-hotel-scene-r3.memory.json",
+          "sha256": "35e3fbefc3bdf963f4f2251c4714fe4f2129642c6a1e0df8d6a867c3750d3c32"
+        },
+        "png": 13,
+        "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02槽，正常旅館選槽、保存與服務LOAD；四語保留原有原生文字，不新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "theme_save_bytes_equal": true
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/normal-church-scene-r3-capture/receipt.json",
+          "sha256": "ef15b519554d80b578ff5728e63f1ddc099e8e8a5056bec1773f0ae12f31bfa0"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/normal-church-scene-r3.memory.json",
+          "sha256": "c19b2c2cfc4e2a01bc15a585ea75c272422841135b83dfd316a54fe59fc088d4"
+        },
+        "png": 15,
+        "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "theme_save_bytes_equal": true
+      }
+    },
+    "regression": {
+      "batches": [
+        {
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/regression-base-r3.memory.json",
+            "sha256": "f79a5903246a33a4c6e8c8486e82b09b151b26faf82b10fdaad259dda60c9bc6"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/regression-base-r3.log",
+            "sha256": "9cbec60247ac2ab288f0566717abdada67371a11550efb66b5afc34265325a98"
+          },
+          "top_level_passed": 109,
+          "skipped": [
+            "TestModernHDMapActualCandidateWorld",
+            "TestModernHDMapOverviewGPU",
+            "TestModernHDPreparationCountsRuntimeGPU",
+            "TestModernHDPreparationCursorRuntimeGPU",
+            "TestModernHDPreparationRosterRuntimeGPU",
+            "TestModernHDPreparationStatusRuntimeGPU",
+            "TestModernHDPreparationTownBackgroundRuntimeGPU",
+            "TestModernHDPreparationDialogueRuntimeGPU",
+            "TestModernHDTownDepartureRuntimeGPU",
+            "TestModernHDPreparationCountIconRuntimeGPU",
+            "TestNativeTownDepartureFromOracle"
+          ]
+        },
+        {
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/regression-facility-r3.memory.json",
+            "sha256": "6472d74ab8e05459afd148be7b58e2b846066606c53e93ab9aa7f738f5d666d2"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/regression-facility-r3.log",
+            "sha256": "90858fc6a8aa85b20750eabadc5aaed55fafb38f3469db73f5ce85e2c6d27bc9"
+          },
+          "top_level_passed": 31,
+          "skipped": [
+            "TestNativeHotelOriginalLoadSameSourceProbe",
+            "TestModernHDFacilityPortraitRuntimeGPU",
+            "TestModernHDFacilityFullSourceExport",
+            "TestModernHDFacilityRuntimeGPU"
+          ]
+        }
+      ],
+      "top_level_passed": 140,
+      "skips_are_not_passes": true,
+      "source_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/pair-source-r5.memory.json",
+        "sha256": "4418a0adca7747f42300309949a02b483b6aa14ad963bb31cff886d4cd2fa99b"
+      },
+      "source_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/pair-source-r5.log",
+        "sha256": "40590c24b84a243ae4be03486ebf9d87a1a50b5963b4d134720994c0280069bb"
+      },
+      "publication_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/publication-r3.memory.json",
+        "sha256": "b27d496f09df262013aea4e9d319d7e8d50bbf83060c7ad898720d580090f4b1"
+      },
+      "publication_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/publication-r3.log",
+        "sha256": "53ba0df2b9ca20d74fc34a515df0b5197ed3099707ad6caa2550c2b0027dfea5"
+      },
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/consumers-scene-verified-r3.json",
+        "sha256": "5fd1bb8df72b42719a0d61deeb6ed9c566129af995699533d59e8c60c43d52a8"
+      },
+      "catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/catalog-tests-r3.json",
+        "sha256": "75fa0bd1385f050c5771be9a73eee2f2886aa8e57c03788325ad03c9b82d7515"
+      },
+      "catalog_test_count": 16,
+      "catalog_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/catalog-validation-r2.json",
+        "sha256": "6aa67f070c555edcc5733f9529e97269eefa08f7b2d3d216062bc69f90200da4"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/string-review-scene-migration-r3.json",
+        "sha256": "d608adb4f6cf76aac7e08e41e877fb1ecff419d11ed453cf1d76505126d3b6f9"
+      },
+      "go_review_candidates": 159,
+      "prior_string_dispositions_preserved": 159,
+      "combined_timeout_not_counted": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/regression-r2-timeout-diagnostic.json",
+        "sha256": "cea8522182453f073bdb5c0e671f4ce91837231f29b7a85828a20d1c69d1b89f"
+      },
+      "native_source_clock_rng_save_unchanged": true,
+      "test_fixture_correction": "foreign nativeShopUIJob from shop fixture cleared when owner changes to hotel/church; production ownership rejection retained"
+    },
+    "public_png": [
+      {
+        "file": "docs/figures/hd1-hotel-scene-game.png",
+        "sha256": "9a84e621410c79aaf10503a6a822e0cfedd5be48b2110185c8daa3f8e9dbc1de"
+      },
+      {
+        "file": "docs/figures/hd1-church-scene-game.png",
+        "sha256": "9b5e79ea5c3cf84626bd924b9d7285038785debae43862b0bbd6950d8fb25b26"
+      }
+    ],
+    "private_assets": {
+      "head": "bd62bd503724f83d0f4ccbce9ae1f79a414db93a",
+      "remote_verified": true,
+      "is_private": true,
+      "files": 6942,
+      "new_files": 8,
+      "sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/private-sync-scene-r2.json",
+        "sha256": "ead3aa5f5ea2da3da57e23543cce1a4f1f65f5eeea631b67780250d986ed7b5d"
+      },
+      "rejected_or_original_exports_included": false
+    },
+    "remaining_ui": [
+      "hotel/church and other facility panels, service icons and frames",
+      "facility opening/closing, portrait mouth and other native animated jobs; stable source-verified scenes only in this slice"
+    ],
+    "limits": [
+      "No gameplay, saved state format, clock or RNG change.",
+      "Normal START then F9 resumes an existing hotel_ch02 source save; no new-process title LOAD or full campaign claim.",
+      "No new original E2, manual art acceptance or platform certification.",
+      "Terrain remains 3180 missing slots / 2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/final-validation-r1.json",
+      "sha256": "bd2d1c4536f14cd8cff2c2189688f670c6e584132b8fca42879345f6ef014d33"
+    }
   }
 }

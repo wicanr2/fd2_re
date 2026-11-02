@@ -427,8 +427,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	if len(set.uiPanelIcons) != 0 && len(set.uiPanelIcons) != 10 {
 		return nil, errors.New("modern HD panel icon group is incomplete")
 	}
-	if len(set.facilityScenes) != 0 && len(set.facilityScenes) != 6 {
-		return nil, errors.New("modern facility scene group is incomplete")
+	if len(set.facilityScenes) != 0 {
+		for _, resource := range []int{11, 61, 62, 12, 29, 63} {
+			if set.facilityScenes[resource] == nil {
+				return nil, errors.New("modern facility scene group is incomplete")
+			}
+		}
 	}
 	if len(hdPortraits) != 0 {
 		if len(hdPortraits) != len(set.portraits) {
@@ -452,6 +456,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	if (set.mapEffects != nil) != hasPlayer9Results {
 		return nil, errors.New("modern HD player9 effect/result group is incomplete")
+	}
+	if err := validateModernFacilityPortraitScenePairs(set); err != nil {
+		return nil, err
 	}
 	return set, nil
 }

@@ -5785,4 +5785,40 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 
 110頂層回歸通過，十一可選GPU／oracle略過不計。純層分解重建原生bytes、隱藏來源預檢、30槽／四拍索引／選取Y+3、來源三陣列／尺寸／palette拒絕、材質快取與owner清除通過。1212份Go指紋a746749285a784c30634a2344656d96367e434ddea6ca2f9cebe6fb949c75324，21來源／416幀／19反例與159字串處置保持。首輪誤用PNG遮罩SHA，次輪漏同樣規範的RemapMask；已直接量取三份型別化陣列，補快速SourceAdapter並乾淨重跑CPU／GPU與完整回歸，未改原圖或載入器。
 
-[普通整備游標畫面](../figures/hd1-preparation-cursor-game.png)沿同一第24章原生槽正常LOAD、選人、第二槽保存、F2、縮放及確認取消17PNG通過。兩美術保存SHAd5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持。攻略建構／清敵祖先限制不變，不新增自然難度、全章E2或原版對拍。907清冊、6934私人檔與ee9ab2e2保持。後續已定位酒店FDOTHER13／DATO129及教堂FDOTHER14／DATO131背景與頭像缺接，其餘設施面板／圖示與動畫另核對；兩頭像試稿僅存R47，未登錄，不算正式完成。
+[普通整備游標畫面](../figures/hd1-preparation-cursor-game.png)沿同一第24章原生槽正常LOAD、選人、第二槽保存、F2、縮放及確認取消17PNG通過。兩美術保存SHAd5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持。攻略建構／清敵祖先限制不變，不新增自然難度、全章E2或原版對拍。907清冊、6934私人檔與ee9ab2e2保持。酒店FDOTHER13／DATO129及教堂FDOTHER14／DATO131依後述完整插畫閉合；其餘設施面板／圖示與動畫續作。
+
+## HD1酒店與教堂固定頭像（SUPERSEDED，2026-11-02）
+
+- 正式來源為酒店nativeHotelPortraitID=0x81的DATO129與nativeClassUI的DATO131。各沿自己的原版m0大頭像，以內建image_gen繪製正常頭像；保留個別面容、表情、髮型、衣裝及背景，不綁其他角色姓名。四個原始嘴型幀的PNG與索引SHA、原始DATO檔版本依R47 ready.json及fd2-reference-files清單；此段重用已閉合consumer，不新增EXE語意。
+- 沿既有story_portrait_frame／story_portrait_hd_frame靜態契約，完整不透明方形主稿分別編成80與480，frame0／closed。原生嘴型排程仍執行，呈現沿既有固定重繪契約，不宣稱新增HD嘴型動畫。907舊項保持，只新增兩對共四項；兩主稿及四PNG依清冊同步私人庫。
+- 位置直接沿NativeFacilityPortraitOffset：129為0x06ab，即107,5至187,85；131為0x0576，即118,4至198,84。穩定酒店／教堂畫面先確認四幀來源各自精確雜湊，再比對實際indexed幀中的完整80×80區域，只有確實出現任一原始幀才疊同一個480圖。部分進出場或被面板遮蓋時保留原圖，不把相似色當成來源或可見性證據。
+- 頭像隨F2美術獨立於F11。HD缺件、尺寸或原始來源不符不留舊overlay；不改原始幀、背景、選項、字串、clock、RNG與保存。必要驗收含直接來源adapter、四種呈現、原版完整區域與遮擋拒絕、四嘴型來源、缺件／快取／owner、正常酒店／教堂短路徑與保存相容。最高RUNTIME-E1，人工由使用者接手，背景及其餘設施圖像／動畫仍續作。
+
+來源及提示詞保存在既有R47工作目錄的prototype-sources.json、imagegen-prototypes.json與ready.json。可重跑工具入口為tools/build_fd2_facility_portraits_hd.py，配方為remake/assets/themes/modern/facility-portraits.recipe.json；使用--recipe <此配方> --source <主稿目錄> --original-pack <固定分離包> --out <明確輸出目錄> --report <JSON>，只支援上述129／131。執行期入口modern_hd_facility_portrait.go與modern_hd_facility_text.go；主收據hd1_facility_portraits_followup_20261102。
+
+教堂typed assets另保留載入時已有的四幀portraits清單，原單幀portrait欄位與正式合成器沿用m0；新增清單只供來源核對，不改原合成器、動畫或資料檔格式。
+
+## HD1酒店與教堂完整插畫（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+原生DATO129／131的80×80區與FDOTHER13／14內的人物身體連續。前述獨立頭像雖通過來源及像素接線，正常畫面有明顯方框接縫，因此不採用。四筆候選已自正式清冊撤下，恢復907項；尚未同步私人庫或提交。原始畫面、舊配方／工具及試稿保存在R47的standalone-rejection.json所列證據，不作完成收據。
+
+後續沿既有build_fd2_facility_hd.py的商店同稿做法，以原版完整設施構圖和各自面容參考重繪整張插畫，再由同一畫布裁出129／131固定區。場景與頭像需同時接線並逐點驗證裁切連續性，不能只核對頭像自身PNG。新的來源、可見區與場景分層規格達READY後才重新登錄；此修正不改玩法、身份、保存或既定美術／介面分工。
+
+完整原圖組合由受版控TestModernHDFacilityFullSourceExport重生，設定FD2_FACILITY_FULL_SOURCE_OUT為既有明確輸出目錄；它沿loadNativeClassUIAssets／loadNativeHotelUIAssets的FDOTHER背景、DATO m0及已證實offset合成320×200，記錄PNG與indexed SHA。這是原版資料解碼組合，沒有UI文字、沒有原版執行期或可達性聲明，不作dosgolem收據。
+
+兩張完整重繪主稿已依原320×200全構圖與各自面容參考完成，來源／提示詞依R47 full-scene-generation-r2.json。FDOTHER13 metadata SHA4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5，14為bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224；typed背景SHA分別c281de5e5346bbff5e6e860ad980d12e4cf50dc70630063ed12f2327bdc93c32與1f93961908efeff46c529c22dba6bee2d224180a862d3ae6ecfc014d1dbbdcc2，背景內m0與同位置DATO0逐byte相同已驗。新主稿1586×992完整縮製1920×1200，再精確裁129的642,30至1122,510及131的708,24至1188,504為480；80由同一480縮製。編製工具及配方沿前述入口改用fd2-facility-scene-portrait-pair-hd6-v2，舊配方／工具封存在R47的standalone-rejected文件，不再登錄獨立主稿。
+
+- 清冊新增13／14兩個既有facility_scene_hd角色與129／131兩對既有頭像角色，共六項及八私人檔；907舊項保持。載入時對新兩組驗場景與480裁切RGBA相同，缺配對或裁切不同拒絕整組，舊包沒有新兩組時照舊載入。既有六場景及125人物不重畫。
+- 穩定酒店／教堂的背景由實際typed來源與上述SHA預檢。沿既有雙填色來源判別，以值複本暫代背景全0／全255，並把主DATO區暫代同一填色marker；只有這個已證實屬整圖的頭部寫入隨背景透出。其他原生UI、人物資訊與後續覆蓋照常執行，兩次輸出相同的位置才是前景write，避免以RGB相似猜遮罩。所有source／素材指標還原，清掉兩次測mask產生的文字capture後再提交真正幀。
+- 真正原生indexed幀仍由原合成器產生。HD整圖在底，原生前景mask在中，完整可見頭像可沿同稿480覆蓋；部分被UI遮蓋時從底圖透出同一HD面容，不畫整個頭像壓住UI。F2原美術與source預檢失敗時保留完整原圖，避免只換頭而再出接縫；F11介面獨立。圖源、原幀、clock、RNG與保存不改。
+- 必要驗收新增場景／頭像裁切逐點一致、主頭部mask透出及前景遮擋、來源／metadata／尺寸／配對拒絕、四種控制、正常酒店／教堂及保存。這段只接穩定設施畫面；進出場與其他動畫、介面圖示／框線另續作，不稱完整HD1或新原版E2。
+
+最終載入閘門保留舊六場景的逐項必備檢查，新13／14各依來源與同稿配對驗證；不再用固定總數六拒絕已驗新增場景。TestModernHDFacilitySceneCatalogPublication以實際PNG的小清冊分別驗新八場景及舊六場景，兩者均通過；不變更原素材或遊戲規則。
+
+主收據hd1_facility_portraits_followup_20261102。48個完整Game.Draw及最終呈現通過，16PNG、29301120背景像素、11059200頭像像素及4516160原生前景像素逐點核對。涵蓋酒店選項、保存／載入訊息、教堂選項、缺件回退及四組美術／介面；工具列開關不改遊戲區。以雙marker清除主DATO寫入、後續UI仍遮擋的來源測試，以及原六場景／新八場景實際PNG小清冊發布測試通過。舊fixture帶有商店job，已在切換測試owner時清除；正式owner拒絕保持。
+
+乾淨回歸分兩批為109及31頂層通過，十一及四項可選GPU／oracle／來源匯出略過另列，專用GPU與來源匯出已有上述獨立收據。原合併命令超過八分鐘上限，未計為通過；相同來源分批重跑通過，未放寬產品斷言。16項Python清冊測試、913項清冊／同稿裁切與私人6942檔核對通過。1215份Go指紋78a186422a356aab92fa9682813cd5c00a5a309133dfeac00c3779e169fc7714，21消費來源／416幀／19反例與159字串處置保持。
+
+[酒店普通畫面](../figures/hd1-hotel-scene-game.png)及[教堂普通畫面](../figures/hd1-church-scene-game.png)來自正常START後以F9接續既有hotel_ch02存檔，再經城鎮及設施正常鍵盤操作。酒店13PNG、教堂15PNG涵蓋四語選項／名冊、保存與服務LOAD、復活及交付列表／取消、F2、縮放和說明頁。來源與兩美術保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持；這批沒有新程序標題LOAD、連續戰役或原版oracle聲明。程式SHA02bd14b1fefb3d8027e820c37d10873b0f14e7d9bdbb8669baf97a524492c572，正式Go建置後未變。
+
+兩整圖主稿、兩1920整圖及四頭像依allow-list同步私人bd62bd503724f83d0f4ccbce9ae1f79a414db93a，遠端及private核對通過。913清冊只有六項新增，前907項逐項保持；舊獨立頭像主稿與原圖匯出不納入。#283續作設施框線／圖示與動畫，#282地形仍3180缺槽／2033唯一來源；不稱全HD1完成，人工由使用者接手。

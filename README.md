@@ -287,7 +287,13 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD整備選人介面](docs/figures/hd1-preparation-cursor-game.png)
 
-整備的計數文字與圖示、狀態卡、面板框線和選人游標已接高解析呈現。名冊沿原版排序、選取位移與三拍動畫顯示 Q 版人物，美術與介面可獨立切換。上圖由標題 LOAD 既有第24章存檔進入，存檔含攻略建構與清敵歷史；酒店、教堂等介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+整備的計數文字與圖示、狀態卡、面板框線和選人游標已接高解析呈現。名冊沿原版排序、選取位移與三拍動畫顯示 Q 版人物，美術與介面可獨立切換。上圖由標題 LOAD 既有第24章存檔進入，存檔含攻略建構與清敵歷史；其餘設施框線、圖示與動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
+| 酒店完整插畫 | 教堂完整插畫 |
+|---|---|
+| ![酒店HD場景](docs/figures/hd1-hotel-scene-game.png) | ![教堂HD場景](docs/figures/hd1-church-scene-game.png) |
+
+酒店與教堂的人物、背景及固定頭像沿各自原圖重繪，頭像直接裁自同一畫稿。上圖由正常START後F9接續既有第2章存檔，經正常鍵盤進入設施；美術與介面可獨立切換。設施框線、圖示與動畫仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
 
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 

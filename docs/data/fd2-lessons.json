@@ -4924,8 +4924,8 @@
       "id": "native-ui-fixture-keeps-unit-records",
       "date": "2026-11-02",
       "area": "原生介面測具",
-      "rule": "擴充整備名冊的測具先從有效原生角色複製完整typed unit，再替換明示的raw selector key；每個variant重設來源party與join order，避免上一案例的替換名冊造成空角色。正式素材與規則不因測具失敗改動。入口為remake/cmd/fd2/modern_hd_preparation_roster_test.go的preparationRosterThirty與TestModernHDPreparationRosterRuntimeGPU。",
-      "why": "R42第一輪GPU在建構下一variant時沿舊join order查到空角色，導致同一份三十槽測具缺原生狀態資料；還原每個variant的有效來源party後，96個完整畫面通過。",
+      "rule": "擴充整備名冊的測具先從有效原生角色複製完整typed unit，再替換明示的raw selector key；每個variant重設來源party與join order，避免上一案例的替換名冊造成空角色。正式素材與規則不因測具失敗改動。入口為remake/cmd/fd2/modern_hd_preparation_roster_test.go的preparationRosterThirty與TestModernHDPreparationRosterRuntimeGPU。 由既有商店測具切換到酒店／教堂時，清除setupNativeShop建立的nativeShopUIJob，再固定新owner；入口另含modern_hd_facility_portrait_test.go的完整設施矩陣。",
+      "why": "R42第一輪GPU在建構下一variant時沿舊join order查到空角色，導致同一份三十槽測具缺原生狀態資料；還原每個variant的有效來源party後，96個完整畫面通過。 R47畫面矩陣曾留下前一商店動畫job，正式owner守門正確拒絕HD場景；修正測具前置，不移除正式守門。",
       "evidence": "WORKLOG.md：2026-11-02 HD1整備選人名冊人物；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_preparation_roster_followup_20261102"
     },
     {
@@ -4979,6 +4979,37 @@
           "remake/cmd/fd2/modern_hd_preparation_cursor.go"
         ],
         "pattern": "329fd24c50c8cf6420bcfbff2fddaf24ae6f86a935175804c1737e9c11a164e7"
+      }
+    },
+    {
+      "id": "facility-face-and-body-share-one-master",
+      "date": "2026-11-02",
+      "area": "設施美術連續性",
+      "rule": "設施頭像區與背景內身體連續時，以同一張完整插畫主稿編製場景及原位置裁切頭像。先讀tools/build_fd2_facility_hd.py既有商店模式，再依tools/build_fd2_facility_portraits_hd.py及61的同稿契約檢查整幅構圖、裁切RGBA相同與原生前景遮罩。執行期載入器同時拒絕缺配對或裁切不同的場景。",
+      "why": "R47獨立頭像雖通過自身PNG與GPU來源比較，正常畫面仍像方框貼在原背景身體上。原背景本已包含DATO閉嘴區，必須同稿重繪並裁切，技術圖源自洽不代表畫面連續。",
+      "evidence": "WORKLOG.md：2026-11-02 酒店與教堂整圖接縫修正；61-modern-theme-runtime-spec.md；R47/standalone-rejection.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_facility_scene_pair.go",
+          "tools/validate_modern_theme_catalog.py"
+        ],
+        "pattern": "portrait crop does not join scene"
+      }
+    },
+    {
+      "id": "asset-group-extension-checks-final-publication",
+      "date": "2026-11-02",
+      "area": "素材群組擴充",
+      "rule": "擴充已登錄資源前，同時核對來源分派、個別素材驗證與最終清冊發布閘門。先以最小合法PNG清冊呼叫真正載入器，驗新群組與舊群組均能發布，再跑完整素材矩陣。入口為modern_story_portrait.go及TestModernHDFacilitySceneCatalogPublication；新增來源仍逐項驗雜湊與配對，不放寬未知來源。",
+      "why": "R47個別來源13／14與Python清冊皆通過，但Go最終仍固定六場景，完整900多項載入後才被拒絕。已保留原六場景逐項要求，另驗新配對，並加入小清冊新八／舊六測試。",
+      "evidence": "WORKLOG.md；61-modern-theme-runtime-spec.md；R47/scene-loader-r2-diagnostic.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_story_portrait.go"
+        ],
+        "pattern": "validateModernFacilityPortraitScenePairs"
       }
     }
   ]

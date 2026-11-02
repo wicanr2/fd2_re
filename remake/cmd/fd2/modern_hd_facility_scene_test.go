@@ -27,8 +27,19 @@ func facilityHDTestSet(t *testing.T) *modernStoryPortraitSet {
 	if catalog == "" || pack == "" {
 		t.Skip("explicit facility candidate or formal pack required")
 	}
+	var declared modernThemeCatalog
+	raw, readErr := os.ReadFile(catalog)
+	if readErr != nil || json.Unmarshal(raw, &declared) != nil {
+		t.Fatal("facility catalog unreadable", readErr)
+	}
+	expected := 6
+	for _, asset := range declared.Assets {
+		if asset.Role == "facility_scene_hd" && (asset.SourceResource == 13 || asset.SourceResource == 14) {
+			expected++
+		}
+	}
 	set, err := loadModernStoryPortraitSet(catalog, pack)
-	if err != nil || len(set.facilityScenes) != 6 {
+	if err != nil || len(set.facilityScenes) != expected {
 		t.Fatalf("facility preflight: %v", err)
 	}
 	return set

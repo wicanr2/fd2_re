@@ -1,0 +1,181 @@
+{
+  "schema": "fd2-facility-scene-portrait-pair-hd6-v2",
+  "pillow": "11.3.0",
+  "scope": "hotel13/DATO129 and church14/DATO131 full scene and exact crops from one master each",
+  "entries": [
+    {
+      "source_resource": 13,
+      "speaker_id": 129,
+      "native_offset": 1707,
+      "source_metadata": {
+        "file": "shop/FDOTHER_013/resource.json",
+        "sha256": "4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5"
+      },
+      "background": {
+        "file": "shop/FDOTHER_013/entry_000/frame.png",
+        "file_sha256": "a6b2750dcaed160d5a2e0f4cb6f2bb7a4264654970f1f4f3563ea26751375318",
+        "indexed_sha256": "c281de5e5346bbff5e6e860ad980d12e4cf50dc70630063ed12f2327bdc93c32",
+        "typed_background_sha256": "c281de5e5346bbff5e6e860ad980d12e4cf50dc70630063ed12f2327bdc93c32",
+        "mask_file": null,
+        "mask_sha256": null
+      },
+      "original_frames": [
+        {
+          "frame": 0,
+          "file": "DATO_129_m0.png",
+          "file_sha256": "06a6a3e77bf525b297e67e40624b9b11facd718f1120b6fa0b45279faf52f3da",
+          "pixels_sha256": "f9003ab74f96e25489dddcbbc78ec7a11f400232d3424eaaf1fa9803f415db9c"
+        },
+        {
+          "frame": 1,
+          "file": "DATO_129_m1.png",
+          "file_sha256": "3afc0088b1eeeb91afeb625c2626e60c5cb16ea3717e51d25bd9d919be4b1afa",
+          "pixels_sha256": "3735b1263b2ac97dc68ec8ccdabda7815dea48bc944bde48e83d09be8058b6f0"
+        },
+        {
+          "frame": 2,
+          "file": "DATO_129_m2.png",
+          "file_sha256": "c0d19283838da63ac5a2860e22af0d8ad080d38f40834b24ecfa56b5ad3ec6ac",
+          "pixels_sha256": "30a73145fdbd5a4b6fe9c492fc586be580bb25005a10c7aeea6321b5aa37e448"
+        },
+        {
+          "frame": 3,
+          "file": "DATO_129_m3.png",
+          "file_sha256": "c590af3935a374b0c72dba16d33e65f97637f019d441121adaa14fe32787c9a9",
+          "pixels_sha256": "b0377b9fd07f820b639ca0e0418296091fc7a0b0f8bb211f1684119667c3851a"
+        }
+      ],
+      "master": {
+        "file": "fdother-013-scene-handpainted-hd6-master-v1.png",
+        "sha256": "f2dc76f356452ea48c5b354d2f07952e959c3065d3889e1faac2421b4abdf8ef",
+        "size": [
+          1586,
+          992
+        ]
+      },
+      "scene": {
+        "file": "fdother-013-scene-handpainted-hd6-v1.png",
+        "width": 1920,
+        "height": 1200,
+        "sha256": "1ed556c36e655d411b2b7ab57eae27a15f85db8c86b3ad7879a06e9bc77acf1d"
+      },
+      "portrait_rect_hd": [
+        642,
+        30,
+        1122,
+        510
+      ],
+      "portraits": [
+        {
+          "file": "dato-129-facility-portrait-handpainted-v1-80.png",
+          "width": 80,
+          "height": 80,
+          "sha256": "8e0ce7ea3caea627f5cb533183f4bc6b8ef92498c62bbe3f0f7a033874d0b2ce"
+        },
+        {
+          "file": "dato-129-facility-portrait-handpainted-v1-480.png",
+          "width": 480,
+          "height": 480,
+          "sha256": "98dbbcfa68e763c8b903a2791a861cb2662656f41e5b58734484571f0fef3fc3"
+        }
+      ]
+    },
+    {
+      "source_resource": 14,
+      "speaker_id": 131,
+      "native_offset": 1398,
+      "source_metadata": {
+        "file": "ui/fdother_014_church/resource.json",
+        "sha256": "bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224"
+      },
+      "background": {
+        "file": "ui/fdother_014_church/entry_000/frame.png",
+        "file_sha256": "12c9f6a7ad8255eadf0993803f4583606882cde01dc75e58c912b13951928845",
+        "indexed_sha256": "1f93961908efeff46c529c22dba6bee2d224180a862d3ae6ecfc014d1dbbdcc2",
+        "typed_background_sha256": "1f93961908efeff46c529c22dba6bee2d224180a862d3ae6ecfc014d1dbbdcc2",
+        "mask_file": "ui/fdother_014_church/entry_000/mask.png",
+        "mask_sha256": "d27d266a15a7f7c466ac1673aade5029cb0691ec355e6fbac51f84230cf33d42"
+      },
+      "original_frames": [
+        {
+          "frame": 0,
+          "file": "DATO_131_m0.png",
+          "file_sha256": "d0692f6e9bfb32d8ba7249a2da39e357471fbf35367773ce0f6d684ea3ce3ac2",
+          "pixels_sha256": "445faaadb4faae86f562ca4367043a083e9e27f1bb3e8d9ae3396244217899d0"
+        },
+        {
+          "frame": 1,
+          "file": "DATO_131_m1.png",
+          "file_sha256": "a88145171011cf97cf9ae018b4b30f9e4b4ddbbbd690da7cd4c37cd5c75cf047",
+          "pixels_sha256": "8643ad5c92f4ca9006030e0bae3467a9e0a34295defac032d0120ef592f4a421"
+        },
+        {
+          "frame": 2,
+          "file": "DATO_131_m2.png",
+          "file_sha256": "267fee71339a744634ee1ffe41c5f1aec4a75868e11bec6e3c6cc8ecf4279ecf",
+          "pixels_sha256": "cde2526cf5b29569144441c0a33fe62a41276d59afa65c854d4d7087e9b7314b"
+        },
+        {
+          "frame": 3,
+          "file": "DATO_131_m3.png",
+          "file_sha256": "2732e99a45264579dc29d87bc73bd8f2d1cf043e2907f2d50611ff425b4a34fc",
+          "pixels_sha256": "bc2c69ecfd18b71f99598297270a0fa249a035d01500a89abcb231a3b9622983"
+        }
+      ],
+      "master": {
+        "file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+        "sha256": "eb7eab3ea7478f3b1e916f272d2a25ce79e9b17ab8ecc7f8bcdff63641a7be35",
+        "size": [
+          1586,
+          992
+        ]
+      },
+      "scene": {
+        "file": "fdother-014-scene-handpainted-hd6-v1.png",
+        "width": 1920,
+        "height": 1200,
+        "sha256": "834368a54353154e2b65e6bb6ce64e8a8aad99f34201793d1fe3aaf6ecf8deab"
+      },
+      "portrait_rect_hd": [
+        708,
+        24,
+        1188,
+        504
+      ],
+      "portraits": [
+        {
+          "file": "dato-131-facility-portrait-handpainted-v1-80.png",
+          "width": 80,
+          "height": 80,
+          "sha256": "1c398818af5d5850f6ef10f775ede3d4ae816cb17ca4bc6231177709a9eda7a4"
+        },
+        {
+          "file": "dato-131-facility-portrait-handpainted-v1-480.png",
+          "width": 480,
+          "height": 480,
+          "sha256": "17d9735565de05e407033c650ab3bfeadec13dfd7fa5f2824c03c528287f8288"
+        }
+      ]
+    }
+  ],
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompts": [
+      {
+        "key": "hotel013",
+        "ref": "source-hotel-composed.png",
+        "face": "dato-129-hotel-church-hd1-r1-master.png",
+        "prompt": "Create one cohesive high-resolution hand-painted fantasy RPG tavern illustration by redrawing the FIRST reference image in its entirety. The first reference is the exact original 320x200 composition: keep its wide landscape 16:10 canvas, camera, framing, object placement, blonde woman leaning on the bar, arm and hand pose, dark teal long gloves/clothing, shelves of pale vessels, papers, plates, blue glassware and carved red-brown wooden bar front. The SECOND reference provides ONLY her individual face, golden curls and painted finish; do not copy its crop, enlarged bust, body position or arm arrangement. Preserve the mature face, arched eyebrows, eyes, nose, lips and smile of the original woman. Paint the complete woman and tavern as ONE continuous illustration, with natural seamless hair, neck, shoulders, arms and background. Her head stays in the same original part of the image, approximately x107..187, y5..85 on the 320x200 coordinate system; do not move or enlarge it. Preserve the original pose and every major original prop, without inventing characters or equipment. Brush-painted surfaces, controlled detail and rich warm original colors, matching the established HD1 painted game art. No chibi. No menus, dialogue box, UI overlay, portrait square, separate inset, border, captions, new legible text or watermark. Opaque complete wide landscape image, exact 16:10 composition, at least 1280x800."
+      },
+      {
+        "key": "church014",
+        "ref": "source-church-composed.png",
+        "face": "dato-131-hotel-church-hd1-r1-master.png",
+        "prompt": "Create one cohesive high-resolution hand-painted fantasy RPG church illustration by redrawing the FIRST reference image in its entirety. The first reference is the exact original 320x200 composition: keep its wide landscape 16:10 canvas, camera, framing, silver-gray-haired woman standing centrally with both gloved hands clasped at her chest, white robe and original gold trim, white/blue headwear, stained-glass window with the same gold, blue and warm red geometry, navy curtains and the original left hanging banner. The SECOND reference provides ONLY her individual facial features, silver bangs and painted finish; do not copy its crop or enlarged bust. Preserve the original woman's face shape, eyes, eyebrows, nose, small closed mouth and gentle expression. Paint the complete woman, her robe, hands and architecture as ONE continuous illustration with seamless hair, neck, shoulders, arms and background. Her head stays in the same original part of the image, approximately x118..198, y4..84 on the 320x200 coordinate system; do not move or enlarge it. Keep the original headwear and clothing rather than adding costume parts or jewelry. Preserve original decorative writing as seen without adding or rewriting text. Brush-painted surfaces, controlled detail and the original cool white/silver, deep blue and gold palette, matching the established HD1 painted game art. No chibi. No menus, dialogue box, UI overlay, portrait square, separate inset, border, captions, new symbols or watermark. Opaque complete wide landscape image, exact 16:10 composition, at least 1280x800."
+      }
+    ],
+    "source_composition_export": "TestModernHDFacilityFullSourceExport",
+    "source_proof": "full-scene-source.json",
+    "standalone_face_refs": "work-only identity references; not runtime assets"
+  }
+}

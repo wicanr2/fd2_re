@@ -199,7 +199,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 raise ValueError(f'map stage master SHA mismatch: {asset_id}')
         if entry['role'] == 'facility_scene_hd':
             resource = entry['source_resource']
-            if (resource not in {11, 61, 62, 12, 29, 63} or resource in facility_resources
+            if (resource not in {11, 61, 62, 12, 29, 63, 13, 14} or resource in facility_resources
                     or entry['source_archive'] != 'FDOTHER.DAT'
                     or entry['consumer_contract'] != 'native_facility_scene_hd6_v1'
                     or (entry['width'], entry['height']) != (1920, 1200)
@@ -208,6 +208,10 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     or entry['source_files'] != [entry['master_file']]
                     or len(entry['source_sha256']) != 1 or not SHA_RE.fullmatch(entry['source_sha256'][0])):
                 raise ValueError(f'invalid facility scene contract: {asset_id}')
+            if resource in {13,14} and entry['source_metadata_sha256'] != {
+                    13:'4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5',
+                    14:'bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224'}[resource]:
+                raise ValueError(f'facility source metadata differs: {asset_id}')
             facility_resources.add(resource)
             if verify_private:
                 source = ROOT / private_root / entry['master_file']
@@ -590,8 +594,22 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         raise ValueError('HD panel icon group incomplete')
     if story_resources and story_resources!={('FDOTHER.DAT',34),('ANI.DAT',0)}:
         raise ValueError('HD sky key pair incomplete')
-    if facility_resources and facility_resources != {11, 61, 62, 12, 29, 63}:
+    if facility_resources and not {11, 61, 62, 12, 29, 63}.issubset(facility_resources):
         raise ValueError('facility scene group is incomplete')
+    for resource,speaker,rect in [(13,129,(642,30,1122,510)),(14,131,(708,24,1188,504))]:
+        scenes=[a for a in assets if a['role']=='facility_scene_hd' and a['source_resource']==resource]
+        parents=[a for a in assets if a['role']=='story_portrait_frame' and a['speaker_id']==speaker]
+        heads=[a for a in assets if a['role']=='story_portrait_hd_frame' and a['speaker_id']==speaker]
+        if not scenes and not parents and not heads:
+            continue
+        if len(scenes)!=1 or len(parents)!=1 or len(heads)!=1 or len({a['master_file'] for a in scenes+parents+heads})!=1:
+            raise ValueError(f'facility scene/portrait pair incomplete: {resource}')
+        if verify_private:
+            from PIL import Image
+            scene=Image.open(ROOT/private_root/scenes[0]['file']).convert('RGBA')
+            head=Image.open(ROOT/private_root/heads[0]['file']).convert('RGBA')
+            if scene.crop(rect).tobytes()!=head.tobytes():
+                raise ValueError(f'facility portrait crop does not join scene: {resource}')
     if (('LMI1',6,87) in battle_resources) != (('LMI1',5,94) in battle_resources):
         raise ValueError('player9 effect/result group is incomplete')
     if hd_speakers and hd_speakers != portrait_speakers:
