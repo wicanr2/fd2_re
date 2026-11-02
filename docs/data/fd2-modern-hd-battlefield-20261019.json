@@ -306321,12 +306321,217 @@
     "limits": [
       "來源與原圖行為沿既有typed/native producer；未新增原版oracle、整章E2或人工造型／平台驗收。",
       "主圖與兩側寶石仍沿原版，僅替換六份已核文字，四語不新增翻譯。",
-      "移動資訊窗、indexed回合橫幅與native面板caller需續核；#283保持開啟。",
+      "移動資訊窗、回合事件鏡頭／閃白與native面板caller需續核；#283保持開啟。",
       "地形#282餘3180缺槽／2033獨特來源；完整HD1未完成。"
     ],
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/final-validation.json",
       "sha256": "a66bdd7c344498a13a34dc0eed0c0da7537d0895955f62c16ef9eecfa434a526"
+    },
+    "remaining_review_correction": "R68源碼追查：nativeTurnStaging屬事件鏡頭／閃白，drawBattlePanel屬已界定後備；操作介面先收斂至移動資訊窗。"
+  },
+  "hd1_movement_panel_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "7a8b6af9d983875e68a6f5c3825c3cbc43987d02",
+    "scope": "149×42移動資訊窗沿原角色record／計畫／色盤與兩框位，以既有Noto／原色細框配方繪製894×252；F11獨立F2，恢復HD美術下原版介面的資訊窗。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1270,
+      "go_tree_sha256": "d843b574834d53c1d020e8b81bb24dcc4562931b710711c701c552e22be2495d",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/fd2-player-r1",
+        "sha256": "e8a0cff3f0a47659f187b13ed67d6d140d83bee76f26ff4ddea86ab859741321"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/ready-source.json",
+        "sha256": "dab967bc46d737275e27357efe1cee8f2f0835635ed40b764e8279cf9349ed4e"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/commands.json",
+        "sha256": "32af3e310040e3ef888dd5b49487275fc6e9e9206de8c79e4e10fd5b7bba131a"
+      },
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/interface-consumers-current.json",
+        "sha256": "0c7ab1d4ec171fd4cddb87ab23a0286f24459e50a71ca335d4ba620339f924d9"
+      },
+      "production_go_files": 234,
+      "production_functions": 1789,
+      "jobs": 82,
+      "presenters": 30,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_movement_panel.go",
+          "sha256": "c136c15a69d11fc5313fb135e73ac46edd89c1df68c6631106f98692449d557a"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_movement_panel_test.go",
+          "sha256": "cb7485d4bb7d1cdceee9590454f9b337aa8f51a77ced7ef47e7d5a6dd42ebc39"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_movement_panel_gpu_test.go",
+          "sha256": "e300a4f70d10c183b9f5370cff6b7a238cdae6b62ef0e05fadbc8bbdb0ed45f4"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_movement_panel_prototype_test.go",
+          "sha256": "5960b973b7bb0ee453c2e414514699e43267ae3767fdd21a4dc1909c6f9b8a98"
+        },
+        {
+          "file": "remake/cmd/fd2/native_player_movement.go",
+          "sha256": "65ac8f1e59093f888a5a2d16d6b92ff4470e7391650819e9d96b61d3bb44c635"
+        },
+        {
+          "file": "remake/cmd/fd2/player_interface.go",
+          "sha256": "ab128e2dce827b407ade2101ba2316f0ec940178af8bed5b18121c5deabc935b"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "ff5bd136f9635f2bf1839488af15e58f3a613f79686746065c57bca601b788a1"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_presentation.go",
+          "sha256": "fcdabab8c119d4188e9881efc4a723ebf804435ba9db3562b3af800de7ee4c87"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "96e6c2f16d45f166a72da62bba5f0b495b5908314d49020a46aa58b72123fe0b"
+        },
+        {
+          "file": "tools/verify_fd2_hd_fonts_gui.py",
+          "sha256": "c2eee62ef39b68e94c24136d9f3c4ed0fbf5ba66b9acccd442507fb959fffbd6"
+        }
+      ]
+    },
+    "prototype": {
+      "states": 8,
+      "pngs": 16,
+      "source_raw_bytes_equal": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/prototype-r1-capture/prototype.json",
+        "sha256": "df65398678ef8d49da24905a3653ab9cd0437de8ab7aef59b2dd59b7db8f7e4a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/prototype-r1.memory.json",
+        "sha256": "1baf08fd633cc7c87492b058013b745dc4d76e1ebf11f66083d5e44551452eb1"
+      }
+    },
+    "cpu": {
+      "anchors": 2,
+      "display_modes": 4,
+      "negative_cases": 18,
+      "font_cache_rebuilt": true,
+      "gameplay_unchanged": true,
+      "source_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/source-r2.log",
+        "sha256": "75e2fa7a1f42d90534e7e79c47c3053a7e0b93e0c867dc4d870bc8e7fbd0e186"
+      },
+      "source_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/source-r2.memory.json",
+        "sha256": "8b799e90af341b183f6b36e0562c189a3cf601b90291afab144684ed272916ba"
+      }
+    },
+    "gpu": {
+      "cases": 11,
+      "game_draws": 22,
+      "full_final_hd_comparisons": 7,
+      "native_exact_crop_comparisons": 4,
+      "pngs": 8,
+      "rgba_tolerance": 0,
+      "guard_cases": [
+        "help",
+        "white",
+        "black"
+      ],
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/gpu-r2-capture/movement-gpu-report.json",
+        "sha256": "a18f6be8749559dc1c629fda4067d51f9edbb279dc10b72caab1842c11a822dd"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/gpu-r2.memory.json",
+        "sha256": "1459ab51d3b57c55c14ec005801340411407ff2ef6fd8aedbda04563bd146590"
+      },
+      "scope": "two anchors/four controls; actual full Game.Draw/DrawFinalScreen; HD image independently rebuilt from existing CPU source collector over ordinary panel-free world; native UI crop exact before existing final filter. No new presenter used to build reference."
+    },
+    "normal_gui": {
+      "pngs": 8,
+      "display_modes": 4,
+      "normal_keyboard_only": true,
+      "cancel": true,
+      "f5_both_art": true,
+      "new_process_title_load": true,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "final_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/normal-r1-capture/receipt.json",
+        "sha256": "525ed1417ef63c78ddf6eb248a8d131acbf6d2f548cd538a8fd8f8cd85500d78"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/normal-r1.memory.json",
+        "sha256": "67d51a0feaccdb3dbfb0700589f18312e782b95e142394294f8dffddfee432ae"
+      }
+    },
+    "regression": {
+      "pass": 49,
+      "optional_skip": 4,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/regression-r1.log",
+        "sha256": "9d807f1aa144d8d46f66151efd4cf5d16695f02a7a2a10013d9f8f91578848d6"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/regression-r1.memory.json",
+        "sha256": "5b6d62805945ac244b50c202d7d0e6936d4df254d39c2e80fa44e25b4d665bfb"
+      },
+      "consumers": 21,
+      "frames": 416,
+      "negative": 19,
+      "export": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/consumers-r1.json",
+        "sha256": "789ea75bc1d747ebc4301e86e6d5726df762a2bb36f3dcf244aa776ee47691d1"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/consumers-verified-r1.json",
+        "sha256": "57d9aa232482eff2409c04546ff98841573e94bfc6a0520fa12b6d5b9735e9f3"
+      },
+      "review_count": 160,
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/review-migration.json",
+        "sha256": "39f26d244a5811ae896d75896b2525656c02147fe7d557a122b1cb003a499919"
+      }
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-movement-panel-game.png",
+        "sha256": "ce509c7ea5b984af55b93ce40fd7e3d3ba4fc09b5cdd37d5d7b625764b829b77"
+      }
+    ],
+    "limits": [
+      "完整既有普通首章JSON由正式載入器讀取；GPU控制鏡頭／時間／遮蔽，正常GUI沒有執行中狀態注入。未新增原版oracle、整章E2或人工平台驗收。",
+      "源碼分類已更正：nativeTurnStaging屬事件鏡頭／閃白，drawBattlePanel屬原生資料不可用的後備，不能列為未接操作介面。",
+      "首章JSON metadata不能映成原生四槽時仍沿既有後備框，下一切片核對HD框線，#283保持開啟。",
+      "地形#282仍餘3180缺槽／2033獨特來源，完整HD1未完成。"
+    ],
+    "diagnostics": {
+      "source_r1": "stage42受控角色缺完整原生AI record，實際移動守門正確拒收；改用已通過普通首章及保存冷讀的完整JSON，沿正式載入器建立來源，不造HasNative旗標。",
+      "gpu_r1": "測試鏡頭int不能賦給pixel float64，改沿正式syncNativeMapView；未改產品規則。"
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "03087cf4c4e78c3bf4ed9a45b86a41cbf2b311ccc6b3b752a1caea71b0e925a4"
+      },
+      "catalog_assets": 957,
+      "private_files": 6990,
+      "new_files": 0,
+      "private_commit": "4d7d9695b16a1781451c9d45bfb1c8804cef49e1",
+      "private_manifest_sha256": "67bef6651d205dfcffdaaae1cbdf699e67a193e1864cf0c937dc657a24306576",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/final-validation.json",
+      "sha256": "278a7b4f889cfb550741636d5214af4351eca6e5639d95442765c66e5c8cd118"
     }
   }
 }

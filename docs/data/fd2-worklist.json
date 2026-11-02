@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "HD1介面沿原位置、輸入與保存接線，F2美術獨立F11介面；人工觀感、逐章與平台由使用者接手。現況以58、61及HD主收據為準。\n\n城鎮／離城／整備、旅館／教會穩定介面、三商店穩定模式、服務圖示、Q版名冊、比較／物品、列表／確認／回覆／主選單開收、金額框及成功演出已接；R66寶箱確認與回覆沿實際actor.BattleFig。#288／#289不重開。957清冊／6990私人檔、私人4d7d9695及兩manifest保持，本批沒有新美術。\n\nR67補上START／LOAD／CONTINUE字樣及四槽原色HD細框。六份原圖及DAC核固定SHA，兩側寶石、逐列背景與mask保持；四槽沿FDOTHER13／16的c009ad5e面板，原輸入與metadata不改。F11先預檢活躍來源，失敗不發布控制狀態。\n\n最終66完整Game.Draw／8PNG，獨立底圖／細框容差0、CPU透明字層容差2、獨立最終source-over合成容差1且字形區外0。六來源／1352文字像素、72語系字級布局及21拒收，40回歸／三可選略過通過。普通鍵盤標題及四槽四組、上下選取／空槽／取消、LOAD既有hotel JSON、兩美術F5/F9及新程序LOAD，共16完整1920×1200PNG；保存bytes與來源190b9f8f相同。未新增原版oracle或整章E2。\n\n1266 Go指紋63bb2464、21來源／416幀／19反例與160字串保持；沿既有預乘透明度教訓補分層案例，409教訓／258 guard。主收據hd1_title_interface_followup_20261103及61索引來源、命令、公開正常畫面及診斷。233正式來源／1784函式／82 job／30 sink的靜態盤點只作保守參照。\n\n移動資訊窗、indexed回合橫幅及native面板caller仍須核對正式範圍；沒有直接HD名稱不等於玩家缺口，本工單保持開啟。地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成。",
+      "body": "HD1介面沿原位置、輸入與保存接線，F2美術獨立F11介面；人工觀感、逐章與平台由使用者接手。現況以58、61及HD主收據為準。\n\n城鎮／離城／整備、旅館／教會、三商店、服務圖示、Q版名冊、比較／物品、列表／確認／回覆／主選單開收、金額框、成功演出及寶箱確認已接。R67標題START／LOAD／CONTINUE與原生四槽接HD字型及原色細框。各批來源、正常抽樣與限制依主收據，不重開#288／#289。\n\nR68移動資訊窗沿原record／actor／plan／palette，以既有Noto與細框配方直繪894×252，保留149×42來源與兩框位、移動及取消。F11獨立F2，原版介面在HD美術下也顯示同源資訊窗。18來源拒收、兩框位／四組、字級重編通過。11GPU案例實際22完整Game.Draw，八PNG；七份HD／遮蔽完整最終畫面及四份原版面板裁切容差0。正常標題LOAD首章、選亞雷斯開窗／取消四組、兩美術F5及新程序LOAD八完整PNG通過；保存與來源089b077b相同。\n\n49回歸／四可選略過、1270 Go指紋d843b574、21來源／416幀／19反例與160字串保持。957清冊／6990私人檔、私人4d7d9695及兩manifest不變；本批無新美術。主收據hd1_movement_panel_followup_20261103及61索引來源、完整命令、正常截圖與診斷。未新增原版oracle或整章E2。\n\n源碼分類勘誤：nativeTurnStaging屬事件鏡頭／閃白，歸地圖演出；drawBattlePanel屬原生資料不可用的後備，不能由字型caller推定正式玩家缺口。首章JSON metadata不能映成原生四槽時，仍會走後備框，下一切片核對HD框線，本工單保持開啟。地形另依#282，3180缺槽／2033獨特來源。完整HD1未完成。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -560,11 +560,17 @@
         "remake/cmd/fd2/native_load_slots_ui.go",
         "remake/cmd/fd2/player_interface.go",
         "docs/figures/hd1-title-interface-game.png",
-        "docs/figures/hd1-title-load-slots-game.png"
+        "docs/figures/hd1-title-load-slots-game.png",
+        "remake/cmd/fd2/modern_hd_movement_panel.go",
+        "remake/cmd/fd2/modern_hd_movement_panel_prototype_test.go",
+        "remake/cmd/fd2/modern_hd_movement_panel_test.go",
+        "remake/cmd/fd2/modern_hd_movement_panel_gpu_test.go",
+        "remake/cmd/fd2/native_player_movement.go",
+        "docs/figures/hd1-movement-panel-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R67標題／四槽66完整Draw／8PNG，底圖0／字層2／最終字形合成1且區外0；72布局／21拒收、40回歸／三略過及16正常完整視窗／保存冷讀保持。957／6990未變，移動資訊窗與indexed分支續核。依61與hd1_title_interface_followup_20261103。"
+        "note": "R68移動窗兩框位／四控制、18拒收、11案例22完整Draw及八正常PNG／取消／保存冷讀保持089b077b；49回歸／四略過。957／6990未變；首章JSON後備框續核，事件鏡頭／閃白與native面板後備不列操作介面缺口。依61與hd1_movement_panel_followup_20261103。"
       },
       "issue": 283
     }

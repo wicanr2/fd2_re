@@ -71,6 +71,9 @@ func (g *Game) setInterfaceMode(mode string) error {
 		if err := candidate.preflightModernHDTitleInterface(); err != nil {
 			return err
 		}
+		if err := candidate.preflightModernHDMovementPanel(); err != nil {
+			return err
+		}
 		if g.font == nil || g.font.sf == nil {
 			return fmt.Errorf("interface: HD font unavailable")
 		}

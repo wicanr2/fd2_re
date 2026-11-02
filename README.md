@@ -305,6 +305,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD移動資訊窗](docs/figures/hd1-movement-panel-game.png)
+
+選人時的移動資訊窗已接高解析字型與原色細框，保留兩個原生框位、血條及數字。上圖由正常標題LOAD首章存檔後選取亞雷斯取得。四組美術／介面、取消及保存冷讀已抽驗；來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1移動資訊窗)。
+
 ![HD標題三選項](docs/figures/hd1-title-interface-game.png)
 
 標題三選項與[四槽讀檔框](docs/figures/hd1-title-load-slots-game.png)已接既定HD字型及細框，保留原背景、選取亮點與操作。上圖取自正常鍵盤啟動；四組切換、取消、讀取既有存檔，以及兩種美術保存與新程序讀取已抽驗。範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1標題選單與四槽框線)。

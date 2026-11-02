@@ -556,6 +556,8 @@ type Game struct {
 	selOrigX, selOrigY int  // 選取單位當下的原始格(ESC 取消移動時退回,playfix #4)
 	moved              bool // 已選單位是否移動完(進入攻擊階段)
 	nativeMovePlan     *battle.NativePlayerMovement
+	movementPanelHD    *modernHDMovementPanel
+	movementPanelDraw  *modernHDMovementPanelDraw
 	nativeMovePanel    *ebiten.Image
 	nativeMovePanelX   int
 	result             string // 勝負:""/win/lose
@@ -9260,6 +9262,7 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.nativeMapPresented = false
+	g.movementPanelDraw = nil
 	g.nativeInterfaceHUDVisible = false
 	g.modernHDOverlay = nil
 	g.modernHDScene = nil

@@ -201,6 +201,7 @@ def main():
     parser.add_argument('--system-info', action='store_true', help='正常第23章空地系統環開關資訊，HD／原版、F2、返回與保存冷讀；需--battle-status --world')
     parser.add_argument('--system-confirmation', action='store_true', help='正常第23章END／NO、四組介面美術與保存保持；需--battle-status --world')
     parser.add_argument('--chibi-refresh', action='store_true', help='普通首章亞雷斯選取、四組呈現、走行取消及保存冷讀；需--battle-status --world')
+    parser.add_argument('--movement-panel', action='store_true', help='普通首章選人開啟移動資訊窗、四組呈現、取消及保存冷讀；需--battle-status --world')
     parser.add_argument('--system-info-locales', action='store_true', help='搭配--system-info驗四語與兩主題資訊窗')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
     parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
@@ -295,6 +296,8 @@ def main():
                                             and not any([args.heal_normal,args.system_info,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
     assert not args.chibi_refresh or (args.battle_status and args.world and args.battle_node=='battle_ch01'
                                      and not any([args.heal_normal,args.system_info,args.system_confirmation,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
+    assert not args.movement_panel or (args.battle_status and args.world and args.battle_node=='battle_ch01'
+                                      and not any([args.chibi_refresh,args.heal_normal,args.system_info,args.system_confirmation,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
     assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert not args.death_actor_art or (args.death_commander_hd and args.death_kind=='action')
     assert args.revive_before_departure is None or args.capture_native_battle_save
@@ -959,6 +962,48 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
+            if args.movement_panel:
+                initial=latest(audit)
+                fields=('native_identity','x','y','hp','mp','lv','exp','acted','on_field')
+                units=lambda s:[{k:u.get(k) for k in fields} for u in s['units']]
+                actor=next(u for u in initial['units'] if u.get('native_identity')==4 and u['camp']==0 and u['on_field'] and u['hp']>0)
+                origin=[actor['x'],actor['y']]
+                def focus_movement_actor():
+                    for axis,positive,negative in ((0,'Right','Left'),(1,'Down','Up')):
+                        current=latest(audit)['cursor']
+                        for _ in range(abs(origin[axis]-current[axis])):
+                            key(positive if origin[axis]>current[axis] else negative)
+                    wait(lambda st:st.get('cursor')==origin and not st.get('walking'))
+                def movement_open(art,ui,name):
+                    focus_movement_actor();key('Return')
+                    state=wait(lambda st:st.get('move_preview') and st.get('movement_panel_presented',{}).get('interface_hd') is ui
+                               and st.get('movement_panel_presented',{}).get('art_hd') is art)
+                    assert units(state)==units(initial)
+                    command('xdotool','windowsize',window,'1920','1200');shot(name)
+                    key('Escape');wait(lambda st:not st.get('move_preview') and not st.get('movement_panel_presented'))
+                    assert units(latest(audit))==units(initial)
+                    return state
+                styles=[]
+                for label,art,ui,press in [('hd-hd',True,True,None),('hd-original',True,False,'F11'),
+                                          ('original-original',False,False,'F2'),('original-hd',False,True,'F11')]:
+                    if press:key(press)
+                    wait(lambda st:st.get('hd_theme') is art and st.get('hd_interface') is ui)
+                    styles.append(dict(label=label,state=movement_open(art,ui,'movement-'+label)))
+                key('F5');saved_native=saved.read_bytes()
+                key('F2');wait(lambda st:st.get('hd_theme') is True)
+                key('F5');assert saved.read_bytes()==saved_native
+                restart_title_load('battle_ch01',initial['gold'],'movement-cold-title-load')
+                cold=movement_open(True,True,'movement-cold-hd')
+                assert saved.read_bytes()==saved_native and units(cold)==units(initial)
+                report=dict(schema='fd2-hd1-movement-panel-gui-v1',status='PASS',binary_sha256=digest(args.binary),
+                            gui_tool_sha256=tool_source_sha256,source_save_sha256=digest(args.town_save),
+                            saved_sha256=digest(saved),initial=initial,styles=styles,cold=cold,
+                            screenshots=shots,operations=operations,normal_keyboard_only=True,state_injection=False,
+                            theme_save_bytes_equal=True,new_process_title_load=True,
+                            scope='完整既有普通首章存檔經正常標題LOAD、游標選亞雷斯、移動資訊窗四控制及取消、兩美術F5與新程序LOAD；不改規則或執行中狀態，不新增原版oracle或整章E2。')
+                (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+                print('PASS normal movement panel and save roundtrip',flush=True)
+                return
             if args.status_death_normal:
                 run_status_death(args,audit,key,wait,shot,saved,command,window,
                                  restart_title_load,operations,shots,tool_source_sha256)

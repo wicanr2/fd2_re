@@ -4926,3 +4926,9 @@ R67最終GPU-r6／binary-r1／普通r1／regression-r1通過。66完整Draw／8P
 主收據hd1_title_interface_followup_20261103索引全部來源與限制；移動資訊窗、indexed回合橫幅及native面板caller須先核對正式範圍，#283暫不關。部分原生函式由上層HD路徑包裝，不能依名稱缺HD就判缺口；FDOTHER45另屬演出美術。地形#282續作。最終雜湊、連結、工單、提交及容器清理於本批收尾核對。
 
 R67收尾：31雜湊引用、39張最終來源PNG含14原型／8GPU／16普通視窗及原字樣表、3750本地連結與新來源索引通過，無新增斷鏈。409教訓／258 guard與27開啟／20人工／零可能完成保持；#283已更新並由主機重拉、官方快照及render／verify重生。模組內text/text.go改標module_file，避免被當作專案本地收據；同容器重跑通過。私人庫乾淨、兩HEAD均4d7d9695且private=true，無FD2容器殘留，其他專案容器不動。
+
+R67已提交推送7a8b6af9d983875e68a6f5c3825c3cbc43987d02，遠端HEAD相同，#283留言6589858805。R68續命中復古重製spec閘門，沿既有入口。補查後訂正：nativeTurnStaging是事件鏡頭／閃白，不是回合橫幅；indexed取決於原生狀態可用性。drawBattlePanel只在原生physical base或舊地圖HUD後備啟用，不據其raw字模重開已完成面板。移動資訊窗是正式來源，先以既有149×42 HD面板producer作可丟棄對照，尚未改production。
+
+R68來源prototype八狀態／16局部PNG通過，原生64000 bytes與149×42裁切相同、玩法保持；原圖與HD圖已檢視。沿既有面板配方及原source位置，61與ready-source.json升READY，開始正式接線；不新增圖稿，事件鏡頭及原生後備不混入此切片。
+\nR68來源測試r1的stage42受控角色只具戰鬥面板來源，缺原生移動計畫要求的AI raw欄位；沒有猜補Has旗標。改由已通過正常首章與保存冷讀的完整JSON source，經正式loadGame／loadJSONGameFromSlot重建。來源明示唯讀掛載；未提供來源時測試略過，明示來源但無效則失敗。原型16圖仍只證明面板producer，不提升為真實移動admission。\n
+R68完成移動資訊窗接線。正式快照沿原record／palette／actor／plan，F11獨立F2，原位置與輸入保持。來源18拒收、兩框位／四組、字級重編及49回歸／四可選略過通過。11受控GPU案例實際22完整Draw，八PNG，HD全畫面／原版面板裁切及說明／黑白遮蔽容差0。正常標題LOAD首章、選亞雷斯開窗／取消四組、兩美術F5與新程序冷讀八PNG通過，來源及保存089b077b相同。1270 Go指紋d843b574，957清冊／6990私人檔不變；主收據hd1_movement_panel_followup_20261103封存完整命令。測具provenance及鏡頭型別兩項失敗已更正，未改產品規則。58的前兩輪新增表格曾留下字面換行，本輪修為實際表格列並更正重複待辦。首章JSON後備框接續核對，地形另案，完整HD1未完成。

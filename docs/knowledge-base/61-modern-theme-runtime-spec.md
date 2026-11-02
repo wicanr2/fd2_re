@@ -6144,4 +6144,31 @@ R67完整繪圖入口為[modern_hd_title_interface_gpu_test.go](../../remake/cmd
 \nR67正常鍵盤抽樣沿[既有GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的--title-interface，普通啟動後核對標題／四槽四組切換、選取與取消、LOAD既有hotel JSON、兩美術F5／F9及新程序LOAD；所有視窗完整擷取，不注入執行中狀態。\n\nR67驗證契約補充：GPU-r5分層診斷顯示原底圖差異0、透明字層最大差2，直接CPU整圖因兩段取整累積而有三個byte差3。正式驗證改為獨立重組底圖容差0、獨立CPU透明字層容差2，再把已獨立驗過的GPU字層依整數source-over公式合成於獨立底圖，最終字形覆蓋區容差1、區外0。此為驗證器的分層契約，不改正式字型、顏色或玩家畫面。鎖定Ebiten2.6.6的text/text.go以字形快取先畫透明層；診斷與來源版本留工作根。\n
 R67最終66完整Game.Draw／8PNG，原底圖／細框容差0、獨立CPU透明字層容差2、最終字形合成容差1且區外0通過。六原圖／1352文字像素、72語系字級布局與21拒收、40回歸／三可選略過通過。普通鍵盤標題與四槽四組、CONTINUE選取、空槽／取消、LOAD既有hotel JSON、兩美術F5／F9及新程序LOAD共16完整1920×1200PNG；保存保持190b9f8f。
 
-[普通標題](../figures/hd1-title-interface-game.png)與[四槽](../figures/hd1-title-load-slots-game.png)皆為正常鍵盤視窗，來源及範圍依主收據hd1_title_interface_followup_20261103。1266 Go指紋63bb2464、21／416／19消費端與160字串保持；957清冊／6990私人檔及兩manifest未改，沒有新美術。盤點233正式來源／1784函式／82個job及30個sink；靜態索引不當成玩家可達。移動資訊窗、indexed回合橫幅與native面板caller續核，不能由零候選或這批綠燈推算完整HD1。
+[普通標題](../figures/hd1-title-interface-game.png)與[四槽](../figures/hd1-title-load-slots-game.png)皆為正常鍵盤視窗，來源及範圍依主收據hd1_title_interface_followup_20261103。1266 Go指紋63bb2464、21／416／19消費端與160字串保持；957清冊／6990私人檔及兩manifest未改，沒有新美術。盤點233正式來源／1784函式／82個job及30個sink；靜態索引不當成玩家可達。移動資訊窗、回合事件鏡頭／閃白與native面板caller續核，不能由零候選或這批綠燈推算完整HD1。
+
+### HD1移動資訊窗
+
+R68 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。prepareNativePlayerMovement沿NativeBattlePanelRecordForUnit及原localized producer凍結149×42來源，以既有HD面板配方生成894×252。原生框位(9,9)／(160,9)及輸入保持，F11獨立F2；原版介面在HD美術下也會顯示同一資訊窗。
+
+R67待查分支訂正：nativeTurnStaging是回合／死亡事件的鏡頭與閃白，indexed由完整原生狀態可用性決定，與PLAYER／ENEMY PHASE橫幅不同，歸地圖演出來源。drawBattlePanel的直接caller只在原生physical base不可用或舊地圖HUD後備時啟用，不能由它仍呼叫原字模就推定正式面板有缺口。上述原推論留WORKLOG，後續先收斂移動資訊窗。
+
+R68可重跑來源原型入口為[modern_hd_movement_panel_prototype_test.go](../../remake/cmd/fd2/modern_hd_movement_panel_prototype_test.go)。在既有map23幾何與明示受控角色上比對原生與既有HD collector，四語／兩來源的16張局部圖不作正常玩家證明。
+
+#### R68 READY契約
+
+四語／兩份typed來源共八狀態、16張894×252局部圖通過並檢視。renderBattlePanelText與移動原producer的64000 bytes及149×42裁切相同，角色、RNG與移動field保持。範圍只接正式prepareNativePlayerMovement的兩個選人／取消返回caller，不改後備drawBattlePanel或事件鏡頭演出。
+
+- 沿NativeBattlePanelRecordForUnit及原localized producer凍結149×42 source、record、palette、角色與plan來源；以既有modernBattlePanelText的Noto、數字／標籤、細框與血條配方生成894×252。原始pixels、計畫、可達field、取消及保存保持，不新增美術或資料格式。
+- 原位置由VisibleCursorX<7決定x160，否則x9，y9。F11原版畫同一原生快照，F11 HD直繪高解析圖；四種F2／F11組合都沿同一可見條件與位置。移除舊版只因HD美術就略過資訊窗的guard，恢復已定獨立介面契約。
+- 面板沿原producer建立時的資料及語系快照。既有字級設定由p.font.userScale控制raster快取重建，不重算移動計畫。正常按鍵隱藏、選人及移動取消仍沿目前輸入順序；不替這個暫存窗新增常駐狀態或翻譯規則。
+- 新描述器綁原生圖像、來源record／像素／palette、plan、actor、font及既有面板recipe。來源缺件或變造不發布HD；HD啟用前對活躍面板預檢。原版可保留無HD描述器的舊測試／隔離來源，進HD拒絕未證實來源。正式constructor先預檢再發布plan與cache。
+- 每次Game.Draw先清最近繪圖描述器。只有原生面板仍可見且來源相符才發布獨立最終畫面層，沿原矩形、內容幾何、淡幕與黑白／說明等上層守衛。高解析面板放在既有HD對話／狀態框及文字之前；返回、隱藏、失敗或其他early return不留舊面板。
+- 驗收含原生bytes保持、兩位置、四控制、source／owner／palette／font／cache反例、原生移動與取消回歸、完整Game.Draw／DrawFinalScreen、存檔保持及正常選人／取消鍵盤抽樣。typed來源不冒稱自然玩家或新原版oracle；人工觀感與平台仍由使用者接手。
+
+R68正式入口為[modern_hd_movement_panel.go](../../remake/cmd/fd2/modern_hd_movement_panel.go)，沿native_player_movement.go的實際producer、player_interface.go預檢及modern_hd_presentation.go最終層接線。Game.Draw清最近描述器，input_audit_trace.go只記錄最近Draw；字型／語系資料快照沿原面板，無新保存欄位。
+
+R68來源／反例入口為[modern_hd_movement_panel_test.go](../../remake/cmd/fd2/modern_hd_movement_panel_test.go)，以實際prepareNativePlayerMovement核對兩位置／四控制、字級重編、隱藏清理、18來源／owner／cache變造與無HD舊來源。原生移動計畫、field及保存模型不變。
+
+R68完整繪圖入口為[modern_hd_movement_panel_gpu_test.go](../../remake/cmd/fd2/modern_hd_movement_panel_gpu_test.go)。11案例實際22次Game.Draw及最終合成，兩框位／四控制、說明／全白／全黑通過；七份HD或遮蔽完整畫面與四份原版面板裁切容差0。八張1920×1200PNG。測具以已通過普通首章保存冷讀的完整JSON經正式載入器建立，不補造raw provenance旗標。
+
+R68來源18拒收、字級重建與原生bytes保持通過；49相關回歸／四可選略過、21素材來源／416幀／19反例與160字串分類保持。正常GUI沿[verify_fd2_hd_fonts_gui.py](../../tools/verify_fd2_hd_fonts_gui.py)的--battle-status --world --movement-panel，由標題LOAD既有首章存檔、選亞雷斯開窗、四控制／取消、兩美術F5及新程序LOAD，共八張完整PNG。保存SHA-256仍為089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2；[正常畫面](../figures/hd1-movement-panel-game.png)及主收據hd1_movement_panel_followup_20261103索引命令／來源與限制。957清冊／6990私人檔保持，沒有新美術。首章JSON後備讀檔框續核，#283保持開啟；地形另案，完整HD1未完成。

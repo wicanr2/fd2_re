@@ -384,6 +384,9 @@ func (g *Game) recordInputAuditState() {
 	}
 	r["dialogue_progress"] = g.nativeDialogueProgress
 	r["dialogue_phase"] = g.dlgPhase
+	if drawn := g.movementPanelDraw; drawn != nil {
+		r["movement_panel_presented"] = map[string]any{"interface_hd": drawn.hd, "art_hd": drawn.artHD, "rect": drawn.rect, "source_key": drawn.key}
+	}
 	r["title_phase"] = g.titlePhase
 	r["title_selection"] = g.titleSel
 	r["title_slot"] = g.titleSlotSel

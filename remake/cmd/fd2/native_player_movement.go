@@ -26,7 +26,12 @@ func (g *Game) prepareNativePlayerMovement(u *battle.Unit) error {
 		return err
 	}
 	pixels := make([]byte, 320*200)
-	if err := g.renderLocalizedNativeBattlePanel(assets, record, pixels, 0, 0); err != nil {
+	var collected []*modernBattlePanelText
+	var collector *[]*modernBattlePanelText
+	if g.font != nil && g.font.sf != nil && g.localeEntities != nil {
+		collector = &collected
+	}
+	if err := g.renderBattlePanelText(assets, record, pixels, 0, 0, collector); err != nil {
 		return err
 	}
 	x, y, err := battle.NativeBattlePanelOrigin(record, 0, 0)
@@ -37,11 +42,19 @@ func (g *Game) prepareNativePlayerMovement(u *battle.Unit) error {
 	for row := 0; row < 42; row++ {
 		copy(panel.Pix[row*panel.Stride:row*panel.Stride+149], pixels[(y+row)*320+x:(y+row)*320+x+149])
 	}
-	g.nativeMovePanel = ebiten.NewImageFromImage(panel)
-	g.nativeMovePanelX = 9
+	sourceImage := ebiten.NewImageFromImage(panel)
+	panelX := 9
 	if g.st.NativeMapViewState.VisibleCursorX < 7 {
-		g.nativeMovePanelX = 160
+		panelX = 160
 	}
+	hd, err := g.freezeModernHDMovementPanel(u, plan, sourceImage, record, panel.Pix, panelX, collected)
+	if err != nil {
+		return err
+	}
+	if g.modernHDInterfaceEnabled() && hd == nil {
+		return errors.New("modern HD movement panel: verified name/font unavailable")
+	}
+	g.nativeMovePanel, g.nativeMovePanelX, g.movementPanelHD = sourceImage, panelX, hd
 	g.nativeMovePlan = plan
 	g.reach = plan.Reach
 	copy(g.st.NativeTileBlitModes, plan.Field)
@@ -53,6 +66,7 @@ func (g *Game) clearNativePlayerMovement() {
 		g.resetNativeTargetField()
 	}
 	g.nativeMovePlan, g.nativeMovePanel = nil, nil
+	g.movementPanelHD, g.movementPanelDraw = nil, nil
 }
 
 func (g *Game) restorePlayerMovementCursor() {
@@ -84,13 +98,23 @@ func (g *Game) restorePlayerMovementCursor() {
 }
 
 func (g *Game) drawNativeMovementPanel(screen *ebiten.Image) {
-	if g.sel == nil || g.nativeMovePanel == nil || g.modernStoryPortraits != nil {
+	g.movementPanelDraw = nil
+	if g.sel == nil || g.nativeMovePanel == nil {
 		return
+	}
+	rect := image.Rect(g.nativeMovePanelX*2, 18, g.nativeMovePanelX*2+298, 102)
+	if g.modernHDInterfaceEnabled() {
+		if hd, err := g.prepareModernHDMovementPanel(); err == nil {
+			g.movementPanelDraw = &modernHDMovementPanelDraw{image: hd.gpu, rect: rect, hd: true, artHD: g.modernStoryPortraits != nil, key: hd.pictureKey}
+			return
+		}
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
 	op.GeoM.Translate(float64(g.nativeMovePanelX*2), 18)
 	screen.DrawImage(g.nativeMovePanel, op)
+	g.movementPanelDraw = &modernHDMovementPanelDraw{rect: rect, artHD: g.modernStoryPortraits != nil}
+
 }
 
 // beginPlayerAttackTargeting 是指令環攻擊收合後的共同入口（0x18f22 分支）：
