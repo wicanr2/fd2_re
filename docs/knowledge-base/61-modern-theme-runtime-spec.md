@@ -5886,3 +5886,19 @@ R51主收據hd1_shop_dialogue_followup_20261102：348完整Game.Draw／71PNG、1
 [正常販售確認](../figures/hd1-shop-dialogue-game.png)由START後F9接續既有hotel_ch02，經城鎮普通購買布衣、拒絕立即裝備再出售。商店18、裝備13、買賣9張完整PNG通過，動態金額另依收據列裁圖；裝備保存保持190b9f8f，買賣1000→950→987後兩美術保存32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66相同，F9及新程序標題LOAD通過。原始JSON來源保持，不外推連續全戰役或原版E2。
 
 正常預設購買測具原用三次Return固定0.5秒，未等確認／受領job，已改逐步等待實際模式與job結束；金幣冷讀原硬編60秒，現沿明示startup_timeout，遊戲時序不變。第二輪三容器在相同秒收到Docker明確signal15，未留完整收據，不算通過；事件與操作者未知均如實保存。相同image、資源及預算的具名容器乾淨重跑通過，未調產品參數。953清冊／6963私人檔與原版包保持，沒有新素材／格式；設施動畫、名冊人物及其他未接介面仍依#283，地形依#282。
+
+## HD1設施名冊人物（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+R52沿已證實typed消費端RenderNativeRosterRows、ComposeNativeShopEquipmentRecipientFrame、RenderNativeClassListRows及RenderNativeReviveRows，來源與固定EXE／DAT／FDICON雜湊保存於work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-roster-r52/ready-source.json。兩欄人物位置14+132×column,117+26×row，三列固定14,117+26×row，原尺寸24×24；只用原始MapSelectorKey及pose0，不用DATO同號猜身份。
+
+商店涵蓋recipient_consumable、recipient_equipment、sell_roster、equip_roster、transfer_source、transfer_dest；教會涵蓋class、status_roster、transfer_source、transfer_dest、revive，共11模式。各自取正式party IDs、選取與既有視窗起點，受領／販售沿實際cycle0..2，其餘沿原frame0；名字、選取色、排序與窗口不改。
+
+每次穩定Draw先核owner、無job、固定Panel16及所有實際24×24範圍。以原Panel底圖加同一原始sprite重播，逐byte核對實際整幀後，才用panel原生底圖清除人物範圍，另在最終視窗以144×144已定Q版繪製；先於文字，F2獨立於F11。原始indexed frame與party不改，全部圖源完整才一起發布；錯來源、覆蓋、缺件或視窗不符整組回退。help／transient／status、DAC黑白與下一Draw不留舊層。
+
+入口modern_hd_facility_roster.go、modern_hd_facility_text.go、native_shop_ui.go、modern_hd_presentation.go及Game.Draw重置，驗證入口modern_hd_facility_roster_test.go。必要驗收含兩欄／三列、視窗移動／三拍／四控制、來源與缺件拒收、完整Game.Draw逐格像素、工具列與非人物區保持，以及正常設施與保存。既有邊框測試只對新增人物範圍另交專門像素驗證，不拿排除區當作人物通過。只接現有圖源，不新增素材／格式、身份或方向；動畫job續作。主收據預留hd1_facility_roster_followup_20261102。
+
+R52主收據hd1_facility_roster_followup_20261102：180完整Game.Draw／50PNG核對18994176人物像素，HD RGB容差2／原生0。相同底圖、文字及場景僅停用最終Q層的控制組，在實際人物範圍外整幅逐byte相同；工具列整個遊戲區相同。控制fixture刻意混用原名IDs與不同raw圖組，只驗路由、位置與畫格，不當身份或一般玩家證據。來源／缺件／遮蓋／foreign job／owner／help／transient／DAC黑白及兩種捲動視窗拒收通過。81相關回歸通過，九可選GPU／oracle／匯出略過另列。
+
+[正常商店名冊](../figures/hd1-shop-roster-q-game.png)與[正常教會名冊](../figures/hd1-church-roster-q-game.png)沿實際存檔的身份及原始MapSelectorKey，不用控制fixture圖。正常裝備13、教會15、買賣9張完整PNG通過；裝備／教會保存仍190b9f8f，布衣1000→950→987後兩美術保存32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66相同，F9及新程序標題LOAD通過。金幣另兩張動態裁圖接受、兩張拒收。不外推連續戰役或原版E2，人工造型由使用者接手。
+
+1224份Go指紋a4289edfcbba7ca96af64f90b5cb0474775c2644db0eeb637d724ac24e4e7267，程式0fc08192bb6a2dffe7fd6a8b83c077f5e0dbb5d668cd9560f2a2e6c5248ad5af；21來源／416幀／19反例與159字串處置保持，Game新增呈現欄位造成的行號遷移不改文字判定。953清冊／6963私人檔、私人44636b94及原版包保持，未新增素材或格式。首輪整體回歸600秒逾時、未見測試FAIL或OOM，收據不計通過；待正常GUI結束後，以同image／CPU／記憶體及逾時預算單獨乾淨重跑295.019秒通過。動畫、比較欄標籤等其餘介面仍依#283，地形依#282。

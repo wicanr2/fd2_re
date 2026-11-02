@@ -592,6 +592,7 @@ type Game struct {
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
 	modernHDScene                       *modernFacilitySceneOverlay
 	preparationRosterHD                 *modernPreparationRoster
+	facilityRosterHD                    *modernFacilityRoster
 	prepStatusHD                        *modernHDPreparationStatus
 	prepCountsHD                        *modernHDPreparationCounts
 	prepCursorHD                        *modernPreparationCursor
@@ -9260,6 +9261,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.modernHDOverlay = nil
 	g.modernHDScene = nil
 	g.preparationRosterHD = nil
+	g.facilityRosterHD = nil
 	g.modernHDPanelPortraits = nil
 	g.modernHDBattleVisible = false
 	g.syncModernHDBattleOwner()

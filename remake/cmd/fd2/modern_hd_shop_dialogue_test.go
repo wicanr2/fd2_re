@@ -322,6 +322,11 @@ func TestModernHDShopDialogueRuntimeGPU(t *testing.T) {
 						skip = skip || image.Pt(x, y).In(image.Rectangle{Min: icon.origin.Mul(6), Max: icon.origin.Add(image.Pt(24, 20)).Mul(6)})
 					}
 				}
+				if plan := g.facilityRosterHD; plan != nil {
+					for _, unit := range plan.units {
+						skip = skip || image.Pt(x, y).In(image.Rectangle{Min: unit.origin.Mul(6), Max: unit.origin.Add(image.Pt(24, 24)).Mul(6)})
+					}
+				}
 				if skip {
 					continue
 				}

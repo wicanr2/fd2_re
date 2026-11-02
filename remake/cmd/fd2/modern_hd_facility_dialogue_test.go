@@ -249,6 +249,14 @@ func TestModernHDFacilityDialogueRuntimeGPU(t *testing.T) {
 						}
 					}
 				}
+				if plan := g.facilityRosterHD; plan != nil {
+					for _, unit := range plan.units {
+						if image.Pt(x, y).In(image.Rectangle{Min: unit.origin.Mul(6), Max: unit.origin.Add(image.Pt(24, 24)).Mul(6)}) {
+							skip = true
+							break
+						}
+					}
+				}
 				if skip {
 					continue
 				}
