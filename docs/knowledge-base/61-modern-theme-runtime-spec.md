@@ -5822,3 +5822,15 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 [酒店普通畫面](../figures/hd1-hotel-scene-game.png)及[教堂普通畫面](../figures/hd1-church-scene-game.png)來自正常START後以F9接續既有hotel_ch02存檔，再經城鎮及設施正常鍵盤操作。酒店13PNG、教堂15PNG涵蓋四語選項／名冊、保存與服務LOAD、復活及交付列表／取消、F2、縮放和說明頁。來源與兩美術保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持；這批沒有新程序標題LOAD、連續戰役或原版oracle聲明。程式SHA02bd14b1fefb3d8027e820c37d10873b0f14e7d9bdbb8669baf97a524492c572，正式Go建置後未變。
 
 兩整圖主稿、兩1920整圖及四頭像依allow-list同步私人bd62bd503724f83d0f4ccbce9ae1f79a414db93a，遠端及private核對通過。913清冊只有六項新增，前907項逐項保持；舊獨立頭像主稿與原圖匯出不納入。#283續作設施框線／圖示與動畫，#282地形仍3180缺槽／2033唯一來源；不稱全HD1完成，人工由使用者接手。
+
+## HD1酒店與教堂穩定框線（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+沿既定古金對話框及原色列表細框，補接酒店／教堂穩定底框5,112至315,198與轉職／復活確認按鈕。酒店menu／saved／loaded／load_blocked與教堂menu／class_confirm／revive_confirm／revive_empty／revive_insufficient／transfer_full採古金框；酒店slots／loadslots及教堂class／status_roster／transfer_source／transfer_dest／transfer_item／revive採原色細框。各自原框及合成入口依R48 border-source.json，兩個列表面板的索引SHA均c009ad5ed72466295e3c60d4cb5117c3331444bcbe23d5d1befd2f413b15ac00；列表框與raw-cell對話邊線有44點不同，分別核對自身來源，不宣稱相同。
+
+R48 ready.json及hotel-gold-frame-prototype.png保存範圍與原型。只在穩定live owner、無設施動畫job時，先比對實際合成幀3像素邊帶與自身來源，再發布原18高解析像素帶內的既有材質。確認按鈕另逐點比對原cells及原choice／pulse，通過後才用既定四語YES／NO。F11獨立於F2，缺件／來源／遮蓋／owner不符保留原生，快取含來源、palette與字型；不改原幀、選項、clock、RNG或保存。
+
+實作入口為modern_hd_facility_dialogue.go、modern_hd_facility_text.go及既有modern_hd_dialogue_chrome.go／modern_hd_confirmation.go；測試入口為modern_hd_facility_dialogue_test.go。驗收包含各模式與四組控制、四語確認、完整繪製邊線逐點、文字與人物區不變、來源／遮蓋拒絕、正常酒店／教堂與保存。此切片不處理動畫、服務圖示或其他尚未接線內容，不新增原版E2；主收據預留hd1_facility_dialogue_followup_20261102。
+
+136個完整Game.Draw及最終呈現通過，涵蓋18模式四種顯示，以及兩確認owner×四語×兩選項×兩pulse。53PNG、8424000框線像素與11902208內部取樣點通過，工具列開關保持遊戲區。參考為先前已驗定版材質的CPU成品，這批驗接線與覆蓋範圍，不重新宣稱原版像素一致。直接來源／遮蓋邊線／遮蓋按鈕／錯owner／外來job／面板SHA／palette快取驗證及35頂層回歸通過，五個可選GPU／oracle／匯出略過另列。首輪測具誤用文字幀型別、欄位及語系API，修為實際型別和既有官方載入器後乾淨重跑，正式實作未因編譯失敗放寬。
+
+[酒店古金框普通畫面](../figures/hd1-hotel-dialogue-game.png)與[教堂古金框普通畫面](../figures/hd1-church-dialogue-game.png)沿前述正常START後F9接續hotel_ch02，再正常鍵盤進設施。酒店13及教堂15PNG、四語／名冊／復活與交付列表取消／服務保存LOAD／F2／縮放及說明頁通過。來源與兩主題保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持；沒有新程序標題LOAD或原版E2。1217份Go指紋c3e8c089245c3d154becbce194a31fa7ed52739e752f5505d2ab8d284d6dedd5，程式SHA0cbaba227de7c6920f4066f027547a7251bfc67dba9200e4a6845b5bd3193c8a，21來源／416幀／19反例及159字串處置保持。913清冊、6942私人檔與bd62bd50不變。服務圖示、進出場／其他動畫與其餘未接內容續作；#283保持開啟，#282地形仍3180缺槽／2033唯一來源，人工由使用者接手。

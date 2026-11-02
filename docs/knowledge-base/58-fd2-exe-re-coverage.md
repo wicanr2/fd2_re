@@ -8,6 +8,7 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
+| HD1酒店／教堂穩定框線 | CONFORMED-SCOPED／RUNTIME-E1；18穩定模式按各自原生邊線來源接古金對話框或原色列表細框，兩確認owner沿原選項／pulse接四語按鈕；F11獨立於F2 | 136完整Game.Draw／53PNG、8424000框線像素／11902208內部點及35相關回歸通過，五可選略過另列。普通酒店13／教堂15PNG與保存保持；1217份Go指紋c3e8c089245c3d154becbce194a31fa7ed52739e752f5505d2ab8d284d6dedd5，21來源／416幀／19反例、159字串不變。913清冊／6942私人檔保持，服務圖示與動畫等內容續作。主收據hd1_facility_dialogue_followup_20261102 |
 | HD1酒店／教堂完整插畫 | CONFORMED-SCOPED／RUNTIME-E1；FDOTHER13／14完整手繪與DATO129／131由同稿裁切，背景及頭像成對發布。穩定設施場景按已證來源marker分層，主頭部隨整圖，後續UI保留 | 48完整Game.Draw／16PNG、29301120背景／11059200頭像像素及109+31回歸通過，可選略過另列；酒店13及教堂15普通PNG、保存相同。1215份Go指紋78a186422a356aab92fa9682813cd5c00a5a309133dfeac00c3779e169fc7714，21來源／416幀／19反例及159字串保持。913清冊／6942私人檔同步bd62bd50；框線、圖示與動畫續作。主收據hd1_facility_portraits_followup_20261102 |
 | HD1整備名冊游標 | CONFORMED-SCOPED／RUNTIME-E1；沿FDOTHER1 sprite0原位置與四角缺口，以既定原色HD細框呈現。游標先畫再畫人物，原美術重播原mask／palette-band恢復遮擋，隨F11獨立於F2 | 332完整Game.Draw／37PNG、3442176游標像素／42656遮擋點、110回歸與普通第24章17PNG通過，十一可選略過不計。1212份Go指紋a746749285a784c30634a2344656d96367e434ddea6ca2f9cebe6fb949c75324，21來源／416幀／19反例、159字串及原保存保持。907清冊／6934私人檔不變；#283續作設施框線／圖示及動畫，酒店／教堂完整插畫依前述閉合。主收據hd1_preparation_cursor_followup_20261102 |
 | HD1整備計數頭部符號 | CONFORMED-SCOPED／RUNTIME-E1；僅沿FDOTHER5 Frame137兩個相同24×18符號重繪，身份未知，不綁DATO／FDICON。兩處隨F11獨立控制，舊包缺此可選素材保留原圖 | 212完整Game.Draw／31PNG、3234816符號與62208舊圖回退像素、108回歸及普通第24章17PNG通過，十可選略過不計。1210份Go指紋208551185bd1acf2ce1ea41e06ed514b5ca7920eb253f58ea2ea2ecccdf0f2fa，21來源／416幀／19反例、159字串與原保存保持。907清冊、6934私人檔已同步ee9ab2e2；游標依後述閉合，其餘設施介面仍在#283。主收據hd1_preparation_count_icon_followup_20261102 |

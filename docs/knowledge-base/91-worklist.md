@@ -358,51 +358,17 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 `hd1-interface-complete` · 工作 · [#283](https://github.com/wicanr2/fd2_re/issues/283) · 仍未完成 · 要人判
 
-使用者2026-10-28確認此項列入HD1 milestone。主規格為61，現況依58及HD主收據；人工驗證由使用者接手。
+使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。主規格61，現況58，逐批證據與限制依HD主收據及WORKLOG；本工單只列目前未完成的正式介面。
 
-定版古金色雙層框已接正式原生／一般故事與既有提示共用材質，保留框位、深藍底、字區與開收時計。框線隨F11，人物美術隨F2；物品／狀態面板保留原色。完整受控繪製與獨立PNG、四組切換、普通START父王續句及原樣首章保存／新程序LOAD通過。README已放實際遊玩圖。
+已接通古金故事／提示框、獨立F11／F2、城鎮人物與字型、離城、整備背景／提示／名冊／狀態卡／計數／游標，以及酒店／教堂同稿完整插畫與頭像。酒店／教堂穩定框線現涵蓋18模式，對話用古金框，列表用原色細框，轉職／復活確認用既有四語按鈕；實際原索引邊線與按鈕先核對再呈現，動畫job與覆蓋不符保留原生。
 
-本工單繼續追蹤其餘尚未HD的正式介面，不因金框切片完成而關閉。原型仍保存作定版參考，不能當遊戲擷取。完整數量、來源SHA、診斷與重跑依主收據hd1_gold_dialogue_followup_20261029。
+穩定框線136完整Game.Draw／53PNG、8424000框線像素／11902208內部點、35相關回歸通過，五個可選GPU／oracle／匯出略過另列。正常START後F9接既有hotel_ch02，酒店13／教堂15PNG與原保存保持，不新增標題冷LOAD、連續戰役或原版E2。1217份Go指紋c3e8c089245c3d154becbce194a31fa7ed52739e752f5505d2ab8d284d6dedd5，21來源／416幀／19反例與159字串處置保持。主收據hd1_facility_dialogue_followup_20261102，README已更新普通畫面；913清冊／6942私人檔及bd62bd50不變。
 
-城鎮人物與獨立字型這段已接通：依隊伍首位raw MapSelectorKey取144人物，原版美術亦可用HD介面。三variant、六selection、0/1/2/1相位與原viewport保持；126完整Game.Draw、20PNG及212348人物核心點通過。最終Linux程式的首章四組F2／F11、走行取消、F5及新程序LOAD十PNG保持保存bytes；城鎮圖是受控測具，不宣稱自然出場或新增原版E2。離城已依後述契約接通；整備背景依後述已閉合契約，其餘正式介面仍續作，工單保持開啟。
-
-_下面區塊供工作清單工具讀取。_
-
-離城十一個步已接HD，來源在正式選項確認前凍結，整備後名冊變動不改圖。132完整Game.Draw、18PNG、452032背景／265790人物核心／10821296原版介面像素、59頂層Go及既有消費端／字串處置通過。普通第二章旅館LOAD、整備NO、F2與F5／F9再YES出發，十二PNG、完整十一邊界及原存檔SHA保持；未新增原版E2。主收據hd1_town_transition_followup_20261102，README已放實際離城圖。整備背景依後述已閉合契約，其餘正式介面仍待，工單保持開啟。
-
-整備Town背景已補齊選人、出發／最終確認、必選訊息與完整開收框／還原；來源、名冊、原生快取及獨立黑底保持。207完整Game.Draw／20PNG、77頂層Go、四種來源回退及實際F2／F11通過。普通第二章旅館LOAD、整備NO、F2、F5／F9再YES，十二PNG與保存SHA保持。外部短動畫擷取沒有有效逐幀PNG，完整像素僅依受控GPU矩陣，不升格原版E2。主收據hd1_preparation_background_followup_20261102，README已放普通背景圖。
-
-整備提示依後述已閉合契約，計數頭部符號、游標及其餘正式介面續作。906素材與私人庫保持，本工單繼續開啟。
-
-整備DATO75頭像、定版古金框與多語確認美術已接通，沿F2／F11獨立控制。原DATO75索引hash綁既有主稿，不關聯未知FDICON75；原生嘴型仍運行，HD沿既有單張閉口近似。247完整Game.Draw／28PNG、78頂層Go、原生blit、缺件回退與F2／F11通過。普通第二章十二PNG、保存SHA及十一離城邊界保持，README已換最新普通整備圖。主收據hd1_preparation_dialogue_followup_20261102，沒有新美術、原版E2或完整HD1聲明。
-
-選人名冊依後述契約已接通，計數頭部符號、游標與其餘正式介面仍續作。
-
-整備名冊依原raw selector key、十欄位置、選取Y+3與三拍接現有Q版人物，未選者沿既有HD暗色近似；原游標與規則保持。96完整Game.Draw、17GPU PNG、29859840人物像素與107頂層Go通過，七個可選略過不計。第24章既有原生槽普通標題LOAD、第二槽保存、選人、確認取消、F2、縮放及說明頁另有17PNG；兩主題保存bytes相同，來源未變。祖先含攻略建構與清敵，沒有新增自然難度或原版E2。主收據hd1_preparation_roster_followup_20261102，README已加普通名冊圖。
-
-目前剩計數頭部符號、游標與其餘正式介面；完整地形另依#282，本工單保持開啟。
-
-整備選人狀態卡已重用原色HD框、標籤、HP／MP條與原始raw-cell圖示，沿F11獨立控制；不配DATO肖像，也不改數值或角色。160完整Game.Draw、20PNG及5235840框線／2833920圖示／4233600血條像素通過。107頂層回歸、四項框線／數值來源與兩項共用物品圖示測試通過，八可選略過不計。普通第24章原生槽17PNG、兩主題保存相同與來源保持通過，保留攻略建構／清敵祖先限制。主收據hd1_preparation_status_followup_20261102，README已換普通選人／狀態卡圖；906素材與私人庫保持。
-
-目前剩計數頭部符號、名冊游標與其餘正式介面；完整地形另依#282，本工單保持開啟。
-
-整備計數欄兩個標籤／乘號、原quota／remaining數字與左框／下框已接HD，沿F11獨立控制；數值仍由原生兩bank產生。208完整Game.Draw／28PNG、12782016框線／8146944標籤像素、數字ink clip與107回歸通過，九可選略過不計。普通第24章17PNG、兩美術保存相同與來源保持通過，保留攻略建構／清敵祖先限制。字串159保留原155處置，四筆新增均為Frame137可見原標籤與乘號，未新增翻譯或敘事。主收據hd1_preparation_counts_followup_20261102，README已換普通計數畫面；906素材與私人庫保持。
-
-計數頭部符號依下述閉合；名冊游標依下述閉合，目前剩酒店、教堂與其餘設施介面。完整地形另依#282，本工單保持開啟。
-
-整備人數圖示已沿FDOTHER5 Frame137兩個相同24×18符號重繪，身份未知，不綁DATO／FDICON。F11介面獨立於F2；舊清冊缺此可選素材保留原圖。212完整Game.Draw／31PNG、3234816符號／62208舊圖回退像素及108回歸通過，十可選略過不計。普通第24章17PNG、兩美術保存相同與來源保持通過，保留攻略建構／清敵祖先限制。907清冊與6934私人檔已同步ee9ab2e2，拒收稿與原圖裁切未納入。主收據hd1_preparation_count_icon_followup_20261102；README已換普通圖。游標依下述閉合，其餘設施介面續作，完整地形依#282，本工單保持開啟。
-
-整備名冊游標已沿FDOTHER1 sprite0原位置與先游標後人物的順序接HD原色細框；原美術以同槽原sprite的mask／palette-band恢復遮擋，F11獨立於F2。332完整Game.Draw／37PNG、3442176游標像素／42656遮擋點、110回歸及普通第24章17PNG通過，十一可選略過不計。原保存、159字串、907清冊與6934私人檔保持。主收據hd1_preparation_cursor_followup_20261102，README已換普通圖。
-
-酒店／教堂完整插畫與同稿頭像依下述契約閉合；設施面板／圖示與動畫續作，完整地形依#282。本工單保持開啟，人工由使用者接手。
-
-酒店FDOTHER13／DATO129與教堂FDOTHER14／DATO131已沿完整原構圖重繪，場景與480頭像必須由同稿精確裁切，避免獨立胸像接縫。穩定設施場景以來源雙marker分層，主頭部隨整圖，後續UI保持。48完整Game.Draw／16PNG、29301120背景／11059200頭像像素，分批109+31回歸與16項Python通過，可選略過不計。正常START後F9接既有hotel_ch02，酒店13／教堂15PNG、四語與原保存保持；不宣稱新程序標題LOAD或原版E2。913清冊／6942私人檔已同步bd62bd50，前907項保持，拒收稿與原圖匯出不納入。主收據hd1_facility_portraits_followup_20261102，README已加兩張普通畫面。
-
-目前續作設施框線／圖示、進出場與其他動畫；#282地形保持3180缺槽／2033唯一來源。本工單保持開啟，全HD1尚未完成。
+目前續作服務圖示、進出場與其他動畫，以及尚未接線的設施內容。完整地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。
 
 怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。
 
-證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py', 'docs/figures/hd1-town-interface-four-modes.png', 'docs/figures/hd1-town-cursor-game.png', 'remake/cmd/fd2/modern_hd_facility_scene_test.go', 'docs/figures/hd1-town-departure-game.png', 'remake/cmd/fd2/modern_hd_town_transition.go', 'remake/cmd/fd2/modern_hd_town_transition_test.go', 'docs/figures/hd1-preparation-town-background.png', 'remake/cmd/fd2/modern_hd_preparation_background.go', 'remake/cmd/fd2/modern_hd_preparation_transition_test.go', 'docs/figures/hd1-preparation-dialogue-game.png', 'remake/cmd/fd2/modern_hd_preparation_dialogue.go', 'remake/cmd/fd2/modern_hd_preparation_dialogue_test.go', 'docs/figures/hd1-preparation-roster-game.png', 'remake/cmd/fd2/modern_hd_preparation_roster.go', 'remake/cmd/fd2/modern_hd_preparation_roster_test.go', 'docs/figures/hd1-preparation-status-game.png', 'remake/cmd/fd2/modern_hd_preparation_status.go', 'remake/cmd/fd2/modern_hd_preparation_status_test.go', 'docs/figures/hd1-preparation-counts-game.png', 'remake/cmd/fd2/modern_hd_preparation_counts.go', 'remake/cmd/fd2/modern_hd_preparation_counts_test.go', 'docs/figures/hd1-preparation-count-icon-game.png', 'remake/cmd/fd2/modern_hd_ui_embedded_icon.go', 'remake/assets/themes/modern/preparation-count-icon.recipe.json', 'tools/build_fd2_hd_preparation_count_icon.py', 'docs/figures/hd1-preparation-cursor-game.png', 'remake/cmd/fd2/modern_hd_preparation_cursor.go', 'remake/cmd/fd2/modern_hd_preparation_cursor_test.go', 'docs/figures/hd1-hotel-scene-game.png', 'docs/figures/hd1-church-scene-game.png', 'remake/cmd/fd2/modern_hd_facility_portrait.go', 'remake/cmd/fd2/modern_hd_facility_scene_pair.go', 'remake/cmd/fd2/modern_hd_facility_portrait_test.go', 'tools/build_fd2_facility_portraits_hd.py', 'remake/assets/themes/modern/facility-portraits.recipe.json']`
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py', 'docs/figures/hd1-town-interface-four-modes.png', 'docs/figures/hd1-town-cursor-game.png', 'remake/cmd/fd2/modern_hd_facility_scene_test.go', 'docs/figures/hd1-town-departure-game.png', 'remake/cmd/fd2/modern_hd_town_transition.go', 'remake/cmd/fd2/modern_hd_town_transition_test.go', 'docs/figures/hd1-preparation-town-background.png', 'remake/cmd/fd2/modern_hd_preparation_background.go', 'remake/cmd/fd2/modern_hd_preparation_transition_test.go', 'docs/figures/hd1-preparation-dialogue-game.png', 'remake/cmd/fd2/modern_hd_preparation_dialogue.go', 'remake/cmd/fd2/modern_hd_preparation_dialogue_test.go', 'docs/figures/hd1-preparation-roster-game.png', 'remake/cmd/fd2/modern_hd_preparation_roster.go', 'remake/cmd/fd2/modern_hd_preparation_roster_test.go', 'docs/figures/hd1-preparation-status-game.png', 'remake/cmd/fd2/modern_hd_preparation_status.go', 'remake/cmd/fd2/modern_hd_preparation_status_test.go', 'docs/figures/hd1-preparation-counts-game.png', 'remake/cmd/fd2/modern_hd_preparation_counts.go', 'remake/cmd/fd2/modern_hd_preparation_counts_test.go', 'docs/figures/hd1-preparation-count-icon-game.png', 'remake/cmd/fd2/modern_hd_ui_embedded_icon.go', 'remake/assets/themes/modern/preparation-count-icon.recipe.json', 'tools/build_fd2_hd_preparation_count_icon.py', 'docs/figures/hd1-preparation-cursor-game.png', 'remake/cmd/fd2/modern_hd_preparation_cursor.go', 'remake/cmd/fd2/modern_hd_preparation_cursor_test.go', 'docs/figures/hd1-hotel-scene-game.png', 'docs/figures/hd1-church-scene-game.png', 'remake/cmd/fd2/modern_hd_facility_portrait.go', 'remake/cmd/fd2/modern_hd_facility_scene_pair.go', 'remake/cmd/fd2/modern_hd_facility_portrait_test.go', 'tools/build_fd2_facility_portraits_hd.py', 'remake/assets/themes/modern/facility-portraits.recipe.json', 'docs/figures/hd1-hotel-dialogue-game.png', 'docs/figures/hd1-church-dialogue-game.png', 'remake/cmd/fd2/modern_hd_facility_dialogue.go', 'remake/cmd/fd2/modern_hd_facility_dialogue_test.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

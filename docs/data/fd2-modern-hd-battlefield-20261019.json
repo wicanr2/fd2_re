@@ -301243,5 +301243,200 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-hotel-church-portraits-r47/final-validation-r1.json",
       "sha256": "bd2d1c4536f14cd8cff2c2189688f670c6e584132b8fca42879345f6ef014d33"
     }
+  },
+  "hd1_facility_dialogue_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "de733f5c36fbe9c44b861e4eb192a6b2394ba474",
+    "scope": "stable hotel/church dialogue gold border, native-color list thin border and class/revive four-language confirmation choices",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": {
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/ready.json",
+        "sha256": "ed993ff0b5c83328ca10f020efa3f49c7e342f51bd7765bb562df5b81b92084b"
+      },
+      "sources": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/border-source.json",
+        "sha256": "9965436525e4a7ef248517da4eef273057875e032f87275da2d6971d84944132"
+      },
+      "prototype": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/hotel-gold-frame-prototype.png",
+        "sha256": "8b21797c115f157c1310669386f3619d02824d84ce3521158fcefdf8969aab1a"
+      },
+      "native_rect": [
+        5,
+        112,
+        315,
+        198
+      ],
+      "list_panel_indexed_sha256": "c009ad5ed72466295e3c60d4cb5117c3331444bcbe23d5d1befd2f413b15ac00",
+      "list_dialogue_border_difference_points": 44,
+      "own_producer_indices_checked": true,
+      "source": "existing closed FDOTHER5 grid and13/14 panels; no new EXE meaning or oracle receipt"
+    },
+    "source": {
+      "go_files": 1217,
+      "go_tree_sha256": "c3e8c089245c3d154becbce194a31fa7ed52739e752f5505d2ab8d284d6dedd5",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/consumers-r1.json",
+        "sha256": "12b8ead02a37dade9c8938b3cf68f6c75bfbd158498a9e99feaaf91b4d94b960"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/fd2-player-r1",
+        "sha256": "0cbaba227de7c6920f4066f027547a7251bfc67dba9200e4a6845b5bd3193c8a"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/commands.json",
+        "sha256": "4714f28a0d3e95f7d73724f2b57b79c254895576d07699db50cc69eea62d80a4"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "3df572f0de94019e6fef99aa5c0e6731e19c387c6ac46a24d640b32d4f63db1b"
+      },
+      "registered_assets": 913,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_dialogue.go",
+          "sha256": "11cf53920fb6cbc9cc5ead6362e97c435b57c8e0a8fe1db38a058f16efad69fd"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "f3781c15b452431acb33c9de0c2e8d773fec5fde09415c2e12e4b048d7eb2cd1"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "21ca4fdf90d902dd7c95641a1bc69e54ad39e817727839685982b91cd715d504"
+        }
+      ]
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/gpu-r1-capture/receipt.json",
+        "sha256": "ff98cffa0fa34f6ec112e7e3cf72306c1118278f2c0a310a259e4c6748e5201a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/gpu-r1.memory.json",
+        "sha256": "35b2c3cd1108c3a9bf7b6d3cf61461cc85a097e45d8ee1becb4c1e3893778827"
+      },
+      "cases": 136,
+      "modes": 18,
+      "png": 53,
+      "border_pixels": 8424000,
+      "interior_points": 11902208,
+      "reference": "final presented pixels versus existing approved CPU chrome material; no source redefinition or original parity claim",
+      "four_styles": true,
+      "confirmation_locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "en",
+        "ja"
+      ],
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "hotel": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/normal-hotel-r1-capture/receipt.json",
+          "sha256": "9c29c238a76db90272ebf84669aea3cc2336a7f3121b7d7d8d5e89254e0e109e"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/normal-hotel-r1.memory.json",
+          "sha256": "73c0c8124a9608454d34769f741d3a14599c81a101d3f016994ce2631805cb6d"
+        },
+        "png": 13,
+        "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02槽，正常旅館選槽、保存與服務LOAD；四語保留原有原生文字，不新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "theme_save_bytes_equal": true
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/normal-church-r1-capture/receipt.json",
+          "sha256": "d03a30a2ea725abf3cd1dd2faa8c62f1618b68c904c15d800b5e8dfe75933bd7"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/normal-church-r1.memory.json",
+          "sha256": "a87b32ea6afede58077a18a5536632602ec937557a3300820b76b7da4e0a8e4e"
+        },
+        "png": 15,
+        "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "theme_save_bytes_equal": true
+      }
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/regression-r1.memory.json",
+        "sha256": "3c18bd2270b87d1df4b863514e5fc0f4630e44466667f1d27552c8453ff0c43c"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/regression-r1.log",
+        "sha256": "73c38eebd57e9d6464ab6278cebedbf57011d8fc5a92f0bdb5ec1b2e76723c53"
+      },
+      "top_level_passed": 35,
+      "skipped": [
+        "TestNativeHotelOriginalLoadSameSourceProbe",
+        "TestModernHDFacilityDialogueRuntimeGPU",
+        "TestModernHDFacilityPortraitRuntimeGPU",
+        "TestModernHDFacilityFullSourceExport",
+        "TestModernHDFacilityRuntimeGPU"
+      ],
+      "skips_are_not_passes": true,
+      "source_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/cpu-r2.memory.json",
+        "sha256": "3a3db2918bcafd368fce12144ced4c2fc1010072cef16b851c1c93d913ee56a6"
+      },
+      "source_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/cpu-r2.log",
+        "sha256": "06ec60d43baa7e7f1c21ee39230351e302f7c7bf8b6a6112d230c97a3a5677ee"
+      },
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/consumers-verified-r1.json",
+        "sha256": "1fda7fbd7d3ae34509bead58103721b8d94e55335a3f13ededb2e23af1b16d81"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/string-migration-r1.json",
+        "sha256": "82747bc0768463589bee236d77cda4fa15cf00ec4f4f03faa99e055834973644"
+      },
+      "go_review_candidates": 159,
+      "prior_string_dispositions_preserved": 159,
+      "native_source_clock_rng_save_unchanged": true,
+      "fixture_compile_correction": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/cpu-r1-diagnostic.json",
+        "sha256": "2222570e4e7095c657b12bcb902ed2a1be4918de537bac2096f8b67141624253"
+      }
+    },
+    "public_png": [
+      {
+        "file": "docs/figures/hd1-hotel-dialogue-game.png",
+        "sha256": "11290c3dd4c067f2910bce5f21fc117f989afb970e2d3b2810d7c83555f871f2"
+      },
+      {
+        "file": "docs/figures/hd1-church-dialogue-game.png",
+        "sha256": "121b3360c24ab4bd7ba15e886283de84768cd42a8d5892f8b204a3020d06a2b8"
+      }
+    ],
+    "private_assets": {
+      "changed": false,
+      "head": "bd62bd503724f83d0f4ccbce9ae1f79a414db93a",
+      "files": 6942
+    },
+    "remaining_ui": [
+      "service icons and remaining facility content",
+      "facility opening/closing and other native animated jobs"
+    ],
+    "limits": [
+      "Stable source-verified owners only; no source/choice occlusion guessed.",
+      "No gameplay/save/clock/RNG change or new original E2.",
+      "Normal START then F9 resumes an existing hotel_ch02 source save; no new-process title LOAD or full campaign claim.",
+      "Terrain remains3180 missing slots/2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/final-validation-r1.json",
+      "sha256": "fbc0b587e31b886d84427b0b2d916eb5b29d981da49da8661ba27ed636481041"
+    }
   }
 }
