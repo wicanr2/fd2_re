@@ -16,6 +16,7 @@ import (
 )
 
 type modernFacilityScene struct {
+	file, sha256     string
 	image            image.Image
 	gpu              *ebiten.Image
 	pairedPortrait   *modernStoryPortraitFrame
@@ -24,11 +25,13 @@ type modernFacilityScene struct {
 }
 
 type modernFacilitySceneOverlay struct {
-	scene     *modernFacilityScene
-	source    image.Rectangle // HD pixels.
-	dest      image.Point     // Existing 640x400 coordinates.
-	cursor    *modernTownCursor
-	departure *modernTownDepartureTransform
+	success    *modernHDOverlay
+	whiteDelta int
+	scene      *modernFacilityScene
+	source     image.Rectangle // HD pixels.
+	dest       image.Point     // Existing 640x400 coordinates.
+	cursor     *modernTownCursor
+	departure  *modernTownDepartureTransform
 }
 
 type modernTownCursor struct {
@@ -131,7 +134,7 @@ func loadModernFacilityScene(set *modernStoryPortraitSet, a modernThemeAsset, ro
 			}
 		}
 	}
-	set.facilityScenes[a.SourceResource] = &modernFacilityScene{image: picture}
+	set.facilityScenes[a.SourceResource] = &modernFacilityScene{image: picture, file: a.File, sha256: a.SHA256}
 	set.hasHD = true
 	return nil
 }
@@ -177,7 +180,14 @@ func (p *modernHDPresentation) drawModernFacilityLayers(screen modernHDImageTarg
 	if o.departure != nil {
 		o.departure.darken(op)
 	}
+	if o.whiteDelta > 0 {
+		d := float64(o.whiteDelta) / 63
+		op.ColorM.Translate(d, d, d, 0)
+	}
 	screen.DrawImage(source, op)
+	if o.success != nil {
+		drawModernHDFacilitySuccessPatch(screen, geometry, o.success, o.whiteDelta)
+	}
 	if cursor := o.cursor; cursor != nil {
 		set := p.Game.modernStoryPortraits
 		if set.townCursorGPU == nil {

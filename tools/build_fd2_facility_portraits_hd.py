@@ -13,9 +13,9 @@ from PIL import Image
 def sha(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
-def png(image: Image.Image) -> bytes:
+def png(image: Image.Image, compress_level: int = 9) -> bytes:
     stream=io.BytesIO()
-    image.save(stream,format="PNG",compress_level=9)
+    image.save(stream,format="PNG",compress_level=compress_level)
     return stream.getvalue()
 
 def compile_pairs(recipe: dict, source: Path, original: Path, out: Path) -> dict:
@@ -59,6 +59,9 @@ def compile_pairs(recipe: dict, source: Path, original: Path, out: Path) -> dict
         native_crop=b"".join(indexed[(y+row)*320+x:(y+row)*320+x+80] for row in range(80))
         if native_crop!=frames[0]:
             raise ValueError("native scene and original closed portrait do not join")
+        compression=e.get("png_compress_level",9);revision=e.get("asset_revision",1)
+        if type(compression) is not int or compression not in range(10) or type(revision) is not int or revision<1:
+            raise ValueError("invalid output encoding or revision")
         master=e["master"];name=master["file"]
         if Path(name).name!=name or Path(name).suffix!=".png":
             raise ValueError("unsafe master filename")
@@ -66,7 +69,7 @@ def compile_pairs(recipe: dict, source: Path, original: Path, out: Path) -> dict
         if sha(raw)!=master["sha256"] or list(image.size)!=master["size"] or image.width<1280 or image.height<800 or abs(image.width/image.height-1.6)>=0.01 or image.getchannel("A").getextrema()!=(255,255):
             raise ValueError("selected full-scene master differs")
         prepared[name]=raw
-        scene=image.resize((1920,1200),Image.Resampling.LANCZOS);encoded=png(scene)
+        scene=image.resize((1920,1200),Image.Resampling.LANCZOS);encoded=png(scene,compression)
         s=e["scene"]
         if (s["width"],s["height"])!=(1920,1200) or sha(encoded)!=s["sha256"]:
             raise ValueError("compiled scene differs")
@@ -74,7 +77,7 @@ def compile_pairs(recipe: dict, source: Path, original: Path, out: Path) -> dict
         refs=[f"asset:FDOTHER_{resource:03d}",f"asset:DATO_{speaker:03d}_m0","docs/data/fd2-reference-files.json",
             "remake/assets/themes/modern/facility-portraits.recipe.json","tools/build_fd2_facility_portraits_hd.py",
             "docs/knowledge-base/61-modern-theme-runtime-spec.md"]
-        assets.append(dict(asset_id=f"modern.fdother.{resource:03d}.scene.hd6.v1",role="facility_scene_hd",
+        assets.append(dict(asset_id=f"modern.fdother.{resource:03d}.scene.hd6.v{revision}",role="facility_scene_hd",
             status="runtime_candidate",file=s["file"],width=1920,height=1200,sha256=sha(encoded),source_refs=refs,
             consumer_contract="native_facility_scene_hd6_v1",source_archive="FDOTHER.DAT",source_resource=resource,
             source_metadata_sha256=e["source_metadata"]["sha256"],master_file=name,source_files=[name],source_sha256=[master["sha256"]]))
@@ -83,11 +86,11 @@ def compile_pairs(recipe: dict, source: Path, original: Path, out: Path) -> dict
             raise ValueError("portrait crop geometry differs")
         crop=scene.crop(rect)
         for p in e["portraits"]:
-            size=p["width"];data=png(crop.resize((size,size),Image.Resampling.LANCZOS))
+            size=p["width"];data=png(crop.resize((size,size),Image.Resampling.LANCZOS),compression)
             if p["height"]!=size or sha(data)!=p["sha256"]:
                 raise ValueError("compiled paired portrait differs")
             prepared[p["file"]]=data;hd=size==480
-            assets.append(dict(asset_id=f"modern.dato.{speaker}.facility.portrait.{size}.v1",
+            assets.append(dict(asset_id=f"modern.dato.{speaker}.facility.portrait.{size}.v{revision}",
                 role="story_portrait_hd_frame" if hd else "story_portrait_frame",status="runtime_candidate",
                 file=p["file"],master_file=name,width=size,height=size,sha256=sha(data),source_refs=refs,
                 consumer_contract="native_story_dialogue_rgba_overlay_hd6_v1" if hd else "native_story_dialogue_rgba_overlay_v1",

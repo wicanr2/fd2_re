@@ -71338,13 +71338,13 @@
       "mouth_state": "closed"
     },
     {
-      "asset_id": "modern.fdother.014.scene.hd6.v1",
+      "asset_id": "modern.fdother.014.scene.hd6.v2",
       "role": "facility_scene_hd",
       "status": "runtime_candidate",
-      "file": "fdother-014-scene-handpainted-hd6-v1.png",
+      "file": "fdother-014-scene-handpainted-hd6-v2.png",
       "width": 1920,
       "height": 1200,
-      "sha256": "834368a54353154e2b65e6bb6ce64e8a8aad99f34201793d1fe3aaf6ecf8deab",
+      "sha256": "ba182f7c5373ebe9a0a2b87996944120e05e0fa3d8b4cc6427b8813c4493afba",
       "source_refs": [
         "asset:FDOTHER_014",
         "asset:DATO_131_m0",
@@ -71357,23 +71357,23 @@
       "source_archive": "FDOTHER.DAT",
       "source_resource": 14,
       "source_metadata_sha256": "fabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12",
-      "master_file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+      "master_file": "fdother-014-scene-handpainted-hd6-master-v2.png",
       "source_files": [
-        "fdother-014-scene-handpainted-hd6-master-v1.png"
+        "fdother-014-scene-handpainted-hd6-master-v2.png"
       ],
       "source_sha256": [
-        "eb7eab3ea7478f3b1e916f272d2a25ce79e9b17ab8ecc7f8bcdff63641a7be35"
+        "ba182f7c5373ebe9a0a2b87996944120e05e0fa3d8b4cc6427b8813c4493afba"
       ]
     },
     {
-      "asset_id": "modern.dato.131.facility.portrait.80.v1",
+      "asset_id": "modern.dato.131.facility.portrait.80.v2",
       "role": "story_portrait_frame",
       "status": "runtime_candidate",
-      "file": "dato-131-facility-portrait-handpainted-v1-80.png",
-      "master_file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+      "file": "dato-131-facility-portrait-handpainted-v2-80.png",
+      "master_file": "fdother-014-scene-handpainted-hd6-master-v2.png",
       "width": 80,
       "height": 80,
-      "sha256": "1c398818af5d5850f6ef10f775ede3d4ae816cb17ca4bc6231177709a9eda7a4",
+      "sha256": "64171d7e0cc7a952e8ce87b76ff4859d35dc4a8385ffee8292ea49c84cfddaa9",
       "source_refs": [
         "asset:FDOTHER_014",
         "asset:DATO_131_m0",
@@ -71388,14 +71388,14 @@
       "mouth_state": "closed"
     },
     {
-      "asset_id": "modern.dato.131.facility.portrait.480.v1",
+      "asset_id": "modern.dato.131.facility.portrait.480.v2",
       "role": "story_portrait_hd_frame",
       "status": "runtime_candidate",
-      "file": "dato-131-facility-portrait-handpainted-v1-480.png",
-      "master_file": "fdother-014-scene-handpainted-hd6-master-v1.png",
+      "file": "dato-131-facility-portrait-handpainted-v2-480.png",
+      "master_file": "fdother-014-scene-handpainted-hd6-master-v2.png",
       "width": 480,
       "height": 480,
-      "sha256": "17d9735565de05e407033c650ab3bfeadec13dfd7fa5f2824c03c528287f8288",
+      "sha256": "1eda53515965444eaf5433e7c35e304c9fa0b2048ee0382fcd59bd76d9b868a7",
       "source_refs": [
         "asset:FDOTHER_014",
         "asset:DATO_131_m0",
@@ -72766,6 +72766,352 @@
         "asset:FDOTHER_014.raw_010",
         "remake/assets/themes/modern/facility-service-icons.recipe.json",
         "tools/build_fd2_service_icons_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.fdother.012.success.portrait.hd6.v1",
+      "role": "facility_success_portrait_hd_set",
+      "status": "runtime_candidate",
+      "master_file": "fdother-012-success-painting-master-v1.png",
+      "files": [
+        "fdother-012-success-hd6-v1-00.png",
+        "fdother-012-success-hd6-v1-01.png",
+        "fdother-012-success-hd6-v1-02.png",
+        "fdother-012-success-hd6-v1-03.png",
+        "fdother-012-success-hd6-v1-04.png"
+      ],
+      "frame_sha256": [
+        "1bddebdc83075b815d73d9b26fb97c6c9fe845b55522b0e2c17ffff17e8bd6ba",
+        "336bad4aa22a288c83364d28412fdcbe076ee2cd3fa740dac208339063060c49",
+        "e101e4bc51f9c633a76afa33d81d06f44f5cfbe679544f82a8a5ffc2eed59c1b",
+        "a08fc7f1d2976ad53f76f80cd40b40f69dc120e806243fe9d7adbe4f56113d3d",
+        "0b5b2c687cb158d3207bb9dcc1f9e060018cfa234e15c05a0ce7fd06f5644d68"
+      ],
+      "width": 480,
+      "height": 480,
+      "frame_count": 5,
+      "consumer_contract": "native_facility_success_portrait_hd6_v1",
+      "alpha_contract": "opaque",
+      "cycle_policy": "native_timeline",
+      "layout_policy": "native_portrait_patch_hd6",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 12,
+      "source_metadata_sha256": "9a80b9a9d23b0d89d242c785900fbcf1a7048f540fbc609ae125d37a05a6a775",
+      "native_lmi_frames": [
+        {
+          "index": 23,
+          "width": 25,
+          "height": 17,
+          "pixels_sha256": "d1941d8317cd7b38c039d09e8417376aa25c0ec0d562ea1234e90a61b5a7fd7d"
+        },
+        {
+          "index": 24,
+          "width": 25,
+          "height": 17,
+          "pixels_sha256": "bec80a6f2ba661372413346c75494cde99e075fe582f66070b683cf07e11e3b3"
+        },
+        {
+          "index": 25,
+          "width": 25,
+          "height": 17,
+          "pixels_sha256": "ddc504f3bb16f0a42b847a38795e3f3f7a413fddc8e905e344e089942c75c344"
+        },
+        {
+          "index": 26,
+          "width": 25,
+          "height": 17,
+          "pixels_sha256": "3bab08ce9af439b0e362280bc08deb907bb41938b8f27bcaa0bff06fc666bb34"
+        },
+        {
+          "index": 27,
+          "width": 25,
+          "height": 17,
+          "pixels_sha256": "5ea6073a93540b40b80594765259745d123de9be57fde064d6a4e91078dc7d18"
+        }
+      ],
+      "native_source_rect": [
+        123,
+        13,
+        80,
+        80
+      ],
+      "source_files": [
+        "fdother-012-scene-handpainted-hd6-v1.png",
+        "fdother-012-success-painting-master-v1.png"
+      ],
+      "source_sha256": [
+        "96d4bcd50ccc7c024f3742f58b9ecddfa405b8d48b6bd7c988ba4cda3b826683",
+        "a5ff63bb0a68bf8fea89596e913d036660ea8a55b669e9fa6afba1011df34c88"
+      ],
+      "source_refs": [
+        "asset:FDOTHER_012",
+        "remake/assets/themes/modern/facility-success.recipe.json",
+        "tools/build_fd2_facility_success_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.fdother.029.success.portrait.hd6.v1",
+      "role": "facility_success_portrait_hd_set",
+      "status": "runtime_candidate",
+      "master_file": "fdother-029-success-painting-master-v1.png",
+      "files": [
+        "fdother-029-success-hd6-v1-00.png"
+      ],
+      "frame_sha256": [
+        "05706675891bee867310e753c3e273139e76ccdc0554cbcc23572e9a24ddc9e1"
+      ],
+      "width": 480,
+      "height": 480,
+      "frame_count": 1,
+      "consumer_contract": "native_facility_success_portrait_hd6_v1",
+      "alpha_contract": "opaque",
+      "cycle_policy": "native_timeline",
+      "layout_policy": "native_portrait_patch_hd6",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 29,
+      "source_metadata_sha256": "732b27ddb48a416d4efa0ff61355f446bacc10083726792b813370e31f6bb096",
+      "native_lmi_frames": [
+        {
+          "index": 23,
+          "width": 16,
+          "height": 19,
+          "pixels_sha256": "13617d12ea7241e5a2de50281ad5fc1581da2ac1a02ece89babc58745eba12c2"
+        }
+      ],
+      "native_source_rect": [
+        99,
+        12,
+        80,
+        80
+      ],
+      "source_files": [
+        "fdother-029-scene-handpainted-hd6-v1.png",
+        "fdother-029-success-painting-master-v1.png"
+      ],
+      "source_sha256": [
+        "480bc117bacb80738551ddb04afdcd2b3be1ef26b3c26c2bbd071204d2825c21",
+        "fe39c902193009b806ea66ac11165d60121be6bb93921cd2e1ca57a3c10eb7cc"
+      ],
+      "source_refs": [
+        "asset:FDOTHER_029",
+        "remake/assets/themes/modern/facility-success.recipe.json",
+        "tools/build_fd2_facility_success_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.fdother.063.success.portrait.hd6.v1",
+      "role": "facility_success_portrait_hd_set",
+      "status": "runtime_candidate",
+      "master_file": "fdother-063-success-painting-master-v1.png",
+      "files": [
+        "fdother-063-success-hd6-v1-00.png",
+        "fdother-063-success-hd6-v1-01.png",
+        "fdother-063-success-hd6-v1-02.png",
+        "fdother-063-success-hd6-v1-03.png",
+        "fdother-063-success-hd6-v1-04.png",
+        "fdother-063-success-hd6-v1-05.png",
+        "fdother-063-success-hd6-v1-06.png"
+      ],
+      "frame_sha256": [
+        "04849f76395b3451be0ca9fa777cbebb35ed5bbac949a98a69abfe5ee0623324",
+        "92baa3011d62f7f3e9e4ecc67db10309c4b566fb9d7b7676f724db731ca46fc0",
+        "754e2ce6177f5b86bdc541f9e66ca3d4d88a881aba95daf09e70a332c89011a2",
+        "137ce56883ac523d0b4a434303954c1334a817bacc019f3d4cfc7e4cb56b893c",
+        "ade891b00e8a97b3c4b101cb3be694263f246dc29c3eb062cdd81628abd39365",
+        "7c10f2b31f6dfe9421b19d8f95ec3eef0de74515526cd5375265cb60adecabea",
+        "7c10f2b31f6dfe9421b19d8f95ec3eef0de74515526cd5375265cb60adecabea"
+      ],
+      "width": 480,
+      "height": 480,
+      "frame_count": 7,
+      "consumer_contract": "native_facility_success_portrait_hd6_v1",
+      "alpha_contract": "opaque",
+      "cycle_policy": "native_timeline",
+      "layout_policy": "native_portrait_patch_hd6",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 63,
+      "source_metadata_sha256": "c461d881cdfef918c09bcbdd7940d556b74e554a543f18509981b2b18831c838",
+      "native_lmi_frames": [
+        {
+          "index": 23,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "3408f310378037d0edea581084574b427eb82ed4a4bd2af63e020bdb9dff2a91"
+        },
+        {
+          "index": 24,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "74ee74c47d630555233491894acc239d38d7ff7c198399ac3b796f3a778c8714"
+        },
+        {
+          "index": 25,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "c8e18d20cf873e736a54552630ff1f430a186a0c92b09b1c81fc50f13375962e"
+        },
+        {
+          "index": 26,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "a0199127240d6cea6158fa9989b2b5c5381fa4e26818234979f01ef3aac62914"
+        },
+        {
+          "index": 27,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "393d3223685fccb738c1746caf9ef9c96b70a85af1b1246aa9b76581c880657a"
+        },
+        {
+          "index": 28,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "f5cd3c1db4a6b321f933a20ec437cb96337377bef55416c1a8284a0aa51089fa"
+        },
+        {
+          "index": 29,
+          "width": 65,
+          "height": 31,
+          "pixels_sha256": "319941868b788c2c9526a2853641a3238a90b6411cdecaa7484be9c47987024c"
+        }
+      ],
+      "native_source_rect": [
+        124,
+        11,
+        80,
+        80
+      ],
+      "source_files": [
+        "fdother-063-scene-handpainted-hd6-v1.png",
+        "fdother-063-success-painting-master-v1.png"
+      ],
+      "source_sha256": [
+        "ba8e6f0ad1394ba7e7a400a6d7875a3db60cb4ea44cd09a41b6efdfd7d4d051d",
+        "8ec358830d5108a03fde16f788c07f54bf6ba5fcae67d078d803875296ba3842"
+      ],
+      "source_refs": [
+        "asset:FDOTHER_063",
+        "remake/assets/themes/modern/facility-success.recipe.json",
+        "tools/build_fd2_facility_success_hd.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.fdother.014.success.portrait.hd6.v1",
+      "role": "facility_success_portrait_hd_set",
+      "status": "runtime_candidate",
+      "master_file": "fdother-014-success-painting-master-v1.png",
+      "files": [
+        "fdother-014-success-hd6-v1-00.png",
+        "fdother-014-success-hd6-v1-01.png",
+        "fdother-014-success-hd6-v1-02.png",
+        "fdother-014-success-hd6-v1-03.png",
+        "fdother-014-success-hd6-v1-04.png",
+        "fdother-014-success-hd6-v1-05.png",
+        "fdother-014-success-hd6-v1-06.png",
+        "fdother-014-success-hd6-v1-07.png",
+        "fdother-014-success-hd6-v1-08.png"
+      ],
+      "frame_sha256": [
+        "c90c5c0e8fbfa12a4f7fc8aeceaba71ac20095b6bc67cf4d6fbe66d8b546d085",
+        "f8dc86e12684915ccb03110c3b9af4058693cbec00178ba33f98191e9b551e49",
+        "2c60140ff611631d8f41285650c05269065ef2cce5fe2826348b00ede753cb21",
+        "29ae216cc00e38f4f5d09a9ac2a5aeaeb801e83be5b508c4dc8b8d9e255da59d",
+        "55082df8f1ed14136b2c2aaeb79af815e7f6059f27a45e6fd97b5d84b8b2a83a",
+        "39f46fd77c75c85b32bf374a8fa084b8388a03ee0dc329ba5364bf4721fd11d8",
+        "ad4876e594d7515356cc414647b5e16cdcc42a8ded21b5e6879fbe07390d33c9",
+        "dfa5e2827b873984c93b874a21d1e9c372505a31c7c6641693701dca03b3ef05",
+        "cf77c2dc6f39c5600e3948cd7b5017b40d6d7ed928302c24e1bd9c0cb48f5c53"
+      ],
+      "width": 480,
+      "height": 480,
+      "frame_count": 9,
+      "consumer_contract": "native_facility_success_portrait_hd6_v1",
+      "alpha_contract": "opaque",
+      "cycle_policy": "native_timeline",
+      "layout_policy": "native_portrait_patch_hd6",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 14,
+      "source_metadata_sha256": "fabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12",
+      "native_lmi_frames": [
+        {
+          "index": 23,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "2f0733138b3ea0e2fe506d5b7be1fff24ba09d3c6ea85289b00c5396b61fda5c"
+        },
+        {
+          "index": 24,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "042f7a8b266b5e075e71843539fd8c388aca16bf877a8b99ba9d5c88f43582ff"
+        },
+        {
+          "index": 25,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "aae16704d58659aa2e492dade51baf789681e3a1c66b7e47478d157a66d73b41"
+        },
+        {
+          "index": 26,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "df2eff31976ea09cd456dc62fcf876272e37e01e5b60c9e64ed6b7591f44af85"
+        },
+        {
+          "index": 27,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "8b75209cb14b7e2fda8214dffb55398c7bd9acb2564e76c681445c595dcbfaa7"
+        },
+        {
+          "index": 28,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "a49451c22c7aaf33cb7f9ffd67c4100e0d4d03cfddecd1da14ea647b4c36357c"
+        },
+        {
+          "index": 29,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "d3bf81a12804fb319eef071cbe25303e2c11260fcc521f595b882fda056e2213"
+        },
+        {
+          "index": 30,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "781d7104f15b7ce89926cbd5f42c69ca5ebb730843e2c449167c1382ad244379"
+        },
+        {
+          "index": 31,
+          "width": 3,
+          "height": 6,
+          "pixels_sha256": "7fca1fb6cd3d78aa51919cfc9c98f06115b1dedf1d09a7ab4674f86d5700f5f1"
+        }
+      ],
+      "native_source_rect": [
+        118,
+        4,
+        80,
+        80
+      ],
+      "source_files": [
+        "fdother-014-scene-handpainted-hd6-v2.png",
+        "fdother-014-success-painting-master-v1.png",
+        "fdother-014-scene-handpainted-hd6-v1.png"
+      ],
+      "source_sha256": [
+        "ba182f7c5373ebe9a0a2b87996944120e05e0fa3d8b4cc6427b8813c4493afba",
+        "103dce2d41896fc72927a7a40ae88f2b0e8d7ac0c53c5624366e596c19b6a7a2",
+        "834368a54353154e2b65e6bb6ce64e8a8aad99f34201793d1fe3aaf6ecf8deab"
+      ],
+      "source_refs": [
+        "asset:FDOTHER_014",
+        "remake/assets/themes/modern/facility-success.recipe.json",
+        "tools/build_fd2_facility_success_hd.py",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
     }

@@ -123,18 +123,18 @@
         }
       ],
       "master": {
-        "file": "fdother-014-scene-handpainted-hd6-master-v1.png",
-        "sha256": "eb7eab3ea7478f3b1e916f272d2a25ce79e9b17ab8ecc7f8bcdff63641a7be35",
+        "file": "fdother-014-scene-handpainted-hd6-master-v2.png",
+        "sha256": "ba182f7c5373ebe9a0a2b87996944120e05e0fa3d8b4cc6427b8813c4493afba",
         "size": [
-          1586,
-          992
+          1920,
+          1200
         ]
       },
       "scene": {
-        "file": "fdother-014-scene-handpainted-hd6-v1.png",
+        "file": "fdother-014-scene-handpainted-hd6-v2.png",
+        "sha256": "ba182f7c5373ebe9a0a2b87996944120e05e0fa3d8b4cc6427b8813c4493afba",
         "width": 1920,
-        "height": 1200,
-        "sha256": "834368a54353154e2b65e6bb6ce64e8a8aad99f34201793d1fe3aaf6ecf8deab"
+        "height": 1200
       },
       "portrait_rect_hd": [
         708,
@@ -144,18 +144,20 @@
       ],
       "portraits": [
         {
-          "file": "dato-131-facility-portrait-handpainted-v1-80.png",
+          "file": "dato-131-facility-portrait-handpainted-v2-80.png",
           "width": 80,
           "height": 80,
-          "sha256": "1c398818af5d5850f6ef10f775ede3d4ae816cb17ca4bc6231177709a9eda7a4"
+          "sha256": "64171d7e0cc7a952e8ce87b76ff4859d35dc4a8385ffee8292ea49c84cfddaa9"
         },
         {
-          "file": "dato-131-facility-portrait-handpainted-v1-480.png",
+          "file": "dato-131-facility-portrait-handpainted-v2-480.png",
           "width": 480,
           "height": 480,
-          "sha256": "17d9735565de05e407033c650ab3bfeadec13dfd7fa5f2824c03c528287f8288"
+          "sha256": "1eda53515965444eaf5433e7c35e304c9fa0b2048ee0382fcd59bd76d9b868a7"
         }
-      ]
+      ],
+      "png_compress_level": 6,
+      "asset_revision": 2
     }
   ],
   "generation": {
@@ -177,5 +179,7 @@
     "source_composition_export": "TestModernHDFacilityFullSourceExport",
     "source_proof": "full-scene-source.json",
     "standalone_face_refs": "work-only identity references; not runtime assets"
-  }
+  },
+  "success_detail_compiler": "tools/build_fd2_facility_success_hd.py",
+  "success_detail_recipe": "remake/assets/themes/modern/facility-success.recipe.json"
 }

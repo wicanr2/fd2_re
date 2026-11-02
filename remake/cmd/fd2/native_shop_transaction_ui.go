@@ -172,6 +172,7 @@ func (g *Game) beginNativeShopPurchaseSuccess() bool {
 			duration:       campaign.NativeGoldRollDelayMilliseconds * time.Millisecond,
 		}
 	}
+	inheritModernFacilitySuccess(timeline[len(timeline)-1], debitTimeline)
 	recipientID := g.shopEquipUnit
 	staged := cloneNativeShopUnit(g.nativeShopPendingUnit)
 	g.partyRoster[recipientID] = staged
@@ -247,5 +248,15 @@ func (g *Game) nativeShopSuccessTimeline() (
 		shopEffectMask: finalMask,
 	})
 
+	stages := make([]int, 0, len(timeline))
+	deltas := make([]int, len(timeline))
+	if plan.PreDelayBIOSTicks != 0 {
+		stages = append(stages, -1)
+	}
+	for i := range animation {
+		stages = append(stages, i)
+	}
+	stages = append(stages, -2)
+	g.bindModernFacilitySuccessTimeline(timeline, assets.ResourceID, stages, deltas)
 	return timeline, true
 }

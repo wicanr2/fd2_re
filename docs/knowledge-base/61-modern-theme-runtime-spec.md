@@ -6074,3 +6074,18 @@ R64字色勘誤：原75是深色描邊RGB(28,52,117)，正常主筆最亮169為R
 R64主收據 hd1_facility_money_followup_20261103：75穩定來源、八job／32原幀及2052固定區拒收／1728數字窗byte通過。正式2551500 HD像素、1166400透明數字像素與2091拒收通過，原確認／主選單保持。最終GPU-r3共207完整Game.Draw／32PNG、1907712000 RGBA byte與獨立停用新裝飾baseline、邊線配方及單獨貨幣字元合成相同，容差0；範圍見主收據。101回歸通過、十一可選略過；1255 Go指紋 b77a06df072811bff004424999d3dcbee90322c6673ce3ec767e4292e1a2f3b0，21／416／19及160字串保持。
 
 普通布衣買賣39PNG，1000→950→987，金額框1059筆最近最終Draw含23筆滾動；教會取消26PNG、708筆金額框觀測。兩美術保存／F9保持，商店另新程序LOAD；買賣保存32c9cd02，教會保存190b9f8f。金幣動態裁圖12接受／四拒收，不宣稱PNG精確同幀。[普通出售後金額987完整視窗](../figures/hd1-facility-money-panel-game.png)為本批公開圖。953／6963與兩manifest保持，無新私人圖稿。407教訓／256 guard含取色防護；前輪暗色與已停止候選只留診斷。四資源此金額框待接項由本節取代，成功特效、其餘金額框、小字樣與地形續作。
+
+### HD1 設施成功演出
+
+本節實作前為READY，現為CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。原始實圖確認三店眨眼／閃光後睜眼，教會額頭寶石由藍到白。既有四組22拍、93步時間線與結算規則沿原生producer，不新增轉職成功動畫或未證實角色設定。
+
+- 三店沿FDOTHER12／29／63的5／1／7拍，教會沿FDOTHER14的9拍及76步復活調色盤。原始indexed畫格、遮罩、palette、duration、ACK與after保持。金額滾動只改原48×9窗口，繼承演出最終臉部。
+- 可省略角色facility_success_portrait_hd_set為四組480×480不透明局部，綁原80×80位置。native_lmi_frames記錄entry、形狀與indexed SHA，遮罩另核對固定雜湊。宣告時四組必須齊全，舊包完全省略時沿既有呈現。來源、缺件、圖像身分或內容突變退出新路徑，不留最近Draw觀測。F2美術與F11介面即時獨立決定。
+- [局部配方](../../remake/assets/themes/modern/facility-success.recipe.json)與[編製器](../../tools/build_fd2_facility_success_hd.py)固定原HD圖、imagegen畫作、矩形與步序，只做裁切、重採樣、局部合成與光效編製。矩形以外每一像素保持。教會整景v2及DATO131的480／80配對補回原版額頭寶石，前版來源保留。
+- [配對配方](../../remake/assets/themes/modern/facility-portraits.recipe.json)明示教會PNG壓縮6與修訂2；[配對編製器](../../tools/build_fd2_facility_portraits_hd.py)的旅館預設仍為壓縮9與v1。兩條編製鏈均已重建相同檔案，不能只驗解碼像素便忽略PNG檔案雜湊。
+- 原版VGA palette逐步保持。HD場景、金框與文字同序加亮，屬RGB美術近似；兩原版控制不經此近似，不宣稱HD RGB等於原版逐像素palette。
+- [素材載入](../../remake/cmd/fd2/modern_hd_facility_success_assets.go)、[時間線接線](../../remake/cmd/fd2/modern_hd_facility_success.go)、[原圖匯出](../../remake/cmd/fd2/modern_hd_facility_success_prototype_test.go)、[來源／退回測試](../../remake/cmd/fd2/modern_hd_facility_success_test.go)及[完整GPU測試](../../remake/cmd/fd2/modern_hd_facility_success_gpu_test.go)為正式入口。正常購物沿[GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的--gold-roll及--facility-success。
+
+最終201完整Draw／43PNG、1852416000 RGBA byte與獨立全景組圖相同，容差0。93步序、52狀態及20美術拒收通過；109回歸通過，十二可選略過，清冊16測試通過。正常START／F9接續第2章買賣布衣，1000→950→987、39PNG、54筆成功最近Draw含22滾動；兩美術保存、F9與新程序標題LOAD保持。教會成功是typed繪圖場景，未新增原版oracle、PLAYER-E2、人工或平台驗收。
+
+[四組成功畫格](../figures/hd1-facility-success-game.png)取自最終GPU-r3，圖上數值不作自然戰役證明。主收據hd1_facility_success_followup_20261103索引所有來源。重跑命令在work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/commands.json；同目錄ready-source.json、gpu-r3-capture/success-gpu-report.json、normal-gold-roll-r2-capture/receipt.json與regression-r2.log為最終證據。1260 Go指紋d4b97dd6，21／416／19消費端及160字串保持。957清冊、6990私人檔，私人4d7d9695；408教訓／257 guard。其餘正式介面依#283逐consumer核對，地形另依#282，完整HD1仍續作。

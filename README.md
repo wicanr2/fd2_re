@@ -305,6 +305,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![三家店眨眼與教會寶石的HD成功畫格](docs/figures/hd1-facility-success-game.png)
+
+店員成功眨眼與閃光、教會復活時的額頭寶石與閃白已接HD，沿原有步序及結算。上圖是四組正式繪圖測試場景；正常購買、出售及兩美術存讀檔另已抽驗。人工觀感由使用者接手，範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1-設施成功演出)。
+
 ![普通出售布衣後的HD設施金額框](docs/figures/hd1-facility-money-panel-game.png)
 
 三類商店與教會的金額框、貨幣符號已直接HD繪製，保留原位置、配色及數字滾動。上圖是正常接續第2章存檔後買賣布衣、餘額987的完整視窗；四組切換、兩美術保存及重新啟動讀檔已抽驗。其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。

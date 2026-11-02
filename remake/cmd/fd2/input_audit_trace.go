@@ -278,6 +278,24 @@ func (g *Game) recordInputAuditState() {
 			"rect": [4]int{5, 95, 68, 110}, "digit_window": [4]int{16, 98, 64, 107},
 			"interface_hd": true, "art_hd": d.artHD, "rolling": d.rolling}
 	}
+
+	for _, job := range []*nativeClassUIJob{g.nativeShopUIJob, g.nativeClassUIJob} {
+		if job == nil || len(job.timeline) == 0 || job.timeline[0].facilitySuccess == nil {
+			continue
+		}
+		d := job.timeline[0].facilitySuccess.presentation
+		if d == nil || d.lastDraw == nil || d.lastDraw.frame < 0 || d.lastDraw.frame >= len(job.timeline) {
+			continue
+		}
+		drawn := d.lastDraw
+		step := job.timeline[drawn.frame].facilitySuccess
+		if step == nil || step.presentation != d {
+			continue
+		}
+		r["facility_success_presented"] = map[string]any{"owner": d.owner, "resource": d.resource, "variant": d.variant,
+			"presented_frame": drawn.frame, "animation_entry": drawn.choiceFrame, "white_delta": step.delta,
+			"interface_hd": drawn.interfaceHD, "art_hd": drawn.artHD, "rolling": job.goldText != nil}
+	}
 	r["shop_mode"] = g.nativeShopMode
 	r["shop_service"] = g.nativeShopServiceSel
 	r["shop_ui_busy"] = g.nativeShopUIJob != nil

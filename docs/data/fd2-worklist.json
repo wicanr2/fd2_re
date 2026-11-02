@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "HD1介面與美術獨立控制，人工造型、逐章及平台由使用者接手。現況58、契約61與HD主收據為現行入口。\n\n已接故事／提示古金框、城鎮／離城／整備、旅館／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類物品列表、商店九種與教會六種列表開收、復活費用符號、教會及三商店確認、商店八種與教會三種回覆、三商店與教會主選單開收。R64再接四資源共用的63×15金額框與貨幣符號。#288／#289保持已解。\n\n金額框原位置(5,95)..(68,110)與色盤保持，框線沿既有HD三條1 HD pixel邊線及3×3角。原48×9數字／滾動窗完全透明，其他513個byte逐一核對。貨幣符號沿既有Noto數字run、原(9,99)及6×8 clip，依原符號非背景像素最大RGB亮度選色。正式VGA169為(211,227,251)，75是深色描邊，不能由PNG索引灰階判定原色。F11框線／符號獨立F2場景，兩共用present入口採實際frame／palette；原cache、金額／party／RNG及after保持。旅館沒有此金額producer，不新增顯示。\n\n75穩定來源、八job／32原幀及2052固定區拒收／1728數字窗byte通過；正式2551500 HD像素、1166400透明數字像素與2091拒收通過。最終GPU-r3共207完整Game.Draw／32PNG、1907712000 RGBA byte與停用新裝飾baseline、獨立邊線配方及貨幣字元合成相同，容差0。涵蓋75模式HD／HD，四資源主選單四控制、主選單開收、三商店收支滾動及三語代表。101回歸通過，十一可選略過；1255 Go指紋b77a06df072811bff004424999d3dcbee90322c6673ce3ec767e4292e1a2f3b0，21／416／19及160字串保持。\n\n普通START/F9接續hotel_ch02，布衣買賣1000→950→987、39PNG，1059筆金額框最近最終Draw含23滾動；教會取消26PNG、708筆金額框觀測。兩美術保存／F9保持，商店另新程序LOAD；買賣保存32c9cd02，教會190b9f8f。金幣動態裁圖12接受／四拒收，不宣稱PNG精確同幀或新原版E2。公開圖是普通出售後餘額987完整視窗。\n\n主收據hd1_facility_money_followup_20261103與61索引命令／來源。首輪暗色與variant標籤診斷、停止候選均保留；最終只取source-r2／GPU-r3／binary-r2／普通r2／regression-r1。407教訓／256 guard含原色盤選主筆防護。953清冊／6963私人檔與兩manifest保持，私人44636b94，無新圖稿。\n\n成功特效、其餘金額框與小字樣續作；地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成，本工單保持開啟。",
+      "body": "HD1介面沿原位置、輸入與保存接線，F2美術獨立F11介面；人工觀感、逐章與平台由使用者接手。現況以58、61及HD主收據為準。\n\n城鎮／離城／整備、旅館／教會穩定介面、三商店21穩定模式、40服務圖示、名冊Q版、比較／物品、列表／確認／回覆／主選單開收及四資源金額框已接。R65再接三店5／1／7拍眨眼閃光、教會9拍額頭寶石與76步復活閃白，並補回教會整景／DATO131配對寶石。原時序、ACK、交易及復活after保持。#288／#289不重開。\n\n新四組facility_success_portrait_hd_set為480×480不透明局部，原始entry、indexed bytes及遮罩雜湊核對，矩形外每像素保持；缺件、來源及圖像突變退回。F2／F11即時獨立；金額滾動只改原48×9窗口。HD閃白依原步序作RGB美術近似，原版palette沿既有資料，不宣稱HD逐像素palette一致。\n\n最終201完整Draw／43PNG、1852416000 RGBA byte與獨立全景組圖相同，容差0；93步序、52狀態與20美術拒收通過，109回歸／十二可選略過，清冊16測試通過。正常START／F9接續第2章布衣買賣1000→950→987、39PNG、54筆成功最近Draw含22滾動；兩美術保存、F9與新程序標題LOAD保持。教會成功為正式Draw的typed fixture，沒有新增原版oracle或PLAYER-E2。\n\n1260 Go指紋d4b97dd6、21／416／19消費端與160字串保持。957清冊／6990私人檔，新30PNG與兩條可重跑編製鏈，私人4d7d9695已推送且維持private；原版manifest保持。408教訓／257 guard。主收據hd1_facility_success_followup_20261103及61索引所有來源與命令。\n\n其餘正式介面依目前consumer逐項盤點，不以舊籠統待辦單獨判定缺失。地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成，本工單保持開啟。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -537,11 +537,19 @@
         "remake/cmd/fd2/modern_hd_presentation.go",
         "remake/cmd/fd2/modern_hd_facility_scene.go",
         "remake/cmd/fd2/native_class_ui.go",
-        "docs/figures/hd1-facility-money-panel-game.png"
+        "docs/figures/hd1-facility-money-panel-game.png",
+        "remake/cmd/fd2/modern_hd_facility_success.go",
+        "remake/cmd/fd2/modern_hd_facility_success_assets.go",
+        "remake/cmd/fd2/modern_hd_facility_success_prototype_test.go",
+        "remake/cmd/fd2/modern_hd_facility_success_test.go",
+        "remake/cmd/fd2/modern_hd_facility_success_gpu_test.go",
+        "remake/assets/themes/modern/facility-success.recipe.json",
+        "tools/build_fd2_facility_success_hd.py",
+        "docs/figures/hd1-facility-success-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R64金額框207完整Game.Draw／32PNG、1907712000 RGBA byte容差0；75來源／2551500 HD像素／1166400透明像素／2091拒收，101回歸與十一可選略過。普通買賣39與教會26PNG、金額框1059／708最近Draw含23滾動、兩美術保存／F9與商店新程序LOAD通過。407教訓／256 guard。成功特效、其餘金額框、小字樣及地形續作，依61與hd1_facility_money_followup_20261103。"
+        "note": "R65四組22拍／201完整Draw／43PNG、1852416000 RGBA byte容差0，93步序／72拒收、109回歸及十二可選略過、16清冊測試。普通買賣39PNG與54成功最近Draw含22滾動，兩美術保存／F9及冷LOAD通過。957清冊／6990私人檔；其餘正式介面逐consumer盤點，地形另案。依61與hd1_facility_success_followup_20261103。"
       },
       "issue": 283
     }

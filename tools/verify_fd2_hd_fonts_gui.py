@@ -142,6 +142,21 @@ def facility_money_observations(paths, owner, require_roll=False):
             'scope':'正常鍵盤路徑的最近最終Draw；Update可已前進，不宣稱PNG精確同幀。'}
 
 
+def facility_success_observations(paths):
+    samples=[]
+    for path in paths:
+        for line in path.read_text().splitlines():
+            try: state=json.loads(line)
+            except json.JSONDecodeError: continue
+            drawn=state.get('facility_success_presented')
+            if drawn and drawn.get('owner')=='shop' and drawn.get('interface_hd') and drawn.get('art_hd'):
+                samples.append({'game_update_frame':state['frame'],**drawn})
+    assert any(s.get('animation_entry',-1)>=0 and not s.get('rolling') for s in samples), '未觀測到店員成功畫格'
+    assert any(s.get('rolling') for s in samples), '未觀測到成功演出接續金額滾動'
+    return {'owner':'shop','samples':samples,'audit_files':[p.name for p in paths],
+            'scope':'正常購買與出售的最近實際Draw；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -244,7 +259,10 @@ def main():
     parser.add_argument('--facility-reply-transitions', action='store_true', help='搭配--shop-transfer要求來源與目的提示的實際HD開收')
     parser.add_argument('--service-menu-transitions', action='store_true', help='搭配--shop-transfer或--church驗證主選單實際HD開收')
     parser.add_argument('--facility-money-panel', action='store_true', help='搭配--gold-roll或--church要求設施金額框實際HD呈現')
+    parser.add_argument('--facility-success', action='store_true', help='搭配--gold-roll要求實際HD成功畫格及金額接續')
     args = parser.parse_args()
+    if args.facility_success and not args.gold_roll:
+        parser.error('--facility-success需要--gold-roll')
     if args.facility_money_panel and not (args.gold_roll or args.church):
         parser.error('--facility-money-panel需要--gold-roll或--church')
     if args.service_menu_transitions and not (args.shop_transfer or args.church):
@@ -1768,6 +1786,7 @@ def main():
             assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存檔'
             shot('gold-new-process-title-load')
             report={'schema':'fd2-hd-gold-roll-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
+                    'facility_success':facility_success_observations([args.out/'input-audit-first-process.jsonl']) if args.facility_success else None,
                     'facility_money_panel':facility_money_observations([args.out/'input-audit-first-process.jsonl'],'shop',True) if args.facility_money_panel else None,
                     'shop_confirmation_transitions':{mode:facility_confirmation_observations([args.out/'input-audit-first-process.jsonl'],mode) for mode in ['confirm','equip_confirm','sell_confirm']} if args.shop_confirmation_transitions else None,
                     'confirmation_four_styles_sampled':args.shop_confirmation_transitions and args.facility_item_rows,

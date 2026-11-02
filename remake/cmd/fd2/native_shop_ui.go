@@ -1515,7 +1515,7 @@ func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool {
 		if job.elapsed >= total {
 			job.frame = 1
 		}
-		if !g.drawModernHDGoldRoll(screen, job, index) {
+		if !g.drawModernHDFacilitySuccess(screen, job, index) && !g.drawModernHDGoldRoll(screen, job, index) {
 			if !g.drawModernHDShopFrame(screen, step.frame, step.palette, step.shopEffectMask) {
 				g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
 			}

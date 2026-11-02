@@ -22,7 +22,7 @@ ROLES = PROTOTYPE_ROLES | {
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
     "facility_scene_hd", "battle_surface_hd", "map_stage_hd", "story_animation_hd_set",
     "native_ui_icon_hd", "native_ui_embedded_icon_hd",
-    "presentation_poster_pair",
+    "presentation_poster_pair", "facility_success_portrait_hd_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -31,7 +31,7 @@ NATIVE_FDICON_GROUP_COUNT = 140
 NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139}
 VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
 SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
-MULTI_FILE_ROLES = SPRITE_ROLES | {"story_animation_hd_set", "battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set"}
+MULTI_FILE_ROLES = SPRITE_ROLES | {"story_animation_hd_set", "battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set", "facility_success_portrait_hd_set"}
 ORDINARY_EFFECT_RESOURCES = {18,19,20,21,22,23,24,25,26,27,28,30,32,33,37,38,39,43}
 
 
@@ -89,7 +89,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "presentation_poster_pair":
+        if entry.get("role") == "facility_success_portrait_hd_set":
+            expected = sprite_set - {"source_group"} | {"master_file", "source_archive", "source_resource", "source_metadata_sha256", "native_lmi_frames", "native_source_rect", "layout_policy", "source_files", "source_sha256"}
+        elif entry.get("role") == "presentation_poster_pair":
             expected = required | {"consumer_contract", "frame", "layout_policy", "alpha_contract"}
         elif entry.get("role") == "native_ui_embedded_icon_hd":
             expected = required | {"master_file", "consumer_contract", "alpha_contract", "layout_policy", "source_archive", "source_resource", "source_metadata_sha256", "native_lmi_frames", "native_source_rect", "source_files", "source_sha256"}
@@ -138,6 +140,27 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             raise ValueError(f"invalid status: {entry['status']!r}")
         if entry["status"] == "prototype" and entry["role"] != "map_sprite_set":
             raise ValueError(f"prototype status is restricted to sprite sets: {asset_id}")
+        if entry['role'] == 'facility_success_portrait_hd_set':
+            resource=entry['source_resource']
+            shape={12:(5,25,17,123,13),29:(1,16,19,99,12),63:(7,65,31,124,11),14:(9,3,6,118,4)}.get(resource)
+            if (not shape or entry['consumer_contract']!='native_facility_success_portrait_hd6_v1'
+                    or entry['source_archive']!='FDOTHER.DAT' or entry['alpha_contract']!='opaque'
+                    or entry['cycle_policy']!='native_timeline' or entry['layout_policy']!='native_portrait_patch_hd6'
+                    or (entry['width'],entry['height'])!=(480,480) or entry['frame_count']!=shape[0]
+                    or entry['native_source_rect']!=[shape[3],shape[4],80,80]
+                    or len(entry['native_lmi_frames'])!=shape[0]
+                    or len(entry['source_files']) not in {2,3} or len(entry['source_sha256'])!=len(entry['source_files'])
+                    or entry['source_files'][1]!=entry['master_file']):
+                raise ValueError(f'invalid facility success contract: {asset_id}')
+            for i,f in enumerate(entry['native_lmi_frames']):
+                if (set(f)!={'index','width','height','pixels_sha256'} or f['index']!=23+i
+                        or (f['width'],f['height'])!=shape[1:3] or not SHA_RE.fullmatch(f['pixels_sha256'])):
+                    raise ValueError(f'invalid facility success native frame: {asset_id}')
+            for name,sha in zip(entry['source_files'],entry['source_sha256']):
+                if Path(name).name!=name or not SHA_RE.fullmatch(sha):
+                    raise ValueError('invalid facility success provenance')
+                if verify_private and hashlib.sha256((ROOT/private_root/name).read_bytes()).hexdigest()!=sha:
+                    raise ValueError('facility success source sha256 mismatch')
         if entry['role'] == 'presentation_poster_pair':
             if (type(entry['frame']) is not int or entry['frame'] not in (0, 1)
                     or entry['frame'] in poster_sets
@@ -324,6 +347,11 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if entry['master_file'] not in entry['source_files'] or sum(Path(v).suffix=='.json' for v in entry['source_files'])!=1:
                 raise ValueError(f'HD story plan/master missing: {asset_id}')
             file_paths=[Path(v) for v in entry['files']]
+        elif entry['role']=='facility_success_portrait_hd_set':
+            files,hashes=entry['files'],entry['frame_sha256']
+            if len(files)!=entry['frame_count'] or len(hashes)!=len(files) or len(set(files))!=len(files) or any(not SHA_RE.fullmatch(h) for h in hashes):
+                raise ValueError('invalid facility success files')
+            file_paths=[Path(v) for v in files]
         elif entry["role"] == "native_terrain_hd_set":
             count = entry["frame_count"]
             frames, semantics = entry["frame_ids"], entry["semantics"]
@@ -596,11 +624,14 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if alpha.getextrema() != (0,255):
                         raise ValueError(f'embedded UI icon lacks real alpha: {asset_id}')
-                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd", "native_ui_icon_hd", "presentation_poster_pair"}:
+                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd", "native_ui_icon_hd", "presentation_poster_pair", "facility_success_portrait_hd_set"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    success=[a for a in assets if a['role']=='facility_success_portrait_hd_set']
+    if success and (len(success)!=4 or {a['source_resource'] for a in success}!={12,29,63,14}):
+        raise ValueError('facility success four-resource group incomplete')
     if poster_sets and poster_sets != {0, 1}:
         raise ValueError('poster pair must contain both approved sets')
     if service_icon_sources and service_icon_sources != {(r,i) for r in [12,13,14,29,63] for i in range(3,11)}:

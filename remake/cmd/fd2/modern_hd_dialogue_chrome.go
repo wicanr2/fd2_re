@@ -28,6 +28,7 @@ type modernHDDialogueChrome struct {
 }
 
 type modernHDDialoguePanel struct {
+	whiteDelta   int
 	chrome       *modernHDDialogueChrome
 	rect         image.Rectangle // Frozen native 320x200 coordinates, before clipping.
 	clip         image.Rectangle
@@ -184,6 +185,10 @@ func (p *modernHDPresentation) drawModernHDDialogueChrome(screen ebiten.FinalScr
 		op.GeoM.Concat(geometry)
 		v := float32(math.Max(0, math.Min(1, brightness)))
 		op.ColorScale.Scale(v, v, v, 1)
+		if panel.whiteDelta > 0 {
+			d := float64(panel.whiteDelta) / 63
+			op.ColorM.Translate(d, d, d, 0)
+		}
 		screen.DrawImage(source, op)
 		if panel.values != nil {
 			values := panel.values

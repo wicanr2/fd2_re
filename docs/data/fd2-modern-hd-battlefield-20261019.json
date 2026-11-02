@@ -305664,6 +305664,260 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/final-validation.json",
       "sha256": "6d03a3e66aa8f0abd934cb21c5e90a8d4f37a94dc7418a9a7c7f1e41365d664c"
+    },
+    "remaining_superseded_by": "hd1_facility_success_followup_20261103"
+  },
+  "hd1_facility_success_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "732fa9be43080a7541ceaeeaa1b788a508badadf",
+    "scope": "三店5／1／7拍眨眼閃光、教會9拍額頭寶石及76步復活閃白；教會整景與DATO131配對補回原版寶石。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1260,
+      "go_tree_sha256": "d4b97dd66ffc6afe7305454ce7e74f5cb6111f8b1849c19acf03193996b30032",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/fd2-player-r2",
+        "sha256": "6fec671d1f901f8d07976d3cead64d735322cf4bfb9efc15e9edc3fa703ca224"
+      },
+      "production_go_unchanged_after_binary": true,
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/ready-source.json",
+        "sha256": "0cd33d9d6ac2c546d90f61ef60d924d8f1e52c0ba9a888f5a15a035a14460559"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/commands.json",
+        "sha256": "d69d6176443f3a4fa7a94ead81f616384235df2c599dd4a004dc1c5deec94c50"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_success.go",
+          "sha256": "b38deb75783185692bd31e3bd0aa37834a41a23f1395b91f087a81d21c57020d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_success_assets.go",
+          "sha256": "40693f0163dc27256ff09b8ebd8af3fe745b85dc19fc1ab4ad684e0ed429b555"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_success_prototype_test.go",
+          "sha256": "3c0bf366fd8f3fc96e445b273d23e15d8b8de353d2012ce53a1d7c68350ba176"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_success_test.go",
+          "sha256": "643598b166ac1c61b09a1c372960214010eb1445c7e1e56a1be14aaa10e3626c"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_success_gpu_test.go",
+          "sha256": "d62b902142821a2c8cb92aa78f1173e34dcd230f90e6a7bfd80648adcb745d00"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_scene.go",
+          "sha256": "5f3e30481cf2c521afcef7feae1e9000c7ef9b4439d31c0d3512cabf650a6677"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_story_portrait.go",
+          "sha256": "4d01c3508acfed13d48445518c8ee92c651b3479eb463a8227908387ea055d9a"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_transaction_ui.go",
+          "sha256": "cf4279eef992cf17452055ff0fb8b23614a7f808d9e2b78c13fb3b9f34b761f8"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_sell_ui.go",
+          "sha256": "b17384ca7eae225c62fd1904e9f97c16b9e73c64674e7e1888a4a0b7904f8ca1"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "d1d6bdd9f7efcc1c7d9320b1a6ad83f037e5107412b0e43f3118cc262d826197"
+        },
+        {
+          "file": "remake/cmd/fd2/native_church_revive_ui.go",
+          "sha256": "70b07c74092c49f2836a77d1c279d78d7e60285f5fac7fcd0a32e25876e160f9"
+        },
+        {
+          "file": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+          "sha256": "296dd14dc6d752a1ed5611e906f1a575b2ba0167eca93ab4659c6eec18525c9e"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_dialogue_chrome.go",
+          "sha256": "1af5fd7256b3afaa3bcb155ff0d7cab7aa5b8bc32db2d61e96ebc0e271305516"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "724e04815e9ed53b2b23703e413af57bf850aee7519854fb02ea1acbfa2312ef"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "ff9f38b29bee971c662bbbe3931635793c37d92f9cced1230d052abfae5fc30b"
+      },
+      "compilers": [
+        {
+          "file": "tools/build_fd2_facility_success_hd.py",
+          "sha256": "e383c2e247ce9d28e9e5b49e628b347835f0909d42e2af16cf70b8e876874ea5"
+        },
+        {
+          "file": "tools/build_fd2_facility_portraits_hd.py",
+          "sha256": "c5bad0bf2922ea613718e0424723f83138af21fcb735c2cf6ee645e040325116"
+        }
+      ],
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/consumers-r2.json",
+        "sha256": "bc5bcb601f9c2e3adb195032ab04bcc569f8aac9e5d080de23a3e8bf70720497"
+      },
+      "consumer_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/consumers-verified-r2.json",
+        "sha256": "9f9301efa796216a1a986272d597e033a0a0e7d7bcc6d16adb8f3c731593eb0e"
+      },
+      "string_review_count": 160
+    },
+    "rules": [
+      "原始indexed畫格、遮罩、palette、duration、ACK與結算after保持。",
+      "F2場景／人物與F11介面各自決定；金額滾動繼承成功演出最終臉部，只改原48×9窗口。",
+      "四組480×480不透明局部的矩形以外每像素保持原HD圖；缺件、原始來源、模式、字型、語系、圖像身分或內容突變時退回既有呈現，不留最近Draw觀測。",
+      "教會補回原版額頭寶石，整景v2及480／80頭像同源配對；前版來源保留。",
+      "原版palette沿既有VGA步序；HD場景與框線以delta/63作RGB加亮，文字做飽和加亮，屬美術近似。兩原版控制不經此近似。",
+      "PNG編製鏈在配方明示壓縮等級與資產修訂版，解碼像素相同仍須重建相同檔案雜湊。"
+    ],
+    "prototype": {
+      "resources": 4,
+      "animated_frames": 22,
+      "timeline_steps": 93,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/prototype-report.json",
+        "sha256": "d7f67def5a1e827f3ba2d12ffed7ac77c31bb33746af36eeda1d4c4f5ff38f6a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/prototype-r1.memory.json",
+        "sha256": "6a3a9333106e104a72809c688c179b9e7f5b7b0f343ae4cc58b9b39fd65ca5d4"
+      }
+    },
+    "cpu": {
+      "timeline_steps": 93,
+      "state_faults_rejected": 52,
+      "art_faults_rejected": 20,
+      "raw_and_transaction_state_unchanged": true,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/regression-r2.log",
+        "sha256": "1b487b8f1c49ea1bd67b783e6f4504988c4032827e2c0c4152242818673ab615"
+      }
+    },
+    "gpu": {
+      "frames": 201,
+      "pngs": 43,
+      "whole_game_rgba_bytes": 1852416000,
+      "rgba_tolerance": 0,
+      "four_controls": true,
+      "all_success_steps_hd_hd": true,
+      "independent_scene_assembly_equal": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/gpu-r3-capture/success-gpu-report.json",
+        "sha256": "dded211688db74e524d55db056fee1ddbf9348fcff1851786d2850ccc82b0832"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/gpu-r3.memory.json",
+        "sha256": "786bd52a15f6a5bb40d80adf5b475068dabaf7ccbf772e607d9b06c4ef32f571"
+      }
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/normal-gold-roll-r2-capture/receipt.json",
+        "sha256": "b261633278dafbe2c0456955ae050bcce4031b27c2e0d3f7315ac6bdae051573"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/normal-gold-roll-r2.memory.json",
+        "sha256": "43915a91698a4d769b5b8c740b19dcf76511cd7e8040296c0cfc1a8285038014"
+      },
+      "pngs": 39,
+      "success_draw_samples": 54,
+      "rolling_success_samples": 22,
+      "save_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+      "gold": [
+        1000,
+        950,
+        987
+      ],
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。",
+      "church_success_is_typed_fixture": true
+    },
+    "regression": {
+      "passed": 109,
+      "optional_skipped": 12,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/regression-r2.memory.json",
+        "sha256": "2b908a29c3e98ff42f4eea50d28f9d23dde79c72cb3172decf54f0375cf34390"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/regression-r2.log",
+        "sha256": "1b487b8f1c49ea1bd67b783e6f4504988c4032827e2c0c4152242818673ab615"
+      },
+      "catalog_unit_tests": 16
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "03087cf4c4e78c3bf4ed9a45b86a41cbf2b311ccc6b3b752a1caea71b0e925a4"
+      },
+      "catalog_assets": 957,
+      "private_files": 6990,
+      "new_png_files": 30,
+      "private_commit": "4d7d9695b16a1781451c9d45bfb1c8804cef49e1",
+      "private_repository_verified_private": true,
+      "private_manifest_sha256": "67bef6651d205dfcffdaaae1cbdf699e67a193e1864cf0c937dc657a24306576",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e",
+      "recipe": {
+        "file": "remake/assets/themes/modern/facility-success.recipe.json",
+        "sha256": "9755de0d32ce72293a9ff40c01828ad346eebaa355211d71b3bdcac52cfb6093"
+      },
+      "paired_recipe": {
+        "file": "remake/assets/themes/modern/facility-portraits.recipe.json",
+        "sha256": "eea4ce9972251ab8a747518c870424e0c20086c73edf590b67ecb9cd1a3b76eb"
+      },
+      "rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/rebuild-receipt.json",
+        "sha256": "5413beffcaac4b6e1684cac96150cc41ce6683ff1d5a1a36fd5d9d6a19377ed8"
+      },
+      "paired_rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/paired-rebuild-report-r2.json",
+        "sha256": "cc9cc682ad1b22e8a744fac77f08fce14e8bbac810da83d66722f28986de233c"
+      }
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-facility-success-game.png",
+        "sha256": "a47e3aa6424a6a79728255d85ac192d1c023c8679efabee628587b9ec143eb3a"
+      }
+    ],
+    "public_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/public-success-sources.json",
+      "sha256": "87b7af18a597d16d6ac8b43ec42942607f88ab87d4424ca23136a77064baa6cf"
+    },
+    "diagnostics": [
+      "前期嘴部及寶石消失判讀已依原始3×6實圖更正，未據錯誤判讀接線。",
+      "regression-r1因匯出測試缺明示輸出參數失敗，補參數後同容器regression-r2全通過，非產品缺陷。",
+      "paired-rebuild-r1因PNG壓縮9／6差異拒收；明示編碼及v2後paired-rebuild-r2重建相同檔案，未改已驗證圖檔。",
+      "候選source-r1／GPU-r1／GPU-r2／普通r1保留；最終取GPU-r3／binary-r2／普通r2／regression-r2。"
+    ],
+    "lessons": {
+      "count": 408,
+      "guards": 257
+    },
+    "remaining_ui": [
+      "其餘正式介面依#283逐consumer盤點，舊籠統待辦不能單獨判定缺失。"
+    ],
+    "limits": [
+      "教會成功為正式Draw的typed fixture，正常購物另有START/F9與冷LOAD收據。",
+      "未新增原版oracle、PLAYER-E2、人工或平台驗收。",
+      "地形#282仍有3180缺槽／2033唯一來源，完整HD1未完成；HD2與新Release另期。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/final-validation.json",
+      "sha256": "199f6ea68ee7ea4ac44338612013fa45f0f6e8532f9ee35cc1a981fd339e0acd"
     }
   }
 }

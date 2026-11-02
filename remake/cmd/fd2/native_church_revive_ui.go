@@ -393,6 +393,24 @@ func (g *Game) beginNativeChurchReviveSuccess(after func()) bool {
 		},
 		nativeClassUITimelineStep{frame: final, palette: a.palette},
 	)
+	stages, deltas := make([]int, 0, len(timeline)), make([]int, 0, len(timeline))
+	for i := range animation {
+		stages = append(stages, i)
+		deltas = append(deltas, 0)
+	}
+	for _, delta := range plan.RisePaletteDeltas {
+		stages = append(stages, len(animation)-1)
+		deltas = append(deltas, delta)
+	}
+	stages = append(stages, len(animation)-1)
+	deltas = append(deltas, plan.RisePaletteDeltas[len(plan.RisePaletteDeltas)-1])
+	for _, delta := range plan.FallPaletteDeltas {
+		stages = append(stages, len(animation)-1)
+		deltas = append(deltas, delta)
+	}
+	stages = append(stages, len(animation)-1, -2)
+	deltas = append(deltas, plan.FallPaletteDeltas[len(plan.FallPaletteDeltas)-1], 0)
+	g.bindModernFacilitySuccessTimeline(timeline, 14, stages, deltas)
 	g.nativeClassUIJob = &nativeClassUIJob{timeline: timeline, after: after}
 	return true
 }

@@ -5086,6 +5086,22 @@
         ],
         "pattern": "d\\.foreground,\\ best\\ =\\ index,\\ brightness"
       }
+    },
+    {
+      "id": "hd-png-compiler-encoding-and-revision-explicit",
+      "date": "2026-11-03",
+      "area": "HD編製鏈的PNG編碼與版次",
+      "rule": "串接多個PNG編製器時，配方明示輸出編碼參數與資產修訂版，並依同一契約重建檔案雜湊。先核對解碼後像素，再區分編碼差異。入口為tools/build_fd2_facility_success_hd.py及tools/build_fd2_facility_portraits_hd.py；後者沿facility-portraits.recipe.json的png_compress_level與asset_revision，未設定時保留既有壓縮9與v1。",
+      "why": "R65新局部編製器輸出PNG壓縮6，既有配對編製器固定9，像素相同但檔案SHA不同。既有工具也把輸出資產識別字寫死為v1。配方明示壓縮6與修訂2後，兩條編製鏈重建相同檔案及版次，沒有改已驗證圖檔。",
+      "evidence": "WORKLOG.md：2026-11-03 HD1設施成功演出R65；docs/knowledge-base/61-modern-theme-runtime-spec.md：HD1設施成功演出",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_facility_portraits_hd.py",
+          "remake/assets/themes/modern/facility-portraits.recipe.json"
+        ],
+        "pattern": "png_compress_level"
+      }
     }
   ]
 }

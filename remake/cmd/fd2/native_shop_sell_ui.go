@@ -438,6 +438,7 @@ func (g *Game) beginNativeShopSellSuccess() bool {
 			duration: campaign.NativeGoldRollDelayMilliseconds * time.Millisecond,
 		}
 	}
+	inheritModernFacilitySuccess(timeline[len(timeline)-1], creditTimeline)
 	g.nativeShopPendingUnit = staged
 	g.nativeShopPendingGold = nextGold
 	g.nativeShopHasPendingUnit = true

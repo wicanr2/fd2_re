@@ -25,6 +25,7 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
+	facilitySuccess   map[int]*modernFacilitySuccessBank
 	uiPanelIcons      map[int]*modernUIPanelIcon
 	uiServiceIcons    map[[2]int]*modernHDServiceIcon
 	uiEmbeddedIcons   map[int]*modernUIEmbeddedIcon
@@ -146,6 +147,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		}
 		if asset.Role == "battle_surface_hd" {
 			if err := loadModernBattleSurfaceHD(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
+		if asset.Role == "facility_success_portrait_hd_set" {
+			if err := loadModernFacilitySuccessBank(set, asset, packRoot); err != nil {
 				return nil, err
 			}
 			continue
@@ -459,6 +466,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		return nil, errors.New("modern HD player9 effect/result group is incomplete")
 	}
 	if err := validateModernHDServiceIconGroup(set); err != nil {
+		return nil, err
+	}
+	if err := validateModernFacilitySuccessBanks(set); err != nil {
 		return nil, err
 	}
 	if err := validateModernFacilityPortraitScenePairs(set); err != nil {

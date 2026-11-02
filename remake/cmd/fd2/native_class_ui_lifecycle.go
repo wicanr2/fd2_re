@@ -29,10 +29,11 @@ type nativeClassUIJob struct {
 }
 
 type nativeClassUITimelineStep struct {
-	frame          []byte
-	palette        color.Palette
-	duration       time.Duration
-	shopEffectMask []byte
+	facilitySuccess *nativeFacilitySuccessStep
+	frame           []byte
+	palette         color.Palette
+	duration        time.Duration
+	shopEffectMask  []byte
 }
 
 func (g *Game) beginNativeClassListOpening() bool {
@@ -208,7 +209,10 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 		if job.elapsed >= total {
 			job.frame = 1
 		}
-		g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
+		index, _ := job.timelinePosition()
+		if !g.drawModernHDFacilitySuccess(screen, job, index) {
+			g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
+		}
 		job.drawn = true
 		return true
 	}
