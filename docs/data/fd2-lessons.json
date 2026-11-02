@@ -5071,6 +5071,21 @@
         ],
         "pattern": "兩控制都原版時驗原生像素並要求沒有HD\\ Draw"
       }
+    },
+    {
+      "id": "hd-baked-label-ink-uses-runtime-palette",
+      "date": "2026-11-03",
+      "area": "HD固定字樣取色",
+      "rule": "固定字樣的HD重繪先核對原字樣非背景像素與正式執行期色盤，再選主筆色。PNG的索引灰階與索引數字大小不能代表原色亮度。金額符號入口為remake/cmd/fd2/modern_hd_facility_money.go的appendModernHDFacilityMoney與currencyRun，支援規格61的四資源63×15裝飾；來源／palette證據與重跑命令依61的HD1設施金額框與貨幣符號。",
+      "why": "R64初稿把原符號的深色描邊75當主筆色，GPU按配方比較通過但實際畫面偏暗。正式VGA palette顯示75為(28,52,117)，原字樣最亮169為(211,227,251)；改沿原符號非背景像素取最大RGB亮度。",
+      "evidence": "WORKLOG.md：2026-11-03 HD1設施金額框R64；docs/knowledge-base/61-modern-theme-runtime-spec.md：HD1設施金額框與貨幣符號",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_facility_money.go"
+        ],
+        "pattern": "d\\.foreground,\\ best\\ =\\ index,\\ brightness"
+      }
     }
   ]
 }

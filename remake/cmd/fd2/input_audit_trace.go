@@ -271,6 +271,13 @@ func (g *Game) recordInputAuditState() {
 	}
 	r["locale"] = g.localeID
 	r["gold"] = g.gold
+
+	if frame := g.modernHDText; frame != nil && frame.money != nil && frame.money.presented {
+		d := frame.money
+		r["facility_money_presented"] = map[string]any{"owner": d.owner, "variant": d.variant, "resource": d.resource,
+			"rect": [4]int{5, 95, 68, 110}, "digit_window": [4]int{16, 98, 64, 107},
+			"interface_hd": true, "art_hd": d.artHD, "rolling": d.rolling}
+	}
 	r["shop_mode"] = g.nativeShopMode
 	r["shop_service"] = g.nativeShopServiceSel
 	r["shop_ui_busy"] = g.nativeShopUIJob != nil

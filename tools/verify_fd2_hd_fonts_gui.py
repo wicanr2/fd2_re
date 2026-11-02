@@ -125,6 +125,23 @@ def service_menu_observations(paths, owner):
             'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
 
 
+def facility_money_observations(paths, owner, require_roll=False):
+    samples=[]
+    for path in paths:
+        for line in path.read_text().splitlines():
+            try: state=json.loads(line)
+            except json.JSONDecodeError: continue
+            drawn=state.get('facility_money_presented')
+            if (drawn and drawn.get('owner')==owner and drawn.get('interface_hd') and drawn.get('art_hd')):
+                samples.append({'game_update_frame':state['frame'],**drawn})
+    assert samples, f'未觀測到{owner}金額框HD呈現'
+    if require_roll:
+        assert any(s.get('rolling') for s in samples), '未觀測到滾動期間HD金額框'
+        assert any(not s.get('rolling') for s in samples), '未觀測到穩定HD金額框'
+    return {'owner':owner,'samples':samples,'audit_files':[p.name for p in paths],
+            'scope':'正常鍵盤路徑的最近最終Draw；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -226,7 +243,10 @@ def main():
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     parser.add_argument('--facility-reply-transitions', action='store_true', help='搭配--shop-transfer要求來源與目的提示的實際HD開收')
     parser.add_argument('--service-menu-transitions', action='store_true', help='搭配--shop-transfer或--church驗證主選單實際HD開收')
+    parser.add_argument('--facility-money-panel', action='store_true', help='搭配--gold-roll或--church要求設施金額框實際HD呈現')
     args = parser.parse_args()
+    if args.facility_money_panel and not (args.gold_roll or args.church):
+        parser.error('--facility-money-panel需要--gold-roll或--church')
     if args.service_menu_transitions and not (args.shop_transfer or args.church):
         parser.error('--service-menu-transitions需要--shop-transfer或--church')
     if args.facility_reply_transitions and not args.shop_transfer:
@@ -1748,6 +1768,7 @@ def main():
             assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存檔'
             shot('gold-new-process-title-load')
             report={'schema':'fd2-hd-gold-roll-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
+                    'facility_money_panel':facility_money_observations([args.out/'input-audit-first-process.jsonl'],'shop',True) if args.facility_money_panel else None,
                     'shop_confirmation_transitions':{mode:facility_confirmation_observations([args.out/'input-audit-first-process.jsonl'],mode) for mode in ['confirm','equip_confirm','sell_confirm']} if args.shop_confirmation_transitions else None,
                     'confirmation_four_styles_sampled':args.shop_confirmation_transitions and args.facility_item_rows,
                     'gui_tool_sha256':digest(Path(__file__)),
@@ -1892,6 +1913,7 @@ def main():
             report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
                     'church_list_transitions':{mode:facility_list_observations([audit],mode,'church') for mode in ['status_roster','revive','transfer_source','transfer_item','transfer_dest']} if args.church_list_transitions else None,
                     'revive_fee_currency_four_styles':args.church_fee_currency,
+                    'facility_money_panel':facility_money_observations([audit],'church') if args.facility_money_panel else None,
                     'service_menu_transitions':service_menu_observations([audit],'church') if args.service_menu_transitions else None,
                     'church_confirmation_transitions':church_confirmation_observations([audit],'revive_confirm') if args.church_confirmation_transitions else None,
                     'panel_transitions':panels,

@@ -219,6 +219,7 @@ func (g *Game) presentNativeClassFrameWithPalette(
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(native, op)
+	g.appendModernHDFacilityMoney(frame, palette)
 }
 
 // presentNativeClassFrameWithOverlay 先呈現原生 indexed 畫面，再以相同

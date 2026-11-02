@@ -6056,3 +6056,21 @@ R63 完整繪圖：[modern_hd_service_menu_gpu_test.go](../../remake/cmd/fd2/mod
 R63主收據 hd1_service_menu_followup_20261103：四語原型16狀態／32 job／128原幀／16還原、256個normal零像素與441680 writer byte通過。正式8來源／32原幀／4還原、2211840 HD覆蓋像素及132拒收／八兩原版清Draw通過。192完整Game.Draw／42PNG、1769472000 RGBA byte與獨立source及逐像素normal來源合成相同，容差0；三商店與教會全步／四組，其他三語各shop1及church代表幀。96回歸通過、十可選略過；1251 Go指紋 6f7109143dd1f554e145c683050a5def533fd545132157b3282458df1e675d89，21／416／19及160字串保持。
 
 普通商店交付取消32PNG、教會名冊／復活問句／物品取消26PNG，主選單最近Draw分別19／45筆含開收。兩美術保存與F9保持190b9f8f，商店另驗新程序LOAD；未實際移交、轉職或復活，觀測不作PNG精確同幀。[受控教會展開第二拍](../figures/hd1-service-menu-opening-game.png)使用金額1234測試資料。953／6963及兩manifest保持，未改私人圖源。商店與教會主選單待接項由本節取代；成功特效、金額框、小字樣及地形續作。
+
+### HD1 設施金額框與貨幣符號
+
+R64 已達 CONFORMED-SCOPED／RUNTIME-E1。四資源的63×15裝飾同源，位置(5,95)..(68,110)與配色保持；只接HD框線及原baked貨幣符號，金額與既有HD數字／滾動保持。先以 [modern_hd_facility_money_prototype_test.go](../../remake/cmd/fd2/modern_hd_facility_money_prototype_test.go) 查證非數字區與48×9滾動窗。工作根 work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/。旅館未有此金額producer，不新增顯示。
+
+R64原型75穩定模式、八主選單job／32幀通過；非數字區2052單byte損壞拒收，數字窗1728byte變動接受。框線沿既有HD面板的三條1 HD pixel邊線與3×3角，保留原63×15佔位及來源色盤；數字窗不畫。貨幣符號沿現有HD數字字型，(9,99)、6×8 clip、20 logical pixel及原符號非背景像素的最亮色，正常VGA palette為169；不創造新美術風格或改動交易規則。
+
+R64 正式入口：[modern_hd_facility_money.go](../../remake/cmd/fd2/modern_hd_facility_money.go)。兩個共用present入口按實際frame／palette驗證；數字窗透明，框線在文字之前畫，貨幣符號沿獨立run，不改既有文字計數或cache。未知模式、來源不符、遮罩與DAC遮蔽回原生。
+
+R64 正式來源與數字區驗證：[modern_hd_facility_money_test.go](../../remake/cmd/fd2/modern_hd_facility_money_test.go)。所有穩定來源查驗HD邊框不透明、48×9數字窗完全透明、原始frame／交易狀態保持；固定區單byte及owner／字型／色盤／來源錯誤必須清除金額描述器。
+
+R64 完整繪圖：[modern_hd_facility_money_gpu_test.go](../../remake/cmd/fd2/modern_hd_facility_money_gpu_test.go)。預期圖先停用新金額裝飾取得相同正式畫面，再依獨立邊線色盤配方及貨幣字元合成；不用正式picture或currencyRun。涵蓋75穩定模式、四控制代表、主選單轉場、三商店收支滾動及三語代表。只有固定非數字區完全相符才接，未單靠status模式猜金額仍可見。
+
+R64字色勘誤：原75是深色描邊RGB(28,52,117)，正常主筆最亮169為RGB(211,227,251)，173／177是較暗色階。依正式palette收據，貨幣run沿原符號非背景像素的最大RGB亮度選色；GPU-r1及停止的r2／普通r1只保留診斷，最終另重跑。
+
+R64主收據 hd1_facility_money_followup_20261103：75穩定來源、八job／32原幀及2052固定區拒收／1728數字窗byte通過。正式2551500 HD像素、1166400透明數字像素與2091拒收通過，原確認／主選單保持。最終GPU-r3共207完整Game.Draw／32PNG、1907712000 RGBA byte與獨立停用新裝飾baseline、邊線配方及單獨貨幣字元合成相同，容差0；範圍見主收據。101回歸通過、十一可選略過；1255 Go指紋 b77a06df072811bff004424999d3dcbee90322c6673ce3ec767e4292e1a2f3b0，21／416／19及160字串保持。
+
+普通布衣買賣39PNG，1000→950→987，金額框1059筆最近最終Draw含23筆滾動；教會取消26PNG、708筆金額框觀測。兩美術保存／F9保持，商店另新程序LOAD；買賣保存32c9cd02，教會保存190b9f8f。金幣動態裁圖12接受／四拒收，不宣稱PNG精確同幀。[普通出售後金額987完整視窗](../figures/hd1-facility-money-panel-game.png)為本批公開圖。953／6963與兩manifest保持，無新私人圖稿。407教訓／256 guard含取色防護；前輪暗色與已停止候選只留診斷。四資源此金額框待接項由本節取代，成功特效、其餘金額框、小字樣與地形續作。

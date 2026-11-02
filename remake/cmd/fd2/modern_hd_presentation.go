@@ -12,6 +12,7 @@ const modernHDWidth, modernHDHeight = 1920, 1200
 // Every theme shares a final display layer so F2 can activate HD after startup.
 // Faithful rendering retains the pinned Ebiten default screen filter.
 type modernHDPresentation struct {
+	moneyChrome *modernHDMoneyCache
 	*Game
 	screenShader                   *ebiten.Shader
 	textSurface                    *ebiten.Image
@@ -203,6 +204,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	}
 	if !g.nativeFullDACWhite && !g.nativeFullDACBlack &&
 		!(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
+		p.drawModernHDFacilityMoney(screen, contentGeometry, brightness)
 		p.drawModernHDText(screen, contentGeometry, brightness)
 		p.drawModernHDServiceIcons(screen, contentGeometry, brightness)
 	}

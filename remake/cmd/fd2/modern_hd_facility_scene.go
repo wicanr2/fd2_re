@@ -226,6 +226,7 @@ func (g *Game) presentModernFacilityFrame(screen *ebiten.Image, frame, mask []by
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(native, op)
 	g.modernHDScene = overlay
+	g.appendModernHDFacilityMoney(frame, palette)
 	return true
 }
 

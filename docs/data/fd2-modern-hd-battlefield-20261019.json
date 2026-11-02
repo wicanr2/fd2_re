@@ -305408,5 +305408,262 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/final-validation.json",
       "sha256": "effa4fb1f9d9ebe872b85cc69c1f30c03f0c9a8b2fd5a3198ad3d80ff1d376a5"
     }
+  },
+  "hd1_facility_money_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "aa988bfe6457b303dc7cf061011eaaea1ada7dfa",
+    "scope": "三商店及教會共用63×15金額框的HD邊線與貨幣符號，48×9原數字／滾動窗完全透明。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1255,
+      "go_tree_sha256": "b77a06df072811bff004424999d3dcbee90322c6673ce3ec767e4292e1a2f3b0",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/fd2-player-r2",
+        "sha256": "736c8011a621befe5dc166c751f2ed804527265fdd49b670bb613da70ec705df"
+      },
+      "production_go_unchanged_after_binary": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/consumers-r1.json",
+        "sha256": "90c190aac0729b5ed702fc086cda033f7e7455ee99ef1e8b9feb870911239e35"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/commands.json",
+        "sha256": "1dd91844680bb6398d03e2f5a8586a3f2528f1673e52cfe9924ad77e70d00880"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/ready-source.json",
+        "sha256": "aaeb6a36edc95735fc68eafc7bc60e067cc290eda7281a44ba5e6d182d557fcd"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_money.go",
+          "sha256": "43bcf42dd6e14a68a66540577de1f622c52dd2a3c2248f8be529f1a9a5be1ae4"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_money_prototype_test.go",
+          "sha256": "5fffc5c0be708ae75c0ce1ddbf4aff3f178dd5925421d5946376d400123f45a5"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_money_test.go",
+          "sha256": "6daa0652d285d05c83e341b599b282624121251e898cd6c3308ad8d5bdc28a7c"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_money_gpu_test.go",
+          "sha256": "63dccc3c457fb267035206f12a5015e7c2e461c57266c094cc727ce7aca843e0"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_text.go",
+          "sha256": "b10601010a5bd0571044a9513cf76185e82038d56359b642a21a0728b063eec7"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_presentation.go",
+          "sha256": "39646b54ec4c1286f0d33f209e70ec7da0810946028dff2b3e1ebb8ec130f1e9"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_scene.go",
+          "sha256": "aa7c236074a1aca0718deb929a9384e35bc7099f111698f4de5bd61ec4138ae4"
+        },
+        {
+          "file": "remake/cmd/fd2/native_class_ui.go",
+          "sha256": "d1894bf391dd489e69ac151f63b77260e6e6c9afa888bd5a9cc7eba2b5e7e328"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "349992602b1bf268db9b4743d8eeca67e6d5305896a54160ed5d6826dfe11222"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "0afd7eb8e4b2be5dbcf92273deb476598a1f2f91a929c7c9219ce01e502f303f"
+      }
+    },
+    "rules": [
+      "四資源12／29／63／14的entry1同raw SHA3ae75118，固定rect(5,95)..(68,110)；只忽略原48×9滾動窗(16,98)..(64,107)，其他513個byte全部核對。",
+      "沿既有HD面板三條1 HD pixel邊線、3×3角及原palette，保留原佔位；數字窗透明，不覆蓋穩定或滾動數字。",
+      "貨幣符號沿現有Noto數字run，原(9,99)、6×8 clip、20 logical pixels；主筆依原符號非背景像素最大RGB亮度，正常169，拒絕以描邊75或PNG索引灰階推定原色。",
+      "兩共用present入口採實際frame／palette；貨幣run獨立於原runs計數，框線在文字前畫。F11介面獨立F2場景，原cache／after／gold／party／RNG保持。",
+      "未知owner／variant／mode、來源或palette不符、說明／暫態及DAC遮蔽時不留金額描述器。旅館沒有此金額producer，不新增顯示。"
+    ],
+    "prototype": {
+      "stable_states": 75,
+      "menu_jobs": 8,
+      "menu_frames": 32,
+      "protected_byte_corruptions_rejected": 2052,
+      "digit_window_bytes_admitted": 1728,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/prototype-report.json",
+        "sha256": "726a935062ce384a09e9f94306a379b0efa7944f0a48a975a500a0a23b9c06f4"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/prototype-r1.memory.json",
+        "sha256": "c3d527d78e21d0c3abaaefe3b78fa354f07e63d9cb9681d374ae1231e686bdf4"
+      },
+      "palette": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/palette-evidence.json",
+        "sha256": "d91be6297b033629fa338f30f43c52deec47805c16b203a63bc7a7527ff53b6f"
+      },
+      "palette_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/palette-r1.memory.json",
+        "sha256": "abfbed9f73fe75dd8b78f3645d41254f00644b2212ddf5035f8270ef327e85f1"
+      },
+      "palette_rechecked_in_final_source": true
+    },
+    "cpu": {
+      "stable_cases": 75,
+      "hd_pixels": 2551500,
+      "transparent_digit_pixels": 1166400,
+      "fault_guards": 2091,
+      "existing_confirmation_and_menu_kept": true,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/source-r2.log",
+        "sha256": "2c3c32bed5e1be6baf71b6021361f2c74e0690a93d4ffbce10196cf60f814778"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/source-r2.memory.json",
+        "sha256": "492ef8b268193dbab9ba2611d09ca2b2b7b430e47531d3b3709fc4e4396b861c"
+      },
+      "final_source_rechecked_in_regression": true
+    },
+    "gpu": {
+      "cases": 207,
+      "full_png": 32,
+      "whole_game_rgba_bytes": 1907712000,
+      "rgba_tolerance": 0,
+      "independent_static_composite_equal": true,
+      "whole_game_toolbar_equal": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/gpu-r3-capture/receipt.json",
+        "sha256": "94c99a89f0bbf4ba80061d4d5fbb742fa8d14337e378b66c3461e6e457de82f3"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/gpu-r3.memory.json",
+        "sha256": "13a2c432ad58889653c9003a08cdc27371704fdccdd612049a21929bcc386bde"
+      },
+      "sampling": "75 stable modes HD/HD; four controls for four menus, menu transitions, three-shop debit/credit windows and representative other locales; independent baseline plus literal HD border recipe and independent currency glyph; no new original oracle"
+    },
+    "normal_gui": {
+      "shop": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-gold-roll-r2-capture/receipt.json",
+          "sha256": "f02c16e8904e7f61d9c966a04a1890cfd780d87bae8bbc54fee585bd05575ad4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-gold-roll-r2.memory.json",
+          "sha256": "b6655133bd89b57e95f2720bcbd1b20e770a97b19e49cd4c33a6c0d28ef66191"
+        },
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-gold-roll-r2-capture/input-audit-first-process.jsonl",
+          "sha256": "507b9afd5e96257ed755731ad92593e5de58eb2ad91018259b8620df58aa44cf"
+        },
+        "full_png": 39,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "theme_save_bytes_equal": true,
+        "source_save_bytes_equal": false,
+        "new_process_title_load": true,
+        "money_last_draw_samples": 1059,
+        "rolling_samples": 23,
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。另驗金額框最近最終Draw；不宣稱PNG精確同幀。",
+        "gold": [
+          1000,
+          950,
+          987
+        ],
+        "accepted_dynamic_crops": 12,
+        "rejected_dynamic_crops": 4,
+        "four_styles_sampled": true
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-church-r2-capture/receipt.json",
+          "sha256": "0fb4470d098b1da145a2e4016f5b4df66056061864d41784480d528e308b6976"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-church-r2.memory.json",
+          "sha256": "3596aa1eded8708ab0ad327c22ae24f1e988f630bde6c500f96ccb67cd62f624"
+        },
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-church-r2-capture/input-audit.jsonl",
+          "sha256": "fe693faa20ac7fe02ce1eeee47d87f4e329c290d641e9c7a87babe1c43247007"
+        },
+        "full_png": 26,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "theme_save_bytes_equal": true,
+        "source_save_bytes_equal": true,
+        "new_process_title_load": false,
+        "money_last_draw_samples": 708,
+        "rolling_samples": 0,
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。另驗金額框最近最終Draw；不宣稱PNG精確同幀。"
+      }
+    },
+    "regression": {
+      "passed": 101,
+      "optional_skipped": 11,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/regression-r1.memory.json",
+        "sha256": "89626cfc1162c9e6f3e546745c8e4a8857dd452a7cda3cbf1f35af6ebe164fd4"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/regression-r1.log",
+        "sha256": "eab8ff3e9bf81612dd64e20df978e99cbf17a4c241cb0a55b40bf2aed5cd2b31"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/consumers-verified-r1.json",
+        "sha256": "0672cffcb00da7ff914719926652eb24d45b2c36741d526d45c4a3faa5fae303"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/inv-r2.json",
+        "sha256": "eac4f7a55129a998436544300e02fddee4318889ffef83a8683b7991328aec2a"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "8e78e8f83df7bc73efdefd0d0cde2a1b2b56d4cc2d5345cc6980274af3f53f84"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/asset-pack-unchanged.json",
+        "sha256": "82f41c4cd7c2065dc802257e4e9a10957702c397d1b2f961100ef3fdee0f2e0c"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "new_assets": 0
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-facility-money-panel-game.png",
+          "sha256": "b650c3d863cec0409daf70c2189efec57508dccf0d604cc19feef4dee3db6be5"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/normal-gold-roll-r2-capture/gold-after-sale.png",
+          "sha256": "b650c3d863cec0409daf70c2189efec57508dccf0d604cc19feef4dee3db6be5"
+        },
+        "scope": "普通START/F9接續既有hotel_ch02，經城鎮購買布衣、拒絕立即裝備後出售，餘額987的完整視窗；非原版oracle或連續戰役。"
+      }
+    ],
+    "diagnostics": "GPU-r1按錯誤暗色配方通過；其後發現教會variant標籤與貨幣描邊色，回DRAFT補正式palette證據。停止舊色GPU-r2／普通r1，保留診斷，不混入最終結果；最終source-r2／GPU-r3／binary-r2／兩普通r2／regression-r1採相同最終production來源。",
+    "lessons": {
+      "count": 407,
+      "guard_count": 256,
+      "new_id": "hd-baked-label-ink-uses-runtime-palette",
+      "file": {
+        "file": "docs/data/fd2-lessons.json",
+        "sha256": "e7e14e6248f7e18542889cfd945aa99126ffc1e5a8186716ab7930b686cf63d3"
+      }
+    },
+    "remaining_ui": "成功特效、其餘金額框與小字樣續#283；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1。HD邊線為既定UI配方，非原版RGB逐像素；普通商店樣本含買賣與冷啟LOAD，教會只取消與F9，沒有轉職／復活成功或新增原版E2。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-money-panel-r64/final-validation.json",
+      "sha256": "6d03a3e66aa8f0abd934cb21c5e90a8d4f37a94dc7418a9a7c7f1e41365d664c"
+    }
   }
 }

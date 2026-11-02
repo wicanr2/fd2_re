@@ -64,6 +64,7 @@ func modernHDTextFace(f *Font, run modernHDTextRun, scale float64) (font.Face, f
 }
 
 type modernHDTextFrame struct {
+	money        *modernHDFacilityMoneyPanel
 	serviceIcons []modernHDServiceIconPlacement
 	scene        *ebiten.Image
 	runs         []modernHDTextRun
@@ -110,7 +111,14 @@ func (g *Game) beginModernHDText(screen *ebiten.Image) func() {
 
 func (p *modernHDPresentation) drawModernHDText(screen ebiten.FinalScreen, geometry ebiten.GeoM, brightness float64) {
 	frame := p.Game.modernHDText
-	if frame == nil || len(frame.runs) == 0 {
+	if frame == nil {
+		return
+	}
+	runs := frame.runs
+	if frame.money != nil {
+		runs = append(append([]modernHDTextRun(nil), runs...), frame.money.currencyRun())
+	}
+	if len(runs) == 0 {
 		return
 	}
 	if p.textSurface == nil {
@@ -118,7 +126,7 @@ func (p *modernHDPresentation) drawModernHDText(screen ebiten.FinalScreen, geome
 	}
 	p.textSurface.Clear()
 	const factor = float64(modernHDWidth) / logicalW
-	for _, run := range frame.runs {
+	for _, run := range runs {
 		renderFont := run.font
 		if regional := run.font.hdFonts[p.Game.localeID]; regional != nil {
 			renderFont = regional
