@@ -302506,5 +302506,222 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-roster-r52/final-validation.json",
       "sha256": "d5718c9f6efa564c6d3a4cc175195257fda13ef29f38322cf67ad30d20c62f46"
     }
+  },
+  "hd1_shop_comparison_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "cfd4ad402963b85546455b2083658172e0d2a31b",
+    "scope": "三商店穩定裝備受領的AP／DP／HIT／EV及右箭頭，原座標、原色盤與三列視窗。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1226,
+      "go_tree_sha256": "601774cbf8a48cfe10d32dc49264bde9509c9961a745d3ba621fdf064f08f5be",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/consumers-r1.json",
+        "sha256": "6f063d14235f93a3539309a4ce6fdeb6fd5b4b362bdc6860ef73801b7d942bd5"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/fd2-player-r1",
+        "sha256": "9b31a1c1f28e6bb7ede4d2430e3bfca59a1f8e5e5fb61962c4ecbe3f18f61969"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/commands.json",
+        "sha256": "c412317d528d5f0776626f30bd142d0b685867474334b2a9237128d5557dbd64"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/ready-source.json",
+        "sha256": "7bc964fd88ea42743f5ae021259b70fb8f27238f6e97e10f085442fc4863babc"
+      },
+      "canonical_inputs": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "input_hashes_matched_canonical_reference": true,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_shop_comparison.go",
+          "sha256": "ffae67f345cd2e84b04ccbacf9971a49ff4519b6c4b98035f6bd06872fb8e9d4"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_shop_comparison_test.go",
+          "sha256": "f3e269f64e5d9875753f57c7efdc63f402366f82f25432993821bba388c4a397"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "eedb6d8fb620240d26c521b26637117d2d7278f178c212d6f31a674c16522464"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "e51575344e3e202ab5ac1a7b29a8d18264e3007b49bccb344f5e9e567959460f"
+        },
+        {
+          "file": "tools/verify_fd2_hd_fonts_gui.py",
+          "sha256": "82cbe640cba4a0d6f3c693b1f5e17d342a471881c0706db4a7d78c33a8338e54"
+        }
+      ],
+      "typed_consumers": [
+        {
+          "file": "remake/internal/campaign/native_shop_equipment_recipient.go",
+          "sha256": "a8f1453f010040f5a7d2c92aa5b2a2707b6f829b10fd6847a7709bdcb5aa0582"
+        },
+        {
+          "file": "remake/internal/campaign/separated_shop_assets.go",
+          "sha256": "6ec1b4f19b3839582fe94d57d0777bf8e1a83e9a4e09bc7c90d25ec1d2bc3189"
+        }
+      ]
+    },
+    "rules": {
+      "resources": [
+        12,
+        29,
+        63
+      ],
+      "entries": [
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "five_cells_identical_in_three_shops": true,
+      "renderer": "existing Noto panel-ink raster and opaque small-image final painter",
+      "source_palette": "FDOTHER0 background73, brightest actual label ink169",
+      "source_proof": "complete five indexed SHA/shape and all bytes in every visible label/arrow destination; whole group before publication",
+      "independent_F2_F11": true,
+      "original_frame_party_numbers_comparison_colors_order_viewport_save_unchanged": true,
+      "new_assets": 0,
+      "new_schema": false
+    },
+    "cpu": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/cpu-r2.memory.json",
+        "sha256": "f86281d1174699024cdfbd3139e5d41de487c8308e82c0cbf8e6e833ac87f012"
+      },
+      "independent_base_font_drawer_rgba_equal": true,
+      "source_and_shape_rejections": 10,
+      "all24_destination_cover_rejections_per_shop": true,
+      "owner_job_help_transient_dac_font_palette_fallback": true,
+      "cache_palette_font_scale_invalidations": true,
+      "failed_first_test_diagnostic": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/cpu-r1-diagnostic.json",
+        "sha256": "bab7ac53770ece568fed10a7f06d6d176a836bb9e0496edb7bf73875c5a59739"
+      },
+      "failed_receipt_not_counted": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/gpu-r1-capture/receipt.json",
+        "sha256": "cb86878edf4293f2ea2c1744e3c7231d96360a81d1b208c110588628f98efb78"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/gpu-r1.memory.json",
+        "sha256": "35221edd8f7bdfb126867b4d4d93eb1d9298921b912e0b72752585e8f69b1a65"
+      },
+      "cases": 64,
+      "png": 20,
+      "comparison_pixels": 4202496,
+      "rgba_tolerance": 0,
+      "all_outside_bytes_equal": true,
+      "outside_control": "same underlay/text/scenery with only comparison layer disabled; exact source rectangles excluded for whole-frame byte equality",
+      "complete_toolbar_game_pixels_equal": true,
+      "fixture_scope": "three shops/four styles/four locales/three-row viewport/font scale; rendering fixture, not identity or normal-player oracle"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/normal-gold-roll-r1-capture/receipt.json",
+        "sha256": "efdba188d3d2862297a8452fd085b20958fcbd9894a1bbb63ce742e4345ffffc"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/normal-gold-roll-r1.memory.json",
+        "sha256": "4b67d6787a361edeb063c71bdadbbd845ed24f21419367846879c20360c82935"
+      },
+      "full_png": 14,
+      "accepted_dynamic_crops": 13,
+      "rejected_dynamic_crops": 3,
+      "four_styles_equipment_recipient": true,
+      "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "gold": [
+        1000,
+        950,
+        987
+      ],
+      "scope": "normal START/F9 existing hotel_ch02; ordinary cloth recipient, buy/refuse immediate equip/sell; F2/F11/F5/F9 and new-process title LOAD; no continuous campaign/E2"
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/regression-r1.memory.json",
+        "sha256": "c82a0101fcc459dd6f25dd97dbbfa652ad7fddeaf03a7a87188c6792b35b313e"
+      },
+      "pass": 82,
+      "skip": 10,
+      "skip_tests": [
+        "TestNativeHotelOriginalLoadSameSourceProbe",
+        "TestModernHDChurchRawServiceSourceGPU",
+        "TestModernHDFacilityDialogueRuntimeGPU",
+        "TestModernHDFacilityPortraitRuntimeGPU",
+        "TestModernHDFacilityFullSourceExport",
+        "TestModernHDFacilityRosterRuntimeGPU",
+        "TestModernHDFacilityRuntimeGPU",
+        "TestModernHDServiceIconsRuntimeGPU",
+        "TestModernHDShopComparisonRuntimeGPU",
+        "TestModernHDShopDialogueRuntimeGPU"
+      ],
+      "consumer_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/consumers-verified-r1.json",
+        "sha256": "f09d50aac4a5a9a061a5e2d4d95228b44bfec9c10004539960c61e81897364ca"
+      },
+      "string_review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "26394cbb689c2fb16a4041927b3ef87a1788208fd4927edd90ac6324ad6d6d73"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/string-migration-r1.json",
+        "sha256": "8c308f8133fd8591dbd0eb1408231911fb3f614973fe59fa7509a538aad6cc78"
+      },
+      "reviewed_go_candidates": 160,
+      "prior159_dispositions_preserved": true,
+      "new_go_review": "native right arrow; other four ASCII labels outside non-ASCII review candidates"
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/asset-pack-unchanged.json",
+        "sha256": "c6ad5e0f92b87accd0f2fa84a760a3dae927baebe95141335af1fb95da286739"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "private_unchanged": true,
+      "private_remote_verified": true,
+      "private_is_private": true
+    },
+    "public_pngs": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/public-pngs.json",
+        "sha256": "247a8fb3afc5dc4635c92afd441aef4a8f1ee23a56af630e3332444ad89861fb"
+      },
+      "images": [
+        {
+          "file": "docs/figures/hd1-shop-equipment-comparison-game.png",
+          "sha256": "bdefebf2065212e4878b9618167f25fcbeacc25f1898fcea6f046807c24ef522",
+          "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/normal-gold-roll-r1-capture/gold-equipment-comparison-hd.png",
+          "source_kind": "normal START/F9 hotel_ch02; ordinary cloth recipient; actual native identities and map keys",
+          "width": 1920,
+          "height": 1200
+        }
+      ]
+    },
+    "remaining_ui": "設施進出場、其他動畫及其餘介面；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "scoped RUNTIME-E1; no new original oracle, E2, identity, hardware, full HD1 or human appearance acceptance",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/final-validation.json",
+      "sha256": "e0dd279017f0466ae71ac55a348518e1631a34130b9da2730797dae3f6aa9a06"
+    }
   }
 }

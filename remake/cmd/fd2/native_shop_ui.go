@@ -1586,6 +1586,7 @@ func (g *Game) drawNativeShop(screen *ebiten.Image) bool {
 	g.drawModernHDFacilityRosterUnderlay(screen, frame)
 	g.appendModernHDFacilityDialogue(frame)
 	g.appendModernHDServiceIcons(frame)
+	g.appendModernHDShopComparison(frame)
 	if g.nativeShopMode == "equip_panel" {
 		return g.drawNativeItemPanel(screen)
 	}

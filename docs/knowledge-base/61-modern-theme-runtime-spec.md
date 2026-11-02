@@ -5902,3 +5902,15 @@ R52主收據hd1_facility_roster_followup_20261102：180完整Game.Draw／50PNG�
 [正常商店名冊](../figures/hd1-shop-roster-q-game.png)與[正常教會名冊](../figures/hd1-church-roster-q-game.png)沿實際存檔的身份及原始MapSelectorKey，不用控制fixture圖。正常裝備13、教會15、買賣9張完整PNG通過；裝備／教會保存仍190b9f8f，布衣1000→950→987後兩美術保存32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66相同，F9及新程序標題LOAD通過。金幣另兩張動態裁圖接受、兩張拒收。不外推連續戰役或原版E2，人工造型由使用者接手。
 
 1224份Go指紋a4289edfcbba7ca96af64f90b5cb0474775c2644db0eeb637d724ac24e4e7267，程式0fc08192bb6a2dffe7fd6a8b83c077f5e0dbb5d668cd9560f2a2e6c5248ad5af；21來源／416幀／19反例與159字串處置保持，Game新增呈現欄位造成的行號遷移不改文字判定。953清冊／6963私人檔、私人44636b94及原版包保持，未新增素材或格式。首輪整體回歸600秒逾時、未見測試FAIL或OOM，收據不計通過；待正常GUI結束後，以同image／CPU／記憶體及逾時預算單獨乾淨重跑295.019秒通過。動畫、比較欄標籤等其餘介面仍依#283，地形依#282。
+
+### HD1裝備比較欄標籤
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，R53來源與驗收保存於work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-equipment-comparison-r53/ready-source.json。沿固定EXE／FDOTHER雜湊、已閉合IDA linear 0x2E8CF→0x2EBE0及ComposeNativeShopEquipmentRecipientFrame，不新增二進位語意。FDOTHER12／29／63的entries18..22逐byte相同，尺寸依序13×8、13×8、16×8、13×8、7×6；實際原圖可見AP／DP／HIT／EV及右箭頭。
+
+只在穩定recipient_equipment，以原三列視窗與native座標替換五種標籤。沿現有Noto panel-ink renderer、原palette背景與亮色，在六倍原框繪字；F11獨立F2。數字、比較色、姓名、窗口、原indexed frame、交易及save不變。每次核對完整五圖SHA／尺寸及所有可見目的範圍，全部與合成來源相符後才原子發布；owner／job／help／transient／status／DAC、缺glyph、palette、覆蓋或來源不符保留原生。
+
+材質快取含來源、palette、有效字級及font；逐幀placements沿既有不透明小圖示呈現器，不新增清冊格式或私人圖稿。實作預定modern_hd_shop_comparison.go，永久驗證modern_hd_shop_comparison_test.go，均由本節索引。驗收涵蓋三商店、四控制、四語、捲動、完整RGBA與範圍外控制、快取及拒收、正常裝備選人與保存；動畫仍留#283，最高RUNTIME-E1。
+
+R53主收據hd1_shop_comparison_followup_20261102：64完整Game.Draw／20PNG逐RGBA核對4202496標籤及箭頭像素，容差0；僅停用本層的控制組在實際標籤範圍外整幅逐byte相同，工具列遊戲區相同。基底字級另用獨立font.Drawer核對完整五種材質；首輪測試錯把177當最亮色，正式色盤證明169較亮，修正測試後通過，產品碼未因此改動。來源／尺寸、24目的覆蓋、owner／job／help／transient／DAC、font／palette回退與快取失效通過。
+
+82相關回歸通過，十可選GPU／oracle／匯出略過另列。1226份Go指紋601774cbf8a48cfe10d32dc49264bde9509c9961a745d3ba621fdf064f08f5be，21來源／416幀／19反例保持；160字串處置含原159及原圖右箭頭。正常START後F9接續既有hotel_ch02，普通布衣受領四種介面／美術與買賣14完整PNG、13動態裁圖接受／三拒收，1000→950→987。兩美術保存32c9cd02相同，F9與新程序標題LOAD通過。953清冊／6963私人檔、私人44636b94及原版包未變，沿R52已驗runtime素材，沒有新圖稿。設施動畫與其餘介面依#283續作，不外推完整HD1或原版E2。正常[裝備比較畫面](../figures/hd1-shop-equipment-comparison-game.png)沿實際存檔身份，不採fixture替代一般玩家證據。

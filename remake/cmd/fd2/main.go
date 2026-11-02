@@ -162,6 +162,7 @@ type Game struct {
 	prepTownSource               *nativeTownFrameSource
 	prepDialogueHD               *modernHDPreparationDialogue
 	facilityDialogueHD           *modernHDFacilityDialogue
+	shopComparisonHD             *modernHDShopComparison
 	churchSel                    int    // church service menu cursor (0..3)
 	churchMode                   string // menu / status_* / transfer_* / revive* / class / class_confirm
 	churchIDs                    []int  // current church candidate ids

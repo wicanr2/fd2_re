@@ -305,9 +305,13 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD裝備受領的能力比較欄](docs/figures/hd1-shop-equipment-comparison-game.png)
+
+裝備受領的AP、DP、HIT、EV與箭頭已改用清晰字型，沿原座標顯示原比較數值與顏色。上圖為正常START後F9接續第2章存檔，再購買布衣時的選人畫面。四種介面／美術組合與保存讀取已抽驗，設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 
-整備提示已接HD頭像、古金框與四語按鈕，沿原有開收框和選項操作。人物美術與介面可獨立切換。上圖為一般標題LOAD與鍵盤操作畫面；內建標籤等介面仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
+整備提示已接HD頭像、古金框與四語按鈕，沿原有開收框和選項操作。人物美術與介面可獨立切換。上圖為一般標題LOAD與鍵盤操作畫面；其餘介面仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
 
 ![HD1古金雙層對話框的普通父王對話](docs/figures/hd1-gold-dialogue-game.png)
 

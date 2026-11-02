@@ -1473,6 +1473,19 @@ def main():
             key('Return');shop('purchase')
             key('Return');shop('confirm')
             key('Return');shop('recipient_equipment')
+            comparison_before=latest(audit)
+            shot('gold-equipment-comparison-hd')
+            key('F11');wait(lambda s:s.get('hd_interface') is False)
+            shop('recipient_equipment');shot('gold-equipment-comparison-native-ui')
+            key('F2');wait(lambda s:s.get('hd_theme') is not transaction_hd)
+            shop('recipient_equipment');shot('gold-equipment-comparison-alternate-native-ui')
+            key('F11');wait(lambda s:s.get('hd_interface') is True)
+            shop('recipient_equipment');shot('gold-equipment-comparison-alternate-hd-ui')
+            key('F2');wait(lambda s:s.get('hd_theme') is transaction_hd)
+            shop('recipient_equipment');shot('gold-equipment-comparison-restored')
+            comparison_after=latest(audit)
+            for field in ['node','shop_mode','gold']:
+                assert comparison_before[field]==comparison_after[field],field
             key('Return');shop('equip_confirm')
             key('Right');key('Return');shop('purchase')
             assert latest(audit).get('gold')==950,'購買布衣的餘額錯誤'
@@ -1554,6 +1567,7 @@ def main():
                     'gui_tool_sha256':digest(Path(__file__)),
                     'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
                     'transaction_theme':args.gold_roll_theme,'theme_save_bytes_equal':True,
+                    'equipment_comparison_four_styles':True,
                     'expected_save_changes':{'gold':[1000,987],'party_roster/0/InventorySlots/5':[255,0]},
                     'new_process_title_load':True,
                     'screenshots':shots,'gold_roll_screenshots':accepted,'gold_roll_rejected':rejected,
