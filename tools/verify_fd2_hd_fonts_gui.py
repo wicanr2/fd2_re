@@ -38,7 +38,7 @@ def battle_advance_route(value):
     return [list(map(int, cell.split(','))) for cell in value.split(';')]
 
 
-def facility_list_observations(paths, mode):
+def facility_list_observations(paths, mode, owner='shop'):
     samples = []
     for path in paths:
         for line in path.read_text().splitlines():
@@ -49,11 +49,12 @@ def facility_list_observations(paths, mode):
             except json.JSONDecodeError:
                 continue  # A live audit can end with the next incomplete append.
             presented = state.get('facility_list_presented')
-            if (presented and presented.get('mode') == mode and presented.get('live_job')
-                    and state.get('hd_theme') and state.get('shop_ui_busy')):
+            if (presented and presented.get('owner','shop') == owner
+                    and presented.get('mode') == mode and presented.get('live_job')
+                    and state.get('hd_theme') and state.get('shop_ui_busy' if owner=='shop' else 'church_ui_busy')):
                 samples.append({'game_update_frame': state['frame'], **presented})
-    assert {row['closing'] for row in samples} == {False, True}, '未觀測到普通受領開框及收框的HD呈現'
-    return {'mode': mode, 'audit_files': [path.name for path in paths], 'samples': samples,
+    assert {row['closing'] for row in samples} == {False, True}, f'未觀測到{owner}/{mode}開框及收框的HD呈現'
+    return {'owner': owner, 'mode': mode, 'audit_files': [path.name for path in paths], 'samples': samples,
             'scope': '正常鍵盤路徑的最近一次Draw描述；Update可已前進，不宣稱PNG精確同幀。'}
 
 
@@ -78,6 +79,7 @@ def main():
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
+    parser.add_argument('--church-list-transitions', action='store_true', help='要求教會五種正常可達列表實際執行HD開框及收框')
     parser.add_argument('--facility-item-rows', action='store_true', help='於買賣或教會交付的穩定物品列表抽驗四組介面／美術')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
@@ -1768,6 +1770,8 @@ def main():
             key('Right');key('Return');church('transfer_source');shot('church-transfer-source')
             key('Return');church('transfer_item');shot('church-transfer-item')
             item_row_styles('transfer_item',church,'church-transfer-items')
+            if args.church_list_transitions:
+                key('Return');church('transfer_dest');shot('church-transfer-destination')
             key('Escape');church('transfer_source')
             key('Escape');church('menu')
             assert latest(audit).get('gold')==1000,'取消服務改變金幣'
@@ -1787,6 +1791,7 @@ def main():
                 restart_title_load('hotel_ch02',1000,'hotel-after-status-new-process-load')
                 assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存'
             report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
+                    'church_list_transitions':{mode:facility_list_observations([audit],mode,'church') for mode in ['status_roster','revive','transfer_source','transfer_item','transfer_dest']} if args.church_list_transitions else None,
                     'panel_transitions':panels,
                     'new_process_title_load':args.panel_transitions,
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),

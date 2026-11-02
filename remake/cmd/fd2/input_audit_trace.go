@@ -279,8 +279,8 @@ func (g *Game) recordInputAuditState() {
 		// Update may already have advanced the acknowledged job. This is the
 		// explicit last Draw, not a claim about a simultaneous GPU screenshot.
 		r["facility_list_presented"] = map[string]any{"job": fmt.Sprintf("%p", plan.job),
-			"mode": d.mode, "variant": d.variant, "closing": d.closing, "presented_frame": plan.frame,
-			"live_job": g.nativeShopUIJob == plan.job,
+			"owner": d.owner, "mode": d.mode, "variant": d.variant, "closing": d.closing, "presented_frame": plan.frame,
+			"live_job": g.activeFacilityListJob(d.owner) == plan.job,
 			"rect":     [4]int{plan.clip.Min.X, plan.clip.Min.Y, plan.clip.Max.X, plan.clip.Max.Y}}
 	}
 	if job := g.nativeShopUIJob; job != nil && job.goldText != nil && len(job.timeline) > 0 {

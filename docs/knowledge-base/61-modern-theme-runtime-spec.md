@@ -5971,4 +5971,20 @@ R57主收據hd1_shop_item_transition_followup_20261102：三新增mode各216，�
 
 正常START後F9接續hotel_ch02，買賣24、交付22完整PNG通過，三種物品列表各抽四組。購買13、販售8、交付物品5筆最近Draw觀測均含開與收；交付來源14／目的6筆保持。空units計畫只供既有facility_list_presented觀測，不當PNG精確同幀。布衣1000→950→987，兩美術保存32c9cd02相同，F9與新程序標題LOAD通過；金幣裁圖5接受／3拒收。交付取消後隊伍／金幣／來源保存保持190b9f8f，兩美術保存與新程序LOAD通過，不宣稱實際移交。
 
-[交付物品開框首拍](../figures/hd1-shop-item-opening-game.png)為受控Game.Draw，1234金額與物品名冊為測試構造值，不作一般玩家或身份證據。來源、成功命令與正常觀測均由同工作根索引。953清冊／6963私人檔、原版包與私人44636b94保持，無新素材／格式。教會物品、其餘設施名冊、確認／回覆與成功特效、地形續作，未宣稱全HD1。
+[交付物品開框首拍](../figures/hd1-shop-item-opening-game.png)為受控Game.Draw，1234金額與物品名冊為測試構造值，不作一般玩家或身份證據。來源、成功命令與正常觀測均由同工作根索引。953清冊／6963私人檔、原版包與私人44636b94保持，無新素材／格式。教會列表已依下節R58接通；其餘設施確認／回覆、成功特效及地形續作，未宣稱全HD1。
+
+### HD1教會列表進出場
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，R58來源契約位於work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-list-transitions-r58/ready-source.json。教會class、status_roster、transfer_source、transfer_dest、transfer_item、revive皆由nativeClassUIJob管理，原入口以composeNativeChurchSourceFrame與明示final生成同一六開、五收與source還原。來源保留教會文字與金額，NativeChurchMenuBase只清服務區201..304、169..188為index74；原生命週期先清job才呼叫after。
+
+前置原型modern_hd_church_list_prototype_test.go只驗六mode、四語狀態與兩種viewport，核對原幀、文字／decimal擷取及UI副本還原，以既有composeModernFacilityMarker的literal0／255證明opaque writer。通過才升READY，禁止將原型接正式路徑。費用符號等目前原圖小字樣另列後續UI，不在本片猜改；其他確認／回覆、設施動畫、成功特效與地形續作。
+
+R58前置原型r2在nativeShopUI=nil的首次教會情境通過48來源／528原幀／2650080 opaque writer byte，class decimal、UI還原及party／gold／RNG保持。故升READY；正式接線沿modern_hd_facility_list_transition.go、native_class_ui_lifecycle.go、native_church_roster_ui.go／native_church_revive_ui.go／native_church_transfer_ui.go，owner與實際job欄位必須匹配。captureModernFacilityListText補取class digits值複本，不能依賴商店素材。
+
+正式驗收沿modern_hd_church_list_transition_test.go與既有列表測試：六教會mode各120完整GPU，涵蓋開收／還原、四組控制、四語狀態與捲動，舊商店代表保持。input_audit_trace.go及tools/verify_fd2_hd_fonts_gui.py明示church owner與最近Draw，普通教會狀態／交付雙名冊／物品／復活列表及保存抽樣；class受控fixture不提升為自然進程或身份證據。主收據為hd1_church_list_transition_followup_20261102，最高RUNTIME-E1；原費用符號等小字樣保留後續。
+
+R58主收據hd1_church_list_transition_followup_20261102：六mode各120，共720完整Game.Draw／192PNG，6635520000 RGBA byte與獨立source加普通穩定final位移合成相同，容差0；工具列遊戲區保持。舊裝備受領與購買各16代表畫面另列。教會24狀態／132原幀／12還原／336拒收及商店108狀態／594原幀／54還原兩個來源測試通過；90相關回歸通過，七可選略過。1233份Go指紋393f9a475c4e50463a44d06403c2ec1c877e7d4378960ece152600e8af65d96c，程式4ff9802fc64e57d9c69f1f0d8e2a834ad2fb2b5c4c1fde220ed54f33e622f79d；21來源／416幀／19反例及160字串保持。
+
+正常START/F9接續hotel_ch02，再經城鎮進教會，21完整PNG。狀態名冊9／復活8／交付來源13／物品4／目的7筆最近Draw皆含開收，不當PNG精確同幀；四語狀態、F2、四組物品列表、縮放與說明遮罩及取消返回通過。回旅館兩美術F5與F9，來源及保存皆190b9f8f；未抽驗新程序LOAD，未執行自然轉職、實際移交或復活。
+
+[教會名冊開框首拍](../figures/hd1-church-list-opening-game.png)為受控Game.Draw，1234金額與八人隊伍為測試資料。來源、成功命令與收據保存同R58工作根；原型r1／r2是正式接線前的歷史證據。source-r1只有測試替身型別編譯失敗，修正後同命令r2通過。953清冊與6963私人素材逐檔重算保持，私人44636b94／private及遠端保持，原版manifest與重用runtime保持。原費用符號、計數小字樣、設施確認／回覆、成功特效與地形續作，未宣稱全HD1。

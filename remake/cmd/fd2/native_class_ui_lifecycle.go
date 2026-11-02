@@ -46,7 +46,7 @@ func (g *Game) beginNativeClassListOpening() bool {
 	if err != nil || len(frames) != 6 {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeClassUIJob = g.bindModernFacilityList(&nativeClassUIJob{frames: frames}, source, final, false)
 	return true
 }
 
@@ -63,7 +63,9 @@ func (g *Game) beginNativeClassListClosing(after func()) bool {
 	if err != nil || len(frames) != 5 {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, restore: source, after: after}
+	g.nativeClassUIJob = g.bindModernFacilityList(&nativeClassUIJob{
+		frames: frames, restore: source, after: after,
+	}, source, final, true)
 	return true
 }
 
@@ -175,6 +177,10 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 	job := g.nativeClassUIJob
 	if job == nil || job.frame < 0 {
 		return false
+	}
+	if g.drawModernHDFacilityList(screen, job) {
+		job.drawn = true
+		return true
 	}
 	if g.drawModernHDTransientExpiryMessage(screen, job) {
 		return true

@@ -305,6 +305,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD教會名冊開框首拍](docs/figures/hd1-church-list-opening-game.png)
+
+教會狀態、轉職、復活及交付列表已接HD開框、收框與還原，沿原位移及裁切。上圖是受控繪製的第一拍，金額與隊伍為測試資料。正常教會取消、獨立切換與保存讀取已抽驗，轉職只驗受控繪製；其餘確認／回覆動畫與介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD商店物品列表的開框首拍](docs/figures/hd1-shop-item-opening-game.png)
 
 購買、販售與交付物品列表已接HD開框、收框及還原，圖示、標籤、數字和細框同原位移裁切。上圖為受控Game.Draw的第一拍，金額與物品名冊是測試資料；正常買賣與交付的四種切換、保存及重新啟動讀檔另已抽驗。其餘設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
@@ -319,7 +323,7 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD商店交付目的名冊](docs/figures/hd1-shop-transfer-roster-game.png)
 
-販售、裝備與交付雙名冊已接HD開框、收框及還原，沿原人物、位移與裁切。上圖是正常讀檔後進入商店的交付目的名冊；取消後隊伍、金幣與保存保持一致，四種切換及重新啟動讀檔已抽驗。其餘物品列表與確認／回覆動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+販售、裝備與交付雙名冊已接HD開框、收框及還原，沿原人物、位移與裁切。上圖是正常讀檔後進入商店的交付目的名冊；取消後隊伍、金幣與保存保持一致，四種切換及重新啟動讀檔已抽驗。其餘確認／回覆動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 ![HD商店受領列表的開框首拍](docs/figures/hd1-shop-recipient-opening-game.png)
 

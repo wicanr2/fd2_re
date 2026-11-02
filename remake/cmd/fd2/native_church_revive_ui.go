@@ -97,7 +97,7 @@ func (g *Game) beginNativeChurchReviveListOpening() bool {
 	if err != nil || len(frames) != 6 {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeClassUIJob = g.bindModernFacilityList(&nativeClassUIJob{frames: frames}, source, final, false)
 	return true
 }
 
@@ -114,9 +114,9 @@ func (g *Game) beginNativeChurchReviveListClosing(after func()) bool {
 	if err != nil || len(frames) != 5 {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{
+	g.nativeClassUIJob = g.bindModernFacilityList(&nativeClassUIJob{
 		frames: frames, restore: source, after: after,
-	}
+	}, source, final, true)
 	return true
 }
 

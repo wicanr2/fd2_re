@@ -15,7 +15,7 @@ import (
 
 type nativeFacilityListPresentation struct {
 	variant, resource     int
-	mode, locale          string
+	mode, locale, owner   string
 	closing               bool
 	font                  *Font
 	palette               [256]color.RGBA
@@ -50,6 +50,10 @@ func captureModernFacilityListText(g *Game, compose func() ([]byte, bool)) ([]by
 		return nil, nil, false
 	}
 	g.font.indexedHD = capture
+	g.nativeClassUI.digits = append([]fdother.Frame(nil), g.nativeClassUI.digits...)
+	for digit, frame := range g.nativeClassUI.digits {
+		g.nativeClassUI.digits[digit] = g.modernHDDecimalSprite(frame, digit)
+	}
 	restoreDigits := g.beginModernHDShopDigits()
 	defer restoreDigits()
 	frame, ok := compose()
@@ -77,8 +81,21 @@ func (g *Game) composeModernShopListMarker(fill byte, compose func() ([]byte, bo
 }
 
 func (g *Game) freezeModernShopListWriter(frame []byte, compose func() ([]byte, bool)) ([]byte, bool) {
-	a, okA := g.composeModernShopListMarker(0, compose)
-	b, okB := g.composeModernShopListMarker(255, compose)
+	return g.freezeModernFacilityListWriter("shop", frame, compose)
+}
+
+func (g *Game) freezeModernFacilityListWriter(owner string, frame []byte, compose func() ([]byte, bool)) ([]byte, bool) {
+	marker := func(fill byte) ([]byte, bool) {
+		if owner == "shop" {
+			return g.composeModernShopListMarker(fill, compose)
+		}
+		if owner == "church" {
+			return g.composeModernFacilityMarker(&modernStableFacilitySource{resource: 14}, fill, compose)
+		}
+		return nil, false
+	}
+	a, okA := marker(0)
+	b, okB := marker(255)
 	if !okA || !okB || len(frame) != 64000 || len(a) != 64000 || len(b) != 64000 {
 		return nil, false
 	}
@@ -96,27 +113,56 @@ func (g *Game) freezeModernShopListWriter(frame []byte, compose func() ([]byte, 
 
 // This producer is called before publishing the original job. Its optional
 // presentation recipe never changes the native buffers or continuation.
-func (g *Game) bindModernShopList(job *nativeClassUIJob, source, final []byte, closing bool) *nativeClassUIJob {
-	if job == nil || g.nativeClassUI == nil || g.nativeShopUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil {
+func (g *Game) bindModernFacilityList(job *nativeClassUIJob, source, final []byte, closing bool) *nativeClassUIJob {
+	if job == nil || g.nativeClassUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil || g.camp == nil || g.camp.Node() == nil {
 		return job
 	}
-	var compose func() ([]byte, bool)
+	var compose, composeSource func() ([]byte, bool)
+	owner, mode := g.camp.Node().Type, ""
+	variant, resource := 0, 0
+	var panel fdother.LMI1Entry
+	var comparison [5]fdother.LMI1Entry
 	itemList := false
-	switch g.nativeShopMode {
-	case "recipient_consumable", "recipient_equipment":
-		compose = g.composeNativeShopRecipient
-	case "sell_roster":
-		compose = g.composeNativeShopSellRoster
-	case "equip_roster":
-		compose = g.composeNativeShopEquipRoster
-	case "transfer_source", "transfer_dest":
-		compose = g.composeNativeShopTransferRoster
-	case "purchase":
-		compose, itemList = g.composeNativeShopPurchaseList, true
-	case "sell_items":
-		compose, itemList = g.composeNativeShopSellItems, true
-	case "transfer_items":
-		compose, itemList = g.composeNativeShopTransferItems, true
+	switch owner {
+	case "shop":
+		assets, _, _, valid := g.nativeShopState()
+		if !valid || assets == nil || g.nativeShopUI == nil {
+			return job
+		}
+		mode, variant, resource = g.nativeShopMode, g.nativeShopVariant, assets.ResourceID
+		panel, comparison, composeSource = assets.Panel, assets.CompareCells, g.composeNativeShopStable
+		switch mode {
+		case "recipient_consumable", "recipient_equipment":
+			compose = g.composeNativeShopRecipient
+		case "sell_roster":
+			compose = g.composeNativeShopSellRoster
+		case "equip_roster":
+			compose = g.composeNativeShopEquipRoster
+		case "transfer_source", "transfer_dest":
+			compose = g.composeNativeShopTransferRoster
+		case "purchase":
+			compose, itemList = g.composeNativeShopPurchaseList, true
+		case "sell_items":
+			compose, itemList = g.composeNativeShopSellItems, true
+		case "transfer_items":
+			compose, itemList = g.composeNativeShopTransferItems, true
+		default:
+			return job
+		}
+	case "church":
+		mode, resource, panel, composeSource = g.churchMode, 14, g.nativeClassUI.panel, g.composeNativeChurchSourceFrame
+		switch mode {
+		case "class":
+			compose = g.composeNativeClassListFrame
+		case "status_roster", "transfer_source", "transfer_dest":
+			compose = g.composeNativeChurchRosterFrame
+		case "transfer_item":
+			compose, itemList = g.composeNativeChurchTransferItemFrame, true
+		case "revive":
+			compose = g.composeNativeChurchReviveListFrame
+		default:
+			return job
+		}
 	default:
 		return job
 	}
@@ -137,19 +183,18 @@ func (g *Game) bindModernShopList(job *nativeClassUIJob, source, final []byte, c
 			return job
 		}
 	}
-	assets, _, _, ok := g.nativeShopState()
 	palette, paletteOK := preparationCursorPalette(g.nativeClassUI.palette)
-	if !ok || assets == nil || !paletteOK || len(source) != 64000 {
+	if !paletteOK || len(source) != 64000 {
 		return job
 	}
-	if rebuilt, ok := g.composeNativeShopStable(); !ok || !bytes.Equal(source, rebuilt) {
+	if rebuilt, ok := composeSource(); !ok || !bytes.Equal(source, rebuilt) {
 		return job
 	}
 	if rebuilt, ok := compose(); !ok || !bytes.Equal(final, rebuilt) {
 		return job
 	}
-	d := &nativeFacilityListPresentation{variant: g.nativeShopVariant, resource: assets.ResourceID, mode: g.nativeShopMode, locale: g.localeID, closing: closing, font: g.font,
-		source: append([]byte(nil), source...), final: append([]byte(nil), final...), panel: assets.Panel, comparison: assets.CompareCells, roster: roster, itemRows: itemRows}
+	d := &nativeFacilityListPresentation{variant: variant, resource: resource, owner: owner, mode: mode, locale: g.localeID, closing: closing, font: g.font,
+		source: append([]byte(nil), source...), final: append([]byte(nil), final...), panel: panel, comparison: comparison, roster: roster, itemRows: itemRows}
 	copy(d.palette[:], palette)
 	var err error
 	if closing {
@@ -165,15 +210,16 @@ func (g *Game) bindModernShopList(job *nativeClassUIJob, source, final []byte, c
 			return job
 		}
 	}
-	d.sourceMask, ok = g.freezeModernShopListWriter(source, g.composeNativeShopStable)
+	var ok bool
+	d.sourceMask, ok = g.freezeModernFacilityListWriter(owner, source, composeSource)
 	if !ok {
 		return job
 	}
-	d.finalMask, ok = g.freezeModernShopListWriter(final, compose)
+	d.finalMask, ok = g.freezeModernFacilityListWriter(owner, final, compose)
 	if !ok {
 		return job
 	}
-	d.sourceHD, d.sourceRuns, ok = captureModernFacilityListText(g, g.composeNativeShopStable)
+	d.sourceHD, d.sourceRuns, ok = captureModernFacilityListText(g, composeSource)
 	if !ok {
 		return job
 	}
@@ -198,6 +244,16 @@ func (g *Game) bindModernShopList(job *nativeClassUIJob, source, final []byte, c
 	}
 	job.facilityList = d
 	return job
+}
+
+func (g *Game) activeFacilityListJob(owner string) *nativeClassUIJob {
+	switch owner {
+	case "shop":
+		return g.nativeShopUIJob
+	case "church":
+		return g.nativeClassUIJob
+	}
+	return nil
 }
 
 func outsideFacilityList(rect, cover image.Rectangle) []image.Rectangle {
@@ -237,9 +293,14 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 		return false
 	}
 	d := job.facilityList
-	if d == nil || g.nativeShopUIJob != job || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "shop" ||
-		g.camp.Node().NativeHubVariant != d.variant || g.nativeShopVariant != d.variant || g.nativeShopMode != d.mode ||
+	if d == nil || g.activeFacilityListJob(d.owner) != job || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != d.owner ||
 		g.localeID != d.locale || g.font != d.font || g.helpVisible || g.transientUI || g.nativePlayerStatus != nil || g.nativeFullDACBlack || g.nativeFullDACWhite {
+		return false
+	}
+	if d.owner == "shop" && (g.camp.Node().NativeHubVariant != d.variant || g.nativeShopVariant != d.variant || g.nativeShopMode != d.mode || g.nativeClassUIJob != nil || g.nativeChurchUIJob != nil) {
+		return false
+	}
+	if d.owner == "church" && (d.resource != 14 || g.churchMode != d.mode || g.nativeShopUIJob != nil || g.nativeChurchUIJob != nil) {
 		return false
 	}
 	palette, ok := preparationCursorPalette(g.nativeClassUI.palette)
@@ -367,7 +428,7 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 func (p *modernHDPresentation) drawModernHDFacilityListRoster(screen ebiten.FinalScreen, geometry ebiten.GeoM, brightness float64) {
 	g := p.Game
 	plan := g.facilityListRosterHD
-	if plan == nil || plan.theme != g.modernStoryPortraits || g.nativeShopUIJob != plan.job || plan.job.frame != plan.frame {
+	if plan == nil || plan.job == nil || plan.job.facilityList == nil || plan.theme != g.modernStoryPortraits || g.activeFacilityListJob(plan.job.facilityList.owner) != plan.job || plan.job.frame != plan.frame {
 		return
 	}
 	set := plan.theme
