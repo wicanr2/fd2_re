@@ -45,6 +45,7 @@ type modernHDConfirmationPlacement struct {
 	pulse       int
 	owner       *modernHDConfirmation
 	locale      string
+	clip        image.Rectangle // Optional native crop; render the complete cached button first.
 }
 
 func freezeModernHDConfirmation(cells []fdother.RawCell, palette color.Palette, font *Font) (*modernHDConfirmation, error) {
@@ -257,12 +258,23 @@ func (p *modernHDPresentation) drawModernHDConfirmation(screen ebiten.FinalScree
 		return
 	}
 	for _, button := range p.Game.modernHDText.choices {
+		picture := button.owner.buttonImage(button)
+		at := button.rect.Min.Mul(6)
+		if !button.clip.Empty() {
+			rect := image.Rectangle{Min: at, Max: at.Add(picture.Bounds().Size())}
+			visible := rect.Intersect(image.Rectangle{Min: button.clip.Min.Mul(6), Max: button.clip.Max.Mul(6)})
+			if visible.Empty() {
+				continue
+			}
+			picture = picture.SubImage(visible.Sub(rect.Min)).(*ebiten.Image)
+			at = visible.Min
+		}
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
 		op.GeoM.Scale(1.0/3, 1.0/3)
-		op.GeoM.Translate(float64(button.rect.Min.X*2), float64(button.rect.Min.Y*2))
+		op.GeoM.Translate(float64(at.X)/3, float64(at.Y)/3)
 		op.GeoM.Concat(geometry)
 		v := float32(math.Max(0, math.Min(1, brightness)))
 		op.ColorScale.Scale(v, v, v, 1)
-		screen.DrawImage(button.owner.buttonImage(button), op)
+		screen.DrawImage(picture, op)
 	}
 }

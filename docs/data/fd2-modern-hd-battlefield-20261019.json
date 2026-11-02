@@ -304658,5 +304658,283 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/final-validation.json",
       "sha256": "10c4246b5f8b0fc1b1390f7317ec5e900215715eaf2899a2a8d4ce6f43dc5014"
     }
+  },
+  "hd1_shop_confirmation_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "b934e7195827230406db29d0a67e9cbb040f8451",
+    "scope": "三商店購買／裝備／販售確認的四拍選項開收、對話五收與source還原，原生job與交易規則保持。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1243,
+      "go_tree_sha256": "30ca43e5b271fbc2a412ce16b9a26505a08ca5380acfbc44b0c77d05728e179c",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/fd2-player-r1",
+        "sha256": "b47624fa95b57b2941aed9bc85b1ebb88f4e4f0d2e881a806e2f1f9fe6d12b4b"
+      },
+      "production_go_unchanged_after_binary": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/consumers-r1.json",
+        "sha256": "48430ef02a4b22260da78f21fdb71d88d5dab451cdc4b6deed4d1387ee0b3ef6"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/commands.json",
+        "sha256": "6f77ca8e37f17d6464aedf3170192e7894b94eb048ddc41653247b85d1b1d7b2"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/ready-source.json",
+        "sha256": "cb61706c38f7841403bafb1a4f08fe1afab2cab8c58024d3e31f05155039ff6a"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_confirmation_transition.go",
+          "sha256": "b7ba6e9658441fa102280e92b37afd369871b0a9ba3032f3cd8375c606401a9d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_confirmation.go",
+          "sha256": "0600275f9d454ec08fbdd1a8600390e716963d79022bdd0621aa23837ecb40b6"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "6fcc4c1816116f8bb8fd2947fbb05b5d1c8f239406af814257e78996cd797051"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_transaction_ui.go",
+          "sha256": "bc1ab25d483ee3fdb931e8563e41d0692df1d764d8ff509fafdfe3d2335e4a54"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_sell_ui.go",
+          "sha256": "7933b6afb6da60de0409479db02179e582cf878037dbc232964285ba38db5659"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "e0a00d29ff4e3b2f31d0923ea10e3f158d9be861482e0e9c3ac2100ee88858d4"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_shop_confirmation_prototype_test.go",
+          "sha256": "0ff67dc4f637cb773ddd42713dbc25faa51b087b25e856fdd937d9bfed1d1a2d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_shop_confirmation_transition_test.go",
+          "sha256": "744b050aea5b51e031e4191e7885d7088cfd8be5f6ae1cae0b624410246b49c4"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_shop_confirmation_gpu_test.go",
+          "sha256": "ff133578160e28ac76bbe734af762155c2e8027472e61c0e4f9e417972223f24"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "f77ff0bdf03da513c6c5b24e8114e29b610b1fd7ed1e07d505996bd9999b113a"
+      }
+    },
+    "rules": [
+      "共用R60 recipe，owner／variant／resource及實際job欄位相符才畫；三商店資源12／29／63，原教會14保持。",
+      "購買post-choice回復question，另dialogue-only五收／source還原；裝備及販售用最後choice frame作下移target，保留中央重疊選項，禁止混用blank dialogue或問句。",
+      "HD按鈕完整144×120先依既有字型／色盤快取，再同原13像素位移與底邊裁切；可見原高19／6／0／0／0，沒有clip的既有消費端保持。",
+      "question／source／target逐一凍結原raw、literal writer與HD文字／數字副本，原非零writer與左後右遮擋順序保持。",
+      "F11字型／金框／選項獨立F2場景，兩原版原生回退與每次清先前Draw沿R60契約；原ACK／clock／after、party／pending purchase／gold／RNG／保存保持。"
+    ],
+    "prototype": {
+      "stages": 108,
+      "jobs": 84,
+      "original_frames": 468,
+      "restores": 36,
+      "writer_bytes": 2981340,
+      "cropped_choice_pixels": 14400,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/prototype-r1.memory.json",
+        "sha256": "00a5b1efb536b4a686e0b5b71faed6c95daf38acbe3278dbd4620f2f7aa1ecd9"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/prototype-r1-capture/receipt.json",
+        "sha256": "0e51eebf528ca06247617916f2a157edab276e0fd418ece813b5f2b7e3eb28fd"
+      }
+    },
+    "cpu": {
+      "tests": 4,
+      "shop_source_cases": 21,
+      "shop_original_frames": 117,
+      "shop_restores": 9,
+      "cropped_choices": 24,
+      "shop_fault_guards": 378,
+      "original_control_clear_cases": 21,
+      "pending_purchase_state_preserved": true,
+      "church_confirmation_cases": 5,
+      "church_confirmation_frames": 30,
+      "church_list_cases": 24,
+      "church_list_frames": 132,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/source-r2.memory.json",
+        "sha256": "b68426cdc60c15c24fa0c4d7cedfaed58d377def75697a7584a8c273c48b472d"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/source-r2.log",
+        "sha256": "53d39ad02320ccb2a9f3b7cdf742df0975fd0d2addccb10462f9ed8778e512aa"
+      }
+    },
+    "gpu": {
+      "new_cases": 660,
+      "new_full_png": 71,
+      "whole_game_rgba_bytes": 6082560000,
+      "rgba_tolerance": 0,
+      "independent_static_composite_equal": true,
+      "whole_game_toolbar_equal": true,
+      "modes": [
+        {
+          "mode": "confirm",
+          "cases": 204,
+          "full_png": 25,
+          "whole_game_rgba_bytes": 1880064000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-confirm-r1-capture/receipt.json",
+            "sha256": "158ad35c050d8879a0e70f2bd104790148a118a6aa3abba2d2f2e9b88406b536"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-confirm-r1.memory.json",
+            "sha256": "156c54afd0f64ace77bd29900e1027708ddb6edac58ee4403c3363f9b38f86c1"
+          }
+        },
+        {
+          "mode": "equip_confirm",
+          "cases": 228,
+          "full_png": 23,
+          "whole_game_rgba_bytes": 2101248000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-equip_confirm-r1-capture/receipt.json",
+            "sha256": "c2b9a517a9a6c39ba4ec87b92608963a5c7716fdf91cd52cb83eb25b52db4e6c"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-equip_confirm-r1.memory.json",
+            "sha256": "10b5a2d2b559d75c2a9f7fa364217eb00cd1ce9f6ada13d3ade53fe39090892c"
+          }
+        },
+        {
+          "mode": "sell_confirm",
+          "cases": 228,
+          "full_png": 23,
+          "whole_game_rgba_bytes": 2101248000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-sell_confirm-r1-capture/receipt.json",
+            "sha256": "ccd742ce9b1486b3b34e4f31c3241abd0df9664387c20fa994d0a310c5f38ab6"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-sell_confirm-r1.memory.json",
+            "sha256": "0fd1041c849b468422d81e8f579e7900335cad9df6c7fc24068161f10413a91c"
+          }
+        }
+      ],
+      "old_list_smoke": [
+        {
+          "mode": "class_confirm",
+          "cases": 92,
+          "full_png": 17,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-church-legacy-r1-capture/receipt.json",
+            "sha256": "e0f9b30ee9bf657cb4b8b9f8d45bf6656491e6b503cc826bfae7cc0c8205a4a4"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-church-legacy-r1.memory.json",
+            "sha256": "ea6ba86e8784a3495d472dec4a4654b04aab099d0a38356cc753c4de7bbc7d10"
+          }
+        }
+      ]
+    },
+    "normal_gui": {
+      "gold": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/normal-gold-roll-r1-capture/receipt.json",
+          "sha256": "e438ff2b2aa5f3a172f4c7e358b1eb58e2ad883085009b3eaa26cb17529d8420"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/normal-gold-roll-r1.memory.json",
+          "sha256": "a28b35be3daed7b3e0715fb2b53022f286ed07a279d3ea49c59125d9f9a460f9"
+        },
+        "full_png": 39,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "gold": [
+          1000,
+          950,
+          987
+        ],
+        "confirmation_four_styles_sampled": true,
+        "confirmation_last_draw_samples": {
+          "confirm": 14,
+          "equip_confirm": 18,
+          "sell_confirm": 22
+        },
+        "accepted_dynamic_crops": 9,
+        "rejected_dynamic_crops": 4,
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。另抽三種確認各四組控制與最近Draw三phase，不宣稱PNG精確同幀。",
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/normal-gold-roll-r1-capture/input-audit-first-process.jsonl",
+          "sha256": "4f47b0644c26ffbb5237b750f352730cfaeef0ed40f037a18838a6662bc78989"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/normal-gold-roll-r1.log",
+          "sha256": "8310272b8c017c58c8a734c29d7e0712f527f988d6b2525c029f51e05ff6dc34"
+        }
+      }
+    },
+    "regression": {
+      "passed": 92,
+      "optional_skipped": 8,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/regression-r1.memory.json",
+        "sha256": "16509919a851ad2f672e9344979fe9680f4cd6aad2b259a7729272736836c654"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/regression-r1.log",
+        "sha256": "105edbb4082ac6af06bde44615d2d52dcc3b44c2ce4569eedd84be7d83f2f527"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/consumers-verified-r1.json",
+        "sha256": "780252af3b95e18835a8a6c43a1d1c04a96b19d771e158557afccc91c1445e24"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/inv-r1.json",
+        "sha256": "0263f77f10c0330236d3a5b9cadb7c88506184d650d65c139af9653cc45ac827"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "d037bee4706fa2719e1c226c4789b31d87aeaeee5ddc947f77c0094f7b382ade"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/asset-pack-unchanged.json",
+        "sha256": "4ad0972b33a1a53cd3ba6ce1664ef00b41724459030bbdc0e209c0c52abb908a"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "new_assets": 0
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-shop-confirmation-game.png",
+          "sha256": "63ff84f509af54562f507f6ce6ce6c68055ba4c0aa322f23c977501aa78cce5a"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/gpu-equip_confirm-r1-capture/scene-035.png",
+          "sha256": "63ff84f509af54562f507f6ce6ce6c68055ba4c0aa322f23c977501aa78cce5a"
+        },
+        "scope": "受控Game.Draw的裝備確認對話收框首拍，金額1234／角色／商品為fixture；展示中心HD按鈕沿原大小移動並裁切，不作普通交易或身份證據。"
+      }
+    ],
+    "remaining_ui": "其餘設施回覆／主選單進出場、成功特效、其他金額框及小字樣續#283；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1。原問句與既有多語資料沿用，沒有新增翻譯或遊戲規則。正常樣本限既有hotel_ch02經城鎮布衣買賣、裝備選No及保存冷讀；三variant其餘畫面為受控Game.Draw，不新增原版E2、連續戰役或完整HD1聲明。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/final-validation.json",
+      "sha256": "cdb9b23fd6902948d0313317561e7e94d1f0042c2b7aa078ca77f39a0ac2fbf0"
+    }
   }
 }

@@ -374,7 +374,7 @@ func (g *Game) beginNativeShopSellConfirmationOpening() bool {
 		return false
 	}
 	g.resetNativeShopUIPulse()
-	g.nativeShopUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeShopUIJob = g.bindModernFacilityConfirmation(&nativeClassUIJob{frames: frames}, "opening", nil)
 	return true
 }
 
@@ -401,9 +401,9 @@ func (g *Game) beginNativeShopSellConfirmationClosing(after func()) bool {
 		return false
 	}
 	frames := append(choiceFrames, dialogueFrames...)
-	g.nativeShopUIJob = &nativeClassUIJob{
+	g.nativeShopUIJob = g.bindModernFacilityConfirmation(&nativeClassUIJob{
 		frames: frames, restore: stable, after: after,
-	}
+	}, "closing", nil)
 	return true
 }
 

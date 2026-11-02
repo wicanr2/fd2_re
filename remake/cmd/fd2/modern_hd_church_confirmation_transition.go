@@ -25,18 +25,22 @@ type modernChurchConfirmationDraw struct {
 }
 
 type nativeChurchConfirmationPresentation struct {
-	mode, kind, locale         string
-	font                       *Font
-	palette                    [256]color.RGBA
-	question, source, dialogue modernChurchConfirmationSource
-	choices                    [2]fdother.RawCell
-	rawFrames                  [][]byte
-	chrome                     *modernHDDialogueChrome
-	buttons                    *modernHDConfirmation
-	lastDraw                   *modernChurchConfirmationDraw
+	owner                           string
+	variant, resource, choiceFrames int
+	restoreSource, dialogueChoices  bool
+	mode, kind, locale              string
+	font                            *Font
+	palette                         [256]color.RGBA
+	question, source, dialogue      modernChurchConfirmationSource
+	choices                         [2]fdother.RawCell
+	rawFrames                       [][]byte
+	chrome                          *modernHDDialogueChrome
+	buttons                         *modernHDConfirmation
+	lastDraw                        *modernChurchConfirmationDraw
 }
 
 type modernChurchConfirmationFrame struct {
+	choices      []modernHDConfirmationPlacement
 	pixels, mask []byte
 	runs         []modernHDTextRun
 	panels       []modernHDDialoguePanel
@@ -46,13 +50,13 @@ type modernChurchConfirmationFrame struct {
 	name         string
 }
 
-func (g *Game) captureModernChurchConfirmationSource(compose func() ([]byte, bool)) (s modernChurchConfirmationSource, valid bool) {
+func (g *Game) captureModernFacilityConfirmationSource(owner string, compose func() ([]byte, bool)) (s modernChurchConfirmationSource, valid bool) {
 	raw, ok := compose()
 	if !ok || len(raw) != 64000 {
 		return
 	}
 	s.raw = append([]byte(nil), raw...)
-	s.mask, ok = g.freezeModernFacilityListWriter("church", s.raw, compose)
+	s.mask, ok = g.freezeModernFacilityListWriter(owner, s.raw, compose)
 	if !ok {
 		return s, false
 	}
@@ -71,24 +75,84 @@ func (g *Game) captureModernChurchConfirmationSource(compose func() ([]byte, boo
 // Bind before the original job is published. Native buffers, timing and
 // continuation remain owned by their existing producer and lifecycle.
 func (g *Game) bindModernChurchConfirmation(job *nativeClassUIJob, kind string) *nativeClassUIJob {
+	return g.bindModernFacilityConfirmation(job, kind, nil)
+}
+
+func (g *Game) bindModernFacilityConfirmation(job *nativeClassUIJob, kind string, explicitFinal []byte) *nativeClassUIJob {
 	if job == nil || g.nativeClassUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil ||
-		g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "church" ||
-		g.nativeClassUIJob != nil || g.nativeChurchUIJob != nil || g.nativeShopUIJob != nil || len(g.nativeClassUI.choices) <= 17 {
+		g.camp == nil || g.camp.Node() == nil || g.nativeClassUIJob != nil || g.nativeChurchUIJob != nil || g.nativeShopUIJob != nil || len(g.nativeClassUI.choices) <= 17 {
 		return job
 	}
-	var compose func() ([]byte, bool)
-	switch g.churchMode {
-	case "class_confirm":
-		compose = g.composeNativeClassConfirmationQuestion
-	case "revive_confirm":
-		compose = g.composeNativeChurchReviveQuestion
+	owner := g.camp.Node().Type
+	var question, source, dialogue func() ([]byte, bool)
+	mode, variant, resource := "", 0, 14
+	dialogueChoices := false
+	switch owner {
+	case "church":
+		mode = g.churchMode
+		switch mode {
+		case "class_confirm":
+			question = g.composeNativeClassConfirmationQuestion
+		case "revive_confirm":
+			question = g.composeNativeChurchReviveQuestion
+		default:
+			return job
+		}
+		if kind != "opening" && kind != "closing" && kind != "choice_only" || kind == "choice_only" && mode != "revive_confirm" {
+			return job
+		}
+		source, dialogue = g.composeNativeChurchSourceFrame, g.composeNativeChurchDialogueBase
+	case "shop":
+		assets, _, _, ok := g.nativeShopState()
+		if !ok || assets == nil || g.nativeShopUI == nil || g.camp.Node().NativeHubVariant != g.nativeShopVariant ||
+			assets.ResourceID != map[int]int{1: 12, 3: 29, 5: 63}[g.nativeShopVariant] {
+			return job
+		}
+		mode, variant, resource = g.nativeShopMode, g.nativeShopVariant, assets.ResourceID
+		switch mode {
+		case "confirm":
+			question = g.composeNativeShopPurchaseQuestion
+			if kind != "opening" && kind != "choice_only" && kind != "dialogue_only" {
+				return job
+			}
+			dialogue = g.nativeShopPostChoiceCloseFrame
+		case "equip_confirm":
+			question = g.composeNativeShopEquipQuestion
+			if kind != "opening" && kind != "closing" {
+				return job
+			}
+			dialogueChoices = true
+		case "sell_confirm":
+			question = g.composeNativeShopSellQuestionBase
+			if kind != "opening" && kind != "closing" {
+				return job
+			}
+			dialogueChoices = true
+		default:
+			return job
+		}
+		source = g.composeNativeShopStable
+		if dialogueChoices {
+			dialogue = func() ([]byte, bool) {
+				q, ok := question()
+				if !ok {
+					return nil, false
+				}
+				frames, err := campaign.NativeClassConfirmationClosingFrames(q, g.nativeClassUI.choices)
+				if err != nil || len(frames) != 4 {
+					return nil, false
+				}
+				return frames[3], true
+			}
+		}
 	default:
 		return job
 	}
-	if kind != "opening" && kind != "closing" && kind != "choice_only" || kind == "choice_only" && g.churchMode != "revive_confirm" {
-		return job
+	d := &nativeChurchConfirmationPresentation{owner: owner, mode: mode, kind: kind, locale: g.localeID, font: g.font, variant: variant, resource: resource,
+		choiceFrames: 4, restoreSource: kind == "closing" || kind == "dialogue_only", dialogueChoices: dialogueChoices}
+	if kind == "dialogue_only" {
+		d.choiceFrames = 0
 	}
-	d := &nativeChurchConfirmationPresentation{mode: g.churchMode, kind: kind, locale: g.localeID, font: g.font}
 	for i, expected := range []string{"b5138a9cea25f705232cb051b5012fcb0d5e49c874b99afb8211c2e6c0245eed", "c15fd027c3c31a24d94c8274604f88e45427235defb7cbea43c8d5815db93a2f"} {
 		cell := g.nativeClassUI.choices[16+i]
 		sum := sha256.Sum256(cell.Pixels)
@@ -103,16 +167,19 @@ func (g *Game) bindModernChurchConfirmation(job *nativeClassUIJob, kind string) 
 		return job
 	}
 	copy(d.palette[:], palette)
-	d.question, ok = g.captureModernChurchConfirmationSource(compose)
+	d.question, ok = g.captureModernFacilityConfirmationSource(owner, question)
 	if !ok {
 		return job
 	}
-	d.source, ok = g.captureModernChurchConfirmationSource(g.composeNativeChurchSourceFrame)
+	d.source, ok = g.captureModernFacilityConfirmationSource(owner, source)
 	if !ok {
 		return job
 	}
-	d.dialogue, ok = g.captureModernChurchConfirmationSource(g.composeNativeChurchDialogueBase)
+	d.dialogue, ok = g.captureModernFacilityConfirmationSource(owner, dialogue)
 	if !ok {
+		return job
+	}
+	if kind == "dialogue_only" && (len(explicitFinal) != 64000 || !bytes.Equal(explicitFinal, d.dialogue.raw)) {
 		return job
 	}
 	h, err := g.prepareModernHDFacilityDialogue()
@@ -121,15 +188,17 @@ func (g *Game) bindModernChurchConfirmation(job *nativeClassUIJob, kind string) 
 		return job
 	}
 	d.chrome, d.buttons = h.chrome, h.buttons
-	if kind == "opening" {
-		d.rawFrames, err = campaign.NativeClassConfirmationOpeningFrames(d.question.raw, g.nativeClassUI.choices)
-	} else {
-		d.rawFrames, err = campaign.NativeClassConfirmationClosingFrames(d.question.raw, g.nativeClassUI.choices)
+	if d.choiceFrames != 0 {
+		if kind == "opening" {
+			d.rawFrames, err = campaign.NativeClassConfirmationOpeningFrames(d.question.raw, g.nativeClassUI.choices)
+		} else {
+			d.rawFrames, err = campaign.NativeClassConfirmationClosingFrames(d.question.raw, g.nativeClassUI.choices)
+		}
+		if err != nil {
+			return job
+		}
 	}
-	if err != nil {
-		return job
-	}
-	if kind == "closing" {
+	if d.restoreSource {
 		tail, err := campaign.NativeClassListClosingFrames(d.source.raw, d.dialogue.raw)
 		if err != nil || !bytes.Equal(job.restore, d.source.raw) {
 			return job
@@ -151,19 +220,19 @@ func (g *Game) bindModernChurchConfirmation(job *nativeClassUIJob, kind string) 
 }
 
 func (d *nativeChurchConfirmationPresentation) compose(index int, hd bool) (p modernChurchConfirmationFrame, ok bool) {
-	if d == nil || index < 0 || index > len(d.rawFrames) || index == len(d.rawFrames) && d.kind != "closing" {
+	if d == nil || index < 0 || index > len(d.rawFrames) || index == len(d.rawFrames) && !d.restoreSource {
 		return
 	}
 	base := d.source
 	panel := image.Rect(5, 112, 315, 198)
-	if index < 4 {
+	if index < d.choiceFrames {
 		base = d.question
 	}
 	p.pixels, p.mask = base.raw, base.mask
 	if hd {
 		p.pixels = base.hd
 	}
-	if index < 4 {
+	if index < d.choiceFrames {
 		p.name, p.choice, p.phase, p.choiceFrame = "choices", true, fullRewardOpening, index+6
 		if d.kind != "opening" {
 			p.phase, p.choiceFrame = fullRewardChoiceClosing, index
@@ -201,7 +270,7 @@ func (d *nativeChurchConfirmationPresentation) compose(index int, hd bool) (p mo
 		return p, true
 	}
 	p.name = "dialogue"
-	shift := (index - 3) * 13
+	shift := (index - d.choiceFrames + 1) * 13
 	cover := image.Rect(5, 112+shift, 315, min(198+shift, 200))
 	final := d.dialogue.raw
 	if hd {
@@ -238,11 +307,31 @@ func (d *nativeChurchConfirmationPresentation) compose(index int, hd bool) (p mo
 			p.panels = append(p.panels, modernHDDialoguePanel{chrome: d.chrome, rect: panel, clip: clip, gold: true})
 		}
 		p.panels = append(p.panels, modernHDDialoguePanel{chrome: d.chrome, rect: panel.Add(image.Pt(0, shift)), clip: cover, gold: true})
+		if d.dialogueChoices {
+			choices, err := d.buttons.placements(fullRewardChoiceClosing, 3, 0, 0)
+			if err != nil {
+				return p, false
+			}
+			for _, choice := range choices {
+				choice.rect = choice.rect.Add(image.Pt(0, shift))
+				choice.clip = choice.rect.Intersect(cover)
+				if !choice.clip.Empty() {
+					p.choices = append(p.choices, choice)
+				}
+			}
+			if len(p.choices) != 0 {
+				p.choiceFrame = 3
+			}
+		}
 	}
 	return p, true
 }
 
 func (g *Game) drawModernHDChurchConfirmation(screen *ebiten.Image, job *nativeClassUIJob) bool {
+	return g.drawModernHDFacilityConfirmation(screen, job)
+}
+
+func (g *Game) drawModernHDFacilityConfirmation(screen *ebiten.Image, job *nativeClassUIJob) bool {
 	if job == nil || job.churchConfirmation == nil {
 		return false
 	}
@@ -251,10 +340,16 @@ func (g *Game) drawModernHDChurchConfirmation(screen *ebiten.Image, job *nativeC
 	if g.nativeClassUI == nil {
 		return false
 	}
-	if g.nativeClassUIJob != job || g.nativeShopUIJob != nil || g.nativeChurchUIJob != nil ||
-		g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "church" || g.churchMode != d.mode ||
+	if g.activeFacilityListJob(d.owner) != job || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != d.owner ||
 		g.localeID != d.locale || g.font != d.font || g.helpVisible || g.transientUI || g.nativePlayerStatus != nil ||
 		g.nativeFullDACBlack || g.nativeFullDACWhite || d.chrome == nil || d.buttons == nil {
+		return false
+	}
+	if d.owner == "church" && (g.churchMode != d.mode || g.nativeShopUIJob != nil || g.nativeChurchUIJob != nil) {
+		return false
+	}
+	if d.owner == "shop" && (g.nativeShopMode != d.mode || g.nativeShopVariant != d.variant ||
+		g.camp.Node().NativeHubVariant != d.variant || g.nativeClassUIJob != nil || g.nativeChurchUIJob != nil) {
 		return false
 	}
 	palette, ok := preparationCursorPalette(g.nativeClassUI.palette)
@@ -265,7 +360,7 @@ func (g *Game) drawModernHDChurchConfirmation(screen *ebiten.Image, job *nativeC
 		if !bytes.Equal(job.frames[job.frame], d.rawFrames[job.frame]) {
 			return false
 		}
-	} else if d.kind != "closing" || !bytes.Equal(job.restore, d.source.raw) {
+	} else if !d.restoreSource || !bytes.Equal(job.restore, d.source.raw) {
 		return false
 	}
 	ui, art := g.modernHDText != nil, g.modernStoryPortraits != nil
@@ -277,25 +372,30 @@ func (g *Game) drawModernHDChurchConfirmation(screen *ebiten.Image, job *nativeC
 		return false
 	}
 	var choices []modernHDConfirmationPlacement
-	if ui && p.choice {
-		locale := g.localeID
-		if locale == "" {
-			locale = "zh-Hant"
+	if ui {
+		choices = append(choices, p.choices...)
+		if p.choice {
+			positions, err := d.buttons.placements(p.phase, p.choiceFrame, 0, 0)
+			if err != nil {
+				return false
+			}
+			choices = append(choices, positions...)
 		}
-		if _, exists := d.buttons.labels[locale]; !exists || d.buttons.fonts[locale] == nil {
-			return false
-		}
-		var err error
-		choices, err = d.buttons.placements(p.phase, p.choiceFrame, 0, 0)
-		if err != nil {
-			return false
-		}
-		for i := range choices {
-			choices[i].owner, choices[i].locale = d.buttons, locale
+		if len(choices) != 0 {
+			locale := g.localeID
+			if locale == "" {
+				locale = "zh-Hant"
+			}
+			if _, exists := d.buttons.labels[locale]; !exists || d.buttons.fonts[locale] == nil {
+				return false
+			}
+			for i := range choices {
+				choices[i].owner, choices[i].locale = d.buttons, locale
+			}
 		}
 	}
 	if art {
-		scene := g.modernFacility(14)
+		scene := g.modernFacility(d.resource)
 		if scene == nil || !g.presentModernFacilityFrame(screen, p.pixels, p.mask, g.nativeClassUI.palette, &modernFacilitySceneOverlay{scene: scene, source: image.Rect(0, 0, 1920, 1200)}) {
 			return false
 		}

@@ -274,12 +274,19 @@ func (g *Game) recordInputAuditState() {
 	r["shop_mode"] = g.nativeShopMode
 	r["shop_service"] = g.nativeShopServiceSel
 	r["shop_ui_busy"] = g.nativeShopUIJob != nil
-	if job := g.nativeClassUIJob; job != nil && job.churchConfirmation != nil && job.churchConfirmation.lastDraw != nil {
+	for _, job := range []*nativeClassUIJob{g.nativeClassUIJob, g.nativeShopUIJob} {
+		if job == nil || job.churchConfirmation == nil || job.churchConfirmation.lastDraw == nil {
+			continue
+		}
 		d, drawn := job.churchConfirmation, job.churchConfirmation.lastDraw
-		// The active job's last actual Draw can precede this Update.
-		r["church_confirmation_presented"] = map[string]any{"job": fmt.Sprintf("%p", job), "owner": "church", "mode": d.mode,
+		// The active owner's last actual Draw can precede this Update.
+		record := map[string]any{"job": fmt.Sprintf("%p", job), "owner": d.owner, "mode": d.mode, "variant": d.variant, "resource": d.resource,
 			"kind": d.kind, "closing": d.kind != "opening", "presented_frame": drawn.frame, "phase": drawn.phase,
-			"choice_frame": drawn.choiceFrame, "interface_hd": drawn.interfaceHD, "art_hd": drawn.artHD, "live_job": g.nativeClassUIJob == job}
+			"choice_frame": drawn.choiceFrame, "interface_hd": drawn.interfaceHD, "art_hd": drawn.artHD, "live_job": g.activeFacilityListJob(d.owner) == job}
+		r["facility_confirmation_presented"] = record
+		if d.owner == "church" {
+			r["church_confirmation_presented"] = record
+		}
 	}
 	if plan := g.facilityListRosterHD; plan != nil && plan.job != nil && plan.job.facilityList != nil {
 		d := plan.job.facilityList

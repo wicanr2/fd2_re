@@ -74,6 +74,24 @@ def church_confirmation_observations(paths, mode):
             'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
 
 
+def facility_confirmation_observations(paths, mode, owner='shop'):
+    samples=[]
+    for path in paths:
+        for line in path.read_text().splitlines():
+            try: state=json.loads(line)
+            except json.JSONDecodeError: continue
+            drawn=state.get('facility_confirmation_presented')
+            if (drawn and drawn.get('owner')==owner and drawn.get('mode')==mode and drawn.get('live_job')
+                    and drawn.get('interface_hd') and drawn.get('art_hd')
+                    and state.get('shop_ui_busy' if owner=='shop' else 'church_ui_busy')):
+                samples.append({'game_update_frame':state['frame'],**drawn})
+    assert {s['closing'] for s in samples}=={False,True}, f'未觀測到{owner}/{mode}確認HD開收'
+    assert any(s['closing'] and s['phase']=='choices' for s in samples), '未觀測到選項收框'
+    assert any(s['closing'] and s['phase']=='dialogue' for s in samples), '未觀測到確認後對話收框'
+    return {'owner':owner,'mode':mode,'samples':samples,'audit_files':[p.name for p in paths],
+            'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -96,6 +114,7 @@ def main():
     facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
     parser.add_argument('--church-fee-currency', action='store_true', help='搭配--church及--facility-item-rows抽驗復活費用貨幣的四種顯示組合')
+    parser.add_argument('--shop-confirmation-transitions', action='store_true', help='搭配--gold-roll要求購買、裝備及販售確認選項與對話收框的HD呈現')
     parser.add_argument('--church-confirmation-transitions', action='store_true', help='搭配--church要求復活確認選項開收與取消對話收框的HD呈現')
     parser.add_argument('--church-list-transitions', action='store_true', help='要求教會五種正常可達列表實際執行HD開框及收框')
     parser.add_argument('--facility-item-rows', action='store_true', help='於買賣或教會交付的穩定物品列表抽驗四組介面／美術')
@@ -173,6 +192,8 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    if args.shop_confirmation_transitions and not args.gold_roll:
+        parser.error('--shop-confirmation-transitions需要--gold-roll')
     if args.church_confirmation_transitions and not args.church:
         parser.error('--church-confirmation-transitions需要--church')
     if args.church_fee_currency and not (args.church and args.facility_item_rows):
@@ -1582,6 +1603,8 @@ def main():
             key('Return');shop('purchase')
             item_row_styles('purchase',shop,'gold-purchase-items')
             key('Return');shop('confirm')
+            if args.shop_confirmation_transitions:
+                item_row_styles('confirm',shop,'gold-purchase-confirmation')
             key('Return');shop('recipient_equipment')
             comparison_before=latest(audit)
             shot('gold-equipment-comparison-hd')
@@ -1597,6 +1620,8 @@ def main():
             for field in ['node','shop_mode','gold']:
                 assert comparison_before[field]==comparison_after[field],field
             key('Return');shop('equip_confirm')
+            if args.shop_confirmation_transitions:
+                item_row_styles('equip_confirm',shop,'gold-equip-confirmation')
             key('Right');key('Return');shop('purchase')
             assert latest(audit).get('gold')==950,'購買布衣的餘額錯誤'
             shot('gold-after-purchase')
@@ -1610,6 +1635,8 @@ def main():
             # Sol starts with short sword, leather armor and herb. The ordinary
             # purchase appends cloth in the fourth active raw inventory slot.
             key('Down');key('Right');key('Return');shop('sell_confirm');shot('gold-cloth-sale-confirmation')
+            if args.shop_confirmation_transitions:
+                item_row_styles('sell_confirm',shop,'gold-sell-confirmation')
             key('Return');shop('sell_roster')
             assert latest(audit).get('gold')==987,'出售布衣的餘額錯誤'
             shot('gold-after-sale')
@@ -1675,6 +1702,8 @@ def main():
             assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存檔'
             shot('gold-new-process-title-load')
             report={'schema':'fd2-hd-gold-roll-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
+                    'shop_confirmation_transitions':{mode:facility_confirmation_observations([args.out/'input-audit-first-process.jsonl'],mode) for mode in ['confirm','equip_confirm','sell_confirm']} if args.shop_confirmation_transitions else None,
+                    'confirmation_four_styles_sampled':args.shop_confirmation_transitions and args.facility_item_rows,
                     'gui_tool_sha256':digest(Path(__file__)),
                     'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
                     'transaction_theme':args.gold_roll_theme,'theme_save_bytes_equal':True,

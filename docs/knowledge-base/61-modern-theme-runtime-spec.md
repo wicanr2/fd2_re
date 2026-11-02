@@ -6017,3 +6017,14 @@ GPU r1僅首個兩原版樣本的HD Draw測試條件錯誤，原像素相同；�
 R60收尾補驗最近Draw的有效性：兩控制切回原版或任何預檢回退時，先清除先前HD Draw，避免觀測端誤用上一拍。來源／幾何／像素產生器不改；測試先放入先前HD紀錄再驗全部回退。
 
 最終觀測清除已通過原80個回退及五個兩原版控制樣本，先注入上一拍再驗移除。最終1240份Go指紋7af3f4d15b254d87e4ea86210ead451922d24c4728fefdcb0f76e4d98d55df91，程式5b045cacbaf97119b5faa2681df62b539afa10d1a89955ae5f39b0beb519180f，正常確認16筆三phase觀測；所有最終驗證無逾時或OOM。
+
+### HD1商店確認動畫
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，R61來源契約work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-confirmation-transitions-r61/ready-source.json。三商店confirm／equip_confirm／sell_confirm選項沿原四開／四收；購買在原nativeShopPostChoiceCloseFrame還原question後另五收／source還原，裝備／販售則帶choiceFrames末幀下移，兩種來源分開。nativeShopUIJob與資源12／29／63需匹配。modern_hd_shop_confirmation_prototype_test.go先驗四語、三mode及三variant的原cache、writer、HD文字副本與尾段選項部分可見範圍，通過才升READY；後續沿R60 renderer加owner及HD選項可選clip，既有無clip消費端保持。其他回覆、主選單、成功特效、金額框與小字樣及地形續作。
+
+R61原型於2026-11-03通過108來源stage／84job／468原幀／36還原、2981340 writer byte及14400裁切選項像素，UI及party／gold／RNG保持，故升READY。HD選項的完整144×120圖先快取再裁切，可見高度19／6／0／0／0原像素，禁止按可見範圍重排或縮小文字。正式實作沿modern_hd_church_confirmation_transition.go共用owner recipe與modern_hd_confirmation.go的可選clip；驗證沿modern_hd_shop_confirmation_transition_test.go，原教會與無clip消費端另作保持抽樣。
+R61完整畫面驗證位於modern_hd_shop_confirmation_gpu_test.go，購買204、裝備與販售各228；先獨立渲染完整static source／target，再按原矩形搬移並裁切，預期值不使用共用frame composer或新clip。
+
+R61主收據hd1_shop_confirmation_followup_20261103：購買204、裝備／販售各228，共660完整Game.Draw／71PNG，6082560000 RGBA byte與獨立原生producer、完整static source／target後依原矩形搬移合成相同，容差0；工具列遊戲區保持。三variant繁中全步，variant1其餘三語代表幀包含中心按鈕部分可見與還原；既有教會轉職另92完整畫面／17PNG保持，不混入660。原型108stage／84job／468原幀／36還原與正式21來源／117原幀／9還原／24裁切選項／378拒收、21兩原版清Draw及交易暫存保持通過；四個來源測試與92相關回歸通過，八個可選GPU／oracle／匯出略過。1243份Go指紋30ca43e5b271fbc2a412ce16b9a26505a08ca5380acfbc44b0c77d05728e179c，21／416／19與160字串保持。
+
+普通START/F9接續hotel_ch02後，布衣1000→950→987，39完整PNG、購買14／裝備18／販售22筆確認最近Draw均含開選項、收選項及收對話；三確認各四組、物品與受領比較四組、兩美術保存32c9cd02相同，F9及新程序LOAD通過，金幣動態裁圖九接受／四拒收。最近Draw與金幣觀測不作PNG精確同幀。來源、成功命令及收據沿R61工作根；[受控裝備確認收框首拍](../figures/hd1-shop-confirmation-game.png)明示金額1234與商品／隊伍為測試資料。953／6963與兩manifest保持，無新圖稿。先前各批次的商店確認待接項由本節取代；其餘設施回覆／主選單、成功特效、金額框、小字樣及地形續作。

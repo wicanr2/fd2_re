@@ -297,13 +297,17 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD商店販售確認](docs/figures/hd1-shop-dialogue-game.png)
 
-三類商店的穩定對話框、商品與名冊列表，以及購買、裝備、販售確認已接HD介面。上圖由正常START後F9接續既有第2章存檔，再經城鎮購買布衣並選擇出售；兩種美術保存與新程序標題讀取已抽驗。框線與確認隨F11切換，動畫與其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+三類商店的穩定對話框、商品與名冊列表，以及購買、裝備、販售確認已接HD介面。上圖由正常START後F9接續既有第2章存檔，再經城鎮購買布衣並選擇出售；兩種美術保存與新程序標題讀取已抽驗。框線與確認隨F11切換，其餘設施動畫與介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 | 商店名冊 | 教會名冊 |
 |---|---|
 | ![商店Q版人物名冊](docs/figures/hd1-shop-roster-q-game.png) | ![教會Q版人物名冊](docs/figures/hd1-church-roster-q-game.png) |
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![HD商店裝備確認對話收框首拍](docs/figures/hd1-shop-confirmation-game.png)
+
+三類商店的購買、裝備與販售確認已接HD選項開收，對話沿原位移裁切，介面與美術各自獨立。上圖是受控裝備對話收框的第一拍，金額與商品是測試資料。正常布衣買賣、三種確認切換、保存及重新啟動讀檔已抽驗；其餘設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 ![HD教會復活確認展開末拍](docs/figures/hd1-church-confirmation-game.png)
 

@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。現況58、主規格61與HD主收據是現行入口。\n\n已接古金故事／提示框、城鎮與離城、整備、酒店／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類穩定物品列表，商店九種及教會六種列表開收／還原、復活費用貨幣符號，以及教會轉職／復活確認動畫。#288原圖解碼及#289歡迎詞殘留已修正，不重開。\n\nR60接class_confirm／revive_confirm的四拍選項展開、四拍收回、取消接續對話五收與source還原，另含復活只收選項分支。question／source／dialogue各自證明literal writer與HD文字副本，綁定church mode、locale／font／palette、nativeClassUIJob及完整原cache。16／17原圖SHA固定，各四個0透明角不進選項writer，保留非零寫入與左後右重疊順序；沿既有多語HD按鈕、金框、原位移與文字裁切。F2／F11獨立，原ACK／clock／after及保存保持，缺件或來源不符回退。兩控制都原版回原生，任一HD才發布HD Draw；每次嘗試先清上一拍，回退不留下舊觀測。\n\n最終r3：轉職92／復活120，共212完整Game.Draw／38PNG，1953792000 RGBA byte與獨立原生producer加既有HD文字／金框／按鈕合成相同，容差0，工具列遊戲區相同。繁中全步、其餘三語代表幀與四種控制組合皆驗，原問句未新譯。原型24來源stage／20job／120原幀／662520 writer byte通過；正式五來源分支／30原幀／80拒收、五個兩原版控制與全部先前Draw清除檢查通過，教會列表來源保持。90相關回歸通過，七可選略過；1240份Go指紋7af3f4d15b254d87e4ea86210ead451922d24c4728fefdcb0f76e4d98d55df91，21／416／19與160字串保持。\n\n正常START/F9接續hotel_ch02經城鎮進教會，最終26完整PNG與16筆確認最近Draw，涵蓋開選項、收選項與取消後收對話，不當PNG精確同幀。五列表兩方向、復活費用與物品四組、F2、縮放／說明及取消通過；回旅館兩美術保存／F9皆190b9f8f。未執行實際轉職、復活或新程序LOAD；class是受控fixture，不作自然進程或身份證據。GPU r1僅測試把兩原版也要求HD Draw，已修正並加教訓；r2、最後追加觀測清除的r3皆以同像素門檻通過。\n\n主收據hd1_church_confirmation_followup_20261102與61索引來源、命令與收據。953清冊／6963私人素材及manifest保持，無新圖稿或格式；私人44636b94保持。公開圖明示受控第四拍、金額1234與費用21。\n\n目前續作其餘商店確認、設施回覆／主選單進出場、成功特效、其他金額框與小字樣；地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。",
+      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。現況58、主規格61及HD主收據為現行入口。\n\n已接古金故事／提示框、城鎮與離城、整備、酒店／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類物品列表，商店九種及教會六種列表開收／還原、復活費用貨幣符號、教會轉職／復活確認，以及三商店購買／裝備／販售確認開收。#288原圖解碼及#289歡迎詞殘留已修正，不重開。\n\nR61延用R60共用recipe，新增owner／variant／resource與實際job欄位，三商店12／29／63、教會14各自匹配。購買先還原question再另五收／source還原；裝備／販售以最後choice frame帶中心重疊選項下移，不能混用blank dialogue或還原question。原四開／四收、非零writer及左後右順序保持。HD按鈕按原144×120快取後裁邊，沿13像素位移／底邊裁切，原可見高19／6／0／0／0，沒有clip的既有消費端保持。F11字型／金框／按鈕獨立F2場景，兩原版回原生且清舊Draw；原cache／restore、ACK／clock／after、party／pending purchase／gold／RNG與保存保持。\n\n購買204、裝備／販售各228，共660完整Game.Draw／71PNG，6082560000 RGBA byte與獨立原生producer及完整static source／target後依原矩形搬移合成相同，容差0；工具列遊戲區保持。三variant繁中全步，variant1其餘三語代表幀含部分中心按鈕及還原。既有教會轉職另92完整畫面／17PNG保持，不混入660。原型108stage／84job／468原幀／36還原／2981340 writer byte／14400裁切像素通過；正式21來源／117原幀／9還原／24裁切選項／378拒收及21兩原版清Draw、交易暫存保持通過。四個來源測試與92相關回歸通過，八可選GPU／oracle／匯出略過；1243份Go指紋30ca43e5b271fbc2a412ce16b9a26505a08ca5380acfbc44b0c77d05728e179c，21／416／19與160字串保持。\n\n普通START/F9接續hotel_ch02，經城鎮布衣買賣1000→950→987，39完整PNG，購買14／裝備18／販售22筆最近Draw均含開選項、收選項及收對話；不當PNG精確同幀。三確認各四組、物品／受領比較四組、兩美術保存32c9cd02、F9及新程序LOAD通過，金幣裁圖九接受／四拒收。裝備選No沿既有原流程，未另造裝備服務路徑；三variant其餘畫面只作受控E1。\n\n主收據hd1_shop_confirmation_followup_20261103與61索引來源、命令與收據。953清冊／6963私人檔及兩manifest保持，無新圖稿或格式；私人44636b94保持。公開收框首拍明示金額1234及商品／隊伍為fixture，不作普通交易或身份證據。\n\n目前續作設施回覆／主選單進出場、成功特效、其他金額框與小字樣；地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成，本工單保持開啟。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -510,11 +510,17 @@
         "remake/cmd/fd2/modern_hd_church_confirmation_prototype_test.go",
         "remake/cmd/fd2/modern_hd_church_confirmation_transition_test.go",
         "remake/cmd/fd2/modern_hd_church_confirmation_gpu_test.go",
-        "docs/figures/hd1-church-confirmation-game.png"
+        "docs/figures/hd1-church-confirmation-game.png",
+        "remake/cmd/fd2/modern_hd_shop_confirmation_prototype_test.go",
+        "remake/cmd/fd2/modern_hd_shop_confirmation_transition_test.go",
+        "remake/cmd/fd2/modern_hd_shop_confirmation_gpu_test.go",
+        "remake/cmd/fd2/modern_hd_confirmation.go",
+        "remake/cmd/fd2/native_shop_transaction_ui.go",
+        "docs/figures/hd1-shop-confirmation-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R60最終教會確認212完整Game.Draw／38PNG、1953792000 RGBA byte容差0；原型24stage／20job／120原幀、五分支／30原幀／80拒收及五原版控制／先前Draw清除、90回歸通過，七可選略過。正常教會26PNG、確認16筆三phase觀測、取消與兩美術保存／F9保持190b9f8f；未執行實際轉職／復活或新程序LOAD。其餘設施動畫、小字樣、成功特效與地形續作，依61及hd1_church_confirmation_followup_20261102。"
+        "note": "R61三商店確認660完整Game.Draw／71PNG、6082560000 RGBA byte容差0，教會另92畫面／17PNG保持。原型108stage／84job／468原幀／36還原、正式21來源／117原幀／9還原／378拒收及交易暫存保持、92回歸通過，八可選略過。普通布衣買賣39PNG、三確認各四組與14／18／22筆三phase觀測、兩美術保存／F9／新程序LOAD通過。其餘設施動畫、成功特效、小字樣及地形續作，依61及hd1_shop_confirmation_followup_20261103。"
       },
       "issue": 283
     }

@@ -1400,7 +1400,7 @@ func (g *Game) beginNativeShopConfirmationOpening() bool {
 		return false
 	}
 	g.resetNativeShopUIPulse()
-	g.nativeShopUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeShopUIJob = g.bindModernFacilityConfirmation(&nativeClassUIJob{frames: frames}, "opening", nil)
 	return true
 }
 
@@ -1415,7 +1415,7 @@ func (g *Game) beginNativeShopConfirmationChoiceClosing(after func()) bool {
 	if err != nil || len(frames) != 4 {
 		return false
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{frames: frames, after: after}
+	g.nativeShopUIJob = g.bindModernFacilityConfirmation(&nativeClassUIJob{frames: frames, after: after}, "choice_only", nil)
 	return true
 }
 
@@ -1431,9 +1431,9 @@ func (g *Game) beginNativeShopDialogueClosing(
 	if err != nil || len(frames) != 5 {
 		return false
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{
+	g.nativeShopUIJob = g.bindModernFacilityConfirmation(&nativeClassUIJob{
 		frames: frames, restore: stable, after: after,
-	}
+	}, "dialogue_only", composed)
 	return true
 }
 
@@ -1492,6 +1492,10 @@ func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool {
 	job := g.nativeShopUIJob
 	if job == nil {
 		return false
+	}
+	if g.drawModernHDFacilityConfirmation(screen, job) {
+		job.drawn = true
+		return true
 	}
 	if g.drawModernHDFacilityList(screen, job) {
 		job.drawn = true
