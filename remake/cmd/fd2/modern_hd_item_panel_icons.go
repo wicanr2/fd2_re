@@ -50,6 +50,9 @@ func modernUIPanelIconSize(index int) image.Point {
 }
 
 func loadModernUIPanelIcon(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
+	if asset.SourceResource != 5 {
+		return loadModernHDServiceIcon(set, asset, root)
+	}
 	d := asset.NativeRawCell
 	size := modernUIPanelIconSize(d.Index)
 	if set == nil || size == (image.Point{}) || asset.Role != "native_ui_icon_hd" ||

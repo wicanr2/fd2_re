@@ -100,6 +100,7 @@ func (g *Game) drawModernHDFacilityFrame(screen *ebiten.Image, compose func() ([
 		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
 	}
 	g.appendModernHDFacilityDialogue(frame)
+	g.appendModernHDServiceIcons(frame)
 	return true
 }
 

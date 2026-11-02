@@ -242,6 +242,12 @@ func TestModernHDFacilityDialogueRuntimeGPU(t *testing.T) {
 							break
 						}
 					}
+					for _, icon := range g.modernHDText.serviceIcons {
+						if image.Pt(x, y).In(image.Rectangle{Min: icon.origin.Mul(6), Max: icon.origin.Add(image.Pt(24, 20)).Mul(6)}) {
+							skip = true
+							break
+						}
+					}
 				}
 				if skip {
 					continue

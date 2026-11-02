@@ -68,6 +68,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     surface_resources = set()
     story_resources = set()
     ui_icon_indices = set()
+    service_icon_sources = set()
     embedded_icon_indices = set()
     poster_sets = set()
     for entry in assets:
@@ -245,21 +246,33 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 raise ValueError(f'embedded UI master SHA mismatch: {asset_id}')
         if entry['role'] == 'native_ui_icon_hd':
             cell = entry['native_raw_cell']
+            service_metadata = {
+                12:'9a80b9a9d23b0d89d242c785900fbcf1a7048f540fbc609ae125d37a05a6a775',
+                13:'4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5',
+                14:'fabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12',
+                29:'732b27ddb48a416d4efa0ff61355f446bacc10083726792b813370e31f6bb096',
+                63:'c461d881cdfef918c09bcbdd7940d556b74e554a543f18509981b2b18831c838'}
+            resource=entry['source_resource']
+            service=type(resource) is int and resource in service_metadata
+            indices=set(range(3,11)) if service else {53,54,55,56,57,59,60,61,62,63}
+            used=service_icon_sources if service else ui_icon_indices
+            source_key=(resource,cell.get('index')) if isinstance(cell,dict) and service else cell.get('index') if isinstance(cell,dict) else None
+            expected_metadata=service_metadata.get(resource) if service else 'a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3'
             if (not isinstance(cell, dict) or set(cell) != {'index', 'width', 'height', 'pixels_sha256'}
-                    or type(cell['index']) is not int or cell['index'] not in {53,54,55,56,57,59,60,61,62,63}
-                    or cell['index'] in ui_icon_indices or type(cell['width']) is not int or type(cell['height']) is not int
-                    or (cell['width'], cell['height']) != ((29,24) if cell['index'] in {53,54} else (24,20))
+                    or type(cell['index']) is not int or cell['index'] not in indices
+                    or source_key in used or type(cell['width']) is not int or type(cell['height']) is not int
+                    or (cell['width'], cell['height']) != ((29,24) if not service and cell['index'] in {53,54} else (24,20))
                     or not isinstance(cell['pixels_sha256'], str) or not SHA_RE.fullmatch(cell['pixels_sha256'])
                     or (entry['width'], entry['height']) != (cell['width']*6, cell['height']*6)
                     or entry['consumer_contract'] != 'native_raw_ui_icon_hd6_v1'
-                    or entry['source_archive'] != 'FDOTHER.DAT' or type(entry['source_resource']) is not int or entry['source_resource'] != 5
-                    or entry['source_metadata_sha256'] != 'a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3'
+                    or entry['source_archive'] != 'FDOTHER.DAT' or type(resource) is not int or not service and resource!=5
+                    or entry['source_metadata_sha256'] != expected_metadata
                     or entry['layout_policy'] != 'native_raw_cell_rect_hd6' or entry['alpha_contract'] != 'opaque'
                     or entry['status'] not in {'runtime_candidate','runtime_ready'}
                     or entry['source_files'] != [entry['master_file']] or len(entry['source_sha256']) != 1
                     or not SHA_RE.fullmatch(entry['source_sha256'][0])):
-                raise ValueError(f'invalid HD panel icon contract: {asset_id}')
-            ui_icon_indices.add(cell['index'])
+                raise ValueError(f'invalid HD panel/service icon contract: {asset_id}')
+            used.add(source_key)
             if verify_private and hashlib.sha256((ROOT/private_root/entry['master_file']).read_bytes()).hexdigest() != entry['source_sha256'][0]:
                 raise ValueError(f'HD panel icon master SHA mismatch: {asset_id}')
         if entry["role"] == "battle_hud_panel":
@@ -590,6 +603,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
     if poster_sets and poster_sets != {0, 1}:
         raise ValueError('poster pair must contain both approved sets')
+    if service_icon_sources and service_icon_sources != {(r,i) for r in [12,13,14,29,63] for i in range(3,11)}:
+        raise ValueError('HD service icon40-source group incomplete')
     if ui_icon_indices and ui_icon_indices != {53,54,55,56,57,59,60,61,62,63}:
         raise ValueError('HD panel icon group incomplete')
     if story_resources and story_resources!={('FDOTHER.DAT',34),('ANI.DAT',0)}:

@@ -64,10 +64,11 @@ func modernHDTextFace(f *Font, run modernHDTextRun, scale float64) (font.Face, f
 }
 
 type modernHDTextFrame struct {
-	scene   *ebiten.Image
-	runs    []modernHDTextRun
-	panels  []modernHDDialoguePanel
-	choices []modernHDConfirmationPlacement
+	serviceIcons []modernHDServiceIconPlacement
+	scene        *ebiten.Image
+	runs         []modernHDTextRun
+	panels       []modernHDDialoguePanel
+	choices      []modernHDConfirmationPlacement
 }
 
 type modernHDIndexedText struct {

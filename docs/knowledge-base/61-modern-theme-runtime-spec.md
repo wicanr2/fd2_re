@@ -5851,4 +5851,20 @@ IDA9.4已證實八服務cells走0x4E9E4→0x4E9FF的raw逐byte／零值透明路
 
 [正常教堂清楚原圖](../figures/hd1-church-service-source-game.png)來自START後F9接續既有hotel_ch02，再經城鎮入教堂；酒店13及教堂15PNG、四語名冊／復活與交付取消、服務保存LOAD、F2與縮放說明通過。來源及兩美術保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持，未新增冷LOAD或原版E2。
 
-只將八PNG、resource.json與manifest修正同步私人0b5916e3af7e8075201921df0a853f74a6c1b8e2及本地原版快取，現代包只改scene14 metadata pin；全部6942張現代圖與913清冊數保持。原始EXE／DAT／raw及source_resources未改，來源摘要只更新manifestSHA。私人仍private且遠端一致。這批修正原圖解碼，HD服務美術與動畫仍由#283續作，#282地形仍3180缺槽／2033唯一來源。
+只將八PNG、resource.json與manifest修正同步私人0b5916e3af7e8075201921df0a853f74a6c1b8e2及本地原版快取，現代包只改scene14 metadata pin；全部6942張現代圖與913清冊數保持。原始EXE／DAT／raw及source_resources未改，來源摘要只更新manifestSHA。私人仍private且遠端一致。這批修正原圖解碼，HD服務美術依下節R50補齊，動畫仍由#283續作，#282地形仍3180缺槽／2033唯一來源。
+
+## HD1設施服務圖示（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+沿R49已修正原圖，FDOTHER12／13／14／29／63的indices3..10共40來源，按原始24×20像素SHA去重為20張。三商店來源相同；酒店3／4與教堂3／4、商店9／10與教堂5／6亦逐byte相同，因此只共用同一圖案，不推定角色身份。R50 sources.json、generation-r2.json及144實際尺寸預覽保存來源與內建image_gen提示；已修正錢幣／美元、愛心／棋盤相位及法師多餘道具。採既有金色手繪UI風格，人工造型由使用者接手。
+
+配方入口remake/assets/themes/modern/facility-service-icons.recipe.json，編製器tools/build_fd2_service_icons_hd.py；只支援上述40來源。生成圖集各列高度不同，使用量得的20個完整框位明確裁切，不等分切入相鄰金框；主稿不改。以Pillow11.3縮144×120，四個原生零值角落各6×6沿已證實清除底色index74填RGB40／69／138，其他像素與alpha不改，不設alpha閾值。穩定選單四位置201／227／253／279,169保持。
+
+沿既有schema1的native_ui_icon_hd、native_raw_ui_icon_hd6_v1、opaque及native_raw_cell_rect_hd6契約，以獨立40項完整可選群組擴充上述五來源；原十項panel圖示與舊清冊缺新群組回退保持。正式factory逐項核metadata／native raw描述／PNG／尺寸與不透明，最終另驗40群組，不混入舊10數量閘門。只在live穩定menu、無設施job時，先比對完整實際原生四格與原選項／pulse加零角底色，才一起發布四HD圖示。畫面覆蓋、source／palette／owner不符不留舊圖，F11獨立於F2；其他模式與動畫續作。
+
+入口modern_hd_service_icons.go、modern_hd_facility_text.go、native_shop_ui.go及modern_hd_presentation.go。必要驗收含最小實際PNG清冊舊10／新40、五資源×四選項×兩相位×四控制的完整像素、來源／缺件／遮蓋／owner／job／palette拒絕、正常酒店／教堂／商店與保存、allow-list私人保存。只新增40清冊與21檔，原913項與6942現代圖保持；目標953／6963。主收據預留hd1_facility_service_icons_followup_20261102，不稱整個HD1或新原版E2。
+
+R50主收據hd1_facility_service_icons_followup_20261102：170完整Game.Draw／17PNG逐點核對11750400圖示像素，80組HD、90組原版或舊包回退，包含五資源、四選項、兩相位、四控制及十個舊包回退；工具列整個遊戲區相同。76相關回歸與16清冊測試通過，七可選GPU／oracle／匯出略過另列，不充作通過。錯來源、metadata、raw描述、PNG雜湊、幾何、路徑、重複與契約拒收；遮蓋、job、缺件、palette與快取異動不發布。1221份Go指紋d96c090332f6ccd504f7b7fbcc75075ef60fad307b5a72e37e10fbfd6334a37b，21來源／416幀／19反例及159字串處置保持。
+
+[正常酒店](../figures/hd1-hotel-service-hd-game.png)、[正常教堂](../figures/hd1-church-service-hd-game.png)及[正常商店](../figures/hd1-shop-service-hd-game.png)分別13／15／18PNG通過；均由START後F9接續既有hotel_ch02，再正常鍵盤進入。酒店與教堂保存仍為190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456，商店抽樣未執行F5，不新增其保存聲明。未新增標題冷LOAD、連續戰役或原版E2。
+
+21個登錄檔依allow-list保存私人44636b9445b9585a37b6a74f26096354253e8757，953清冊／6963檔雜湊及1000:1000擁有權核對，舊913項與6942圖、原版包保持；本地快取同步，私人仍private且遠端一致。只完成穩定服務選單，設施進出場及其他動畫仍由#283續作，#282地形仍3180缺槽／2033唯一來源。

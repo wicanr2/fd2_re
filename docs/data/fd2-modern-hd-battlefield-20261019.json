@@ -301672,5 +301672,292 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/final-validation.json",
       "sha256": "e3a6698f0c65a32574769b874e9c39e88d85d2e5c55257111bf556c024a41f13"
     }
+  },
+  "hd1_facility_service_icons_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "21c77ba9ab9dd4e6d38f1cbebb31f9a180b0c909",
+    "scope": "五種設施的穩定服務選單HD圖示；沿原24×20輪廓、四位置及兩相位，不改輸入或遊戲規則。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1221,
+      "go_tree_sha256": "d96c090332f6ccd504f7b7fbcc75075ef60fad307b5a72e37e10fbfd6334a37b",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/consumers-r1.json",
+        "sha256": "7514fc8875dc0cbec5248936b4ee993f83c60f737cfbc452fd4281fae63d7909"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/fd2-player-r1",
+        "sha256": "31872492e0f025295504381b61eb0145b3fb0d4db3b995227bb882fa593140af"
+      },
+      "production_go_unchanged_after_binary": true,
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "5214db655623fd619e822c892d1c98a7a49183215adf158b12c1be802c456333"
+      },
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/runtime-r1/assets/themes/modern/catalog.json",
+        "sha256": "5214db655623fd619e822c892d1c98a7a49183215adf158b12c1be802c456333"
+      },
+      "registered_assets": 953,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/commands.json",
+        "sha256": "e5b07a44d332ef9953e46fbfda2c72f89a80e5a86609f99bfd19d0db4a6dc6b7"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_icons.go",
+          "sha256": "5ced89d161816095fe57816d75f4c501735734ff24391291a5c5dccf29d81348"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_icons_test.go",
+          "sha256": "43fd49f424a5fc8c1a89b80cd275c31b42bb5eed84976f60c64d01a03607db59"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_item_panel_icons.go",
+          "sha256": "8561a67cbae907c1da227574ced0f2f173e51b323b9fa2cea79e738333e0aeeb"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_story_portrait.go",
+          "sha256": "fd87fe7dc079dfba92d6203691790639229f707ff0a6cc4c981792026f20c0ec"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_text.go",
+          "sha256": "3165782281119db1ea0cbcdad7ae23cbe4fc343dd304d1f8a88b88f380291a4d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_presentation.go",
+          "sha256": "1c834d33658aa6ff97cbd26b4bcd8f80040e2fa9a46145236711d3cc03757649"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "a4dbe9ff63c49340992c353f326e8360ca0f3881a1961b3643e41c0ecc7bc2a3"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "a35d093a41e3b39bf500e1d7f4a4b942a583009716cfbf02a823ba3d2ef01e82"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_service_source_test.go",
+          "sha256": "176e17f8e6d12bc06b62f847f5b1613c2993f149508c719fbc85f96d21daf863"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_dialogue_test.go",
+          "sha256": "f7c57d9dedb1b1cf9cd1dd83c9ef0feed147341cd0dbb8e945f10c9d088826fb"
+        }
+      ]
+    },
+    "art": {
+      "resources": [
+        12,
+        13,
+        14,
+        29,
+        63
+      ],
+      "source_indices": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "source_bindings": 40,
+      "unique_paintings": 20,
+      "new_files": 21,
+      "recipe": {
+        "file": "remake/assets/themes/modern/facility-service-icons.recipe.json",
+        "sha256": "bc91166ca9ea4947660ad88e3c352af8008063fedb82dcc75a720fe5834e5444"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_service_icons_hd.py",
+        "sha256": "3cfd9a9e8bf43afc7dd9f31eeea425b2a0407542b7f72f981f9f6cf3c2969330"
+      },
+      "sources": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/sources.json",
+        "sha256": "94829866a4dcedc11772d15690591ee70215f539e3cd3f42910b77a5213d691f"
+      },
+      "generation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/generation-r2.json",
+        "sha256": "b8d1f9ca67046406d4bf85e9c38657c05866c07692ba6b1c4ab3ad83cbcf5e4f"
+      },
+      "compile": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/compiled-r1/receipt.json",
+        "sha256": "7b8227a2948f06e4bb4d134c8c15eee7a6eaa3ff8bd5d9c69cdd6ea898b8a177"
+      },
+      "atlas_master_name": "facility-services-hd1-atlas-r2-master.png",
+      "atlas_master_sha256": "8c57b78d7088a5ddc416a77e4fcff56b63ea7150490a3538d6b55ee8e0dad541",
+      "explicit_crops": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/atlas-crops-r2.json",
+        "sha256": "7f00f45d6ff27176c42648a673603e9eaf3bc2e37a11907355c4de8ec5082b6f"
+      },
+      "actual_size_review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/service-icon-hd144-review-r2.png",
+        "sha256": "5d7023123418373a410cf417be0ffd4487b63a83412752a03eaf95dfd8a29201"
+      },
+      "native_zero_corners_only": "每格四個6×6原零值角落沿palette74填RGB40/69/138；不修改主稿，不設alpha閾值。",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e",
+      "old_913_entries_unchanged": true,
+      "new_schema": false
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/gpu-r1-capture/receipt.json",
+        "sha256": "2663b004b053e952d1661f070e18d1ad40a5455ae2fcad972cd81c09a87ed2aa"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/gpu-r1.memory.json",
+        "sha256": "a5f2428f587a6d8291613d280a9ffb3367e434d2e5c4b7b4d488cc12babc49e1"
+      },
+      "cases": 170,
+      "hd_cases": 80,
+      "native_and_legacy_cases": 90,
+      "png": 17,
+      "icon_pixels": 11750400,
+      "complete_toolbar_game_pixels_equal": true,
+      "matrix": "五資源×四選項×兩相位×四美術／介面組合，加十個舊群組回退；完整四格逐像素核對。"
+    },
+    "normal_gui": {
+      "hotel": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-hotel-r1-capture/receipt.json",
+          "sha256": "d2a34d13daa5a6873953276dd722c1cd7367912129d29156ca7d776d31cf4e7e"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-hotel-r1.memory.json",
+          "sha256": "d7559120f5efe5192e67269dac0797b2447cb79e241f6472a34e577063537d8b"
+        },
+        "png": 13,
+        "scope": "正常START後F9接續既有hotel_ch02槽，正常旅館選槽、保存與服務LOAD；四語保留原有原生文字，不新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-church-r1-capture/receipt.json",
+          "sha256": "8b25b5f7c8a7871dd8994aebda825f732ba0eaa1c2bcc9c7ce8cd203d53c4106"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-church-r1.memory.json",
+          "sha256": "851eced5d5126d0745bc32280812211a95710edfa9eb1addb72ac9d832174285"
+        },
+        "png": 15,
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      },
+      "shop": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-shop-r1-capture/receipt.json",
+          "sha256": "f2e8f64d3a7fa93e912dda897a1dcda202284c6ba8463eeeb75ec1560493006d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-shop-r1.memory.json",
+          "sha256": "2fa0aae2c0242f78ea1c6c95fafc0d73215bb85c426224c01dc4faaa11bc4591"
+        },
+        "png": 18,
+        "scope": "正常START序章首句四語、說明頁；明示F9接續hotel_ch02後正常城鎮與商店。非連續全戰役，不宣稱原版視覺對拍。",
+        "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      }
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/regression-r1.memory.json",
+        "sha256": "931ed051fa4527972479e769cbb63ee926ba8afa2a6d96a650733f66e5519b66"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/regression-r1.log",
+        "sha256": "64a7dca55a8f8d52740fb92f5c274c01ce6536c63ca9199ec2034060150dc2e3"
+      },
+      "top_level_passed": 76,
+      "skipped": [
+        "TestNativeHotelOriginalLoadSameSourceProbe",
+        "TestModernHDChurchRawServiceSourceGPU",
+        "TestModernHDFacilityDialogueRuntimeGPU",
+        "TestModernHDFacilityPortraitRuntimeGPU",
+        "TestModernHDFacilityFullSourceExport",
+        "TestModernHDFacilityRuntimeGPU",
+        "TestModernHDServiceIconsRuntimeGPU"
+      ],
+      "skips_are_not_passes": true,
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/consumers-verified-r1.json",
+        "sha256": "1830093853c1676643aa42ca233ab834028853910390f08e6d3db5b0b17345d8"
+      },
+      "catalog_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/catalog-validation-r1.json",
+        "sha256": "405734a51f22c8eda46cbf2a5bb7837a3767b4dbcd7c57fda6f2fd0af18fab80"
+      },
+      "catalog_unit_tests_passed": 16,
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/string-migration-r1.json",
+        "sha256": "364c4d41f54e7f432cbe000e57e244084c77e70b9b2c75bc57b7f9b29b1376ca"
+      },
+      "go_review_candidates": 159,
+      "prior_string_dispositions_preserved": 159,
+      "source_and_rejection_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/cpu-r2.memory.json",
+        "sha256": "22f2e17b4c3aeaaa1b8ce3ee5e823bb211fcc413b4e57d39d8bc422b7617e1b0"
+      }
+    },
+    "private_assets": {
+      "head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "remote_verified": true,
+      "is_private": true,
+      "changed_files": 23,
+      "registered_files": 6963,
+      "sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/private-sync.json",
+        "sha256": "0a994efb6b3a415488cc5bb60e33b7e6d21fa0250bbab78bfcf30ff5926ceb9d"
+      },
+      "plan": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/private-sync-plan.json",
+        "sha256": "474c5e7983bd9ab0c4039c22a0f316a67ba35552ce27002f669a248383311c0f"
+      },
+      "original_pack_unchanged": true,
+      "prior_6942_files_unchanged": true,
+      "local_registered_cache_synced": true
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-church-service-hd-game.png",
+        "sha256": "0cddcd0501f9c7d6e204a4b7b8599039cea502064ac050bb0e2561f12c88f74b",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-church-r1-capture/church-menu.png",
+        "kind": "normal keyboard remake capture; START then F9 existinghotel_ch02"
+      },
+      {
+        "file": "docs/figures/hd1-hotel-service-hd-game.png",
+        "sha256": "c60f6e165eb06de23cd0377a9cecdec2444d2911dca9a0da9c9055df6c1bbe2d",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-hotel-r1-capture/hotel-menu-zh-Hant.png",
+        "kind": "normal keyboard remake capture; START then F9 existinghotel_ch02"
+      },
+      {
+        "file": "docs/figures/hd1-shop-service-hd-game.png",
+        "sha256": "2ee208cb39e64e9c36af798e006b4450b1d46cecb64e6ff07f648e084a218f09",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/normal-shop-r1-capture/shop-menu-zh-Hant.png",
+        "kind": "normal keyboard remake capture; START then F9 existinghotel_ch02"
+      }
+    ],
+    "remaining_ui": [
+      "設施進出場及其他原生動畫job",
+      "尚未接線的其他正式介面內容"
+    ],
+    "limits": [
+      "只完成穩定服務選單；動畫job保留既有原生來源。",
+      "人工造型、逐章與平台驗證由使用者接手。",
+      "正常START後F9接續既有hotel_ch02；不新增冷LOAD、連續戰役或原版E2聲明。",
+      "酒店及教堂保存保持；商店正常抽樣未執行F5，不將它列作新保存驗證。",
+      "地形仍3180缺槽／2033唯一來源。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/final-validation.json",
+      "sha256": "6b8fe2fdd8f34a2287e999ecaf0d06661aac98fd4642be700a521ba0c2db89ea"
+    }
   }
 }

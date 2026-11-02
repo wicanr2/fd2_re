@@ -202,6 +202,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	if !g.nativeFullDACWhite && !g.nativeFullDACBlack &&
 		!(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
 		p.drawModernHDText(screen, contentGeometry, brightness)
+		p.drawModernHDServiceIcons(screen, contentGeometry, brightness)
 	}
 	if p.toolbarVisible() {
 		toolbarGeometry := ebiten.GeoM{}

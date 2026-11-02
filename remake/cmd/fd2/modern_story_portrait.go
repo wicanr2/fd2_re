@@ -26,6 +26,7 @@ type modernStoryPortraitFrame struct {
 
 type modernStoryPortraitSet struct {
 	uiPanelIcons      map[int]*modernUIPanelIcon
+	uiServiceIcons    map[[2]int]*modernHDServiceIcon
 	uiEmbeddedIcons   map[int]*modernUIEmbeddedIcon
 	skyKeyFD34        *modernSkyKeyHDBank
 	skyKeyANI         *modernSkyKeyHDBank
@@ -456,6 +457,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	if (set.mapEffects != nil) != hasPlayer9Results {
 		return nil, errors.New("modern HD player9 effect/result group is incomplete")
+	}
+	if err := validateModernHDServiceIconGroup(set); err != nil {
+		return nil, err
 	}
 	if err := validateModernFacilityPortraitScenePairs(set); err != nil {
 		return nil, err

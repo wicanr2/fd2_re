@@ -18,6 +18,10 @@ func TestModernHDChurchRawServiceSourceGPU(t *testing.T) {
 		t.Skip("dedicated GPU process")
 	}
 	set := facilityHDTestSet(t)
+	// This source audit deliberately uses the supported legacy UI group.
+	legacy := *set
+	legacy.uiServiceIcons = nil
+	set = &legacy
 	g := facilityDialogueTestGame(t, set)
 	raw, err := os.ReadFile("../../../extracted/raw/FDOTHER/FDOTHER_014.bin")
 	if err != nil {
