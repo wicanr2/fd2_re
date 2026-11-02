@@ -11,6 +11,8 @@ from PIL import Image, __version__ as pillow_version
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_SHA = '5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5'
+# Same six facility sources; only unrelated church14 service cells corrected.
+CHURCH_CODEC_MANIFEST_SHA = '1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e'
 FDOTHER_SHA = 'a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce'
 SOURCES = [('town011', 11), ('town061', 61), ('town062', 62),
            ('shop012', 12), ('shop029', 29), ('shop063', 63)]
@@ -43,7 +45,7 @@ def main():
     assert a.out.parent.is_dir() and a.out.parent.stat().st_uid == os.getuid()
     assert not a.out.exists(), '使用全新輸出目錄，不覆寫舊收據'
     original = a.original_pack
-    assert digest(original / 'manifest.json') == MANIFEST_SHA
+    assert digest(original / 'manifest.json') in {MANIFEST_SHA, CHURCH_CODEC_MANIFEST_SHA}
     manifest = json.loads((original / 'manifest.json').read_text())
     pinned = {v['path']: v['sha256'] for v in manifest['assets']}
     generation = json.loads(a.generation.read_text())
@@ -127,7 +129,7 @@ def main():
     catalog['assets'].extend(entries)
     (a.out / 'catalog.json').write_text(json.dumps(catalog, ensure_ascii=False, indent=2)+'\n')
     report = dict(status='PASS-FACILITY-HD-COMPILE', compiler='tools/build_fd2_facility_hd.py',
-                  pillow=pillow_version, original_manifest_sha256=MANIFEST_SHA, base_catalog_sha256=digest(a.catalog),
+                  pillow=pillow_version, original_manifest_sha256=digest(original / 'manifest.json'), base_catalog_sha256=digest(a.catalog),
                   catalog_sha256=digest(a.out/'catalog.json'), rows=rows,
                   new_files={n: hashlib.sha256(v).hexdigest() for n, v in prepared.items()},
                   scope='六場景與三位店員靜態圖源；不證明正常玩家流程或人工造型驗收。')

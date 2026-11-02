@@ -81,7 +81,7 @@ func (g *Game) modernTownCursorFor(variant, selection, pulse, group int) (*moder
 // canonical FDOTHER fingerprint in fd2-reference-files.json.
 var modernFacilityMetadata = map[int]string{
 	13: "4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5",
-	14: "bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224",
+	14: "fabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12",
 	11: "a2b971d3e390e737d119695e5623291481dd5f4a8c05c22338de6d7e819090f7",
 	61: "eba9d7756735ba4b782adc5d0e9f74d0a68923f643996071bbad3e3e1e168177",
 	62: "170feb1402119cfc491d7aed0682762897e23dcbcc58a37a304f91ba5b374689",

@@ -1599,7 +1599,7 @@ func exportChurchUI(fdotherPath, outputRoot string) error {
 			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
 		},
 	}
-	for _, index := range []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 16} {
+	for _, index := range []int{1, 16} {
 		entry, err := fdother.ParseLMI1OpaqueEntry(raw, index)
 		if err != nil {
 			return err
@@ -1611,6 +1611,23 @@ func exportChurchUI(fdotherPath, outputRoot string) error {
 		if err := writeIndexedPNG(
 			filepath.Join(directory, metadata.Frame), entry.Width, entry.Height, entry.Pixels,
 		); err != nil {
+			return err
+		}
+		document.Entries = append(document.Entries, metadata)
+	}
+	// Service cells use the distinct raw, zero-transparent 0x4e9e4
+	// primitive. The LMI1 directory alone does not select high-run RLE.
+	for index := 3; index <= 10; index++ {
+		entry, err := fdother.ParseLMI1RawEntry(raw, index)
+		if err != nil {
+			return err
+		}
+		if entry.Width != 24 || entry.Height != 20 {
+			return fmt.Errorf("church service %d is not24x20", index)
+		}
+		metadata := itemPanelEntryDocument{Index: index, Codec: "raw_indexed_opaque",
+			Width: entry.Width, Height: entry.Height, Frame: fmt.Sprintf("entry_%03d/frame.png", index)}
+		if err := writeIndexedPNG(filepath.Join(directory, metadata.Frame), entry.Width, entry.Height, entry.Pixels); err != nil {
 			return err
 		}
 		document.Entries = append(document.Entries, metadata)

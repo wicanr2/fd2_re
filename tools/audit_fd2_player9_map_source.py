@@ -20,7 +20,13 @@ def digest(p):
 
 def audit(pack, ranges=None):
     inventory = json.loads((ROOT/'docs/data/fd2-battle-hd-source-inventory-20261019.json').read_text())
-    if digest(pack/'manifest.json') != inventory['pack_manifest_sha256']:
+    # The historical inventory keeps its original pack identity. This second
+    # pinned revision changes only church14 service PNGs/metadata; FDOTHER5/6,
+    # raw archives and palette are byte-identical. Evidence: HD ledger
+    # hd1_church_service_codec_followup_20261102 and canonical service-codec IDA.
+    known_manifests = {inventory['pack_manifest_sha256'],
+                       '1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e'}
+    if digest(pack/'manifest.json') not in known_manifests:
         raise ValueError('固定原包manifest不同')
     manifest = json.loads((pack/'manifest.json').read_text())
     rows = {r['path']: r for r in manifest['assets']}

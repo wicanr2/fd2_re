@@ -70,6 +70,26 @@ func TestComposeNativeChurchMenuFramePulsesOnlySelectedCell(t *testing.T) {
 	}
 }
 
+func nativeChurchOriginalTestEntries(t *testing.T, resource []byte) []fdother.LMI1Entry {
+	t.Helper()
+	entries := make([]fdother.LMI1Entry, 17)
+	for _, index := range []int{1, 16} {
+		cell, err := fdother.ParseLMI1OpaqueEntry(resource, index)
+		if err != nil {
+			t.Fatal(err)
+		}
+		entries[index] = cell
+	}
+	for index := 3; index <= 10; index++ {
+		cell, err := fdother.ParseLMI1RawEntry(resource, index)
+		if err != nil {
+			t.Fatal(err)
+		}
+		entries[index] = fdother.LMI1Entry{Width: cell.Width, Height: cell.Height, Pixels: cell.Pixels}
+	}
+	return entries
+}
+
 func TestNativeChurchMenuOriginalResourceCells(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	path := filepath.Join(base, "FDOTHER.DAT")
@@ -80,10 +100,7 @@ func TestNativeChurchMenuOriginalResourceCells(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	entries, err := fdother.ParseLMI1(resource)
-	if err != nil {
-		t.Fatal(err)
-	}
+	entries := nativeChurchOriginalTestEntries(t, resource)
 	backgroundFrame, err := fdother.ParseLMI1FrameEntry(resource, 0)
 	if err != nil {
 		t.Fatal(err)

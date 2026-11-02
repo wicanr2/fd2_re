@@ -1,0 +1,5682 @@
+{
+  "schema": "fd2-service-icon-codec-ida-v1",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "database_input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "ida_version": "9.4",
+  "address_space": "IDA LE linear, image base0, code segment begins0x10000",
+  "semantic_policy": "original names/operands/bytes retained; annotations from reviewed semantic index",
+  "functions": [
+    {
+      "address": "0x2d669",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x2d669",
+      "target": "0x2d669",
+      "original_name": "sub_2D669",
+      "start": "0x2d669",
+      "end": "0x2d7bd",
+      "instructions": [
+        {
+          "address": "0x2d669",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d669",
+          "bytes": "6834000000",
+          "original_disassembly": "push    34h ; '4'"
+        },
+        {
+          "address": "0x2d66e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d66e",
+          "bytes": "e864960000",
+          "original_disassembly": "call    sub_36CD7"
+        },
+        {
+          "address": "0x2d673",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d673",
+          "bytes": "53",
+          "original_disassembly": "push    ebx"
+        },
+        {
+          "address": "0x2d674",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d674",
+          "bytes": "56",
+          "original_disassembly": "push    esi"
+        },
+        {
+          "address": "0x2d675",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d675",
+          "bytes": "57",
+          "original_disassembly": "push    edi"
+        },
+        {
+          "address": "0x2d676",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d676",
+          "bytes": "55",
+          "original_disassembly": "push    ebp"
+        },
+        {
+          "address": "0x2d677",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d677",
+          "bytes": "83ec14",
+          "original_disassembly": "sub     esp, 14h"
+        },
+        {
+          "address": "0x2d67a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d67a",
+          "bytes": "b904000000",
+          "original_disassembly": "mov     ecx, 4"
+        },
+        {
+          "address": "0x2d67f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d67f",
+          "bytes": "89e7",
+          "original_disassembly": "mov     edi, esp"
+        },
+        {
+          "address": "0x2d681",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d681",
+          "bytes": "beda260500",
+          "original_disassembly": "mov     esi, offset unk_526DA"
+        },
+        {
+          "address": "0x2d686",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d686",
+          "bytes": "f3a5",
+          "original_disassembly": "rep movsd"
+        },
+        {
+          "address": "0x2d688",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d688",
+          "bytes": "6800fa0000",
+          "original_disassembly": "push    0FA00h"
+        },
+        {
+          "address": "0x2d68d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d68d",
+          "bytes": "e884960000",
+          "original_disassembly": "call    malloc"
+        },
+        {
+          "address": "0x2d692",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d692",
+          "bytes": "83c404",
+          "original_disassembly": "add     esp, 4"
+        },
+        {
+          "address": "0x2d695",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d695",
+          "bytes": "89442410",
+          "original_disassembly": "mov     [esp+24h+var_14], eax"
+        },
+        {
+          "address": "0x2d699",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d699",
+          "bytes": "6800fa0000",
+          "original_disassembly": "push    0FA00h"
+        },
+        {
+          "address": "0x2d69e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d69e",
+          "bytes": "6800000a00",
+          "original_disassembly": "push    0A0000h"
+        },
+        {
+          "address": "0x2d6a3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6a3",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d6a4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6a4",
+          "bytes": "e81b9d0000",
+          "original_disassembly": "call    memmove"
+        },
+        {
+          "address": "0x2d6a9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6a9",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d6ac",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6ac",
+          "bytes": "31f6",
+          "original_disassembly": "xor     esi, esi"
+        },
+        {
+          "address": "0x2d6ae",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6ae",
+          "bytes": "eb27",
+          "original_disassembly": "jmp     short loc_2D6D7"
+        },
+        {
+          "address": "0x2d6b0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6b0",
+          "bytes": "6a68",
+          "original_disassembly": "push    68h ; 'h'"
+        },
+        {
+          "address": "0x2d6b2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6b2",
+          "bytes": "6a4a",
+          "original_disassembly": "push    4Ah ; 'J'"
+        },
+        {
+          "address": "0x2d6b4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6b4",
+          "bytes": "8d96a9000000",
+          "original_disassembly": "lea     edx, [esi+0A9h]"
+        },
+        {
+          "address": "0x2d6ba",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6ba",
+          "bytes": "89d0",
+          "original_disassembly": "mov     eax, edx"
+        },
+        {
+          "address": "0x2d6bc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6bc",
+          "bytes": "c1e002",
+          "original_disassembly": "shl     eax, 2"
+        },
+        {
+          "address": "0x2d6bf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6bf",
+          "bytes": "01d0",
+          "original_disassembly": "add     eax, edx"
+        },
+        {
+          "address": "0x2d6c1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6c1",
+          "bytes": "c1e006",
+          "original_disassembly": "shl     eax, 6"
+        },
+        {
+          "address": "0x2d6c4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6c4",
+          "bytes": "03442418",
+          "original_disassembly": "add     eax, [esp+2Ch+var_14]"
+        },
+        {
+          "address": "0x2d6c8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6c8",
+          "bytes": "05c9000000",
+          "original_disassembly": "add     eax, 0C9h"
+        },
+        {
+          "address": "0x2d6cd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6cd",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d6ce",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6ce",
+          "bytes": "e8ed9e0000",
+          "original_disassembly": "call    memset"
+        },
+        {
+          "address": "0x2d6d3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6d3",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d6d6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6d6",
+          "bytes": "46",
+          "original_disassembly": "inc     esi"
+        },
+        {
+          "address": "0x2d6d7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6d7",
+          "bytes": "83fe14",
+          "original_disassembly": "cmp     esi, 14h"
+        },
+        {
+          "address": "0x2d6da",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6da",
+          "bytes": "7cd4",
+          "original_disassembly": "jl      short loc_2D6B0"
+        },
+        {
+          "address": "0x2d6dc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6dc",
+          "bytes": "6800fa0000",
+          "original_disassembly": "push    0FA00h"
+        },
+        {
+          "address": "0x2d6e1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6e1",
+          "bytes": "ff742414",
+          "original_disassembly": "push    [esp+28h+var_14]"
+        },
+        {
+          "address": "0x2d6e5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6e5",
+          "bytes": "ff35493a0500",
+          "original_disassembly": "push    dword_53A49"
+        },
+        {
+          "address": "0x2d6eb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6eb",
+          "bytes": "e8d49c0000",
+          "original_disassembly": "call    memmove"
+        },
+        {
+          "address": "0x2d6f0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6f0",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d6f3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6f3",
+          "bytes": "8b2d493a0500",
+          "original_disassembly": "mov     ebp, dword_53A49"
+        },
+        {
+          "address": "0x2d6f9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6f9",
+          "bytes": "81c530d40000",
+          "original_disassembly": "add     ebp, 0D430h"
+        },
+        {
+          "address": "0x2d6ff",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d6ff",
+          "bytes": "31ff",
+          "original_disassembly": "xor     edi, edi"
+        },
+        {
+          "address": "0x2d701",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d701",
+          "bytes": "eb1a",
+          "original_disassembly": "jmp     short loc_2D71D"
+        },
+        {
+          "address": "0x2d703",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d703",
+          "bytes": "6800fa0000",
+          "original_disassembly": "push    0FA00h"
+        },
+        {
+          "address": "0x2d708",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d708",
+          "bytes": "ff35493a0500",
+          "original_disassembly": "push    dword_53A49"
+        },
+        {
+          "address": "0x2d70e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d70e",
+          "bytes": "6800000a00",
+          "original_disassembly": "push    0A0000h"
+        },
+        {
+          "address": "0x2d713",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d713",
+          "bytes": "e8ac9c0000",
+          "original_disassembly": "call    memmove"
+        },
+        {
+          "address": "0x2d718",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d718",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d71b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d71b",
+          "bytes": "89df",
+          "original_disassembly": "mov     edi, ebx"
+        },
+        {
+          "address": "0x2d71d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d71d",
+          "bytes": "83ff04",
+          "original_disassembly": "cmp     edi, 4"
+        },
+        {
+          "address": "0x2d720",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d720",
+          "bytes": "7d6a",
+          "original_disassembly": "jge     short loc_2D78C"
+        },
+        {
+          "address": "0x2d722",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d722",
+          "bytes": "6800fa0000",
+          "original_disassembly": "push    0FA00h"
+        },
+        {
+          "address": "0x2d727",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d727",
+          "bytes": "ff742414",
+          "original_disassembly": "push    [esp+28h+var_14]"
+        },
+        {
+          "address": "0x2d72b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d72b",
+          "bytes": "ff35493a0500",
+          "original_disassembly": "push    dword_53A49"
+        },
+        {
+          "address": "0x2d731",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d731",
+          "bytes": "e88e9c0000",
+          "original_disassembly": "call    memmove"
+        },
+        {
+          "address": "0x2d736",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d736",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d739",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d739",
+          "bytes": "31f6",
+          "original_disassembly": "xor     esi, esi"
+        },
+        {
+          "address": "0x2d73b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d73b",
+          "bytes": "eb01",
+          "original_disassembly": "jmp     short loc_2D73E"
+        },
+        {
+          "address": "0x2d73d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d73d",
+          "bytes": "46",
+          "original_disassembly": "inc     esi"
+        },
+        {
+          "address": "0x2d73e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d73e",
+          "bytes": "8d5f01",
+          "original_disassembly": "lea     ebx, [edi+1]"
+        },
+        {
+          "address": "0x2d741",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d741",
+          "bytes": "83fe04",
+          "original_disassembly": "cmp     esi, 4"
+        },
+        {
+          "address": "0x2d744",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d744",
+          "bytes": "7dbd",
+          "original_disassembly": "jge     short loc_2D703"
+        },
+        {
+          "address": "0x2d746",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d746",
+          "bytes": "8d543603",
+          "original_disassembly": "lea     edx, [esi+esi+3]"
+        },
+        {
+          "address": "0x2d74a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d74a",
+          "bytes": "a147410500",
+          "original_disassembly": "mov     eax, dword_54147"
+        },
+        {
+          "address": "0x2d74f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d74f",
+          "bytes": "03449006",
+          "original_disassembly": "add     eax, [eax+edx*4+6]"
+        },
+        {
+          "address": "0x2d753",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d753",
+          "bytes": "89f2",
+          "original_disassembly": "mov     edx, esi"
+        },
+        {
+          "address": "0x2d755",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d755",
+          "bytes": "c1e202",
+          "original_disassembly": "shl     edx, 2"
+        },
+        {
+          "address": "0x2d758",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d758",
+          "bytes": "837c242800",
+          "original_disassembly": "cmp     [esp+24h+arg_0], 0"
+        },
+        {
+          "address": "0x2d75d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d75d",
+          "bytes": "7525",
+          "original_disassembly": "jnz     short loc_2D784"
+        },
+        {
+          "address": "0x2d75f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d75f",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2d764",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d764",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d765",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d765",
+          "bytes": "bb04000000",
+          "original_disassembly": "mov     ebx, 4"
+        },
+        {
+          "address": "0x2d76a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d76a",
+          "bytes": "29fb",
+          "original_disassembly": "sub     ebx, edi"
+        },
+        {
+          "address": "0x2d76c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d76c",
+          "bytes": "8b441408",
+          "original_disassembly": "mov     eax, [esp+edx+2Ch+var_24]"
+        },
+        {
+          "address": "0x2d770",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d770",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2d772",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d772",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2d775",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d775",
+          "bytes": "f7fb",
+          "original_disassembly": "idiv    ebx"
+        },
+        {
+          "address": "0x2d777",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d777",
+          "bytes": "01e8",
+          "original_disassembly": "add     eax, ebp"
+        },
+        {
+          "address": "0x2d779",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d779",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d77a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d77a",
+          "bytes": "e865120200",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x2d77f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d77f",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d782",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d782",
+          "bytes": "ebb9",
+          "original_disassembly": "jmp     short loc_2D73D"
+        },
+        {
+          "address": "0x2d784",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d784",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2d789",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d789",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d78a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d78a",
+          "bytes": "ebe0",
+          "original_disassembly": "jmp     short loc_2D76C"
+        },
+        {
+          "address": "0x2d78c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d78c",
+          "bytes": "837c242800",
+          "original_disassembly": "cmp     [esp+24h+arg_0], 0"
+        },
+        {
+          "address": "0x2d791",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d791",
+          "bytes": "7416",
+          "original_disassembly": "jz      short loc_2D7A9"
+        },
+        {
+          "address": "0x2d793",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d793",
+          "bytes": "6800fa0000",
+          "original_disassembly": "push    0FA00h"
+        },
+        {
+          "address": "0x2d798",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d798",
+          "bytes": "ff742414",
+          "original_disassembly": "push    [esp+28h+var_14]"
+        },
+        {
+          "address": "0x2d79c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d79c",
+          "bytes": "6800000a00",
+          "original_disassembly": "push    0A0000h"
+        },
+        {
+          "address": "0x2d7a1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7a1",
+          "bytes": "e81e9c0000",
+          "original_disassembly": "call    memmove"
+        },
+        {
+          "address": "0x2d7a6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7a6",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d7a9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7a9",
+          "bytes": "ff742410",
+          "original_disassembly": "push    [esp+24h+var_14]"
+        },
+        {
+          "address": "0x2d7ad",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7ad",
+          "bytes": "e8649c0000",
+          "original_disassembly": "call    free"
+        },
+        {
+          "address": "0x2d7b2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7b2",
+          "bytes": "83c404",
+          "original_disassembly": "add     esp, 4"
+        },
+        {
+          "address": "0x2d7b5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7b5",
+          "bytes": "83c414",
+          "original_disassembly": "add     esp, 14h"
+        },
+        {
+          "address": "0x2d7b8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7b8",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x2d7b9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7b9",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x2d7ba",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7ba",
+          "bytes": "5e",
+          "original_disassembly": "pop     esi"
+        },
+        {
+          "address": "0x2d7bb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7bb",
+          "bytes": "5b",
+          "original_disassembly": "pop     ebx"
+        },
+        {
+          "address": "0x2d7bc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7bc",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x2e4bd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e4bd",
+          "bytes": "e8a7f1ffff",
+          "original_disassembly": "call    sub_2D669"
+        },
+        {
+          "address": "0x2e4de",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e4de",
+          "bytes": "e886f1ffff",
+          "original_disassembly": "call    sub_2D669"
+        },
+        {
+          "address": "0x2fd3b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2fd3b",
+          "bytes": "e829d9ffff",
+          "original_disassembly": "call    sub_2D669"
+        },
+        {
+          "address": "0x2fd5c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2fd5c",
+          "bytes": "e808d9ffff",
+          "original_disassembly": "call    sub_2D669"
+        },
+        {
+          "address": "0x30859",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x30859",
+          "bytes": "e80bceffff",
+          "original_disassembly": "call    sub_2D669"
+        },
+        {
+          "address": "0x3087a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x3087a",
+          "bytes": "e8eacdffff",
+          "original_disassembly": "call    sub_2D669"
+        }
+      ]
+    },
+    {
+      "address": "0x2d85f",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x2d85f",
+      "target": "0x2d85f",
+      "original_name": "sub_2D85F",
+      "start": "0x2d85f",
+      "end": "0x2d9fe",
+      "instructions": [
+        {
+          "address": "0x2d85f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d85f",
+          "bytes": "6838000000",
+          "original_disassembly": "push    38h ; '8'"
+        },
+        {
+          "address": "0x2d864",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d864",
+          "bytes": "e86e940000",
+          "original_disassembly": "call    sub_36CD7"
+        },
+        {
+          "address": "0x2d869",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d869",
+          "bytes": "53",
+          "original_disassembly": "push    ebx"
+        },
+        {
+          "address": "0x2d86a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d86a",
+          "bytes": "56",
+          "original_disassembly": "push    esi"
+        },
+        {
+          "address": "0x2d86b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d86b",
+          "bytes": "57",
+          "original_disassembly": "push    edi"
+        },
+        {
+          "address": "0x2d86c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d86c",
+          "bytes": "55",
+          "original_disassembly": "push    ebp"
+        },
+        {
+          "address": "0x2d86d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d86d",
+          "bytes": "83ec18",
+          "original_disassembly": "sub     esp, 18h"
+        },
+        {
+          "address": "0x2d870",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d870",
+          "bytes": "c644241400",
+          "original_disassembly": "mov     [esp+28h+var_14], 0"
+        },
+        {
+          "address": "0x2d875",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d875",
+          "bytes": "b904000000",
+          "original_disassembly": "mov     ecx, 4"
+        },
+        {
+          "address": "0x2d87a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d87a",
+          "bytes": "89e7",
+          "original_disassembly": "mov     edi, esp"
+        },
+        {
+          "address": "0x2d87c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d87c",
+          "bytes": "beea260500",
+          "original_disassembly": "mov     esi, offset unk_526EA"
+        },
+        {
+          "address": "0x2d881",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d881",
+          "bytes": "f3a5",
+          "original_disassembly": "rep movsd"
+        },
+        {
+          "address": "0x2d883",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d883",
+          "bytes": "b86c040000",
+          "original_disassembly": "mov     eax, 46Ch"
+        },
+        {
+          "address": "0x2d888",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d888",
+          "bytes": "668b00",
+          "original_disassembly": "mov     ax, [eax]"
+        },
+        {
+          "address": "0x2d88b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d88b",
+          "bytes": "89442410",
+          "original_disassembly": "mov     [esp+28h+var_18], eax"
+        },
+        {
+          "address": "0x2d88f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d88f",
+          "bytes": "e8ff0f0200",
+          "original_disassembly": "call    sub_4E893"
+        },
+        {
+          "address": "0x2d894",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d894",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2d896",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d896",
+          "bytes": "be32000000",
+          "original_disassembly": "mov     esi, 32h ; '2'"
+        },
+        {
+          "address": "0x2d89b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d89b",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2d89e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d89e",
+          "bytes": "f7fe",
+          "original_disassembly": "idiv    esi"
+        },
+        {
+          "address": "0x2d8a0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8a0",
+          "bytes": "8d7a08",
+          "original_disassembly": "lea     edi, [edx+8]"
+        },
+        {
+          "address": "0x2d8a3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8a3",
+          "bytes": "bd30d40a00",
+          "original_disassembly": "mov     ebp, 0AD430h"
+        },
+        {
+          "address": "0x2d8a8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8a8",
+          "bytes": "c7053341050002000000",
+          "original_disassembly": "mov     dword_54133, 2"
+        },
+        {
+          "address": "0x2d8b2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8b2",
+          "bytes": "ff74242c",
+          "original_disassembly": "push    [esp+28h+arg_0]"
+        },
+        {
+          "address": "0x2d8b6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8b6",
+          "bytes": "8d442404",
+          "original_disassembly": "lea     eax, [esp+2Ch+var_28]"
+        },
+        {
+          "address": "0x2d8ba",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8ba",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d8bb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8bb",
+          "bytes": "e83e010000",
+          "original_disassembly": "call    sub_2D9FE"
+        },
+        {
+          "address": "0x2d8c0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8c0",
+          "bytes": "83c408",
+          "original_disassembly": "add     esp, 8"
+        },
+        {
+          "address": "0x2d8c3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8c3",
+          "bytes": "837c242c00",
+          "original_disassembly": "cmp     [esp+28h+arg_0], 0"
+        },
+        {
+          "address": "0x2d8c8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8c8",
+          "bytes": "7537",
+          "original_disassembly": "jnz     short loc_2D901"
+        },
+        {
+          "address": "0x2d8ca",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8ca",
+          "bytes": "31f6",
+          "original_disassembly": "xor     esi, esi"
+        },
+        {
+          "address": "0x2d8cc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8cc",
+          "bytes": "eb1f",
+          "original_disassembly": "jmp     short loc_2D8ED"
+        },
+        {
+          "address": "0x2d8ce",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8ce",
+          "bytes": "a147410500",
+          "original_disassembly": "mov     eax, dword_54147"
+        },
+        {
+          "address": "0x2d8d3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8d3",
+          "bytes": "03449006",
+          "original_disassembly": "add     eax, [eax+edx*4+6]"
+        },
+        {
+          "address": "0x2d8d7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8d7",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2d8dc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8dc",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d8dd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8dd",
+          "bytes": "8b44b408",
+          "original_disassembly": "mov     eax, [esp+esi*4+30h+var_28]"
+        },
+        {
+          "address": "0x2d8e1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8e1",
+          "bytes": "01e8",
+          "original_disassembly": "add     eax, ebp"
+        },
+        {
+          "address": "0x2d8e3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8e3",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d8e4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8e4",
+          "bytes": "e8fb100200",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x2d8e9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8e9",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d8ec",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8ec",
+          "bytes": "46",
+          "original_disassembly": "inc     esi"
+        },
+        {
+          "address": "0x2d8ed",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8ed",
+          "bytes": "83fe04",
+          "original_disassembly": "cmp     esi, 4"
+        },
+        {
+          "address": "0x2d8f0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8f0",
+          "bytes": "7d0f",
+          "original_disassembly": "jge     short loc_2D901"
+        },
+        {
+          "address": "0x2d8f2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8f2",
+          "bytes": "8d543603",
+          "original_disassembly": "lea     edx, [esi+esi+3]"
+        },
+        {
+          "address": "0x2d8f6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8f6",
+          "bytes": "3b35573c0500",
+          "original_disassembly": "cmp     esi, dword_53C57"
+        },
+        {
+          "address": "0x2d8fc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8fc",
+          "bytes": "75d0",
+          "original_disassembly": "jnz     short loc_2D8CE"
+        },
+        {
+          "address": "0x2d8fe",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8fe",
+          "bytes": "42",
+          "original_disassembly": "inc     edx"
+        },
+        {
+          "address": "0x2d8ff",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8ff",
+          "bytes": "ebcd",
+          "original_disassembly": "jmp     short loc_2D8CE"
+        },
+        {
+          "address": "0x2d901",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d901",
+          "bytes": "ba6c040000",
+          "original_disassembly": "mov     edx, 46Ch"
+        },
+        {
+          "address": "0x2d906",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d906",
+          "bytes": "668b02",
+          "original_disassembly": "mov     ax, [edx]"
+        },
+        {
+          "address": "0x2d909",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d909",
+          "bytes": "98",
+          "original_disassembly": "cwde"
+        },
+        {
+          "address": "0x2d90a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d90a",
+          "bytes": "0fbf542410",
+          "original_disassembly": "movsx   edx, word ptr [esp+28h+var_18]"
+        },
+        {
+          "address": "0x2d90f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d90f",
+          "bytes": "89c6",
+          "original_disassembly": "mov     esi, eax"
+        },
+        {
+          "address": "0x2d911",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d911",
+          "bytes": "29d6",
+          "original_disassembly": "sub     esi, edx"
+        },
+        {
+          "address": "0x2d913",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d913",
+          "bytes": "83fe02",
+          "original_disassembly": "cmp     esi, 2"
+        },
+        {
+          "address": "0x2d916",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d916",
+          "bytes": "7d08",
+          "original_disassembly": "jge     short loc_2D920"
+        },
+        {
+          "address": "0x2d918",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d918",
+          "bytes": "39d0",
+          "original_disassembly": "cmp     eax, edx"
+        },
+        {
+          "address": "0x2d91a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d91a",
+          "bytes": "0f8d7a000000",
+          "original_disassembly": "jge     loc_2D99A"
+        },
+        {
+          "address": "0x2d920",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d920",
+          "bytes": "ff0533410500",
+          "original_disassembly": "inc     dword_54133"
+        },
+        {
+          "address": "0x2d926",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d926",
+          "bytes": "833d3341050004",
+          "original_disassembly": "cmp     dword_54133, 4"
+        },
+        {
+          "address": "0x2d92d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d92d",
+          "bytes": "750a",
+          "original_disassembly": "jnz     short loc_2D939"
+        },
+        {
+          "address": "0x2d92f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d92f",
+          "bytes": "c7053341050000000000",
+          "original_disassembly": "mov     dword_54133, 0"
+        },
+        {
+          "address": "0x2d939",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d939",
+          "bytes": "ff74242c",
+          "original_disassembly": "push    [esp+28h+arg_0]"
+        },
+        {
+          "address": "0x2d93d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d93d",
+          "bytes": "8d442404",
+          "original_disassembly": "lea     eax, [esp+2Ch+var_28]"
+        },
+        {
+          "address": "0x2d941",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d941",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2d942",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d942",
+          "bytes": "e8b7000000",
+          "original_disassembly": "call    sub_2D9FE"
+        },
+        {
+          "address": "0x2d947",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d947",
+          "bytes": "83c408",
+          "original_disassembly": "add     esp, 8"
+        },
+        {
+          "address": "0x2d94a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d94a",
+          "bytes": "0fb6442414",
+          "original_disassembly": "movzx   eax, [esp+28h+var_14]"
+        },
+        {
+          "address": "0x2d94f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d94f",
+          "bytes": "85c0",
+          "original_disassembly": "test    eax, eax"
+        },
+        {
+          "address": "0x2d951",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d951",
+          "bytes": "7425",
+          "original_disassembly": "jz      short loc_2D978"
+        },
+        {
+          "address": "0x2d953",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d953",
+          "bytes": "6a00",
+          "original_disassembly": "push    0"
+        },
+        {
+          "address": "0x2d955",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d955",
+          "bytes": "e8ff8bfeff",
+          "original_disassembly": "call    sub_16559"
+        },
+        {
+          "address": "0x2d95a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d95a",
+          "bytes": "83c404",
+          "original_disassembly": "add     esp, 4"
+        },
+        {
+          "address": "0x2d95d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d95d",
+          "bytes": "e8310f0200",
+          "original_disassembly": "call    sub_4E893"
+        },
+        {
+          "address": "0x2d962",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d962",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2d964",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d964",
+          "bytes": "be1e000000",
+          "original_disassembly": "mov     esi, 1Eh"
+        },
+        {
+          "address": "0x2d969",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d969",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2d96c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d96c",
+          "bytes": "f7fe",
+          "original_disassembly": "idiv    esi"
+        },
+        {
+          "address": "0x2d96e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d96e",
+          "bytes": "8d7a02",
+          "original_disassembly": "lea     edi, [edx+2]"
+        },
+        {
+          "address": "0x2d971",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d971",
+          "bytes": "c644241400",
+          "original_disassembly": "mov     [esp+28h+var_14], 0"
+        },
+        {
+          "address": "0x2d976",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d976",
+          "bytes": "eb16",
+          "original_disassembly": "jmp     short loc_2D98E"
+        },
+        {
+          "address": "0x2d978",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d978",
+          "bytes": "89f8",
+          "original_disassembly": "mov     eax, edi"
+        },
+        {
+          "address": "0x2d97a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d97a",
+          "bytes": "4f",
+          "original_disassembly": "dec     edi"
+        },
+        {
+          "address": "0x2d97b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d97b",
+          "bytes": "85c0",
+          "original_disassembly": "test    eax, eax"
+        },
+        {
+          "address": "0x2d97d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d97d",
+          "bytes": "750f",
+          "original_disassembly": "jnz     short loc_2D98E"
+        },
+        {
+          "address": "0x2d97f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d97f",
+          "bytes": "6a03",
+          "original_disassembly": "push    3"
+        },
+        {
+          "address": "0x2d981",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d981",
+          "bytes": "e8d38bfeff",
+          "original_disassembly": "call    sub_16559"
+        },
+        {
+          "address": "0x2d986",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d986",
+          "bytes": "83c404",
+          "original_disassembly": "add     esp, 4"
+        },
+        {
+          "address": "0x2d989",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d989",
+          "bytes": "c644241401",
+          "original_disassembly": "mov     [esp+28h+var_14], 1"
+        },
+        {
+          "address": "0x2d98e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d98e",
+          "bytes": "ba6c040000",
+          "original_disassembly": "mov     edx, 46Ch"
+        },
+        {
+          "address": "0x2d993",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d993",
+          "bytes": "668b02",
+          "original_disassembly": "mov     ax, [edx]"
+        },
+        {
+          "address": "0x2d996",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d996",
+          "bytes": "89442410",
+          "original_disassembly": "mov     [esp+28h+var_18], eax"
+        },
+        {
+          "address": "0x2d99a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d99a",
+          "bytes": "e8812cfeff",
+          "original_disassembly": "call    sub_10620"
+        },
+        {
+          "address": "0x2d99f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d99f",
+          "bytes": "85c0",
+          "original_disassembly": "test    eax, eax"
+        },
+        {
+          "address": "0x2d9a1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9a1",
+          "bytes": "0f845affffff",
+          "original_disassembly": "jz      loc_2D901"
+        },
+        {
+          "address": "0x2d9a7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9a7",
+          "bytes": "c6058e3a050010",
+          "original_disassembly": "mov     byte ptr word_53A8D+1, 10h"
+        },
+        {
+          "address": "0x2d9ae",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9ae",
+          "bytes": "688d3a0500",
+          "original_disassembly": "push    offset word_53A8D"
+        },
+        {
+          "address": "0x2d9b3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9b3",
+          "bytes": "688d3a0500",
+          "original_disassembly": "push    offset word_53A8D"
+        },
+        {
+          "address": "0x2d9b8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9b8",
+          "bytes": "6a16",
+          "original_disassembly": "push    16h"
+        },
+        {
+          "address": "0x2d9ba",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9ba",
+          "bytes": "e8d9930000",
+          "original_disassembly": "call    int386"
+        },
+        {
+          "address": "0x2d9bf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9bf",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2d9c2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9c2",
+          "bytes": "0fb6058e3a0500",
+          "original_disassembly": "movzx   eax, byte ptr word_53A8D+1"
+        },
+        {
+          "address": "0x2d9c9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9c9",
+          "bytes": "3de0000000",
+          "original_disassembly": "cmp     eax, 0E0h"
+        },
+        {
+          "address": "0x2d9ce",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9ce",
+          "bytes": "7405",
+          "original_disassembly": "jz      short loc_2D9D5"
+        },
+        {
+          "address": "0x2d9d0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9d0",
+          "bytes": "83f852",
+          "original_disassembly": "cmp     eax, 52h ; 'R'"
+        },
+        {
+          "address": "0x2d9d3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9d3",
+          "bytes": "7507",
+          "original_disassembly": "jnz     short loc_2D9DC"
+        },
+        {
+          "address": "0x2d9d5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9d5",
+          "bytes": "c6058e3a05001c",
+          "original_disassembly": "mov     byte ptr word_53A8D+1, 1Ch"
+        },
+        {
+          "address": "0x2d9dc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9dc",
+          "bytes": "0fb6058e3a0500",
+          "original_disassembly": "movzx   eax, byte ptr word_53A8D+1"
+        },
+        {
+          "address": "0x2d9e3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9e3",
+          "bytes": "83f853",
+          "original_disassembly": "cmp     eax, 53h ; 'S'"
+        },
+        {
+          "address": "0x2d9e6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9e6",
+          "bytes": "7507",
+          "original_disassembly": "jnz     short loc_2D9EF"
+        },
+        {
+          "address": "0x2d9e8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9e8",
+          "bytes": "c6058e3a050001",
+          "original_disassembly": "mov     byte ptr word_53A8D+1, 1"
+        },
+        {
+          "address": "0x2d9ef",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9ef",
+          "bytes": "0fb6058e3a0500",
+          "original_disassembly": "movzx   eax, byte ptr word_53A8D+1"
+        },
+        {
+          "address": "0x2d9f6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9f6",
+          "bytes": "83c418",
+          "original_disassembly": "add     esp, 18h"
+        },
+        {
+          "address": "0x2d9f9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9f9",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x2d9fa",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9fa",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x2d9fb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9fb",
+          "bytes": "5e",
+          "original_disassembly": "pop     esi"
+        },
+        {
+          "address": "0x2d9fc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9fc",
+          "bytes": "5b",
+          "original_disassembly": "pop     ebx"
+        },
+        {
+          "address": "0x2d9fd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9fd",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x2d7cc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d7cc",
+          "bytes": "e88e000000",
+          "original_disassembly": "call    sub_2D85F"
+        },
+        {
+          "address": "0x2df84",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2df84",
+          "bytes": "e8d6f8ffff",
+          "original_disassembly": "call    sub_2D85F"
+        },
+        {
+          "address": "0x2e797",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e797",
+          "bytes": "e8c3f0ffff",
+          "original_disassembly": "call    sub_2D85F"
+        },
+        {
+          "address": "0x2e9be",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e9be",
+          "bytes": "e89ceeffff",
+          "original_disassembly": "call    sub_2D85F"
+        },
+        {
+          "address": "0x30d19",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x30d19",
+          "bytes": "e841cbffff",
+          "original_disassembly": "call    sub_2D85F"
+        },
+        {
+          "address": "0x312d7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x312d7",
+          "bytes": "e883c5ffff",
+          "original_disassembly": "call    sub_2D85F"
+        }
+      ]
+    },
+    {
+      "address": "0x2d9fe",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x2d9fe",
+      "target": "0x2d9fe",
+      "original_name": "sub_2D9FE",
+      "start": "0x2d9fe",
+      "end": "0x2dc55",
+      "instructions": [
+        {
+          "address": "0x2d9fe",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d9fe",
+          "bytes": "6820000000",
+          "original_disassembly": "push    20h ; ' '"
+        },
+        {
+          "address": "0x2da03",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da03",
+          "bytes": "e8cf920000",
+          "original_disassembly": "call    sub_36CD7"
+        },
+        {
+          "address": "0x2da08",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da08",
+          "bytes": "53",
+          "original_disassembly": "push    ebx"
+        },
+        {
+          "address": "0x2da09",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da09",
+          "bytes": "56",
+          "original_disassembly": "push    esi"
+        },
+        {
+          "address": "0x2da0a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da0a",
+          "bytes": "57",
+          "original_disassembly": "push    edi"
+        },
+        {
+          "address": "0x2da0b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da0b",
+          "bytes": "55",
+          "original_disassembly": "push    ebp"
+        },
+        {
+          "address": "0x2da0c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da0c",
+          "bytes": "8b6c2418",
+          "original_disassembly": "mov     ebp, [esp+10h+arg_4]"
+        },
+        {
+          "address": "0x2da10",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da10",
+          "bytes": "f6053341050001",
+          "original_disassembly": "test    byte ptr dword_54133, 1"
+        },
+        {
+          "address": "0x2da17",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da17",
+          "bytes": "7406",
+          "original_disassembly": "jz      short loc_2DA1F"
+        },
+        {
+          "address": "0x2da19",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da19",
+          "bytes": "ff0553410500",
+          "original_disassembly": "inc     dword_54153"
+        },
+        {
+          "address": "0x2da1f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da1f",
+          "bytes": "833d5341050004",
+          "original_disassembly": "cmp     dword_54153, 4"
+        },
+        {
+          "address": "0x2da26",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da26",
+          "bytes": "750a",
+          "original_disassembly": "jnz     short loc_2DA32"
+        },
+        {
+          "address": "0x2da28",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da28",
+          "bytes": "c7055341050000000000",
+          "original_disassembly": "mov     dword_54153, 0"
+        },
+        {
+          "address": "0x2da32",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da32",
+          "bytes": "8b3d53410500",
+          "original_disassembly": "mov     edi, dword_54153"
+        },
+        {
+          "address": "0x2da38",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da38",
+          "bytes": "83ff03",
+          "original_disassembly": "cmp     edi, 3"
+        },
+        {
+          "address": "0x2da3b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da3b",
+          "bytes": "a133410500",
+          "original_disassembly": "mov     eax, dword_54133"
+        },
+        {
+          "address": "0x2da40",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da40",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2da42",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da42",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2da45",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da45",
+          "bytes": "2bc2",
+          "original_disassembly": "sub     eax, edx"
+        },
+        {
+          "address": "0x2da47",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da47",
+          "bytes": "d1f8",
+          "original_disassembly": "sar     eax, 1"
+        },
+        {
+          "address": "0x2da49",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da49",
+          "bytes": "85ed",
+          "original_disassembly": "test    ebp, ebp"
+        },
+        {
+          "address": "0x2da4b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da4b",
+          "bytes": "753b",
+          "original_disassembly": "jnz     short loc_2DA88"
+        },
+        {
+          "address": "0x2da4d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da4d",
+          "bytes": "8b3d573c0500",
+          "original_disassembly": "mov     edi, dword_53C57"
+        },
+        {
+          "address": "0x2da53",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da53",
+          "bytes": "01ff",
+          "original_disassembly": "add     edi, edi"
+        },
+        {
+          "address": "0x2da55",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da55",
+          "bytes": "83c703",
+          "original_disassembly": "add     edi, 3"
+        },
+        {
+          "address": "0x2da58",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da58",
+          "bytes": "01f8",
+          "original_disassembly": "add     eax, edi"
+        },
+        {
+          "address": "0x2da5a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da5a",
+          "bytes": "8b1547410500",
+          "original_disassembly": "mov     edx, dword_54147"
+        },
+        {
+          "address": "0x2da60",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da60",
+          "bytes": "03548206",
+          "original_disassembly": "add     edx, [edx+eax*4+6]"
+        },
+        {
+          "address": "0x2da64",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da64",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2da69",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da69",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x2da6a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da6a",
+          "bytes": "a1573c0500",
+          "original_disassembly": "mov     eax, dword_53C57"
+        },
+        {
+          "address": "0x2da6f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da6f",
+          "bytes": "c1e002",
+          "original_disassembly": "shl     eax, 2"
+        },
+        {
+          "address": "0x2da72",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da72",
+          "bytes": "0344241c",
+          "original_disassembly": "add     eax, [esp+18h+arg_0]"
+        },
+        {
+          "address": "0x2da76",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da76",
+          "bytes": "ba30d40a00",
+          "original_disassembly": "mov     edx, 0AD430h"
+        },
+        {
+          "address": "0x2da7b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da7b",
+          "bytes": "0310",
+          "original_disassembly": "add     edx, [eax]"
+        },
+        {
+          "address": "0x2da7d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da7d",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x2da7e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da7e",
+          "bytes": "e8610f0200",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x2da83",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da83",
+          "bytes": "e9a8000000",
+          "original_disassembly": "jmp     loc_2DB30"
+        },
+        {
+          "address": "0x2da88",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da88",
+          "bytes": "83fd01",
+          "original_disassembly": "cmp     ebp, 1"
+        },
+        {
+          "address": "0x2da8b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da8b",
+          "bytes": "7409",
+          "original_disassembly": "jz      short loc_2DA96"
+        },
+        {
+          "address": "0x2da8d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da8d",
+          "bytes": "83fd03",
+          "original_disassembly": "cmp     ebp, 3"
+        },
+        {
+          "address": "0x2da90",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da90",
+          "bytes": "0f85b2000000",
+          "original_disassembly": "jnz     loc_2DB48"
+        },
+        {
+          "address": "0x2da96",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da96",
+          "bytes": "83fd03",
+          "original_disassembly": "cmp     ebp, 3"
+        },
+        {
+          "address": "0x2da99",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da99",
+          "bytes": "7513",
+          "original_disassembly": "jnz     short loc_2DAAE"
+        },
+        {
+          "address": "0x2da9b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da9b",
+          "bytes": "6800000a00",
+          "original_disassembly": "push    0A0000h"
+        },
+        {
+          "address": "0x2daa0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daa0",
+          "bytes": "ff35573c0500",
+          "original_disassembly": "push    dword_53C57"
+        },
+        {
+          "address": "0x2daa6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daa6",
+          "bytes": "e8e50f0000",
+          "original_disassembly": "call    sub_2EA90"
+        },
+        {
+          "address": "0x2daab",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daab",
+          "bytes": "83c408",
+          "original_disassembly": "add     esp, 8"
+        },
+        {
+          "address": "0x2daae",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daae",
+          "bytes": "833d2f41050000",
+          "original_disassembly": "cmp     dword_5412F, 0"
+        },
+        {
+          "address": "0x2dab5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dab5",
+          "bytes": "7423",
+          "original_disassembly": "jz      short loc_2DADA"
+        },
+        {
+          "address": "0x2dab7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dab7",
+          "bytes": "a133410500",
+          "original_disassembly": "mov     eax, dword_54133"
+        },
+        {
+          "address": "0x2dabc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dabc",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2dabe",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dabe",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2dac1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dac1",
+          "bytes": "2bc2",
+          "original_disassembly": "sub     eax, edx"
+        },
+        {
+          "address": "0x2dac3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dac3",
+          "bytes": "d1f8",
+          "original_disassembly": "sar     eax, 1"
+        },
+        {
+          "address": "0x2dac5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dac5",
+          "bytes": "83c00b",
+          "original_disassembly": "add     eax, 0Bh"
+        },
+        {
+          "address": "0x2dac8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dac8",
+          "bytes": "8b1547410500",
+          "original_disassembly": "mov     edx, dword_54147"
+        },
+        {
+          "address": "0x2dace",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dace",
+          "bytes": "03548206",
+          "original_disassembly": "add     edx, [edx+eax*4+6]"
+        },
+        {
+          "address": "0x2dad2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dad2",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2dad7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dad7",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x2dad8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dad8",
+          "bytes": "eb0e",
+          "original_disassembly": "jmp     short loc_2DAE8"
+        },
+        {
+          "address": "0x2dada",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dada",
+          "bytes": "a147410500",
+          "original_disassembly": "mov     eax, dword_54147"
+        },
+        {
+          "address": "0x2dadf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dadf",
+          "bytes": "03404a",
+          "original_disassembly": "add     eax, [eax+4Ah]"
+        },
+        {
+          "address": "0x2dae2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dae2",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2dae7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dae7",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2dae8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dae8",
+          "bytes": "682a970a00",
+          "original_disassembly": "push    0A972Ah"
+        },
+        {
+          "address": "0x2daed",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daed",
+          "bytes": "e8bd0d0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2daf2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daf2",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2daf5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daf5",
+          "bytes": "a12f410500",
+          "original_disassembly": "mov     eax, dword_5412F"
+        },
+        {
+          "address": "0x2dafa",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dafa",
+          "bytes": "83c006",
+          "original_disassembly": "add     eax, 6"
+        },
+        {
+          "address": "0x2dafd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dafd",
+          "bytes": "3b053f410500",
+          "original_disassembly": "cmp     eax, dword_5413F"
+        },
+        {
+          "address": "0x2db03",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db03",
+          "bytes": "7d33",
+          "original_disassembly": "jge     short loc_2DB38"
+        },
+        {
+          "address": "0x2db05",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db05",
+          "bytes": "a133410500",
+          "original_disassembly": "mov     eax, dword_54133"
+        },
+        {
+          "address": "0x2db0a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db0a",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2db0c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db0c",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2db0f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db0f",
+          "bytes": "2bc2",
+          "original_disassembly": "sub     eax, edx"
+        },
+        {
+          "address": "0x2db11",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db11",
+          "bytes": "d1f8",
+          "original_disassembly": "sar     eax, 1"
+        },
+        {
+          "address": "0x2db13",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db13",
+          "bytes": "83c00d",
+          "original_disassembly": "add     eax, 0Dh"
+        },
+        {
+          "address": "0x2db16",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db16",
+          "bytes": "8b1547410500",
+          "original_disassembly": "mov     edx, dword_54147"
+        },
+        {
+          "address": "0x2db1c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db1c",
+          "bytes": "03548206",
+          "original_disassembly": "add     edx, [edx+eax*4+6]"
+        },
+        {
+          "address": "0x2db20",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db20",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2db25",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db25",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x2db26",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db26",
+          "bytes": "686ae30a00",
+          "original_disassembly": "push    0AE36Ah"
+        },
+        {
+          "address": "0x2db2b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db2b",
+          "bytes": "e87f0d0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2db30",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db30",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2db33",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db33",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x2db34",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db34",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x2db35",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db35",
+          "bytes": "5e",
+          "original_disassembly": "pop     esi"
+        },
+        {
+          "address": "0x2db36",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db36",
+          "bytes": "5b",
+          "original_disassembly": "pop     ebx"
+        },
+        {
+          "address": "0x2db37",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db37",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        },
+        {
+          "address": "0x2db38",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db38",
+          "bytes": "a147410500",
+          "original_disassembly": "mov     eax, dword_54147"
+        },
+        {
+          "address": "0x2db3d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db3d",
+          "bytes": "03404a",
+          "original_disassembly": "add     eax, [eax+4Ah]"
+        },
+        {
+          "address": "0x2db40",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db40",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2db45",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db45",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2db46",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db46",
+          "bytes": "ebde",
+          "original_disassembly": "jmp     short loc_2DB26"
+        },
+        {
+          "address": "0x2db48",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db48",
+          "bytes": "83fd02",
+          "original_disassembly": "cmp     ebp, 2"
+        },
+        {
+          "address": "0x2db4b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db4b",
+          "bytes": "0f85ff000000",
+          "original_disassembly": "jnz     loc_2DC50"
+        },
+        {
+          "address": "0x2db51",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db51",
+          "bytes": "833d2f41050000",
+          "original_disassembly": "cmp     dword_5412F, 0"
+        },
+        {
+          "address": "0x2db58",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db58",
+          "bytes": "7415",
+          "original_disassembly": "jz      short loc_2DB6F"
+        },
+        {
+          "address": "0x2db5a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db5a",
+          "bytes": "83c00b",
+          "original_disassembly": "add     eax, 0Bh"
+        },
+        {
+          "address": "0x2db5d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db5d",
+          "bytes": "8b1547410500",
+          "original_disassembly": "mov     edx, dword_54147"
+        },
+        {
+          "address": "0x2db63",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db63",
+          "bytes": "03548206",
+          "original_disassembly": "add     edx, [edx+eax*4+6]"
+        },
+        {
+          "address": "0x2db67",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db67",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2db6c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db6c",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x2db6d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db6d",
+          "bytes": "eb0e",
+          "original_disassembly": "jmp     short loc_2DB7D"
+        },
+        {
+          "address": "0x2db6f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db6f",
+          "bytes": "a147410500",
+          "original_disassembly": "mov     eax, dword_54147"
+        },
+        {
+          "address": "0x2db74",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db74",
+          "bytes": "03404a",
+          "original_disassembly": "add     eax, [eax+4Ah]"
+        },
+        {
+          "address": "0x2db77",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db77",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2db7c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db7c",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2db7d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db7d",
+          "bytes": "682a970a00",
+          "original_disassembly": "push    0A972Ah"
+        },
+        {
+          "address": "0x2db82",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db82",
+          "bytes": "e8280d0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2db87",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db87",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2db8a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db8a",
+          "bytes": "a12f410500",
+          "original_disassembly": "mov     eax, dword_5412F"
+        },
+        {
+          "address": "0x2db8f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db8f",
+          "bytes": "83c003",
+          "original_disassembly": "add     eax, 3"
+        },
+        {
+          "address": "0x2db92",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db92",
+          "bytes": "3b053f410500",
+          "original_disassembly": "cmp     eax, dword_5413F"
+        },
+        {
+          "address": "0x2db98",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db98",
+          "bytes": "7d23",
+          "original_disassembly": "jge     short loc_2DBBD"
+        },
+        {
+          "address": "0x2db9a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db9a",
+          "bytes": "a133410500",
+          "original_disassembly": "mov     eax, dword_54133"
+        },
+        {
+          "address": "0x2db9f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db9f",
+          "bytes": "89c2",
+          "original_disassembly": "mov     edx, eax"
+        },
+        {
+          "address": "0x2dba1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dba1",
+          "bytes": "c1fa1f",
+          "original_disassembly": "sar     edx, 1Fh"
+        },
+        {
+          "address": "0x2dba4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dba4",
+          "bytes": "2bc2",
+          "original_disassembly": "sub     eax, edx"
+        },
+        {
+          "address": "0x2dba6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dba6",
+          "bytes": "d1f8",
+          "original_disassembly": "sar     eax, 1"
+        },
+        {
+          "address": "0x2dba8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dba8",
+          "bytes": "83c00d",
+          "original_disassembly": "add     eax, 0Dh"
+        },
+        {
+          "address": "0x2dbab",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbab",
+          "bytes": "8b1547410500",
+          "original_disassembly": "mov     edx, dword_54147"
+        },
+        {
+          "address": "0x2dbb1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbb1",
+          "bytes": "03548206",
+          "original_disassembly": "add     edx, [edx+eax*4+6]"
+        },
+        {
+          "address": "0x2dbb5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbb5",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2dbba",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbba",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x2dbbb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbbb",
+          "bytes": "eb0e",
+          "original_disassembly": "jmp     short loc_2DBCB"
+        },
+        {
+          "address": "0x2dbbd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbbd",
+          "bytes": "a147410500",
+          "original_disassembly": "mov     eax, dword_54147"
+        },
+        {
+          "address": "0x2dbc2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbc2",
+          "bytes": "03404a",
+          "original_disassembly": "add     eax, [eax+4Ah]"
+        },
+        {
+          "address": "0x2dbc5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbc5",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2dbca",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbca",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2dbcb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbcb",
+          "bytes": "686ae30a00",
+          "original_disassembly": "push    0AE36Ah"
+        },
+        {
+          "address": "0x2dbd0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbd0",
+          "bytes": "e8da0c0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2dbd5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbd5",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2dbd8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbd8",
+          "bytes": "8b2d3f410500",
+          "original_disassembly": "mov     ebp, dword_5413F"
+        },
+        {
+          "address": "0x2dbde",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbde",
+          "bytes": "83fd03",
+          "original_disassembly": "cmp     ebp, 3"
+        },
+        {
+          "address": "0x2dbe1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbe1",
+          "bytes": "7e05",
+          "original_disassembly": "jle     short loc_2DBE8"
+        },
+        {
+          "address": "0x2dbe3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbe3",
+          "bytes": "bd03000000",
+          "original_disassembly": "mov     ebp, 3"
+        },
+        {
+          "address": "0x2dbe8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbe8",
+          "bytes": "8b3d53410500",
+          "original_disassembly": "mov     edi, dword_54153"
+        },
+        {
+          "address": "0x2dbee",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbee",
+          "bytes": "83ff03",
+          "original_disassembly": "cmp     edi, 3"
+        },
+        {
+          "address": "0x2dbf1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbf1",
+          "bytes": "7505",
+          "original_disassembly": "jnz     short loc_2DBF8"
+        },
+        {
+          "address": "0x2dbf3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbf3",
+          "bytes": "bf01000000",
+          "original_disassembly": "mov     edi, 1"
+        },
+        {
+          "address": "0x2dbf8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbf8",
+          "bytes": "31f6",
+          "original_disassembly": "xor     esi, esi"
+        },
+        {
+          "address": "0x2dbfa",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbfa",
+          "bytes": "eb50",
+          "original_disassembly": "jmp     short loc_2DC4C"
+        },
+        {
+          "address": "0x2dbfc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbfc",
+          "bytes": "a12f410500",
+          "original_disassembly": "mov     eax, dword_5412F"
+        },
+        {
+          "address": "0x2dc01",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc01",
+          "bytes": "01f0",
+          "original_disassembly": "add     eax, esi"
+        },
+        {
+          "address": "0x2dc03",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc03",
+          "bytes": "8b1543410500",
+          "original_disassembly": "mov     edx, dword_54143"
+        },
+        {
+          "address": "0x2dc09",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc09",
+          "bytes": "0fb61402",
+          "original_disassembly": "movzx   edx, byte ptr [edx+eax]"
+        },
+        {
+          "address": "0x2dc0d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc0d",
+          "bytes": "89d0",
+          "original_disassembly": "mov     eax, edx"
+        },
+        {
+          "address": "0x2dc0f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc0f",
+          "bytes": "c1e002",
+          "original_disassembly": "shl     eax, 2"
+        },
+        {
+          "address": "0x2dc12",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc12",
+          "bytes": "29d0",
+          "original_disassembly": "sub     eax, edx"
+        },
+        {
+          "address": "0x2dc14",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc14",
+          "bytes": "c1e004",
+          "original_disassembly": "shl     eax, 4"
+        },
+        {
+          "address": "0x2dc17",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc17",
+          "bytes": "8b15613a0500",
+          "original_disassembly": "mov     edx, dword_53A61"
+        },
+        {
+          "address": "0x2dc1d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc1d",
+          "bytes": "8d1c02",
+          "original_disassembly": "lea     ebx, [edx+eax]"
+        },
+        {
+          "address": "0x2dc20",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc20",
+          "bytes": "89f8",
+          "original_disassembly": "mov     eax, edi"
+        },
+        {
+          "address": "0x2dc22",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc22",
+          "bytes": "8b1c83",
+          "original_disassembly": "mov     ebx, [ebx+eax*4]"
+        },
+        {
+          "address": "0x2dc25",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc25",
+          "bytes": "01d3",
+          "original_disassembly": "add     ebx, edx"
+        },
+        {
+          "address": "0x2dc27",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc27",
+          "bytes": "6840010000",
+          "original_disassembly": "push    140h"
+        },
+        {
+          "address": "0x2dc2c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc2c",
+          "bytes": "6bc61a",
+          "original_disassembly": "imul    eax, esi, 1Ah"
+        },
+        {
+          "address": "0x2dc2f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc2f",
+          "bytes": "8d5075",
+          "original_disassembly": "lea     edx, [eax+75h]"
+        },
+        {
+          "address": "0x2dc32",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc32",
+          "bytes": "89d0",
+          "original_disassembly": "mov     eax, edx"
+        },
+        {
+          "address": "0x2dc34",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc34",
+          "bytes": "c1e002",
+          "original_disassembly": "shl     eax, 2"
+        },
+        {
+          "address": "0x2dc37",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc37",
+          "bytes": "01d0",
+          "original_disassembly": "add     eax, edx"
+        },
+        {
+          "address": "0x2dc39",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc39",
+          "bytes": "c1e006",
+          "original_disassembly": "shl     eax, 6"
+        },
+        {
+          "address": "0x2dc3c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc3c",
+          "bytes": "050e000a00",
+          "original_disassembly": "add     eax, 0A000Eh"
+        },
+        {
+          "address": "0x2dc41",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc41",
+          "bytes": "50",
+          "original_disassembly": "push    eax"
+        },
+        {
+          "address": "0x2dc42",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc42",
+          "bytes": "53",
+          "original_disassembly": "push    ebx"
+        },
+        {
+          "address": "0x2dc43",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc43",
+          "bytes": "e804030200",
+          "original_disassembly": "call    sub_4DF4C"
+        },
+        {
+          "address": "0x2dc48",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc48",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x2dc4b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc4b",
+          "bytes": "46",
+          "original_disassembly": "inc     esi"
+        },
+        {
+          "address": "0x2dc4c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc4c",
+          "bytes": "39ee",
+          "original_disassembly": "cmp     esi, ebp"
+        },
+        {
+          "address": "0x2dc4e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc4e",
+          "bytes": "7cac",
+          "original_disassembly": "jl      short loc_2DBFC"
+        },
+        {
+          "address": "0x2dc50",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc50",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x2dc51",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc51",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x2dc52",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc52",
+          "bytes": "5e",
+          "original_disassembly": "pop     esi"
+        },
+        {
+          "address": "0x2dc53",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc53",
+          "bytes": "5b",
+          "original_disassembly": "pop     ebx"
+        },
+        {
+          "address": "0x2dc54",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dc54",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x2d8bb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8bb",
+          "bytes": "e83e010000",
+          "original_disassembly": "call    sub_2D9FE"
+        },
+        {
+          "address": "0x2d942",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d942",
+          "bytes": "e8b7000000",
+          "original_disassembly": "call    sub_2D9FE"
+        }
+      ]
+    },
+    {
+      "address": "0x1685c",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x1685c",
+      "target": "0x1685c",
+      "original_name": "sub_1685C",
+      "start": "0x1685c",
+      "end": "0x16886",
+      "instructions": [
+        {
+          "address": "0x1685c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1685c",
+          "bytes": "6814000000",
+          "original_disassembly": "push    14h"
+        },
+        {
+          "address": "0x16861",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16861",
+          "bytes": "e871040200",
+          "original_disassembly": "call    sub_36CD7"
+        },
+        {
+          "address": "0x16866",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16866",
+          "bytes": "53",
+          "original_disassembly": "push    ebx"
+        },
+        {
+          "address": "0x16867",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16867",
+          "bytes": "8b542410",
+          "original_disassembly": "mov     edx, [esp+4+arg_8]"
+        },
+        {
+          "address": "0x1686b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1686b",
+          "bytes": "8b442414",
+          "original_disassembly": "mov     eax, [esp+4+arg_C]"
+        },
+        {
+          "address": "0x1686f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1686f",
+          "bytes": "03548206",
+          "original_disassembly": "add     edx, [edx+eax*4+6]"
+        },
+        {
+          "address": "0x16873",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16873",
+          "bytes": "ff74240c",
+          "original_disassembly": "push    [esp+4+arg_4]"
+        },
+        {
+          "address": "0x16877",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16877",
+          "bytes": "52",
+          "original_disassembly": "push    edx"
+        },
+        {
+          "address": "0x16878",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16878",
+          "bytes": "ff742410",
+          "original_disassembly": "push    [esp+0Ch+arg_0]"
+        },
+        {
+          "address": "0x1687c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1687c",
+          "bytes": "e83a810300",
+          "original_disassembly": "call    sub_4E9BB"
+        },
+        {
+          "address": "0x16881",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16881",
+          "bytes": "83c40c",
+          "original_disassembly": "add     esp, 0Ch"
+        },
+        {
+          "address": "0x16884",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16884",
+          "bytes": "5b",
+          "original_disassembly": "pop     ebx"
+        },
+        {
+          "address": "0x16885",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16885",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x16910",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16910",
+          "bytes": "e847ffffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16936",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16936",
+          "bytes": "e821ffffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1695a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1695a",
+          "bytes": "e8fdfeffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16976",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16976",
+          "bytes": "e8e1feffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1698b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1698b",
+          "bytes": "e8ccfeffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x169b5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x169b5",
+          "bytes": "e8a2feffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x169d1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x169d1",
+          "bytes": "e886feffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x169ed",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x169ed",
+          "bytes": "e86afeffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x169ff",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x169ff",
+          "bytes": "e858feffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16a18",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16a18",
+          "bytes": "e83ffeffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16a3c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16a3c",
+          "bytes": "e81bfeffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16a52",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16a52",
+          "bytes": "e805feffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16a79",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16a79",
+          "bytes": "e8defdffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16a9a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16a9a",
+          "bytes": "e8bdfdffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16ad0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16ad0",
+          "bytes": "e887fdffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16aee",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16aee",
+          "bytes": "e869fdffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16b25",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16b25",
+          "bytes": "e832fdffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16ceb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16ceb",
+          "bytes": "e86cfbffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16d4e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16d4e",
+          "bytes": "e809fbffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x16dc8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16dc8",
+          "bytes": "e88ffaffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x17d9b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17d9b",
+          "bytes": "e8bceaffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x17db8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17db8",
+          "bytes": "e89feaffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x17dea",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17dea",
+          "bytes": "e86deaffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x17dfe",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17dfe",
+          "bytes": "e859eaffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x18269",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x18269",
+          "bytes": "e8eee5ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x182a3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x182a3",
+          "bytes": "e8b4e5ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x18536",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x18536",
+          "bytes": "e821e3ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x185d6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x185d6",
+          "bytes": "e881e2ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x18610",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x18610",
+          "bytes": "e847e2ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1863b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1863b",
+          "bytes": "e81ce2ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1868a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1868a",
+          "bytes": "e8cde1ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1cf72",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1cf72",
+          "bytes": "e8e598ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1e763",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1e763",
+          "bytes": "e8f480ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1e77c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1e77c",
+          "bytes": "e8db80ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1e796",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1e796",
+          "bytes": "e8c180ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1e7b8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1e7b8",
+          "bytes": "e89f80ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1e7d4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1e7d4",
+          "bytes": "e88380ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x1e7e9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1e7e9",
+          "bytes": "e86e80ffff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x2dcc8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dcc8",
+          "bytes": "e88f8bfeff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x2dd78",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dd78",
+          "bytes": "e8df8afeff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x2ddb2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ddb2",
+          "bytes": "e8a58afeff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x2dddd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dddd",
+          "bytes": "e87a8afeff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x2de34",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2de34",
+          "bytes": "e8238afeff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x2deaf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2deaf",
+          "bytes": "e8a889feff",
+          "original_disassembly": "call    sub_1685C"
+        },
+        {
+          "address": "0x30b4a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x30b4a",
+          "bytes": "e80d5dfeff",
+          "original_disassembly": "call    sub_1685C"
+        }
+      ]
+    },
+    {
+      "address": "0x4e8af",
+      "semantic_annotations": [
+        {
+          "address": "0x4e8af",
+          "classification": "product",
+          "semantic": "上框 DATO portrait indexed blitter",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+            "docs/knowledge-base/14-text-control-codes.md"
+          ],
+          "scope": "上框資源、目的端與 blit 方向；portrait record bytes 的高階身分語意仍須另證"
+        }
+      ],
+      "semantic_level": "已證實",
+      "unconfirmed_warning": false,
+      "source": "FD2.EXE IDA LE linear 0x4e8af",
+      "target": "0x4e8af",
+      "original_name": "sub_4E8AF",
+      "start": "0x4e8af",
+      "end": "0x4e8e1",
+      "instructions": [
+        {
+          "address": "0x4e8af",
+          "semantic_annotations": [
+            {
+              "address": "0x4e8af",
+              "classification": "product",
+              "semantic": "上框 DATO portrait indexed blitter",
+              "confidence": "已證實",
+              "evidence": [
+                "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+                "docs/knowledge-base/14-text-control-codes.md"
+              ],
+              "scope": "上框資源、目的端與 blit 方向；portrait record bytes 的高階身分語意仍須另證"
+            }
+          ],
+          "semantic_level": "已證實",
+          "unconfirmed_warning": false,
+          "source": "FD2.EXE IDA LE linear 0x4e8af",
+          "bytes": "55",
+          "original_disassembly": "push    ebp"
+        },
+        {
+          "address": "0x4e8b0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8b0",
+          "bytes": "8bec",
+          "original_disassembly": "mov     ebp, esp"
+        },
+        {
+          "address": "0x4e8b2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8b2",
+          "bytes": "60",
+          "original_disassembly": "pusha"
+        },
+        {
+          "address": "0x4e8b3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8b3",
+          "bytes": "8b7d08",
+          "original_disassembly": "mov     edi, [ebp+arg_0]"
+        },
+        {
+          "address": "0x4e8b6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8b6",
+          "bytes": "8b750c",
+          "original_disassembly": "mov     esi, [ebp+arg_4]"
+        },
+        {
+          "address": "0x4e8b9",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8b9",
+          "bytes": "8b5d10",
+          "original_disassembly": "mov     ebx, [ebp+arg_8]"
+        },
+        {
+          "address": "0x4e8bc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8bc",
+          "bytes": "66ad",
+          "original_disassembly": "lodsw"
+        },
+        {
+          "address": "0x4e8be",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8be",
+          "bytes": "668be8",
+          "original_disassembly": "mov     bp, ax"
+        },
+        {
+          "address": "0x4e8c1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8c1",
+          "bytes": "66ad",
+          "original_disassembly": "lodsw"
+        },
+        {
+          "address": "0x4e8c3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8c3",
+          "bytes": "668bd0",
+          "original_disassembly": "mov     dx, ax"
+        },
+        {
+          "address": "0x4e8c6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8c6",
+          "bytes": "33c9",
+          "original_disassembly": "xor     ecx, ecx"
+        },
+        {
+          "address": "0x4e8c8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8c8",
+          "bytes": "6633c0",
+          "original_disassembly": "xor     ax, ax"
+        },
+        {
+          "address": "0x4e8cb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8cb",
+          "bytes": "57",
+          "original_disassembly": "push    edi"
+        },
+        {
+          "address": "0x4e8cc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8cc",
+          "bytes": "668bcd",
+          "original_disassembly": "mov     cx, bp"
+        },
+        {
+          "address": "0x4e8cf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8cf",
+          "bytes": "e842000000",
+          "original_disassembly": "call    sub_4E916"
+        },
+        {
+          "address": "0x4e8d4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8d4",
+          "bytes": "aa",
+          "original_disassembly": "stosb"
+        },
+        {
+          "address": "0x4e8d5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8d5",
+          "bytes": "e2f8",
+          "original_disassembly": "loop    loc_4E8CF"
+        },
+        {
+          "address": "0x4e8d7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8d7",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x4e8d8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8d8",
+          "bytes": "03fb",
+          "original_disassembly": "add     edi, ebx"
+        },
+        {
+          "address": "0x4e8da",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8da",
+          "bytes": "664a",
+          "original_disassembly": "dec     dx"
+        },
+        {
+          "address": "0x4e8dc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8dc",
+          "bytes": "75ed",
+          "original_disassembly": "jnz     short loc_4E8CB"
+        },
+        {
+          "address": "0x4e8de",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8de",
+          "bytes": "61",
+          "original_disassembly": "popa"
+        },
+        {
+          "address": "0x4e8df",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8df",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x4e8e0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8e0",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x16200",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16200",
+          "bytes": "e8aa860300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x16591",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x16591",
+          "bytes": "e819830300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x17c30",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17c30",
+          "bytes": "e87a6c0300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x17f64",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17f64",
+          "bytes": "e846690300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x17f85",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17f85",
+          "bytes": "e825690300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x17fa6",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17fa6",
+          "bytes": "e804690300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x18cc1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x18cc1",
+          "bytes": "e8e95b0300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x19bd8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x19bd8",
+          "bytes": "e8d24c0300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x19c3e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x19c3e",
+          "bytes": "e86c4c0300",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2c81b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2c81b",
+          "bytes": "e88f200200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2cfc2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2cfc2",
+          "bytes": "e8e8180200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2daed",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2daed",
+          "bytes": "e8bd0d0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2db2b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db2b",
+          "bytes": "e87f0d0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2db82",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2db82",
+          "bytes": "e8280d0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2dbd0",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2dbd0",
+          "bytes": "e8da0c0200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2e148",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e148",
+          "bytes": "e862070200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2e3fd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e3fd",
+          "bytes": "e8ad040200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2e432",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e432",
+          "bytes": "e878040200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2e752",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e752",
+          "bytes": "e858010200",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2e973",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2e973",
+          "bytes": "e837ff0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2ed59",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ed59",
+          "bytes": "e851fb0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2ed94",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ed94",
+          "bytes": "e816fb0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2edf4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2edf4",
+          "bytes": "e8b6fa0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2ee4a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ee4a",
+          "bytes": "e860fa0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2ee99",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ee99",
+          "bytes": "e811fa0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2eed7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2eed7",
+          "bytes": "e8d3f90100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2ef24",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ef24",
+          "bytes": "e886f90100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x2ef5f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2ef5f",
+          "bytes": "e84bf90100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x305e8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x305e8",
+          "bytes": "e8c2e20100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x307bc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x307bc",
+          "bytes": "e8eee00100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x307f1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x307f1",
+          "bytes": "e8b9e00100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x30cd2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x30cd2",
+          "bytes": "e8d8db0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x30fc2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x30fc2",
+          "bytes": "e8e8d80100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x3128c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x3128c",
+          "bytes": "e81ed60100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x31977",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x31977",
+          "bytes": "e833cf0100",
+          "original_disassembly": "call    sub_4E8AF"
+        },
+        {
+          "address": "0x31997",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x31997",
+          "bytes": "e813cf0100",
+          "original_disassembly": "call    sub_4E8AF"
+        }
+      ]
+    },
+    {
+      "address": "0x4e916",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x4e916",
+      "target": "0x4e916",
+      "original_name": "sub_4E916",
+      "start": "0x4e916",
+      "end": "0x4e92c",
+      "instructions": [
+        {
+          "address": "0x4e916",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e916",
+          "bytes": "0ae4",
+          "original_disassembly": "or      ah, ah"
+        },
+        {
+          "address": "0x4e918",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e918",
+          "bytes": "7403",
+          "original_disassembly": "jz      short loc_4E91D"
+        },
+        {
+          "address": "0x4e91a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e91a",
+          "bytes": "fecc",
+          "original_disassembly": "dec     ah"
+        },
+        {
+          "address": "0x4e91c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e91c",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        },
+        {
+          "address": "0x4e91d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e91d",
+          "bytes": "ac",
+          "original_disassembly": "lodsb"
+        },
+        {
+          "address": "0x4e91e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e91e",
+          "bytes": "3cc0",
+          "original_disassembly": "cmp     al, 0C0h"
+        },
+        {
+          "address": "0x4e920",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e920",
+          "bytes": "7703",
+          "original_disassembly": "ja      short loc_4E925"
+        },
+        {
+          "address": "0x4e922",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e922",
+          "bytes": "32e4",
+          "original_disassembly": "xor     ah, ah"
+        },
+        {
+          "address": "0x4e924",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e924",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        },
+        {
+          "address": "0x4e925",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e925",
+          "bytes": "8ae0",
+          "original_disassembly": "mov     ah, al"
+        },
+        {
+          "address": "0x4e927",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e927",
+          "bytes": "80ecc1",
+          "original_disassembly": "sub     ah, 0C1h"
+        },
+        {
+          "address": "0x4e92a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e92a",
+          "bytes": "ac",
+          "original_disassembly": "lodsb"
+        },
+        {
+          "address": "0x4e92b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e92b",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x4e87b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e87b",
+          "bytes": "e896000000",
+          "original_disassembly": "call    sub_4E916"
+        },
+        {
+          "address": "0x4e8cf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e8cf",
+          "bytes": "e842000000",
+          "original_disassembly": "call    sub_4E916"
+        },
+        {
+          "address": "0x4e901",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e901",
+          "bytes": "e810000000",
+          "original_disassembly": "call    sub_4E916"
+        }
+      ]
+    },
+    {
+      "address": "0x4e9bb",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x4e9bb",
+      "target": "0x4e9bb",
+      "original_name": "sub_4E9BB",
+      "start": "0x4e9bb",
+      "end": "0x4e9e4",
+      "instructions": [
+        {
+          "address": "0x4e9bb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9bb",
+          "bytes": "55",
+          "original_disassembly": "push    ebp"
+        },
+        {
+          "address": "0x4e9bc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9bc",
+          "bytes": "8bec",
+          "original_disassembly": "mov     ebp, esp"
+        },
+        {
+          "address": "0x4e9be",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9be",
+          "bytes": "60",
+          "original_disassembly": "pusha"
+        },
+        {
+          "address": "0x4e9bf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9bf",
+          "bytes": "8b7d08",
+          "original_disassembly": "mov     edi, [ebp+arg_0]"
+        },
+        {
+          "address": "0x4e9c2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9c2",
+          "bytes": "8b750c",
+          "original_disassembly": "mov     esi, [ebp+arg_4]"
+        },
+        {
+          "address": "0x4e9c5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9c5",
+          "bytes": "8b5d10",
+          "original_disassembly": "mov     ebx, [ebp+arg_8]"
+        },
+        {
+          "address": "0x4e9c8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9c8",
+          "bytes": "66ad",
+          "original_disassembly": "lodsw"
+        },
+        {
+          "address": "0x4e9ca",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9ca",
+          "bytes": "668be8",
+          "original_disassembly": "mov     bp, ax"
+        },
+        {
+          "address": "0x4e9cd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9cd",
+          "bytes": "66ad",
+          "original_disassembly": "lodsw"
+        },
+        {
+          "address": "0x4e9cf",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9cf",
+          "bytes": "668bd0",
+          "original_disassembly": "mov     dx, ax"
+        },
+        {
+          "address": "0x4e9d2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9d2",
+          "bytes": "33c9",
+          "original_disassembly": "xor     ecx, ecx"
+        },
+        {
+          "address": "0x4e9d4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9d4",
+          "bytes": "57",
+          "original_disassembly": "push    edi"
+        },
+        {
+          "address": "0x4e9d5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9d5",
+          "bytes": "668bcd",
+          "original_disassembly": "mov     cx, bp"
+        },
+        {
+          "address": "0x4e9d8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9d8",
+          "bytes": "f3a4",
+          "original_disassembly": "rep movsb"
+        },
+        {
+          "address": "0x4e9da",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9da",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x4e9db",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9db",
+          "bytes": "03fb",
+          "original_disassembly": "add     edi, ebx"
+        },
+        {
+          "address": "0x4e9dd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9dd",
+          "bytes": "664a",
+          "original_disassembly": "dec     dx"
+        },
+        {
+          "address": "0x4e9df",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9df",
+          "bytes": "75f3",
+          "original_disassembly": "jnz     short loc_4E9D4"
+        },
+        {
+          "address": "0x4e9e1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e1",
+          "bytes": "61",
+          "original_disassembly": "popa"
+        },
+        {
+          "address": "0x4e9e2",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e2",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x4e9e3",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e3",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x1687c",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1687c",
+          "bytes": "e83a810300",
+          "original_disassembly": "call    sub_4E9BB"
+        }
+      ]
+    },
+    {
+      "address": "0x4e9e4",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x4e9e4",
+      "target": "0x4e9e4",
+      "original_name": "sub_4E9E4",
+      "start": "0x4e9e4",
+      "end": "0x4e9ff",
+      "instructions": [
+        {
+          "address": "0x4e9e4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e4",
+          "bytes": "55",
+          "original_disassembly": "push    ebp"
+        },
+        {
+          "address": "0x4e9e5",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e5",
+          "bytes": "8bec",
+          "original_disassembly": "mov     ebp, esp"
+        },
+        {
+          "address": "0x4e9e7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e7",
+          "bytes": "60",
+          "original_disassembly": "pusha"
+        },
+        {
+          "address": "0x4e9e8",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9e8",
+          "bytes": "8b7d08",
+          "original_disassembly": "mov     edi, [ebp+arg_0]"
+        },
+        {
+          "address": "0x4e9eb",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9eb",
+          "bytes": "8b750c",
+          "original_disassembly": "mov     esi, [ebp+arg_4]"
+        },
+        {
+          "address": "0x4e9ee",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9ee",
+          "bytes": "8b4510",
+          "original_disassembly": "mov     eax, [ebp+arg_8]"
+        },
+        {
+          "address": "0x4e9f1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9f1",
+          "bytes": "66a3a3270600",
+          "original_disassembly": "mov     ds:word_627A3, ax"
+        },
+        {
+          "address": "0x4e9f7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9f7",
+          "bytes": "e803000000",
+          "original_disassembly": "call    sub_4E9FF"
+        },
+        {
+          "address": "0x4e9fc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9fc",
+          "bytes": "61",
+          "original_disassembly": "popa"
+        },
+        {
+          "address": "0x4e9fd",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9fd",
+          "bytes": "5d",
+          "original_disassembly": "pop     ebp"
+        },
+        {
+          "address": "0x4e9fe",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9fe",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x15eff",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x15eff",
+          "bytes": "e8e08a0300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x1752b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x1752b",
+          "bytes": "e8b4740300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x17773",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17773",
+          "bytes": "e86c720300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x17a52",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x17a52",
+          "bytes": "e88d6f0300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x198c1",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x198c1",
+          "bytes": "e81e510300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x19ab4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x19ab4",
+          "bytes": "e82b4f0300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x19cfc",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x19cfc",
+          "bytes": "e8e34c0300",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x2d77a",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d77a",
+          "bytes": "e865120200",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x2d8e4",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2d8e4",
+          "bytes": "e8fb100200",
+          "original_disassembly": "call    sub_4E9E4"
+        },
+        {
+          "address": "0x2da7e",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x2da7e",
+          "bytes": "e8610f0200",
+          "original_disassembly": "call    sub_4E9E4"
+        }
+      ]
+    },
+    {
+      "address": "0x4e9ff",
+      "semantic_annotations": [],
+      "semantic_level": "未知",
+      "unconfirmed_warning": true,
+      "source": "FD2.EXE IDA LE linear 0x4e9ff",
+      "target": "0x4e9ff",
+      "original_name": "sub_4E9FF",
+      "start": "0x4e9ff",
+      "end": "0x4ea2a",
+      "instructions": [
+        {
+          "address": "0x4e9ff",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9ff",
+          "bytes": "66ad",
+          "original_disassembly": "lodsw"
+        },
+        {
+          "address": "0x4ea01",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea01",
+          "bytes": "668be8",
+          "original_disassembly": "mov     bp, ax"
+        },
+        {
+          "address": "0x4ea04",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea04",
+          "bytes": "66ad",
+          "original_disassembly": "lodsw"
+        },
+        {
+          "address": "0x4ea06",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea06",
+          "bytes": "668bd0",
+          "original_disassembly": "mov     dx, ax"
+        },
+        {
+          "address": "0x4ea09",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea09",
+          "bytes": "33c9",
+          "original_disassembly": "xor     ecx, ecx"
+        },
+        {
+          "address": "0x4ea0b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea0b",
+          "bytes": "33db",
+          "original_disassembly": "xor     ebx, ebx"
+        },
+        {
+          "address": "0x4ea0d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea0d",
+          "bytes": "668b1da3270600",
+          "original_disassembly": "mov     bx, ds:word_627A3"
+        },
+        {
+          "address": "0x4ea14",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea14",
+          "bytes": "57",
+          "original_disassembly": "push    edi"
+        },
+        {
+          "address": "0x4ea15",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea15",
+          "bytes": "668bcd",
+          "original_disassembly": "mov     cx, bp"
+        },
+        {
+          "address": "0x4ea18",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea18",
+          "bytes": "ac",
+          "original_disassembly": "lodsb"
+        },
+        {
+          "address": "0x4ea19",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea19",
+          "bytes": "0ac0",
+          "original_disassembly": "or      al, al"
+        },
+        {
+          "address": "0x4ea1b",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea1b",
+          "bytes": "7402",
+          "original_disassembly": "jz      short loc_4EA1F"
+        },
+        {
+          "address": "0x4ea1d",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea1d",
+          "bytes": "8807",
+          "original_disassembly": "mov     [edi], al"
+        },
+        {
+          "address": "0x4ea1f",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea1f",
+          "bytes": "47",
+          "original_disassembly": "inc     edi"
+        },
+        {
+          "address": "0x4ea20",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea20",
+          "bytes": "e2f6",
+          "original_disassembly": "loop    loc_4EA18"
+        },
+        {
+          "address": "0x4ea22",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea22",
+          "bytes": "5f",
+          "original_disassembly": "pop     edi"
+        },
+        {
+          "address": "0x4ea23",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea23",
+          "bytes": "03fb",
+          "original_disassembly": "add     edi, ebx"
+        },
+        {
+          "address": "0x4ea25",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea25",
+          "bytes": "664a",
+          "original_disassembly": "dec     dx"
+        },
+        {
+          "address": "0x4ea27",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea27",
+          "bytes": "75eb",
+          "original_disassembly": "jnz     short loc_4EA14"
+        },
+        {
+          "address": "0x4ea29",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4ea29",
+          "bytes": "c3",
+          "original_disassembly": "retn"
+        }
+      ],
+      "callers": [
+        {
+          "address": "0x4e9f7",
+          "semantic_annotations": [],
+          "semantic_level": "未知",
+          "unconfirmed_warning": true,
+          "source": "FD2.EXE IDA LE linear 0x4e9f7",
+          "bytes": "e803000000",
+          "original_disassembly": "call    sub_4E9FF"
+        }
+      ]
+    }
+  ]
+}

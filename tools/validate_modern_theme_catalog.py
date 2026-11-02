@@ -210,7 +210,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 raise ValueError(f'invalid facility scene contract: {asset_id}')
             if resource in {13,14} and entry['source_metadata_sha256'] != {
                     13:'4cb14409dbd9d2eb25fdf4d6a50f5f8a19e1313094e3d16ac3f71fce694491c5',
-                    14:'bb17e07bd177005cdd3bf850b158f3539c33b54173c5d13251c6609ee9bdf224'}[resource]:
+                    14:'fabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12'}[resource]:
                 raise ValueError(f'facility source metadata differs: {asset_id}')
             facility_resources.add(resource)
             if verify_private:

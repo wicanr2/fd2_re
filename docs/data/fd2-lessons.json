@@ -5011,6 +5011,21 @@
         ],
         "pattern": "validateModernFacilityPortraitScenePairs"
       }
+    },
+    {
+      "id": "mixed-bank-codec-follows-native-primitive",
+      "date": "2026-11-02",
+      "area": "分離素材與視覺證據",
+      "rule": "混合圖庫依實際caller的繪製primitive逐entry選codec，不由LMI1容器或相鄰entry推定。測試先對固定raw payload及原版指令，不能只讓分離PNG與同一parser互比。入口為tools/ida_probe_fd2_service_icon_codec.py、fd2_church_ui_assets_ida.txt及fd2-asset-import的exportChurchUI。明確指定FD2_ASSET_PACK的回歸保留該候選根，不被本地舊快取覆寫。",
+      "why": "R49發現教堂八服務圖示被高run解碼成條帶。IDA證實原始480-byte像素及零透明；舊AE=0僅兩端共用錯誤parser。候選修正後三個狀態測試又無條件改回舊快取，strict loader正確拒絕。",
+      "evidence": "docs/data/ida/fd2_service_icon_codec_20261102.json；WORKLOG.md；R49/regression-r1-diagnostic.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/fdother/separated_church_ui.go"
+        ],
+        "pattern": "0x2d77a/0x2d8e4/0x2da7e"
+      }
     }
   ]
 }

@@ -15,8 +15,8 @@ const (
 )
 
 var (
-	churchUIOpaqueEntries = []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 16}
-	churchUIRawEntries    = []int{15}
+	churchUIOpaqueEntries = []int{1, 16}
+	churchUIRawEntries    = []int{3, 4, 5, 6, 7, 8, 9, 10, 15}
 	churchUIFrameEntries  = []int{0, 23, 24, 25, 26, 27, 28, 29, 30, 31}
 )
 
@@ -99,10 +99,19 @@ func LoadSeparatedChurchUIAssets(root string) (SeparatedChurchUIAssets, error) {
 				Width: entry.Width, Height: entry.Height, Pixels: pixels,
 			}
 		case "raw_indexed_opaque":
-			if entry.Mask != "" || entry.Index != 15 {
+			if entry.Mask != "" {
 				return SeparatedChurchUIAssets{}, fmt.Errorf("fdother: invalid raw church UI entry %d", entry.Index)
 			}
-			result.PriceCell = RawCell{Width: entry.Width, Height: entry.Height, Pixels: pixels}
+			if entry.Index == 15 {
+				result.PriceCell = RawCell{Width: entry.Width, Height: entry.Height, Pixels: pixels}
+			} else {
+				// 0x2d77a/0x2d8e4/0x2da7e call 0x4e9e4: raw pixels,
+				// zero transparent in the existing service-cell BlitAt.
+				if entry.Index < 3 || entry.Index > 10 || entry.Width != 24 || entry.Height != 20 {
+					return SeparatedChurchUIAssets{}, fmt.Errorf("fdother: invalid raw church service %d", entry.Index)
+				}
+				result.Entries[entry.Index] = LMI1Entry{Width: entry.Width, Height: entry.Height, Pixels: pixels}
+			}
 		case "four_mode_frame":
 			wantMask := fmt.Sprintf("entry_%03d/mask.png", entry.Index)
 			if entry.Mask != wantMask {

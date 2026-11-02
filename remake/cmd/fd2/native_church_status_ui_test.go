@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 	"time"
 
@@ -36,7 +37,9 @@ func TestNativeChurchPanelLifecycleMatches17AEDSchedules(t *testing.T) {
 }
 
 func TestNativeChurchStatusUsesSeparatedAssetsWithoutOriginalArchives(t *testing.T) {
-	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	if os.Getenv("FD2_ASSET_PACK") == "" {
+		t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	}
 	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
 	t.Setenv("FD2_ORIGINAL_FDTXT", "")
 	t.Setenv("FD2_ORIGINAL_DATO", "")
@@ -80,7 +83,9 @@ func TestNativeChurchStatusUsesSeparatedAssetsWithoutOriginalArchives(t *testing
 }
 
 func TestNativeChurchStatusTypedInputRoundTrip(t *testing.T) {
-	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	if os.Getenv("FD2_ASSET_PACK") == "" {
+		t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	}
 	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
 	t.Setenv("FD2_ORIGINAL_FDTXT", "")
 	t.Setenv("FD2_ORIGINAL_DATO", "")
@@ -135,7 +140,9 @@ func TestNativeChurchStatusTypedInputRoundTrip(t *testing.T) {
 }
 
 func TestNativeChurchStatusPublishesRawTransientIndicators(t *testing.T) {
-	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	if os.Getenv("FD2_ASSET_PACK") == "" {
+		t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	}
 	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
 	t.Setenv("FD2_ORIGINAL_FDTXT", "")
 	t.Setenv("FD2_ORIGINAL_DATO", "")

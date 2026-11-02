@@ -5834,3 +5834,21 @@ R48 ready.json及hotel-gold-frame-prototype.png保存範圍與原型。只在穩
 136個完整Game.Draw及最終呈現通過，涵蓋18模式四種顯示，以及兩確認owner×四語×兩選項×兩pulse。53PNG、8424000框線像素與11902208內部取樣點通過，工具列開關保持遊戲區。參考為先前已驗定版材質的CPU成品，這批驗接線與覆蓋範圍，不重新宣稱原版像素一致。直接來源／遮蓋邊線／遮蓋按鈕／錯owner／外來job／面板SHA／palette快取驗證及35頂層回歸通過，五個可選GPU／oracle／匯出略過另列。首輪測具誤用文字幀型別、欄位及語系API，修為實際型別和既有官方載入器後乾淨重跑，正式實作未因編譯失敗放寬。
 
 [酒店古金框普通畫面](../figures/hd1-hotel-dialogue-game.png)與[教堂古金框普通畫面](../figures/hd1-church-dialogue-game.png)沿前述正常START後F9接續hotel_ch02，再正常鍵盤進設施。酒店13及教堂15PNG、四語／名冊／復活與交付列表取消／服務保存LOAD／F2／縮放及說明頁通過。來源與兩主題保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持；沒有新程序標題LOAD或原版E2。1217份Go指紋c3e8c089245c3d154becbce194a31fa7ed52739e752f5505d2ab8d284d6dedd5，程式SHA0cbaba227de7c6920f4066f027547a7251bfc67dba9200e4a6845b5bd3193c8a，21來源／416幀／19反例及159字串處置保持。913清冊、6942私人檔與bd62bd50不變。服務圖示、進出場／其他動畫與其餘未接內容續作；#283保持開啟，#282地形仍3180缺槽／2033唯一來源，人工由使用者接手。
+
+## HD1設施服務圖示來源核對（RE-CLOSED／DATA-READY／RUNTIME-E1，2026-11-02）
+
+教堂現有八圖示呈條帶，固定FDOTHER14 entries3..10每筆皆為4-byte header加480-byte payload。raw假說可得清晰圖案，仍須核對原版呼叫，不能用此視覺印象直接改正式codec。來源位元組與對照保存在R49 raw-entry-observation.json／church-service-codec-hypothesis.png，舊canonical入口fd2_church_ui_assets_ida.txt暫保留，是否重開依直接指令及目前oracle。工具入口tools/ida_probe_fd2_service_icon_codec.py，以FD2_IDA_OUTPUT指定明確JSON、FD2_IDA_ADDRESSES指定已知位址；只在授權IDA容器對原版雜湊一致的資料庫複本執行，原名、位址、bytes與分級索引保持。
+
+IDA9.4已證實八服務cells走0x4E9E4→0x4E9FF的raw逐byte／零值透明路徑，舊high-run斷言由直接指令推翻。新證據為[fd2_service_icon_codec_20261102.json](../data/ida/fd2_service_icon_codec_20261102.json)，canonical勘誤於[教會固定資產](../data/fd2_church_ui_assets_ida.txt)，重開原因同列58及#288。R49 ready-codec.json定義修正匯出器、strict loader與候選分離清冊，八圖逐byte及四選項／兩pulse、透明寫入、正常教堂／保存與其他圖不變均須通過；新格式沿既有raw_indexed_opaque，不猜新身份或玩法。原版分離候選完整驗證後才同步私人庫，現代圖源只更新metadata pin，整圖與頭像PNG保持。HD服務美術另續作。
+
+候選分離包入口tools/build_fd2_church_codec_candidate.py，使用--base <固定分離包> --exported <TestChurchServiceSourceExport實際輸出> --out <全新候選目錄>。只允許八PNG及resource.json改變，其他23個輸出逐byte保持，manifest只更新九筆雜湊，原始source_resources不變；不寫入基底。原版完整archive與拒收高run圖不混入現代美術包。
+
+原版分離manifest由5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5增列已驗revision1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e，只變九個教堂輸出雜湊。歷史戰鬥圖源盤點保持原manifest；tools/audit_fd2_player9_map_source.py及tools/build_fd2_facility_hd.py明列兩個固定revision，仍拒絕未知包並逐圖驗來源，未改的FDOTHER5／6、原六設施圖源與palette保持。主收據hd1_church_service_codec_followup_20261102另存完整manifest變動與相容收據，不把新版來源冒稱舊輸入。
+
+原始圖示修正主收據hd1_church_service_codec_followup_20261102。實際exportChurchUI重生八raw圖與metadata，strict loader及固定payload／零值透明／舊錯誤codec拒絕通過；背景、兩opaque及九復活動畫保持。完整候選manifest及原版來源、音樂／FDFIELD執行期清冊驗證通過，九個輸出變動、其他23個church輸出逐byte保持。首次驗證漏runtime root屬命令缺參，補明既有資產根後通過，未放寬產品檢查。
+
+32完整Game.Draw及最終呈現／10PNG逐點核對2211840圖示像素，參考直接讀固定resource offset的480bytes及原零值透明規則，涵蓋四選項、兩pulse及四組美術／介面。39相關回歸通過，六可選GPU／oracle／匯出略過不計；三個狀態測試原本強制改回舊generated cache，已改為尊重明確FD2_ASSET_PACK且仍關閉原archive，乾淨重跑通過。1219份Go指紋d56ba92e1fc90dc220fcb205d1dd20279d4ebb07ce13d27bf8f9159e134eae10，21來源／416幀／19反例及159字串處置保持。程式SHA4ee988990bd90818fe3d50be1d8933d65e0c539d27c2853f2c3d8745081ea2f2，正式Go建置後未變。
+
+[正常教堂清楚原圖](../figures/hd1-church-service-source-game.png)來自START後F9接續既有hotel_ch02，再經城鎮入教堂；酒店13及教堂15PNG、四語名冊／復活與交付取消、服務保存LOAD、F2與縮放說明通過。來源及兩美術保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持，未新增冷LOAD或原版E2。
+
+只將八PNG、resource.json與manifest修正同步私人0b5916e3af7e8075201921df0a853f74a6c1b8e2及本地原版快取，現代包只改scene14 metadata pin；全部6942張現代圖與913清冊數保持。原始EXE／DAT／raw及source_resources未改，來源摘要只更新manifestSHA。私人仍private且遠端一致。這批修正原圖解碼，HD服務美術與動畫仍由#283續作，#282地形仍3180缺槽／2033唯一來源。

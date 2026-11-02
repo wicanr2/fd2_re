@@ -291,9 +291,9 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 | 酒店完整插畫 | 教堂完整插畫 |
 |---|---|
-| ![酒店HD場景](docs/figures/hd1-hotel-dialogue-game.png) | ![教堂HD場景](docs/figures/hd1-church-dialogue-game.png) |
+| ![酒店HD場景](docs/figures/hd1-hotel-dialogue-game.png) | ![教堂HD場景](docs/figures/hd1-church-service-source-game.png) |
 
-酒店與教堂的人物、背景及固定頭像沿各自原圖重繪，頭像直接裁自同一畫稿。上圖由正常START後F9接續既有第2章存檔，經正常鍵盤進入設施；美術與介面可獨立切換。穩定對話及確認採古金框，列表採原色細框。設施圖示與動畫仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
+酒店與教堂的人物、背景及固定頭像沿各自原圖重繪，頭像直接裁自同一畫稿。上圖由正常START後F9接續既有第2章存檔，經正常鍵盤進入設施；美術與介面可獨立切換。穩定對話及確認採古金框，列表採原色細框；教堂服務圖示保留已核對的原版圖案。設施圖示與動畫仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
 
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 

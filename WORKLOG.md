@@ -4707,3 +4707,13 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - 正常START後F9接既有hotel_ch02，酒店13及教堂15PNG、四語名冊／復活交付取消、服務保存LOAD、F2及縮放說明通過。來源及兩主題保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持。1217份Go指紋c3e8c089245c3d154becbce194a31fa7ed52739e752f5505d2ab8d284d6dedd5，程式SHA0cbaba227de7c6920f4066f027547a7251bfc67dba9200e4a6845b5bd3193c8a；21來源／416幀／19反例與159字串處置保持。
 - README換兩張普通古金框圖，56／57／58／61及唯一現況表同步，主收據hd1_facility_dialogue_followup_20261102。913清冊／6942私人檔與bd62bd50保持，沒有新增美術、原版E2或全HD1聲明。#283續作服務圖示／動畫與未接內容，#282仍3180缺槽／2033唯一來源；人工由使用者接手。
 - 收尾核對25份來源／收據、81驗證PNG及兩張公開圖；新連結錯誤零。402教訓／251訊號、27工單／20人工／零疑似完成通過。新工作根與變更檔UID/GID為1000，新root-owned及.md目錄零；舊2808保持。本批容器全部退出並自刪，其他專案保持。
+
+## 2026-11-02 教堂八服務圖示raw codec修正
+
+- 正常畫面發現教堂圖示呈條帶。依58／00-index先讀已閉合canonical，固定FDOTHER14八entry每筆484bytes，raw假說可得圖案。合法IDA9.4 py312-v1實測最小探針成功，既有資料庫與原EXE雜湊一致；直接指令0x2D77A／0x2D8E4／0x2DA7E→0x4E9E4→0x4E9FF確認raw逐byte及零透明，原opaque_high_run斷言由反證重開。新證據docs/data/ida/fd2_service_icon_codec_20261102.json與受版控exporter保留原名、bytes、位址及分級。未安裝或重建IDA image，所有原始與正式DB唯讀，探針只改一次性DB複本。
+- 先立ready-codec，再修exportChurchUI與strict loader。新候選只准八PNG及metadata改變，其他23個church輸出逐byte保持；原始EXE／DAT／raw、source_set與source_resources不改。原版分離manifest修為1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e，metadatafabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12。來源摘要只換manifestSHA；舊戰鬥盤點不重寫，兩個受影響工具明列舊／新固定revision，逐圖核對仍在且未知包拒絕。
+- 實際匯出、strict loader、固定八payload、零透明與舊codec拒絕通過；完整manifest與原版／音樂／FDFIELD來源驗證通過。首輪漏runtime-assets參數，補現有根後重跑；沒有放寬檢查。32完整Game.Draw／10PNG、2211840raw圖示像素通過，四選項／兩pulse／四組控制與工具列遊戲區保持。
+- 39相關回歸通過，六可選略過另列。首輪三個狀態測試強制覆寫明確候選根而讀到舊cache，strict loader正確拒絕；測具改尊重FD2_ASSET_PACK、原archive仍關閉，再乾淨重跑。1219份Go指紋d56ba92e1fc90dc220fcb205d1dd20279d4ebb07ce13d27bf8f9159e134eae10，21來源／416幀／19反例及159字串處置保持。程式SHA4ee988990bd90818fe3d50be1d8933d65e0c539d27c2853f2c3d8745081ea2f2，production Go建置後未變。
+- 正常START後F9接既有hotel_ch02，酒店13及教堂15PNG、四語／服務保存LOAD／復活交付取消／F2／縮放說明通過。來源與兩美術保存SHA190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456保持。README換清楚原圖的普通教堂畫面。舊共用parser的AE=0無法證明正確圖示，已同步57／58及canonical勘誤，輸入／保存等其他已驗範圍保持；未新增原版E2或整章聲明。
+- 精確11檔同步並提交私人0b5916e3af7e8075201921df0a853f74a6c1b8e2，遠端一致；原圖快取同批修正。現代包僅改metadata pin，6942張現代圖與913清冊數保持。#288追蹤這個缺陷，#283續作HD服務圖示與動畫，#282仍3180缺槽／2033唯一來源。主收據hd1_church_service_codec_followup_20261102。
+- 收尾核對36份來源／收據、38驗證PNG與一張公開圖；新連結錯誤零。403教訓／252訊號、27開啟工單／20人工／零疑似完成通過，#288已關閉。新工作根及變更檔UID/GID為1000，新root-owned及.md目錄零，舊2808保持。IDA／建置／測試／GUI容器全部退出並自刪，其他專案保持。

@@ -22,7 +22,7 @@
 - **已證實**：`0x3072F` 教會穩定場景使用 entry1；背景由 entry0 的
   320×200 four-mode frame 建立。
 - **已證實**：`0x2D669`／`0x2D85F` 使用 entries 3/4、5/6、7/8、9/10
-  四組 normal／pulse cell；八筆皆為24×20 opaque LMI1 cell。
+  四組 normal／pulse cell；八筆皆為24×20 raw indexed cell。2026-11-02直接指令勘誤見末節。
 - **已證實**：`0x2DC55(mode=1)` 使用 entry15 raw cell，並與 entry16
   組成物品轉交／費用列畫面。
 - **已證實**：復活成功 `0x2F4C6` 依序將 entries23..31 的 nine four-mode
@@ -37,8 +37,8 @@
   archive hash、resource 14 與51,157-byte raw size。
 - `four_mode_frame`：entries 0、23..31；每筆輸出 indexed `frame.png` 與 binary
   `mask.png`。
-- `opaque_high_run`：entries 1、3..10、16；每筆只輸出 indexed `frame.png`。
-- `raw_indexed_opaque`：entry15；只輸出 indexed `frame.png`。
+- `opaque_high_run`：entries 1、16；每筆只輸出 indexed `frame.png`。
+- `raw_indexed_opaque`：entries3..10、15；只輸出 indexed `frame.png`。codec描述資料格式，服務consumer另以零值透明繪製。
 - metadata 必須恰含上述21筆且 index 不重複；codec、幾何、相對路徑、PNG mode、
   mask mode及來源任一不符即失敗即關閉。production 不得對 resource14 回退 archive。
 - 驗收：所有 separated pixels／masks 與對應原始 parser 逐位元組一致；缺 pack
@@ -53,3 +53,9 @@ PNG mode。所有 entry pixels／masks 已在 Docker 中與固定 raw resource �
 比較通過，缺 pack 會拒絕。`loadNativeClassUIAssets` 已不再讀取或解析 resource14，
 轉職與四項教會服務的正式 Ebiten 聚焦回歸亦通過。因此 resource14 固定資產達
 `RUNTIME-E1`；#5／#2 的剩餘 archive 依賴與 DOSBox `PLAYER-E2` 限制不變。
+
+## 2026-11-02 服務圖示 codec 勘誤
+
+舊文把entries3..10歸入opaque high-run，這項結論已失效。輸入EXE／archive／resource雜湊與前述相同。IDA9.4直接指令新證據為docs/data/ida/fd2_service_icon_codec_20261102.json，匯出工具tools/ida_probe_fd2_service_icon_codec.py；原名、bytes及IDA LE linear位址保留。0x2D746以2*option+3取entry，0x2D77A及0x2D8E4呼叫sub_4E9E4；0x2DA53..0x2DA60以2*selected+3+pulse取entry，0x2DA7E亦呼叫sub_4E9E4。該函式於0x4E9F7呼叫sub_4E9FF，後者0x4E9FF／0x4EA04讀width／height，0x4EA18為lodsb，0x4EA19..0x4EA1D跳過零值後直接寫目的。此路徑不呼叫sub_4E916。
+
+八個entry在解包resource的檔案偏移分別44797、45281、45765、46249、46733、47217、47701、48185，各長484 bytes，即4-byte header加480原始像素。這些數字是resource檔案偏移，不是IDA位址。原版3/4、5/6、7/8、9/10的normal／pulse配對與目的地保持。原版entry1／16、背景及23..31動畫不重開。先前分離PNG與原parser相等只證明兩者共享同一錯誤codec，不能證明原版consumer一致；舊條帶PNG及當時驗證保留作歷史證據，現況依#288修正收據。

@@ -301438,5 +301438,239 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-dialogue-r48/final-validation-r1.json",
       "sha256": "fbc0b587e31b886d84427b0b2d916eb5b29d981da49da8661ba27ed636481041"
     }
+  },
+  "hd1_church_service_codec_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "RE-CLOSED/DATA-READY/RUNTIME-E1/NORMAL-GUI",
+    "issue": 288,
+    "base_commit": "67b51f90c1d4670132feeefe7d363843e4aea0ef",
+    "scope": "correct original church FDOTHER14 service cells3..10 to raw480-byte pixel source with zero transparency; no new HD service art",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source_evidence": {
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/ready-codec.json",
+        "sha256": "e5eadf40b774c6f745e976f61a341494d1e6d8b5a456c0cbad0cee76d63c0997"
+      },
+      "ida": {
+        "file": "docs/data/ida/fd2_service_icon_codec_20261102.json",
+        "sha256": "d96680fcc7d9cac3a0f4453697a226e396b8f3319d8e484bdf67e268afcf4d6c"
+      },
+      "exporter": {
+        "file": "tools/ida_probe_fd2_service_icon_codec.py",
+        "sha256": "662b8b08a0ed4345dcfd1287943070e4627796ddcf05edb7c2d0f016365e65f1"
+      },
+      "minimal_probe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/ida-minimal.json",
+        "sha256": "07d5ff7c3910039a682055d48cd5a63cc28c956e2ec9a1b509fe11f9b0c18f54"
+      },
+      "raw_observation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/raw-entry-observation.json",
+        "sha256": "a703e2baf748d70767dd98c9a37339dc1d971848e8857e9cf01a877fe15b1e5a"
+      },
+      "canonical": {
+        "file": "docs/data/fd2_church_ui_assets_ida.txt",
+        "sha256": "b147f4767567e3fc7a85395ebc585ae916799826af14f65e96d9bb952975bcc6"
+      },
+      "source_inference": "confirmed raw byte stream and zero-transparent primitive by0x2d77a/0x2d8e4/0x2da7e→0x4e9e4→0x4e9ff; fixed input EXE/raw hashes in canonical",
+      "address_space": "IDA LE linear; raw observation offsets separately unpacked resource offsets",
+      "supersedes": "opaque_high_run classification of eight church service cells and old same-parser AE=0 evidence only; other entries, input owners and saves unchanged"
+    },
+    "source": {
+      "go_files": 1219,
+      "go_tree_sha256": "d56ba92e1fc90dc220fcb205d1dd20279d4ebb07ce13d27bf8f9159e134eae10",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/consumers-r2.json",
+        "sha256": "2ae7260e634661267fd18a206e86f1f67a8aaedea7dbabe2fb3b858b5aa94bcd"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/fd2-player-r1",
+        "sha256": "4ee988990bd90818fe3d50be1d8933d65e0c539d27c2853f2c3d8745081ea2f2"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/commands.json",
+        "sha256": "7045e42f4a70e4db1412010d43e74adab0e3059be9984c4ab2f295895da072da"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "110e8a4f92e820e8b7e10cb2f6bd007ffaab678157bd3c7103ab1fa569129bd7"
+      },
+      "registered_assets": 913,
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/runtime-r1/assets/themes/modern/catalog.json",
+        "sha256": "110e8a4f92e820e8b7e10cb2f6bd007ffaab678157bd3c7103ab1fa569129bd7"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2-asset-import/main.go",
+          "sha256": "2f5960d6d52d86726a914d87fb19b35eb197f1a38b1ad170eda074e81180371d"
+        },
+        {
+          "file": "remake/internal/fdother/separated_church_ui.go",
+          "sha256": "7c5a9254cc96834825d379095f5c9399455362805e2c07eef7a536f3f42ed90d"
+        },
+        {
+          "file": "tools/build_fd2_church_codec_candidate.py",
+          "sha256": "b39387224179b1118f915709f0c26aff14ac8a5648b40d7be38a4087f159b122"
+        }
+      ]
+    },
+    "data": {
+      "export": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/export-r1/codec-receipt.json",
+        "sha256": "9f340f1c48d3b3f715b59ffe85a117fb863ac120fdbc8e51c7220549fbb74d11"
+      },
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/candidate-original-receipt.json",
+        "sha256": "68b76a717efc3bc28a438876c0a4bd833e388ccff33afcd1e38ad9cdc3d0dc76"
+      },
+      "validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/pack-validation-r2.json",
+        "sha256": "4ccff8cebfeb942d8126a25461e1ec0c8c85892186240ec17760a223203eb15b"
+      },
+      "source_summary": {
+        "file": "docs/data/fd2-source-resource-coverage-summary.json",
+        "sha256": "7939eff65d27d0a524f61432f755764698e3ebf3c6fe589244fa7da2f10f851e"
+      },
+      "source_summary_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/source-coverage-migration.json",
+        "sha256": "4950999254dad61abd522a2207ae26773611b3185fc37d6768f204890c8f72c7"
+      },
+      "old_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+      "new_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e",
+      "metadata_sha256": "fabec30f3791617f5449239ac235bbeb69cf0b8ba51ad1ff9cc2e357c2728a12",
+      "changed_original_outputs": 9,
+      "unchanged_church_outputs": 23,
+      "original_archives_raw_and_source_resources_unchanged": true,
+      "new_schema": false,
+      "manifest_compatibility": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/manifest-compatibility.json",
+        "sha256": "62dee4cc27769c4968c801b21b7427710d91bdea149898359889bb5ac3a1f9bf"
+      },
+      "historical_inventory_preserved": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/gpu-r1-capture/receipt.json",
+        "sha256": "4aace45877b444a79c51fbeb4d11bdddf0c1d8b2fb3dcac413783998851e6aa9"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/gpu-r1.memory.json",
+        "sha256": "4f4f97cdf49ac06efb0c50ef217ae74cecdbb52f47ec6c2abdf80bb44b3f7d9f"
+      },
+      "cases": 32,
+      "png": 10,
+      "raw_source_pixels": 2211840,
+      "reference": "direct fixed resource offsets and raw480 payload, literal zero-transparent loop, four choices/two pulses/four art-UI styles",
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "hotel": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/normal-hotel-r1-capture/receipt.json",
+          "sha256": "b37f5b5edc4d7682c23af2ab2eb3b399bf0b7225f095459fd167757b89a5f0bb"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/normal-hotel-r1.memory.json",
+          "sha256": "1c17b4de0e333d70f4574e8f6deb30d99aa84bb13682e6af47bffe244407052d"
+        },
+        "png": 13,
+        "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02槽，正常旅館選槽、保存與服務LOAD；四語保留原有原生文字，不新增翻譯。不宣稱連續戰役或原版視覺對拍。"
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/normal-church-r1-capture/receipt.json",
+          "sha256": "8a7fffb96118e1f3f5481166181eba82f1a4a387c9edeb8b1192e620914c2bb6"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/normal-church-r1.memory.json",
+          "sha256": "8fd982cc35aecd070f1814a947f9a8d2bb071f721d5672941c861b559fd7159c"
+        },
+        "png": 15,
+        "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。"
+      }
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/regression-r2.memory.json",
+        "sha256": "13c76e31e670116e55890f43546e5a4021e646b269c51fcfd26e5ce53c535286"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/regression-r2.log",
+        "sha256": "68004f48ffd1f6cc3fb92acd8c88bacb93da95446f9db500b1745a2c302f16a6"
+      },
+      "top_level_passed": 39,
+      "skipped": [
+        "TestNativeHotelOriginalLoadSameSourceProbe",
+        "TestModernHDChurchRawServiceSourceGPU",
+        "TestModernHDFacilityDialogueRuntimeGPU",
+        "TestModernHDFacilityPortraitRuntimeGPU",
+        "TestModernHDFacilityFullSourceExport",
+        "TestModernHDFacilityRuntimeGPU"
+      ],
+      "skips_are_not_passes": true,
+      "source_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/source-r2.memory.json",
+        "sha256": "0d12e06ab460ae9572162cb32d21ae0ef9aaaddd1630b17ab7e030e7cef56aab"
+      },
+      "source_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/source-r2.log",
+        "sha256": "b0bc6ff4af00a5d12f44e2a2717f998b413ec866febd3f228595c5867c4b6284"
+      },
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/consumers-verified-r3.json",
+        "sha256": "385b17669c8695d5f878eb1dbffb18478101438d89023a25175d4454f25e8ae9"
+      },
+      "catalog_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/catalog-validation.json",
+        "sha256": "da5c06ba5d965b7a4a456aa052230a162307c7edb486c35fcbfed34c2a71f7b6"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/string-migration-r1.json",
+        "sha256": "7732da3b2d4bdf8f97ddb8a55edde19d09d76e5dd9a01fdec372e077b3fc354e"
+      },
+      "go_review_candidates": 159,
+      "prior_string_dispositions_preserved": 159,
+      "stale_test_override_correction": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/regression-r1-diagnostic.json",
+        "sha256": "00fe0db4b81b055ab7bdbac4e82c23d6dd47bf402f0b1c1dc42f2730409e5a9d"
+      },
+      "native_source_clock_rng_save_unchanged": true
+    },
+    "private_assets": {
+      "head": "0b5916e3af7e8075201921df0a853f74a6c1b8e2",
+      "remote_verified": true,
+      "is_private": true,
+      "changed_files": 11,
+      "modern_images": 6942,
+      "modern_images_unchanged": true,
+      "sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/private-sync.json",
+        "sha256": "0511b6f821cd2b58b95e3cec12f51a639f70a5279fdad40023f206631409f809"
+      },
+      "original_cache_synced": true
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-church-service-source-game.png",
+      "sha256": "b0036ec7dad700c8babe37b1099a729350caea126052a386ade24790b5d27057"
+    },
+    "remaining_ui": [
+      "service icons HD artwork and wiring",
+      "facility opening/closing and other native animated jobs"
+    ],
+    "limits": [
+      "Corrected native source, not new HD icon art or full HD1.",
+      "No gameplay/save/clock/RNG change.",
+      "Normal START then F9 resumes existinghotel_ch02; no new-process title LOAD or campaign/original E2 claim.",
+      "Terrain remains3180 missing slots/2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-icons-r49/final-validation.json",
+      "sha256": "e3a6698f0c65a32574769b874e9c39e88d85d2e5c55257111bf556c024a41f13"
+    }
   }
 }

@@ -2,7 +2,11 @@ package fdother
 
 import (
 	"bytes"
+	"encoding/json"
+	"io/fs"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -15,8 +19,15 @@ func TestSeparatedChurchUIAssetsMatchOriginalCodecs(t *testing.T) {
 	if err != nil {
 		t.Skip("player-provided FDOTHER_014 is absent")
 	}
-	got, err := LoadSeparatedChurchUIAssets(uiRoot)
+	root := uiRoot
+	if pack := os.Getenv("FD2_ASSET_PACK"); pack != "" {
+		root = filepath.Join(pack, "ui")
+	}
+	got, err := LoadSeparatedChurchUIAssets(root)
 	if err != nil {
+		if os.Getenv("FD2_ASSET_PACK") != "" {
+			t.Fatal(err)
+		}
 		t.Skipf("separated FDOTHER_014 church pack is absent: %v", err)
 	}
 	for _, index := range churchUIOpaqueEntries {
@@ -25,6 +36,16 @@ func TestSeparatedChurchUIAssetsMatchOriginalCodecs(t *testing.T) {
 			got.Entries[index].Height != want.Height ||
 			!bytes.Equal(got.Entries[index].Pixels, want.Pixels) {
 			t.Fatalf("opaque entry %d differs: %v", index, err)
+		}
+	}
+	for index := 3; index <= 10; index++ {
+		want, err := ParseLMI1RawEntry(raw, index)
+		if err != nil || got.Entries[index].Width != 24 || got.Entries[index].Height != 20 || !bytes.Equal(got.Entries[index].Pixels, want.Pixels) {
+			t.Fatalf("raw service%d differs: %v", index, err)
+		}
+		wrong, err := ParseLMI1OpaqueEntry(raw, index)
+		if err == nil && bytes.Equal(wrong.Pixels, want.Pixels) {
+			t.Fatalf("test did not distinguish wrong codec%d", index)
 		}
 	}
 	wantPrice, err := ParseLMI1RawEntry(raw, 15)
@@ -55,5 +76,62 @@ func TestSeparatedChurchUIAssetsMatchOriginalCodecs(t *testing.T) {
 func TestSeparatedChurchUIAssetsFailClosedWithoutPack(t *testing.T) {
 	if _, err := LoadSeparatedChurchUIAssets(t.TempDir()); err == nil {
 		t.Fatal("incomplete separated church UI pack was accepted")
+	}
+}
+
+// A previous pack whose service payload was interpreted as high-run must
+// fail on that explicit codec, even when every required PNG is present.
+func TestSeparatedChurchUIAssetsRejectsHighRunServiceMetadata(t *testing.T) {
+	root := os.Getenv("FD2_ASSET_PACK")
+	if root == "" {
+		t.Skip("explicit pack required")
+	}
+	source := filepath.Join(root, "ui", "fdother_014_church")
+	target := filepath.Join(t.TempDir(), "fdother_014_church")
+	err := filepath.WalkDir(source, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		rel, err := filepath.Rel(source, path)
+		if err != nil {
+			return err
+		}
+		out := filepath.Join(target, rel)
+		if entry.IsDir() {
+			return os.MkdirAll(out, 0755)
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(out, data, 0644)
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata := filepath.Join(target, "resource.json")
+	data, err := os.ReadFile(metadata)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc separatedItemPanelDocument
+	if err := json.Unmarshal(data, &doc); err != nil {
+		t.Fatal(err)
+	}
+	for i := range doc.Entries {
+		if doc.Entries[i].Index == 3 {
+			doc.Entries[i].Codec = "opaque_high_run"
+		}
+	}
+	data, err = json.Marshal(doc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(metadata, data, 0644); err != nil {
+		t.Fatal(err)
+	}
+	_, err = LoadSeparatedChurchUIAssets(filepath.Dir(target))
+	if err == nil || !strings.Contains(err.Error(), "entry3 metadata mismatch") && !strings.Contains(err.Error(), "entry 3 metadata mismatch") {
+		t.Fatal("old codec not explicitly rejected", err)
 	}
 }

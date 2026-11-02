@@ -29,10 +29,7 @@ func loadNativeChurchOriginalSceneAssets(t *testing.T) (
 	if err != nil {
 		t.Fatal(err)
 	}
-	entries14, err := fdother.ParseLMI1(resource14)
-	if err != nil {
-		t.Fatal(err)
-	}
+	entries14 := nativeChurchOriginalTestEntries(t, resource14)
 	backgroundFrame, err := fdother.ParseLMI1FrameEntry(resource14, 0)
 	if err != nil {
 		t.Fatal(err)
