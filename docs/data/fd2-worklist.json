@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。主規格61、現況58及HD主收據是現行入口。\n\n已接故事／提示古金框、城鎮與離城、整備、酒店／教會18穩定模式、三商店21穩定模式、40來源服務圖示、11種穩定名冊Q版、裝備比較欄及三商店受領列表六開／五收／還原。#288原圖解碼與#289殘留歡迎詞已修正，不重開。\n\nR55補接三商店purchase／sell_items／transfer_items與教會transfer_item的穩定物品列表。類別59..61共用已登錄HD圖，四屬性與價格符號沿原圖、Noto及原位置，F11獨立F2。依正式goods.ID、販售ID清單及compact slot映射實際Inventory，沿六格視窗；完整來源SHA／HD digest與所有目的範圍通過才原子發布。缺件、來源、owner、mode、job、覆蓋、palette或font不符保留原生。原???、姓名、數字、價格、交易與保存不改，無新素材或格式。\n\n200完整Game.Draw／25PNG核對28857600個類別、屬性與價格符號像素，RGBA容差0；範圍外控制及工具列整幅相同。二個來源與獨立字型測試、20實際列表／340目的覆蓋拒收及77相關回歸通過，八可選GPU／oracle／匯出略過另列。1231份Go指紋fac1d1d44d51f5332e6c1b9a1e8a62c99c9357d4ae0d595032dcd5e9b0e2e150；21來源／416幀／19反例及160字串保持。\n\n正常START後F9接續hotel_ch02，布衣買賣24、教會交付20完整PNG，三種列表各抽四組介面／美術。布衣1000→950→987，兩美術保存相同，F9及新程序標題LOAD通過；教會保存保持。金幣動態裁圖四接受／三拒收，不稱精確同幀。教會首輪測具在原版介面仍要求HD runs而逾時，遊戲狀態原已正確；只修等待條件，相同image／binary／素材／預算r2通過，首輪不計。已通過買賣分支未受影響，其舊測具全文與SHA另存。\n\n主收據hd1_facility_item_rows_followup_20261102與61保存來源、命令、失敗診斷及正常畫面。953清冊／6963私人檔、原版包與私人44636b94保持，private及遠端已核對。\n\n目前續作其餘商店與設施列表／確認／回覆進出場、成功特效及未接介面。地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。",
+      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型與實機驗證由使用者接手。現況58、主規格61及HD主收據是現行入口。\n\n已接古金故事／提示框、城鎮與離城、整備、酒店／教會穩定介面、三商店21穩定模式、40來源服務圖示、11種穩定名冊Q版、裝備比較欄、四類穩定物品列表，以及三商店六種名冊開收／還原。#288原圖解碼與#289歡迎詞殘留已修正，不重開。\n\nR56將R54配方擴到sell_roster、equip_roster、transfer_source、transfer_dest，mode明示分派原final producer。完整source／final及原job.frames一致才綁定，literal0／255前景、source歡迎詞、文字／細框／Q版沿原13像素位移與底邊裁切。sell沿實際cycle，其他新名冊沿frame0，typed IDs／視窗／MapSelectorKey各取正式owner。F2／F11獨立，原ACK、clock、after、交易保存與所有guard保持，無新素材或格式。\n\n四新增mode各216，共864完整Game.Draw／152PNG，與獨立source加普通穩定final的位移合成共7962624000 RGBA byte相同，容差0；工具列遊戲區保持。舊兩recipient另各16代表畫面保持，不混入864。來源六mode／三商店／開收／捲動共72狀態、396原幀及36還原通過；76相關回歸通過，七可選GPU／oracle／匯出略過另列。1231份Go指紋765d3da11563141b3881df1c6671243d538f2349d1c2cf52a3ea768f449facb0；21來源／416幀／19反例及160字串保持。\n\n正常START後F9接續hotel_ch02，買賣14／裝備13／交付17完整PNG。販售34、裝備31、交付來源33／目的16筆最近Draw觀測均含開與收，不當PNG精確同幀。新--shop-transfer配合--facility-item-rows走普通雙名冊及取消，各四組切換後隊伍／金幣／來源保存保持190b9f8f，兩美術保存與F9／新程序標題LOAD通過；不宣稱實際移交物品。布衣仍1000→950→987，保存32c9cd02及新程序LOAD，金幣裁圖十接受／四拒收。裝備保存保持190b9f8f。\n\n主收據hd1_shop_roster_transition_followup_20261102與61索引來源、命令及正常畫面。953清冊／6963私人檔、原版包與私人44636b94保持，private與遠端重核。\n\n目前續作物品列表、確認／回覆及其他設施的進出場、成功特效與未接介面。地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -496,11 +496,12 @@
         "docs/figures/hd1-shop-recipient-opening-game.png",
         "remake/cmd/fd2/modern_hd_facility_item_rows.go",
         "remake/cmd/fd2/modern_hd_facility_item_rows_test.go",
-        "docs/figures/hd1-facility-item-rows-game.png"
+        "docs/figures/hd1-facility-item-rows-game.png",
+        "docs/figures/hd1-shop-transfer-roster-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R55四類穩定物品列表接線通過200完整Game.Draw／25PNG／28857600類別與標籤像素、二個來源測試及77相關回歸，八可選略過；正常買賣24／教會20PNG與四組切換、保存及布衣新程序LOAD通過。教會首輪測具等待條件錯誤不計，修正重跑通過。953清冊／6963私人檔保持；其餘設施動畫及介面續作，依61與hd1_facility_item_rows_followup_20261102。"
+        "note": "R56四新名冊六開／五收／還原通過864完整Game.Draw／152PNG、7962624000 RGBA byte容差0，舊兩recipient另32代表畫面保持；來源72狀態與76回歸、正常買賣14／裝備13／交付17PNG及兩方向Draw觀測通過，七可選略過。交付驗取消及狀態保持，布衣／交付保存與新程序LOAD通過。953／6963素材保持，物品／確認／回覆及其他設施動畫續作，依61與hd1_shop_roster_transition_followup_20261102。"
       },
       "issue": 283
     }

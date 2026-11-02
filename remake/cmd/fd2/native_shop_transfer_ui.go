@@ -256,7 +256,7 @@ func (g *Game) beginNativeShopTransferRosterOpening() bool {
 	if err != nil || len(frames) != 6 {
 		return false
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeShopUIJob = g.bindModernShopRosterList(&nativeClassUIJob{frames: frames}, stable, final, false)
 	return true
 }
 
@@ -273,9 +273,9 @@ func (g *Game) beginNativeShopTransferRosterClosing(after func()) bool {
 	if err != nil || len(frames) != 5 {
 		return false
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{
+	g.nativeShopUIJob = g.bindModernShopRosterList(&nativeClassUIJob{
 		frames: frames, restore: stable, after: after,
-	}
+	}, stable, final, true)
 	return true
 }
 

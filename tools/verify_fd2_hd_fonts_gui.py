@@ -76,6 +76,7 @@ def main():
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
+    facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
     parser.add_argument('--facility-item-rows', action='store_true', help='於買賣或教會交付的穩定物品列表抽驗四組介面／美術')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
@@ -1499,6 +1500,49 @@ def main():
         if args.panel_transitions:
             panel_probe=PanelTransitionProbe(args.out,lambda:latest(audit),command,lambda:window,env)
             panel_probe.start()
+        if args.shop_transfer:
+            def shop(mode):
+                return wait(lambda s:s.get('node')=='shop_ch02_weapon' and s.get('shop_mode')==mode
+                            and s.get('shop_ui_busy') is False)
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            key('Left');key('Return');shop('menu')
+            for _ in range(3):key('Right')
+            wait(lambda s:s.get('shop_service')==3)
+            key('Return');shop('transfer_intro');shot('shop-transfer-source-prompt')
+            key('Return');shop('transfer_source');shot('shop-transfer-source-roster')
+            item_row_styles('transfer_source',shop,'shop-transfer-source-styles')
+            key('Return');shop('transfer_items');shot('shop-transfer-item-list')
+            key('Return');shop('transfer_dest_prompt');shot('shop-transfer-destination-prompt')
+            key('Return');shop('transfer_dest');shot('shop-transfer-destination-roster')
+            item_row_styles('transfer_dest',shop,'shop-transfer-destination-styles')
+            key('Escape');shop('transfer_intro')
+            key('Return');shop('transfer_source')
+            key('Escape');shop('menu')
+            assert latest(audit).get('gold')==1000,'取消交付改變金幣'
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            key('Right');key('Return');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            assert saved.read_bytes()==args.town_save.read_bytes(),'未保存前來源槽被改寫'
+            key('F5');hd_saved=saved.read_bytes()
+            key('F2');wait(lambda s:s.get('hd_theme') is False)
+            key('F5');assert saved.read_bytes()==hd_saved,'兩美術保存結果不同'
+            assert hd_saved==args.town_save.read_bytes(),'取消交付仍改變隊伍或保存狀態'
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            shot('shop-transfer-saved-load')
+            restart_title_load('hotel_ch02',1000,'shop-transfer-new-process-load')
+            assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存'
+            observations={mode:facility_list_observations([args.out/'input-audit-first-process.jsonl'],mode)
+                          for mode in ['transfer_source','transfer_dest']}
+            report={'schema':'fd2-hd-shop-transfer-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
+                    'gui_tool_sha256':digest(Path(__file__)),
+                    'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
+                    'theme_save_bytes_equal':True,'source_save_bytes_equal':True,'new_process_title_load':True,
+                    'four_styles_sampled':args.facility_item_rows,'facility_list_transitions':observations,
+                    'screenshots':shots,'operations':operations,'recording_created':False,
+                    'scope':'正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。兩名冊各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。',
+                    'elapsed_seconds':time.monotonic()-started}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         if args.gold_roll:
             transaction_hd=args.gold_roll_theme=='hd'
             if not transaction_hd:

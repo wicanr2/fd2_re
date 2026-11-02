@@ -95,9 +95,21 @@ func (g *Game) freezeModernShopListWriter(frame []byte, compose func() ([]byte, 
 
 // This producer is called before publishing the original job. Its optional
 // presentation recipe never changes the native buffers or continuation.
-func (g *Game) bindModernShopRecipientList(job *nativeClassUIJob, source, final []byte, closing bool) *nativeClassUIJob {
-	if job == nil || g.nativeClassUI == nil || g.nativeShopUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil ||
-		(g.nativeShopMode != "recipient_consumable" && g.nativeShopMode != "recipient_equipment") {
+func (g *Game) bindModernShopRosterList(job *nativeClassUIJob, source, final []byte, closing bool) *nativeClassUIJob {
+	if job == nil || g.nativeClassUI == nil || g.nativeShopUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil {
+		return job
+	}
+	var compose func() ([]byte, bool)
+	switch g.nativeShopMode {
+	case "recipient_consumable", "recipient_equipment":
+		compose = g.composeNativeShopRecipient
+	case "sell_roster":
+		compose = g.composeNativeShopSellRoster
+	case "equip_roster":
+		compose = g.composeNativeShopEquipRoster
+	case "transfer_source", "transfer_dest":
+		compose = g.composeNativeShopTransferRoster
+	default:
 		return job
 	}
 	roster := g.prepareNativeFacilityRoster(final)
@@ -109,7 +121,7 @@ func (g *Game) bindModernShopRecipientList(job *nativeClassUIJob, source, final 
 	if rebuilt, ok := g.composeNativeShopStable(); !ok || !bytes.Equal(source, rebuilt) {
 		return job
 	}
-	if rebuilt, ok := g.composeNativeShopRecipient(); !ok || !bytes.Equal(final, rebuilt) {
+	if rebuilt, ok := compose(); !ok || !bytes.Equal(final, rebuilt) {
 		return job
 	}
 	d := &nativeFacilityListPresentation{variant: g.nativeShopVariant, resource: assets.ResourceID, mode: g.nativeShopMode, locale: g.localeID, closing: closing, font: g.font,
@@ -133,7 +145,7 @@ func (g *Game) bindModernShopRecipientList(job *nativeClassUIJob, source, final 
 	if !ok {
 		return job
 	}
-	d.finalMask, ok = g.freezeModernShopListWriter(final, g.composeNativeShopRecipient)
+	d.finalMask, ok = g.freezeModernShopListWriter(final, compose)
 	if !ok {
 		return job
 	}
@@ -141,7 +153,7 @@ func (g *Game) bindModernShopRecipientList(job *nativeClassUIJob, source, final 
 	if !ok {
 		return job
 	}
-	d.finalHD, d.finalRuns, ok = captureModernFacilityListText(g, g.composeNativeShopRecipient)
+	d.finalHD, d.finalRuns, ok = captureModernFacilityListText(g, compose)
 	if !ok {
 		return job
 	}

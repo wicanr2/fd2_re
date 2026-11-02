@@ -18,20 +18,38 @@ func facilityListTestJob(t *testing.T, g *Game, variant int, mode string, closin
 	t.Helper()
 	shopDialogueTestState(g, variant, mode, 0, 0)
 	g.nativeShopRecipientCycle = variant % 3
+	g.nativeShopSellRosterCycle = variant % 3
 	if scroll {
-		g.shopRecipientSel, g.nativeShopRecipientStart = 5, 3
-		if mode == "recipient_consumable" {
+		switch mode {
+		case "recipient_equipment":
+			g.shopRecipientSel, g.nativeShopRecipientStart = 5, 3
+		case "recipient_consumable":
 			g.shopRecipientSel, g.nativeShopRecipientStart = 7, 2
+		case "sell_roster":
+			g.shopSellUnitSel, g.nativeShopSellRosterTop = 7, 2
+		case "equip_roster":
+			g.nativeShopEquipUnitSel, g.nativeShopEquipRosterTop = 7, 2
+		case "transfer_source", "transfer_dest":
+			g.nativeShopTransferSel, g.nativeShopTransferTop = 7, 2
 		}
+	}
+	opening, ending := g.beginNativeShopRecipientOpening, g.beginNativeShopRecipientClosing
+	switch mode {
+	case "sell_roster":
+		opening, ending = g.beginNativeShopSellRosterOpening, g.beginNativeShopSellRosterClosing
+	case "equip_roster":
+		opening, ending = g.beginNativeShopEquipRosterOpening, g.beginNativeShopEquipRosterClosing
+	case "transfer_source", "transfer_dest":
+		opening, ending = g.beginNativeShopTransferRosterOpening, g.beginNativeShopTransferRosterClosing
 	}
 	var ok bool
 	if closing {
-		ok = g.beginNativeShopRecipientClosing(nil)
+		ok = ending(nil)
 	} else {
-		ok = g.beginNativeShopRecipientOpening()
+		ok = opening()
 	}
 	if !ok || g.nativeShopUIJob == nil || g.nativeShopUIJob.facilityList == nil {
-		t.Fatal("real recipient job did not bind source recipe", variant, mode, closing, scroll)
+		t.Fatal("real roster job did not bind source recipe", variant, mode, closing, scroll)
 	}
 	return g.nativeShopUIJob
 }
@@ -122,8 +140,10 @@ func TestModernHDFacilityListTransitionRuntimeGPU(t *testing.T) {
 		t.Skip("dedicated GPU process")
 	}
 	mode := os.Getenv("FD2_TEST_FACILITY_LIST_KIND")
-	if mode != "recipient_consumable" && mode != "recipient_equipment" {
-		t.Fatal("explicit recipient kind required")
+	switch mode {
+	case "recipient_consumable", "recipient_equipment", "sell_roster", "equip_roster", "transfer_source", "transfer_dest":
+	default:
+		t.Fatal("explicit roster kind required")
 	}
 	out := os.Getenv("FD2_TEST_FACILITY_OUT")
 	if out == "" {
@@ -299,7 +319,7 @@ func TestModernHDFacilityListTransitionSourceAndFallback(t *testing.T) {
 	g := facilityDialogueTestGame(t, nil)
 	facilityRosterTestEightParty(g)
 	for _, variant := range []int{1, 3, 5} {
-		for _, mode := range []string{"recipient_consumable", "recipient_equipment"} {
+		for _, mode := range []string{"recipient_consumable", "recipient_equipment", "sell_roster", "equip_roster", "transfer_source", "transfer_dest"} {
 			for _, closing := range []bool{false, true} {
 				for _, scroll := range []bool{false, true} {
 					previous := &modernHDTextFrame{runs: []modernHDTextRun{{text: "previous-frame"}}}
@@ -314,7 +334,11 @@ func TestModernHDFacilityListTransitionSourceAndFallback(t *testing.T) {
 					if closing {
 						want = 5
 					}
-					if len(d.rawFrames) != want || len(job.frames) != want || d.variant != variant || d.mode != mode || d.roster.source.cycle != variant%3 {
+					cycle := 0
+					if mode == "recipient_consumable" || mode == "recipient_equipment" || mode == "sell_roster" {
+						cycle = variant % 3
+					}
+					if len(d.rawFrames) != want || len(job.frames) != want || d.variant != variant || d.mode != mode || d.roster.source.cycle != cycle {
 						t.Fatal("frozen recipe lost native owner or phase")
 					}
 					for i := 0; i < want; i++ {

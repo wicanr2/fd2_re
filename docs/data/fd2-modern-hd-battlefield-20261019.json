@@ -303241,5 +303241,316 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/final-validation.json",
       "sha256": "e0e6725fae63f86772142171e5427ce853de03793b08528b69be2571a9f77287"
     }
+  },
+  "hd1_shop_roster_transition_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "9b2fcee0076d3a16a79467e39c4e5be91d523405",
+    "scope": "三商店sell_roster／equip_roster／transfer_source／transfer_dest的六開、五收及source還原；既有兩recipient配方保持。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1231,
+      "go_tree_sha256": "765d3da11563141b3881df1c6671243d538f2349d1c2cf52a3ea768f449facb0",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/fd2-player-r1",
+        "sha256": "e44a3b04db2a3dc8f106f231fe40ebe93d167688c65b803b0caf4d6a4b67549e"
+      },
+      "production_go_unchanged_after_binary": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/consumers-r1.json",
+        "sha256": "5c4b8651e85bd07ec31a155ee679b8d094c14a0b91e899266ebb9af16ff48caa"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/commands.json",
+        "sha256": "b1987120db868337fc9bc8338f048c1c6b2ec1c09055d12f3769d3d201b05954"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/ready-source.json",
+        "sha256": "ca7ebe5a5507e04c13a8a62f831239ddcfea281c949717b8fc9af2bfe12dfb5e"
+      },
+      "canonical_inputs": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition.go",
+          "sha256": "8838e40eab77bc732e4dfe287b4e0e2f3275c021f424c6f843fefa83c15f03e5"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition_test.go",
+          "sha256": "e8d2ec6bacdf30e81404721dea03b66d8454b8648320f6b04102a851ee45b43a"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_recipient_ui.go",
+          "sha256": "4d4e883366ca25c0b2d8d8557cc5af7c4af9a5122af2c6de9ca71e484c1724ea"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_sell_ui.go",
+          "sha256": "f3060d483b4b12b3cf97083db751d73a31890c498b62915f3f713b87df5d3a82"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_equip_ui.go",
+          "sha256": "f3c7938c94ef697436c26069c039b5cfd0561bd9f3ec35068eef8af3a69db456"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_transfer_ui.go",
+          "sha256": "d1f6243a0c1082aedddaeacd25a23726ce1fea940e26157a8fbd49cc44b601a7"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "b5e7a211601bba37bde87836b4cb240b14a5d240f6f7f7563755d2fd184ff0f0"
+      }
+    },
+    "rules": [
+      "mode明示分派既有final producer，保留原生source／final／job.frames／restore及after；整幀原樣重播一致才綁定。",
+      "literal0／255前景、source歡迎詞、Noto文字、細框及Q版的原13位移／底邊裁切皆沿R54既有配方；不改圖稿／規則／格式。",
+      "sell沿實際cycle，equip與兩transfer沿原frame0；typed IDs、視窗與MapSelectorKey各取正式owner。",
+      "F2／F11四組獨立，原ACK／clock／after／交易保存保持；所有既有source、job、owner、locale、font、palette與缺件拒收保持。"
+    ],
+    "cpu": {
+      "tests": 1,
+      "source_cases": 72,
+      "original_animation_frames": 396,
+      "closing_restores": 36,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/source-r1.memory.json",
+        "sha256": "f493230475994420fcf63a1bcd5481065913b115a79eac1a20dba757ae8b6841"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/source-r1.log",
+        "sha256": "1eb09e62b33003f364c4f9be4d2493b87386e63fad20a2d30b0b6e63d84932f3"
+      },
+      "scope": "六mode、三商店、開收、捲動；全原幀、上次Draw文字還原、獨立來源buffer、裁切及所有guard拒收。"
+    },
+    "gpu": {
+      "new_cases": 864,
+      "new_full_png": 152,
+      "whole_game_rgba_bytes": 7962624000,
+      "rgba_tolerance": 0,
+      "independent_static_composite_equal": true,
+      "whole_game_toolbar_equal": true,
+      "modes": [
+        {
+          "mode": "sell_roster",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-sell_roster-r1-capture/receipt.json",
+            "sha256": "801453fb60d79b17a2e0f0926242a84d2c3154fb034993b888abaad22b507705"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-sell_roster-r1.memory.json",
+            "sha256": "4db351739849649f53f8fa23ec9d38a5a2859edc900eb4ad981af095dc971854"
+          }
+        },
+        {
+          "mode": "equip_roster",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-equip_roster-r1-capture/receipt.json",
+            "sha256": "3eab9d4f9f89dc87db3bb5b91e966359b441b5bbbb58fc0e62b030a7201cfb7f"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-equip_roster-r1.memory.json",
+            "sha256": "8ddb373d271146e0e999c669b5c866dd2da64092907d1ad20383bbd360d20fcd"
+          }
+        },
+        {
+          "mode": "transfer_source",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-transfer_source-r1-capture/receipt.json",
+            "sha256": "6b60db6161b67369ac0ef0bbce755c86b1fd51674765b591f4ef6bc9556fac4b"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-transfer_source-r1.memory.json",
+            "sha256": "b6b26d94d9ef533c0e6111903b138ba3a4ad7ae097583f85aa396d24d9b4a327"
+          }
+        },
+        {
+          "mode": "transfer_dest",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-transfer_dest-r1-capture/receipt.json",
+            "sha256": "09882308363f9142c11666c8303ea69c5285a76669f459384953730cd74b8632"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-transfer_dest-r1.memory.json",
+            "sha256": "251685f7119051ff53cf952bc0eadc102ed1228735487f1ebbb4d12350335e50"
+          }
+        }
+      ],
+      "old_recipient_smoke": [
+        {
+          "mode": "recipient_equipment",
+          "cases": 16,
+          "full_png": 6,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-smoke-recipient_equipment-r1-capture/receipt.json",
+            "sha256": "990230ce260c0978f9f87286f5c044c1d915105d2f7d3d4e91770908bce90135"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-smoke-recipient_equipment-r1.memory.json",
+            "sha256": "d3958e58e76f2122fd1ca2151e1f1dee92277a5f751dfd912b1d695199a92c05"
+          }
+        },
+        {
+          "mode": "recipient_consumable",
+          "cases": 16,
+          "full_png": 6,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-smoke-recipient_consumable-r1-capture/receipt.json",
+            "sha256": "3b4e1497af4204ed63a23ec3033b51058d633cfe0c4b91868ee895ada483f018"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/gpu-smoke-recipient_consumable-r1.memory.json",
+            "sha256": "4634cbb1f81a6a5ef5ba3e6d04c5875344920afbf73a35ee3f02c4f47c91ffaf"
+          }
+        }
+      ],
+      "old_smoke_cases": 32
+    },
+    "normal_gui": {
+      "gold": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-gold-roll-r1-capture/receipt.json",
+          "sha256": "40efbc272b458e4a73774375e1c9a5b50867338b0663c878970d6b110bb277a9"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-gold-roll-r1.memory.json",
+          "sha256": "95e0b088a10b03769cd91507a22c98eaf56d5dd1803839f9641d1e14e1d646c7"
+        },
+        "full_png": 14,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "gold": [
+          1000,
+          950,
+          987
+        ],
+        "accepted_dynamic_crops": 10,
+        "rejected_dynamic_crops": 4,
+        "roster_observation": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-sell-roster-observation.json",
+          "sha256": "9d7c53e5d42a6c45e28c3c11964ad3a2c32a73d3992c5ebed70408b8f5437078"
+        },
+        "last_draw_samples": 34
+      },
+      "items": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-items-r1-capture/receipt.json",
+          "sha256": "dc7b541916a9e4c655a32079f613b5631b0ed679e84c87e6a4882d104180e7e3"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-items-r1.memory.json",
+          "sha256": "a27c2811145f7d8a1bfd3fa92042ecc3fed193f2b5b3168e2fee778445b7f91c"
+        },
+        "full_png": 13,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進武器店裝備服務；普通選索爾、移動至皮甲／藥草、拒絕裝備藥草、重新裝備既有短劍；F2、縮放／說明遮罩、返回旅館F5／F9。原生物品文字沿既有語言，未新增翻譯，不宣稱連續戰役或原版對拍。",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": false,
+        "roster_observation": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-equipment-roster-observation.json",
+          "sha256": "ff3b5932e32a68b7fbf35ddefd47bb465def968ce5acf7a55a5556845bc9ddb8"
+        },
+        "last_draw_samples": 31
+      },
+      "transfer": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-transfer-r1-capture/receipt.json",
+          "sha256": "ad13ce3797cfafb1856e06445af1acda0e7f021ab5131b48df30375d44c17640"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-transfer-r1.memory.json",
+          "sha256": "392c747fbd43b3a60cfbd5ba84dc5a5dd31a6e3e948b84302e6f3f42ba748c33"
+        },
+        "full_png": 17,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。兩名冊各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "four_styles_sampled": true,
+        "source_save_bytes_equal": true,
+        "roster_samples": {
+          "transfer_source": 33,
+          "transfer_dest": 16
+        }
+      }
+    },
+    "regression": {
+      "passed": 76,
+      "optional_skipped": 7,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/regression-r1.memory.json",
+        "sha256": "1ed6af0dc2e9a7b1e8debcbdbd780a1856b88ba021eecfca5154288daaf07cfa"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/regression-r1.log",
+        "sha256": "45b63f1a4755ca8f38f98a81f672b574c82c9edc81b626f279bff7df27e64ab0"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/consumers-verified-r1.json",
+        "sha256": "dd9a40f2d7352459d963843d4235420e99dbc21b50755cc8ca8ecaad5cb3cb37"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/inv-r2.json",
+        "sha256": "394dc9de3b7d1f1dd1aa671d3ff7848908ae7643cccb3d9dd3c70b8d8ff0f7be"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "cb873f6cd58aa7e86377a167acf5440a8896880b4575e776ff08079fdcf7a35d"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/asset-pack-unchanged.json",
+        "sha256": "b51a7819c8b7d2e7716637b392426fa819200fdf36bcbbab6e912a89442e7200"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "private_remote_verified": true,
+      "private_worktree_clean": true,
+      "private_is_private": true,
+      "original_and_modern_packs_unchanged": true
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-shop-transfer-roster-game.png",
+          "sha256": "12b8c3fe576e1ba62c45c9d8703492ecbe5c691595077a532f50b1576509f88f"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/normal-transfer-r1-capture/shop-transfer-destination-styles-hd-ui.png",
+          "sha256": "12b8c3fe576e1ba62c45c9d8703492ecbe5c691595077a532f50b1576509f88f"
+        },
+        "scope": "正常START/F9 hotel_ch02，普通商店交付目的名冊，原隊伍及MapSelectorKey，不採受控fixture身份。"
+      }
+    ],
+    "remaining_ui": "商店物品列表／確認／回覆與其他設施的進出場、成功特效及未接介面續#283；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1；交付普通路徑抽驗取消與狀態保持，不宣稱實際移交、連續全戰役、原版E2或完整HD1。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/final-validation.json",
+      "sha256": "cf37390a01c797d0a30b2ffd2454898eb3c97d2fa900fdd83a775ab6c7ebfd72"
+    }
   }
 }

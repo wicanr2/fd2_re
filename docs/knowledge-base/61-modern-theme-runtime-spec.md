@@ -5944,3 +5944,17 @@ R55主收據hd1_facility_item_rows_followup_20261102：200完整Game.Draw／25PN
 正常START後F9接續hotel_ch02，布衣買賣24、教會交付20完整PNG通過，購買／販售／教會交付各含F2與F11四組。布衣1000→950→987，兩美術保存32c9cd02相同，F9及新程序標題LOAD通過；金幣動態裁圖4接受／3拒收。教會保存保持190b9f8f。教會首輪切回原版介面後，舊測具仍強制HD runs，屬等待條件失誤；遊戲與程式未改，修正後以相同image／binary／資產／預算重跑通過，首輪不計。已通過買賣分支不消費church helper，其舊測具全文與SHA保存於gui-before-church-wait-fix.py。
 
 [正常販售物品列表](../figures/hd1-facility-item-rows-game.png)沿實際存檔與正常交易，不用fixture身份。953清冊／6963私人檔、私人44636b94與原版包保持，沒有新圖稿／清冊格式；原???仍留原圖。其餘設施動畫及介面由#283續作，地形由#282續作，未宣稱完整HD1。
+
+### HD1商店其餘名冊進出場
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，R56來源契約位於work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/ready-source.json。沿R54已驗source、literal writer與原NativeClassListOpeningFrames／ClosingFrames，擴充三商店sell_roster、equip_roster、transfer_source與transfer_dest。逐一核對三組Opening／Closing皆由同一composeNativeShopStable及各自明示final producer生成六開、五收及source還原；不新增原版語意、圖稿或格式。
+
+sell沿實際cycle，其他三名冊沿frame0；ID、選取與兩欄六格視窗各取正式owner欄位，原MapSelectorKey不猜身份。完整source／final及job.frames一致才凍結配方，文字、細框與Q版同原13像素位移與底邊裁切，source歡迎詞沿已驗遮蓋規則。F2／F11、guard與缺件回退保持，原ACK、clock、after及交易不改。入口沿modern_hd_facility_list_transition.go、native_shop_sell_ui.go、native_shop_equip_ui.go、native_shop_transfer_ui.go與native_shop_recipient_ui.go，永久驗證沿modern_hd_facility_list_transition_test.go。
+
+必要驗收為六mode來源／guard回歸與四新增mode各216完整GPU，涵蓋三商店、全部開收／還原、四控制、四語與捲動；普通買賣、裝備與交付名冊及保存，既有兩mode代表GPU保持。主收據為hd1_shop_roster_transition_followup_20261102，最高RUNTIME-E1，其他列表、確認／回覆及成功特效仍續作。
+
+R56主收據hd1_shop_roster_transition_followup_20261102：四新增mode各216，共864完整Game.Draw／152PNG，與獨立source加普通穩定final按原位移合成逐byte相同，共7962624000個RGBA byte，容差0；工具列遊戲區相同。既有裝備與消耗品受領另各16代表畫面保持，不混入864。來源測試六mode／三商店／開收／捲動共72狀態，396原動畫幀及36還原均保持；76相關回歸通過，七可選略過另列。1231份Go指紋765d3da11563141b3881df1c6671243d538f2349d1c2cf52a3ea768f449facb0，21來源／416幀／19反例與160字串保持。
+
+正常START後F9接續hotel_ch02，買賣14、裝備13、交付17完整PNG通過；販售34、裝備31、交付來源33／目的16筆最近Draw觀測均含開與收。觀測沿input_audit_trace.go既有facility_list_presented，不當PNG精確同幀。交付兩名冊各四組切換後取消，隊伍、金幣與來源保存保持190b9f8f，兩美術保存／F9及新程序標題LOAD通過；不宣稱實際移交物品。布衣仍1000→950→987、兩美術保存32c9cd02及新程序LOAD，金幣裁圖10接受／4拒收；裝備保存保持190b9f8f。
+
+正常交付新增tools/verify_fd2_hd_fonts_gui.py的--shop-transfer配合--facility-item-rows，明示走source提示→來源名冊→物品→目的提示→目的名冊→取消→保存冷讀；其餘正常裝備／買賣路徑重用。來源、成功命令與觀測由同工作根索引。[普通交付名冊](../figures/hd1-shop-transfer-roster-game.png)沿實際隊伍身份。953清冊／6963私人檔與原版包保持，私人44636b94仍private且遠端一致；無新素材或格式。其餘物品／確認／回覆及設施動畫、成功特效與地形續作，不宣稱全HD1或原版E2。
