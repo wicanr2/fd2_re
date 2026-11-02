@@ -33,7 +33,7 @@ type NativeLoadSlot struct {
 
 // ComposeNativeLoadSlotsFrame reproduces the stable 0x30437 frame used by
 // 0x30550. It deliberately accepts a caller-owned source snapshot because
-// 0x30550 copies the current VGA page before opening the FDOTHER#5 frame.
+// 0x30550 copies the current VGA page before opening FDOTHER#13 LMI entry16.
 func ComposeNativeLoadSlotsFrame(
 	source []byte,
 	dialogueBox fdother.LMI1Entry,

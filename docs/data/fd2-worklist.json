@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "HD1介面沿原位置、輸入與保存接線，F2美術獨立F11介面；人工觀感、逐章與平台由使用者接手。現況以58、61及HD主收據為準。\n\n城鎮／離城／整備、旅館／教會穩定介面、三商店21穩定模式、40服務圖示、名冊Q版、比較／物品、列表／確認／回覆／主選單開收、四資源金額框及三店成功眨眼／閃光、教會寶石／復活閃白已接。R65的957清冊／6990私人檔及原步序保持，私人4d7d9695，無本批新圖源。#288／#289不重開。\n\nR66補上寶箱物品／金錢、隱藏／可見、零金額及等待ACK的HD確認、開收與逐字回覆，頭像沿原actor.BattleFig，不用地圖圖組號推身份。213完整Draw／17PNG與既有五種系統確認147Draw／15PNG通過，獨立CPU容差2；484原幀／11拒收、38回歸／三可選略過及保存bytes保持。受控map23及寶物fixture不冒稱自然開箱或新原版E2。\n\n1262 Go指紋49c3ce20，21來源／416幀／19反例與160字串保持。靜態盤點232正式來源／1775函式／82個job，只當保守參照索引；未使用復活收框helper排除，實際成功after直接回已接HD名冊。409教訓／258 guard。主收據hd1_treasure_confirmation_followup_20261103及61索引來源、命令、公開完整圖與診斷。\n\n目前已確認續核標題START／LOAD／CONTINUE字樣及四槽讀檔框線，後續仍按實際consumer核對。地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成，本工單保持開啟。",
+      "body": "HD1介面沿原位置、輸入與保存接線，F2美術獨立F11介面；人工觀感、逐章與平台由使用者接手。現況以58、61及HD主收據為準。\n\n城鎮／離城／整備、旅館／教會穩定介面、三商店穩定模式、服務圖示、Q版名冊、比較／物品、列表／確認／回覆／主選單開收、金額框及成功演出已接；R66寶箱確認與回覆沿實際actor.BattleFig。#288／#289不重開。957清冊／6990私人檔、私人4d7d9695及兩manifest保持，本批沒有新美術。\n\nR67補上START／LOAD／CONTINUE字樣及四槽原色HD細框。六份原圖及DAC核固定SHA，兩側寶石、逐列背景與mask保持；四槽沿FDOTHER13／16的c009ad5e面板，原輸入與metadata不改。F11先預檢活躍來源，失敗不發布控制狀態。\n\n最終66完整Game.Draw／8PNG，獨立底圖／細框容差0、CPU透明字層容差2、獨立最終source-over合成容差1且字形區外0。六來源／1352文字像素、72語系字級布局及21拒收，40回歸／三可選略過通過。普通鍵盤標題及四槽四組、上下選取／空槽／取消、LOAD既有hotel JSON、兩美術F5/F9及新程序LOAD，共16完整1920×1200PNG；保存bytes與來源190b9f8f相同。未新增原版oracle或整章E2。\n\n1266 Go指紋63bb2464、21來源／416幀／19反例與160字串保持；沿既有預乘透明度教訓補分層案例，409教訓／258 guard。主收據hd1_title_interface_followup_20261103及61索引來源、命令、公開正常畫面及診斷。233正式來源／1784函式／82 job／30 sink的靜態盤點只作保守參照。\n\n移動資訊窗、indexed回合橫幅及native面板caller仍須核對正式範圍；沒有直接HD名稱不等於玩家缺口，本工單保持開啟。地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -551,11 +551,20 @@
         "remake/cmd/fd2/native_treasure_input.go",
         "remake/cmd/fd2/modern_hd_treasure_confirmation_test.go",
         "remake/cmd/fd2/modern_hd_treasure_confirmation_gpu_test.go",
-        "docs/figures/hd1-treasure-confirmation-game.png"
+        "docs/figures/hd1-treasure-confirmation-game.png",
+        "remake/cmd/fd2/modern_hd_title_interface.go",
+        "remake/cmd/fd2/modern_hd_title_interface_prototype_test.go",
+        "remake/cmd/fd2/modern_hd_title_interface_test.go",
+        "remake/cmd/fd2/modern_hd_title_interface_gpu_test.go",
+        "remake/cmd/fd2/title.go",
+        "remake/cmd/fd2/native_load_slots_ui.go",
+        "remake/cmd/fd2/player_interface.go",
+        "docs/figures/hd1-title-interface-game.png",
+        "docs/figures/hd1-title-load-slots-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R66寶箱213完整Draw／17PNG與原系統五caller147Draw／15PNG容差2，484原幀／11拒收、38回歸／三可選略過、保存bytes及21／416／19消費端保持。957／6990不變；標題三項及四槽框線續核，地形另案。依61與hd1_treasure_confirmation_followup_20261103。"
+        "note": "R67標題／四槽66完整Draw／8PNG，底圖0／字層2／最終字形合成1且區外0；72布局／21拒收、40回歸／三略過及16正常完整視窗／保存冷讀保持。957／6990未變，移動資訊窗與indexed分支續核。依61與hd1_title_interface_followup_20261103。"
       },
       "issue": 283
     }

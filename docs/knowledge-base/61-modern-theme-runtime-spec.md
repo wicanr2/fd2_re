@@ -6117,3 +6117,31 @@ R66完整GPU入口為[modern_hd_treasure_confirmation_gpu_test.go](../../remake/
 R66最終寶箱213完整Draw／17PNG，六內容、四控制、開收／逐字回覆／等待ACK及三語代表通過；獨立CPU合成容差2。五種既有系統確認另147完整Draw／15PNG通過。12來源狀態／484原幀、11拒收與38回歸／三可選略過通過；保存bytes相同，1262 Go指紋49c3ce20，21／416／19消費端與160字串保持。原圖snapshot省略range／selection，第一次普通Draw重建地圖快取屬既有呈現；測試先沿正常producer準備快取並封存來源，完整Draw前後狀態斷言保持。序列化回呼與前版收據指紋不合只列驗證工具診斷。
 
 [寶箱確認完整畫面](../figures/hd1-treasure-confirmation-game.png)取自正式建構器的受控map23／DATO0及明示寶物fixture，未新增正常寶箱觸發或原版oracle聲明。主收據hd1_treasure_confirmation_followup_20261103與同工作根commands.json索引最終來源。957清冊／6990私人檔及兩manifest保持，無新美術；盤點接線後232來源／1775函式／82個job。標題三項實為START／LOAD／CONTINUE，沿title.go輸入動作核對，非QUIT；標題字樣、四槽框線與地形續作。
+
+### HD1標題選單與四槽框線
+
+R67 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿R66實際consumer盤點，查核FDOTHER7的六張字樣、FDOTHER8 palette及原四槽310×86框。先匯出原圖於work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/title-original-items.png與original-items.json，再依既定Noto與原色細框作可丟棄prototype；不新增選項、輸入、存檔格式或原版語意。
+
+R67可重跑原型入口為[modern_hd_title_interface_prototype_test.go](../../remake/cmd/fd2/modern_hd_title_interface_prototype_test.go)。只在明示輸出環境變數時匯出，三個選單狀態與四個混合空槽／有檔狀態使用原始來源及既定Noto／原色細框。
+
+#### R67 READY契約
+
+三種原選單與四種空槽／有檔狀態，共14張1920×1200原型通過並檢視。標題來源FDOTHER7的nested1至6與FDOTHER8 DAC逐項雜湊，四槽是FDOTHER13的LMI entry16，310×86 indexed SHA c009ad5e，與既有設施列表同源。原型19像素字級高出原七列範圍，改沿既有18像素後全字完整放入；不改原框位。
+
+- 標題保持START／LOAD／CONTINUE、原輸入、selected閃爍與兩側寶石。只在各item的x7至width-7移除已確認藍色文字；逐列背景以原x7核對，非文字位置、mask與寶石逐像素保持。六張來源及DAC先核固定SHA，再建可拋棄的執行期衍生圖，不增加私人資產或序列化格式。
+- 字體沿既定Noto，原亮／暗文字主筆及陰影取來源palette。18 logical pixel為上限基準，字級按現有設定縮放且完整放入原佔位，保持中心與裁切。四語仍沿原英文字樣，不新增翻譯或選項。
+- 標題四槽保留現有metadata、文字writer、選取色與存讀規則，只加既有原色HD細框，矩形(5,112)..(315,198)。核自身面板及原raw dialogue來源，不把44點不同的兩種框混為同一來源。成功覆蓋完整畫面時清除前次面板；壞來源不留HD描述器。
+- 介面只隨F11，F2美術保持獨立。來源缺件、hash／mask／palette／綁定圖像異常，拒絕新HD呈現；切到HD前只在相應標題phase預檢，失敗不發布控制狀態。兩原版介面控制的正常畫面保持。
+- 驗收為六來源、字樣／寶石遮罩保持、四槽來源及拒收、四控制的完整Game.Draw／DrawFinalScreen、原標題與存讀輸入回歸、保存內容相同及普通鍵盤抽樣。受控slot metadata與prototype不冒稱原版oracle或新PLAYER-E2。主圖、標題動畫、音訊與地形另依既有範圍，不以本切片重開。
+
+來源與固定雜湊在同工作根ready-source.json；原native_load_slots註解將FDOTHER5框誤標為四槽來源，正式loader已核FDOTHER13／16，本切片依實檔修正導覽註解。
+
+R67正式入口為[modern_hd_title_interface.go](../../remake/cmd/fd2/modern_hd_title_interface.go)，由title.go與native_load_slots_ui.go接入；active title phase的F11預檢沿player_interface.go。既有隔離原生包可缺共用dialogue cells而繼續讀原生四槽，進HD時拒絕缺描述器，不新增原生包必要檔。
+
+R67來源與拒收入口為[modern_hd_title_interface_test.go](../../remake/cmd/fd2/modern_hd_title_interface_test.go)，核對六原圖文字遮罩與寶石保持、四語／字級裁切、面板來源及F11失敗原子性。
+
+R67完整繪圖入口為[modern_hd_title_interface_gpu_test.go](../../remake/cmd/fd2/modern_hd_title_interface_gpu_test.go)。原始來源逐像素重組作CPU基準，標題只依可丟棄prototype移除已核文字；四槽沿原producer及同源邊線，完整hotel JSON只複製到暫存槽。實際Game.Draw／DrawFinalScreen驗四控制、選取閃爍、空槽／有檔、其他三語及字級；不作正常鍵盤路徑聲明。
+\nR67正常鍵盤抽樣沿[既有GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的--title-interface，普通啟動後核對標題／四槽四組切換、選取與取消、LOAD既有hotel JSON、兩美術F5／F9及新程序LOAD；所有視窗完整擷取，不注入執行中狀態。\n\nR67驗證契約補充：GPU-r5分層診斷顯示原底圖差異0、透明字層最大差2，直接CPU整圖因兩段取整累積而有三個byte差3。正式驗證改為獨立重組底圖容差0、獨立CPU透明字層容差2，再把已獨立驗過的GPU字層依整數source-over公式合成於獨立底圖，最終字形覆蓋區容差1、區外0。此為驗證器的分層契約，不改正式字型、顏色或玩家畫面。鎖定Ebiten2.6.6的text/text.go以字形快取先畫透明層；診斷與來源版本留工作根。\n
+R67最終66完整Game.Draw／8PNG，原底圖／細框容差0、獨立CPU透明字層容差2、最終字形合成容差1且區外0通過。六原圖／1352文字像素、72語系字級布局與21拒收、40回歸／三可選略過通過。普通鍵盤標題與四槽四組、CONTINUE選取、空槽／取消、LOAD既有hotel JSON、兩美術F5／F9及新程序LOAD共16完整1920×1200PNG；保存保持190b9f8f。
+
+[普通標題](../figures/hd1-title-interface-game.png)與[四槽](../figures/hd1-title-load-slots-game.png)皆為正常鍵盤視窗，來源及範圍依主收據hd1_title_interface_followup_20261103。1266 Go指紋63bb2464、21／416／19消費端與160字串保持；957清冊／6990私人檔及兩manifest未改，沒有新美術。盤點233正式來源／1784函式／82個job及30個sink；靜態索引不當成玩家可達。移動資訊窗、indexed回合橫幅與native面板caller續核，不能由零候選或這批綠燈推算完整HD1。

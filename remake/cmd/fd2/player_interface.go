@@ -68,6 +68,9 @@ func (g *Game) setInterfaceMode(mode string) error {
 	candidate.interfaceMode = mode
 	candidate.modernHDMapHUDArt = nil
 	if mode == playerInterfaceHD {
+		if err := candidate.preflightModernHDTitleInterface(); err != nil {
+			return err
+		}
 		if g.font == nil || g.font.sf == nil {
 			return fmt.Errorf("interface: HD font unavailable")
 		}

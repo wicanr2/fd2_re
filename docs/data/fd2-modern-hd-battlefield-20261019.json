@@ -306110,6 +306110,223 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-interface-audit-r66/final-validation.json",
       "sha256": "ad1cfab5aeb99d191cbfa8937f7fcfc144fc7d5e60f560bd03de5a7c9d82bb69"
+    },
+    "remaining_superseded_by": "hd1_title_interface_followup_20261103"
+  },
+  "hd1_title_interface_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "5b7a4d805151a055f2c3e328af31a72b28bc75d6",
+    "scope": "標題START／LOAD／CONTINUE沿原背景及兩側寶石換既定Noto；四槽沿同源原色細框。F11獨立F2，原輸入／存檔保持。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1266,
+      "go_tree_sha256": "63bb2464f3b9815b2829363350ddea774cf389ff0bd9a5ccacd94d89f9cba356",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/fd2-player-r1",
+        "sha256": "2aac5b2160e66942835f43cc2b9f69801a4da35a981b2e0c25dcbb3e3cf11bd9"
+      },
+      "binary_uses_current_production_source": true,
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/ready-source.json",
+        "sha256": "9a4f294d88494a2e1a96b0df8aa96065d34240930c944a199113e1f2b8160b02"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/commands.json",
+        "sha256": "21453191caf9c5f27b44dd9aeeaca4bdb2cf865f0feffc8fd3cde56b4345ae9f"
+      },
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/interface-consumers-current.json",
+        "sha256": "f6cc53da292deb8e11640b88c2b185aae3fb520ce03da32301bee2ddc017690e"
+      },
+      "production_go_files": 233,
+      "production_functions": 1784,
+      "jobs": 82,
+      "presenters": 30,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_title_interface.go",
+          "sha256": "d2937ff69326e3e5252c668654f10962cb1710df7ab5a3f5997b6045d926e938"
+        },
+        {
+          "file": "remake/cmd/fd2/title.go",
+          "sha256": "ddacbbf4b65ba228e8df78acab8ad59eb6d58b5c89e63fbe1e54169d1b549cf1"
+        },
+        {
+          "file": "remake/cmd/fd2/native_load_slots_ui.go",
+          "sha256": "4f24662c530317830e579ed28e176d0be550f869e518ede82cf82c605977efe0"
+        },
+        {
+          "file": "remake/cmd/fd2/player_interface.go",
+          "sha256": "efe96b36677d961251b27bf5d48d4bac3695728363740c60394363b0d462223d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_title_interface_prototype_test.go",
+          "sha256": "3b6da1bf9125031ca8382e1d499edfb047c03504654e8e24875d92019fa1dd4c"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_title_interface_test.go",
+          "sha256": "533dbf6367fd5c4dd8105666041611a88145b9584d5d08d77ab55ef804e328ec"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_title_interface_gpu_test.go",
+          "sha256": "605276cd698c5edfe05d72658b0e2b0e6b77e645d7d4007e22006450fa1ab387"
+        },
+        {
+          "file": "remake/internal/campaign/native_load_slots.go",
+          "sha256": "c632fa7ee28d1a4e452c13860c5dba0363683effea0aa18e5075395cb3026266"
+        },
+        {
+          "file": "tools/verify_fd2_hd_fonts_gui.py",
+          "sha256": "04c1aa5b4799fbbd715ac55c2bb841f1e41deeebfb0dc17040cb62841ff92f70"
+        }
+      ]
+    },
+    "prototype": {
+      "pngs": 14,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/prototype-r2-capture/prototype.json",
+        "sha256": "fd243bfed84d34c50f1a73b861b8d27fa6ab3eee9f88a9de2478c4ecdf63ae02"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/prototype-r2.memory.json",
+        "sha256": "0f2f7074ed74d0f293723decbe5230db1a147eb9658b94ec53448eb918b562e3"
+      }
+    },
+    "cpu": {
+      "menu_sources": 6,
+      "replaced_letter_pixels": 1352,
+      "locale_size_layouts": 72,
+      "slot_selections": 4,
+      "negative_cases": 21,
+      "source_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/source-r1.log",
+        "sha256": "c056985f5c1c2d2e68c2b683d8349d701f8c7add989220ee9582805f266f8718"
+      },
+      "source_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/source-r1.memory.json",
+        "sha256": "68657c1d1be5ccafbf02bbd3be27d234e12a1a3c8f373c80792852fac31b229b"
+      }
+    },
+    "gpu": {
+      "complete_draws": 66,
+      "pngs": 8,
+      "rgba_bytes": 608256000,
+      "native_base_tolerance": 0,
+      "independent_cpu_glyph_layer_tolerance": 2,
+      "final_glyph_composite_tolerance": 1,
+      "outside_glyph_tolerance": 0,
+      "scope": "native/chrome base rebuilt independently; GPU transparent glyph layer first compared with independent CPU raster, then independent integer source-over checks final output; native control compares full image exactly",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/gpu-r6-capture/title-gpu-report.json",
+        "sha256": "bba642c2687bf4c5e7bf9dd90c91b798d26e77a6335eb7c3eba45758568f309d"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/gpu-r6.memory.json",
+        "sha256": "239401d087e0d71eeef6f39f72ba0ba2690fe34131e73fd713bc1a21f4af5d98"
+      }
+    },
+    "normal_gui": {
+      "pngs": 16,
+      "source": "normal opening escape/menu input, LOAD existing complete hotel_ch02 JSON; not an injected running state",
+      "menu_controls": 4,
+      "slot_controls": 4,
+      "selection_and_cancel": true,
+      "f5_f9_both_art": true,
+      "new_process_title_load": true,
+      "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "final_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/normal-title-r1-capture/receipt.json",
+        "sha256": "fbe86c503d618907a59cd2e7f5f291793fafa9d1c91828a23ce8d61ec30a0bcd"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/normal-title-r1.memory.json",
+        "sha256": "3d608f889b86f4cb6e4912db3e5668322fe99e6a5b4079c81a51277e66e581c8"
+      }
+    },
+    "regression": {
+      "pass": 40,
+      "optional_skip": 3,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/regression-r1.log",
+        "sha256": "6d493a8bacbf7ad43d90e83eff8ff67d2f27331818102c45ce97aea17feec70f"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/regression-r1.memory.json",
+        "sha256": "caa567a72dccd284c62ddb7770d17ea1a4150907781f689bd56399062580da3e"
+      },
+      "consumers": 21,
+      "frames": 416,
+      "negative": 19,
+      "export": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/consumers-r1.json",
+        "sha256": "39b96dc5ffe45621412d21b2db3dda1bd2c61ffd445f771c5a5d5df34fb2a4e7"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/consumers-verified-r1.json",
+        "sha256": "c05554c9b38e95e4463b4e7ae40c9114a44cf95458ad17fe4275207a1337401f"
+      },
+      "review_count": 160,
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/review-migration.json",
+        "sha256": "6951e7ce74da2848869d58e1386f6fcef3e60a324a263dcf103995585d0067af"
+      }
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "03087cf4c4e78c3bf4ed9a45b86a41cbf2b311ccc6b3b752a1caea71b0e925a4"
+      },
+      "catalog_assets": 957,
+      "private_files": 6990,
+      "new_files": 0,
+      "private_commit": "4d7d9695b16a1781451c9d45bfb1c8804cef49e1",
+      "private_manifest_sha256": "67bef6651d205dfcffdaaae1cbdf699e67a193e1864cf0c937dc657a24306576",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-title-interface-game.png",
+        "sha256": "4a4de1317e989b17262358c8e120146fe6900fa6635bb3583445c895db4a1a4f"
+      },
+      {
+        "file": "docs/figures/hd1-title-load-slots-game.png",
+        "sha256": "d106a97106683d5cbab5b20b900bfc7a750b83ef132707186e8b55c7ffe139f2"
+      }
+    ],
+    "diagnostics": {
+      "r1": "incomplete test owner lacked baseMapTileset for actual F2; test now uses existing complete rewardStageGame; no applyTheme production patch",
+      "r2_r3": "direct whole-image CPU text blend differs by rounding; no production palette changed",
+      "r4": "test refactor compilation name corrected",
+      "r5": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/gpu-r5-capture/failure-diagnostics.json",
+        "sha256": "42430ab27bbfd31ec45a0688640f323bf12b3ac7660456b750be8fcdbeb7d70c"
+      },
+      "ebiten_text_source": {
+        "module": "github.com/hajimehoshi/ebiten/v2",
+        "version": "v2.6.6",
+        "sha256": "5a206dd0c9b613ec64501928d5f029a13432f1ef49dacc2f4052c271811e8bf8",
+        "module_file": "text/text.go"
+      },
+      "final_reference": "component-wise source, text and composition checks; no whole-image tolerance relaxation"
+    },
+    "remaining_ui_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/interface-review.json",
+      "sha256": "662c508ac42376cd2a7c26aa4c34fe25db36ade2c9df7ba37248103232be70e4"
+    },
+    "limits": [
+      "來源與原圖行為沿既有typed/native producer；未新增原版oracle、整章E2或人工造型／平台驗收。",
+      "主圖與兩側寶石仍沿原版，僅替換六份已核文字，四語不新增翻譯。",
+      "移動資訊窗、indexed回合橫幅與native面板caller需續核；#283保持開啟。",
+      "地形#282餘3180缺槽／2033獨特來源；完整HD1未完成。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/final-validation.json",
+      "sha256": "a66bdd7c344498a13a34dc0eed0c0da7537d0895955f62c16ef9eecfa434a526"
     }
   }
 }

@@ -305,6 +305,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD標題三選項](docs/figures/hd1-title-interface-game.png)
+
+標題三選項與[四槽讀檔框](docs/figures/hd1-title-load-slots-game.png)已接既定HD字型及細框，保留原背景、選取亮點與操作。上圖取自正常鍵盤啟動；四組切換、取消、讀取既有存檔，以及兩種美術保存與新程序讀取已抽驗。範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1標題選單與四槽框線)。
+
 ![HD寶箱確認框](docs/figures/hd1-treasure-confirmation-game.png)
 
 寶箱的物品與金幣確認、開收及回覆已接HD，沿實際角色頭像，介面與美術獨立切換。上圖使用正式建構器與受控測試資料，未作自然戰役開箱驗收；交易與保存回歸通過。範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1寶箱確認)。

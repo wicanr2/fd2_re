@@ -17,6 +17,7 @@ import (
 )
 
 type nativeLoadSlotsUIAssets struct {
+	hd          *modernHDTitleLoadSlots
 	dialogueBox fdother.LMI1Entry
 	strings     *fdtxt.Strings
 	font        *fdtxt.Font
@@ -43,17 +44,21 @@ func loadNativeLoadSlotsUIAssets() (*nativeLoadSlotsUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, palette, err := loadNativeBattlePalette()
+	dac, palette, err := loadNativeBattlePalette()
 	if err != nil {
 		return nil, err
 	}
 	palette[0] = color.NRGBA{A: 0xff}
-	return &nativeLoadSlotsUIAssets{
+	assets := &nativeLoadSlotsUIAssets{
 		dialogueBox: dialogueBox,
 		strings:     strings,
 		font:        font,
 		palette:     palette,
-	}, nil
+	}
+	// Older isolated native packs can omit the shared dialogue cells.
+	// Native loading remains available; entering HD preflights this descriptor.
+	assets.hd, _ = freezeModernHDTitleLoadSlots(assets, dac)
+	return assets, nil
 }
 
 func nativeLoadSlotMetadata() ([4]campaign.NativeLoadSlot, bool) {
@@ -339,6 +344,11 @@ func (g *Game) drawNativeLoadSlots(screen *ebiten.Image) bool {
 	screen.DrawImage(native, op)
 	if capture != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
+		g.modernHDText.panels = nil
+		g.modernHDText.choices = nil
+		if assets.titleChromeHDValid() {
+			g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{chrome: assets.hd.chrome, rect: image.Rect(5, 112, 315, 198)})
+		}
 	}
 	return true
 }

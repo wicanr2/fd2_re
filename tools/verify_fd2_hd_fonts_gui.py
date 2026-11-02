@@ -176,6 +176,7 @@ def main():
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
+    facility.add_argument('--title-interface', action='store_true', help='正常標題選取／取消與LOAD，四控制、兩美術保存及新程序冷讀')
     facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
     parser.add_argument('--church-fee-currency', action='store_true', help='搭配--church及--facility-item-rows抽驗復活費用貨幣的四種顯示組合')
@@ -583,12 +584,15 @@ def main():
             except (subprocess.CalledProcessError,IndexError):time.sleep(.1)
         assert window
         command('xdotool','windowmove',window,'0','0')
+        if args.title_interface: command('xdotool','windowsize',window,'1920','1200')
         wait(lambda s:bool(s.get('title_phase')))
         for _ in range(160):
             if latest(audit).get('title_phase')=='menu':break
             key('Escape')
         else:raise TimeoutError('冷讀標題未就緒')
+        if args.title_interface: shot(name+'-menu')
         key('Down');key('Return');wait(lambda s:s.get('title_phase')=='loadslots')
+        if args.title_interface: shot(name+'-slots')
         key('Return');wait(lambda s:not s.get('title_phase') and s.get('node')==node and s.get('gold')==gold)
         if args.battle_status:
             loaded_frame=latest(audit)['frame']
@@ -718,6 +722,65 @@ def main():
             if latest(audit).get('title_phase')=='menu':break
             key('Escape')
         else:raise TimeoutError('標題未就緒')
+        if args.title_interface:
+            assert not args.native_save and not args.player_toolbar
+            command('xdotool','windowsize',window,'1920','1200')
+            source_bytes=args.town_save.read_bytes()
+            source=json.loads(source_bytes)
+            assert source['node']=='hotel_ch02'
+            if not latest(audit).get('hd_theme'):
+                key('F2');wait(lambda st:st.get('hd_theme') is True)
+            if not latest(audit).get('hd_interface'):
+                key('F11');wait(lambda st:st.get('hd_interface') is True)
+            def title_styles(phase):
+                before=latest(audit)
+                for suffix,art,ui,press in [
+                    ('hd-art-hd-ui',True,True,None),
+                    ('hd-art-native-ui',True,False,'F11'),
+                    ('native-art-native-ui',False,False,'F2'),
+                    ('native-art-hd-ui',False,True,'F11')]:
+                    if press:key(press)
+                    wait(lambda st:st.get('title_phase')==phase
+                         and st.get('hd_theme') is art and st.get('hd_interface') is ui
+                         and ((st.get('hd_text_runs',0)>0) if ui else st.get('hd_text_runs',0)==0))
+                    shot('title-'+phase+'-'+suffix)
+                    assert saved.read_bytes()==source_bytes
+                key('F2');wait(lambda st:st.get('hd_theme') is True)
+                after=latest(audit)
+                for field in ['title_phase','title_selection','title_slot','gold','node']:
+                    assert before.get(field)==after.get(field),field
+            title_styles('menu')
+            key('Up');wait(lambda st:st.get('title_selection')==2);shot('title-continue-selected')
+            key('Down');wait(lambda st:st.get('title_selection')==0)
+            key('Down');wait(lambda st:st.get('title_selection')==1)
+            key('Return');wait(lambda st:st.get('title_phase')=='loadslots')
+            title_styles('loadslots')
+            key('Down');wait(lambda st:st.get('title_slot')==1);shot('title-empty-slot-selected')
+            key('Up');wait(lambda st:st.get('title_slot')==0)
+            key('Escape');wait(lambda st:st.get('title_phase')=='menu');shot('title-load-canceled')
+            assert saved.read_bytes()==source_bytes
+            key('Return');wait(lambda st:st.get('title_phase')=='loadslots')
+            key('Return');wait(lambda st:not st.get('title_phase') and st.get('node')=='hotel_ch02'
+                               and st.get('gold')==source['gold'])
+            shot('title-loaded-hotel')
+            key('F5');assert saved.read_bytes()==source_bytes
+            key('F2');wait(lambda st:st.get('hd_theme') is False)
+            key('F5');assert saved.read_bytes()==source_bytes
+            key('F9');wait(lambda st:st.get('node')=='hotel_ch02' and st.get('gold')==source['gold'])
+            shot('title-native-art-f9')
+            key('F2');wait(lambda st:st.get('hd_theme') is True)
+            restart_title_load('hotel_ch02',source['gold'],'title-new-process-load')
+            assert saved.read_bytes()==source_bytes
+            report={'schema':'fd2-hd1-title-interface-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'tool_source_sha256':tool_source_sha256,
+                    'source_save_sha256':digest(args.town_save),'final_save_sha256':digest(saved),
+                    'menu_display_modes':4,'slots_display_modes':4,'normal_keyboard_only':True,
+                    'up_down_wrap':True,'slot_selection_and_cancel':True,'cold_title_load':True,
+                    'theme_save_bytes_equal':True,'screenshots':shots,'operations':operations,
+                    'scope':'普通啟動與鍵盤標題LOAD既有第2章hotel JSON；F2/F11、取消、兩美術F5/F9及新程序LOAD。未注入執行中狀態，不新增原版oracle或整章E2。'}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            print('PASS normal title interface and save roundtrip',flush=True)
+            return
         if args.death_event:
             run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,
                                 restart_title_load,operations,shots,tool_source_sha256)

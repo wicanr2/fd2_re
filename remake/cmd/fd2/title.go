@@ -25,12 +25,13 @@ import (
 )
 
 type titleAssets struct {
-	scroll         *ebiten.Image       // 320×735 立繪
-	scrollPulse    *ebiten.Image       // 同 indexed pixels，FDOTHER #102 短暫 DAC
-	title          *ebiten.Image       // 320×200 標題畫面
-	publisher      *ebiten.Image       // FDOTHER #74 + palette #76 漢堂發行商畫面
-	redFadeFrames  [20]*ebiten.Image   // sub_286BD phase 40→0，FDOTHER #69..73/#101
-	titleFadeFrame [20]*ebiten.Image   // sub_286BD phase 0→40，FDOTHER #7/#8
+	scroll         *ebiten.Image     // 320×735 立繪
+	scrollPulse    *ebiten.Image     // 同 indexed pixels，FDOTHER #102 短暫 DAC
+	title          *ebiten.Image     // 320×200 標題畫面
+	publisher      *ebiten.Image     // FDOTHER #74 + palette #76 漢堂發行商畫面
+	redFadeFrames  [20]*ebiten.Image // sub_286BD phase 40→0，FDOTHER #69..73/#101
+	titleFadeFrame [20]*ebiten.Image // sub_286BD phase 0→40，FDOTHER #7/#8
+	hdItems        [3][2]*modernHDTitleMenuItem
 	items          [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
 	cutStatic      [2]*ebiten.Image    // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
 	aniClips       map[int]*afm.Clip   // 離線分離後的 ANI indexed frame／DAC snapshots
@@ -236,6 +237,12 @@ func loadSeparatedTitleFDOTHER(packRoot string, target *titleAssets) error {
 			return fmt.Errorf("標題選單 FDOTHER #7/%d 幾何=%dx%d", nested, frame.Width, frame.Height)
 		}
 		target.items[(nested-1)/2][(nested-1)%2] = ebiten.NewImageFromImage(maskedRGBA(frame, titlePalette))
+		item, state := (nested-1)/2, (nested-1)%2
+		hd, err := freezeModernHDTitleMenuItem(frame, titleDAC, titlePalette, item, state, target.items[item][state])
+		if err != nil {
+			return err
+		}
+		target.hdItems[item][state] = hd
 	}
 
 	for slot, pair := range []struct{ resource, palette int }{{100, 99}, {75, 76}} {
@@ -805,6 +812,9 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			}
 			it := ta.items[i][st]
 			if it == nil {
+				continue
+			}
+			if g.drawModernHDTitleMenuItem(screen, ta, i, st, it) {
 				continue
 			}
 			b := it.Bounds()
