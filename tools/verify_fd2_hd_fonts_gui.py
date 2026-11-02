@@ -77,6 +77,7 @@ def main():
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
+    parser.add_argument('--facility-item-rows', action='store_true', help='於買賣或教會交付的穩定物品列表抽驗四組介面／美術')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
     parser.add_argument('--town-departure', action='store_true', help='整備取消及保存後，再正常確認城鎮出口，核對凍結來源與十一個離城呈現步')
@@ -422,6 +423,25 @@ def main():
                           'gpu_before':gpu_before,
                           'window_geometry':command('xdotool','getwindowgeometry','--shell',window)}
         print('CAPTURE '+path.name,flush=True)
+
+    def item_row_styles(mode, ready, name):
+        if not args.facility_item_rows:
+            return
+        before=latest(audit)
+        assert before.get('hd_interface') is True
+        art=before.get('hd_theme')
+        ready(mode);shot(name+'-hd-ui')
+        key('F11');wait(lambda s:s.get('hd_interface') is False)
+        ready(mode);shot(name+'-native-ui')
+        key('F2');wait(lambda s:s.get('hd_theme') is not art)
+        ready(mode);shot(name+'-alternate-native-ui')
+        key('F11');wait(lambda s:s.get('hd_interface') is True)
+        ready(mode);shot(name+'-alternate-hd-ui')
+        key('F2');wait(lambda s:s.get('hd_theme') is art)
+        ready(mode);shot(name+'-restored')
+        after=latest(audit)
+        for field in ['node','shop_mode','church_mode','gold']:
+            assert before.get(field)==after.get(field),field
 
     def restart_title_load(node, gold, name):
         nonlocal game, window, audit_epoch
@@ -1491,6 +1511,7 @@ def main():
             key('Left');key('Return');shop('menu');shot('gold-before-purchase')
             gold_thread=threading.Thread(target=capture_gold_roll,daemon=True);gold_thread.start()
             key('Return');shop('purchase')
+            item_row_styles('purchase',shop,'gold-purchase-items')
             key('Return');shop('confirm')
             key('Return');shop('recipient_equipment')
             comparison_before=latest(audit)
@@ -1516,6 +1537,7 @@ def main():
             key('Right');wait(lambda s:s.get('shop_service')==1)
             key('Return');shop('sell_roster')
             key('Return');shop('sell_items')
+            item_row_styles('sell_items',shop,'gold-sell-items')
             # Sol starts with short sword, leather armor and herb. The ordinary
             # purchase appends cloth in the fourth active raw inventory slot.
             key('Down');key('Right');key('Return');shop('sell_confirm');shot('gold-cloth-sale-confirmation')
@@ -1651,7 +1673,8 @@ def main():
         if args.church or args.status:
             def church(mode):
                 return wait(lambda s:s.get('node')=='church_ch02' and s.get('church_mode')==mode
-                            and s.get('church_ui_busy') is False and s.get('hd_text_runs',0)>0)
+                            and s.get('church_ui_busy') is False
+                            and (s.get('hd_interface') is False or s.get('hd_text_runs',0)>0))
 
             key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
             key('Escape');wait(lambda s:s.get('node')=='town_ch02')
@@ -1699,6 +1722,7 @@ def main():
             key('Escape');church('menu')
             key('Right');key('Return');church('transfer_source');shot('church-transfer-source')
             key('Return');church('transfer_item');shot('church-transfer-item')
+            item_row_styles('transfer_item',church,'church-transfer-items')
             key('Escape');church('transfer_source')
             key('Escape');church('menu')
             assert latest(audit).get('gold')==1000,'取消服務改變金幣'

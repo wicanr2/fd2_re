@@ -247,7 +247,7 @@ HD1地圖人物的125組、1455個來源幀已完成定版圖源與接線。第6
 
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
-蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。
+蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。125組的正式圖源與地圖接線已完成，完整「原版／HD1」人物總覽見下方。逐人造型與實機畫面由使用者複核。
 
 ![系統確認的四組原版與HD介面／美術](docs/figures/hd1-system-confirmations.png)
 
@@ -304,6 +304,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 | ![商店Q版人物名冊](docs/figures/hd1-shop-roster-q-game.png) | ![教會Q版人物名冊](docs/figures/hd1-church-roster-q-game.png) |
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![HD設施物品列表](docs/figures/hd1-facility-item-rows-game.png)
+
+商店購買、販售、交付與教會交付列表已接上HD物品類別圖示、屬性標籤和價格符號，保留原數值與選取。上圖是正常讀檔後購買布衣，再進販售的完整視窗；介面與美術獨立切換、買賣及保存讀取已抽驗。其餘設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 ![HD裝備受領的能力比較欄](docs/figures/hd1-shop-equipment-comparison-game.png)
 

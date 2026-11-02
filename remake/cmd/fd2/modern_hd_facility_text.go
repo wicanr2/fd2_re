@@ -102,6 +102,7 @@ func (g *Game) drawModernHDFacilityFrame(screen *ebiten.Image, compose func() ([
 	g.drawModernHDFacilityRosterUnderlay(screen, frame)
 	g.appendModernHDFacilityDialogue(frame)
 	g.appendModernHDServiceIcons(frame)
+	g.appendModernHDFacilityItemRows(frame)
 	return true
 }
 

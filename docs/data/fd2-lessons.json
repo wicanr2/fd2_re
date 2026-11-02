@@ -5041,6 +5041,21 @@
         ],
         "pattern": "控制圖先呈現原生底圖，再發布同次擷取文字"
       }
+    },
+    {
+      "id": "hd-gui-wait-follows-interface-mode",
+      "date": "2026-11-02",
+      "area": "HD操作測具",
+      "rule": "跨F11介面抽樣時，以同一owner、mode與無job判定到達；只有HD介面要求hd_text_runs，原版介面不要求HD文字。入口為tools/verify_fd2_hd_fonts_gui.py的item_row_styles與church等待函式，使用--gold-roll或--church加--facility-item-rows，Docker及素材參數依規格61。",
+      "why": "R55普通教會交付切回原版介面後，實際mode已是transfer_item且job結束；舊等待條件仍強制hd_text_runs>0而逾時。屬測具條件問題，未變更遊戲、時序或UI。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1設施穩定物品列表R55；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_facility_item_rows_followup_20261102",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "\\(s\\.get\\('hd_interface'\\)\\ is\\ False\\ or\\ s\\.get\\('hd_text_runs',0\\)>0\\)"
+      }
     }
   ]
 }

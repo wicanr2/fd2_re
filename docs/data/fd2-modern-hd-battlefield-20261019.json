@@ -303035,5 +303035,211 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-recipient-transition-r54/final-validation.json",
       "sha256": "2428d03c17cc1e6b97e9f0e6e5bb59f87f785bc7d57f9a62a26c51c0a5859242"
     }
+  },
+  "hd1_facility_item_rows_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "60f9b45e418e00bc9cfce1bad1c4436e0bb956c9",
+    "scope": "三商店purchase／sell_items／transfer_items與教會transfer_item的穩定列表，類別59..61、四種屬性標籤及entry15價格符號；F11獨立F2。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1231,
+      "go_tree_sha256": "fac1d1d44d51f5332e6c1b9a1e8a62c99c9357d4ae0d595032dcd5e9b0e2e150",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/fd2-player-r1",
+        "sha256": "6e112e9a354f47dc67da7c645b78426c571ff796bfabe3c6510442c40a521a28"
+      },
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/consumers-r1.json",
+        "sha256": "aa7b36fb8c58501632221d16a72ba7d88b1b2d16c4b35541c1a5bdf46d88145e"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/commands.json",
+        "sha256": "2dfd488599a8b345bfbb2db20833903a09823469aaf3730a0f5c6ca30fe571b8"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/ready-source.json",
+        "sha256": "05af097994578fac6f1206618c4ac9b97ea793fa8538c93b33835caaadee0500"
+      },
+      "canonical_inputs": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_item_rows.go",
+          "sha256": "f7ca4f32a015a19eaa53dbcaa4b2ecccb7edc8a8dbf00b3a4aecc0317feda78c"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_item_rows_test.go",
+          "sha256": "b6b3ead4c7d0fb3a2e2e5ea497021bd776fa1aa4ade6fa0eafb518e2fd5f4863"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "3dd98767f26de2199137af11a19adc1a4e5b891f186012a75b6788a55bb67b15"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "da952600d425622e82bc4ebc5ac1ffcca7e3b398e835b38c76e0bb3a1d52589d"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "ff15b3665b5404a6476a8d7bcaa1ff4ab98571fb4cb85a93d412c53e4679de21"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "b7553ee194f22e11b5d26c4b2c9a2f6f4be5ae06c9530a5e3c87043948f5c87f"
+      }
+    },
+    "rules": [
+      "沿原IDA linear 0x2DC55／0x2DF6B／0x2F8EA及typed消費端，不重開原版語意。",
+      "購買goods.ID、販售ID清單、兩交付compact slots映射實際Inventory ID，沿原兩欄六格與捲動窗口；數字、名字、價格、交易及保存保持。",
+      "已登錄FDOTHER5類別圖示與現有Noto六倍原框，完整來源與所有目的opaque矩形通過才整組發布；原???保持。",
+      "缺件、來源／owner／mode／job／遮蓋／palette／font不符留原生；快取納入來源、palette、有效字級、font與圖片digest。"
+    ],
+    "cpu": {
+      "tests": 2,
+      "actual_source_cases": 20,
+      "covered_rectangle_rejections": 340,
+      "source_and_fallback_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/source-r1.memory.json",
+        "sha256": "03e6778f42204ec45b19e9b5b1d77a168cf2466dc74194f8ae4e34f5548cd57f"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/source-r1.log",
+        "sha256": "0dbf74d7829454f8a83f7d60fcfd7ea4eb7d140ca8c470c41e4769e8dec768f9"
+      },
+      "independent_font_drawer": true,
+      "scope": "四列表、三商店、實際來源五效果分支與兩種compact permutation／scroll；來源、缺圖、digest、owner、job與遮蓋拒收，字型與palette快取失效。"
+    },
+    "gpu": {
+      "cases": 200,
+      "full_png": 25,
+      "item_role_pixels": 28857600,
+      "rgba_tolerance": 0,
+      "all_outside_bytes_equal": true,
+      "whole_game_toolbar_equal": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/gpu-r1-capture/receipt.json",
+        "sha256": "78e30665dd4c25517090ed46b5961a86d3de0b141ce41f3f194434f16accca84"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/gpu-r1.memory.json",
+        "sha256": "528fe8667506c162733235bc25967563e661206129ec5967b75444aee30bed1c"
+      },
+      "scope": "three shops/three stable item modes and church transfer; four independent styles/four locales/scroll; complete opaque role RGBA and all outside bytes equal; no new original oracle claim"
+    },
+    "normal_gui": {
+      "gold": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/normal-gold-roll-r1-capture/receipt.json",
+          "sha256": "b316f59795b64a9cdff048c24cb73f361acd3420e3697de3afa82172d4005b3e"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/normal-gold-roll-r1.memory.json",
+          "sha256": "359ab27a95d8f88b9025bbcb5dbfa42257f001f4a335781f8c14ff5bb1733188"
+        },
+        "full_png": 24,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。",
+        "four_item_row_styles": true,
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "tool_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/gui-before-church-wait-fix.py",
+          "sha256": "1928c60e9de48b9d7dfb462da093c90843e1b880f54e5f7db5d59bd6fee0845c"
+        },
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "gold": [
+          1000,
+          950,
+          987
+        ],
+        "accepted_dynamic_crops": 4,
+        "rejected_dynamic_crops": 3
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/normal-church-r2-capture/receipt.json",
+          "sha256": "b0e0ba5aec0a68a6c3ca05b57367339bd7ea056ccd47d5bd1a4f922d8420be24"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/normal-church-r2.memory.json",
+          "sha256": "6b6339046531a75828003b819886dbaf90ba8b023f822ad7c9db8de1fa0bd178"
+        },
+        "full_png": 20,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+        "four_item_row_styles": true,
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "failed_first_run_excluded": true,
+        "wait_diagnostic": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/church-wait-diagnostic.json",
+          "sha256": "428a240aad2974cbfe7500af0619757893262b3d7b50ad6e53f5a7237a687d02"
+        }
+      }
+    },
+    "regression": {
+      "passed": 77,
+      "optional_skipped": 8,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/regression-r1.log",
+        "sha256": "4434144f06a7a8cf5ee2440607381d4a88f5f0fea8297d59ab4ecf1b9227e00f"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/regression-r1.memory.json",
+        "sha256": "e4f7c8da9cab25fa348864131834f7737cc11d6c6a85152fd708a1899437c40c"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/consumers-verified-r1.json",
+        "sha256": "ed3806c4e888293edc1e056a1a5d740c7d696bf244c8ae032594691a566c4292"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/inv-r2.json",
+        "sha256": "63e1bdad40a46aee6bcdb1c59c5c6616b841888b35aad4390ee0878bf79c6555"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "004d4a1083190f463592c50c0fc941d11e8eeba259383671347b0025bd30e589"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/asset-pack-unchanged.json",
+        "sha256": "b1ba25041558aa1b36f25c081ed370c71c2969d6cce6bd3a016cb7b804ebe804"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "private_remote_verified": true,
+      "private_worktree_clean": true,
+      "private_is_private": true,
+      "original_and_modern_packs_unchanged": true
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-facility-item-rows-game.png",
+          "sha256": "d62e1080f7447cbfa47897fda2c561a282bbd572594ce85e90b4535f1a22f82b"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/normal-gold-roll-r1-capture/gold-sell-items-hd-ui.png",
+          "sha256": "d62e1080f7447cbfa47897fda2c561a282bbd572594ce85e90b4535f1a22f82b"
+        },
+        "scope": "正常START後F9接續hotel_ch02，普通購買布衣後的索爾販售列表；實際隊伍、金額與物品，不用fixture身份。"
+      }
+    ],
+    "remaining_ui": "其餘商店與設施的列表／確認／回覆進出場、成功特效及未接介面由#283續作；完整地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1，非原版逐幀對拍、連續全戰役或完整HD1；造型／逐章／平台人工驗證由使用者接手。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/final-validation.json",
+      "sha256": "e0e6725fae63f86772142171e5427ce853de03793b08528b69be2571a9f77287"
+    }
   }
 }

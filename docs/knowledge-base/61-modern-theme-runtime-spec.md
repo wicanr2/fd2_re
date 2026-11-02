@@ -5930,3 +5930,17 @@ job建立時核對完整source／final及原幀，再凍結明示producer的文�
 正常START後F9接續hotel_ch02，布衣買賣14、藥草受領18完整PNG通過。布衣有15、藥草18筆實際開／收Draw觀測；input_audit_trace.go的facility_list_presented明示最近一次Draw，Update可能已前進，不當PNG精確同幀或原版E2。tools/verify_fd2_hd_fonts_gui.py的--facility-list-transitions要求兩方向均觀測到。布衣1000→950→987，兩美術保存32c9cd02相同，F9及新程序標題LOAD通過；金幣動態裁圖八接受／四拒收。
 
 [開框首拍](../figures/hd1-shop-recipient-opening-game.png)是明示受控Game.Draw重播，金額1234及測試隊伍為構造值，並非一般玩家收據。953清冊／6963私人檔、私人44636b94與原版包未變，沿R52已驗runtime素材，沒有新增圖稿或格式。其餘商店與設施的列表／確認／回覆進出場、成功特效及尚未接介面依#283續作；完整地形仍#282，未宣稱全HD1完成。
+
+### HD1設施穩定物品列表
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，R55來源契約位於work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-item-rows-r55/ready-source.json。沿固定輸入及已閉合IDA linear 0x2DC55／0x2DF6B／0x2F8EA與RenderNativeFacilityItemRows，不新增二進位語意。三商店purchase、sell_items、transfer_items與教會transfer_item共四類穩定列表，物品來源各依goods.ID、販售ID清單及兩種compact slot映射實際Inventory ID，沿正式六格視窗。
+
+FDOTHER5的59／60／61共用已登錄HD類別圖；64..67沿原圖+AP／+DP／+HP／+MP，以現有Noto繪字及原palette背景／亮色製作。FDOTHER12／14／29／63的entry15皆相同6×8美元符號；原圖41的???保持。各格x=10+148×column、y=119+26×row；類別24×20在x,y，屬性21×8在x+95,y+2，價格符號6×8在x+95,y+12。名稱、數字、價格與交易規則不改。
+
+所有完整來源SHA／幾何／HD digest及可見目的opaque範圍先驗完才整組發布；錯owner、mode、job、覆蓋、字型、palette或缺圖回退。材質快取納入來源、palette、有效字級、font及圖片digest；F11獨立於F2。實作入口modern_hd_facility_item_rows.go、modern_hd_facility_text.go及native_shop_ui.go，永久驗證modern_hd_facility_item_rows_test.go。必要驗收為四類列表／三商店、四組控制、四語、捲動、獨立RGBA與範圍外控制、缺件與遮蓋拒收、正常商店／教會及保存；不重做已接的一般物品面板。主收據為hd1_facility_item_rows_followup_20261102。動畫與成功特效續作，953清冊／6963私人檔保持，不宣稱完整HD1。
+
+R55主收據hd1_facility_item_rows_followup_20261102：200完整Game.Draw／25PNG，逐RGBA核對28857600個類別、屬性及價格符號像素，容差0；僅停用本層的控制圖在其餘範圍逐byte相同，工具列整個遊戲區保持。二個新來源／獨立font.Drawer測試涵蓋20實際列表與340個目的覆蓋拒收；77相關回歸通過，八個可選GPU／oracle／匯出略過另列。1231份Go指紋fac1d1d44d51f5332e6c1b9a1e8a62c99c9357d4ae0d595032dcd5e9b0e2e150，21來源／416幀／19反例及160字串處置保持。
+
+正常START後F9接續hotel_ch02，布衣買賣24、教會交付20完整PNG通過，購買／販售／教會交付各含F2與F11四組。布衣1000→950→987，兩美術保存32c9cd02相同，F9及新程序標題LOAD通過；金幣動態裁圖4接受／3拒收。教會保存保持190b9f8f。教會首輪切回原版介面後，舊測具仍強制HD runs，屬等待條件失誤；遊戲與程式未改，修正後以相同image／binary／資產／預算重跑通過，首輪不計。已通過買賣分支不消費church helper，其舊測具全文與SHA保存於gui-before-church-wait-fix.py。
+
+[正常販售物品列表](../figures/hd1-facility-item-rows-game.png)沿實際存檔與正常交易，不用fixture身份。953清冊／6963私人檔、私人44636b94與原版包保持，沒有新圖稿／清冊格式；原???仍留原圖。其餘設施動畫及介面由#283續作，地形由#282續作，未宣稱完整HD1。
