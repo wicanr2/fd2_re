@@ -6171,4 +6171,22 @@ R68來源／反例入口為[modern_hd_movement_panel_test.go](../../remake/cmd/f
 
 R68完整繪圖入口為[modern_hd_movement_panel_gpu_test.go](../../remake/cmd/fd2/modern_hd_movement_panel_gpu_test.go)。11案例實際22次Game.Draw及最終合成，兩框位／四控制、說明／全白／全黑通過；七份HD或遮蔽完整畫面與四份原版面板裁切容差0。八張1920×1200PNG。測具以已通過普通首章保存冷讀的完整JSON經正式載入器建立，不補造raw provenance旗標。
 
-R68來源18拒收、字級重建與原生bytes保持通過；49相關回歸／四可選略過、21素材來源／416幀／19反例與160字串分類保持。正常GUI沿[verify_fd2_hd_fonts_gui.py](../../tools/verify_fd2_hd_fonts_gui.py)的--battle-status --world --movement-panel，由標題LOAD既有首章存檔、選亞雷斯開窗、四控制／取消、兩美術F5及新程序LOAD，共八張完整PNG。保存SHA-256仍為089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2；[正常畫面](../figures/hd1-movement-panel-game.png)及主收據hd1_movement_panel_followup_20261103索引命令／來源與限制。957清冊／6990私人檔保持，沒有新美術。首章JSON後備讀檔框續核，#283保持開啟；地形另案，完整HD1未完成。
+R68來源18拒收、字級重建與原生bytes保持通過；49相關回歸／四可選略過、21素材來源／416幀／19反例與160字串分類保持。正常GUI沿[verify_fd2_hd_fonts_gui.py](../../tools/verify_fd2_hd_fonts_gui.py)的--battle-status --world --movement-panel，由標題LOAD既有首章存檔、選亞雷斯開窗、四控制／取消、兩美術F5及新程序LOAD，共八張完整PNG。保存SHA-256仍為089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2；[正常畫面](../figures/hd1-movement-panel-game.png)及主收據hd1_movement_panel_followup_20261103索引命令／來源與限制。957清冊／6990私人檔保持，沒有新美術。首章JSON後備框及操作介面接線現況依R69；地形另案，完整HD1未完成。
+
+### HD1 JSON後備讀檔框
+
+R69 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。首章JSON的Chapter=0不能映成原生四槽metadata，沿drawTitle既有360×250、(140,70)半透明框與四列內容，確認仍由loadJSONGameFromSlot負責。R68正常標題收據證實此分支可達且文字已HD，框線仍空白。先以R67已核FDOTHER13／16及FDOTHER5 raw細框色源做可丟棄框線原型，保持底色透明度、矩形、字樣、輸入與存檔映射。來源原型入口為[modern_hd_json_load_frame_test.go](../../remake/cmd/fd2/modern_hd_json_load_frame_test.go)；不新增美術或修改JSON ABI。
+
+#### R69 READY契約
+
+既有JSON後備框沿360×250、(140,70)與原半透明底，HD只補R67已核原色細框外緣三像素。原型1080×750的內部透明、全部邊線不透明，已通過並檢視；不改原生metadata、JSON Chapter<=0拒收、槽確認、翻譯或存檔格式。
+
+- 由已驗title load-slot chrome複製獨立快取，背景透明，只保留相同edges／corners。驗證來源未變、clone獨立及透明背景，失敗不發布HD框線。不同矩形不共用原生四槽GPU材質快取。
+- 只在drawNativeLoadSlots未處理且後備框已繪製時，沿F11 HD追加同矩形邊線；F2獨立。保留既有Noto文字、原背景、四列與輸入。active F11對實際後備來源預檢。
+- 驗收原生四槽／JSON0／空槽與取消、來源變造與獨立快取、完整Game.Draw／最終合成四控制，以及普通首章JSON標題LOAD、兩美術保存／F9及新程序LOAD。框內與框外畫面保持，只變三像素邊線，不新增原版oracle或E2。
+
+R69正式接線沿[modern_hd_title_interface.go](../../remake/cmd/fd2/modern_hd_title_interface.go)的jsonChrome及appendModernHDJSONLoadFrame，title.go只在既有JSON後備框後追加。來源／反例及GPU入口為[modern_hd_json_load_frame_test.go](../../remake/cmd/fd2/modern_hd_json_load_frame_test.go)與[modern_hd_json_load_frame_gpu_test.go](../../remake/cmd/fd2/modern_hd_json_load_frame_gpu_test.go)；正常流程沿verify_fd2_hd_fonts_gui.py的--title-interface --title-json-fallback。
+
+R69六種clone來源拒收及健康F11通過。16完整Draw、四槽／四控制，四張1920×1200PNG，獨立逐邊／逐角合成最終畫面容差0，框內與框外保持。50回歸／四可選略過、21來源／416幀／19反例及160字串分類保持。普通首章JSON0標題選單／後備讀檔框四組、空槽確認拒收、取消、LOAD、兩美術F5/F9與新程序LOAD共16完整PNG通過，保存089b077b保持；[正常畫面](../figures/hd1-json-load-frame-game.png)及主收據hd1_json_load_frame_followup_20261103索引全部來源／命令。
+
+操作介面來源接線已完成。保守AST盤點涵蓋30共用呈現入口及82建構入口；各批正式消費端與R67待核分支已沿既有收據核對，R67續核分支由R68移動資訊窗及本批JSON後備框閉合。nativeTurnStaging、FDOTHER45屬地圖演出，drawBattlePanel屬明示後備，四份無執行期引用helper不列為玩家缺口。盤點不是typed call graph、原版oracle或全章可達性證明。#283技術接線可關閉，人工觀感／逐章／平台仍由使用者接手；地形#282接續，完整HD1未完成。

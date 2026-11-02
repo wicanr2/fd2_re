@@ -167,6 +167,8 @@ func (g *Game) drawModernHDTitleMenuItem(screen *ebiten.Image, assets *titleAsse
 type modernHDTitleLoadSlots struct {
 	chrome         *modernHDDialogueChrome
 	chromeIdentity *modernHDDialogueChrome
+	jsonChrome     *modernHDDialogueChrome
+	jsonIdentity   *modernHDDialogueChrome
 	cells          []fdother.RawCell
 	seal           [32]byte
 }
@@ -222,12 +224,32 @@ func freezeModernHDTitleLoadSlots(a *nativeLoadSlotsUIAssets, dac []byte) (*mode
 		return nil, err
 	}
 	h.chromeIdentity = h.chrome
+	jsonChrome := *h.chrome
+	jsonChrome.background = color.RGBA{}
+	jsonChrome.gpu, jsonChrome.goldGPU = nil, nil
+	h.jsonChrome, h.jsonIdentity = &jsonChrome, &jsonChrome
 	h.seal = titleLoadSlotsHDSeal(a, h)
 	return h, nil
 }
 
 func (a *nativeLoadSlotsUIAssets) titleChromeHDValid() bool {
 	return a != nil && a.hd != nil && a.hd.chrome != nil && a.hd.chrome == a.hd.chromeIdentity && a.hd.seal == titleLoadSlotsHDSeal(a, a.hd)
+}
+
+func (a *nativeLoadSlotsUIAssets) titleJSONChromeHDValid() bool {
+	if !a.titleChromeHDValid() {
+		return false
+	}
+	h := a.hd
+	return h.jsonChrome != nil && h.jsonChrome == h.jsonIdentity && h.jsonChrome != h.chrome &&
+		h.jsonChrome.background == (color.RGBA{}) && h.jsonChrome.edges == h.chrome.edges && h.jsonChrome.corners == h.chrome.corners
+}
+
+func (g *Game) appendModernHDJSONLoadFrame() {
+	if g.modernHDText != nil && g.nativeLoadSlotsUI.titleJSONChromeHDValid() {
+		g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{
+			chrome: g.nativeLoadSlotsUI.hd.jsonChrome, rect: image.Rect(70, 35, 250, 160)})
+	}
 }
 
 func (g *Game) preflightModernHDTitleInterface() error {
@@ -250,6 +272,9 @@ func (g *Game) preflightModernHDTitleInterface() error {
 	case "loadslots":
 		if g.nativeLoadSlotsUI != nil && !g.nativeLoadSlotsUI.titleChromeHDValid() {
 			return errors.New("modern HD title slots: source unavailable or changed")
+		}
+		if _, native := nativeLoadSlotMetadata(); !native && g.nativeLoadSlotsUI != nil && !g.nativeLoadSlotsUI.titleJSONChromeHDValid() {
+			return errors.New("modern HD JSON title slots: source unavailable or changed")
 		}
 	}
 	return nil

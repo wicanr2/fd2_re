@@ -177,6 +177,7 @@ def main():
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     facility.add_argument('--title-interface', action='store_true', help='正常標題選取／取消與LOAD，四控制、兩美術保存及新程序冷讀')
+    parser.add_argument('--title-json-fallback', action='store_true', help='搭配--title-interface，以既有首章JSON驗後備讀檔框與空槽拒收')
     facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
     parser.add_argument('--church-fee-currency', action='store_true', help='搭配--church及--facility-item-rows抽驗復活費用貨幣的四種顯示組合')
@@ -263,6 +264,8 @@ def main():
     parser.add_argument('--facility-money-panel', action='store_true', help='搭配--gold-roll或--church要求設施金額框實際HD呈現')
     parser.add_argument('--facility-success', action='store_true', help='搭配--gold-roll要求實際HD成功畫格及金額接續')
     args = parser.parse_args()
+    if args.title_json_fallback and not args.title_interface:
+        parser.error('--title-json-fallback需要--title-interface')
     if args.facility_success and not args.gold_roll:
         parser.error('--facility-success需要--gold-roll')
     if args.facility_money_panel and not (args.gold_roll or args.church):
@@ -359,7 +362,7 @@ def main():
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
     if not args.capture_native_battle_save:
-        assert json.loads(args.town_save.read_text())['node'] == (args.battle_node if args.battle_status else 'hotel_ch02')
+        assert json.loads(args.town_save.read_text())['node'] == (args.battle_node if args.battle_status or args.title_json_fallback else 'hotel_ch02')
     assert not args.out.exists()
     args.out.mkdir()
     audit = args.out/'input-audit.jsonl'
@@ -730,7 +733,8 @@ def main():
             command('xdotool','windowsize',window,'1920','1200')
             source_bytes=args.town_save.read_bytes()
             source=json.loads(source_bytes)
-            assert source['node']=='hotel_ch02'
+            node='battle_ch01' if args.title_json_fallback else 'hotel_ch02'
+            assert source['node']==node
             if not latest(audit).get('hd_theme'):
                 key('F2');wait(lambda st:st.get('hd_theme') is True)
             if not latest(audit).get('hd_interface'):
@@ -759,20 +763,23 @@ def main():
             key('Return');wait(lambda st:st.get('title_phase')=='loadslots')
             title_styles('loadslots')
             key('Down');wait(lambda st:st.get('title_slot')==1);shot('title-empty-slot-selected')
+            if args.title_json_fallback:
+                key('Return');wait(lambda st:st.get('title_phase')=='loadslots' and st.get('title_slot')==1)
+                assert saved.read_bytes()==source_bytes
             key('Up');wait(lambda st:st.get('title_slot')==0)
             key('Escape');wait(lambda st:st.get('title_phase')=='menu');shot('title-load-canceled')
             assert saved.read_bytes()==source_bytes
             key('Return');wait(lambda st:st.get('title_phase')=='loadslots')
-            key('Return');wait(lambda st:not st.get('title_phase') and st.get('node')=='hotel_ch02'
+            key('Return');wait(lambda st:not st.get('title_phase') and st.get('node')==node
                                and st.get('gold')==source['gold'])
-            shot('title-loaded-hotel')
+            shot('title-loaded-save')
             key('F5');assert saved.read_bytes()==source_bytes
             key('F2');wait(lambda st:st.get('hd_theme') is False)
             key('F5');assert saved.read_bytes()==source_bytes
-            key('F9');wait(lambda st:st.get('node')=='hotel_ch02' and st.get('gold')==source['gold'])
+            key('F9');wait(lambda st:st.get('node')==node and st.get('gold')==source['gold'])
             shot('title-native-art-f9')
             key('F2');wait(lambda st:st.get('hd_theme') is True)
-            restart_title_load('hotel_ch02',source['gold'],'title-new-process-load')
+            restart_title_load(node,source['gold'],'title-new-process-load')
             assert saved.read_bytes()==source_bytes
             report={'schema':'fd2-hd1-title-interface-gui-v1','status':'PASS',
                     'binary_sha256':digest(args.binary),'tool_source_sha256':tool_source_sha256,
@@ -780,7 +787,8 @@ def main():
                     'menu_display_modes':4,'slots_display_modes':4,'normal_keyboard_only':True,
                     'up_down_wrap':True,'slot_selection_and_cancel':True,'cold_title_load':True,
                     'theme_save_bytes_equal':True,'screenshots':shots,'operations':operations,
-                    'scope':'普通啟動與鍵盤標題LOAD既有第2章hotel JSON；F2/F11、取消、兩美術F5/F9及新程序LOAD。未注入執行中狀態，不新增原版oracle或整章E2。'}
+                    'json_fallback':args.title_json_fallback,'node':node,
+                    'scope':'普通啟動與鍵盤標題LOAD既有完整JSON；F2/F11、取消、兩美術F5/F9及新程序LOAD。未注入執行中狀態，不新增原版oracle或整章E2。'}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             print('PASS normal title interface and save roundtrip',flush=True)
             return

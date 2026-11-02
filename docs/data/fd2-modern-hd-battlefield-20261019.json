@@ -306328,7 +306328,8 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-title-interface-r67/final-validation.json",
       "sha256": "a66bdd7c344498a13a34dc0eed0c0da7537d0895955f62c16ef9eecfa434a526"
     },
-    "remaining_review_correction": "R68源碼追查：nativeTurnStaging屬事件鏡頭／閃白，drawBattlePanel屬已界定後備；操作介面先收斂至移動資訊窗。"
+    "remaining_review_correction": "R68源碼追查：nativeTurnStaging屬事件鏡頭／閃白，drawBattlePanel屬已界定後備；操作介面先收斂至移動資訊窗。",
+    "operating_ui_remaining_superseded_by": "hd1_json_load_frame_followup_20261103"
   },
   "hd1_movement_panel_followup_20261103": {
     "date": "2026-11-03",
@@ -306532,6 +306533,189 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-movement-panel-r68/final-validation.json",
       "sha256": "278a7b4f889cfb550741636d5214af4351eca6e5639d95442765c66e5c8cd118"
+    },
+    "operating_ui_remaining_superseded_by": "hd1_json_load_frame_followup_20261103"
+  },
+  "hd1_json_load_frame_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "f1ce2f35b89a9ae41f6512b9a7f365289f962dfe",
+    "scope": "首章JSON後備360×250半透明讀檔框沿R67已核原色細框補三像素邊線，獨立快取；F11獨立F2，metadata／確認／保存不改。",
+    "operating_ui_source_wiring_complete": true,
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1272,
+      "go_tree_sha256": "1a13907464ef8b4bf8f0c6ccf64190eaa814ef3aab783d94fb51460fc7cf2c59",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/fd2-player-r1",
+        "sha256": "1a7542de9b6de7efe044a4efb677499553e816a35e92944fcd02810d07b8ed00"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/ready-source.json",
+        "sha256": "bcf70a9590543af8095b6e16849ab1a1a55d6d5b2564e51c71fece5cdd96814c"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/commands.json",
+        "sha256": "b9c92e207acf637fe6445546e04af67b0ef9df04792ea2474556ba2cfb2a6495"
+      },
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/interface-consumers-current.json",
+        "sha256": "10af1111fcc85f4388319a45ddff68fb3edc9aec2531a576cfa741eb6ee8c471"
+      },
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/interface-review.json",
+        "sha256": "06a1151941458e16b0759e3b49b76e64521e972609612bb4d9e618962dc50681"
+      },
+      "production_go_files": 234,
+      "production_functions": 1791,
+      "jobs": 82,
+      "presenters": 30,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_title_interface.go",
+          "sha256": "76a04ca38537dc977f8ce78a0320367543005a0df678bbba538cadc10949122e"
+        },
+        {
+          "file": "remake/cmd/fd2/title.go",
+          "sha256": "5ca04d88ded814e6a55eea09e12ae17cd4412da55da9411c80f9d586e2f83875"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_json_load_frame_test.go",
+          "sha256": "db9ded3e3408332ffa169d46d1653c0f87421b28f909bfcb68a51c6d79feb27a"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_json_load_frame_gpu_test.go",
+          "sha256": "756fa845015a8568485afe25964741b360e6cdd1bfbe04c17964b26503579d77"
+        },
+        {
+          "file": "tools/verify_fd2_hd_fonts_gui.py",
+          "sha256": "c2c90a6ff60a1b219f9bb6ee92e88c6d1fd746aae83bb1d477b1e2f6030f1a6b"
+        }
+      ]
+    },
+    "prototype": {
+      "pngs": 1,
+      "size": [
+        1080,
+        750
+      ],
+      "border_width": 3,
+      "interior_unchanged": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/prototype-r1-capture/prototype.json",
+        "sha256": "4aaf7303248136d2567ba877ddb68203a035caf5f9aedaf4b9027df45440c654"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/prototype-r1.memory.json",
+        "sha256": "83122fc271770b78a0a51843303fbca28c40475a4ec253dea708b425ab732ea9"
+      }
+    },
+    "cpu": {
+      "negative_cases": 6,
+      "healthy_f11_checked": true,
+      "json_zero_native_metadata_rejected": true,
+      "source_bytes_kept": true,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/source-r1.log",
+        "sha256": "e00202aba860a74ad7dcadf7e81b0a5eab508e1768e1d136019ad734c40434c7"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/source-r1.memory.json",
+        "sha256": "83b2c45b7246cdad60b4a2017e2fe5f4c04076f5310b8619c457fbee00a34aa9"
+      }
+    },
+    "gpu": {
+      "cases": 16,
+      "game_draws": 16,
+      "full_final_exact": 16,
+      "pngs": 4,
+      "rgba_tolerance": 0,
+      "interior_and_outside_kept": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/gpu-r1-capture/json-load-gpu-report.json",
+        "sha256": "3b2b25d09a6cee890ac720b6a5bed0e34ccca18d36c61c3e0d6570d83ea00cc4"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/gpu-r1.memory.json",
+        "sha256": "c3fae8f7ac4d7c33e5ca613d83569711bacd54be189871c358fc0380fcef7904"
+      }
+    },
+    "normal_gui": {
+      "pngs": 16,
+      "menu_controls": 4,
+      "slot_controls": 4,
+      "empty_slot_rejected": true,
+      "cancel": true,
+      "f5_f9_both_art": true,
+      "new_process_title_load": true,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "final_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/normal-r1-capture/receipt.json",
+        "sha256": "a2a651ba0d64c8a18e9b6f9c66717a3b5a82cff90a97b153519b9ede00def78e"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/normal-r1.memory.json",
+        "sha256": "d3a301dc49f931395e2eaedef83221eb34fbd41b72a13de705dd723f463e9805"
+      }
+    },
+    "regression": {
+      "pass": 50,
+      "optional_skip": 4,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/regression-r1.log",
+        "sha256": "420f72f46edb4683dbc623a3184abf84fd27eecdeaa6b8e704f0e10c5b474431"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/regression-r1.memory.json",
+        "sha256": "c1594bb80b84225d805306727399f68acdfe60da1864ac9f9d90ffe0e153cd5b"
+      },
+      "consumers": 21,
+      "frames": 416,
+      "negative": 19,
+      "export": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/consumers-r1.json",
+        "sha256": "eaf61b34b8fcc7d4bbb4ac96027fc6539d06a5725f1ae56627a8494697ac3580"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/consumers-verified-r1.json",
+        "sha256": "c4255d35eab20eace39afcacd59b67b735e96c7d880c39c653c78fa4cd5c89a7"
+      },
+      "review_count": 160,
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/review-migration.json",
+        "sha256": "48ac52cbd83f80136124ab643ccab5caede179fc3a5581579947a22449bbe50f"
+      }
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "03087cf4c4e78c3bf4ed9a45b86a41cbf2b311ccc6b3b752a1caea71b0e925a4"
+      },
+      "catalog_assets": 957,
+      "private_files": 6990,
+      "new_files": 0,
+      "private_commit": "4d7d9695b16a1781451c9d45bfb1c8804cef49e1",
+      "private_manifest_sha256": "67bef6651d205dfcffdaaae1cbdf699e67a193e1864cf0c937dc657a24306576",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-json-load-frame-game.png",
+        "sha256": "5f662cd15b0c35565da18c017e609b0504dde0f6810cd556d0a17c9336839d3b"
+      }
+    ],
+    "limits": [
+      "介面接線以目前來源、正式消費端及各批技術／正常抽樣為完成範圍；逐章觀感、造型及平台人工由使用者接手。",
+      "原版未知、原生資料不可用的後備、未引用helper及地圖事件美術不新增為操作介面缺口。新反證依AGENTS重開。",
+      "未新增原版oracle或整章E2。地形#282仍餘3180缺槽／2033獨特來源，完整HD1未完成。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/final-validation.json",
+      "sha256": "e9f37e2518262e6c7c9055bcc319b316d677040c55118b226153164372f18af3"
     }
   }
 }

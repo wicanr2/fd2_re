@@ -311,7 +311,7 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD標題三選項](docs/figures/hd1-title-interface-game.png)
 
-標題三選項與[四槽讀檔框](docs/figures/hd1-title-load-slots-game.png)已接既定HD字型及細框，保留原背景、選取亮點與操作。上圖取自正常鍵盤啟動；四組切換、取消、讀取既有存檔，以及兩種美術保存與新程序讀取已抽驗。範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1標題選單與四槽框線)。
+標題三選項與[四槽讀檔框](docs/figures/hd1-title-load-slots-game.png)已接既定HD字型及細框，保留原背景、選取亮點與操作。上圖取自正常鍵盤啟動；四組切換、取消、讀取既有存檔，以及兩種美術保存與新程序讀取已抽驗。首章JSON的[後備讀檔框](docs/figures/hd1-json-load-frame-game.png)也沿原半透明底補上細邊，保留存檔映射。範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1標題選單與四槽框線)。
 
 ![HD寶箱確認框](docs/figures/hd1-treasure-confirmation-game.png)
 

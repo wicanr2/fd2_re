@@ -839,6 +839,7 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 		bop := &ebiten.DrawImageOptions{}
 		bop.GeoM.Translate(140, 70)
 		screen.DrawImage(box, bop)
+		g.appendModernHDJSONLoadFrame()
 		controls, ok := g.localeMessage("title.load.controls")
 		if !ok {
 			return
