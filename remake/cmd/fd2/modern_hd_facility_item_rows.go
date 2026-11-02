@@ -14,6 +14,12 @@ import (
 	"golang.org/x/image/font/sfnt"
 )
 
+var facilityItemRowCategories = []modernLMIHDDescriptor{
+	{Index: 59, Width: 24, Height: 20, PixelsSHA256: "924ccec7fb6b235945c8fe6849d3e23a0371c69ac7fa05d6d3258eef217e859f"},
+	{Index: 60, Width: 24, Height: 20, PixelsSHA256: "e30156258340ca382a651007bbc6a3eb9526ba4a06ee7bbea9666e2e36cdbb62"},
+	{Index: 61, Width: 24, Height: 20, PixelsSHA256: "406893316358233bc1ac97442c4d7f265f8e785b78c8e0996b88cc26e292a9d1"},
+}
+
 var facilityItemRowLabels = []struct {
 	index int
 	text  string
@@ -34,10 +40,54 @@ type modernHDFacilityItemRows struct {
 }
 
 type facilityItemRowSource struct {
-	assets battle.NativeItemPanelDataAssets
-	price  fdother.RawCell
-	rows   []byte
-	ids    []int // Visible raw item IDs, after the owner's compact-slot mapping.
+	assets          battle.NativeItemPanelDataAssets
+	price           fdother.RawCell
+	rows            []byte
+	ids             []int // Visible raw item IDs, after the owner's compact-slot mapping.
+	start, selected int
+}
+
+type facilityItemRowPlacement struct {
+	index  int
+	origin image.Point
+}
+
+func (s facilityItemRowSource) cell(index int) fdother.RawCell {
+	if index == 15 {
+		return s.price
+	}
+	return s.assets.RawCells[index]
+}
+
+func (s facilityItemRowSource) validSources() bool {
+	for _, source := range facilityItemRowCategories {
+		if modernUIRawDescription(source.Index, s.cell(source.Index)) != source {
+			return false
+		}
+	}
+	for _, source := range facilityItemRowLabels {
+		cell := s.cell(source.index)
+		sum := sha256.Sum256(cell.Pixels)
+		if cell.Width != source.width || cell.Height != 8 || len(cell.Pixels) != source.width*8 || hex.EncodeToString(sum[:]) != source.sha {
+			return false
+		}
+	}
+	return true
+}
+
+func (s facilityItemRowSource) frozen() *facilityItemRowSource {
+	copySource := s
+	copySource.ids = append([]int(nil), s.ids...)
+	copySource.rows = append([]byte(nil), s.rows...)
+	copySource.price.Pixels = append([]byte(nil), s.price.Pixels...)
+	cells := make(map[int]fdother.RawCell)
+	for _, index := range []int{59, 60, 61, 64, 65, 66, 67} {
+		cell := s.cell(index)
+		cell.Pixels = append([]byte(nil), cell.Pixels...)
+		cells[index] = cell
+	}
+	copySource.assets = battle.NativeItemPanelDataAssets{RawCells: cells}
+	return &copySource
 }
 
 func (g *Game) modernFacilityItemRowSource() (s facilityItemRowSource, ok bool) {
@@ -108,11 +158,12 @@ func (g *Game) modernFacilityItemRowSource() (s facilityItemRowSource, ok bool) 
 		return s, false
 	}
 	s.ids = append([]int(nil), ids[start:start+visible]...)
+	s.start, s.selected = start, selected
 	return s, true
 }
 
 func (g *Game) prepareModernHDFacilityItemRows(s facilityItemRowSource, set *modernStoryPortraitSet) *modernHDFacilityItemRows {
-	if set == nil || len(set.uiPanelIcons) != 10 || g.font == nil || g.font.sf == nil || g.nativeClassUI == nil {
+	if set == nil || len(set.uiPanelIcons) != 10 || g.font == nil || g.font.sf == nil || g.nativeClassUI == nil || !s.validSources() {
 		return nil
 	}
 	palette, ok := preparationCursorPalette(g.nativeClassUI.palette)
@@ -190,26 +241,16 @@ func (g *Game) prepareModernHDFacilityItemRows(s facilityItemRowSource, set *mod
 	return h
 }
 
-// Publish only after every complete opaque source rectangle matches this Draw.
-// The original ??? marker, item names, numbers and transaction state stay owned
-// by RenderNativeFacilityItemRows and its existing text/decimal adapters.
-func (g *Game) appendModernHDFacilityItemRows(frame []byte) {
-	if g.modernHDText == nil || len(frame) != 64000 {
-		return
+// This native proof also binds jobs created while original art/UI are active.
+// Every source and complete opaque destination must match before publication.
+func (s facilityItemRowSource) placements(frame []byte) ([]facilityItemRowPlacement, bool) {
+	if len(frame) != 64000 || !s.validSources() || len(s.ids) == 0 || len(s.ids) > 6 {
+		return nil, false
 	}
-	set := g.interfaceAssetTheme()
-	s, ok := g.modernFacilityItemRowSource()
-	if !ok {
-		return
-	}
-	h := g.prepareModernHDFacilityItemRows(s, set)
-	if h == nil {
-		return
-	}
-	var placements []modernHDServiceIconPlacement
+	var placements []facilityItemRowPlacement
 	for i, id := range s.ids {
 		if id < 0 || id >= len(s.rows)/battle.NativeItemEffectRowSize {
-			return
+			return nil, false
 		}
 		row := s.rows[id*battle.NativeItemEffectRowSize : (id+1)*battle.NativeItemEffectRowSize]
 		category, stat := 61, 0
@@ -224,25 +265,52 @@ func (g *Game) appendModernHDFacilityItemRows(frame []byte) {
 			stat = 67
 		}
 		x, y := 10+148*(i%2), 119+26*(i/2)
-		for _, p := range []struct {
-			index  int
-			origin image.Point
-		}{{category, image.Pt(x, y)}, {stat, image.Pt(x+95, y+2)}, {15, image.Pt(x+95, y+12)}} {
+		for _, p := range []facilityItemRowPlacement{{category, image.Pt(x, y)}, {stat, image.Pt(x+95, y+2)}, {15, image.Pt(x+95, y+12)}} {
 			if p.index == 0 {
 				continue
 			}
-			cell := s.assets.RawCells[p.index]
-			if p.index == 15 {
-				cell = s.price
-			}
+			cell := s.cell(p.index)
 			for line := 0; line < cell.Height; line++ {
 				at := (p.origin.Y+line)*320 + p.origin.X
 				if !bytes.Equal(frame[at:at+cell.Width], cell.Pixels[line*cell.Width:(line+1)*cell.Width]) {
-					return
+					return nil, false
 				}
 			}
-			placements = append(placements, modernHDServiceIconPlacement{icon: h.icons[p.index], origin: p.origin})
+			placements = append(placements, p)
 		}
+	}
+	return placements, true
+}
+
+func (g *Game) modernHDFacilityItemRowPlacements(frame []byte, s facilityItemRowSource, set *modernStoryPortraitSet) ([]modernHDServiceIconPlacement, bool) {
+	plan, ok := s.placements(frame)
+	if !ok {
+		return nil, false
+	}
+	h := g.prepareModernHDFacilityItemRows(s, set)
+	if h == nil {
+		return nil, false
+	}
+	var placements []modernHDServiceIconPlacement
+	for _, p := range plan {
+		placements = append(placements, modernHDServiceIconPlacement{icon: h.icons[p.index], origin: p.origin})
+	}
+	return placements, true
+}
+
+// The original ??? marker, names, numbers and transaction state remain owned
+// by RenderNativeFacilityItemRows and its existing text/decimal adapters.
+func (g *Game) appendModernHDFacilityItemRows(frame []byte) {
+	if g.modernHDText == nil {
+		return
+	}
+	s, ok := g.modernFacilityItemRowSource()
+	if !ok {
+		return
+	}
+	placements, ok := g.modernHDFacilityItemRowPlacements(frame, s, g.interfaceAssetTheme())
+	if !ok {
+		return
 	}
 	g.modernHDText.serviceIcons = append(g.modernHDText.serviceIcons, placements...)
 }

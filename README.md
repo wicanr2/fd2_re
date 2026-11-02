@@ -305,6 +305,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD商店物品列表的開框首拍](docs/figures/hd1-shop-item-opening-game.png)
+
+購買、販售與交付物品列表已接HD開框、收框及還原，圖示、標籤、數字和細框同原位移裁切。上圖為受控Game.Draw的第一拍，金額與物品名冊是測試資料；正常買賣與交付的四種切換、保存及重新啟動讀檔另已抽驗。其餘設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD設施物品列表](docs/figures/hd1-facility-item-rows-game.png)
 
 商店購買、販售、交付與教會交付列表已接上HD物品類別圖示、屬性標籤和價格符號，保留原數值與選取。上圖是正常讀檔後購買布衣，再進販售的完整視窗；介面與美術獨立切換、買賣及保存讀取已抽驗。其餘設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。

@@ -303552,5 +303552,301 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-roster-transitions-r56/final-validation.json",
       "sha256": "cf37390a01c797d0a30b2ffd2454898eb3c97d2fa900fdd83a775ab6c7ebfd72"
     }
+  },
+  "hd1_shop_item_transition_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "1f6f5d4a8bb737d8a96c15dda341828bec734d7e",
+    "scope": "三商店purchase／sell_items／transfer_items的六開、五收及source還原；類別／屬性／價格圖示與文字、數字及細框同原位移裁切。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1231,
+      "go_tree_sha256": "dd13e558e15a971e6573b1ed5873504cd268a98dd4646234257290a903327e75",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/fd2-player-r1",
+        "sha256": "fb639e5b891846d5ba7af918df1e1741cc6cd2e9990d4b738fb4e460cc41a2a3"
+      },
+      "production_go_unchanged_after_binary": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/consumers-r1.json",
+        "sha256": "bca23e4623ff0df6b41c34750453c02166c597e98c05546287df2fd5a474896b"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/commands.json",
+        "sha256": "ab1dd4061ab05611178e34e2e559181a0ba9fea93d3c859549393339e70b0762"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/ready-source.json",
+        "sha256": "c5282b56760ecc8dd8f1f7fbc8bffc8741b86641c9c01081b2af18988ab1a391"
+      },
+      "typed_effect_rows": {
+        "file": "remake/assets/data/native_item_effect_rows.json",
+        "sha256": "1092f6ebb722dd5b89e4738bd10bd6ddd91a9e6d23fdfce24adcf641ef601048"
+      },
+      "canonical_inputs": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_item_rows.go",
+          "sha256": "12f5c3d060a9ffa2adaf15735e048c066adcf295f358eff519c5603f935f99d0"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition.go",
+          "sha256": "5225d04cc94ecb5056bcb77dd2e718034679850c56e0059df9b48ee34e78f56c"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition_test.go",
+          "sha256": "01ad1d11724da843090aceefe42ce9b171aa550cb6f9605a497dcd8ba0556bb3"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "8d0432fabda513f9699e0b82a275e9c907490d90367bbbc42c6494160530054e"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_recipient_ui.go",
+          "sha256": "2ab94bbcf02c4705be1db1928873fb882f0830de4a3e161eda1c5b0bf71ab0b7"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_sell_ui.go",
+          "sha256": "d7e8e316188244d901d298c4cb97ba6ce7ab66eddb2bcb0e9511ae4eb4942cd2"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_equip_ui.go",
+          "sha256": "42d35a60e602b9ce2caa55dd48e7431708a70056b611203368e0f1f2221b898f"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_transfer_ui.go",
+          "sha256": "cf5c942a8206de942a49444432916805bd0954e5ebbcfb744c66ee78a4104b02"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "b6874d297146d11d07acfc06b464b5a06056bdec3390eceb135c7a63be134eb2"
+      }
+    },
+    "rules": [
+      "R55來源核對抽為不依賴HD圖稿的純原生計畫，固定三類native descriptor及五標籤SHA、所有目的opaque矩形通過才綁定。",
+      "job深複製可見ID、start／selected、effectRows、price與七RawCells，不保存活動Inventory／UI map alias；原???保持。",
+      "mode明示原producer，完整source／final／原生快取與literal writer一致才發布，原ACK／clock／after／交易保存保持。",
+      "F11依當前完整主題發布既有圖示，與文字／數字／細框同13像素位移及底邊裁切；F2背景獨立，原版介面保留原圖示。缺件或來源不符回退。",
+      "物品列表無Q版單位，空units計畫只記錄最近一次實際Draw，不新增身份，也不當PNG精確同幀。"
+    ],
+    "cpu": {
+      "tests": 3,
+      "all_list_source_cases": 108,
+      "original_animation_frames": 594,
+      "closing_restores": 54,
+      "stable_item_source_cases": 20,
+      "covered_rectangle_rejections": 340,
+      "independent_font_drawer": true,
+      "deep_copy_mutation_proof": true,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/source-r1.memory.json",
+        "sha256": "38caefcae6a38b92b82923fb8cb68fdedf66c6372d42cf365b73bca48c7db246"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/source-r1.log",
+        "sha256": "1ff26ee2aefb213856df841692fc30f87a6ab8ac396bd3e4ae1c51efca7a9f28"
+      }
+    },
+    "gpu": {
+      "new_cases": 648,
+      "new_full_png": 114,
+      "whole_game_rgba_bytes": 5971968000,
+      "rgba_tolerance": 0,
+      "independent_static_composite_equal": true,
+      "whole_game_toolbar_equal": true,
+      "modes": [
+        {
+          "mode": "purchase",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-purchase-r1-capture/receipt.json",
+            "sha256": "a653d3766e3fea986b3c5f028ee3c1309f7541c87d2a35e8175c5503df93ee23"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-purchase-r1.memory.json",
+            "sha256": "b7de34ddaf0b16d7f810b6c650199492884017174dc151c2a2d9669769d710c4"
+          }
+        },
+        {
+          "mode": "sell_items",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-sell_items-r1-capture/receipt.json",
+            "sha256": "a3027e579c1fc278276309a05c75a2889145548d932122db5810feae99807b9c"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-sell_items-r1.memory.json",
+            "sha256": "fb3f64f3416b8efee10652ab1f7d8f3d13ad64024b8b2c6796012cb2d7d79f36"
+          }
+        },
+        {
+          "mode": "transfer_items",
+          "cases": 216,
+          "full_png": 38,
+          "whole_game_rgba_bytes": 1990656000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-transfer_items-r1-capture/receipt.json",
+            "sha256": "f624c37d2df1797f12d0376e2b04b2fd131c0b6698b92fc34101cb0975b8fa3a"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-transfer_items-r1.memory.json",
+            "sha256": "7c314883da773af786a076a791d676fba4806f85dfbc4625b5c5e72a22530f95"
+          }
+        }
+      ],
+      "old_list_smoke": [
+        {
+          "mode": "recipient_equipment",
+          "cases": 16,
+          "full_png": 6,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-smoke-recipient_equipment-r1-capture/receipt.json",
+            "sha256": "990230ce260c0978f9f87286f5c044c1d915105d2f7d3d4e91770908bce90135"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-smoke-recipient_equipment-r1.memory.json",
+            "sha256": "6c753ace80dc758bd45c2ac167c6b555a83f8806963e6f6c1805745dd8f1d5fd"
+          }
+        },
+        {
+          "mode": "sell_roster",
+          "cases": 16,
+          "full_png": 6,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-smoke-sell_roster-r1-capture/receipt.json",
+            "sha256": "0aa25c3d47ff17b804043a7f56bcdccf36a708d760fd4a21e88e3e59eb6bcf45"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-smoke-sell_roster-r1.memory.json",
+            "sha256": "9762025a56530f05de5d6d1d74f493a501b621cda1d937dcb90173a2944d97bd"
+          }
+        }
+      ],
+      "old_smoke_cases": 32
+    },
+    "normal_gui": {
+      "gold": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/normal-gold-roll-r1-capture/receipt.json",
+          "sha256": "ae7df381268631aaf0fef8abff42e3866995e1d73ed1c74e079aba08c143df77"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/normal-gold-roll-r1.memory.json",
+          "sha256": "b22cbdb3638876ca7c388864abe261a191be47b2681c71464b47c3be2dee409e"
+        },
+        "full_png": 24,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "gold": [
+          1000,
+          950,
+          987
+        ],
+        "accepted_dynamic_crops": 5,
+        "rejected_dynamic_crops": 3,
+        "item_list_observation": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/normal-item-list-observations.json",
+          "sha256": "6e9ef581e352fd57069d5a906b5467c0912a549bc7988eb4a8853f78baa1fd0c"
+        },
+        "last_draw_samples": {
+          "purchase": 13,
+          "sell_items": 8
+        },
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。"
+      },
+      "transfer": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/normal-transfer-r1-capture/receipt.json",
+          "sha256": "b5a52bcc6e2edf50e82d20b007eb832d9fcf776886fe5e7aa10a1759ce217d12"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/normal-transfer-r1.memory.json",
+          "sha256": "358ed41fd9f6cf2762852601b49b0d78be4f0303aa5247e7f69558096ec2b05e"
+        },
+        "full_png": 22,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "source_save_bytes_equal": true,
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "four_styles_sampled": true,
+        "list_last_draw_samples": {
+          "transfer_source": 14,
+          "transfer_items": 5,
+          "transfer_dest": 6
+        },
+        "scope": "正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。三種列表各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。"
+      }
+    },
+    "regression": {
+      "passed": 76,
+      "optional_skipped": 7,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/regression-r1.memory.json",
+        "sha256": "b4acc6726c0b3ec2f558a58182a480f18340c8a9e71034f54986adf74849b7ad"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/regression-r1.log",
+        "sha256": "52aa3b3781c09064c2584f0b35b7a4062790bf7293ec843b93bbb98943229b10"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/consumers-verified-r1.json",
+        "sha256": "04a1d9814cdfde608273ccb6e30cda91e6bf0f06c2689ad681459288d233b7a8"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/inv-r2.json",
+        "sha256": "d396810e9cc1753d15e110865fc5193738acb1bfad5897f7556e8b534b3b7f85"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "73fe8775a441106ef7e5bb410d98590dc4d519349e1f2d599a7cb3d2ef19cfcd"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/asset-pack-unchanged.json",
+        "sha256": "f491af0ee29ac041d9ec2fd687bcfe8918850db54557f48c1434eaf28561ce84"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "private_remote_verified": true,
+      "private_worktree_clean": true,
+      "private_is_private": true,
+      "original_and_modern_packs_unchanged": true
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-shop-item-opening-game.png",
+          "sha256": "f06c4c64530be280c8a113931b20031e90601e158413b2164e6bad8496b9ae77"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/gpu-transfer_items-r1-capture/scene-003.png",
+          "sha256": "f06c4c64530be280c8a113931b20031e90601e158413b2164e6bad8496b9ae77"
+        },
+        "scope": "明示受控Game.Draw，交付物品列表第一開框步；金額1234及測試物品／隊伍為構造值，不作普通玩家或身份證據。"
+      }
+    ],
+    "remaining_ui": "教會物品及其餘設施名冊、確認／回覆進出場、成功特效與未接介面續#283；完整地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1；普通交付驗取消及保持，不宣稱實際移交、連續全戰役、原版E2或完整HD1。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-item-transitions-r57/final-validation.json",
+      "sha256": "124e744bd1e489fab185ba2f4c1eb822d54b5d4d0560b3e099c724f68059061c"
+    }
   }
 }

@@ -1513,6 +1513,7 @@ def main():
             key('Return');shop('transfer_source');shot('shop-transfer-source-roster')
             item_row_styles('transfer_source',shop,'shop-transfer-source-styles')
             key('Return');shop('transfer_items');shot('shop-transfer-item-list')
+            item_row_styles('transfer_items',shop,'shop-transfer-items-styles')
             key('Return');shop('transfer_dest_prompt');shot('shop-transfer-destination-prompt')
             key('Return');shop('transfer_dest');shot('shop-transfer-destination-roster')
             item_row_styles('transfer_dest',shop,'shop-transfer-destination-styles')
@@ -1532,14 +1533,14 @@ def main():
             restart_title_load('hotel_ch02',1000,'shop-transfer-new-process-load')
             assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存'
             observations={mode:facility_list_observations([args.out/'input-audit-first-process.jsonl'],mode)
-                          for mode in ['transfer_source','transfer_dest']}
+                          for mode in ['transfer_source','transfer_items','transfer_dest']}
             report={'schema':'fd2-hd-shop-transfer-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
                     'gui_tool_sha256':digest(Path(__file__)),
                     'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
                     'theme_save_bytes_equal':True,'source_save_bytes_equal':True,'new_process_title_load':True,
                     'four_styles_sampled':args.facility_item_rows,'facility_list_transitions':observations,
                     'screenshots':shots,'operations':operations,'recording_created':False,
-                    'scope':'正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。兩名冊各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。',
+                    'scope':'正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。三種列表各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。',
                     'elapsed_seconds':time.monotonic()-started}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return

@@ -16,21 +16,25 @@ import (
 
 func facilityListTestJob(t *testing.T, g *Game, variant int, mode string, closing, scroll bool) *nativeClassUIJob {
 	t.Helper()
-	shopDialogueTestState(g, variant, mode, 0, 0)
-	g.nativeShopRecipientCycle = variant % 3
-	g.nativeShopSellRosterCycle = variant % 3
-	if scroll {
-		switch mode {
-		case "recipient_equipment":
-			g.shopRecipientSel, g.nativeShopRecipientStart = 5, 3
-		case "recipient_consumable":
-			g.shopRecipientSel, g.nativeShopRecipientStart = 7, 2
-		case "sell_roster":
-			g.shopSellUnitSel, g.nativeShopSellRosterTop = 7, 2
-		case "equip_roster":
-			g.nativeShopEquipUnitSel, g.nativeShopEquipRosterTop = 7, 2
-		case "transfer_source", "transfer_dest":
-			g.nativeShopTransferSel, g.nativeShopTransferTop = 7, 2
+	if mode == "purchase" || mode == "sell_items" || mode == "transfer_items" {
+		facilityItemTestState(g, mode, variant, facilityItemTestIDs(t, g), scroll)
+	} else {
+		shopDialogueTestState(g, variant, mode, 0, 0)
+		g.nativeShopRecipientCycle = variant % 3
+		g.nativeShopSellRosterCycle = variant % 3
+		if scroll {
+			switch mode {
+			case "recipient_equipment":
+				g.shopRecipientSel, g.nativeShopRecipientStart = 5, 3
+			case "recipient_consumable":
+				g.shopRecipientSel, g.nativeShopRecipientStart = 7, 2
+			case "sell_roster":
+				g.shopSellUnitSel, g.nativeShopSellRosterTop = 7, 2
+			case "equip_roster":
+				g.nativeShopEquipUnitSel, g.nativeShopEquipRosterTop = 7, 2
+			case "transfer_source", "transfer_dest":
+				g.nativeShopTransferSel, g.nativeShopTransferTop = 7, 2
+			}
 		}
 	}
 	opening, ending := g.beginNativeShopRecipientOpening, g.beginNativeShopRecipientClosing
@@ -41,6 +45,12 @@ func facilityListTestJob(t *testing.T, g *Game, variant int, mode string, closin
 		opening, ending = g.beginNativeShopEquipRosterOpening, g.beginNativeShopEquipRosterClosing
 	case "transfer_source", "transfer_dest":
 		opening, ending = g.beginNativeShopTransferRosterOpening, g.beginNativeShopTransferRosterClosing
+	case "purchase":
+		opening, ending = g.beginNativeShopPurchaseOpening, g.beginNativeShopPurchaseClosing
+	case "sell_items":
+		opening, ending = g.beginNativeShopSellItemsOpening, g.beginNativeShopSellItemsClosing
+	case "transfer_items":
+		opening, ending = g.beginNativeShopTransferItemsOpening, g.beginNativeShopTransferItemsClosing
 	}
 	var ok bool
 	if closing {
@@ -49,9 +59,19 @@ func facilityListTestJob(t *testing.T, g *Game, variant int, mode string, closin
 		ok = opening()
 	}
 	if !ok || g.nativeShopUIJob == nil || g.nativeShopUIJob.facilityList == nil {
-		t.Fatal("real roster job did not bind source recipe", variant, mode, closing, scroll)
+		t.Fatal("real list job did not bind source recipe", variant, mode, closing, scroll)
 	}
 	return g.nativeShopUIJob
+}
+
+func facilityListTestWindow(d *nativeFacilityListPresentation) (start, cycle int) {
+	if d.roster != nil {
+		return d.roster.source.start, d.roster.source.cycle
+	}
+	if d.itemRows != nil {
+		return d.itemRows.start, 0
+	}
+	return -1, -1
 }
 
 // Independent whole-view controls: the stable final uses the ordinary
@@ -141,9 +161,9 @@ func TestModernHDFacilityListTransitionRuntimeGPU(t *testing.T) {
 	}
 	mode := os.Getenv("FD2_TEST_FACILITY_LIST_KIND")
 	switch mode {
-	case "recipient_consumable", "recipient_equipment", "sell_roster", "equip_roster", "transfer_source", "transfer_dest":
+	case "recipient_consumable", "recipient_equipment", "sell_roster", "equip_roster", "transfer_source", "transfer_dest", "purchase", "sell_items", "transfer_items":
 	default:
-		t.Fatal("explicit roster kind required")
+		t.Fatal("explicit list kind required")
 	}
 	out := os.Getenv("FD2_TEST_FACILITY_OUT")
 	if out == "" {
@@ -165,7 +185,8 @@ func TestModernHDFacilityListTransitionRuntimeGPU(t *testing.T) {
 		if d == nil {
 			return fmt.Errorf("case%d missing source recipe", p.index)
 		}
-		cacheGroup := fmt.Sprintf("%d/%s/%d", d.variant, d.locale, d.roster.source.start)
+		start, cycle := facilityListTestWindow(d)
+		cacheGroup := fmt.Sprintf("%d/%s/%d", d.variant, d.locale, start)
 		if cacheGroup != group {
 			group = cacheGroup
 			cache = make(map[string]controls)
@@ -224,7 +245,7 @@ func TestModernHDFacilityListTransitionRuntimeGPU(t *testing.T) {
 		if plan := g.facilityListRosterHD; restore && plan != nil {
 			return fmt.Errorf("restore retained moving Q layer")
 		}
-		p.checks = append(p.checks, map[string]any{"case": p.index, "variant": d.variant, "mode": mode, "closing": d.closing, "frame": job.frame, "restore": restore, "source_start": d.roster.source.start, "source_cycle": d.roster.source.cycle, "locale": d.locale, "interface": g.interfaceMode, "art_hd": g.modernStoryPortraits != nil, "whole_game_rgba_bytes": len(want), "rgba_tolerance": 0, "independent_static_composite_equal": true})
+		p.checks = append(p.checks, map[string]any{"case": p.index, "variant": d.variant, "mode": mode, "closing": d.closing, "frame": job.frame, "restore": restore, "source_start": start, "source_cycle": cycle, "locale": d.locale, "interface": g.interfaceMode, "art_hd": g.modernStoryPortraits != nil, "whole_game_rgba_bytes": len(want), "rgba_tolerance": 0, "independent_static_composite_equal": true})
 		return nil
 	}
 	add := func(variant, style, index int, closing, scroll bool, locale string) {
@@ -319,7 +340,7 @@ func TestModernHDFacilityListTransitionSourceAndFallback(t *testing.T) {
 	g := facilityDialogueTestGame(t, nil)
 	facilityRosterTestEightParty(g)
 	for _, variant := range []int{1, 3, 5} {
-		for _, mode := range []string{"recipient_consumable", "recipient_equipment", "sell_roster", "equip_roster", "transfer_source", "transfer_dest"} {
+		for _, mode := range []string{"recipient_consumable", "recipient_equipment", "sell_roster", "equip_roster", "transfer_source", "transfer_dest", "purchase", "sell_items", "transfer_items"} {
 			for _, closing := range []bool{false, true} {
 				for _, scroll := range []bool{false, true} {
 					previous := &modernHDTextFrame{runs: []modernHDTextRun{{text: "previous-frame"}}}
@@ -338,8 +359,37 @@ func TestModernHDFacilityListTransitionSourceAndFallback(t *testing.T) {
 					if mode == "recipient_consumable" || mode == "recipient_equipment" || mode == "sell_roster" {
 						cycle = variant % 3
 					}
-					if len(d.rawFrames) != want || len(job.frames) != want || d.variant != variant || d.mode != mode || d.roster.source.cycle != cycle {
+					_, actualCycle := facilityListTestWindow(d)
+					if len(d.rawFrames) != want || len(job.frames) != want || d.variant != variant || d.mode != mode || actualCycle != cycle {
 						t.Fatal("frozen recipe lost native owner or phase")
+					}
+					if d.itemRows != nil {
+						if d.roster != nil {
+							t.Fatal("item list invented roster units")
+						}
+						cell := g.nativeShopUI.itemAssets.RawCells[59]
+						pixel := cell.Pixels[0]
+						cell.Pixels[0] ^= 1
+						if d.itemRows.cell(59).Pixels[0] != pixel {
+							t.Fatal("frozen item source aliases live raw cell")
+						}
+						cell.Pixels[0] = pixel
+						row := g.nativeShopUI.effectRows[0]
+						g.nativeShopUI.effectRows[0] ^= 1
+						if d.itemRows.rows[0] != row {
+							t.Fatal("frozen item rows alias live effects")
+						}
+						g.nativeShopUI.effectRows[0] = row
+						assets, _, _, _ := g.nativeShopState()
+						price := assets.PriceCell.Pixels[0]
+						assets.PriceCell.Pixels[0] ^= 1
+						if d.itemRows.price.Pixels[0] != price {
+							t.Fatal("frozen price source aliases live cell")
+						}
+						assets.PriceCell.Pixels[0] = price
+						if _, ok := d.itemRows.placements(d.final); !ok {
+							t.Fatal("frozen item proof differs from original final")
+						}
 					}
 					for i := 0; i < want; i++ {
 						if !bytes.Equal(d.rawFrames[i], job.frames[i]) {
@@ -398,7 +448,7 @@ func TestModernHDFacilityListTransitionSourceAndFallback(t *testing.T) {
 						g.helpVisible, g.transientUI = fault == "help", fault == "transient"
 						g.nativeFullDACBlack, g.nativeFullDACWhite = fault == "black", fault == "white"
 						if fault == "mode" {
-							g.nativeShopMode = "purchase"
+							g.nativeShopMode = "menu"
 						}
 						if fault == "variant" {
 							g.nativeShopVariant = 0

@@ -28,6 +28,7 @@ type nativeFacilityListPresentation struct {
 	comparison            [5]fdother.LMI1Entry
 	chrome                *modernHDDialogueChrome
 	roster                *modernFacilityRoster
+	itemRows              *facilityItemRowSource
 }
 
 type modernFacilityListRoster struct {
@@ -95,11 +96,12 @@ func (g *Game) freezeModernShopListWriter(frame []byte, compose func() ([]byte, 
 
 // This producer is called before publishing the original job. Its optional
 // presentation recipe never changes the native buffers or continuation.
-func (g *Game) bindModernShopRosterList(job *nativeClassUIJob, source, final []byte, closing bool) *nativeClassUIJob {
+func (g *Game) bindModernShopList(job *nativeClassUIJob, source, final []byte, closing bool) *nativeClassUIJob {
 	if job == nil || g.nativeClassUI == nil || g.nativeShopUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil {
 		return job
 	}
 	var compose func() ([]byte, bool)
+	itemList := false
 	switch g.nativeShopMode {
 	case "recipient_consumable", "recipient_equipment":
 		compose = g.composeNativeShopRecipient
@@ -109,13 +111,35 @@ func (g *Game) bindModernShopRosterList(job *nativeClassUIJob, source, final []b
 		compose = g.composeNativeShopEquipRoster
 	case "transfer_source", "transfer_dest":
 		compose = g.composeNativeShopTransferRoster
+	case "purchase":
+		compose, itemList = g.composeNativeShopPurchaseList, true
+	case "sell_items":
+		compose, itemList = g.composeNativeShopSellItems, true
+	case "transfer_items":
+		compose, itemList = g.composeNativeShopTransferItems, true
 	default:
 		return job
 	}
-	roster := g.prepareNativeFacilityRoster(final)
+	var roster *modernFacilityRoster
+	var itemRows *facilityItemRowSource
+	if itemList {
+		items, valid := g.modernFacilityItemRowSource()
+		if !valid {
+			return job
+		}
+		if _, valid := items.placements(final); !valid {
+			return job
+		}
+		itemRows = items.frozen()
+	} else {
+		roster = g.prepareNativeFacilityRoster(final)
+		if roster == nil {
+			return job
+		}
+	}
 	assets, _, _, ok := g.nativeShopState()
 	palette, paletteOK := preparationCursorPalette(g.nativeClassUI.palette)
-	if roster == nil || !ok || assets == nil || !paletteOK || len(source) != 64000 {
+	if !ok || assets == nil || !paletteOK || len(source) != 64000 {
 		return job
 	}
 	if rebuilt, ok := g.composeNativeShopStable(); !ok || !bytes.Equal(source, rebuilt) {
@@ -125,7 +149,7 @@ func (g *Game) bindModernShopRosterList(job *nativeClassUIJob, source, final []b
 		return job
 	}
 	d := &nativeFacilityListPresentation{variant: g.nativeShopVariant, resource: assets.ResourceID, mode: g.nativeShopMode, locale: g.localeID, closing: closing, font: g.font,
-		source: append([]byte(nil), source...), final: append([]byte(nil), final...), panel: assets.Panel, comparison: assets.CompareCells, roster: roster}
+		source: append([]byte(nil), source...), final: append([]byte(nil), final...), panel: assets.Panel, comparison: assets.CompareCells, roster: roster, itemRows: itemRows}
 	copy(d.palette[:], palette)
 	var err error
 	if closing {
@@ -237,7 +261,15 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 	if !art && !ui {
 		return false
 	}
-	if art {
+	var itemPlacements []modernHDServiceIconPlacement
+	if ui && d.itemRows != nil && !rect.Empty() {
+		var valid bool
+		itemPlacements, valid = g.modernHDFacilityItemRowPlacements(d.final, *d.itemRows, g.interfaceAssetTheme())
+		if !valid {
+			return false
+		}
+	}
+	if art && d.roster != nil {
 		for _, unit := range d.roster.units {
 			frames := g.modernStoryPortraits.mapSpritesHD[unit.group]
 			if unit.frame >= len(frames) || frames[unit.frame] == nil || frames[unit.frame].Bounds() != image.Rect(0, 0, 144, 144) {
@@ -249,7 +281,7 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 	if ui {
 		source, final = d.sourceHD, d.finalHD
 	}
-	if art && !rect.Empty() {
+	if art && !rect.Empty() && d.roster != nil {
 		final = append([]byte(nil), final...)
 		for _, unit := range d.roster.units {
 			for y := 0; y < 24; y++ {
@@ -277,7 +309,12 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 			return false
 		}
 		if !rect.Empty() {
-			g.facilityListRosterHD = &modernFacilityListRoster{job: job, frame: job.frame, theme: g.modernStoryPortraits, units: d.roster.units, shift: shift, clip: rect}
+			var units []modernFacilityRosterUnit
+			if d.roster != nil {
+				units = d.roster.units
+			}
+			// Empty units also record the latest actual item-list Draw for audit.
+			g.facilityListRosterHD = &modernFacilityListRoster{job: job, frame: job.frame, theme: g.modernStoryPortraits, units: units, shift: shift, clip: rect}
 		}
 	} else {
 		g.presentNativeClassFrame(screen, frame)
@@ -310,12 +347,17 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 				}
 			}
 			g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{chrome: d.chrome, rect: panel.Add(image.Pt(0, shift)), clip: rect})
-			if d.mode == "recipient_equipment" {
+			if d.mode == "recipient_equipment" && d.roster != nil {
 				if h := g.prepareModernHDShopComparison(d.comparison); h != nil {
 					for _, p := range shopComparisonPlacements(len(d.roster.source.ids)) {
 						g.modernHDText.serviceIcons = append(g.modernHDText.serviceIcons, modernHDServiceIconPlacement{icon: h.icons[p.cell], origin: p.origin.Add(image.Pt(0, shift)), clip: rect})
 					}
 				}
+			}
+			for _, placement := range itemPlacements {
+				placement.origin = placement.origin.Add(image.Pt(0, shift))
+				placement.clip = rect
+				g.modernHDText.serviceIcons = append(g.modernHDText.serviceIcons, placement)
 			}
 		}
 	}
