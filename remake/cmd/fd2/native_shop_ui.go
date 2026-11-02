@@ -1583,6 +1583,7 @@ func (g *Game) drawNativeShop(screen *ebiten.Image) bool {
 	if g.modernHDShopText() {
 		g.modernHDText.runs = append(g.modernHDText.runs, g.font.indexedHD.runs...)
 	}
+	g.appendModernHDFacilityDialogue(frame)
 	g.appendModernHDServiceIcons(frame)
 	if g.nativeShopMode == "equip_panel" {
 		return g.drawNativeItemPanel(screen)

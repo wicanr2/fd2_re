@@ -295,6 +295,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 酒店與教堂的人物、背景及固定頭像沿各自原圖重繪，頭像直接裁自同一畫稿。上圖由正常START後F9接續既有第2章存檔，經正常鍵盤進入設施；美術與介面可獨立切換。穩定對話及確認採古金框，列表採原色細框；五種設施的服務圖示已沿原圖重繪，保留選項與兩個動畫相位，隨F11介面切換。設施進出場及其餘動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
+![HD商店販售確認](docs/figures/hd1-shop-dialogue-game.png)
+
+三類商店的穩定對話框、商品與名冊列表，以及購買、裝備、販售確認已接HD介面。上圖由正常START後F9接續既有第2章存檔，再經城鎮購買布衣並選擇出售；兩種美術保存與新程序標題讀取已抽驗。框線與確認隨F11切換，動畫與其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 
 整備提示已接HD頭像、古金框與四語按鈕，沿原有開收框和選項操作。人物美術與介面可獨立切換。上圖為一般標題LOAD與鍵盤操作畫面；內建標籤等介面仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。

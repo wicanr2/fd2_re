@@ -301959,5 +301959,266 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-service-art-r50/final-validation.json",
       "sha256": "6b8fe2fdd8f34a2287e999ecaf0d06661aac98fd4642be700a521ba0c2db89ea"
     }
+  },
+  "hd1_shop_dialogue_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "closed_defect": 289,
+    "base_commit": "107439bfb7ca39ea66ced69a0214ea6a48ff3ce4",
+    "scope": "三商店21穩定模式的對話／列表框與購買、裝備、販售確認；修正受領列表殘留HD歡迎詞。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1222,
+      "go_tree_sha256": "2961a0911f4e58309902636a6d8c571c6980f5f05a611d52b491275b0d8b8ed4",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/consumers-r3.json",
+        "sha256": "beb3e1179ca016fcee346712640a5205f740e222301ab5e081d3da628995fb52"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/fd2-player-r2",
+        "sha256": "3b65452b51c07c241dc7ec2c84f80e1f3d1bc7425784abd73d15e5c41baef8cc"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/commands.json",
+        "sha256": "cda08ebd00b1426a4313c30c13576779569d1a283b33d49940dffac2f8a7da05"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/ready-source.json",
+        "sha256": "5cc9078ad51567a4fb744dd2c98e65b9c890f32a1b5e9a6396182eee43c93562"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_dialogue.go",
+          "sha256": "52a62bbaaa03d989cec6b2422446cd909f2498a7425dcc85bc4164b6c38fab41"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "5076047bd15ac029b40356e7410975ac5bb88bfbfc92cf66e81f1699d8cc5451"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_recipient_ui.go",
+          "sha256": "a16c91e5c097b1ad2c1a694ec2ec7541efd1ec53e18ab304c8019fade5356bbb"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_shop_dialogue_test.go",
+          "sha256": "2b89f03e4c8b6e9910256c5d89ed4a91f395351a7fa717da6d141c0b613e8362"
+        }
+      ],
+      "gui_verifier": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "8a00f52e61022a4eb47caf7bec42c9d0150086a5c4777b667ba25de193d2d3e8"
+      }
+    },
+    "rules": {
+      "stable_modes": 21,
+      "shop_resources": [
+        12,
+        29,
+        63
+      ],
+      "panel_index": 16,
+      "panel_indexed_sha256": "c009ad5ed72466295e3c60d4cb5117c3331444bcbe23d5d1befd2f413b15ac00",
+      "confirmation_fields": [
+        "nativeShopConfirmSel",
+        "nativeShopEquipSel",
+        "nativeShopSellConfirmSel"
+      ],
+      "pulse": "nativeShopUIPulse/2",
+      "source_border_and_both_cells_match_before_publish": true,
+      "independent_F11_F2": true,
+      "new_assets": 0,
+      "new_schema": false,
+      "excluded": [
+        "equip_panel",
+        "success",
+        "sell_success",
+        "all animation jobs"
+      ]
+    },
+    "defect": {
+      "issue": 289,
+      "diagnostic": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/stale-greeting-diagnostic.json",
+        "sha256": "5f4cf88fc8f4442dff05fe81fff50fafa458d7cd3c88020e49848609f8ad1e43"
+      },
+      "before_test_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/stale-greeting-before-r1.log",
+        "sha256": "98a00e999d8291eefd5607d769caef61e85319c7658d20267353ca0d1f3902d6"
+      },
+      "before_test_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/stale-greeting-before-r1.memory.json",
+        "sha256": "d8dd16796108ff55331801ed6118f59be14a668f35e7533a5565436b3564ccbb"
+      },
+      "after_test_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/cpu-r2.log",
+        "sha256": "28b89150df19492a2e3a917e295c4be304695523a33efa3cf5fe572c2a5aec03"
+      },
+      "after_test_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/cpu-r2.memory.json",
+        "sha256": "c13a83531e21ea0215de6e51dbfda6dd19b985f85654ea443ded80241e6c96ba"
+      },
+      "result": "同一實際捕捉回歸修正前失敗，修正後三商店／四語通過；只清除列表覆蓋的歡迎詞，保留金額、三列名字及能力數字。",
+      "existing_rule_updated": "native-text-overlay-clears-hd-covered-region"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/gpu-r2-capture/receipt.json",
+        "sha256": "f42f343946ade3423fccfa7fa7f5dca77de233e024384f446a90c710906c80b5"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/gpu-r2.memory.json",
+        "sha256": "efee7c95de5527fa2c2f27223d216d2b8d919bd053a5b7608345b149da6dfaee"
+      },
+      "cases": 348,
+      "png": 71,
+      "border_pixels": 18701280,
+      "interior_points": 28292848,
+      "matrix": "21模式×三商店×四呈現，另三確認owner×四語×兩選項×兩相位×兩HD介面呈現；當前名字與覆蓋文字另驗。",
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "shop": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-shop-r2-capture/receipt.json",
+          "sha256": "33558a297daa33642348031986931fc280966343dc3f1e6d44ce7f7564023bf2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-shop-r2.memory.json",
+          "sha256": "864092c1e6ff002804806b5664130b3f4f85d4a9865ec2f9bc3cf75a68ae203f"
+        },
+        "full_png": 18,
+        "scope": "正常START序章首句四語、說明頁；明示F9接續hotel_ch02後正常城鎮與商店。非連續全戰役，不宣稱原版視覺對拍。",
+        "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      },
+      "items": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-items-r3-capture/receipt.json",
+          "sha256": "fc521ec0a02062cb21a8bfeb4b154d6cdb75d401d6a7a5474f21200e052ebdee"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-items-r3.memory.json",
+          "sha256": "fddf301e8937f071ff744effe18e34ddc9f17bb888f203b8fcd12d629a541604"
+        },
+        "full_png": 13,
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進武器店裝備服務；普通選索爾、移動至皮甲／藥草、拒絕裝備藥草、重新裝備既有短劍；F2、縮放／說明遮罩、返回旅館F5／F9。原生物品文字沿既有語言，未新增翻譯，不宣稱連續戰役或原版對拍。",
+        "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": false
+      },
+      "gold-roll": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-gold-roll-r3-capture/receipt.json",
+          "sha256": "8e61851613a5abfd3b122d6b53b8e84b1422d988eff03ac8055c8408623be543"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-gold-roll-r3.memory.json",
+          "sha256": "18ae6f5573891884eba3bbfb0d65e19c03854f196819d355a9d0cd76b305dd0e"
+        },
+        "full_png": 9,
+        "scope": "正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。",
+        "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "expected_save_changes": {
+          "gold": [
+            1000,
+            987
+          ],
+          "party_roster/0/InventorySlots/5": [
+            255,
+            0
+          ]
+        },
+        "gold_roll_crop_png": 12,
+        "accepted_dynamic_png": 8,
+        "rejected_dynamic_png": 4
+      }
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/regression-r3.memory.json",
+        "sha256": "682a0382c76c6cb815029d31bb30d188eefcfed062012924b5d51615138f0671"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/regression-r3.log",
+        "sha256": "acd379ea405f08c07a84d52add6d6de824713922ba6095eaeb891b91c6683d21"
+      },
+      "top_level_passed": 79,
+      "skipped": [
+        "TestNativeHotelOriginalLoadSameSourceProbe",
+        "TestModernHDChurchRawServiceSourceGPU",
+        "TestModernHDFacilityDialogueRuntimeGPU",
+        "TestModernHDFacilityPortraitRuntimeGPU",
+        "TestModernHDFacilityFullSourceExport",
+        "TestModernHDFacilityRuntimeGPU",
+        "TestModernHDServiceIconsRuntimeGPU",
+        "TestModernHDShopDialogueRuntimeGPU"
+      ],
+      "skips_are_not_passes": true,
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/consumers-verified-r3.json",
+        "sha256": "9cbd65814081a9c7f1e764f25e58248447ced56d3417984bef75f08d1d98333b"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/string-migration-r2.json",
+        "sha256": "568276cf46459b261a9626a6f6bc35cc247fb8f82f4cada3688473c7830dbebf"
+      },
+      "prior_string_dispositions_preserved": 159,
+      "go_review_candidates": 159
+    },
+    "assets": {
+      "registered_assets": 953,
+      "registered_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "new_assets": 0,
+      "unchanged": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/asset-pack-unchanged.json",
+        "sha256": "4c5d200c7b6374ce08d96416a2fdde9e4759d610313688ed9251bd99cbe19ed1"
+      },
+      "private_remote_verified": true,
+      "private_is_private": true
+    },
+    "verification_corrections": {
+      "script_failures": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/verification-r1-diagnostic.json",
+        "sha256": "b3530856d05cf9816a7c4c1ee3ee1b9b24632d882d0ac44929611fb66adfa257"
+      },
+      "external_stop": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/external-stop-diagnostic-r2.json",
+        "sha256": "04f85f6943208be46c063a6cc28a053e59583fe57b5de8e868451d5dc44faf43"
+      },
+      "docker_events": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/external-stop-events-r2.jsonl",
+        "sha256": "ffdabf869e1d5c0dda34b96cdd85903e7b6fd20f9a24b411c2478d0567187ec7"
+      },
+      "interrupted_runs_not_passes": true,
+      "retry_uses_same_images_resources_and_budgets": true
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-shop-dialogue-game.png",
+      "sha256": "076b9664f99c796a9b8b251d413ccd100f31b71769461c53ca2073de7bffe874",
+      "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/normal-gold-roll-r3-capture/gold-cloth-sale-confirmation.png",
+      "scope": "normal START/F9 existinghotel_ch02, weapon shop ordinary cloth purchase and sale confirmation; no state injection during route"
+    },
+    "remaining_ui": [
+      "設施進出場與其他動畫job",
+      "名冊人物及其餘未接HD呈現"
+    ],
+    "limits": [
+      "只完成穩定模式，預製動畫影格不從畫面猜HD文字。",
+      "正常START後F9接續既有hotel_ch02；金幣交易另驗F5、F9與新程序標題LOAD，不外推連續全戰役或原版E2。",
+      "人工造型、逐章與平台由使用者接手。",
+      "地形仍3180缺槽／2033唯一來源。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/final-validation.json",
+      "sha256": "74cc22a92cf3bdd8a302ca41462aaec972d5429004a6419b3142b27984fac1ab"
+    }
   }
 }

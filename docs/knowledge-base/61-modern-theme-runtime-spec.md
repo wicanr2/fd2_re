@@ -5868,3 +5868,21 @@ R50主收據hd1_facility_service_icons_followup_20261102：170完整Game.Draw／
 [正常酒店](../figures/hd1-hotel-service-hd-game.png)、[正常教堂](../figures/hd1-church-service-hd-game.png)及[正常商店](../figures/hd1-shop-service-hd-game.png)分別13／15／18PNG通過；均由START後F9接續既有hotel_ch02，再正常鍵盤進入。酒店與教堂保存仍為190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456，商店抽樣未執行F5，不新增其保存聲明。未新增標題冷LOAD、連續戰役或原版E2。
 
 21個登錄檔依allow-list保存私人44636b9445b9585a37b6a74f26096354253e8757，953清冊／6963檔雜湊及1000:1000擁有權核對，舊913項與6942圖、原版包保持；本地快取同步，私人仍private且遠端一致。只完成穩定服務選單，設施進出場及其他動畫仍由#283續作，#282地形仍3180缺槽／2033唯一來源。
+
+## HD1商店穩定框線（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+R51沿既有已閉合商店消費端0x2E341／0x2E0BD／0x1956B及三確認合成器，不新增原版語意。FDOTHER12／29／63的entry16均為310×86，indexed SHA皆c009ad5ed72466295e3c60d4cb5117c3331444bcbe23d5d1befd2f413b15ac00，與酒店／教堂列表框相同；原圖及metadata逐檔證據在work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-shop-chrome-r51/ready-source.json。固定EXE／DAT及manifest沿R50，原始來源唯讀。
+
+21穩定模式：menu、purchase、confirm、insufficient、recipient_consumable、recipient_equipment、recipient_full、no_recipient、equip_confirm、sell_roster、sell_items、sell_empty、sell_confirm、equip_roster、transfer_intro、transfer_empty、transfer_dest_prompt、transfer_full、transfer_source、transfer_dest、transfer_items。其中purchase、兩recipient、兩sell列表、equip_roster及三transfer列表沿各自Panel細框，其餘沿原FDOTHER5對話網格古金框。confirm／equip_confirm／sell_confirm各讀nativeShopConfirmSel／nativeShopEquipSel／nativeShopSellConfirmSel，pulse皆nativeShopUIPulse/2；四語沿既有按鈕，不新增文字。
+
+先核live shop owner、三固定資源及完整原框邊線／兩確認原格，再發布；foreign job、覆蓋、來源不符保持原生。F11獨立於F2，原四格HD服務圖示保持。equip_panel沿既有物品面板，不覆蓋；success、sell_success及全部動畫job另續作，不從預製影格猜文字。
+
+實作入口modern_hd_facility_dialogue.go及native_shop_ui.go，受領覆蓋修正入口native_shop_recipient_ui.go，驗證入口modern_hd_shop_dialogue_test.go及tools/verify_fd2_hd_fonts_gui.py。必要驗收為21模式×三商店×四控制、三確認四語／兩選項／兩相位的完整Game.Draw與邊線像素／內部保留、來源／覆蓋／job／owner拒收、正常商店及保存來源保持。此批不新增素材或格式，953清冊／6963私人檔保持；主收據預留hd1_shop_dialogue_followup_20261102。
+
+R51完整圖scene-023另確認既有裝備受領列表殘留HD歡迎詞：原生Panel已覆蓋，該分支缺少其他列表既有的clearModernHDShopText。勘誤與來源在R51 stale-greeting-diagnostic.json；正式修正只清除被下方面板覆蓋的文字紀錄，保留上方金額及當前名冊。先驗三商店／四語的實際捕捉只含當前名字，再重生完整GPU、正常流程與來源指紋，不沿舊收據提升。
+
+R51主收據hd1_shop_dialogue_followup_20261102：348完整Game.Draw／71PNG、18701280框線像素／28292848內部點通過，含21模式×三商店×四呈現與三確認四語／兩選項／兩相位；工具列整個遊戲區保持。#289的實際文字捕捉回歸修正前失敗，修正後三商店／四語及完整圖均不殘留歡迎詞，保留當前名字、金額與能力數字。79相關回歸通過，八個可選GPU／oracle／匯出略過另列；1222份Go指紋2961a0911f4e58309902636a6d8c571c6980f5f05a611d52b491275b0d8b8ed4，21來源／416幀／19反例與159字串保持。
+
+[正常販售確認](../figures/hd1-shop-dialogue-game.png)由START後F9接續既有hotel_ch02，經城鎮普通購買布衣、拒絕立即裝備再出售。商店18、裝備13、買賣9張完整PNG通過，動態金額另依收據列裁圖；裝備保存保持190b9f8f，買賣1000→950→987後兩美術保存32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66相同，F9及新程序標題LOAD通過。原始JSON來源保持，不外推連續全戰役或原版E2。
+
+正常預設購買測具原用三次Return固定0.5秒，未等確認／受領job，已改逐步等待實際模式與job結束；金幣冷讀原硬編60秒，現沿明示startup_timeout，遊戲時序不變。第二輪三容器在相同秒收到Docker明確signal15，未留完整收據，不算通過；事件與操作者未知均如實保存。相同image、資源及預算的具名容器乾淨重跑通過，未調產品參數。953清冊／6963私人檔與原版包保持，沒有新素材／格式；設施動畫、名冊人物及其他未接介面仍依#283，地形依#282。

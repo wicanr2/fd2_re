@@ -2724,9 +2724,9 @@
       "id": "native-text-overlay-clears-hd-covered-region",
       "area": "繪製",
       "date": "2026-10-18",
-      "rule": "原生合成器替換文字區時，同步清除該區HD文字，再擷取新字形。以remake/cmd/fd2/native_shop_sell_ui.go的composeNativeShopSellQuestionBase及TestModernHDShopSaleQuestionReplacesCoveredGreeting檢查混用原生／多語繪字的服務分支。",
-      "why": "正常出售確認已由原生合成器重建底圖，HD歡迎詞仍留在獨立上層，與出售問句重疊；gold-roll-gui-r1實際PNG揭露#255。",
-      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "rule": "原生合成器替換文字區時，同步清除該區HD文字，再擷取新字形。入口為remake/cmd/fd2/native_shop_sell_ui.go的composeNativeShopSellQuestionBase與native_shop_recipient_ui.go的composeNativeShopEquipmentRecipient；回歸為TestModernHDShopSaleQuestionReplacesCoveredGreeting及TestModernHDShopEquipmentRecipientReplacesGreeting。",
+      "why": "正常出售確認已由原生合成器重建底圖，HD歡迎詞仍留在獨立上層，與出售問句重疊；gold-roll-gui-r1實際PNG揭露#255。2026-11-02的#289在裝備受領分支重現同一缺口，完整GPU畫面顯示歡迎詞蓋住名冊；只驗框線並排除所有HD文字，無法偵測此錯誤。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json；docs/data/fd2-modern-hd-battlefield-20261019.json的hd1_shop_dialogue_followup_20261102",
       "guard": {
         "kind": "present",
         "paths": [
@@ -4459,7 +4459,7 @@
       "date": "2026-10-26",
       "area": "正常GUI驗證",
       "rule": "包含冷啟動的GUI流程同時對齊外層逾時、整輪預算與兩次啟動預算；延長外層不會延長內層。入口tools/verify_fd2_hd_fonts_gui.py的--run-timeout與--startup-timeout，以及tools/fd2_go_test_memory_probe.py的--timeout；整輪參數只接受660至2400秒的明示有界選項。",
-      "why": "自然攻擊返回與F5已走完，但舊GUI工具仍固定整輪660秒，外層改1500秒仍在冷讀等待標題時誤中止。原程式沒有OOM，不能把測試器整輪限制寫成遊戲崩潰。",
+      "why": "自然攻擊返回與F5已走完，但舊GUI工具仍固定整輪660秒，外層改1500秒仍在冷讀等待標題時誤中止。原程式沒有OOM，不能把測試器整輪限制寫成遊戲崩潰。2026-11-02金幣流程的第二次啟動另有固定600輪／60秒，未讀明示startup_timeout；統一沿相同參數後重跑，不改遊戲時序。",
       "evidence": "HD主收據map_hud_hd_followup_20261026；map-hud-normal-natural-r3.log",
       "guard": {
         "kind": "present",

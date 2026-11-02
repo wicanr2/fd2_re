@@ -1535,7 +1535,7 @@ def main():
             audit_epoch=1
             game=start([str(args.binary)],'game-cold-load.log',args.assets)
             window=None
-            for _ in range(600):
+            for _ in range(args.startup_timeout*10):
                 if game.poll() is not None:raise RuntimeError('冷讀程序提前退出')
                 try:window=command('xdotool','search','--name','炎龍騎士團').splitlines()[0];break
                 except (subprocess.CalledProcessError,IndexError):time.sleep(.1)
@@ -1755,8 +1755,9 @@ def main():
             wait(lambda s:s.get('locale')==locale and s.get('shop_mode')=='purchase')
             shot('shop-list-'+locale);key('F4')
         # One ordinary purchase, followed by a state-based save receipt.
-        for _ in range(3):key('Return');time.sleep(.5)
-        wait(lambda s:s.get('gold')==990 and s.get('shop_mode')=='purchase')
+        key('Return');wait(lambda s:s.get('shop_mode')=='confirm' and not s.get('shop_ui_busy'))
+        key('Return');wait(lambda s:s.get('shop_mode')=='recipient_consumable' and not s.get('shop_ui_busy'))
+        key('Return');wait(lambda s:s.get('gold')==990 and s.get('shop_mode')=='purchase' and not s.get('shop_ui_busy'))
         shot('shop-after-purchase')
         key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-shop')
         key('F1');wait(lambda s:s.get('help_visible') is True);shot('faithful-help')

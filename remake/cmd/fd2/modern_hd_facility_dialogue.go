@@ -24,6 +24,22 @@ func (g *Game) facilityDialoguePolicy() (gold, choices, ok bool) {
 		return
 	}
 	switch g.camp.Node().Type {
+	case "shop":
+		assets, _, _, valid := g.nativeShopState()
+		if !valid || assets == nil || g.camp.Node().NativeHubVariant != g.nativeShopVariant ||
+			assets.ResourceID != map[int]int{1: 12, 3: 29, 5: 63}[g.nativeShopVariant] {
+			return
+		}
+		switch g.nativeShopMode {
+		case "confirm", "equip_confirm", "sell_confirm":
+			return true, true, true
+		case "menu", "insufficient", "recipient_full", "no_recipient", "sell_empty",
+			"transfer_intro", "transfer_empty", "transfer_dest_prompt", "transfer_full":
+			return true, false, true
+		case "purchase", "recipient_consumable", "recipient_equipment", "sell_roster", "sell_items",
+			"equip_roster", "transfer_source", "transfer_dest", "transfer_items":
+			return false, false, true
+		}
 	case "hotel":
 		switch g.nativeHotelMode {
 		case "menu", "saved", "loaded", "load_blocked":
@@ -55,6 +71,13 @@ func (g *Game) prepareModernHDFacilityDialogue() (*modernHDFacilityDialogue, err
 			return nil, errors.New("modern facility dialogue: hotel unavailable")
 		}
 		panel = g.nativeHotelUI.slotsBox
+	}
+	if g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "shop" {
+		assets, _, _, valid := g.nativeShopState()
+		if !valid || assets == nil {
+			return nil, errors.New("modern facility dialogue: shop unavailable")
+		}
+		panel = assets.Panel
 	}
 	sum := sha256.Sum256(panel.Pixels)
 	if panel.Width != 310 || panel.Height != 86 || len(panel.Pixels) != 310*86 ||
@@ -139,7 +162,21 @@ func (g *Game) appendModernHDFacilityDialogue(frame []byte) {
 		return
 	}
 	if choices {
-		placements, err := h.buttons.placements(fullRewardChoice, 0, g.churchSel, g.nativeClassUIPulse/2)
+		choice, pulse := g.churchSel, g.nativeClassUIPulse/2
+		if g.camp.Node().Type == "shop" {
+			pulse = g.nativeShopUIPulse / 2
+			switch g.nativeShopMode {
+			case "confirm":
+				choice = g.nativeShopConfirmSel
+			case "equip_confirm":
+				choice = g.nativeShopEquipSel
+			case "sell_confirm":
+				choice = g.nativeShopSellConfirmSel
+			default:
+				return
+			}
+		}
+		placements, err := h.buttons.placements(fullRewardChoice, 0, choice, pulse)
 		if err != nil {
 			return
 		}
@@ -153,7 +190,7 @@ func (g *Game) appendModernHDFacilityDialogue(frame []byte) {
 				}
 			}
 		}
-		if g.appendModernHDConfirmation(h.buttons, fullRewardChoice, 0, g.churchSel, g.nativeClassUIPulse/2) != nil {
+		if g.appendModernHDConfirmation(h.buttons, fullRewardChoice, 0, choice, pulse) != nil {
 			return
 		}
 	}

@@ -170,6 +170,7 @@ func (g *Game) composeNativeShopEquipmentRecipient() ([]byte, bool) {
 	var frame []byte
 	var err error
 	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
+		g.clearModernHDShopText()
 		frame, err = campaign.ComposeNativeShopEquipmentRecipientFrameWithoutNames(
 			stable, assets, g.nativeShopUI.itemAssets, rows, g.shopRecipientSel-start,
 		)
