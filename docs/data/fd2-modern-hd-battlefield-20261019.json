@@ -304400,5 +304400,263 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/final-validation.json",
       "sha256": "9a44a2d320f0c51e5e0d57001ba5c51fdb03ff3fed924b81fb61cdde4dbec0bb"
     }
+  },
+  "hd1_church_confirmation_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "fda6dc6214aeaf8fbf655261001b28ed3628777c",
+    "scope": "教會轉職／復活確認四開、四收；取消接續對話五收與source還原，另含復活只收選項分支。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1240,
+      "go_tree_sha256": "7af3f4d15b254d87e4ea86210ead451922d24c4728fefdcb0f76e4d98d55df91",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/fd2-player-r3",
+        "sha256": "5b045cacbaf97119b5faa2681df62b539afa10d1a89955ae5f39b0beb519180f"
+      },
+      "normal_tested_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/fd2-player-r3",
+        "sha256": "5b045cacbaf97119b5faa2681df62b539afa10d1a89955ae5f39b0beb519180f"
+      },
+      "production_go_unchanged_after_normal_gui": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/consumers-r3.json",
+        "sha256": "e1f04797cfeb6220c5c69339452f72777e952ef0f48d2958219d7fe2605c71ac"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/commands.json",
+        "sha256": "b3aa684ce1b4f54cb39a5912f381dd269e6919c0cbad543927ff967457931e5a"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/ready-source.json",
+        "sha256": "5026c41591dc6d1ff30ae0f685417b22a159e9d988fb1b57be4602b60a4d27ff"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_confirmation_transition.go",
+          "sha256": "331f47afc5a796c820f2f5da357c90220c954f3b337496f82abd92ded55c9f32"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_confirmation_prototype_test.go",
+          "sha256": "bb23877b0cdd72a928997997b88d3017a8bbad24e4e94e5970259e91c0506251"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_confirmation_transition_test.go",
+          "sha256": "f895524def651709da3165eb2966c4edcc640b42168ac843493523b9535342da"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_confirmation_gpu_test.go",
+          "sha256": "1b34ea2b85c105e7842aac38a25d6eb44875eba754deedafb6f194c160b0e3ed"
+        },
+        {
+          "file": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+          "sha256": "37ae0d548dddc1d5a7114e6893726405c1c0deea200f45c7ba6a90b77d43fc3d"
+        },
+        {
+          "file": "remake/cmd/fd2/native_church_revive_ui.go",
+          "sha256": "ef521a0bf2ea3cbe4f5475db7bc8c0c56862caca04d7ca8dcc2c956e34e12182"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "d18f555e4114936ecf4aa075cf53b1c92ef7108e9dfb077618b62916677fd978"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "59ac3cf83d0df198b669ed651541d3483ec43105951549e83819f52494d34877"
+      }
+    },
+    "rules": [
+      "question／source／dialogue分別捕獲原生raw、literal writer、HD文字及class digits值複本；綁定church mode、locale／font／palette、nativeClassUIJob及完整原cache。",
+      "16／17原圖SHA固定，原圖各四個0透明角不進選項writer；保留非零索引左後右寫入與重疊順序，HD按鈕重用既有多語樣式。",
+      "選項x248±spread／y168，原四開spread4,8,12,16及四收12,8,4,0；後段同原13像素位移與gold框／文字裁切。",
+      "F11字型／金框／選項與F2場景獨立；兩控制都原版走原生且無HD Draw，任一HD才發布HD Draw；缺件或來源不符回退。",
+      "所有預檢在發布前完成，present後才附HD文字；原ACK／clock／after／保存不變。",
+      "每次確認繪製嘗試先清除上一次HD Draw；原版兩控制或任何來源回退不保留舊紀錄。"
+    ],
+    "prototype": {
+      "stages": 24,
+      "jobs": 20,
+      "original_frames": 120,
+      "writer_bytes": 662520,
+      "without_shop_assets": true,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/prototype-r1.memory.json",
+        "sha256": "281d154b738cccc9e849734dcffd2674e43d532470d718df5f233f74f9ecb87c"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/prototype-r1-capture/receipt.json",
+        "sha256": "3f7ff54a1799c2cdf7e825b832581c07eb197e59dcc1c7835e85dbc9acb9fe06"
+      }
+    },
+    "cpu": {
+      "tests": 3,
+      "confirmation_source_cases": 5,
+      "confirmation_original_frames": 30,
+      "confirmation_fault_guards": 80,
+      "church_list_source_cases": 24,
+      "church_list_original_frames": 132,
+      "church_list_fault_guards": 336,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/source-r3.memory.json",
+        "sha256": "de2889132d53c371bf45f5b3f47e37aa088ce534e1bd7a165290459c9dc8cab9"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/source-r3.log",
+        "sha256": "6573d34cd992e4def32bfca9c37448f61597e4d3c4a4ed195822ea15d146d67d"
+      },
+      "original_control_clear_cases": 5,
+      "prior_draw_cleared_on_all_fallbacks": true
+    },
+    "gpu": {
+      "new_cases": 212,
+      "new_full_png": 38,
+      "whole_game_rgba_bytes": 1953792000,
+      "rgba_tolerance": 0,
+      "independent_static_composite_equal": true,
+      "whole_game_toolbar_equal": true,
+      "modes": [
+        {
+          "mode": "class_confirm",
+          "cases": 92,
+          "full_png": 17,
+          "whole_game_rgba_bytes": 847872000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/gpu-class_confirm-r3-capture/receipt.json",
+            "sha256": "e0f9b30ee9bf657cb4b8b9f8d45bf6656491e6b503cc826bfae7cc0c8205a4a4"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/gpu-class_confirm-r3.memory.json",
+            "sha256": "d64b05cf8e0642cc871ad1a7ca0ad957613fe34211058f315d4536a5a18ff648"
+          }
+        },
+        {
+          "mode": "revive_confirm",
+          "cases": 120,
+          "full_png": 21,
+          "whole_game_rgba_bytes": 1105920000,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/gpu-revive_confirm-r3-capture/receipt.json",
+            "sha256": "2c5667a0d75556350aaf9d10a04827bad65a338914574f7e673c3bbf87f717ad"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/gpu-revive_confirm-r3.memory.json",
+            "sha256": "9844ab7feada173709a066b52853bc1276e5c6c670ead421bf0c2b94984aa891"
+          }
+        }
+      ],
+      "old_list_smoke": []
+    },
+    "normal_gui": {
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/normal-church-r2-capture/receipt.json",
+          "sha256": "57a8a28dd025ac6864b6c89a736e0aded2c86cc09432915a42381cbc40ffcb17"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/normal-church-r2.memory.json",
+          "sha256": "608920d176453956432c7928842fb405e2fa686850459c59e80e1b0ce998d979"
+        },
+        "full_png": 26,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "theme_save_bytes_equal": true,
+        "source_save_bytes_equal": true,
+        "new_process_title_load": false,
+        "confirmation_last_draw_samples": 16,
+        "confirmation_phases": [
+          [
+            false,
+            "choices"
+          ],
+          [
+            true,
+            "choices"
+          ],
+          [
+            true,
+            "dialogue"
+          ]
+        ],
+        "list_last_draw_samples": {
+          "status_roster": 13,
+          "revive": 19,
+          "transfer_source": 26,
+          "transfer_item": 11,
+          "transfer_dest": 11
+        },
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。另觀測復活確認選項四開／四收及取消對話收框。最近Draw不作PNG精確同幀。",
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/normal-church-r2-capture/input-audit.jsonl",
+          "sha256": "dac29f768f69da664f2612f3af467828200df320b30e97b638115561c8da3b08"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/normal-church-r2.log",
+          "sha256": "77445180eb91be7aa3eebe6b8c7ce37085a850df7000ee51adbf35469ba33b50"
+        }
+      }
+    },
+    "regression": {
+      "passed": 90,
+      "optional_skipped": 7,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/regression-r2.memory.json",
+        "sha256": "c9112bb27154b007220d9468196e3b84e930971bfa75e116286974ef84691dfb"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/regression-r2.log",
+        "sha256": "6d0183c47574469549876287450f0ff7d14913b1acd3501f5fc09a59fc7efcae"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/consumers-verified-r3.json",
+        "sha256": "76c84ab2dddcbf5c8d13ea6858b11152aee6484f45e37570d90ba9269277a9f1"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/inv-r2.json",
+        "sha256": "12947a590a0413835b40d7667e051bb867fd77b29cc79f88d017ec663277235a"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "089e8cea7469770a6e1654474fcbaaf9257c731af94ea75e3555353e3761405d"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/asset-pack-unchanged.json",
+        "sha256": "7d816320d51385bc47383db4e7a25f88e4d5e37c5a0731370629450b4428e90f"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "new_assets": 0
+    },
+    "diagnostics": {
+      "gpu_r1": "兩mode第一個原版／原版樣本像素相同，但測試無條件要求HD Draw；只修正測試控制條件及nil使用。正式Go不變，r2全部容差0通過。",
+      "source_after_test_fix": "先前測具修正後曾重生指紋並核對r1／r2程式相同；收尾另補回退時清除上一拍觀測，r3正式程式、source-r3、GPU-r3、regression-r2及normal-r2全部乾淨通過，最終指紋不混用前輪。",
+      "lesson": "hd-draw-observation-follows-both-controls"
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-church-confirmation-game.png",
+          "sha256": "594519b5ccd7d1618b1f74e520b23b473413b97556f75e634f4bff6ba91e2409"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/gpu-revive_confirm-r3-capture/scene-015.png",
+          "sha256": "594519b5ccd7d1618b1f74e520b23b473413b97556f75e634f4bff6ba91e2409"
+        },
+        "scope": "受控Game.Draw的復活確認第四開框步，金額1234／費用21／角色是測試狀態；不作實際復活或自然進程證據。"
+      }
+    ],
+    "remaining_ui": "其餘商店確認、設施回覆與主選單進出場、成功特效、其他金額框及小字樣續#283；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1。問句沿既有原文字與替換，未新譯；四語按鈕沿既有locale。普通教會只取消，class是受控fixture，未執行轉職／復活或新程序LOAD，不新增原版E2與完整HD1聲明。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/final-validation.json",
+      "sha256": "10c4246b5f8b0fc1b1390f7317ec5e900215715eaf2899a2a8d4ce6f43dc5014"
+    }
   }
 }

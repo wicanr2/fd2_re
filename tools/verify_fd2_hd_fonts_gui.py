@@ -58,6 +58,22 @@ def facility_list_observations(paths, mode, owner='shop'):
             'scope': '正常鍵盤路徑的最近一次Draw描述；Update可已前進，不宣稱PNG精確同幀。'}
 
 
+def church_confirmation_observations(paths, mode):
+    samples=[]
+    for path in paths:
+        for line in path.read_text().splitlines():
+            try: state=json.loads(line)
+            except json.JSONDecodeError: continue
+            drawn=state.get('church_confirmation_presented')
+            if (drawn and drawn.get('mode')==mode and drawn.get('live_job')
+                    and drawn.get('interface_hd') and drawn.get('art_hd') and state.get('church_ui_busy')):
+                samples.append({'game_update_frame':state['frame'],**drawn})
+    assert {s['closing'] for s in samples}=={False,True}, '未觀測到教會確認的HD開收'
+    assert any(s['phase']=='dialogue' for s in samples if s['closing']), '未觀測到取消後的對話收框'
+    return {'mode':mode,'samples':samples,'audit_files':[p.name for p in paths],
+            'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -80,6 +96,7 @@ def main():
     facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
     parser.add_argument('--church-fee-currency', action='store_true', help='搭配--church及--facility-item-rows抽驗復活費用貨幣的四種顯示組合')
+    parser.add_argument('--church-confirmation-transitions', action='store_true', help='搭配--church要求復活確認選項開收與取消對話收框的HD呈現')
     parser.add_argument('--church-list-transitions', action='store_true', help='要求教會五種正常可達列表實際執行HD開框及收框')
     parser.add_argument('--facility-item-rows', action='store_true', help='於買賣或教會交付的穩定物品列表抽驗四組介面／美術')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
@@ -156,6 +173,8 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    if args.church_confirmation_transitions and not args.church:
+        parser.error('--church-confirmation-transitions需要--church')
     if args.church_fee_currency and not (args.church and args.facility_item_rows):
         parser.error('--church-fee-currency需要--church及--facility-item-rows')
     if args.cpu_profile and not args.performance:
@@ -1798,6 +1817,7 @@ def main():
             report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
                     'church_list_transitions':{mode:facility_list_observations([audit],mode,'church') for mode in ['status_roster','revive','transfer_source','transfer_item','transfer_dest']} if args.church_list_transitions else None,
                     'revive_fee_currency_four_styles':args.church_fee_currency,
+                    'church_confirmation_transitions':church_confirmation_observations([audit],'revive_confirm') if args.church_confirmation_transitions else None,
                     'panel_transitions':panels,
                     'new_process_title_load':args.panel_transitions,
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),

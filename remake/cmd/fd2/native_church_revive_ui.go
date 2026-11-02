@@ -167,7 +167,7 @@ func (g *Game) beginNativeChurchReviveConfirmationOpening() bool {
 		return false
 	}
 	g.resetNativeClassUIPulse()
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeClassUIJob = g.bindModernChurchConfirmation(&nativeClassUIJob{frames: frames}, "opening")
 	return true
 }
 
@@ -194,11 +194,11 @@ func (g *Game) beginNativeChurchReviveConfirmationClosing(after func()) bool {
 	if err != nil || len(dialogueFrames) != 5 {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{
+	g.nativeClassUIJob = g.bindModernChurchConfirmation(&nativeClassUIJob{
 		frames:  append(choiceFrames, dialogueFrames...),
 		restore: source,
 		after:   after,
-	}
+	}, "closing")
 	return true
 }
 
@@ -216,7 +216,7 @@ func (g *Game) beginNativeChurchReviveChoiceClosing(after func()) bool {
 	if err != nil || len(frames) != 4 {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, after: after}
+	g.nativeClassUIJob = g.bindModernChurchConfirmation(&nativeClassUIJob{frames: frames, after: after}, "choice_only")
 	return true
 }
 

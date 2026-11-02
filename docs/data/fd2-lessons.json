@@ -5056,6 +5056,21 @@
         ],
         "pattern": "\\(s\\.get\\('hd_interface'\\)\\ is\\ False\\ or\\ s\\.get\\('hd_text_runs',0\\)>0\\)"
       }
+    },
+    {
+      "id": "hd-draw-observation-follows-both-controls",
+      "date": "2026-11-02",
+      "area": "HD繪製測具",
+      "rule": "同時覆蓋原版與HD的畫面矩陣，依介面與美術兩個控制判定是否應有HD Draw。兩控制都原版時驗原生像素且不得有HD Draw；任一HD才要求實際HD frame與phase。入口為remake/cmd/fd2/modern_hd_church_confirmation_gpu_test.go的TestModernHDChurchConfirmationRuntimeGPU，專用FD2_HD_CHURCH_CONFIRMATION_GPU與兩mode、Docker素材參數依規格61及R60 commands.json。",
+      "why": "R60兩GPU r1在首個原版／原版樣本的像素對照相同，舊斷言卻無條件要求HD lastDraw，並在後續直接解參考。正式路徑依契約返回原生繪製；修正測試控制條件，保留像素容差0及所有有效HD觀測。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1教會確認動畫R60；docs/knowledge-base/61-modern-theme-runtime-spec.md：HD1教會確認動畫",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "兩控制都原版時驗原生像素並要求沒有HD\\ Draw"
+      }
     }
   ]
 }

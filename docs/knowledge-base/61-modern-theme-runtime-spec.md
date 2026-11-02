@@ -5999,3 +5999,21 @@ R59前置原型通過兩viewport／六貨幣原圖與288逐byte覆蓋拒收，na
 R59主收據hd1_church_fee_currency_followup_20261102：原型兩viewport／六cell／288覆蓋拒收通過，正式三種列數／288覆蓋拒收與四個凍結job通過；教會與商店來源回歸保持。穩定32完整Game.Draw／5PNG，165888貨幣區像素逐byte相同，範圍外全部byte保持；revive開收／還原120完整Game.Draw／32PNG、1105920000 RGBA byte與獨立source加普通穩定final合成相同，容差0。F2／F11、四語狀態與兩viewport通過，不新增文字翻譯。90相關回歸通過，七可選略過，1236份Go指紋a2b41652db7d1314296d12cdaa4d491b5046b7d050f2c033a1f17cb07a0591ca，21／416／19與160字串保持。
 
 正常START/F9 hotel_ch02經城鎮進教會，26完整PNG，復活貨幣及交付物品各四組，取消後回旅館兩美術F5與F9保持190b9f8f；五mode最近Draw仍含開收。未執行復活或新程序LOAD。[正常教會費用列表](../figures/hd1-church-fee-currency-game.png)已核對，來源、命令與收據沿同R59工作根。953／6963素材保持，R58逐檔驗證沿用且本輪清冊／manifest重算相同；其他金額框、小字樣、確認／回覆、成功特效及地形續作。
+
+### HD1教會確認動畫
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，R60來源契約work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60/ready-source.json。沿原生class_confirm／revive_confirm四開、四收與取消合併對話五收／還原，以及復活只收選項的分支。16／17圖格按非零索引由左後右寫，原x248±spread／y168；既有modern_hd_confirmation.go多語按鈕與古金框可重用。modern_hd_church_confirmation_prototype_test.go先驗四語／兩mode／五分支的原幀、writer、HD文字副本及狀態保持，通過才升READY與接線。其他設施動畫、成功特效、金額框、小字樣及地形續作。
+
+R60前置原型通過24來源stage／20原生job／120原幀及662520 writer byte，四語狀態、無商店素材、UI及party／gold／RNG保持。16／17原圖SHA分別b5138a9cea25f705232cb051b5012fcb0d5e49c874b99afb8211c2e6c0245eed及c15fd027c3c31a24d94c8274604f88e45427235defb7cbea43c8d5815db93a2f，各四個0透明像素。幾何與既有HD按鈕逐byte一致，故升READY；正式入口modern_hd_church_confirmation_transition.go，驗證modern_hd_church_confirmation_transition_test.go，原幀與mask保持非零寫入語意。
+完整畫面對照位於modern_hd_church_confirmation_gpu_test.go，沿原生producer與既有HD文字／金框／選項獨立重建，不使用R60的frame composer作預期值。
+確認動畫的四組控制驗收：兩控制都原版時驗原生像素並要求沒有HD Draw；任一HD控制啟用才要求實際HD frame與phase，仍對全部遊戲區逐byte比較。lessons工具依既有政策不掃測試檔，護欄綁此規格文字，測試入口仍依上列GPU檔案。
+
+R60主收據hd1_church_confirmation_followup_20261102：轉職92／復活120，共212完整Game.Draw／38PNG，1953792000 RGBA byte與獨立原生producer加既有HD文字／金框／多語按鈕合成相同，容差0；工具列遊戲區保持。繁中全部原生步、其餘三語代表幀及四組介面／美術皆驗；原問句未新譯。五來源分支／30原幀／80拒收及教會列表來源保持；前置原型24來源stage／20job／120原幀通過。90相關回歸通過，七可選略過。1240份Go指紋7af3f4d15b254d87e4ea86210ead451922d24c4728fefdcb0f76e4d98d55df91，程式5b045cacbaf97119b5faa2681df62b539afa10d1a89955ae5f39b0beb519180f；21／416／19與160字串保持。
+
+正常START/F9 hotel_ch02經城鎮進教會26PNG，復活確認16筆最近Draw涵蓋開選項、收選項與取消後收對話；五列表兩方向、復活費用及物品四組、取消與兩美術保存／F9保持190b9f8f，不當PNG精確同幀。未執行實際轉職、復活或新程序LOAD。[受控確認開框末拍](../figures/hd1-church-confirmation-game.png)明示金額1234／費用21測試狀態。來源、成功命令與收據沿R60工作根；953／6963素材與manifest保持。
+
+GPU r1僅首個兩原版樣本的HD Draw測試條件錯誤，原像素相同；測具修正後r2全部通過。之後收尾補清除上一拍觀測，最終r3程式重新通過source-r3、兩GPU-r3、regression-r2及normal-r2，不混用前輪指紋。新增教訓及規格guard，406教訓／255 guard保持。其餘商店確認、設施回覆／主選單、成功特效、其他金額框及小字樣與地形續作。
+
+R60收尾補驗最近Draw的有效性：兩控制切回原版或任何預檢回退時，先清除先前HD Draw，避免觀測端誤用上一拍。來源／幾何／像素產生器不改；測試先放入先前HD紀錄再驗全部回退。
+
+最終觀測清除已通過原80個回退及五個兩原版控制樣本，先注入上一拍再驗移除。最終1240份Go指紋7af3f4d15b254d87e4ea86210ead451922d24c4728fefdcb0f76e4d98d55df91，程式5b045cacbaf97119b5faa2681df62b539afa10d1a89955ae5f39b0beb519180f，正常確認16筆三phase觀測；所有最終驗證無逾時或OOM。

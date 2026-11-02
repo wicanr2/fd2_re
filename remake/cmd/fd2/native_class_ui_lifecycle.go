@@ -9,19 +9,20 @@ import (
 )
 
 type nativeClassUIJob struct {
-	frames          [][]byte
-	restore         []byte
-	frame           int
-	drawn           bool
-	after           func()
-	timeline        []nativeClassUITimelineStep
-	started         time.Time
-	elapsed         time.Duration
-	preparationText *nativePreparationTransitionText
-	goldText        *nativeGoldRollText
-	facilityList    *nativeFacilityListPresentation
-	statusText      *nativeStatusTransitionText
-	expiryText      *nativeTransientExpiryPresentation
+	frames             [][]byte
+	restore            []byte
+	frame              int
+	drawn              bool
+	after              func()
+	timeline           []nativeClassUITimelineStep
+	started            time.Time
+	elapsed            time.Duration
+	preparationText    *nativePreparationTransitionText
+	goldText           *nativeGoldRollText
+	facilityList       *nativeFacilityListPresentation
+	churchConfirmation *nativeChurchConfirmationPresentation
+	statusText         *nativeStatusTransitionText
+	expiryText         *nativeTransientExpiryPresentation
 	// 0x196CB 的戰場關框 owner 才宣告 0x19742；城鎮共用 job 不推定重繪。
 	redrawNativeMapAfterRestore bool
 }
@@ -79,7 +80,7 @@ func (g *Game) beginNativeClassConfirmationOpening() bool {
 		return false
 	}
 	g.resetNativeClassUIPulse()
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeClassUIJob = g.bindModernChurchConfirmation(&nativeClassUIJob{frames: frames}, "opening")
 	return true
 }
 
@@ -105,7 +106,7 @@ func (g *Game) beginNativeClassConfirmationClosing(after func()) bool {
 		return false
 	}
 	frames := append(choiceFrames, dialogueFrames...)
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, restore: source, after: after}
+	g.nativeClassUIJob = g.bindModernChurchConfirmation(&nativeClassUIJob{frames: frames, restore: source, after: after}, "closing")
 	return true
 }
 
@@ -177,6 +178,10 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 	job := g.nativeClassUIJob
 	if job == nil || job.frame < 0 {
 		return false
+	}
+	if g.drawModernHDChurchConfirmation(screen, job) {
+		job.drawn = true
+		return true
 	}
 	if g.drawModernHDFacilityList(screen, job) {
 		job.drawn = true

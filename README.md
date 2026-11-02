@@ -305,6 +305,10 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD教會復活確認展開末拍](docs/figures/hd1-church-confirmation-game.png)
+
+教會轉職與復活確認已接HD選項展開、收回及接續對話收框，沿原圖遮罩與重疊順序。上圖為受控繪製的第四拍，金額與費用是測試值。正常復活確認與取消已抽驗，隊伍、金幣和保存保持；其他設施動畫依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD教會復活費用列表](docs/figures/hd1-church-fee-currency-game.png)
 
 教會狀態、轉職、復活及交付列表已接HD開框、收框與還原。復活費用符號沿原位置改用HD字型，費用規則保持。上圖為正常讀檔後經城鎮進教會的列表；取消、獨立切換與保存讀取已抽驗，轉職只驗受控繪製。其餘確認／回覆動畫與介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。

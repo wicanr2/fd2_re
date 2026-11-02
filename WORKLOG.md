@@ -4828,3 +4828,17 @@ R57已提交並推送ed6e75870af86e45a20a0a364246ec9f109b8046，本機／origin/
 - 原型兩viewport／288覆蓋拒收，正式三種列數／288覆蓋拒收／四凍結job與教會／商店來源三測試通過。穩定32完整Game.Draw／5PNG、165888貨幣像素及全部範圍外byte保持；動畫120完整Game.Draw／32PNG、1105920000 RGBA byte容差0；90相關回歸通過，七可選略過。1236份Go／a2b41652db7d1314296d12cdaa4d491b5046b7d050f2c033a1f17cb07a0591ca，程式9138b274687d7fe6fe75a330e75654885129d4a01dcfde9097a17e1bbc95fde6；21／416／19與160字串保持。無失敗、逾時或OOM。
 - 普通START/F9 hotel_ch02經城鎮進教會26PNG，復活貨幣及交付物品四組、五mode兩方向、取消、兩美術保存與F9保持190b9f8f；未執行復活或新程序LOAD。來源、命令及收據保存work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59，61及主收據hd1_church_fee_currency_followup_20261102索引；README改用正常復活列表。953清冊及6963私人檔保持，沿R58逐檔驗證，本輪manifest／catalog重算保持；無私人或素材變更。其他金額框、小字樣、設施動畫、成功特效及地形續作，#283／#282保持開啟。
 - R59最後稽核30份雜湊引用、63完整PNG、3478本地連結，無新增壞連結；README文化保存與來源索引保持，擁有權1000:1000，無root-owned或非預期FD2容器。六個有界驗證皆通過，無失敗、逾時或OOM；worklist 27／20人工／0可能完成，405教訓與254 guard保持。
+- R59已推送fda6dc6214aeaf8fbf655261001b28ed3628777c，本機與遠端main一致，工單283留言6580473005；私人素材保持，無FD2容器遺留。
+
+## 2026-11-02 HD1教會確認動畫R60起始
+
+- 路由命中正式實作spec閘門及文件職責，沿既有入口與61建立DRAFT。原生四拍選項及合併對話五收／還原已由現有campaign與job證實，不重開原版RE；先作純原型驗來源與狀態，不新增規則。
+- R60 GPU r1兩mode都在第一個原版／原版樣本遇到測試斷言錯誤：像素對照相同，產品依既有兩控制契約走原生繪製，測試卻無條件要求HD Draw且後續直接解參考lastDraw。重查spec路由與明示guard後，只修測試：有任一HD控制才要求同frame／phase的HD Draw，兩原版則要求沒有HD Draw；所有逐byte比較與有效HD觀測保持，r2乾淨重跑。正式Go不變。
+- GPU r2命令首次誤把整段-r1替換，連既有工作根也改成-r2；probe在worker啟動前依parent存在閘門拒絕。只改回既有工作根並精準更新GPU證據路徑重跑，沒有另建工具鏈或放寬驗收。新增教訓hd-draw-observation-follows-both-controls及對應guard。
+
+- R60原型24來源stage／20job／120原幀／662520 writer byte通過，原圖16／17各四透明角保留非零writer語意；正式五分支／30原幀／80拒收、教會列表與原型三測試通過。轉職92／復活120，共212完整Game.Draw／38PNG、1953792000 RGBA byte與獨立原生producer及既有HD文字／金框／按鈕合成相同，容差0，工具列遊戲區保持。90相關回歸通過，七可選略過。
+- 普通START/F9 hotel_ch02經城鎮進教會26PNG，確認15筆最近Draw含開選項／收選項／取消對話收框；五列表及費用／物品四組、取消、兩美術保存與F9保持190b9f8f，未執行轉職／復活或新程序LOAD。1240份Go／8a77b715d9a1629cbaf61b7da9019f63905bf9b1b42888427304270f25bbe0b8，重建r2程式48858690906c990e20b7441b00b47e2e4209e0f7c35332f2ee30dea9ed804e3d與正常已測r1逐byte相同；21／416／19、160字串保持。953／6963素材、catalog與manifest保持，無新圖稿。
+- 來源、命令與成功收據保存work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-confirmation-transitions-r60，61及主收據hd1_church_confirmation_followup_20261102索引；58／56／57與README同步。公開圖明示受控第四拍、金額1234／費用21，原問句未新增翻譯。其他商店確認、設施回覆／主選單、成功特效、金額框、小字樣及地形續作，#283／#282保持開啟。
+- R60收尾發現切回兩原版或預檢回退時lastDraw會保留先前HD紀錄；只補每次嘗試前清除，像素產生器不改。CPU回退測試改先注入上一拍再驗清除，追加五個原版控制樣本；規格暫回READY，乾淨重跑目前來源。
+- R60最終r3觀測清除版本已通過兩GPU-r3的212完整Game.Draw／38PNG與1953792000 RGBA byte容差0、source-r3原型／來源／列表回歸與85個先前Draw清除檢查；regression-r2 90通過／七可選略過，normal-r2 26PNG與16筆三phase確認觀測、取消及兩美術保存／F9保持190b9f8f。最終1240份Go／7af3f4d15b254d87e4ea86210ead451922d24c4728fefdcb0f76e4d98d55df91，程式5b045cacbaf97119b5faa2681df62b539afa10d1a89955ae5f39b0beb519180f；21／416／19與160字串保持。來源、GPU、回歸及普通程式使用最新指紋，前述r1／r2僅歷史診斷。\n
+- R60最後稽核33份雜湊引用、64完整PNG、3481本地連結，無新增壞連結；README文化入口與來源索引正對照保持，擁有權1000:1000，無root-owned產物或非預期FD2容器。最終六個有界驗證均通過且無逾時／OOM；前述GPU r1測具診斷另列。worklist 27開啟／20人工／0可能完成，406教訓／255 guard通過；私人素材工作樹保持乾淨。
