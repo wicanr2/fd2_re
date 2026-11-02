@@ -4898,3 +4898,21 @@ R65視覺來源勘誤：寬幅接觸表把教會3×6變化誤認嘴部；放大(
 R65 READY：局部候選已檢視。店員恢復睜眼；教會額頭寶石由藍到白，並非消失。配方、可省略四組素材契約與原始步序保持方式記於 61；開始接線。
 
 R65最終GPU-r3／binary-r2／普通r2／regression-r2通過。四組22拍與教會76步、201完整Draw／43PNG容差0；93步序、52狀態與20美術拒收，109回歸／十二可選略過。普通買賣1000→950→987、39PNG、54成功最近Draw含22滾動；兩美術保存、F9及冷LOAD保持。新30PNG登錄為957清冊／6990私人檔，私人4d7d9695已推送並核對遠端HEAD，原版manifest保持。兩條編製鏈重建相同檔案；配對PNG壓縮差異及初輪缺匯出參數留診斷，不計產品缺陷。新增教訓408與guard257。主收據hd1_facility_success_followup_20261103索引所有命令、來源與限制；其餘介面逐consumer核對，地形#282續作。
+
+R65公開3246be1e55a13c6ee408fbc62ebc40e0305a13a4與私人4d7d9695b16a1781451c9d45bfb1c8804cef49e1已推送，兩遠端HEAD核對一致；#283留言6587342502。無非預期FD2容器，SAN5不動。R66沿目前程式找到復活成功後beginNativeChurchReviveDialogueClosing的五幀／restore尚無HD描述器，先以現有來源及共用收框呈現作可丟棄prototype，再進READY。
+
+R66追加訂正：先前把beginNativeChurchReviveDialogueClosing未綁HD當作復活後玩家缺口。完整符號參照顯示它沒有正式呼叫者；native_church_input.go的成功after直接returnToNativeReviveList，再走已接HD的名冊開框。故未寫任何正式修補，撤回缺口，改為逐消費端盤點。新的可重跑靜態工具將同列原函式、檔案／行號、參照及job建構位置。
+
+R66寶箱來源prototype八狀態／324原幀通過，物品／金錢與隱藏／可見原圖已檢視；READY契約記於61，開始接現有系統確認描述器與正確角色頭像，交易及ACK保持。
+
+## 2026-11-03 HD1介面盤點與寶箱確認R66
+
+路由沿復古重製規格閘門與文件職責。以3246be1e現行程式盤點232正式來源、1773函式、82個job及30原圖呈現入口；排除未使用復活收框helper，實際after仍直接回已接HD的名冊。寶箱沿原有typed producer先做八狀態／324原幀／24PNG來源prototype，再依61的READY契約接現有系統描述器，保持交易、ACK與after。標題第三項核為CONTINUE，非QUIT；下一切片另處理標題字樣及讀檔框。
+
+最終寶箱GPU-r4共213完整Draw／17PNG、1963008000 RGBA byte容差2，六內容／四控制與等待ACK、正確DATO0及保存bytes相同；原系統五caller另147Draw／15PNG通過。12來源／484原幀、11拒收、38回歸／三可選略過及21／416／19消費端通過。1262 Go指紋49c3ce20；160字串處置與來源簽名保持。957清冊／6990私人檔及兩manifest保持，沒有新美術。
+
+GPU-r1／r2只差原生地圖快取：取寶closedAction省略range／selection，Game.Draw先重建普通地圖；修正測試比較點並封存來源與玩法，沒有修改正式繪圖以遷就測試。r3另因序列化battle.State回呼失敗，改用既有單位快照。消費端r1在測試檔修改後被源碼指紋guard拒收，重生r2通過。這些保留診斷，不計產品缺陷；原系統GPU收據保留其自身測試樹指紋，正式程式與nil-hook路徑保持。新增教訓409與guard258。
+
+主收據hd1_treasure_confirmation_followup_20261103索引命令、來源、收據與公開完整圖。受控map23及明示寶物不冒稱自然開箱、原版oracle或新PLAYER-E2。接線後盤點1775函式；標題字樣、四槽框線與地形續作，完整HD1仍未完成。提交、遠端Issue與容器清理於本批收尾核對。
+
+R66收尾：26雜湊引用、57PNG含32完整GPU與24原型圖、3739本地連結及新來源索引通過，無新增斷鏈。README文化保存、409教訓／258 guard通過；新guard核對原生closedAction分支，保持排除測試檔政策。27開啟／20人工／零可能完成，#283已更新並由主機遠端重拉、官方formatter／snapshot／render／verify重生。私人庫乾淨，兩HEAD均4d7d9695且private=true；FD2容器清空，SAN5及其他專案不動。腳本文字嵌入與命令長度限制只影響未執行的收尾工具，修正後同容器乾淨重跑通過。

@@ -58,16 +58,21 @@ func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treas
 	if err != nil {
 		return err
 	}
-	g.nativeSystemEndTurnUI = &nativeSystemEndTurnUIState{
+	state := &nativeSystemEndTurnUIState{
 		portraits: portraits,
 		source:    source, dialogue: dialogue, question: question, accepted: accepted, canceled: canceled,
 		treasure: &nativeTreasurePrompt{actor: u, reward: reward, x: u.X, y: u.Y},
 	}
+	if !g.freezeModernHDSystemConfirmation(state) {
+		return fmt.Errorf("native treasure: HD source admission failed: %s", g.loadErr)
+	}
+	g.nativeSystemEndTurnUI = state
 	g.nativeSystemEndTurnConfirm = true
 	g.ring = false
 	g.msg = ""
 	g.resetNativeClassUIPulse()
 	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.bindModernHDSystemConfirmation(fullRewardOpening)
 	return nil
 }
 

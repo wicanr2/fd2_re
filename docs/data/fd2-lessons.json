@@ -5102,6 +5102,21 @@
         ],
         "pattern": "png_compress_level"
       }
+    },
+    {
+      "id": "treasure-draw-fixture-normal-map-cache",
+      "date": "2026-11-03",
+      "area": "寶箱完整Draw測試前置狀態",
+      "rule": "測試寶箱純繪圖時，先沿composeNativeMapFrame準備普通地圖快取，再比較完整Draw狀態，並封存玩法與寶箱來源。入口為remake/cmd/fd2/modern_hd_treasure_confirmation_gpu_test.go；原建構器的closedAction快照依main.go省略range／selection，不能把第一次普通地圖重建當成交易變動。",
+      "why": "R66原版控制組僅nativeMapWork／VGA於第一個Draw改變，139像素落在原選取區；角色、金額、RNG與物品未改。測試沿原producer準備快取，來源封印及完整Draw狀態斷言保持。 guard核對正式closedAction仍省略range的觸發條件；測試檔依工具政策排除，測試本身由Go執行。",
+      "evidence": "WORKLOG.md：2026-11-03 HD1介面盤點與寶箱確認R66；61的HD1寶箱確認。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "(?s)if closedAction \\{\\s*in.Frame.RangeMode = 0"
+      }
     }
   ]
 }

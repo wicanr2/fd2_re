@@ -297,13 +297,17 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD商店販售確認](docs/figures/hd1-shop-dialogue-game.png)
 
-三類商店的穩定對話框、商品與名冊列表，以及購買、裝備、販售確認已接HD介面。上圖由正常START後F9接續既有第2章存檔，再經城鎮購買布衣並選擇出售；兩種美術保存與新程序標題讀取已抽驗。框線與確認隨F11切換，其餘設施動畫與介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+三類商店的穩定對話框、商品與名冊列表，以及購買、裝備、販售確認已接HD介面。上圖由正常START後F9接續既有第2章存檔，再經城鎮購買布衣並選擇出售；兩種美術保存與新程序標題讀取已抽驗。框線與確認隨F11切換，其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 | 商店名冊 | 教會名冊 |
 |---|---|
 | ![商店Q版人物名冊](docs/figures/hd1-shop-roster-q-game.png) | ![教會Q版人物名冊](docs/figures/hd1-church-roster-q-game.png) |
 
 設施名冊人物已依實際地圖圖組接上已定Q版，保留原排序、捲動與畫格。人物隨F2美術切換，介面隨F11。上圖由正常START後F9接續既有第2章存檔，再經正常鍵盤進入設施；來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![HD寶箱確認框](docs/figures/hd1-treasure-confirmation-game.png)
+
+寶箱的物品與金幣確認、開收及回覆已接HD，沿實際角色頭像，介面與美術獨立切換。上圖使用正式建構器與受控測試資料，未作自然戰役開箱驗收；交易與保存回歸通過。範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1寶箱確認)。
 
 ![三家店眨眼與教會寶石的HD成功畫格](docs/figures/hd1-facility-success-game.png)
 
@@ -315,11 +319,11 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD教會主選單展開中的圖示](docs/figures/hd1-service-menu-opening-game.png)
 
-三類商店與教會的主選單已接HD圖示開收，保留原位移、透明邊角及重疊順序。上圖是受控展開第二拍，金額為測試資料；普通商店與教會取消、切換及保存讀取已抽驗。成功特效與其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+三類商店與教會的主選單已接HD圖示開收，保留原位移、透明邊角及重疊順序。上圖是受控展開第二拍，金額為測試資料；普通商店與教會取消、切換及保存讀取已抽驗。其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 ![HD商店目的提示的開框第三拍](docs/figures/hd1-facility-reply-game.png)
 
-商店與教會的提示開收已接HD文字與古金框，沿原位移及遮擋。上圖是受控開框第三拍，金額與隊伍為測試資料；正常商店交付取消、四組切換、保存及重新啟動讀檔已抽驗。成功特效與其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+商店與教會的提示開收已接HD文字與古金框，沿原位移及遮擋。上圖是受控開框第三拍，金額與隊伍為測試資料；正常商店交付取消、四組切換、保存及重新啟動讀檔已抽驗。其餘介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 ![HD商店裝備確認對話收框首拍](docs/figures/hd1-shop-confirmation-game.png)
 

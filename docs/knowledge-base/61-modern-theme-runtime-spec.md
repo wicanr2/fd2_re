@@ -6089,3 +6089,31 @@ R64主收據 hd1_facility_money_followup_20261103：75穩定來源、八job／32
 最終201完整Draw／43PNG、1852416000 RGBA byte與獨立全景組圖相同，容差0。93步序、52狀態及20美術拒收通過；109回歸通過，十二可選略過，清冊16測試通過。正常START／F9接續第2章買賣布衣，1000→950→987、39PNG、54筆成功最近Draw含22滾動；兩美術保存、F9與新程序標題LOAD保持。教會成功是typed繪圖場景，未新增原版oracle、PLAYER-E2、人工或平台驗收。
 
 [四組成功畫格](../figures/hd1-facility-success-game.png)取自最終GPU-r3，圖上數值不作自然戰役證明。主收據hd1_facility_success_followup_20261103索引所有來源。重跑命令在work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-success-r65/commands.json；同目錄ready-source.json、gpu-r3-capture/success-gpu-report.json、normal-gold-roll-r2-capture/receipt.json與regression-r2.log為最終證據。1260 Go指紋d4b97dd6，21／416／19消費端及160字串保持。957清冊、6990私人檔，私人4d7d9695；408教訓／257 guard。其餘正式介面依#283逐consumer核對，地形另依#282，完整HD1仍續作。
+
+### HD1 介面消費端盤點
+
+狀態SOURCE-AUDIT，寶箱切片已CONFORMED-SCOPED。以目前正式Game輸入、Draw與回呼的靜態參照及既有執行期收據核對介面覆蓋，不從未使用helper推定玩家缺口。beginNativeChurchReviveDialogueClosing目前只有宣告，成功回呼由native_church_input.go直接returnToNativeReviveList，沿既有HD名冊開框；不補未使用的五幀helper。前次判讀訂正留於WORKLOG。
+
+盤點入口為[audit_fd2_hd1_interface.go](../../tools/audit_fd2_hd1_interface.go)；輸出在work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-interface-audit-r66/interface-consumers.json。靜態可達性是程式參照，不升格為原版或正常玩家可達證據。候選缺口仍須追原始來源、正式呼叫者與實際Draw後才能開實作。
+
+R66以3246be1e為基底的初始靜態盤點232份正式來源、1773函式、82個job建構及30個原圖呈現入口。已確認需續核寶箱確認的HD描述器、標題三選項的bitmap字樣及標題讀檔框線；後兩項先查原圖與已定範圍。FDOTHER45事件屬演出美術另列，未使用復活收框helper排除。本輪先取寶箱確認的單一垂直切片，來源與分類記於同目錄findings.json。
+
+R66寶箱來源prototype入口為remake/cmd/fd2/modern_hd_treasure_confirmation_test.go的TestModernHDTreasureSourcePrototype；輸出同工作根treasure-source-prototype.json與24張原生UI實圖。涵蓋物品／金錢、隱藏／可見、兩個實際DATO來源；黑底typed地圖不當作正常玩家或原版oracle。
+
+#### HD1寶箱確認
+
+本節實作前READY，現為CONFORMED-SCOPED／RUNTIME-E1。八狀態來源prototype通過324個原生畫格，24張原生UI圖已檢視。正式來源沿NativeTreasureItemQuestion、物品／金錢回覆及既有逐字writer，不重開原版RE。
+
+- 只接現行寶箱確認的10幀開框、4幀YES／NO收合、逐字回覆、等待ACK與5幀空框收合／還原。物品及金幣交易、claim、關框後加金、回合完成與after保持。零金額沿既有空寶箱回覆，不猜新規則。
+- 擴充現有系統確認描述器的文字producer及來源頭像。一般系統確認仍用原DATO75；寶箱沿原beginNativeTreasureItemPrompt實際載入的actor.BattleFig與原四拍DATO，HD頭像用同一已登錄ID。不得把地圖圖組號當頭像。
+- 封存source、dialogue、question、accepted／canceled、portrait bytes與寶物kind／value／hidden／來源座標；不把claimed／awaitAck等預期變動狀態當作來源變造。發布前驗原生逐幀一致、字型及可用HD頭像；缺件及變造沿既有失敗即關閉。
+- F11沿既有金框、逐字Noto及YES／NO，F2沿既有場景與正確角色頭像。等待寶箱ACK時也保持HD。沿既有地圖來源封存、矩形、鏡像、裁切與四控制組合，不新增美術或資料包。
+- 來源／反例、既有系統五種caller、寶箱四內容與兩角色、零金額邊界、完整Draw及既有輸入／交易／保存保持已通過。typed場景不冒稱原版oracle或自然戰役可達。
+
+正式接線沿[modern_hd_system_confirmation.go](../../remake/cmd/fd2/modern_hd_system_confirmation.go)與[native_treasure_input.go](../../remake/cmd/fd2/native_treasure_input.go)，來源測試入口為[modern_hd_treasure_confirmation_test.go](../../remake/cmd/fd2/modern_hd_treasure_confirmation_test.go)；全UI盤點仍另核標題選項與讀檔框，不因本切片宣稱完整HD1。
+
+R66完整GPU入口為[modern_hd_treasure_confirmation_gpu_test.go](../../remake/cmd/fd2/modern_hd_treasure_confirmation_gpu_test.go)；重用modern_hd_system_confirmation_gpu_test.go的獨立CPU合成探針，普通五種系統caller的預設路徑保持。寶箱用正式建構器、map23既有DATO0角色與明示寶物fixture，驗四控制、開收、逐字回覆、零金額、等待ACK、來源頭像與保存；不冒稱自然開箱。
+
+R66最終寶箱213完整Draw／17PNG，六內容、四控制、開收／逐字回覆／等待ACK及三語代表通過；獨立CPU合成容差2。五種既有系統確認另147完整Draw／15PNG通過。12來源狀態／484原幀、11拒收與38回歸／三可選略過通過；保存bytes相同，1262 Go指紋49c3ce20，21／416／19消費端與160字串保持。原圖snapshot省略range／selection，第一次普通Draw重建地圖快取屬既有呈現；測試先沿正常producer準備快取並封存來源，完整Draw前後狀態斷言保持。序列化回呼與前版收據指紋不合只列驗證工具診斷。
+
+[寶箱確認完整畫面](../figures/hd1-treasure-confirmation-game.png)取自正式建構器的受控map23／DATO0及明示寶物fixture，未新增正常寶箱觸發或原版oracle聲明。主收據hd1_treasure_confirmation_followup_20261103與同工作根commands.json索引最終來源。957清冊／6990私人檔及兩manifest保持，無新美術；盤點接線後232來源／1775函式／82個job。標題三項實為START／LOAD／CONTINUE，沿title.go輸入動作核對，非QUIT；標題字樣、四槽框線與地形續作。

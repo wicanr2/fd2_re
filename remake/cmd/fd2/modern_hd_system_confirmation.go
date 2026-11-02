@@ -16,16 +16,18 @@ import (
 )
 
 type modernHDSystemConfirmation struct {
-	ui      *nativePreparationUIAssets
-	scene   *modernHDCompoundMapScene
-	world   *modernHDMapFrame
-	theme   *modernStoryPortraitSet
-	seal    [32]byte
-	job     *nativeClassUIJob
-	kind    fullRewardPhase
-	chrome  *modernHDDialogueChrome
-	buttons *modernHDConfirmation
-	palette color.Palette
+	speaker      int
+	treasureSeal [32]byte
+	ui           *nativePreparationUIAssets
+	scene        *modernHDCompoundMapScene
+	world        *modernHDMapFrame
+	theme        *modernStoryPortraitSet
+	seal         [32]byte
+	job          *nativeClassUIJob
+	kind         fullRewardPhase
+	chrome       *modernHDDialogueChrome
+	buttons      *modernHDConfirmation
+	palette      color.Palette
 }
 
 type systemQuestionProducer func([]byte, dato.Frame, *fdtxt.Strings, *fdtxt.Font) ([]byte, error)
@@ -33,6 +35,25 @@ type systemResponseProducer func([]byte, *fdtxt.Strings, *fdtxt.Font, bool) ([][
 
 func systemConfirmationProducer(s *nativeSystemEndTurnUIState) (systemQuestionProducer, systemResponseProducer) {
 	switch {
+	case s.treasure != nil:
+		reward := s.treasure.reward
+		question := func(source []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font) ([]byte, error) {
+			return campaign.ComposeNativeTreasureItemQuestion(source, portrait, strings, font, reward.Hidden)
+		}
+		response := func(source []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool) ([][]byte, error) {
+			if !accepted {
+				return campaign.NativeBattleEndTurnResponseFrames(source, strings, font, false)
+			}
+			switch reward.Kind {
+			case "item":
+				return campaign.NativeTreasureItemResponseFrames(source, strings, font, reward.Value, reward.Hidden)
+			case "gold":
+				return campaign.NativeTreasureGoldResponseFrames(source, strings, font, reward.Value, reward.Hidden)
+			default:
+				return nil, errors.New("modern HD treasure: unsupported reward source")
+			}
+		}
+		return question, response
 	case s.exitProgram:
 		return campaign.ComposeNativeBattleExitQuestion, campaign.NativeBattleExitResponseFrames
 	case s.saveCurrent:
@@ -46,6 +67,41 @@ func systemConfirmationProducer(s *nativeSystemEndTurnUIState) (systemQuestionPr
 	}
 }
 
+// Transaction latches change during the native workflow; identity and reward
+// source do not. This small seal can be checked in Draw without hashing frames.
+func treasureConfirmationSourceSeal(s *nativeSystemEndTurnUIState) [32]byte {
+	var source any
+	if s != nil && s.treasure != nil {
+		p := s.treasure
+		if p.actor == nil {
+			return sha256.Sum256([]byte("missing treasure actor"))
+		}
+		source = []any{p.reward, p.x, p.y, p.actor.BattleFig, p.actor.HasBattleFig}
+	}
+	raw, _ := json.Marshal(source)
+	return sha256.Sum256(raw)
+}
+
+func systemConfirmationSourcePortrait(s *nativeSystemEndTurnUIState, ui *nativePreparationUIAssets) (dato.Frame, int, error) {
+	if s == nil || ui == nil {
+		return dato.Frame{}, 0, errors.New("modern HD system confirmation: portrait source unavailable")
+	}
+	if s.treasure == nil {
+		return ui.portrait, 75, nil
+	}
+	p := s.treasure
+	if p.actor == nil || !p.actor.HasBattleFig || p.actor.BattleFig < 0 || len(s.portraits) != 4 || s.exitProgram || s.saveCurrent || s.loadCurrent || s.groupMarch {
+		return dato.Frame{}, 0, errors.New("modern HD treasure: invalid actor or owner source")
+	}
+	for _, f := range s.portraits {
+		if f.Width != 80 || f.Height != 80 || len(f.Pixels) != 6400 {
+			return dato.Frame{}, 0, errors.New("modern HD treasure: incomplete actor portrait")
+		}
+	}
+	// The original treasure producer loads these exact DATO frames by BattleFig.
+	return s.portraits[0], p.actor.BattleFig, nil
+}
+
 func systemConfirmationSeal(s *nativeSystemEndTurnUIState) [32]byte {
 	h := s.hd
 	var cells []any
@@ -56,7 +112,7 @@ func systemConfirmationSeal(s *nativeSystemEndTurnUIState) [32]byte {
 		cells = append(cells, h.ui.choices[index])
 	}
 	b, _ := json.Marshal([]any{s.source, s.dialogue, s.question, s.accepted, s.canceled, s.portraits,
-		s.exitProgram, s.saveCurrent, s.loadCurrent, s.groupMarch, h.ui.dialogue, h.ui.portrait, cells})
+		s.exitProgram, s.saveCurrent, s.loadCurrent, s.groupMarch, h.ui.dialogue, h.ui.portrait, cells, treasureConfirmationSourceSeal(s), h.speaker})
 	return sha256.Sum256(b)
 }
 
@@ -69,6 +125,12 @@ func (g *Game) freezeModernHDSystemConfirmation(s *nativeSystemEndTurnUIState) b
 	s.hd = &modernHDSystemConfirmation{ui: g.nativePreparationUI, kind: fullRewardOpening,
 		palette: append(color.Palette(nil), g.nativeClassUI.palette...),
 		scene:   g.newModernHDCompoundMapScene(in, g.nativeMapWork, s.source, palette, inputErr)}
+	_, speaker, portraitErr := systemConfirmationSourcePortrait(s, g.nativePreparationUI)
+	if portraitErr != nil {
+		g.loadErr = portraitErr.Error()
+		return false
+	}
+	s.hd.speaker, s.hd.treasureSeal = speaker, treasureConfirmationSourceSeal(s)
 	s.hd.seal = systemConfirmationSeal(s)
 	h, err := g.prepareModernHDSystemConfirmation(s, g.modernStoryPortraits)
 	if err != nil && g.hdPresentationEnabled() {
@@ -85,7 +147,11 @@ func (g *Game) freezeModernHDSystemConfirmation(s *nativeSystemEndTurnUIState) b
 func (h *modernHDSystemConfirmation) frame(s *nativeSystemEndTurnUIState, source []byte, font *fdtxt.Font,
 	kind fullRewardPhase, index, choice, pulse int, capture *modernHDIndexedText) ([]byte, int, error) {
 	u := h.ui
-	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, u.dialogue, u.portrait)
+	portrait, _, err := systemConfirmationSourcePortrait(s, u)
+	if err != nil {
+		return nil, 0, err
+	}
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, u.dialogue, portrait)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -101,7 +167,7 @@ func (h *modernHDSystemConfirmation) frame(s *nativeSystemEndTurnUIState, source
 		return fullRewardFrameAt(frames, index, (5-index)*13, err)
 	}
 	questionFn, responseFn := systemConfirmationProducer(s)
-	question, err := questionFn(dialogue, u.portrait, u.status.Strings, font)
+	question, err := questionFn(dialogue, portrait, u.status.Strings, font)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -157,13 +223,17 @@ func (g *Game) prepareModernHDSystemConfirmation(s *nativeSystemEndTurnUIState, 
 	if !bytes.Equal(originalPalette, currentPalette) {
 		return nil, errors.New("modern HD system confirmation: changed palette")
 	}
+	portrait, speaker, portraitErr := systemConfirmationSourcePortrait(s, h.ui)
+	if portraitErr != nil || speaker != h.speaker || treasureConfirmationSourceSeal(s) != h.treasureSeal {
+		return nil, errors.New("modern HD system confirmation: changed portrait or treasure source")
+	}
 	// Check native question and both responses independently of the HD writer.
 	qf, rf := systemConfirmationProducer(s)
-	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(s.source, h.ui.dialogue, h.ui.portrait)
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(s.source, h.ui.dialogue, portrait)
 	if err != nil || !bytes.Equal(dialogue, s.dialogue) {
 		return nil, errors.New("modern HD system confirmation: changed dialogue")
 	}
-	question, err := qf(dialogue, h.ui.portrait, h.ui.status.Strings, h.ui.status.Font)
+	question, err := qf(dialogue, portrait, h.ui.status.Strings, h.ui.status.Font)
 	if err != nil || !bytes.Equal(question, s.question) {
 		return nil, errors.New("modern HD system confirmation: changed question")
 	}
@@ -205,9 +275,9 @@ func (g *Game) prepareModernHDSystemConfirmation(s *nativeSystemEndTurnUIState, 
 		}
 	}
 	if set != nil {
-		portrait := set.portraits[75]
+		portrait := set.portraits[h.speaker]
 		if portrait == nil || portrait.hdImage == nil {
-			return nil, errors.New("modern HD system confirmation: DATO75 unavailable")
+			return nil, errors.New("modern HD system confirmation: source-bound DATO unavailable")
 		}
 		if len(set.mapSpritesHD) != 125 || h.scene == nil {
 			return nil, errors.New("modern HD system confirmation: world unavailable")
@@ -268,6 +338,9 @@ func (g *Game) drawModernHDSystemConfirmation(screen *ebiten.Image) bool {
 		return false
 	}
 	h, job := s.hd, g.nativeClassUIJob
+	if treasureConfirmationSourceSeal(s) != h.treasureSeal {
+		return false
+	}
 	kind, index := h.kind, -1
 	if job != nil {
 		if job != h.job {
@@ -276,7 +349,7 @@ func (g *Game) drawModernHDSystemConfirmation(screen *ebiten.Image) bool {
 		index = job.frame
 	} else if g.nativeSystemEndTurnConfirm {
 		kind = fullRewardChoice
-	} else if g.nativeSystemEndTurnDelay <= 0 {
+	} else if g.nativeSystemEndTurnDelay <= 0 && !(s.treasure != nil && s.treasure.awaitAck) {
 		return false
 	}
 	writes := []modernHDGlyphWrite{}
@@ -349,7 +422,7 @@ func (g *Game) drawModernHDSystemConfirmation(screen *ebiten.Image) bool {
 			}
 		}
 		if set := g.modernStoryPortraits; set != nil {
-			g.modernHDOverlay = &modernHDOverlay{portrait: set.portraits[75], mirrorX: true, rect: image.Rect(16, (115+shift)*2, 176, (195+shift)*2), clip: clip}
+			g.modernHDOverlay = &modernHDOverlay{portrait: set.portraits[h.speaker], mirrorX: true, rect: image.Rect(16, (115+shift)*2, 176, (195+shift)*2), clip: clip}
 		}
 		if err := g.appendModernHDConfirmation(h.buttons, kind, index, s.choice, g.nativeClassUIPulse/2); err != nil {
 			g.loadErr = err.Error()

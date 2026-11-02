@@ -23,6 +23,7 @@ import (
 )
 
 type systemGPUCase struct {
+	treasureAwait        bool
 	caller               int
 	phase                fullRewardPhase
 	frame, choice, pulse int
@@ -30,6 +31,8 @@ type systemGPUCase struct {
 	locale               string
 }
 type systemGPUProbe struct {
+	makeState     func(*Game, int) *nativeSystemEndTurnUIState
+	verifyOverlay func(*systemGPUProbe, systemGPUCase, *modernHDOverlay) error
 	t             *testing.T
 	set           *modernStoryPortraitSet
 	g             *Game
@@ -145,7 +148,11 @@ func (p *systemGPUProbe) Draw(screen *ebiten.Image) {
 			p.err = err
 			return
 		}
-		p.state = systemHDTestState(p.t, g, c.caller)
+		if p.makeState != nil {
+			p.state = p.makeState(g, c.caller)
+		} else {
+			p.state = systemHDTestState(p.t, g, c.caller)
+		}
 		g.nativeSystemEndTurnUI = p.state
 		p.caller = c.caller
 		p.worldChecked = false
@@ -186,6 +193,13 @@ func (p *systemGPUProbe) Draw(screen *ebiten.Image) {
 			}
 			s.hd.job = g.nativeClassUIJob
 		}
+	}
+	if s.treasure != nil {
+		s.treasure.awaitAck = c.treasureAwait
+		s.treasure.claimed = c.treasureAwait && c.accepted
+	}
+	if c.treasureAwait {
+		g.nativeSystemEndTurnDelay = 0
 	}
 	art := p.set
 	if !c.art {
@@ -251,6 +265,12 @@ func (p *systemGPUProbe) Draw(screen *ebiten.Image) {
 		p.worldChecked = true
 	}
 	textFrame, overlay := g.modernHDText, g.modernHDOverlay
+	if p.verifyOverlay != nil {
+		if err := p.verifyOverlay(p, c, overlay); err != nil {
+			p.err = err
+			return
+		}
+	}
 	if (textFrame != nil) != c.ui || (overlay != nil) != c.art && c.phase == fullRewardChoice {
 		p.err = fmt.Errorf("case%d control followed wrong mode", p.index)
 		return
@@ -276,11 +296,14 @@ func (p *systemGPUProbe) Draw(screen *ebiten.Image) {
 		}
 	}
 	if !reflect.DeepEqual(before, fullRewardGPUState(g)) {
+		raw, _ := json.MarshalIndent(map[string]any{"before": before, "after": fullRewardGPUState(g)}, "", "  ")
+		_ = os.WriteFile(filepath.Join(p.out, "native-state-mismatch.json"), append(raw, '\n'), 0644)
 		p.err = fmt.Errorf("case%d Draw changed native state", p.index)
 		return
 	}
 	row := map[string]any{"caller": c.caller, "phase": c.phase, "frame": c.frame, "choice": c.choice, "pulse": c.pulse, "accepted": c.accepted, "art_hd": c.art, "ui_hd": c.ui, "locale": c.locale, "full_rgba_pixels": 1920 * 1200, "rgba_tolerance": 2, "source_state_unchanged": true}
 	row["f2_f11_roundtrip"] = roundtrip
+	row["treasure_await_ack"] = c.treasureAwait
 	if c.phase == fullRewardChoice && c.choice == 0 && c.pulse == 0 && (c.art == c.ui || c.caller == 0) {
 		name := fmt.Sprintf("caller%d-art%t-ui%t-%s.png", c.caller, c.art, c.ui, c.locale)
 		path := filepath.Join(p.out, name)
