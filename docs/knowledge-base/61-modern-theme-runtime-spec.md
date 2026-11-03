@@ -6230,3 +6230,19 @@ R71 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿固定原生三層與968基�
 本批23格158槽已登錄，1005清冊及7046私人白名單同步fc80f2a2，10239舊美術SHA／inode／mtime／owner保持。23成品與已審原型逐檔相同，私人包只靠23裁切母稿及草材能逐byte重編；原1024×1536生成母稿ad23f68e與完整提示詞依配方保存，生成alpha未改。158來源交易／14錯遮罩、23編製／分區及八登錄反例、632來源GPU／兩完整map2 Draw／F2／169 bytes受控保存通過。五項Python、13248邊界比對與13156獨立邊界像素、舊R70十圖重編保持；32正式回歸／兩可選略過、21來源／416幀／19反例及160字串保持，1272 Go指紋db6b6c9a，正式Go未改。
 
 普通首章整包四控制、合法一格走行取消、兩美術／介面F5及新程序LOAD十PNG通過，保存089b077b保持；新158槽的實際圖源與完整map2另由受控GPU驗證，不冒稱普通路徑自然看過全部新槽。[受控物件地圖](../figures/hd1-colored-objects-game.png)仍保留未HD的橋與建築。33圖正式Go覆蓋為1016已接，餘2972缺槽／2000獨特來源，10純remap保持。主收據hd1_colored_objects_followup_20261103索引所有來源、內建生成提示詞、命令及拒收原因。新教訓terrain-art-mask-shared-index-volume保留共用索引的分區守門，410教訓／259 guard；#282續作，完整HD1未完成。
+
+## HD1草地周圍物件第二批
+
+R72 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿R71固定原生三層與1005基底清冊，24格RGBA物件新增66槽。物件身份、用途與材質未知，共用草索引不再用來推除綠色前景；[篩選資料](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-objects-r72/screening.json)與下列READY契約保留完整來源及方法。
+
+第二批[24格原型來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-objects-r72/source-prototype.json)保留固定source三層、色盤與同源上界。預定只提取新手繪物件透明層，依原位置覆蓋已定草材，native source alpha仍為原576完整像素；製圖alpha不進遊戲遮擋、圖層與事件規則。原型需核對各格的綠色體積及裁切位置，未通過者不登錄。
+
+### R72 READY契約
+
+24格／66槽的RGBA試稿已依原圖輪廓、色群與前後關係複核，綠色體積不再被草索引消去。正式配方為[hd1-rgba-objects-r72.recipe.json](../../remake/assets/themes/modern/hd1-rgba-objects-r72.recipe.json)，完整來源及驗收見[READY收據](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-objects-r72/ready-source.json)。原1024×1536母稿與alpha保持，24個256×256裁切依LANCZOS編144；製圖RGBA疊回同一grass_policy背景，成品alpha255，原遊戲source alpha、cycle及selector不改。身份／材質未知，重繪曲線不宣稱逐像素原輪廓。
+
+編製與私人重編沿[build_fd2_hd_terrain_atlas.py](../../tools/build_fd2_hd_terrain_atlas.py)及[rebuild_fd2_hd_terrain_atlas.py](../../tools/rebuild_fd2_hd_terrain_atlas.py)新增atlas_rgba_object，需明示painted_object_rgba母稿契約及各裁切alpha SHA／非零數；其餘既有模式保持opaque契約。原型不作新遊戲遮罩，綠前景不由grass索引推除。驗證由[test_fd2_hd_terrain_atlas.py](../../tools/test_fd2_hd_terrain_atlas.py)、既有來源交易與完整Draw、保存與正常首章回歸完成。新圖須與已審原型相同，24裁切母稿能從私人包逐byte重編，舊R70／R71圖保持。
+
+24母稿／24成品已登錄，1044清冊與7094私人白名單同步19f88d34，10285份舊美術SHA／inode／mtime／owner保持。生成母稿e6cb8a89及其0～254原alpha不修改，成品與24格已審原型逐byte相同，從私人裁切母稿可逐byte重生，不依賴整張atlas。R71拒收的map6:131綠色前景由本批RGBA圖源續補，原拒收原型不改寫。
+
+66來源交易／15錯遮罩、264來源GPU與兩完整map3 Draw／F2／169 bytes受控保存通過；五項Python含27編製／alpha拒收與八登錄拒收，舊R70十圖及R71二十三圖重編保持。32正式回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、一格合法走行取消、兩美術／介面F5及新程序LOAD十PNG通過，保存089b077b保持。[受控綠色物件地圖](../figures/hd1-rgba-objects-game.png)仍有待補像素及物件其他部分；新66槽未宣稱由普通路徑全部自然看過。正式33圖1082已接，餘2906缺槽／1976獨特來源，10純remap；依主收據hd1_rgba_objects_followup_20261103及#282續作，人工由使用者接手。

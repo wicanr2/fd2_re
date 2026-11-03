@@ -11,7 +11,7 @@ from PIL import Image
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
-from build_fd2_hd_terrain_atlas import grass_policy, masked_object_tile, read, write
+from build_fd2_hd_terrain_atlas import grass_policy, masked_object_tile, rgba_object_tile, read, write
 from build_fd2_hd_terrain_reuse import native, witness
 from verify_fd2_terrain_sources import check_binding, sha, verify
 
@@ -63,6 +63,20 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                     raise ValueError('物件裁切母稿SHA或尺寸不同')
                 painting = Image.open(master).convert('RGBA').resize((144, 144), Image.Resampling.LANCZOS)
                 picture, _, _ = masked_object_tile(content[:576], painting, grass, policy)
+            elif group['compile_mode'] == 'atlas_rgba_object':
+                masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
+                if (recipe.get('master_alpha_contract') != 'painted_object_rgba' or len(masters) != 1 or
+                        masters[0]['file'] != group['master_file'] or Path(group['master_file']).name != group['master_file']):
+                    raise ValueError('已登錄RGBA物件母稿不同')
+                master = pack / group['master_file']
+                if sha(master) != masters[0]['sha256'] or Image.open(master).size != (256, 256):
+                    raise ValueError('RGBA物件裁切母稿SHA或尺寸不同')
+                piece = Image.open(master).convert('RGBA')
+                alpha = piece.getchannel('A').tobytes()
+                if (group['master_alpha_sha256'] != hashlib.sha256(alpha).hexdigest() or
+                        group['master_alpha_nonzero'] != sum(bool(v) for v in alpha)):
+                    raise ValueError('已登錄RGBA物件alpha不同')
+                picture, _ = rgba_object_tile(content[:576], piece.resize((144, 144), Image.Resampling.LANCZOS), grass, policy)
             else:
                 raise ValueError('未知地表編製模式')
             expected = {slots[target['map'], target['frame']] for target in group['targets']}

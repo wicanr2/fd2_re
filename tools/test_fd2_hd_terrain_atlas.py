@@ -1,5 +1,6 @@
 """用實際候選核對圖集重編與錯誤來源拒收；只在Docker執行。"""
 import copy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -165,6 +166,60 @@ class TerrainAtlasTests(unittest.TestCase):
         for bad in (Image.new('RGBA', (143, 144)), Image.new('RGBA', (144, 144), (10, 20, 30, 254))):
             with self.assertRaises(ValueError):
                 atlas.masked_object_tile(raw, bad, grass, policy)
+
+    def test_rgba_objects_keep_master_alpha_and_green_volume(self):
+        recipe = atlas.read(self.recipe)
+        groups = [g for g in recipe['groups'] if g['compile_mode'] == 'atlas_rgba_object']
+        if not groups:
+            self.skipTest('this recipe has no RGBA object source')
+        policy, grass, _ = atlas.grass_policy(recipe, atlas.read(self.base), Path('/modern'))
+        for group in groups:
+            master = Image.open(self.candidate / group['master_file']).convert('RGBA')
+            alpha = master.getchannel('A').tobytes()
+            self.assertEqual(hashlib.sha256(alpha).hexdigest(), group['master_alpha_sha256'])
+            self.assertEqual(sum(bool(v) for v in alpha), group['master_alpha_nonzero'])
+            self.assertEqual(Image.open(self.candidate / group['file']).getextrema()[3], (255, 255))
+        # A green object must remain visible even when every underlying source
+        # index belongs to grass. Artistic alpha never becomes game coverage.
+        painting = Image.new('RGBA', (144, 144))
+        painting.paste((30, 140, 70, 255), (40, 40, 104, 104))
+        actual, _ = atlas.rgba_object_tile(bytes([68]) * 576, painting, grass, policy)
+        self.assertEqual(actual.getpixel((72, 72)), (30, 140, 70, 255))
+        self.assertEqual(actual.getpixel((0, 0)), grass.getpixel((0, 0)))
+        self.assertEqual(actual.getextrema()[3], (255, 255))
+
+    def test_rgba_object_alpha_contract_fails_closed(self):
+        original = atlas.read(self.recipe)
+        if not any(g['compile_mode'] == 'atlas_rgba_object' for g in original['groups']):
+            self.skipTest('this recipe has no RGBA object source')
+        for fault in ('alpha-sha', 'alpha-count', 'opaque-contract', 'mixed-mode'):
+            with self.subTest(fault=fault):
+                recipe = copy.deepcopy(original)
+                if fault == 'alpha-sha':
+                    recipe['groups'][0]['master_alpha_sha256'] = '0' * 64
+                elif fault == 'alpha-count':
+                    recipe['groups'][0]['master_alpha_nonzero'] += 1
+                elif fault == 'opaque-contract':
+                    recipe['master_alpha_contract'] = 'opaque'
+                else:
+                    recipe['groups'][0]['compile_mode'] = 'atlas_masked_object'
+                path, out = self.root / (fault + '.json'), self.root / (fault + '-candidate')
+                atlas.write(path, recipe)
+                with self.assertRaises(ValueError):
+                    self.prepare(path, out)
+                self.assertFalse(out.exists())
+                self.assertFalse(list(self.root.glob('.terrain-atlas-*')))
+        policy, grass, _ = atlas.grass_policy(original, atlas.read(self.base), Path('/modern'))
+        raw = bytes([68]) * 576
+        for bad in (Image.new('RGBA', (143, 144)), Image.new('RGB', (144, 144)),
+                    Image.new('RGBA', (144, 144)), Image.new('RGBA', (144, 144), (10, 20, 30, 255))):
+            with self.assertRaises(ValueError):
+                atlas.rgba_object_tile(raw, bad, grass, policy)
+        painting = Image.new('RGBA', (144, 144))
+        painting.putpixel((72, 72), (10, 20, 30, 255))
+        for bad in (raw[:-1], bytes([32]) * 576):
+            with self.assertRaises(ValueError):
+                atlas.rgba_object_tile(bad, painting, grass, policy)
 
     def test_registration_requires_complete_real_gpu_evidence(self):
         value = os.environ.get('FD2_TERRAIN_ATLAS_GPU_RECEIPT')

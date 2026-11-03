@@ -5133,6 +5133,14 @@
         "pattern": "\"rejected_cells\":\\s*\\[\\s*\\{\\s*\"cell\": 9",
         "note": "保留未通過原圖輪廓審查的來源及原因；後續獨立已核分區不改寫本批拒收紀錄。"
       }
+    },
+    {
+      "id": "command-registry-required-string-keys",
+      "date": "2026-11-03",
+      "area": "驗證收據",
+      "rule": "組合可重跑命令時使用實際儲存鍵，JSON序列化前逐名稱核對必填入口及非空字串。JavaScript的undefined欄位會被JSON略去，不能只驗序列化成功或猜測總數。入口為規格61「HD1草地周圍物件第二批」及主收據hd1_rgba_objects_followup_20261103的commands.json。",
+      "why": "R72命令索引取值時把鍵的首字改大寫，序列化後只留下另行指定的R70入口。提交前總核對擋下，改回實際鍵後完整保存17個已執行命令，素材與測試產物未變。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_rgba_objects_followup_20261103；WORKLOG.md：R72提交前命令索引勘誤"
     }
   ]
 }

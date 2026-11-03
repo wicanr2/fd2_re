@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_hd1_terrain_coverage",
   "scope": "33 native maps: initial selectors and active-event writer upper bound; catalog PNG/SHA/native-mask verified. Not normal reachability, original parity, or complete HD.",
-  "catalog_sha256": "625cab919bc8ce3fbb9e80e1e55f4da36a81eb9135ed0f1684ce958e69fee4e9",
+  "catalog_sha256": "637e8cf42f09ab271b084bf0187eaeec263137e64d3d83fb6a0ce062a0488088",
   "palette": {
     "file": "palette/fdother_000.json",
     "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
@@ -8240,13 +8240,20 @@
           "native_content_sha256": "ce306046d0ce5ee744ea494d07bb9b92370d9ffc3d21c432ae73ebfcff430d2c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 130,
             "cell": 1,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map03.native_hd",
+            "map": 3,
+            "frame": 130,
+            "file": "hd1-terrain-r72-object13-hd.png",
+            "sha256": "4b0af70ed7d6476d2c31dc97f68019466604bade6e5ef605068e3a120e548c75"
           }
         },
         {
@@ -9772,13 +9779,20 @@
           "native_content_sha256": "99b694ade3ead35b7e2effadaeb90aefe7e2e1a95ca25a2e0021d075fefd13dd",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 156,
             "cell": 98,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 156,
+            "file": "hd1-terrain-r72-object07-hd.png",
+            "sha256": "5ce413d760aa92b5e7352180c50a61a1569605dece40372c89b737abb5104e1c"
           }
         },
         {
@@ -9817,13 +9831,20 @@
           "native_content_sha256": "af3d5a02271805c14b7d8b1a753678af1a21dfcf320500687774f592fcd5b557",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 161,
             "cell": 59,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 161,
+            "file": "hd1-terrain-r72-object08-hd.png",
+            "sha256": "5af297e7006bc908fa832c0e4804543654f9be2d7e60bffa2e4e3c687277e717"
           }
         },
         {
@@ -9832,13 +9853,20 @@
           "native_content_sha256": "abd64f981a5258c45aaee77a5400a9073718a9219f33cc35d5c072d61bb67fbf",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 163,
             "cell": 19,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 163,
+            "file": "hd1-terrain-r72-object09-hd.png",
+            "sha256": "dbd62d0016f92b49e97f8137e69d7d8fb2e46d95bb92107d4df69ef5d3d383f4"
           }
         },
         {
@@ -9847,13 +9875,20 @@
           "native_content_sha256": "c91f3becdda6d700d162d561452659827669a3f225c82fb29fe7fd40d355a89a",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 164,
             "cell": 37,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 164,
+            "file": "hd1-terrain-r72-object10-hd.png",
+            "sha256": "259ec55a6b8ed3e22632b61b2d8e11fed9f2b3617ed09777d9363cc301e0739d"
           }
         },
         {
@@ -9862,13 +9897,20 @@
           "native_content_sha256": "03abe7f8e5062ab55157ebcd0dab21304606e66a84169ad835442ef5d1e816db",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 165,
             "cell": 214,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 165,
+            "file": "hd1-terrain-r72-object11-hd.png",
+            "sha256": "92695f79f7f54500bb9c47ece8297a89762d386185db33462f86b09bd3c2f81a"
           }
         },
         {
@@ -9877,13 +9919,20 @@
           "native_content_sha256": "9e74ce547bb58cb07e3f0474275bbe2c1c634677bb88e617127d6a22913cb791",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 167,
             "cell": 18,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 167,
+            "file": "hd1-terrain-r72-object12-hd.png",
+            "sha256": "9782d5e697690fb1efcc543abd32682bc11c3a501eed8dbc98bdc3e50586b435"
           }
         },
         {
@@ -10533,13 +10582,20 @@
           "native_content_sha256": "1c8a99cada6f75df44515ca7ddac4e6fc3adc034ca6fbf5d4935f8fbae810c98",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 218,
             "cell": 850,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map04.native_hd",
+            "map": 4,
+            "frame": 218,
+            "file": "hd1-terrain-r72-object05-hd.png",
+            "sha256": "561307aee9cfc111d82e7df358de25a91cbda1c0f3918b2303b5eb35560900a2"
           }
         },
         {
@@ -14490,13 +14546,20 @@
           "native_content_sha256": "3753635b0ab3ba881561b759f3e988d7de0e86750b9232dee98be9de91f9b185",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 131,
             "cell": 5,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map06.native_hd",
+            "map": 6,
+            "frame": 131,
+            "file": "hd1-terrain-r72-object00-hd.png",
+            "sha256": "250bd2569b69b74314c4218e6d1d47f47e3a72f6bc572a0aef2ce4b13169d922"
           }
         },
         {
@@ -14637,13 +14700,20 @@
           "native_content_sha256": "99b694ade3ead35b7e2effadaeb90aefe7e2e1a95ca25a2e0021d075fefd13dd",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 140,
             "cell": 302,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map06.native_hd",
+            "map": 6,
+            "frame": 140,
+            "file": "hd1-terrain-r72-object07-hd.png",
+            "sha256": "5ce413d760aa92b5e7352180c50a61a1569605dece40372c89b737abb5104e1c"
           }
         },
         {
@@ -14652,13 +14722,20 @@
           "native_content_sha256": "1c8a99cada6f75df44515ca7ddac4e6fc3adc034ca6fbf5d4935f8fbae810c98",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 142,
             "cell": 748,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map06.native_hd",
+            "map": 6,
+            "frame": 142,
+            "file": "hd1-terrain-r72-object05-hd.png",
+            "sha256": "561307aee9cfc111d82e7df358de25a91cbda1c0f3918b2303b5eb35560900a2"
           }
         },
         {
@@ -14814,13 +14891,20 @@
           "native_content_sha256": "2f80f6ccda4a08d73e50e402bd38853a644310cf46a0a9ec3d1cc92d86c8ca9e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 153,
             "cell": 594,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map06.native_hd",
+            "map": 6,
+            "frame": 153,
+            "file": "hd1-terrain-r72-object01-hd.png",
+            "sha256": "b2cc89f0ac263cee0ec471dc0264636e95ba513cbd422e09d926259046503771"
           }
         },
         {
@@ -14829,13 +14913,20 @@
           "native_content_sha256": "da61ee33335d78aad53dd62fd8ae07782af27913e910d5cca65713490eaa2300",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 155,
             "cell": 632,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map06.native_hd",
+            "map": 6,
+            "frame": 155,
+            "file": "hd1-terrain-r72-object02-hd.png",
+            "sha256": "ed6059d8affe113b671d46b6b61835b5accf3ba618c66422b90f66cdef3e1cb3"
           }
         },
         {
@@ -15267,13 +15358,20 @@
           "native_content_sha256": "bcc3e83adbc0df9e182b65ba8defc13471e6ff6ad67a6243afaa24923e838122",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 11,
             "cell": 532,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map07.native_hd",
+            "map": 7,
+            "frame": 11,
+            "file": "hd1-terrain-r72-object06-hd.png",
+            "sha256": "d434afb4ce1ff15937d86c49b01f807730dfe03e8839f5b6ea4ad4320b156b42"
           }
         },
         {
@@ -15911,13 +16009,20 @@
           "native_content_sha256": "af3d5a02271805c14b7d8b1a753678af1a21dfcf320500687774f592fcd5b557",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 161,
             "cell": 755,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map07.native_hd",
+            "map": 7,
+            "frame": 161,
+            "file": "hd1-terrain-r72-object08-hd.png",
+            "sha256": "5af297e7006bc908fa832c0e4804543654f9be2d7e60bffa2e4e3c687277e717"
           }
         },
         {
@@ -15926,13 +16031,20 @@
           "native_content_sha256": "abd64f981a5258c45aaee77a5400a9073718a9219f33cc35d5c072d61bb67fbf",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 163,
             "cell": 725,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map07.native_hd",
+            "map": 7,
+            "frame": 163,
+            "file": "hd1-terrain-r72-object09-hd.png",
+            "sha256": "dbd62d0016f92b49e97f8137e69d7d8fb2e46d95bb92107d4df69ef5d3d383f4"
           }
         },
         {
@@ -15941,13 +16053,20 @@
           "native_content_sha256": "c91f3becdda6d700d162d561452659827669a3f225c82fb29fe7fd40d355a89a",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 164,
             "cell": 697,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map07.native_hd",
+            "map": 7,
+            "frame": 164,
+            "file": "hd1-terrain-r72-object10-hd.png",
+            "sha256": "259ec55a6b8ed3e22632b61b2d8e11fed9f2b3617ed09777d9363cc301e0739d"
           }
         },
         {
@@ -15956,13 +16075,20 @@
           "native_content_sha256": "03abe7f8e5062ab55157ebcd0dab21304606e66a84169ad835442ef5d1e816db",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 165,
             "cell": 754,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map07.native_hd",
+            "map": 7,
+            "frame": 165,
+            "file": "hd1-terrain-r72-object11-hd.png",
+            "sha256": "92695f79f7f54500bb9c47ece8297a89762d386185db33462f86b09bd3c2f81a"
           }
         },
         {
@@ -15971,13 +16097,20 @@
           "native_content_sha256": "9e74ce547bb58cb07e3f0474275bbe2c1c634677bb88e617127d6a22913cb791",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 167,
             "cell": 726,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map07.native_hd",
+            "map": 7,
+            "frame": 167,
+            "file": "hd1-terrain-r72-object12-hd.png",
+            "sha256": "9782d5e697690fb1efcc543abd32682bc11c3a501eed8dbc98bdc3e50586b435"
           }
         },
         {
@@ -18514,13 +18647,20 @@
           "native_content_sha256": "f6c85002a7b4ee7a234aee6a280055785353915a03ad96ca77832ef98261939c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 80,
             "cell": 630,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map08.native_hd",
+            "map": 8,
+            "frame": 80,
+            "file": "hd1-terrain-r72-object14-hd.png",
+            "sha256": "43420adebcaa8538d6b1554deb873575c32758df52702e8785f2154118509635"
           }
         },
         {
@@ -18529,13 +18669,20 @@
           "native_content_sha256": "b7f313df2656d0532023e07b90109f0bc33c602d40243ca3604a51fdf1426fab",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 81,
             "cell": 675,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map08.native_hd",
+            "map": 8,
+            "frame": 81,
+            "file": "hd1-terrain-r72-object15-hd.png",
+            "sha256": "1aab8065bc0d1b03653cbd84204c4abec126fdf4897134fd08a2b673970f35d6"
           }
         },
         {
@@ -18971,13 +19118,20 @@
           "native_content_sha256": "bcc3e83adbc0df9e182b65ba8defc13471e6ff6ad67a6243afaa24923e838122",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 150,
             "cell": 182,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map08.native_hd",
+            "map": 8,
+            "frame": 150,
+            "file": "hd1-terrain-r72-object06-hd.png",
+            "sha256": "d434afb4ce1ff15937d86c49b01f807730dfe03e8839f5b6ea4ad4320b156b42"
           }
         },
         {
@@ -22177,13 +22331,20 @@
           "native_content_sha256": "e55ad49d1030beb96bda9e564d1b9dcb93342ad2f1da1528fd580ba9f4332da6",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 118,
             "cell": 345,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map10.native_hd",
+            "map": 10,
+            "frame": 118,
+            "file": "hd1-terrain-r72-object04-hd.png",
+            "sha256": "0fe6fb7e645fe131c5db65bb67338edfba7819a8a9471db9441b90a67e01f872"
           }
         },
         {
@@ -22236,13 +22397,20 @@
           "native_content_sha256": "2f80f6ccda4a08d73e50e402bd38853a644310cf46a0a9ec3d1cc92d86c8ca9e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 121,
             "cell": 393,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map10.native_hd",
+            "map": 10,
+            "frame": 121,
+            "file": "hd1-terrain-r72-object01-hd.png",
+            "sha256": "b2cc89f0ac263cee0ec471dc0264636e95ba513cbd422e09d926259046503771"
           }
         },
         {
@@ -22251,13 +22419,20 @@
           "native_content_sha256": "b000ac950d97b1fbd4434f51a7d905ee6d293d1a5fea13a3e04465a773769376",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 122,
             "cell": 119,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map10.native_hd",
+            "map": 10,
+            "frame": 122,
+            "file": "hd1-terrain-r72-object03-hd.png",
+            "sha256": "0772e185f8e7ade8f335d5cad6af0c2ff75de63cca7b79757df33c5dc1acfc45"
           }
         },
         {
@@ -22266,13 +22441,20 @@
           "native_content_sha256": "da61ee33335d78aad53dd62fd8ae07782af27913e910d5cca65713490eaa2300",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 123,
             "cell": 125,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map10.native_hd",
+            "map": 10,
+            "frame": 123,
+            "file": "hd1-terrain-r72-object02-hd.png",
+            "sha256": "ed6059d8affe113b671d46b6b61835b5accf3ba618c66422b90f66cdef3e1cb3"
           }
         },
         {
@@ -22391,13 +22573,20 @@
           "native_content_sha256": "3753635b0ab3ba881561b759f3e988d7de0e86750b9232dee98be9de91f9b185",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 131,
             "cell": 7,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map10.native_hd",
+            "map": 10,
+            "frame": 131,
+            "file": "hd1-terrain-r72-object00-hd.png",
+            "sha256": "250bd2569b69b74314c4218e6d1d47f47e3a72f6bc572a0aef2ce4b13169d922"
           }
         },
         {
@@ -22538,13 +22727,20 @@
           "native_content_sha256": "1c8a99cada6f75df44515ca7ddac4e6fc3adc034ca6fbf5d4935f8fbae810c98",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 142,
             "cell": 418,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map10.native_hd",
+            "map": 10,
+            "frame": 142,
+            "file": "hd1-terrain-r72-object05-hd.png",
+            "sha256": "561307aee9cfc111d82e7df358de25a91cbda1c0f3918b2303b5eb35560900a2"
           }
         },
         {
@@ -23705,13 +23901,20 @@
           "native_content_sha256": "ffffe10d2f85750eaf4f843253972337160432eb46786f69febce60010eefa2e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 89,
             "cell": 133,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 89,
+            "file": "hd1-terrain-r72-object16-hd.png",
+            "sha256": "8ed3e6c917fca58858d1673acc0549cee3f74a009934ff3a15ef119728e138ef"
           }
         },
         {
@@ -23981,13 +24184,20 @@
           "native_content_sha256": "3753635b0ab3ba881561b759f3e988d7de0e86750b9232dee98be9de91f9b185",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 135,
             "cell": 28,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 135,
+            "file": "hd1-terrain-r72-object00-hd.png",
+            "sha256": "250bd2569b69b74314c4218e6d1d47f47e3a72f6bc572a0aef2ce4b13169d922"
           }
         },
         {
@@ -23996,13 +24206,20 @@
           "native_content_sha256": "c0f2eac442a33bccd0d3bf7f28a943056ffb4f1876384ec9a4e378608cf05193",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 136,
             "cell": 63,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 136,
+            "file": "hd1-terrain-r72-object17-hd.png",
+            "sha256": "bb6978585ad3651410e8184e4c7d3dc1ddb75b0c9e21f16d5ec6bfbad13a6ece"
           }
         },
         {
@@ -24011,13 +24228,20 @@
           "native_content_sha256": "510aff555958346a264d8dba456a555e89301232a78b9f5017ca431593cbd41c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 137,
             "cell": 14,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 137,
+            "file": "hd1-terrain-r72-object18-hd.png",
+            "sha256": "5a34b763d8528b1c9827fb6ca346298f9ae4658b3da49bde1696f0a374e8cb18"
           }
         },
         {
@@ -25528,13 +25752,20 @@
           "native_content_sha256": "e55ad49d1030beb96bda9e564d1b9dcb93342ad2f1da1528fd580ba9f4332da6",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 278,
             "cell": 410,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 278,
+            "file": "hd1-terrain-r72-object04-hd.png",
+            "sha256": "0fe6fb7e645fe131c5db65bb67338edfba7819a8a9471db9441b90a67e01f872"
           }
         },
         {
@@ -25565,13 +25796,20 @@
           "native_content_sha256": "b000ac950d97b1fbd4434f51a7d905ee6d293d1a5fea13a3e04465a773769376",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 282,
             "cell": 931,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 282,
+            "file": "hd1-terrain-r72-object03-hd.png",
+            "sha256": "0772e185f8e7ade8f335d5cad6af0c2ff75de63cca7b79757df33c5dc1acfc45"
           }
         },
         {
@@ -25580,13 +25818,20 @@
           "native_content_sha256": "da61ee33335d78aad53dd62fd8ae07782af27913e910d5cca65713490eaa2300",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 283,
             "cell": 1016,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map11.native_hd",
+            "map": 11,
+            "frame": 283,
+            "file": "hd1-terrain-r72-object02-hd.png",
+            "sha256": "ed6059d8affe113b671d46b6b61835b5accf3ba618c66422b90f66cdef3e1cb3"
           }
         }
       ]
@@ -29240,13 +29485,20 @@
           "native_content_sha256": "593e914e9d4f656a4a149bc1d5e81fda6bc4e950a68f9c0d838a29f837892da1",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 89,
             "cell": 92,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map13.native_hd",
+            "map": 13,
+            "frame": 89,
+            "file": "hd1-terrain-r72-object19-hd.png",
+            "sha256": "4ef899dafe991d4a0f4ea1a1ce048b12ad8c4346310f24e6bf0fea2850d2c222"
           }
         },
         {
@@ -29255,13 +29507,20 @@
           "native_content_sha256": "2eb1f758d2c08c3526b645b941d0c82d1775d983a2c4853af909d8d75b737019",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 92,
             "cell": 8,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map13.native_hd",
+            "map": 13,
+            "frame": 92,
+            "file": "hd1-terrain-r72-object20-hd.png",
+            "sha256": "e10008c7d48b9e95f8bd5f0cc8e1e060b6679843e9664f54a5214ecbf10f0362"
           }
         },
         {
@@ -29270,13 +29529,20 @@
           "native_content_sha256": "08bd1b12efa801be984771c1feae10b49fa617e1070b4a11afc6792beb433fd6",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 93,
             "cell": 7,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map13.native_hd",
+            "map": 13,
+            "frame": 93,
+            "file": "hd1-terrain-r72-object21-hd.png",
+            "sha256": "666b823f1ad361241f0d0f4c848baed06b13dfabe61e3508339094236788a3fd"
           }
         },
         {
@@ -29823,13 +30089,20 @@
           "native_content_sha256": "b000ac950d97b1fbd4434f51a7d905ee6d293d1a5fea13a3e04465a773769376",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 158,
             "cell": 1243,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map13.native_hd",
+            "map": 13,
+            "frame": 158,
+            "file": "hd1-terrain-r72-object03-hd.png",
+            "sha256": "0772e185f8e7ade8f335d5cad6af0c2ff75de63cca7b79757df33c5dc1acfc45"
           }
         },
         {
@@ -29838,13 +30111,20 @@
           "native_content_sha256": "da61ee33335d78aad53dd62fd8ae07782af27913e910d5cca65713490eaa2300",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 159,
             "cell": 1365,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map13.native_hd",
+            "map": 13,
+            "frame": 159,
+            "file": "hd1-terrain-r72-object02-hd.png",
+            "sha256": "ed6059d8affe113b671d46b6b61835b5accf3ba618c66422b90f66cdef3e1cb3"
           }
         },
         {
@@ -30997,13 +31277,20 @@
           "native_content_sha256": "ce306046d0ce5ee744ea494d07bb9b92370d9ffc3d21c432ae73ebfcff430d2c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 80,
             "cell": 24,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 80,
+            "file": "hd1-terrain-r72-object13-hd.png",
+            "sha256": "4b0af70ed7d6476d2c31dc97f68019466604bade6e5ef605068e3a120e548c75"
           }
         },
         {
@@ -31072,13 +31359,20 @@
           "native_content_sha256": "593e914e9d4f656a4a149bc1d5e81fda6bc4e950a68f9c0d838a29f837892da1",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 89,
             "cell": 497,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 89,
+            "file": "hd1-terrain-r72-object19-hd.png",
+            "sha256": "4ef899dafe991d4a0f4ea1a1ce048b12ad8c4346310f24e6bf0fea2850d2c222"
           }
         },
         {
@@ -31087,13 +31381,20 @@
           "native_content_sha256": "7f8176aeba41dedbf0a4bc68d9672959b61f8dca94e5ac278592fc2038858738",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 90,
             "cell": 243,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 90,
+            "file": "hd1-terrain-r72-object22-hd.png",
+            "sha256": "906d9c327b0334d7d929f98bacaae514ce41d314cb8dae8842fa3ef49125c148"
           }
         },
         {
@@ -31102,13 +31403,20 @@
           "native_content_sha256": "50fb0789ffff6b498010a25ae9ff17d13d6235a1e08de96715d15e0f0da2babc",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 91,
             "cell": 91,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 91,
+            "file": "hd1-terrain-r72-object23-hd.png",
+            "sha256": "6c45540db969157cfa99cf0a32cb1a298319ba1dd9df097632c73f4e35bdeda5"
           }
         },
         {
@@ -31117,13 +31425,20 @@
           "native_content_sha256": "2eb1f758d2c08c3526b645b941d0c82d1775d983a2c4853af909d8d75b737019",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 92,
             "cell": 48,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 92,
+            "file": "hd1-terrain-r72-object20-hd.png",
+            "sha256": "e10008c7d48b9e95f8bd5f0cc8e1e060b6679843e9664f54a5214ecbf10f0362"
           }
         },
         {
@@ -31132,13 +31447,20 @@
           "native_content_sha256": "08bd1b12efa801be984771c1feae10b49fa617e1070b4a11afc6792beb433fd6",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 93,
             "cell": 547,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 93,
+            "file": "hd1-terrain-r72-object21-hd.png",
+            "sha256": "666b823f1ad361241f0d0f4c848baed06b13dfabe61e3508339094236788a3fd"
           }
         },
         {
@@ -31829,13 +32151,20 @@
           "native_content_sha256": "e55ad49d1030beb96bda9e564d1b9dcb93342ad2f1da1528fd580ba9f4332da6",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 154,
             "cell": 396,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 154,
+            "file": "hd1-terrain-r72-object04-hd.png",
+            "sha256": "0fe6fb7e645fe131c5db65bb67338edfba7819a8a9471db9441b90a67e01f872"
           }
         },
         {
@@ -31888,13 +32217,20 @@
           "native_content_sha256": "2f80f6ccda4a08d73e50e402bd38853a644310cf46a0a9ec3d1cc92d86c8ca9e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 157,
             "cell": 583,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map14.native_hd",
+            "map": 14,
+            "frame": 157,
+            "file": "hd1-terrain-r72-object01-hd.png",
+            "sha256": "b2cc89f0ac263cee0ec471dc0264636e95ba513cbd422e09d926259046503771"
           }
         },
         {
@@ -36633,13 +36969,20 @@
           "native_content_sha256": "ffffe10d2f85750eaf4f843253972337160432eb46786f69febce60010eefa2e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 89,
             "cell": 1196,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map17.native_hd",
+            "map": 17,
+            "frame": 89,
+            "file": "hd1-terrain-r72-object16-hd.png",
+            "sha256": "8ed3e6c917fca58858d1673acc0549cee3f74a009934ff3a15ef119728e138ef"
           }
         },
         {
@@ -36804,13 +37147,20 @@
           "native_content_sha256": "3753635b0ab3ba881561b759f3e988d7de0e86750b9232dee98be9de91f9b185",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 135,
             "cell": 201,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map17.native_hd",
+            "map": 17,
+            "frame": 135,
+            "file": "hd1-terrain-r72-object00-hd.png",
+            "sha256": "250bd2569b69b74314c4218e6d1d47f47e3a72f6bc572a0aef2ce4b13169d922"
           }
         },
         {
@@ -38272,13 +38622,20 @@
           "native_content_sha256": "2f80f6ccda4a08d73e50e402bd38853a644310cf46a0a9ec3d1cc92d86c8ca9e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 281,
             "cell": 351,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map17.native_hd",
+            "map": 17,
+            "frame": 281,
+            "file": "hd1-terrain-r72-object01-hd.png",
+            "sha256": "b2cc89f0ac263cee0ec471dc0264636e95ba513cbd422e09d926259046503771"
           }
         },
         {
@@ -38287,13 +38644,20 @@
           "native_content_sha256": "b000ac950d97b1fbd4434f51a7d905ee6d293d1a5fea13a3e04465a773769376",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 282,
             "cell": 598,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map17.native_hd",
+            "map": 17,
+            "frame": 282,
+            "file": "hd1-terrain-r72-object03-hd.png",
+            "sha256": "0772e185f8e7ade8f335d5cad6af0c2ff75de63cca7b79757df33c5dc1acfc45"
           }
         },
         {
@@ -39368,13 +39732,20 @@
           "native_content_sha256": "b7f313df2656d0532023e07b90109f0bc33c602d40243ca3604a51fdf1426fab",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 72,
             "cell": 3,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map18.native_hd",
+            "map": 18,
+            "frame": 72,
+            "file": "hd1-terrain-r72-object15-hd.png",
+            "sha256": "1aab8065bc0d1b03653cbd84204c4abec126fdf4897134fd08a2b673970f35d6"
           }
         },
         {
@@ -39413,13 +39784,20 @@
           "native_content_sha256": "f6c85002a7b4ee7a234aee6a280055785353915a03ad96ca77832ef98261939c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 76,
             "cell": 32,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map18.native_hd",
+            "map": 18,
+            "frame": 76,
+            "file": "hd1-terrain-r72-object14-hd.png",
+            "sha256": "43420adebcaa8538d6b1554deb873575c32758df52702e8785f2154118509635"
           }
         },
         {
@@ -43346,13 +43724,20 @@
           "native_content_sha256": "7f8176aeba41dedbf0a4bc68d9672959b61f8dca94e5ac278592fc2038858738",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 216,
             "cell": 820,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map20.native_hd",
+            "map": 20,
+            "frame": 216,
+            "file": "hd1-terrain-r72-object22-hd.png",
+            "sha256": "906d9c327b0334d7d929f98bacaae514ce41d314cb8dae8842fa3ef49125c148"
           }
         },
         {
@@ -43406,13 +43791,20 @@
           "native_content_sha256": "50fb0789ffff6b498010a25ae9ff17d13d6235a1e08de96715d15e0f0da2babc",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 220,
             "cell": 275,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map20.native_hd",
+            "map": 20,
+            "frame": 220,
+            "file": "hd1-terrain-r72-object23-hd.png",
+            "sha256": "6c45540db969157cfa99cf0a32cb1a298319ba1dd9df097632c73f4e35bdeda5"
           }
         },
         {
@@ -47055,13 +47447,20 @@
           "native_content_sha256": "bcc3e83adbc0df9e182b65ba8defc13471e6ff6ad67a6243afaa24923e838122",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 122,
             "cell": 1412,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map22.native_hd",
+            "map": 22,
+            "frame": 122,
+            "file": "hd1-terrain-r72-object06-hd.png",
+            "sha256": "d434afb4ce1ff15937d86c49b01f807730dfe03e8839f5b6ea4ad4320b156b42"
           }
         },
         {
@@ -66329,13 +66728,20 @@
           "native_content_sha256": "e55ad49d1030beb96bda9e564d1b9dcb93342ad2f1da1528fd580ba9f4332da6",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 118,
             "cell": 345,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map30.native_hd",
+            "map": 30,
+            "frame": 118,
+            "file": "hd1-terrain-r72-object04-hd.png",
+            "sha256": "0fe6fb7e645fe131c5db65bb67338edfba7819a8a9471db9441b90a67e01f872"
           }
         },
         {
@@ -66388,13 +66794,20 @@
           "native_content_sha256": "2f80f6ccda4a08d73e50e402bd38853a644310cf46a0a9ec3d1cc92d86c8ca9e",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 121,
             "cell": 393,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map30.native_hd",
+            "map": 30,
+            "frame": 121,
+            "file": "hd1-terrain-r72-object01-hd.png",
+            "sha256": "b2cc89f0ac263cee0ec471dc0264636e95ba513cbd422e09d926259046503771"
           }
         },
         {
@@ -66403,13 +66816,20 @@
           "native_content_sha256": "b000ac950d97b1fbd4434f51a7d905ee6d293d1a5fea13a3e04465a773769376",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 122,
             "cell": 119,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map30.native_hd",
+            "map": 30,
+            "frame": 122,
+            "file": "hd1-terrain-r72-object03-hd.png",
+            "sha256": "0772e185f8e7ade8f335d5cad6af0c2ff75de63cca7b79757df33c5dc1acfc45"
           }
         },
         {
@@ -66418,13 +66838,20 @@
           "native_content_sha256": "da61ee33335d78aad53dd62fd8ae07782af27913e910d5cca65713490eaa2300",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 123,
             "cell": 125,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map30.native_hd",
+            "map": 30,
+            "frame": 123,
+            "file": "hd1-terrain-r72-object02-hd.png",
+            "sha256": "ed6059d8affe113b671d46b6b61835b5accf3ba618c66422b90f66cdef3e1cb3"
           }
         },
         {
@@ -66543,13 +66970,20 @@
           "native_content_sha256": "3753635b0ab3ba881561b759f3e988d7de0e86750b9232dee98be9de91f9b185",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 131,
             "cell": 7,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map30.native_hd",
+            "map": 30,
+            "frame": 131,
+            "file": "hd1-terrain-r72-object00-hd.png",
+            "sha256": "250bd2569b69b74314c4218e6d1d47f47e3a72f6bc572a0aef2ce4b13169d922"
           }
         },
         {
@@ -68617,13 +69051,20 @@
           "native_content_sha256": "ce306046d0ce5ee744ea494d07bb9b92370d9ffc3d21c432ae73ebfcff430d2c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 130,
             "cell": 364,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map31.native_hd",
+            "map": 31,
+            "frame": 130,
+            "file": "hd1-terrain-r72-object13-hd.png",
+            "sha256": "4b0af70ed7d6476d2c31dc97f68019466604bade6e5ef605068e3a120e548c75"
           }
         },
         {
@@ -68713,13 +69154,20 @@
           "native_content_sha256": "3753635b0ab3ba881561b759f3e988d7de0e86750b9232dee98be9de91f9b185",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 135,
             "cell": 365,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map31.native_hd",
+            "map": 31,
+            "frame": 135,
+            "file": "hd1-terrain-r72-object00-hd.png",
+            "sha256": "250bd2569b69b74314c4218e6d1d47f47e3a72f6bc572a0aef2ce4b13169d922"
           }
         },
         {
@@ -68728,13 +69176,20 @@
           "native_content_sha256": "c0f2eac442a33bccd0d3bf7f28a943056ffb4f1876384ec9a4e378608cf05193",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 136,
             "cell": 12,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map31.native_hd",
+            "map": 31,
+            "frame": 136,
+            "file": "hd1-terrain-r72-object17-hd.png",
+            "sha256": "bb6978585ad3651410e8184e4c7d3dc1ddb75b0c9e21f16d5ec6bfbad13a6ece"
           }
         },
         {
@@ -68743,13 +69198,20 @@
           "native_content_sha256": "510aff555958346a264d8dba456a555e89301232a78b9f5017ca431593cbd41c",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 137,
             "cell": 8,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.hd1.rgba_objects_r72.map31.native_hd",
+            "map": 31,
+            "frame": 137,
+            "file": "hd1-terrain-r72-object18-hd.png",
+            "sha256": "5a34b763d8528b1c9827fb6ca346298f9ae4658b3da49bde1696f0a374e8cb18"
           }
         },
         {
@@ -71930,10 +72392,10 @@
   ],
   "summary": {
     "maps": 33,
-    "missing-art": 2972,
-    "missing_unique_native_content": 2000,
+    "missing-art": 2906,
+    "missing_unique_native_content": 1976,
     "native-remap-only": 10,
-    "registered-hd": 1016,
+    "registered-hd": 1082,
     "required_slots": 3998,
     "selector_checks": 617520
   }

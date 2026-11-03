@@ -134,6 +134,20 @@ def masked_object_tile(raw, painting, grass, policy):
     return Image.composite(painting, background, mask), mask, shade
 
 
+def rgba_object_tile(raw, painting, grass, policy):
+    """製圖alpha保留綠色物件體積；成品仍為原生完整opaque來源。"""
+    indices = set(policy['index_groups']['grass'])
+    if (len(raw) != 576 or set(policy['index_groups']) != {'grass'} or 68 not in indices or
+            not any(v in indices for v in raw) or painting.mode != 'RGBA' or painting.size != (144, 144)):
+        raise ValueError('RGBA物件製圖來源尺寸或背景不同')
+    low, high = painting.getchannel('A').getextrema()
+    if low != 0 or high < 200:
+        raise ValueError('RGBA物件缺少透明背景或可見前景')
+    background_raw = bytes(v if v in indices else 68 for v in raw)
+    background, shade = composite_relief(background_raw, {'grass': grass}, policy)
+    return Image.alpha_composite(background, painting), shade
+
+
 def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_path, coverage_path, out):
     if not Path('/.dockerenv').exists() or os.path.lexists(out) or not out.parent.is_dir():
         raise ValueError('只在Docker寫入既有父目錄中的新候選')
@@ -149,7 +163,13 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
         raise ValueError('覆蓋與基底清冊不同')
     with Image.open(master_path) as opened:
         master = opened.convert('RGBA')
-    if list(master.size) != recipe['master_size'] or master.getchannel('A').getextrema() != (255, 255):
+    alpha_contract = recipe.get('master_alpha_contract', 'opaque')
+    rgba_groups = all(g['compile_mode'] == 'atlas_rgba_object' for g in recipe['groups'])
+    low, high = master.getchannel('A').getextrema()
+    alpha_valid = ((alpha_contract == 'opaque' and (low, high) == (255, 255) and
+                    not any(g['compile_mode'] == 'atlas_rgba_object' for g in recipe['groups'])) or
+                   (alpha_contract == 'painted_object_rgba' and rgba_groups and low == 0 and high >= 200))
+    if list(master.size) != recipe['master_size'] or not alpha_valid:
         raise ValueError('圖集母稿尺寸或透明度不同')
     bindings = source_groups(recipe, coverage, source, original, maps)
     policy, grass, grass_edge = grass_policy(recipe, catalog, pack)
@@ -204,6 +224,24 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                 frame.update(master_file=group['master_file'], master_sha256=sha(stage / group['master_file']),
                              crop=crop, object_indices=actual_indices, object_source_pixels=group['object_source_pixels'],
                              object_mask_sha256=hashlib.sha256(mask.tobytes()).hexdigest(),
+                             shade_mask_sha256=hashlib.sha256(shade.tobytes()).hexdigest(),
+                             material=policy['material'], background_edge_calibration=grass_edge)
+                additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
+                                  'status': 'concept', 'file': group['master_file'], 'width': 256, 'height': 256,
+                                  'sha256': frame['master_sha256'], 'source_refs': refs})
+            elif group['compile_mode'] == 'atlas_rgba_object':
+                crop = [cell % 4 * 256, cell // 4 * 256, cell % 4 * 256 + 256, cell // 4 * 256 + 256]
+                piece = master.crop(crop)
+                alpha = piece.getchannel('A').tobytes()
+                if (group['crop'] != crop or group['master_alpha_sha256'] != hashlib.sha256(alpha).hexdigest() or
+                        group['master_alpha_nonzero'] != sum(bool(v) for v in alpha)):
+                    raise ValueError('RGBA物件裁切或製圖alpha不同')
+                piece.save(stage / group['master_file'])
+                raw = native(original, source, *group['anchor'])[:576]
+                tile, shade = rgba_object_tile(raw, piece.resize((144, 144), Image.Resampling.LANCZOS), grass, policy)
+                frame.update(master_file=group['master_file'], master_sha256=sha(stage / group['master_file']),
+                             crop=crop, master_alpha_sha256=group['master_alpha_sha256'],
+                             master_alpha_nonzero=group['master_alpha_nonzero'],
                              shade_mask_sha256=hashlib.sha256(shade.tobytes()).hexdigest(),
                              material=policy['material'], background_edge_calibration=grass_edge)
                 additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
