@@ -119,7 +119,7 @@ https://github.com/wicanr2/fd2_re
 
 這是第一版正式引擎發行。30章受控流程已通過逐章驗收。
 各章使用的建構槽、清敵及保存差異見儲存庫 docs/REMAKE-STATUS.md。
-HD、所有分支、自然難度與人耳音訊驗收仍未完成。
+HD1素材與技術接線已完成；人工造型、逐章、平台及人耳音訊驗收另行確認。
 
 本包不含原版遊戲、美術、音樂、字型或私人現代素材。
 首次遊玩前，請從自己合法持有的來源建立完整分離素材包。
@@ -163,7 +163,7 @@ macOS 的 LICENSE 與 third-party/ 位於 FD2.app/Contents/Resources/。
         "schema_version": 1, "version": version(), "source_commit": commit(),
         "platform": platform, "distribution": "engine-only",
         "original_assets_included": False, "modern_private_assets_included": False,
-        "gameplay_scope": "111受控流程30章；各章限制見正式台帳，HD未完成",
+        "gameplay_scope": "111受控流程30章；HD1素材與接線完成，各章及人工限制見正式台帳",
         "assets": assets})
 
 

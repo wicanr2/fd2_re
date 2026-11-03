@@ -16,12 +16,12 @@ import (
 const playerToolbarHeight = 24
 const playerToolbarHideTicks = 90
 
-var playerLocaleButton = image.Rect(240, 3, 336, 21)
-var playerInterfaceButton = image.Rect(134, 3, 236, 21)
-var playerFontButton = image.Rect(340, 3, 410, 21)
-var playerSpeedButton = image.Rect(414, 3, 466, 21)
-var playerPosterButton = image.Rect(470, 3, 540, 21)
-var playerFullscreenButton = image.Rect(544, 3, 632, 21)
+var playerLocaleButton = image.Rect(230, 3, 314, 21)
+var playerInterfaceButton = image.Rect(134, 3, 226, 21)
+var playerFontButton = image.Rect(318, 3, 376, 21)
+var playerSpeedButton = image.Rect(380, 3, 424, 21)
+var playerPosterButton = image.Rect(428, 3, 482, 21)
+var playerFullscreenButton = image.Rect(486, 3, 560, 21)
 
 func (g *Game) playerTouchCoordinates(x, y int) (int, int, bool) {
 	x -= g.playerViewportLeft
@@ -130,6 +130,9 @@ func (p *modernHDPresentation) queueToolbarPoint(point image.Point) {
 		return
 	}
 	switch {
+	case point.In(playerBalanceButton):
+		p.Game.openBalanceEditor()
+		p.poster.consumeInput = true
 	case point.In(playerLocaleButton):
 		p.Game.playerLocaleRequested = true
 	case point.In(playerInterfaceButton):
@@ -232,6 +235,7 @@ func (p *modernHDPresentation) drawThemeToolbar(screen ebiten.FinalScreen, geome
 		full = "全屏"
 	}
 	p.drawCompactToolbarButton(surface, playerFullscreenButton, full, ebiten.IsFullscreen())
+	p.drawCompactToolbarButton(surface, playerBalanceButton, "能力", p.Game.balanceUI.open)
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(1.0/factor, 1.0/factor)
 	op.GeoM.Concat(geometry)

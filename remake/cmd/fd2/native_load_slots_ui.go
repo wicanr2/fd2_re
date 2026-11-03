@@ -257,6 +257,10 @@ func (g *Game) restoreNativeChapterSlot(path string, slot int, inHotel bool) err
 		)
 	}
 
+	balanceState, err := loadBalanceSavedState(path, plain, slot)
+	if err != nil {
+		return err
+	}
 	// Every fallible decode/validation step has completed. Apply the complete
 	// transaction at once so malformed native data cannot leave mixed state.
 	g.captureNativeMapHUDPersistence()
@@ -272,6 +276,8 @@ func (g *Game) restoreNativeChapterSlot(path string, slot int, inHotel bool) err
 	g.partyMembers = plan.PartyMembers
 	g.partyJoinOrder = plan.PartyJoinOrder
 	g.partyRoster = plan.PartyRoster
+	g.balance = balanceState.Options
+	g.balanceUI = balanceEditor{}
 	g.partyDeploy = map[int]bool{}
 	g.handlerChapter = plan.NativeChapterIndex
 	g.restoreNativeMapHUDGateA(plan.HUDGateA)

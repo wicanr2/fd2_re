@@ -68,7 +68,10 @@ func (r StatRange) roll(roll statRoll) int {
 
 // GrowthRow 一個(角色,職業)每級成長範圍。原生第 11 byte 的 learn_idx 已另由
 // CommandLearn 表處理，不能再被稱為 magic/spell index。
-type GrowthRow struct{ AP, DP, DX, HP, MP StatRange }
+type GrowthRow struct {
+	AP, DP, DX, HP, MP StatRange
+	balanceRates       *GrowthRates
+}
 
 // growthTable — 各角色×職業每級成長範圍(doc02 §7.2 逐格與 EXE 升級成長表
 // docs/data/exe_tables/growth.json[0x55EA1] 交叉比對後的精確版;每級升級時在
@@ -259,6 +262,23 @@ func (u *Unit) applyGrowthRow(row GrowthRow, roll statRoll) LevelUpEvent {
 		HpGain: row.HP.roll(roll),
 		MpGain: row.MP.roll(roll),
 	}
+	if r := row.balanceRates; r != nil && *r != OriginalGrowthRates() {
+		capGain := func(value, current, percent int) int {
+			v := scaleBalance(value, percent)
+			if current+v > 32767 {
+				v = 32767 - current
+			}
+			if v < 0 {
+				v = 0
+			}
+			return v
+		}
+		ev.ApGain = capGain(ev.ApGain, u.AP, r.AP)
+		ev.DpGain = capGain(ev.DpGain, u.DP, r.DP)
+		ev.DxGain = capGain(ev.DxGain, u.DX, r.DX)
+		ev.HpGain = capGain(ev.HpGain, u.MaxHP, r.HP)
+		ev.MpGain = capGain(ev.MpGain, u.MaxMP, r.MP)
+	}
 	u.AP += ev.ApGain
 	u.DP += ev.DpGain
 	u.DX += ev.DxGain
@@ -414,10 +434,11 @@ func (s *State) AwardExpNative(u *Unit, amount int, rngState uint16) (int, []Lev
 func (s *State) NativeGrowthRowFor(u *Unit) (GrowthRow, bool) {
 	if s != nil && u != nil && u.HasBattleFig && s.NativeGrowthRows != nil {
 		if row, ok := s.NativeGrowthRows[u.BattleFig]; ok {
-			return row, true
+			return s.balanceGrowthRow(u, row), true
 		}
 	}
-	return legacyGrowthRow(u)
+	row, ok := legacyGrowthRow(u)
+	return s.balanceGrowthRow(u, row), ok
 }
 
 // LoadNativeGrowthRows 讀 EXE 升級成長表（docs/data/exe_tables/growth.json 或打包的

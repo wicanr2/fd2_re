@@ -225,6 +225,11 @@ func (g *Game) prepareNativeContinueFromCurrentSnapshot(path string, timer int) 
 	); err != nil {
 		return Game{}, err
 	}
+	balanceState, err := loadBalanceSavedState(path, plain, -1)
+	if err != nil {
+		return Game{}, err
+	}
+	candidate.restoreBalanceSavedState(balanceState)
 	candidate.nativeCurrentSavePlain = append([]byte(nil), plain...)
 	return candidate, nil
 }

@@ -138,6 +138,7 @@ func (s *State) planNativeCommandDamageTargets(actor *Unit, commandID int, recor
 		ActorActedBefore: actor.Acted, RNGBefore: rngState,
 		DamageStages: damageStages,
 	}
+	record.Hit = s.CommandHit(actor, commandID, record.Hit)
 	if err := resolveNativeCommandDamagePlan(plan, record, targets, resistByClass, rngState, walk); err != nil {
 		return nil, err
 	}
@@ -314,6 +315,7 @@ func (s *State) PlanNativeAICommandDamageWalk(actor *Unit, origin Cell, commandI
 	}
 	plan := &NativeCommandDamagePlan{Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
 		ActorActedBefore: actor.Acted, RNGBefore: rngState, DamageStages: stages}
+	record.Hit = s.CommandHit(actor, commandID, record.Hit)
 	if err := resolveNativeCommandDamagePlan(plan, record, targets, resistByClass, rngState, walk); err != nil {
 		return nil, err
 	}

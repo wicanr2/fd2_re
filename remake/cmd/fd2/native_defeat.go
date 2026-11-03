@@ -235,6 +235,8 @@ func (g *Game) restartCampaignFromTitle() error {
 		return errors.New("新戰役缺少起點")
 	}
 	g.clearDefeatedBattleTransientState()
+	g.balance = nil
+	g.balanceUI = balanceEditor{}
 	g.camp = campaign.NewRunner(g.camp.C)
 	g.partyMembers, g.partyRoster, g.partyDeploy = nil, nil, nil
 	g.partyJoinOrder, g.items = nil, nil

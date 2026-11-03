@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -339,6 +339,14 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
+
+### P1 工具列能力設定：逐人成長與命中、全體敵軍強度及獨立存檔
+
+`progress-balance-editor` · 工作 · [#291](https://github.com/wicanr2/fd2_re/issues/291) · 仍未完成 · 要人判
+
+使用者已確認每次開啟三次警告；當前能力逐人編輯；成長採我方全體預設＋逐人覆寫；命中只調整既有命中骰，音速刃保持原傷害；敵軍生命、魔力、攻擊、防禦、敏捷整體倍率。預設維持原版，設定隨各份進度保存。READY契約依docs/knowledge-base/61-modern-theme-runtime-spec.md「進度獨立的能力、成長、命中與敵軍設定」。
+
+怎樣算做完：規則預設不變、成長兩條路徑與命中、敵軍出場與續戰不重乘、每次三次警告、正常GUI與不同存檔隔離驗證通過；更新截圖及三平台完整版。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

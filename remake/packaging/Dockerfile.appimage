@@ -9,7 +9,8 @@ ARG LINUXDEPLOY_URL=https://github.com/linuxdeploy/linuxdeploy/releases/download
 ARG APPIMAGETOOL_URL=https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage
 ARG APPIMAGE_RUNTIME_URL=https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-x86_64
 
-RUN apt-get update \
+RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources \
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates curl file patchelf desktop-file-utils python3 xvfb xauth \
         pkg-config libasound2-dev xorg-dev libgl1-mesa-dev \

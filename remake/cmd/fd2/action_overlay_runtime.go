@@ -652,7 +652,7 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 			return
 		}
 		if accepted && state.saveCurrent {
-			if err := replaceNativeCurrentSaveAtomic(state.savePath, state.saveStored); err != nil {
+			if err := g.replaceNativeSaveWithBalance(state.savePath, state.saveStored, -1); err != nil {
 				g.loadErr = err.Error()
 				accepted = false
 			} else if plain, err := fdsave.Decode(state.saveStored); err != nil {

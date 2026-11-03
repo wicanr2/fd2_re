@@ -25,10 +25,14 @@ type modernHDPresentation struct {
 	interfaceHUDGPU                *modernHDMapGPU
 	appliedPlayerSpeed             int
 	poster                         playerPosterPresentation
+	balanceSurface                 *ebiten.Image
 	posterMenuSurface, posterPixel *ebiten.Image
 }
 
 func (p *modernHDPresentation) Update() error {
+	if p.updateBalanceEditor() {
+		return nil
+	}
 	before := p.Game.hdPresentationEnabled()
 	beforeWidth := p.layoutWidth()
 	w, h := ebiten.WindowSize()
@@ -48,7 +52,7 @@ func (p *modernHDPresentation) Update() error {
 	if p.poster.menuOpen {
 		p.Game.playerOverlayBlock = playerPosterMenu
 	}
-	if !p.poster.consumeInput {
+	if !p.poster.consumeInput && !p.Game.balanceUI.open {
 		if err := p.Game.Update(); err != nil {
 			return err
 		}
@@ -216,4 +220,5 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		p.drawThemeToolbar(screen, toolbarGeometry)
 		p.drawPosterMenu(screen, toolbarGeometry)
 	}
+	p.drawBalanceEditor(screen, contentGeometry)
 }

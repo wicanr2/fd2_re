@@ -1,7 +1,7 @@
 name: FD2 official release
 on:
   push:
-    branches: ['release/v.1.0.0-20261017']
+    branches: ['release/v.*']
     tags: ['v.*']
 permissions:
   contents: read

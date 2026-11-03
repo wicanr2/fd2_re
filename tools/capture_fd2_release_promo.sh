@@ -17,7 +17,7 @@ duration=${3:-900}
 size=${4:-640x400}
 fps=${5:-60}
 [[ "$duration" =~ ^[1-9][0-9]*$ ]] && (( duration <= 900 ))
-[[ "$size" == 640x400 || "$size" == 1280x800 ]]
+[[ "$size" == 640x400 || "$size" == 1280x800 || "$size" == 1920x1200 ]]
 [[ "$fps" == 30 || "$fps" == 60 ]]
 test -x "$game/AppRun"
 test -f "$game/pack/manifest.json"
@@ -28,24 +28,41 @@ mkdir -p "$out"
 export HOME=/tmp/fd2-promo-home XDG_DATA_HOME="$out/user-data"
 export XDG_RUNTIME_DIR=/tmp/fd2-pulse DISPLAY=:95
 export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
-export GOMAXPROCS=2 GOMEMLIMIT=2GiB LP_NUM_THREADS=2
+export GOMAXPROCS=2 GOMEMLIMIT="${FD2_CAPTURE_GO_MEMORY:-6GiB}" LP_NUM_THREADS=2
 mkdir -p "$HOME" "$XDG_RUNTIME_DIR" "$XDG_DATA_HOME"
 chmod 700 "$XDG_RUNTIME_DIR"
 export PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
+# Polling is bounded even when an X11 read or GL swap does not return.
+stop_children() {
+  local signal=$1 limit=$2 pid attempt alive
+  shift 2
+  for pid in "$@"; do
+    [[ "$pid" =~ ^[1-9][0-9]*$ ]] && kill -"$signal" "$pid" 2>/dev/null || true
+  done
+  for ((attempt=0; attempt<limit; attempt++)); do
+    alive=0
+    for pid in "$@"; do
+      if [[ "$pid" =~ ^[1-9][0-9]*$ ]] && kill -0 "$pid" 2>/dev/null; then alive=1; fi
+    done
+    (( alive )) || return 0
+    sleep .1
+  done
+}
 cleanup() {
-  kill -INT "${record_pid:-}" 2>/dev/null || true
-  kill -INT "${audio_pid:-}" 2>/dev/null || true
-  wait "${record_pid:-}" 2>/dev/null || true
-  wait "${audio_pid:-}" 2>/dev/null || true
-  kill "${game_pid:-}" "${xvfb_pid:-}" "${pulse_pid:-}" 2>/dev/null || true
-  kill "${memory_pid:-}" 2>/dev/null || true
-  wait "${game_pid:-}" "${xvfb_pid:-}" "${pulse_pid:-}" 2>/dev/null || true
+  trap - EXIT INT TERM
+  stop_children INT 50 "${record_pid:-}" "${audio_pid:-}"
+  stop_children TERM 20 "${record_pid:-}" "${audio_pid:-}" "${game_pid:-}" "${memory_pid:-}"
+  stop_children KILL 10 "${record_pid:-}" "${audio_pid:-}" "${game_pid:-}" "${memory_pid:-}"
+  stop_children TERM 20 "${xvfb_pid:-}" "${pulse_pid:-}"
+  stop_children KILL 10 "${xvfb_pid:-}" "${pulse_pid:-}"
   if test -s "$out/video.mkv" && test -s "$out/audio.mka"; then
-    ffmpeg -hide_banner -loglevel warning -y -i "$out/video.mkv" -i "$out/audio.mka" \
-      -map 0:v:0 -map 1:a:0 -c copy -shortest "$out/live.mkv" >"$out/mux.log" 2>&1
+    timeout -k 2s 30s ffmpeg -hide_banner -loglevel warning -y -i "$out/video.mkv" -i "$out/audio.mka" \
+      -map 0:v:0 -map 1:a:0 -c copy -shortest "$out/live.mkv" >"$out/mux.log" 2>&1 || true
   fi
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 Xvfb :95 -screen 0 "${size}x24" -nolisten tcp >"$out/xvfb.log" 2>&1 & xvfb_pid=$!
 pulseaudio --daemonize=no --exit-idle-time=-1 --disallow-exit --log-target=stderr >"$out/pulse.log" 2>&1 & pulse_pid=$!
 for attempt in $(seq 1 100); do

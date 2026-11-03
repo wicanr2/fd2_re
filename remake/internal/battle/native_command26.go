@@ -42,7 +42,7 @@ func (s *State) ExecuteNativeCommandApplication(actor, confirmed *Unit, commandI
 	for _, target := range targets {
 		result := NativeCommandApplicationResult{Target: target, Offset: offset}
 		duration, _ := target.NativeTransientDuration(offset)
-		if duration == 0 && target.ClassID != 0x19 && target.ClassID != 0x1A && rng.Intn(100) < 50 {
+		if duration == 0 && target.ClassID != 0x19 && target.ClassID != 0x1A && rng.Intn(100) < s.CommandHit(actor, commandID, 50) {
 			damage := 10*9/10 + rng.Intn(100)*10/1000
 			target.ApplyHPDamage(damage)
 			result.Applied = true

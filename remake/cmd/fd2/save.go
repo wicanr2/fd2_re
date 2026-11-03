@@ -47,13 +47,26 @@ func writeSaveFile(path string, raw []byte) error {
 		tmp.Close()
 		return err
 	}
+	if err := tmp.Sync(); err != nil {
+		tmp.Close()
+		return err
+	}
 	if err := tmp.Close(); err != nil {
 		return err
 	}
-	return os.Rename(tmpName, path)
+	if err := os.Rename(tmpName, path); err != nil {
+		return err
+	}
+	if handle, err := os.Open(dir); err == nil {
+		_ = handle.Sync()
+		_ = handle.Close()
+	}
+	return nil
 }
 
 type saveData struct {
+	Balance *battle.BalanceOptions `json:"balance,omitempty"`
+
 	Node           string              `json:"node"`
 	Flags          map[string]bool     `json:"flags"`
 	Gold           int                 `json:"gold"`
@@ -153,6 +166,9 @@ func (g *Game) saveGameToSlot(slot int) error {
 	}
 	raw53AF9, raw51E61, raw51E62 := int(options.Raw53AF9), int(options.Raw51E61), int(options.Raw51E62)
 	d.NativeRaw53AF9, d.NativeRaw51E61, d.NativeRaw51E62 = &raw53AF9, &raw51E61, &raw51E62
+	if !g.balance.IsOriginal() {
+		d.Balance = g.balance
+	}
 	raw, err := json.MarshalIndent(d, "", " ")
 	if err != nil {
 		return err
@@ -196,6 +212,10 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 	}
 	var d saveData
 	if json.Unmarshal(raw, &d) != nil || d.Chapter < 0 || d.Chapter > 0xff {
+		return false
+	}
+	if err := d.Balance.Validate(); err != nil {
+		g.msg = err.Error()
 		return false
 	}
 	if _, ok := g.camp.C.Nodes[d.Node]; !ok {
@@ -261,6 +281,8 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 	g.partyMembers, g.partyJoinOrder = d.PartyMembers, d.PartyJoinOrder
 	g.partyDeploy = d.PartyDeploy
 	g.partyRoster, g.handlerChapter = d.PartyRoster, d.Chapter
+	g.balance = d.Balance
+	g.balanceUI = balanceEditor{}
 	if d.NativeHUDGateA != nil {
 		g.restoreNativeMapHUDGateA(byte(*d.NativeHUDGateA))
 	}

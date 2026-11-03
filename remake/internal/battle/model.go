@@ -41,6 +41,9 @@ func (c Camp) String() string {
 // Unit 戰場單位。數值來自 EXE 表(doc 03); raw byte fields are optional
 // provenance and normalized fields remain engine projections.
 type Unit struct {
+	EnemyBalanceBase    *BalanceStats `json:"enemy_balance_base,omitempty"`
+	EnemyBalancePercent int           `json:"enemy_balance_percent,omitempty"`
+
 	Camp      Camp
 	Name      string // 角色名(characters.json;敵方多為職業名)
 	ClsName   string // 職業名(中文,M2 TTF 才顯示)
@@ -500,6 +503,8 @@ func (u *Unit) TickStatus() {
 
 // State 一場戰鬥的狀態。
 type State struct {
+	Balance *BalanceOptions
+
 	W, H  int
 	Units []*Unit
 	// NativeMapSelectorCache is the single process-global raw-key cache accumulated

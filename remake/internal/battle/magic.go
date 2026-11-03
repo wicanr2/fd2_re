@@ -185,7 +185,19 @@ func (s *State) CastArea(caster *Unit, cx, cy int, sp Spell, rng *rand.Rand) []C
 		if isEnemyOf(caster, u) != wantEnemy {
 			continue
 		}
-		results = append(results, s.applySpell(caster, u, sp, rng))
+		if sp.Hit > 0 {
+			chance := s.CommandHit(caster, sp.ID, sp.Hit)
+			if chance == 0 {
+				_ = rng.Intn(100)
+				results = append(results, CastResult{Target: u, Missed: true})
+				continue
+			}
+			adjusted := sp
+			adjusted.Hit = chance
+			results = append(results, s.applySpell(caster, u, adjusted, rng))
+		} else {
+			results = append(results, s.applySpell(caster, u, sp, rng))
+		}
 	}
 
 	if caster.Camp == Own || caster.Camp == Ally {

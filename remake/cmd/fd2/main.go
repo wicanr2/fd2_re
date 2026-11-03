@@ -80,6 +80,9 @@ type MapData struct {
 }
 
 type Game struct {
+	balance   *battle.BalanceOptions
+	balanceUI balanceEditor
+
 	m                            *MapData
 	nativeMapAssets              *nativeMapAssets             // all original map HUD resources, nil on any missing/malformed asset
 	modernMapTilesetLoaded       bool                         // 本次 loadMap 已原子採用現代圖集
@@ -4063,6 +4066,10 @@ func (g *Game) bindNativeCommandResistances(st *battle.State) {
 // explicit editable export. A missing table leaves the state fail-closed;
 // it never falls back to the legacy normalized Spells list.
 func (g *Game) bindCommandLearn(st *battle.State) {
+	if st != nil {
+		st.Balance = g.balance
+	}
+
 	if st != nil && g.commandLearn != nil && g.commandLearnSelectors != nil {
 		st.CommandLearn = g.commandLearn
 		st.CommandLearnSelectors = g.commandLearnSelectors
@@ -8281,6 +8288,9 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 }
 
 func (g *Game) Update() error {
+	g.syncBalanceState()
+	defer g.syncBalanceState()
+
 	g.playerPosterCycleRequested = false
 	defer func() {
 		g.playerThemeRequested, g.playerLocaleRequested, g.playerInterfaceRequested = false, false, false

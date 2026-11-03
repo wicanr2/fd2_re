@@ -71,6 +71,8 @@ func (g *Game) applyTitleMenuEvent(event TitleMenuEvent) bool {
 			g.msg = err.Error()
 		}
 	case TitleMenuStart:
+		g.balance = nil
+		g.balanceUI = balanceEditor{}
 		if g.titleNeedsNewCampaign {
 			if err := g.restartCampaignFromTitle(); err != nil {
 				g.msg = err.Error()

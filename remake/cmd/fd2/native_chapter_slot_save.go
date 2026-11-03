@@ -82,7 +82,7 @@ func (g *Game) saveNativeChapterSlot(slot int) error {
 	if err != nil {
 		return fmt.Errorf("原版章節槽存檔：%w", err)
 	}
-	if err := replaceNativeCurrentSaveAtomic(path, stored); err != nil {
+	if err := g.replaceNativeSaveWithBalance(path, stored, slot); err != nil {
 		return err
 	}
 	snapshot, err := fdsave.InspectChapterSlot(plain, slot)
