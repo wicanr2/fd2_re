@@ -269,6 +269,8 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 原圖的陰影輪廓已接入手繪草材，逐格銜接保留連續明暗；[原生／HD圖源對照](docs/figures/hd1-terrain-shadow-source-comparison.png)可核對已登錄的編製方式，純草地陰影已沿同一配方續補。上圖是第二張地圖的受控繪製，人物與相機用來驗圖源，仍可見未替換的像素建築及局部圖源。完整缺口依[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)續作。
 
+紅、藍、褐色物件已依原輪廓續補手繪圖源，[受控地圖範例](docs/figures/hd1-colored-objects-game.png)可見褐色輪廓的新圖，橋與建築仍保留待補像素。來源、被拒收的共用索引前景及範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1紅藍褐物件圖源續補)。
+
 ![HD1洞窟地板與石壁](docs/figures/hd1-cave-floor.png)
 
 洞窟石壁、外緣、部分地板與明暗變體已接入手繪HD，原生資料完全相同的其他地圖共用既有圖片，透明範圍保留原生背景。上圖為第二十五張地圖與第25章單位的受控繪製，人物位置與相機經明示設定；未替換的地板、熔岩與部分介面仍為像素，不代表整張洞窟已完成HD。技術範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。

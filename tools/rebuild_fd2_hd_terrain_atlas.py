@@ -11,7 +11,7 @@ from PIL import Image
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
-from build_fd2_hd_terrain_atlas import grass_policy, read, write
+from build_fd2_hd_terrain_atlas import grass_policy, masked_object_tile, read, write
 from build_fd2_hd_terrain_reuse import native, witness
 from verify_fd2_terrain_sources import check_binding, sha, verify
 
@@ -50,6 +50,19 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                 if sha(master) != masters[0]['sha256'] or Image.open(master).size != (248, 248):
                     raise ValueError('裁切母稿SHA或尺寸不同')
                 picture, _ = make_tile(master, 144, 8)
+            elif group['compile_mode'] == 'atlas_masked_object':
+                masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
+                actual_indices = sorted(set(content[:576]) - set(policy['index_groups']['grass']))
+                if (len(masters) != 1 or masters[0]['file'] != group['master_file'] or
+                        Path(group['master_file']).name != group['master_file'] or
+                        group['object_indices'] != actual_indices or
+                        group['object_source_pixels'] != sum(v in actual_indices for v in content[:576])):
+                    raise ValueError('已登錄物件母稿或原生製圖分區不同')
+                master = pack / group['master_file']
+                if sha(master) != masters[0]['sha256'] or Image.open(master).size != (256, 256):
+                    raise ValueError('物件裁切母稿SHA或尺寸不同')
+                painting = Image.open(master).convert('RGBA').resize((144, 144), Image.Resampling.LANCZOS)
+                picture, _, _ = masked_object_tile(content[:576], painting, grass, policy)
             else:
                 raise ValueError('未知地表編製模式')
             expected = {slots[target['map'], target['frame']] for target in group['targets']}

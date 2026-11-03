@@ -346,17 +346,19 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 使用者2026-10-28確認地形列入HD1 milestone，2026-10-29確認清爽手繪材質方向。來源、接線與進度依58、61及HD主收據；人工觀感、逐章與平台由使用者接手。
 
-既有草、土、沙、水及石路與其交界沿同一配方刷新，洞窟與同源來源已列範圍接線。R37補174槽，R70再補10份純草地陰影來源共50槽。原生三層內容、bank／map與selector見證逐筆核對，只用既有正式手繪草材及已核明暗153／255、模糊2與外緣1像素政策；原遮罩、cycle、圖層、通行、事件與保存保持。
+既有草、土、沙、水及石路與交界沿同一配方刷新，洞窟與同源來源已列範圍接線。R37補174槽，R70補純草地陰影50槽，R71依原輪廓新增紅、藍、褐色物件23格158槽。固定原生三層及跨圖同源見證逐筆核對，原source alpha、selector、cycle、圖層、通行、事件與保存保持。
 
-R70的123候選305槽只是篩選上界。岩塊、木板與樹幹套材質會畫平，均拒收，僅10份／50槽正式登錄。50來源交易／11錯遮罩、17編製及八登錄拒收、200來源GPU及兩完整map1 Draw／F2／169 bytes受控保存、32回歸／兩可選略過通過。21來源／416幀／19反例及160字串保持，1272 Go指紋db6b6c9a。正式Go未改，普通首章沿R69相同程式、候選清冊唯讀覆蓋，四控制、一格合法走行取消、兩美術／介面保存及新程序LOAD十PNG，保存089b077b保持。
+R71內建imagegen依24格原圖及已定風格生成母稿。完整提示詞、原bytes與alpha保存於配方／主收據。第9格map6:131綠色前景與grass索引共用，試合成變平，拒收六槽；物件用途與材質身份保留未知。僅23裁切母稿及23成品登錄，不同步整張含拒收格的atlas。
 
-目前968清冊／7000私人白名單。十份新PNG已同步私人94745a519f545bf4274ccc32821a11fb715e1da2，10229舊美術SHA／inode／mtime／owner保持；只用已登錄私人草材與原生來源可逐byte重編全部十圖。主收據hd1_terrain_grass_shadow_followup_20261103及61封存完整命令、來源、診斷與受控地圖畫面。
+158來源交易／14錯遮罩、632來源GPU與兩完整map2 Draw／F2／169 bytes受控保存、五項Python含23編製／分區及八登錄反例通過。23成品與已審原型相同，私人重編逐byte相同，舊R70十圖保持。32正式回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、一格合法走行取消、兩美術／介面保存及新程序LOAD十PNG，保存089b077b保持；未宣稱自然看過所有新地形。
 
-正式Go重生33圖覆蓋：858已登錄、3130缺槽／2023獨特來源、10純目的地remap，3998必要槽。其餘岩塊、建築與物件仍未製作，本工單保持OPEN。操作介面#283已結案；完整HD1未完成，不新增原版oracle或整章E2。
+目前1005清冊／7046私人白名單。46份新增檔已同步私人fc80f2a2c9a6d1f4c579398aa0b5537ff197dc0e，10239舊美術SHA／inode／mtime／owner保持。主收據hd1_colored_objects_followup_20261103、61及版本化配方保存所有來源、命令、拒收原因及受控map2圖。
+
+正式Go重生33圖覆蓋：1016已登錄、2972缺槽／2000獨特來源、10純目的地remap，3998必要槽。其餘建築與物件仍未製作，本工單保持OPEN。操作介面#283已結案；完整HD1未完成，不新增原版oracle或整章E2。
 
 怎樣算做完：盤點全部正式地圖的原生地形／前景consumer，補齊HD1圖源並登錄私人庫；沿原輪廓、遮擋、視圖與事件更新呈現，缺件明示，保留原版模式。必要來源、載入及切換檢查通過，人工畫面驗證由使用者接手。
 
-證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-terrain-shadow-map01-game.png', 'docs/figures/hd1-terrain-shadow-source-comparison.png', 'remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json', 'tools/build_fd2_hd_terrain_atlas.py', 'tools/rebuild_fd2_hd_terrain_atlas.py', 'remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json', 'docs/figures/hd1-terrain-grass-shadow-game.png', 'docs/data/fd2-hd1-terrain-coverage.json', 'remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go', 'tools/test_fd2_hd_terrain_atlas.py']`
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-terrain-shadow-map01-game.png', 'docs/figures/hd1-terrain-shadow-source-comparison.png', 'remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json', 'tools/build_fd2_hd_terrain_atlas.py', 'tools/rebuild_fd2_hd_terrain_atlas.py', 'remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json', 'docs/figures/hd1-terrain-grass-shadow-game.png', 'docs/data/fd2-hd1-terrain-coverage.json', 'remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go', 'tools/test_fd2_hd_terrain_atlas.py', 'remake/assets/themes/modern/hd1-colored-objects-r71.recipe.json', 'docs/figures/hd1-colored-objects-game.png']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

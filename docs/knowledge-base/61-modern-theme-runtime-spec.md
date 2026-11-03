@@ -6193,7 +6193,7 @@ R69六種clone來源拒收及健康F11通過。16完整Draw、四槽／四控制
 
 ## HD1既有材質缺圖續補
 
-R70 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿正式33圖覆蓋與原生三層內容盤點，123份缺圖的原生索引完全落在relief-hd.recipe.json已定grass／earth／stone分區，涉及305槽；這只是候選上界，不代表全部同材質。先以目前正式三份手繪母稿及既有composite_relief做對照，逐格排除木板、樹幹及無法保留輪廓的物件。只接受已定原生遮罩／明暗政策足以呈現的地表，不改selector／通行／事件／保存，未收圖維持缺件。研究來源與原型位於既有work根hd1-terrain-r70，正式工具／配方入口待原型審查後登記。
+R70 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿正式33圖覆蓋與原生三層內容盤點，123份缺圖的原生索引完全落在relief-hd.recipe.json已定grass／earth／stone分區，涉及305槽；這只是候選上界，不代表全部同材質。先以目前正式三份手繪母稿及既有composite_relief做對照，逐格排除木板、樹幹及無法保留輪廓的物件。只接受已定原生遮罩／明暗政策足以呈現的地表，不改selector／通行／事件／保存，未收圖維持缺件。研究來源與原型位於既有work根hd1-terrain-r70，正式配方、編製與私人重編入口依本節READY契約及後述收據。
 
 ### R70 READY契約
 
@@ -6210,3 +6210,23 @@ R70 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿正式33圖覆蓋與原生�
 本批十份新圖／50槽已正式登錄，保留50個地形角色與原生明暗。50來源交易、11錯遮罩、17編製及八登錄反例、200來源GPU與兩完整map1 Draw／F2／169 bytes受控邊界保存保持通過。32回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a；正式Go未改，普通抽樣沿R69相同程式與候選清冊的容器唯讀覆蓋。首章四控制、合法一格走行取消、兩美術／介面F5與新程序LOAD十PNG通過，保存089b077b保持。
 
 968清冊、7000私人白名單、十份新PNG已同步私人庫94745a51，10229舊美術SHA／inode／mtime／owner保持；只用已登錄草材及原生來源可逐byte重編十份PNG。33圖正式Go覆蓋增為858已登錄，餘3130缺槽／2023獨特來源，10純remap保持。早期R2預覽沿全relief最低明暗115，與正式草地153政策最多差7階；R3對照沿正式配方重生，十份像素相同，正式成品政策未變。來源及完整命令依主收據hd1_terrain_grass_shadow_followup_20261103與[受控map1畫面](../figures/hd1-terrain-grass-shadow-game.png)。未新增原版E2或全章自然可達聲明，#282續作，人工由使用者接手。
+
+## HD1紅藍褐物件圖源續補
+
+R71 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿固定原生三層與968基底清冊，內建imagegen依24格原圖生成一份母稿，審查後收23格158槽。物件用途、樹種或地質身份未知，只依主色、輪廓及位置。第9格map6:131的綠色前景與草地共用索引，試合成變平，拒收並保持缺圖。其餘來源完整opaque且無remap，23母稿／23成品依白名單登錄，不上傳整張含拒收格的atlas。
+
+### R71 READY契約
+
+內建imagegen依24格原圖與已定風格生成1024×1536母稿，原bytes／alpha保存。逐格遮罩原型審查後收23格／158槽；第9格map6:131的綠色前景與草材共用索引，試合成變平，拒收並保持缺圖。物件用途與材質身份不新增確認。
+
+- 沿既有schema1／fd2_painted_terrain_atlas_v1及native_terrain_hd_set，不改正式runtime格式。新製圖模式atlas_masked_object只影響RGB編製，原生完整opaque、無remap、三層SHA、bank／map及selector見證先核；全部跨圖同源缺槽共同接入，不改既有968清冊。
+- 每格原樣裁切256×256版本化母稿，不套對邊混色於物件，取樣144。物件分區為原生非既定grass索引，逐格凍結完整索引集合及像素數；缺項／新增分類／全草或無草、錯crop／來源均拒收。第9格不進此配方。
+- 草地／明暗只用正式手繪草材及既定153／255政策。物件區的暫存草底用已定亮草索引68，全部RGB來自生成物件及私人草材，不混原版RGB。物件覆蓋以原生二元分區放大六倍、雙三次／半徑2柔化，最外緣1像素保留原分區。原生來源alpha仍完整opaque，不把製圖分區當新的遊戲遮罩或碰撞。
+- 來源與成品SHA、原生分區／暗部hash及裁切母稿逐格入清冊。私人重編只讀已登錄23裁切母稿及草材，不依賴含拒收第9格的原atlas；整張原稿留work，不混入私庫白名單。
+- 編製／分區／遮罩與來源反例、原子登錄拒收、632來源GPU及兩介面完整首張來源地圖Draw／F2／保存、相關正式回歸與普通首章整包四控制／走行取消／保存冷讀通過後登錄。覆蓋數由正式Go重生，人工觀感／逐章／平台由使用者接手，不新增原版E2。
+
+正式配方入口為[hd1-colored-objects-r71.recipe.json](../../remake/assets/themes/modern/hd1-colored-objects-r71.recipe.json)。編製／登錄沿[build_fd2_hd_terrain_atlas.py](../../tools/build_fd2_hd_terrain_atlas.py)新增製圖模式，私人重編沿[rebuild_fd2_hd_terrain_atlas.py](../../tools/rebuild_fd2_hd_terrain_atlas.py)，來源／反例沿[test_fd2_hd_terrain_atlas.py](../../tools/test_fd2_hd_terrain_atlas.py)，GPU沿既有modern_hd_terrain_reuse_gpu_test.go及明示158槽參數。
+
+本批23格158槽已登錄，1005清冊及7046私人白名單同步fc80f2a2，10239舊美術SHA／inode／mtime／owner保持。23成品與已審原型逐檔相同，私人包只靠23裁切母稿及草材能逐byte重編；原1024×1536生成母稿ad23f68e與完整提示詞依配方保存，生成alpha未改。158來源交易／14錯遮罩、23編製／分區及八登錄反例、632來源GPU／兩完整map2 Draw／F2／169 bytes受控保存通過。五項Python、13248邊界比對與13156獨立邊界像素、舊R70十圖重編保持；32正式回歸／兩可選略過、21來源／416幀／19反例及160字串保持，1272 Go指紋db6b6c9a，正式Go未改。
+
+普通首章整包四控制、合法一格走行取消、兩美術／介面F5及新程序LOAD十PNG通過，保存089b077b保持；新158槽的實際圖源與完整map2另由受控GPU驗證，不冒稱普通路徑自然看過全部新槽。[受控物件地圖](../figures/hd1-colored-objects-game.png)仍保留未HD的橋與建築。33圖正式Go覆蓋為1016已接，餘2972缺槽／2000獨特來源，10純remap保持。主收據hd1_colored_objects_followup_20261103索引所有來源、內建生成提示詞、命令及拒收原因。新教訓terrain-art-mask-shared-index-volume保留共用索引的分區守門，410教訓／259 guard；#282續作，完整HD1未完成。

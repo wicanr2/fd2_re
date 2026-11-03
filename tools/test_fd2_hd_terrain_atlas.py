@@ -10,6 +10,7 @@ import unittest
 from PIL import Image
 
 import build_fd2_hd_terrain_atlas as atlas
+from build_fd2_hd_terrain_reuse import native
 
 
 class TerrainAtlasTests(unittest.TestCase):
@@ -102,6 +103,68 @@ class TerrainAtlasTests(unittest.TestCase):
                     self.prepare(path, out, master)
                 self.assertFalse(out.exists())
                 self.assertFalse(list(self.root.glob('.terrain-atlas-*')))
+
+    def test_masked_objects_keep_native_boundary_and_painted_rgb(self):
+        recipe = atlas.read(self.recipe)
+        groups = [g for g in recipe['groups'] if g['compile_mode'] == 'atlas_masked_object']
+        if not groups:
+            self.skipTest('this recipe has no masked object source')
+        policy, grass, _ = atlas.grass_policy(recipe, atlas.read(self.base), Path('/modern'))
+        source = atlas.read(self.repo / 'work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json')
+        indices = set(policy['index_groups']['grass'])
+        checked = 0
+        for group in groups:
+            raw = native(Path('/original'), source, *group['anchor'])[:576]
+            master = Image.open(self.candidate / group['master_file']).convert('RGBA')
+            painting = master.resize((144, 144), Image.Resampling.LANCZOS)
+            actual = Image.open(self.candidate / group['file']).convert('RGBA')
+            self.assertEqual(actual.getextrema()[3], (255, 255))
+            for offset in range(144):
+                for x, y in ((offset, 0), (offset, 143), (0, offset), (143, offset)):
+                    index = raw[y // 6 * 24 + x // 6]
+                    if index in indices:
+                        value = policy['index_shades'][str(index)]
+                        expected = tuple(round(v * value / 255) for v in grass.getpixel((x, y))[:3]) + (255,)
+                    else:
+                        expected = painting.getpixel((x, y))
+                    self.assertEqual(actual.getpixel((x, y)), expected, (group['cell'], x, y))
+                    checked += 1
+        self.assertEqual(checked, len(groups) * 576)
+        # A broad isolated object has an unmixed painted center, while the
+        # surrounding grass stays at its source material and original opacity.
+        raw = bytes(32 if 5 <= x < 19 and 5 <= y < 19 else 68 for y in range(24) for x in range(24))
+        actual, _, _ = atlas.masked_object_tile(raw, painting, grass, policy)
+        self.assertEqual(actual.getpixel((72, 72)), painting.getpixel((72, 72)))
+        self.assertEqual(actual.getpixel((0, 0)), grass.getpixel((0, 0)))
+
+    def test_masked_object_wrong_partition_never_publishes(self):
+        original = atlas.read(self.recipe)
+        group = next((g for g in original['groups'] if g['compile_mode'] == 'atlas_masked_object'), None)
+        if group is None:
+            self.skipTest('this recipe has no masked object source')
+        for fault in ('indices', 'count'):
+            with self.subTest(fault=fault):
+                recipe = copy.deepcopy(original)
+                changed = next(g for g in recipe['groups'] if g['cell'] == group['cell'])
+                if fault == 'indices':
+                    changed['object_indices'].append(next(v for v in range(256) if v not in changed['object_indices']))
+                else:
+                    changed['object_source_pixels'] += 1
+                path, out = self.root / (fault + '.json'), self.root / (fault + '-candidate')
+                atlas.write(path, recipe)
+                with self.assertRaises(ValueError):
+                    self.prepare(path, out)
+                self.assertFalse(out.exists())
+                self.assertFalse(list(self.root.glob('.terrain-atlas-*')))
+        policy, grass, _ = atlas.grass_policy(original, atlas.read(self.base), Path('/modern'))
+        painting = Image.new('RGBA', (144, 144), (10, 20, 30, 255))
+        for raw in (bytes([68]) * 576, bytes([32]) * 576):
+            with self.assertRaises(ValueError):
+                atlas.masked_object_tile(raw, painting, grass, policy)
+        raw = bytes(32 if x < 12 else 68 for y in range(24) for x in range(24))
+        for bad in (Image.new('RGBA', (143, 144)), Image.new('RGBA', (144, 144), (10, 20, 30, 254))):
+            with self.assertRaises(ValueError):
+                atlas.masked_object_tile(raw, bad, grass, policy)
 
     def test_registration_requires_complete_real_gpu_evidence(self):
         value = os.environ.get('FD2_TERRAIN_ATLAS_GPU_RECEIPT')

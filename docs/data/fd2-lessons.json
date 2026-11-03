@@ -5117,6 +5117,22 @@
         ],
         "pattern": "(?s)if closedAction \\{\\s*in.Frame.RangeMode = 0"
       }
+    },
+    {
+      "id": "terrain-art-mask-shared-index-volume",
+      "date": "2026-11-03",
+      "area": "HD1地形製圖",
+      "rule": "以原生索引分離物件與草地前，逐格核對原圖可見輪廓與遮罩合成。物件與背景可共用palette索引，未保住立體輪廓的候選保留缺件，不能沿同索引自動歸為背景。入口為規格61的HD1紅藍褐物件圖源續補、hd1-colored-objects-r71.recipe.json的rejected_cells及build_fd2_hd_terrain_atlas.py的masked_object_tile。",
+      "why": "R71第9格map6:131的綠色前景與已定grass索引重疊，原型變成平面草地；本批拒收這格六槽，只登錄其餘23格158槽。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_colored_objects_followup_20261103；WORKLOG.md：2026-11-03 HD1紅藍褐物件試稿",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/assets/themes/modern/hd1-colored-objects-r71.recipe.json"
+        ],
+        "pattern": "\"rejected_cells\":\\s*\\[\\s*\\{\\s*\"cell\": 9",
+        "note": "保留未通過原圖輪廓審查的來源及原因；後續獨立已核分區不改寫本批拒收紀錄。"
+      }
     }
   ]
 }

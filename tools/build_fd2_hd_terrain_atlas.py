@@ -10,7 +10,7 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
@@ -115,6 +115,25 @@ def grass_policy(recipe, catalog, pack):
     return policy, picture, edge
 
 
+def masked_object_tile(raw, painting, grass, policy):
+    """原生索引只提供製圖分區，物件及草地RGB均沿已保存手繪來源。"""
+    indices = set(policy['index_groups']['grass'])
+    if (len(raw) != 576 or set(policy['index_groups']) != {'grass'} or 68 not in indices or
+            painting.mode != 'RGBA' or painting.size != (144, 144) or painting.getextrema()[3] != (255, 255)):
+        raise ValueError('物件製圖來源尺寸、明暗或透明度不同')
+    count = sum(v not in indices for v in raw)
+    if not 0 < count < 576:
+        raise ValueError('物件製圖必須同時具有明示草地及物件分區')
+    background_raw = bytes(v if v in indices else 68 for v in raw)
+    background, shade = composite_relief(background_raw, {'grass': grass}, policy)
+    native_mask = Image.frombytes('L', (24, 24), bytes(0 if v in indices else 255 for v in raw))
+    mask = native_mask.resize((144, 144), Image.Resampling.BICUBIC).filter(ImageFilter.GaussianBlur(2))
+    for p in range(144):
+        for x, y in ((p, 0), (p, 143), (0, p), (143, p)):
+            mask.putpixel((x, y), native_mask.getpixel((x // 6, y // 6)))
+    return Image.composite(painting, background, mask), mask, shade
+
+
 def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_path, coverage_path, out):
     if not Path('/.dockerenv').exists() or os.path.lexists(out) or not out.parent.is_dir():
         raise ValueError('只在Docker寫入既有父目錄中的新候選')
@@ -172,6 +191,24 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                 tile, mask = composite_relief(raw, {'grass': grass}, policy)
                 frame.update(material=policy['material'], shade_mask_sha256=hashlib.sha256(mask.tobytes()).hexdigest(),
                              edge_calibration=grass_edge)
+            elif group['compile_mode'] == 'atlas_masked_object':
+                crop = [cell % 4 * 256, cell // 4 * 256, cell % 4 * 256 + 256, cell // 4 * 256 + 256]
+                raw = native(original, source, *group['anchor'])[:576]
+                actual_indices = sorted(set(raw) - set(policy['index_groups']['grass']))
+                if (group['crop'] != crop or group['object_indices'] != actual_indices or
+                        group['object_source_pixels'] != sum(v in actual_indices for v in raw)):
+                    raise ValueError('物件裁切或原生製圖分區不同')
+                master.crop(crop).save(stage / group['master_file'])
+                painting = master.crop(crop).resize((144, 144), Image.Resampling.LANCZOS)
+                tile, mask, shade = masked_object_tile(raw, painting, grass, policy)
+                frame.update(master_file=group['master_file'], master_sha256=sha(stage / group['master_file']),
+                             crop=crop, object_indices=actual_indices, object_source_pixels=group['object_source_pixels'],
+                             object_mask_sha256=hashlib.sha256(mask.tobytes()).hexdigest(),
+                             shade_mask_sha256=hashlib.sha256(shade.tobytes()).hexdigest(),
+                             material=policy['material'], background_edge_calibration=grass_edge)
+                additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
+                                  'status': 'concept', 'file': group['master_file'], 'width': 256, 'height': 256,
+                                  'sha256': frame['master_sha256'], 'source_refs': refs})
             else:
                 raise ValueError('未知地表編製模式')
             tile.save(stage / group['file'])
