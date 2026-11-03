@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "status": "PASS-SCOPED",
+  "version": "v.1.1.0-20261103",
+  "engine_source_commit": "a71f1717c4500cb3628266b3a79ef031b90d8c0a",
+  "ci_run": "https://github.com/wicanr2/fd2_re/actions/runs/41654266307",
+  "ci_native_platforms": "Linux x86_64, Windows x86_64, macOS x86_64/arm64 universal",
+  "full_local": [
+    {
+      "path": "full-local/FD2-v.1.1.0-20261103-windows-x86_64-full-local.zip",
+      "bytes": 3400665125,
+      "sha256": "c98e6db8c7a77c81d4ed322d9e8c8d75096e0174534d948561c608f6f74aebb3"
+    },
+    {
+      "path": "full-local/FD2-v.1.1.0-20261103-macos-universal-full-local.zip",
+      "bytes": 3409179725,
+      "sha256": "3c1da6da386e2600d108e21a2f55a81af40a0d9aaa0c39622c91fb3c60550885"
+    },
+    {
+      "path": "full-local/FD2-v.1.1.0-20261103-linux-x86_64-full-local.AppImage",
+      "bytes": 2988120568,
+      "sha256": "442e03fba4038d59348d273d843399d78926e56e302a2ff03925b655fd479fca"
+    }
+  ],
+  "asset_files": 54349,
+  "asset_manifest_sha256": "a0303ff1943bc50a9a33e75a1a29eb1e941a0f736f02a99ad33c204a40adc131",
+  "modern_catalog_sha256": "3129903d28b1b0dcb84568cac112a8e58e37a7036bd7a5aff0bd49e34b196fe8",
+  "font": {
+    "file": "assets/fonts/cjk.ttc",
+    "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+    "license": "third-party/noto-cjk/copyright",
+    "license_sha256": "5bb218343ded506b258d86186d460fc47d9b6b28f0e642cf32676c396b7df763"
+  },
+  "promo": {
+    "file": "FD2-v.1.1.0-20261103-hd1-promo.mp4",
+    "bytes": 21946483,
+    "sha256": "8f436de916807adfd420dcc7478543877fae23077ffc652afd031163a78f3a0c"
+  },
+  "promo_duration_seconds": 90.022,
+  "promo_validation_sha256": "990203e83649e6ad1ded4459a35c35b006d77cac0c1cbd2acdce736ad0796b78",
+  "linux_full_gui_sha256": "3df195dabfb24d8286387f96205ca993c98090bb457b769eaf5451822ad8c656",
+  "balance_receipt": "docs/data/fd2-balance-editor-20261103.json",
+  "rights": "full-local and promo remain local-private; public repo contains source, hashes and approved screenshots",
+  "limitations": [
+    "Windows／macOS完整版未實體桌面驗收；原生CI自檢屬引擎程序驗證。",
+    "示範片特技使用已揭露的受控章前槽，不宣稱自然招募、完整章節或新原版對拍。",
+    "音訊技術檢查通過，不宣稱人耳試聽或硬體波形一致。"
+  ],
+  "temporary_capture_cleanup": {
+    "receipt": "smoke/TEMP-CAPTURE-CLEANUP.json",
+    "sha256": "a5d97bf2ce0e8b37d2d1b4e37645c8cb7e5d48d239454b940e1bf37a3fc7b132",
+    "removed_recordings": 61,
+    "restored_test_copy_audio_files": 97
+  }
+}

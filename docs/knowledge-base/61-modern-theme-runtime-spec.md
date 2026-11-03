@@ -6473,7 +6473,7 @@ HD1素材與接線完成。最後281份完整裁切母稿與281份144成品新�
 
 ## 進度獨立的能力、成長、命中與敵軍設定
 
-狀態：READY。使用者於2026-11-03逐項確認；這是自訂規則擴充，不宣稱原版新增功能。
+狀態：CONFORMED-SCOPED。使用者於2026-11-03逐項確認，依READY契約完成實作與抽樣驗證；這是自訂規則擴充，不宣稱原版新增功能。
 
 - 工具列「能力」入口每次開啟先顯示平衡與樂趣警告，須三次分開按下「我了解，繼續」；取消、關閉、讀檔與新遊戲均重設確認次數。編輯期間暫停遊戲輸入及推進。
 - 分頁為當前能力、升級成長、特技命中、敵人強度。當前能力逐人編輯生命上限、魔力上限、基礎攻擊、基礎防禦與敏捷；保留裝備加成，降低上限時限制目前生命／魔力，不自動補滿。範圍為原生有號word的非負區間，生命上限至少1。
@@ -6495,3 +6495,16 @@ HD1素材與接線完成。最後281份完整裁切母稿與281份144成品新�
 不同槽／舊檔隔離、每次三次警告、正常工具列操作及存讀檔。
 \n測試入口：[規則測試](../../remake/internal/battle/balance_test.go)、[警告與附檔測試](../../remake/cmd/fd2/balance_save_test.go)。工作項：[\#291](https://github.com/wicanr2/fd2_re/issues/291)。\n
 推廣錄影可重跑入口：[record_fd2_hd_gameplay.py](../../tools/record_fd2_hd_gameplay.py)，包覆既有普通鍵盤驗證器，錄製實際視窗與遊戲音訊；來源槽與狀態限制仍由原驗證器收據標示。\n
+能力擴充現況：CONFORMED-SCOPED／RUNTIME-E1，普通GUI與保存冷讀抽樣通過。唯一收據為[能力設定驗證](../data/fd2-balance-editor-20261103.json)，普通鍵鼠重跑入口為[verify_fd2_balance_gui.py](../../tools/verify_fd2_balance_gui.py)。原生附檔按槽隔離由決定性測試驗證，GUI冷讀使用JSON進度；兩者不混稱。可見[四分頁總覽](../figures/hd1-balance-editor-overview.png)與[逐人命中](../figures/hd1-skill-hit-editor.png)。
+
+## HD1推廣片與三平台本機完整版
+
+推廣片主題為「讓經典再現」，包含介紹、片頭、普通遊玩與原版／HD切換、物理戰鬥、蜜蒂音速刃及能力工具列。錄製來源與限制依剪輯清冊；新字幕與片頭文字卡不宣稱是原版介面。
+
+重跑入口：[build_fd2_hd1_promo.py](../../tools/build_fd2_hd1_promo.py)依具雜湊剪輯表製作，字幕先由既有Pillow映像準備，再由既有promo映像編碼；[validate_fd2_hd1_promo.py](../../tools/validate_fd2_hd1_promo.py)核對時長、視訊、音訊、音量、黑幀、凍結與字幕安全區。正式影片與技術收據位於本機dist-all同版號promo目錄，片段選擇需實際檢視；不得將初始化等待當作遊玩。
+
+完整版沿[build_fd2_full_local.py](../../tools/build_fd2_full_local.py)，由同版號三平台原生CI引擎包加上正式清冊白名單素材及Noto字型／授權重建，留在full-local。Linux以實際AppImage解出唯讀執行，遮蔽系統候選字型並從空白工作目錄測試；Windows與macOS為原生CI引擎自檢及完整版內容／雜湊核對，未宣稱完整包實體平台試玩。新版沒有建立tag或Release，既有已發布版本保持。
+
+遊玩截圖入口：[原版／HD與戰鬥總覽](../figures/hd1-release-gameplay-overview.png)。
+
+交付版本v.1.1.0-20261103已通過上述驗證，唯一清冊為[HD1交付收據](../data/fd2-hd1-delivery-20261103.json)。原生CI來源a71f1717；完整版54349份共用資產檔與三包雜湊均已核對，推廣片90.022秒、1080p／30fps、AAC雙聲道，沒有黑幀或靜音區間，凍結僅預期文字卡與警告。正式成品位於dist-all同版號；Windows／macOS完整版實機與集中人工範圍保持揭露。

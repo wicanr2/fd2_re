@@ -3916,3 +3916,7 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 首章保存定案與正式驗收（2026-10-17）：使用者明確允許已展示差異，隨後要求matching技巧輔助。START既有C物件重連結與固定原版663 bytes相同；酒店完整C尚未匹配，沿既有IDA直接writer證據。有效紀錄65個差異在本章人物首次出現到保存均原值保留，未使用名冊2160個與衍生檢查碼3個全部逐筆列出。正式START初存已接酒店owner，Game full-r10實際寫SAV並以新Game正常LOAD冷讀5人已知能力／物品、章節1、gold1000及選項。嚴格比較仍failed；明示本份政策後行為／節點／交易passed，正式收據為[parity-ch01](../data/ui-traces/parity-ch01.json)。第1章依111列PLAYER-E2，正式台帳28章，第2、3章保留未完成；不宣稱全SAV bytes相同或未知producer已閉合。
 
 BattleFig15／17手繪來源已正式接入，限定CONFORMED-SCOPED／RUNTIME-E1；唯一入口為HD主收據party15_17_battle_followup_20261021及61「隊伍BattleFig15與17圖源」。34幀實際Draw核心、F2／返回、來源拒收及正式／runtime-only原子預檢通過；數量由同欄formal_coverage重生，不重開RE，不提升普通玩家或人工驗收。
+
+## 進度獨立的能力設定擴充
+
+自訂規則擴充已達CONFORMED-SCOPED／RUNTIME-E1，普通START、三次警告、四分頁、能力調整、成長／敵軍倍率、逐人命中與JSON保存冷讀已抽樣。100%預設不改既有原版公式，音速刃無新增命中骰或傷害下限。原生SAV格式保持，附檔以個別進度雜湊配對；不同槽隔離與原版bytes不變由決定性測試驗證。這是使用者確認的重製端擴充，不新增原版parity聲明。契約依[61](61-modern-theme-runtime-spec.md#進度獨立的能力成長命中與敵軍設定)，唯一收據為[能力設定驗證](../data/fd2-balance-editor-20261103.json)。

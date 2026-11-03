@@ -86,3 +86,42 @@ func TestBalanceNativeSidecarKeepsSlotsIndependentAndOriginalBytes(t *testing.T)
 		t.Fatal("unrelated old save inherited options")
 	}
 }
+
+func TestBalanceNativeCurrentRestoresEnemyBaselineWithoutScalingTwice(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "FD2.SAV")
+	plain := make([]byte, fdsave.FileSize)
+	stored, err := fdsave.Encode(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(path, stored, 0600); err != nil {
+		t.Fatal(err)
+	}
+	base := battle.BalanceStats{HP: 100, MP: 20, AP: 50, DP: 40, DX: 10}
+	u := &battle.Unit{Camp: battle.Enemy, HP: 80, MaxHP: 200, MP: 20, MaxMP: 40, AP: 100, DP: 80, DX: 20, EnemyBalanceBase: &base, EnemyBalancePercent: 200}
+	g := &Game{st: &battle.State{Units: []*battle.Unit{u}}, balance: battle.NewBalanceOptions()}
+	g.balance.EnemyPercent = 200
+	if err = g.replaceNativeSaveWithBalance(path, stored, -1); err != nil {
+		t.Fatal(err)
+	}
+	saved, err := loadBalanceSavedState(path, plain, -1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	loaded := &battle.Unit{Camp: battle.Enemy, HP: 80, MaxHP: 200, MP: 20, MaxMP: 40, AP: 100, DP: 80, DX: 20}
+	cold := &Game{st: &battle.State{Units: []*battle.Unit{loaded}}}
+	cold.restoreBalanceSavedState(saved)
+	cold.syncBalanceState()
+	if loaded.MaxHP != 200 || loaded.HP != 80 || loaded.AP != 100 {
+		t.Fatal("native current strength compounded")
+	}
+	cold.balance = nil
+	cold.syncBalanceState()
+	if loaded.MaxHP != 100 || loaded.HP != 40 || loaded.AP != 50 {
+		t.Fatal("native current baseline was not restored")
+	}
+	cold.restoreBalanceSavedState(balanceSavedState{})
+	if cold.balance != nil {
+		t.Fatal("old save inherited prior profile")
+	}
+}

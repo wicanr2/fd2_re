@@ -5229,6 +5229,22 @@
         "pattern": "actual = Counter",
         "note": "保留逐槽獨立計數，不把缺鍵本身當成完成證據。"
       }
+    },
+    {
+      "id": "capture-cleanup-uses-output-allowlist",
+      "date": "2026-11-03",
+      "area": "主機衛生",
+      "rule": "錄影清理依錄製器輸出清冊與明示錄製目錄選檔，逐檔核對SHA後刪除；不以副檔名遞迴掃描包含解包素材的整個驗證工作根。tools/record_fd2_hd_gameplay.py的recording.json記錄video.mkv與audio.wav的檔名和雜湊；tools/capture_fd2_release_promo.sh的專用目錄只清理video.mkv、audio.mka與live.mkv。編碼草稿另以剪輯清單明列。",
+      "why": "R82曾將驗證用AppImage解包副本的97個音效WAV誤列為暫存錄影，已逐檔按清理前SHA還原；正式封包及原版／私人來源未改。",
+      "evidence": "WORKLOG.md R82清理勘誤；dist-all/v.1.1.0-20261103/smoke/TEMP-CAPTURE-CLEANUP.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/record_fd2_hd_gameplay.py"
+        ],
+        "pattern": "result\\['files'\\]",
+        "note": "錄製器保留具檔名與雜湊的輸出清冊，作為清理白名單來源。"
+      }
     }
   ]
 }

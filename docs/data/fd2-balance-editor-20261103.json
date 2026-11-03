@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "status": "CONFORMED-SCOPED",
+  "date": "2026-11-03",
+  "source_commit": "a71f1717c4500cb3628266b3a79ef031b90d8c0a",
+  "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#進度獨立的能力成長命中與敵軍設定",
+  "issue": 291,
+  "scope": "自訂規則擴充；既有原版預設維持。不新增DOS原版對拍或自然招募聲明。",
+  "checks": {
+    "growth_rng_and_original_defaults": "PASS",
+    "battle_campaign_fdsave_packages": "PASS",
+    "related_save_load_continue_toolbar_command30_regressions": "PASS",
+    "warning_three_clicks_each_open": "PASS",
+    "five_growth_rates_110_cold_load": "PASS",
+    "enemy_120_cold_load_no_compounding": "PASS",
+    "current_maxhp_42_to_43_hp_stays42_then_restore": "PASS",
+    "restore_100_omits_json_profile": "PASS",
+    "yuni_command0_90_to100_save_then_restore90": "PASS",
+    "middy_command30_no_hit_roll_no_override": "PASS",
+    "hd_editor_current_growth_enemy": "PASS"
+  },
+  "native_save_contract": {
+    "format": "unchanged FD2.SAV with adjacent .fd2-options.json",
+    "tests": "default bytes unchanged, per-slot fingerprints, old-save isolation",
+    "gui_scope": "GUI保存與冷讀使用JSON進度；原生附檔交易由決定性測試驗證。"
+  },
+  "skill_source_policy": "正式JOIN與原生升級writer建構章前槽；非自然招募或完整章節",
+  "raw_evidence": [
+    {
+      "path": "work/hd1-promo-release-20261103-r82/probe/validated-gui.json",
+      "bytes": 37845,
+      "sha256": "5f2597d0c63d7e336bc3b860bbfd140aade2ba4323018344438ec8cf314b3a07"
+    },
+    {
+      "path": "work/hd1-promo-release-20261103-r82/probe/skill-gui-r1/validated-skill-gui.json",
+      "bytes": 24693,
+      "sha256": "db9b34848a7488a1bb5c66d21d530331f2badd61a0cc3ffda25bc86d61be67b5"
+    },
+    {
+      "path": "work/hd1-promo-release-20261103-r82/probe/balance-gui-r2/operations.json",
+      "bytes": 732557,
+      "sha256": "49a0cf67c9229a9007d2c24cf87bde205e26420ec2579b9e507f8ffec6bfb024"
+    },
+    {
+      "path": "work/hd1-promo-release-20261103-r82/probe/skill-gui-r1/operations.json",
+      "bytes": 1770037,
+      "sha256": "d60fc9d7b5292b0ca96145580824f80cef7a88859521bd9e96d7aadc83524228"
+    },
+    {
+      "path": "work/hd1-promo-release-20261103-r82/fd2-player-final",
+      "bytes": 21806488,
+      "sha256": "86e61ed40781fc2f715d313d7f8cd741c434f93dfc8eec940f13a6b48ceb60a4"
+    },
+    {
+      "path": "work/hd1-promo-release-20261103-r82/probe/balance-gui.py",
+      "bytes": 12501,
+      "sha256": "7b3ec87d8155e5b36329376729225154988b0712cd4e9d9a6d591d82df31fbf5"
+    },
+    {
+      "path": "tools/verify_fd2_balance_gui.py",
+      "bytes": 12455,
+      "sha256": "9ce221e1c2c282bd9599d8c6a2dd5b59ad32606db981aeb6d59ecafa9073903b"
+    }
+  ],
+  "figures": [
+    {
+      "path": "docs/figures/hd1-balance-editor-overview.png",
+      "sha256": "9a87f5f1389ea0b9f093de72400bc8b97c34473c109172d32b1fa725aae3a515"
+    },
+    {
+      "path": "docs/figures/hd1-skill-hit-editor.png",
+      "sha256": "98a611a5e3c0875d8f466bad3bc82346f518b4f6ceb43122671d7e8a7983d23d"
+    }
+  ],
+  "reproducer": "tools/verify_fd2_balance_gui.py",
+  "manual_limits": [
+    "逐章、造型及實體平台驗收沿既有HD1交接；本輪不擴張原版parity聲明。"
+  ]
+}
