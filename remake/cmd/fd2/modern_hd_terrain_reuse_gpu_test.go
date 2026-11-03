@@ -327,6 +327,13 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 		}
 		gameMap, gameFrame, cell = first.Map, first.Frame, first.Selector.Cell
 	}
+	gameKind := os.Getenv("FD2_HD_TERRAIN_REUSE_GAME_KIND")
+	if gameKind == "" {
+		gameKind = "battle"
+	}
+	if gameKind != "battle" && gameKind != "story" {
+		t.Fatal("invalid explicit terrain fixture kind", gameKind)
+	}
 	mapPath := fmt.Sprintf("assets/maps/map%d", gameMap)
 	if err = g.loadMap(mapPath); err != nil {
 		t.Fatal(err)
@@ -371,8 +378,35 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 	if err = g.applyTheme(set); err != nil {
 		t.Fatal(err)
 	}
+	// Story-only LOADCH maps have no matching mapID+1 battle scenario. Keep
+	// their typed roster and camera on a private story carrier; the ordinary
+	// boundary carrier remains separate from the controlled Draw experiment.
+	saveCarrier := g
+	if gameKind == "story" {
+		source := g.st
+		view := *g
+		view.storyActors = view.storyActors[:0:0]
+		for _, unit := range source.Units {
+			view.storyActors = append(view.storyActors, *unit)
+		}
+		view.storyBG, view.st = true, nil
+		view.storyNativeMapView, view.hasStoryNativeMapView = v, true
+		view.camX, view.camY = float64(v.CameraX*g.m.TileW), float64(v.CameraY*g.m.TileH)
+		view.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
+		view.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
+		view.modernHDMapGPU = nil
+		if err = view.materializeNativeStoryMapState(source); err != nil {
+			t.Fatal("controlled story source", err)
+		}
+		g = &view
+	}
 	g.modernHDMapComposing = true
-	if err = g.composeNativeMapFrame(); err != nil {
+	if gameKind == "story" {
+		err = g.composeNativeStoryMapFrame()
+	} else {
+		err = g.composeNativeMapFrame()
+	}
+	if err != nil {
 		t.Fatal(err)
 	}
 	found := false
@@ -388,7 +422,7 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 	if !found {
 		t.Fatal("complete map missed new HD source", gameMap, gameFrame)
 	}
-	if err = g.saveGameToSlot(0); err != nil {
+	if err = saveCarrier.saveGameToSlot(0); err != nil {
 		t.Fatal(err)
 	}
 	saved, err := os.ReadFile(saveSlotPath(0))
@@ -396,7 +430,13 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 		t.Fatal(err)
 	}
 	g.msg = ""
-	units, _ := json.Marshal(g.st.Units)
+	unitSnapshot := func() ([]byte, error) {
+		if g.st != nil {
+			return json.Marshal(g.st.Units)
+		}
+		return json.Marshal(g.storyActors)
+	}
+	units, _ := unitSnapshot()
 	rng := g.nativeRNGState
 	probe.cases = append(probe.cases, sharedGroundGPUCase{g: g, name: fmt.Sprintf("game-map%02d-hd-ui", gameMap), mapID: gameMap, source: gameFrame, keepPNG: true})
 	originalUI := *g
@@ -413,11 +453,11 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 	if probe.err != nil || probe.index != len(probe.cases) {
 		t.Fatal(probe.index, probe.err)
 	}
-	after, _ := json.Marshal(g.st.Units)
+	after, _ := unitSnapshot()
 	if !bytes.Equal(units, after) || rng != g.nativeRNGState {
 		t.Fatal("theme changed units or RNG")
 	}
-	if err = g.saveGameToSlot(0); err != nil {
+	if err = saveCarrier.saveGameToSlot(0); err != nil {
 		t.Fatal(err)
 	}
 	resaved, err := os.ReadFile(saveSlotPath(0))
@@ -430,6 +470,7 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 	}
 	report := map[string]any{"status": status, "catalog_sha256": receipt.CatalogSHA, "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)),
 		"bindings": len(receipt.Bindings), "source_cases": len(receipt.Bindings) * 4, "complete_game_cases": 2, "cases": probe.rows, "save_bytes_unchanged": len(saved),
+		"game_kind": gameKind, "save_scope": "controlled boundary carrier; normal save/load verified separately",
 		"scope": fmt.Sprintf("controlled native selectors, actual terrain/foreground producer and map%d Game.Draw; theme/UI controls and saved boundary bytes; not normal chapter reachability or platform acceptance", gameMap)}
 	encoded, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {

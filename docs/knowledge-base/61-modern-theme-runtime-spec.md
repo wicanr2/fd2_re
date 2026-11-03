@@ -6362,3 +6362,33 @@ R77執行期間另整理[後續完整地形圖源](../../work/promo-cadence-2026
 32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過；1272 Go指紋db6b6c9a與R69程式保持。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存保持089b077b；唯讀外部候選清冊的整包載入另核。
 
 [受控map7畫面](../figures/hd1-terrain-context-map07-game.png)明示人物及相機，保留fixture原生HUD；不稱自然走遍、整張HD或新原版E2。正式33圖2129已接，餘1859缺槽／1217獨特來源，10純remap；四格五槽仍缺。主收據hd1_context_terrain_followup_20261103索引全部原稿、來源、配方、命令與真實程序收據。後續草地整格、一般地形及透明圖層仍屬DRAFT，#282與完整HD1續作。
+
+## HD1完整草地與地形續補
+
+R78 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。八份原稿接受683格1034槽，十三格31槽細點／短線圖案與灰色片段不收。依[來源包](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/source-pack.json)、[審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/prototype-review.json)及[READY](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/ready-source.json)。完整草地與可見物件整格重繪，綠色物件不依色號擦除；原native全opaque、無remap，128完整裁切→144且alpha不改。只將stage的8×12已審格數上限由24提高為96，舊4×6仍24；正式Go、編製、私人重編與資料格式不改。配方hd1-terrain-r78-atlas00.recipe.json至hd1-terrain-r78-atlas07.recipe.json逐份核來源、四態GPU、兩完整Draw／F2與保存後才登錄。前向邊界與舊配方先驗；整批回歸／普通首章／消費端後再定CONFORMED，私人1366新PNG與11851舊美術分開核對。
+
+R78另以[地圖演出繪製盤點](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source.json)使用既有章26測具與原始事件owner，透過獨立Go overlay實測四控制及首末幀；正式Go與R78地形驗證不改。此為DRAFT分類，未通過控制組與實際繪製前不判定缺件，既有#201承接後續。
+
+事件DRAFT控制組前次仍停在啟動logo，未取得產品結論；[第三次測具來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source-r3.json)沿既有受控戰場測具明示清除title owner，再驗真正Game.Draw。此控制設定不作一般玩家可達性或原版證據。
+
+[第四次事件DRAFT來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source-r4.json)核對modernHDMapFrameAdmission後，僅以私有中立Game視圖建立HD控制組，複製native work／VGA，不改事件實際選人或原生幀。前次已選人但未開命令的基準按正式守門不會進HD世界，故未成立的控制不當產品缺陷。
+
+[第五次事件DRAFT來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source-r5.json)沿既有sharedGroundGPUProbe補上modernHDPresentation.DrawFinalScreen，擷取1920×1200最終畫面；控制另驗CPU／GPU世界像素容差2及最終非黑畫面。R4只抓640×400中間層，缺少最終合成，旗標本身不足以建立可見控制，尚不據此登錄產品缺陷。
+
+### R78故事地圖測具補充READY
+
+最後一份map31的通用測具原以地圖編號直接找ch32戰鬥，缺少cycle與selector cache；正式campaign明示此圖用於story_ch01_forest_duel／story_ch01_forest_discover。[補充READY](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/ready-story-map31.json)先凍結，再只修既有modern_hd_terrain_reuse_gpu_test.go：明示story參數，私有carrier走既有故事materializer、原相機witness與typed roster。四態來源與兩完整Draw／F2仍實測；169 bytes保存限共用boundary carrier，普通整包另驗。前七份來源可回查修改前Go檔，正式Go與R69程式不變，最後Go tree如實記錄測具修訂；不把map31當一般戰鬥章或新增原版E2。
+
+[繪製重試來源規格](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/ready-draw-retry.json)保留失敗gpu-r1，故事分支實測另寫gpu-r2；登錄及audit明示選gpu-r2，不改名影像或偽造收據。audit標籤預設仍r1且拒越界路徑；另取一份既有battle候選驗預設分支，與已完成素材分開，不再登錄。
+
+事件61的[有效最終畫面分類](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/classification.json)已由r5確認：兩個HD中立控制組經CPU／GPU及最終非黑守衛，首末事件幀四控制均完全原生，原幀不變；其餘幀同消費端只作靜態推論。接線缺陷已列[#290](https://github.com/wicanr2/fd2_re/issues/290)，不以中間旗標、DRAFT或FDSHAP覆蓋替它結案。地形[測具來源分層](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/test-source-provenance.json)另記前七份原Go_test與最後故事／預設battle分支修訂，CPU函式區段逐byte不改，正式Go不變。
+
+### R78驗證結果
+
+683份128裁切母稿與683份144成品已登錄，2731清冊／9978私人白名單同步46e3afd90；11851舊美術SHA、inode、mtime與擁有權保持。八份原稿與alpha保持，成品與原型及私人重編逐byte相同。stage只放寬8×12格上限96，三份舊配方相同、五種錯誤metadata拒收；audit新增受限gpu_run，三種非法標籤拒收。23編製與八登錄拒收保持。
+
+1034來源交易／73錯遮罩、4136來源GPU／16完整Draw與F2通過。前七份用原測具；最後map31走明示故事測具gpu-r2，原失敗gpu-r1保留。每份169 bytes保存限共用boundary carrier，另以舊battle候選實測預設分支96來源／兩Draw。正式Go與R69程式不改，唯一Go_test修訂來源與1272份Go指紋3400eb8b如實分列；CPU測試區段逐byte保持。
+
+32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存SHA保持089b077b。最終整包沿唯讀候選清冊載入，沒有新原版E2或平台聲明。
+
+[受控map31故事畫面](../figures/hd1-terrain-full-map31-game.png)明示人物與相機，不稱自然走遍或整張HD。正式33圖3163已接，餘825缺槽／534獨特來源，10純remap；十三格31槽仍缺。主收據hd1_full_cell_terrain_followup_20261103索引八份來源、配方、補充READY與實際收據。透明／重映色、後續地形與事件61缺口續做，#282及#290保持開啟。

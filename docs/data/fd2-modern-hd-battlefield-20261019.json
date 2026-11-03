@@ -310326,5 +310326,684 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/final-validation.json",
       "sha256": "003f01a529e4c543a8a55b0743a071fe78ce4e0b2e569088a4c797811bc2bfbf"
     }
+  },
+  "hd1_full_cell_terrain_followup_20261103": {
+    "date": "2026-11-03",
+    "base_commit": "60aa84fc8e7ddb02131096c4bb2e83318853a889",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 282,
+    "production_registered": true,
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "scope": "八份完整草地與一般地形原稿接受683格1034槽；13格31槽保留。原128完整裁切與alpha保持，校準0後LANCZOS144。正式Go與R69程式不改，測具新增明示story map31，CPU測試區段不變；原遮罩、selector、cycle、圖層、規則及保存保持。",
+    "recipes": [
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas00.recipe.json",
+        "sha256": "2a71ee9d893f3c84b05dc7aa41aa9eaebb5d2b01f8cdfa20296aa633d7692802"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas01.recipe.json",
+        "sha256": "a7215a4e1e1d25efb8c8205c5c976ba438f0f33d1206feb84574e0cf445548ed"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas02.recipe.json",
+        "sha256": "339a937bc3ceed24022dcb00d4ba380c5c774569a738ded4dc90965121fb9a5e"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas03.recipe.json",
+        "sha256": "07d1ac67c39adb972d5689299f9d45f16abad7ca77b11ae1b8aa0eca82315793"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas04.recipe.json",
+        "sha256": "b261cf32222365c08f5709a6f5aa6d3e5692086c1d60c6b92d06fcac53f587cc"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas05.recipe.json",
+        "sha256": "a6963088693cf75eb5d77cceebc1b8d6c08a0dadbc1a98680b244485b2385240"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas06.recipe.json",
+        "sha256": "d4b434f2094e7b57f1a0617e373b3ecb0bd6193d40b09c1e2483dcf612038b7d"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-terrain-r78-atlas07.recipe.json",
+        "sha256": "e58dc7acd44d9bf673c50d392cf0aa6b489784c91b2a4ca1a3d2e55f290ca92f"
+      }
+    ],
+    "proofs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/progress.json",
+        "sha256": "13aa9da88fd8e99f8ff9bcaca613f309a7be04cc1338f51c07c6de3d13bf4af5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/planned-commands.json",
+        "sha256": "1acf8332694a23d841527281bfae71d764d2e16adb78336716aca4ca79e7154c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/source-pack.json",
+        "sha256": "99aa5d42d6cf55534816d1c51fbcb26ae4ca36dc3b4fb05366a51165d7082e45"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/prototype-review.json",
+        "sha256": "f8ea6ed57fd4c02f0e503bb94c427ba9e90208afb07f877090e1d5bc93177dbb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/ready-source.json",
+        "sha256": "cedf4bf1244137bea508817298f09c7eec817ce3fff9d8c752ee6461c76b5518"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/ready-story-map31.json",
+        "sha256": "c3772425b1da8afcaef0ecbbd07c64101b6a10bc1d75ab062de2df533dea8c50"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/ready-draw-retry.json",
+        "sha256": "a300a3c3da4bf12dc9758183fa67ddab7f1ab20838b4690042514933e456281e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/production-source-unchanged.json",
+        "sha256": "2d710382c1e40ea5b4181cee71897f6fae78d4a488e4c1d6f7ff05addb7d48d2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/test-source-provenance.json",
+        "sha256": "ef5a3fb44cc35a3eab9c460433aa31718e955b541f5f706c88f83eb1dba28f25"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/fixture-compatibility.json",
+        "sha256": "953429b186985e24898ff007cd1573d576c71a8bafc4cba85ce6a02fb6734997"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/batch-tool-compatibility.json",
+        "sha256": "339ecc19cdd55cf0165ad1fd2472bc4317ab4a7d05bdd7eebc975074cb6f1010"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/audit-gpu-run-negative.json",
+        "sha256": "590e3752a227a38f015493b5b9dd3d2267a596750755a532219249553bd0bec8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/private-preservation.json",
+        "sha256": "448dc8e938f7e86cb94bee2ce2d0172a43598f73b4bf4c447c257cf1b4357288"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/private-before-files.json",
+        "sha256": "8cb5a6bd6ae8cd06f457a3ebeda14d881cc16924959384782d8baee3ceecfea2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/catalog-validation.json",
+        "sha256": "ac738446b99c01e195cf6d2358aba1505d2230d67a1de9f3f7a076592e17bc4b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/compilation-tests-r1.log",
+        "sha256": "8e25d200da8b4323e376086ed87f2d53a47e60c68396ff2cd6fad55cf8c1fedd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/compilation-tests-r1.memory.json",
+        "sha256": "123a153c4685cd7ef194a84c2ca24f35adf036901e03950209b60bcfcca09db4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/registration-tests-r1.log",
+        "sha256": "e1ddbf286e296be817152da74160a57be5e2bd2794d5e2c843a4b85ebe35db62"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/registration-tests-r1.memory.json",
+        "sha256": "46b3a04ec096562eb9b6a4fbad6076ca884e46d2a2219d20d080a0b119f22c5e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/normal-r1-capture/receipt.json",
+        "sha256": "ab075d738286210622f8df1c99f592a38a3c06bf262180e8110b444a0d2cb4b0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/normal-r1.memory.json",
+        "sha256": "c5c8c3250100b9419f2e8b5cd83f43bb3732a2a926f31f9ea0903f636b7cbc41"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/formal-regression-r2.log",
+        "sha256": "110c448efcdb44b5225df2c174eac79c32a2e3695e2dd06c9306a63f464d4460"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/formal-regression-r2.memory.json",
+        "sha256": "9d288e5f1c1396c9006ede12aa4a780519a5d8ccfb5da2433ff9581b1e917014"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/consumers-formal-r2.json",
+        "sha256": "66c3b44fc978a73235d1195470bac417656c6c5d27fd1bf4fade6c99ca1770cc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/consumers-verified-r2.json",
+        "sha256": "4144b62d8dd91af4de8cbb10fa564a7cc0155080b59f04f2f7d33719c6ecc4bc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/review-migration.json",
+        "sha256": "cee0d307cfba68cf24ebd2bf9a4408c2d120a344a97952bc2ac57d6219063b0e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/catalog-validation.log",
+        "sha256": "0864ae65a70395450d6e46764f3d55ca3a97d02fd7ff1c50f03267fae61469cf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/formal-coverage-r1.json",
+        "sha256": "4ad68f80dccd490cef649ac016f48e422427723a2ce82657c44fb6484f111da0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/battle-fixture-after-story-r1-capture/receipt.json",
+        "sha256": "92ccbb6a652675a6573d8cb5f13ed670a32c2d44cbb2f92c5bd7203d430200ed"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/battle-fixture-after-story-r1.memory.json",
+        "sha256": "0aff6381290dfaf1122a726c78b010eecde16459d138727116af7552ad902e9d"
+      }
+    ],
+    "per_atlas": [
+      {
+        "atlas": 0,
+        "cells": 96,
+        "bindings": 110,
+        "new_sets": 8,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/receipt.json",
+          "sha256": "b2bcb92661011a87e60eded881dc66263db85a1fd84525dd44dcdb759f4c9d2f"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/planned-commands.json",
+          "sha256": "978b6f140221c8895a91f6d92fa7b58e3fdc99a10182b14eeacc9461a2ae8bc6"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/source-prototype.json",
+          "sha256": "f6b6a567092fa4aaab1087af2f1aae8128a1a306ee5ba223f90db628699b0cb0"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/imagegen-request-r1.json",
+          "sha256": "cae81e20bbb0d73ebca75427e9f7b5a5ac0ffae1dd5700957ec5a42f31a77612"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/atlas-r1-master.png",
+          "sha256": "f5f5a42d89f701f3c67f7b69af10df87f5e126960b67a7e798ca9b1ffb008418"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-00/direct-prototype-r1/prototype.json",
+          "sha256": "c62870b58c6e79c50264b850e72c4ed0b41dc4d2421eebd6f0bd3388a3930a87"
+        }
+      },
+      {
+        "atlas": 1,
+        "cells": 95,
+        "bindings": 120,
+        "new_sets": 12,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-01/receipt.json",
+          "sha256": "3d8274fc1a8f8244bdbe3231af4611fe9d968d5b3f0dee281b82391f6a9cff0b"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-01/planned-commands.json",
+          "sha256": "bce343a54b06811a5c929261d0f6b844cc0648ca5fe1124e293346f0e0b9a046"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-01/source-prototype.json",
+          "sha256": "f8edb14b577eacd8c321888c542e060fbbc5a4deac17a75c0bc7f1cdb0cc1829"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-01/imagegen-request-r1.json",
+          "sha256": "e2b991c80e7be4d57760469c5b666a36e3b363910911fcc6ba32908cf5bfa179"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-01/atlas-r1-master.png",
+          "sha256": "a4c2caa1c7bdc40ee051e82d17fc357e4fc47ab4ca2c6710e6bd69f736658c39"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-01/direct-prototype-r1/prototype.json",
+          "sha256": "b4e9e43ee2f8bc0c71786e0b98c64f9557a43a4d05f02dbd95ebe9bf3be82940"
+        }
+      },
+      {
+        "atlas": 2,
+        "cells": 96,
+        "bindings": 222,
+        "new_sets": 16,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-02/receipt.json",
+          "sha256": "8831ee05f4f48edca2b3511ddb4faa81cd113b5ad7ea97fb253793147eca2a49"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-02/planned-commands.json",
+          "sha256": "b784b2f24921d0be7b5622c1b2267bb27e301826621b6a2c3782265e2b59c4bc"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-02/source-prototype.json",
+          "sha256": "7660e764ef3dd25b124b9cc2df9ef52a9bc3efa32744ca376a995a468673c75e"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-02/imagegen-request-r1.json",
+          "sha256": "6c528a61d47a721c173369d20759e81a8ab629bcb82fc60c271136d1880fea2f"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-02/atlas-r1-master.png",
+          "sha256": "d6fe56d609b8b63a871bfd6e01ea547932bd8bc69310d3fbbba94b6b1b3bf520"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-02/direct-prototype-r1/prototype.json",
+          "sha256": "1858e790d33a002230fb32116e67d2c8e45eb6c85bae1e8a367c776b3596947e"
+        }
+      },
+      {
+        "atlas": 3,
+        "cells": 94,
+        "bindings": 177,
+        "new_sets": 12,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-03/receipt.json",
+          "sha256": "54cb513aa4ed0226aab184ae69cdac95b5bf5951ec3488d0278f8fb131e25ee9"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-03/planned-commands.json",
+          "sha256": "72a0fa89b5ace3b53989d6c522e96c7b2a50608e91ca848303c26220baea87cc"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-03/source-prototype.json",
+          "sha256": "873774a6263b47de4679a14d26827adb36d57b7484483223d85baf80247b60dc"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-03/imagegen-request-r1.json",
+          "sha256": "c4a94801c273200aaea841c949dd1c7bdb44f51870627ec3485c8af7f0f58b89"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-03/atlas-r1-master.png",
+          "sha256": "648e3990fd29455aee5e1a988dba3ffe7ea786dbf42964971762d317107afcb8"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-03/direct-prototype-r1/prototype.json",
+          "sha256": "bfc8961f0f89e2ed37e6a603b803611b2e580fd2363bf5dbda9eb6221310210e"
+        }
+      },
+      {
+        "atlas": 4,
+        "cells": 90,
+        "bindings": 153,
+        "new_sets": 12,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-04/receipt.json",
+          "sha256": "610842bd8dc0774e26b873e76f6e54a86eeaba03504a96dfa139278dbdcd2f33"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-04/planned-commands.json",
+          "sha256": "69fd98cb65452efa43c632efa54f19f59454be4ea84c9c9f3303b6ab63cd1c2e"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-04/source-prototype.json",
+          "sha256": "a274a3cf759efb7c1a4ca4757d74ec5e5609552e289cce67851835d7141e369e"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-04/imagegen-request-r1.json",
+          "sha256": "5b47c15226fd91a777dd0ddcd8a308a5b8d98ba1b81361f08233423cc849dc6a"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-04/atlas-r1-master.png",
+          "sha256": "b45353f2e9854d325b1d5b3f411c9106abc2bcf63c6098df488ce143fddea6f6"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-04/direct-prototype-r1/prototype.json",
+          "sha256": "b578a54516bcdcc983b58c5022ed6561259a4bf37b2f240848c9561f55c9f058"
+        }
+      },
+      {
+        "atlas": 5,
+        "cells": 96,
+        "bindings": 109,
+        "new_sets": 8,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-05/receipt.json",
+          "sha256": "f32e9a01fd943881f1f6c4eba8b8ed8c0e3d41d4660cf9a70938a5d6fd4480f6"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-05/planned-commands.json",
+          "sha256": "2d0a42b67f35d12eab1c599b64d62843bffe648b941437c1c2f5f2c4c74f7ad6"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-05/source-prototype.json",
+          "sha256": "762b6ade640ea849872a3ebd3db9582ec2cecfc48d516cb6579e496b1e3e346c"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-05/imagegen-request-r1.json",
+          "sha256": "0ad2f25d3783f902625e38e36b3e773567eb76528cd85ac12087ccd73f1fb74e"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-05/atlas-r1-master.png",
+          "sha256": "5b49367221c63e1fdd3bac64858092cef898313e91f2b2efe72ad0cd12dcfa47"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-05/direct-prototype-r1/prototype.json",
+          "sha256": "85f5412dca3300c16656882d85ea3159d8ff4d17b86fb85654086a93ae665662"
+        }
+      },
+      {
+        "atlas": 6,
+        "cells": 92,
+        "bindings": 119,
+        "new_sets": 4,
+        "gpu_run": "gpu-r1",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-06/receipt.json",
+          "sha256": "ec28f9e66234bbbbc3433b4dc6312f263cd30dd48ce7fc24e1c1e50c371dac83"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-06/planned-commands.json",
+          "sha256": "3a4fba1e0a40b0af18da58ff986d3f4afc440b0edb96b262584146f1c57bc925"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-06/source-prototype.json",
+          "sha256": "a25b0df9ab2c11c50270aab197875d6c548e0b795d19b77a6dce9b2cdf2c2d7f"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-06/imagegen-request-r1.json",
+          "sha256": "4493532ef6ba79dd26de72b3f15694f8c4385ad1d314ad6d0f24245f40bc3da3"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-06/atlas-r1-master.png",
+          "sha256": "4c34cd0ff2428b37a759e4671a7b323931afcceb112a9d913dd969abfb1cafde"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-06/direct-prototype-r1/prototype.json",
+          "sha256": "30e5713be44fb6aa688a65c34ba846be2cbc1d030d8bb6247a90247fc73956a7"
+        }
+      },
+      {
+        "atlas": 7,
+        "cells": 24,
+        "bindings": 24,
+        "new_sets": 1,
+        "gpu_run": "gpu-r2",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/receipt.json",
+          "sha256": "bb0091d615805f9f451f6cd474a5d56cff77f28b04ab6643f1a8923d06fd1072"
+        },
+        "commands": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/planned-commands.json",
+          "sha256": "c01fa0aa68d0b208a037ca952a7d6ee6ddb9fe2a1fe90b85302b7d0624467612"
+        },
+        "source_prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/source-prototype.json",
+          "sha256": "b00f9afb31bd44ae6498ca186c47c0f5f8801914b18d7feebf726e35a3a07754"
+        },
+        "request": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/imagegen-request-r1.json",
+          "sha256": "05ed362d62fb91198f8a212afa5d6f814631aa437fe64984d9230a85f584bb06"
+        },
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/atlas-r1-master.png",
+          "sha256": "93c5bbc7333ff2d99238b9b3b57e339fb9b49857a7a386bd27cd071c32bc45a5"
+        },
+        "prototype": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/atlas-07/direct-prototype-r1/prototype.json",
+          "sha256": "b7603cb3861e9aec8c7235541a08022037dc121c2819f868e55d8ae0e7931c17"
+        }
+      }
+    ],
+    "implementation": [
+      {
+        "file": "tools/build_fd2_hd_terrain_atlas.py",
+        "sha256": "ff1d689ee447fad4480a8b1d3ea76e22939d0f9335e9e0ba986cf9b77433aba2"
+      },
+      {
+        "file": "tools/rebuild_fd2_hd_terrain_atlas.py",
+        "sha256": "5187ca316bb50101cd73742069e12b075cd6df5428187b7e3747182f1b8fe6d3"
+      },
+      {
+        "file": "tools/test_fd2_hd_terrain_atlas.py",
+        "sha256": "cec94708003b8a84d28612929ee53c3d21eb35f983335e28bb75e06c8f20bcc9"
+      },
+      {
+        "file": "tools/stage_fd2_hd_terrain_batch.py",
+        "sha256": "6af9c0e8c228a09069f3e7d4e8fda3bc50b27bf0cd087be62d85d4684be03958"
+      },
+      {
+        "file": "tools/audit_fd2_hd_terrain_batch.py",
+        "sha256": "111347398822aa1d7194e2a761cebece16dc61b65d1f2d777c835082a1a7550a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go",
+        "sha256": "7f9e70210b2994c8c292df035e4488b109875248b0b43336a2b1469b417ce478"
+      }
+    ],
+    "native_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json",
+      "sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5"
+    },
+    "approved_style": {
+      "file": "docs/figures/hd1-terrain-redesign-style.png",
+      "sha256": "58b655b4207fe9e0dddb906dad8029ff44412a0f090089719be294fd37ccb07c"
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "calls": 8,
+      "new_generation_calls_for_registered_art": 0,
+      "origin": "R77後續一般地形前兩稿與六份完整草地原稿",
+      "size": [
+        1024,
+        1536
+      ],
+      "raw_master_bytes_and_alpha_preserved": true,
+      "registered_crop_masters": 683,
+      "whole_atlases_and_held_crops_not_synced": true
+    },
+    "prototype": {
+      "accepted_cells": 683,
+      "accepted_bindings": 1034,
+      "accepted_pngs_equal_to_compiled": 683,
+      "held_cells": 13,
+      "held_bindings": 31,
+      "held": [
+        {
+          "atlas": 1,
+          "cells": [
+            59
+          ]
+        },
+        {
+          "atlas": 3,
+          "cells": [
+            70,
+            71
+          ]
+        },
+        {
+          "atlas": 4,
+          "cells": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            36
+          ]
+        },
+        {
+          "atlas": 6,
+          "cells": [
+            9,
+            10,
+            48,
+            49
+          ]
+        }
+      ],
+      "held_reason": "細點／短線圖案與灰色片段保留待核。",
+      "opposing_edge_mix_applied": false
+    },
+    "source": {
+      "go_files": 1272,
+      "go_tree_sha256": "3400eb8bdfe722baaf83bc102a64bc5280f7e1c9aebd5842e8d76442243b45b4",
+      "first_seven_go_tree_sha256": "db6b6c9ae709aef7776012ce1d2699697c941314bf5d84f18438a2b7c4d9be91",
+      "production_go_unchanged": true,
+      "test_go_changed": [
+        "remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go"
+      ],
+      "cpu_test_prefix_unchanged": true,
+      "normal_runtime_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-json-load-frame-r69/fd2-player-r1",
+        "sha256": "1a7542de9b6de7efe044a4efb677499553e816a35e92944fcd02810d07b8ed00"
+      },
+      "normal_runtime_loads_readonly_external_candidate": true
+    },
+    "cpu": {
+      "source_transactions": 1034,
+      "wrong_mask_rejections": 73
+    },
+    "python": {
+      "top_level_pass": 3,
+      "compilation_source_rejections": 23,
+      "registration_rejections": 8,
+      "prior_recipes_byte_identical": 3,
+      "invalid_ready_rejected": 5,
+      "invalid_gpu_run_rejected": 3,
+      "common_fault_tests_once_atlas": 0,
+      "compiler_and_rebuilder_unchanged": true
+    },
+    "gpu": {
+      "source_cases": 4136,
+      "complete_game_cases": 16,
+      "total": 4152,
+      "complete_game_maps": [
+        1,
+        16,
+        1,
+        4,
+        7,
+        13,
+        20,
+        31
+      ],
+      "last_game_kind": "story",
+      "f2": 16,
+      "pngs": 16,
+      "rgba_tolerance": 2,
+      "save_bytes_unchanged_each": 169,
+      "story_save_scope": "shared controlled boundary carrier, not arbitrary story saving",
+      "default_battle_compatibility_extra_source_cases": 96,
+      "default_battle_compatibility_extra_game_cases": 2,
+      "original_failed_last_gpu_r1_kept": true
+    },
+    "normal_gui": {
+      "pngs": 10,
+      "display_modes": 4,
+      "legal_walk_cancel": true,
+      "f5_both_art_and_ui": true,
+      "new_process_title_load": true,
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "scope": "最終整包普通首章相容；新增槽由各份來源與受控完整Draw驗證。"
+    },
+    "regression": {
+      "pass": 32,
+      "optional_skip": 2,
+      "consumers": 21,
+      "frames": 416,
+      "negative": 19,
+      "review_count": 160
+    },
+    "coverage": {
+      "canonical": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "4ad68f80dccd490cef649ac016f48e422427723a2ce82657c44fb6484f111da0"
+      },
+      "summary": {
+        "maps": 33,
+        "missing-art": 825,
+        "missing_unique_native_content": 534,
+        "native-remap-only": 10,
+        "registered-hd": 3163,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "delta": {
+        "new_registered_slots": 1034,
+        "new_unique_sources": 683
+      }
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "99e1f281d8fb6f5a321c71f5149fe065f6b12ab8f87a6b6900b5730f41995356"
+      },
+      "catalog_assets": 2731,
+      "private_files": 9978,
+      "new_files": 1366,
+      "old_art_files_unchanged": 11851,
+      "private_commit": "46e3afd90dd7b4f5d4db829a628b882275f8340a",
+      "private_manifest_sha256": "3b1faaf8d724337c59e653d1dfd1a60ec451ed05efe3caa78ef6f510fca2e260",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-terrain-full-map31-game.png",
+        "sha256": "9ebff3f2bcd5bc4d12453d53da57799e5ac6f7f6009b11c68a4c48aa10d66ab0"
+      }
+    ],
+    "map_event_followup": {
+      "status": "OBSERVED-REMAKE-HD-PRESENTATION-GAP",
+      "issue": 290,
+      "classification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/classification.json",
+        "sha256": "c4bb58100bbf731029aa5c2c14cfc6f69505612e4e8285ee230a48e6c04d7e07"
+      },
+      "probe_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source-r5.json",
+        "sha256": "cf70c2e0bfa4d4bbd3857785b7bde79b1f9636ad7f52bf731453d83cd58f1a95"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/capture-r5/receipt.json",
+        "sha256": "48f7d72d771265a917631027d333b92c7cd6e09631fa9b21079c848cb18b9884"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/run-r5.memory.json",
+        "sha256": "915edb74b9d2509348b4924cd8a4e47c8e72d8226d55eaee1752d53a96a510c4"
+      },
+      "scope": "首末事件幀四控制及兩HD中立控制的最終畫面證明事件61退出HD世界；未作原版或正常可達性聲明。"
+    },
+    "limits": [
+      "完整HD1尚餘825缺槽／534獨特來源，#282保持開啟；事件61 HD呈現缺口由#290承接。",
+      "十三格31槽仍缺；受控map31故事畫面不等於自然走遍或整張HD。",
+      "人工觀感／逐章／平台由使用者接手，沒有新增原版E2。"
+    ],
+    "next_preparations": {
+      "status": "DRAFT-NOT-REGISTERED",
+      "not_counted_in_current_batch": true,
+      "sources": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-sources.json",
+          "sha256": "df1efcf21f59c9a478047af9ed8d1c0ccab2f07ed092b4fdb0be3c7622cf5dff"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-02-r1/source-prototype.json",
+          "sha256": "24481cc5294a16097f6fedf38b85604ebd3db69d001786a7c1ca83f00eaa2b45"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-03-r1/source-prototype.json",
+          "sha256": "066dd271b316ce90c9edf695d11207d1a66bd4f4b9bad4410b0e9363a4cbaa73"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-04-r1/source-prototype.json",
+          "sha256": "be4d308a1783ac44666747f76ac10db0c7221c1670335271daa1eb7681ca47dc"
+        }
+      ],
+      "geometry_prototypes": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r1/prototype.json",
+          "sha256": "4c59ac007df1dfdcfa1d43b033b125e5053f96725b4d097da061b0de911e1eef"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r2/prototype.json",
+          "sha256": "0920a1aee58ee19155c819b6f9b3c2285644e33b39e56af708516f9797701f7d"
+        }
+      ],
+      "scope": "透明／重映色、三份一般地形及細線幾何原型待後續READY。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/final-validation.json",
+      "sha256": "8f3c62676105eee163f8655a3e7f9d36adc18faa75a81857d2726faae0287c71"
+    }
   }
 }

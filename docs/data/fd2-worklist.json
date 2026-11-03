@@ -399,7 +399,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1地形：補齊正式地形與前景圖源",
-      "body": "使用者已確認地形列入HD1，採清爽手繪風格；人工觀感、逐章與平台由使用者接手。目前來源、接線與限制依58、61及HD主收據。\n\nR77三份完整輪廓／建築試稿以八個子集接受187格281槽，原生三層完整opaque且無remap。四格五槽迷宮圖案與原圖不同，保持缺件。基礎狀態暗眼與cycle2原圖微小亮點分別保留，不作身份推定；兩個靜態邊框在兩狀態native完全相同，只從第二原稿各登錄一次。原selector、cycle、圖層、通行、事件與保存不改。\n\n內建imagegen原母稿bytes／alpha及提示詞保存。8×12排列，完整128裁切後LANCZOS144，本批edge_pad0，不裁邊、不環繞UV、不混合對邊。187成品與原型及私人裁切母稿重編逐byte相同。正式Go與編製工具未改；R76的舊配方與45份PNG向後驗證仍適用。整張atlas與拒收裁切不入私人庫。\n\n281來源交易／39錯遮罩、1124來源GPU／16完整Game.Draw／16次F2及每份169 bytes受控保存通過。共用Python三項PASS含23編製及八登錄拒收；每份真實GPU後才登錄，正式清冊／官方覆蓋前後鏈已核。整批32正式回歸／兩可選略過、21來源／416幀／19反例與160字串通過。1272 Go指紋db6b6c9a，正式Go未改；普通首章十PNG涵蓋四控制、合法一格走行取消、兩美術／介面F5及新程序LOAD，保存089b077b保持。新281槽另由受控來源／完整Draw驗證，不稱自然走遍。\n\n1975正式清冊／8612私人白名單，新374檔已同步私人7b0ca096254cde02dfdb8f283615f574225f49aa並核遠端HEAD，11477舊美術SHA／inode／mtime／owner保持。主收據hd1_context_terrain_followup_20261103保存八份來源、配方、提示詞、實際程序與受控map7圖。後續683格1034槽已審試稿仍屬DRAFT，十三格31槽細圖案／灰色片段未接受；透明與前景來源及兩份幾何編製原型也未登錄，不計正式完成。\n\n正式Go重生33圖覆蓋：2129已接、1859缺槽／1217獨特來源、10純目的地remap，3998必要槽。受控map7仍有待補圖源與fixture原生HUD，不稱整張HD；外部相鄰格不宣稱逐像素相同。#282保持OPEN，#283操作介面已結案，完整HD1繼續，不新增原版oracle或整章E2。FDSHAP統計以外的地圖演出歸既有#201盤點。\n\n_下面這個區塊給 tools/fd2_worklist_issues.py 讀，改的時候保持 JSON 格式。_",
+      "body": "使用者已確認地形列入HD1，採清爽手繪風格；人工觀感、逐章與平台由使用者接手。目前來源、接線與限制依58、61及HD主收據。\n\nR78八份一般地形／完整草地原稿接受683格1034槽，native三層完整opaque且無remap。十三格31槽細點／短線圖案與灰色片段保持缺件。完整草地及綠色物件整格重繪，不依色號擦除；原selector、cycle、圖層、通行、事件與保存不改。\n\n內建imagegen原母稿bytes／alpha及提示詞保存。8×12排列，完整128裁切後LANCZOS144，本批edge_pad0，不裁邊、不環繞UV、不混合對邊。683成品與原型及私人裁切母稿重編逐byte相同。stage僅放寬8×12上限96，三份舊配方重生相同，五錯metadata拒收；audit明示受限gpu_run，三非法標籤拒收。整張atlas與拒收裁切不入私人庫。\n\n1034來源交易／73錯遮罩、4136來源GPU／16完整Game.Draw／16次F2及每份169 bytes受控邊界保存通過。前七份用原測具，最後map31依既有campaign走故事測具gpu-r2，原失敗gpu-r1保留；故事保存限共用boundary carrier，不稱任意故事保存。另用舊battle候選驗預設分支96來源／兩Draw，沒有重複登錄。正式Go與R69程式不改，唯一Go_test修訂與1272 Go指紋3400eb8b如實分層，CPU測試區段保持。\n\n共用Python三項PASS含23編製及八登錄拒收；每份真實GPU後才登錄，正式清冊／官方覆蓋前後鏈已核。整批32正式回歸／兩可選略過、21來源／416幀／19反例與160字串通過。普通首章十PNG涵蓋四控制、合法一格走行取消、兩美術／介面F5及新程序LOAD，保存089b077b保持。新1034槽另由受控來源／完整Draw驗證，不稱自然走遍。\n\n2731正式清冊／9978私人白名單，新1366檔已同步私人46e3afd90dd7b4f5d4db829a628b882275f8340a並核遠端HEAD，11851舊美術SHA／inode／mtime／owner保持。主收據hd1_full_cell_terrain_followup_20261103保存八份來源、配方、提示詞、補充READY與實際收據，另附受控map31故事圖。透明／remap來源、後續一般地形與兩份幾何編製原型尚未登錄。\n\n正式Go重生33圖覆蓋：3163已接、825缺槽／534獨特來源、10純目的地remap，3998必要槽。#282保持OPEN，#283操作介面已結案，完整HD1繼續，不新增原版oracle或整章E2。FDSHAP統計以外的事件61已由有效最終畫面控制確認會退回原生，列#290承接，不能只靠地形統計結案。\n\n_下面這個區塊給 tools/fd2_worklist_issues.py 讀，改的時候保持 JSON 格式。_",
       "acceptance": "盤點全部正式地圖的原生地形／前景consumer，補齊HD1圖源並登錄私人庫；沿原輪廓、遮擋、視圖與事件更新呈現，缺件明示，保留原版模式。必要來源、載入及切換檢查通過，人工畫面驗證由使用者接手。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -456,13 +456,48 @@
         "remake/assets/themes/modern/hd1-terrain-r77-atlas05.recipe.json",
         "remake/assets/themes/modern/hd1-terrain-r77-atlas06.recipe.json",
         "remake/assets/themes/modern/hd1-terrain-r77-atlas07.recipe.json",
-        "docs/figures/hd1-terrain-context-map07-game.png"
+        "docs/figures/hd1-terrain-context-map07-game.png",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas00.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas01.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas02.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas03.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas04.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas05.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas06.recipe.json",
+        "remake/assets/themes/modern/hd1-terrain-r78-atlas07.recipe.json",
+        "docs/figures/hd1-terrain-full-map31-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R77八份接受187圖281槽，1975清冊／8612私人檔，11477舊美術保持。281交易／39錯遮罩、1124來源GPU／16完整Draw、23編製／八登錄拒收、32回歸／兩可選略過及普通首章十PNG／保存冷讀通過。33圖2129已接，餘1859缺槽／1217獨特來源，10純remap；四格五槽迷宮圖案需核。依61及hd1_context_terrain_followup_20261103續作，完整HD1未完成。"
+        "note": "R78八份接受683圖1034槽，2731清冊／9978私人檔，11851舊美術保持。1034交易／73錯遮罩、4136來源GPU／16完整Draw、23編製／八登錄拒收、32回歸／兩可選略過及普通首章十PNG／保存冷讀通過。33圖3163已接，餘825缺槽／534獨特來源，10純remap；十三格31槽保留待核，事件61呈現缺口由#290承接。依61及hd1_full_cell_terrain_followup_20261103續作，完整HD1未完成。"
       },
       "issue": 282
+    },
+    {
+      "id": "hd1-field-event61-world",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "HD1：事件61播放時整張地圖與人物退回原生美術",
+      "body": "已用既有章26typed測具及實際Game.Draw／modernHDPresentation.DrawFinalScreen驗證：私有中立HD控制組可見，CPU／GPU世界像素容差2、1920×1200最終非黑守衛通過；事件61第0／58幀在四組美術／介面控制下卻全部與原生全幀6倍影像逐像素相同，HD世界旗標false，job.drawn=true。首末幀是實測，其餘幀的同一消費端屬靜態推論。\n\n來源是native_field_event61.go的drawNativeFieldEvent61直接進presentNativeClassFrameWithPalette，main.go事件owner早退。FDOTHER45是既有59份8×2原生來源，不能因此宣稱欠59張完整插圖。既有素材、frame／tick／物品／JOIN31語意不改，本題只修HD世界與小寫入的呈現。\n\n前四次觀察測具限制已保留：虛擬新檔vet、啟動logo、選人守門及漏最終合成；這些沒有當作產品缺陷。r5才取得有效可見HD控制與最終畫面。沒有修改正式Go、沒有新增原版oracle或一般章26可達性結論。此為既有#201之具體缺陷；#283已結案，不重開。",
+      "acceptance": "美術HD時保留同來源HD世界，逐幀原生小寫入的定位與可見範圍保持；原版模式最終畫面仍逐像素一致。全部59來源、完整Game.Draw／最終合成、F2中途切換及F11四控制、缺件拒收與既有事件完成／物品消耗／JOIN31回歸通過，普通首章保存／冷讀相容；技術收據在HD主收據以hd1_field_event61_followup_日期寫CONFORMED後結案。自然章26觀感仍由使用者接手。",
+      "evidence": [
+        "remake/cmd/fd2/native_field_event61.go",
+        "remake/cmd/fd2/native_class_ui.go",
+        "remake/internal/battle/native_field_event.go",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source-r5.json",
+        "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/capture-r5/receipt.json",
+        "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/run-r5.memory.json"
+      ],
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "\"hd1_field_event61_followup_[0-9]{8}\"\\s*:\\s*\\{",
+        "note": "只有完整技術驗證後才在主收據新增此CONFORMED鍵；DRAFT留work，不以函式名或旗標視為完成。"
+      },
+      "issue": 290
     }
   ]
 }

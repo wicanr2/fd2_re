@@ -17,8 +17,9 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def audit(batch, atlas):
-    if not Path('/.dockerenv').exists() or atlas not in range(8):
+def audit(batch, atlas, gpu_run='gpu-r1'):
+    if (not Path('/.dockerenv').exists() or atlas not in range(8) or
+            not re.fullmatch(r'gpu-r[1-9][0-9]*', gpu_run)):
         raise ValueError('需Docker與圖集0至7')
     batch.relative_to(ROOT / 'work')
     work = batch / f'atlas-{atlas:02d}'
@@ -29,7 +30,7 @@ def audit(batch, atlas):
     row = next(a for a in ready['atlases'] if a['atlas'] == atlas)
     recipe_path = ROOT / f'remake/assets/themes/modern/hd1-terrain-{batch_id}-atlas{atlas:02d}.recipe.json'
     recipe, manifest = read(recipe_path), read(work / 'candidate-r2/manifest.json')
-    gpu = read(work / 'gpu-r1-capture/receipt.json')
+    gpu = read(work / (gpu_run + '-capture/receipt.json'))
     count = row['bindings']
     if (manifest['recipe_sha256'] != sha(recipe_path) or len(manifest['bindings']) != count or
             gpu['status'] != 'PASS-PAINTED-TERRAIN-ATLAS-GPU' or
@@ -38,7 +39,7 @@ def audit(batch, atlas):
             (gpu['source_cases'], gpu['complete_game_cases'], len(gpu['cases'])) != (count*4, 2, count*4+2) or
             gpu['save_bytes_unchanged'] != 169):
         raise ValueError('實際來源／GPU收據不完整')
-    logs = ['source-r1', 'gpu-r1'] + (['compilation-tests-r1', 'registration-tests-r1'] if atlas == 0 else [])
+    logs = ['source-r1', gpu_run] + (['compilation-tests-r1', 'registration-tests-r1'] if atlas == 0 else [])
     for name in logs:
         memory = read(work / (name + '.memory.json'))
         if memory['returncode'] != 0 or memory['timeout'] or memory['memory_events_delta']['oom_kill']:
@@ -99,8 +100,8 @@ def audit(batch, atlas):
         raise ValueError('已有不同正式清冊快照')
     snapshot.write_bytes(catalog_path.read_bytes())
     shutil.copyfile(work / 'formal-coverage-r1.json', ROOT / 'docs/data/fd2-hd1-terrain-coverage.json')
-    proof_names = ['staged-inputs.json', 'candidate-r2/manifest.json', 'gpu-r1-capture/receipt.json',
-                   'source-r1.log', 'source-r1.memory.json', 'gpu-r1.memory.json', 'formal-coverage-r1.json',
+    proof_names = ['staged-inputs.json', 'candidate-r2/manifest.json', gpu_run + '-capture/receipt.json',
+                   'source-r1.log', 'source-r1.memory.json', gpu_run + '.memory.json', 'formal-coverage-r1.json',
                    'registered-catalog.json', 'rebuilt-from-private-r2/receipt.json', 'direct-prototype-r1/prototype.json']
     if atlas == 0:
         proof_names += ['compilation-tests-r1.log', 'compilation-tests-r1.memory.json',
@@ -113,6 +114,8 @@ def audit(batch, atlas):
               'prototype_and_private_rebuild_exact': True, 'crop_master_pixels_preserved': True,
               'proofs': [{'file': str((work / name).relative_to(ROOT)), 'sha256': sha(work / name)} for name in proof_names],
               'tool_sha256': sha(Path(__file__)), 'normal_and_final_regression': 'pending whole batch'}
+    if gpu_run != 'gpu-r1':
+        result['gpu_run'] = gpu_run
     write(work / 'receipt.json', result)
     progress_path = batch / 'progress.json'
     progress = read(progress_path) if progress_path.exists() else {'status': 'IN-PROGRESS', 'completed': []}
@@ -139,8 +142,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--batch-root', type=lambda p: Path(p).resolve(), required=True)
     parser.add_argument('--atlas', type=int, required=True)
+    parser.add_argument('--gpu-run', default='gpu-r1')
     args = parser.parse_args()
-    print(json.dumps(audit(args.batch_root, args.atlas), ensure_ascii=False))
+    print(json.dumps(audit(args.batch_root, args.atlas, args.gpu_run), ensure_ascii=False))
 
 
 if __name__ == '__main__':

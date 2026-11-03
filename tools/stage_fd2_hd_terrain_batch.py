@@ -33,9 +33,10 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
     ready = read(batch_root / 'ready-source.json')
     batch_id = ready.get('batch_id', 'r74')
     rows = ready['atlases']
+    max_cells = 96 if ready.get('grid', [4, 6]) == [8, 12] else 24
     if (not re.fullmatch(r'r[1-9][0-9]{1,3}', batch_id) or ready['status'] != 'READY' or
             len(rows) != 8 or {a['atlas'] for a in rows} != set(range(8)) or
-            any(type(a['accepted_cells']) is not int or not 1 <= a['accepted_cells'] <= 24 or
+            any(type(a['accepted_cells']) is not int or not 1 <= a['accepted_cells'] <= max_cells or
                 type(a['bindings']) is not int or a['bindings'] < a['accepted_cells'] for a in rows) or
             ready['accepted_cells'] != sum(a['accepted_cells'] for a in rows) or
             ready['accepted_bindings'] != sum(a['bindings'] for a in rows)):
