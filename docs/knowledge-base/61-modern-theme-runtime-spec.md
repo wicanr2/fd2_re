@@ -6392,3 +6392,25 @@ R78另以[地圖演出繪製盤點](../../work/promo-cadence-20261018/hd-fonts/o
 32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存SHA保持089b077b。最終整包沿唯讀候選清冊載入，沒有新原版E2或平台聲明。
 
 [受控map31故事畫面](../figures/hd1-terrain-full-map31-game.png)明示人物與相機，不稱自然走遍或整張HD。正式33圖3163已接，餘825缺槽／534獨特來源，10純remap；十三格31槽仍缺。主收據hd1_full_cell_terrain_followup_20261103索引八份來源、配方、補充READY與實際收據。透明／重映色、後續地形與事件61缺口續做，#282及#290保持開啟。
+
+## HD1事件61同來源世界
+
+R79 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。依[#290](https://github.com/wicanr2/fd2_re/issues/290)的有效最終畫面分類與[READY來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/ready-source.json)，只修事件61呈現。既有FDOTHER45的59份8×2寫入、320 stride、48356 offset、無透明色與兩BIOS ticks保持；事件狀態12、物品0xD0消耗、JOIN31及回呼不改。
+
+同一次中立原生compose的typed input、work、VGA與palette沿modernHDCompoundMapScene凍結及重建驗證；HD準備走既有prepareModernHDCommandSteadyStage，不再推時鐘。僅8×2來源像素以nearest6覆蓋HD世界，原生完整幀與fallback保持。F2／F11私有預檢後發布，失敗保留活躍主題、事件幀與狀態。新實作入口modern_hd_field_event61.go及驗證modern_hd_field_event61_test.go／modern_hd_field_event61_gpu_test.go，切換接入player_shortcuts.go；沒有新增配方或美術。全部59來源四控制、最終GPU／CPU／原生像素、中途切換、來源拒收、原事件回歸及普通保存相容通過才定CONFORMED。
+
+R79執行期間完成五份後續地形DRAFT試稿，原始母稿與提示詞保持；[一般地形02](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-02-r1/prototype.json)、[一般地形03](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-03-r1/prototype.json)、[一般地形04](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-04-r1/prototype.json)、[原生遮罩01](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-01-r1/prototype.json)及[原生遮罩02](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-02-r1/prototype.json)仍未登錄。局部格紋與孔槽數量先核幾何，不能把生成圖存在視為正式HD。
+
+R79四控制的[獨立HUD補充READY](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/ready-independent-hud.json)依player_interface_hud.go既有契約，忠實美術／HD介面沿同一凍結來源呈現HD資訊窗，原8×2寫入保持在HUD之上；原版美術／原版介面才是整幀逐像素比較。原事件清除HUD可見旗標的來源已核，此補充不改介面設計或事件規則。
+
+細線圖案另測[原幾何與手繪材質浮雕原型](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r3/prototype.json)，保留原索引幾何、改以手繪色票與有限浮雕明暗編製。這仍為DRAFT，未登錄或計入正式HD；實際144尺寸需確認線段與畫風。
+
+透明來源的三份[原遮罩裁切原型00](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-00-r1/native-mask-prototype-r1/prototype.json)、[01](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-01-r1/native-mask-prototype-r1/prototype.json)及[02](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-02-r1/native-mask-prototype-r1/prototype.json)保持原Mask與remap互斥，完整128母稿RGB另套nearest6 alpha。DRAFT未登錄，原稿不改；格紋與孔槽仍待幾何核對。
+
+### R79驗證結果
+
+全部59原生來源及四組控制共236次完整Game.Draw／最終1920×1200合成通過；八次F2與八次F11在第29幀切換，事件幀、時鐘、單位與RNG保持。原版美術／原版介面最終逐像素相同；其餘CPU／GPU容差2。十二張首／中／末PNG保存，原生幀bytes不改；[受控事件畫面](../figures/hd1-field-event61-game.png)可見HD人物與資訊窗，其他缺地形仍保留原生，不稱整圖HD或自然章26可達。
+
+八項事件來源／既有流程頂層回歸、九種來源／不完整世界拒收通過，涵蓋物品消耗、JOIN31及全軍移動續行；完整既有規則檔逐byte保持。32項正式回歸／兩可選略過與21來源／416幀／19反例通過。160字串的處置及來源簽名保持，清單重綁603028ca；1275 Go指紋8171727c。新程式f9fa55f1完成普通首章十PNG四控制、走行取消、F5及新程序LOAD，保存089b077b保持。
+
+GPU213.583秒／峰值5051224064 bytes，來源303.302秒／5428867072 bytes，普通282.294秒／4899016704 bytes，正式回歸215.483秒／4240207872 bytes，均零OOM。2731清冊／9978私人檔與R78完全相同，沒有新素材。首次source-r1僅新測試圖片容器型別編譯錯誤，修正後r2通過；獨立HUD補充及最終來源以r3／gpu-r1為準。主收據hd1_field_event61_followup_20261103保存READY、命令、來源與限制；#290技術工作可結案，#282與完整HD1續做。

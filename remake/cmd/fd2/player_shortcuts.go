@@ -84,6 +84,10 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	if err != nil {
 		return err
 	}
+	publishFieldEvent61, err := g.stageModernHDFieldEvent61(set)
+	if err != nil {
+		return err
+	}
 	publishUnitPresent, err := g.stageModernHDUnitPresent(set)
 	if err != nil {
 		return err
@@ -251,6 +255,7 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	publishRowShake()
 	publishUnitPresent()
 	publishIndexedTransition()
+	publishFieldEvent61()
 	publishCompoundMap()
 	publishExpiry()
 	if p := g.nativeDeathRewardUI; p != nil && p.hd != nil {

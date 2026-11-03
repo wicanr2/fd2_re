@@ -472,32 +472,6 @@
         "note": "R78八份接受683圖1034槽，2731清冊／9978私人檔，11851舊美術保持。1034交易／73錯遮罩、4136來源GPU／16完整Draw、23編製／八登錄拒收、32回歸／兩可選略過及普通首章十PNG／保存冷讀通過。33圖3163已接，餘825缺槽／534獨特來源，10純remap；十三格31槽保留待核，事件61呈現缺口由#290承接。依61及hd1_full_cell_terrain_followup_20261103續作，完整HD1未完成。"
       },
       "issue": 282
-    },
-    {
-      "id": "hd1-field-event61-world",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "HD1：事件61播放時整張地圖與人物退回原生美術",
-      "body": "已用既有章26typed測具及實際Game.Draw／modernHDPresentation.DrawFinalScreen驗證：私有中立HD控制組可見，CPU／GPU世界像素容差2、1920×1200最終非黑守衛通過；事件61第0／58幀在四組美術／介面控制下卻全部與原生全幀6倍影像逐像素相同，HD世界旗標false，job.drawn=true。首末幀是實測，其餘幀的同一消費端屬靜態推論。\n\n來源是native_field_event61.go的drawNativeFieldEvent61直接進presentNativeClassFrameWithPalette，main.go事件owner早退。FDOTHER45是既有59份8×2原生來源，不能因此宣稱欠59張完整插圖。既有素材、frame／tick／物品／JOIN31語意不改，本題只修HD世界與小寫入的呈現。\n\n前四次觀察測具限制已保留：虛擬新檔vet、啟動logo、選人守門及漏最終合成；這些沒有當作產品缺陷。r5才取得有效可見HD控制與最終畫面。沒有修改正式Go、沒有新增原版oracle或一般章26可達性結論。此為既有#201之具體缺陷；#283已結案，不重開。",
-      "acceptance": "美術HD時保留同來源HD世界，逐幀原生小寫入的定位與可見範圍保持；原版模式最終畫面仍逐像素一致。全部59來源、完整Game.Draw／最終合成、F2中途切換及F11四控制、缺件拒收與既有事件完成／物品消耗／JOIN31回歸通過，普通首章保存／冷讀相容；技術收據在HD主收據以hd1_field_event61_followup_日期寫CONFORMED後結案。自然章26觀感仍由使用者接手。",
-      "evidence": [
-        "remake/cmd/fd2/native_field_event61.go",
-        "remake/cmd/fd2/native_class_ui.go",
-        "remake/internal/battle/native_field_event.go",
-        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
-        "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/source-r5.json",
-        "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/capture-r5/receipt.json",
-        "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/run-r5.memory.json"
-      ],
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/data/fd2-modern-hd-battlefield-20261019.json"
-        ],
-        "pattern": "\"hd1_field_event61_followup_[0-9]{8}\"\\s*:\\s*\\{",
-        "note": "只有完整技術驗證後才在主收據新增此CONFORMED鍵；DRAFT留work，不以函式名或旗標視為完成。"
-      },
-      "issue": 290
     }
   ]
 }

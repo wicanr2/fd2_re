@@ -310961,7 +310961,8 @@
         "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/map-event-draw-audit-r1/run-r5.memory.json",
         "sha256": "915edb74b9d2509348b4924cd8a4e47c8e72d8226d55eaee1752d53a96a510c4"
       },
-      "scope": "首末事件幀四控制及兩HD中立控制的最終畫面證明事件61退出HD世界；未作原版或正常可達性聲明。"
+      "scope": "首末事件幀四控制及兩HD中立控制的最終畫面證明事件61退出HD世界；未作原版或正常可達性聲明。",
+      "superseded_by": "hd1_field_event61_followup_20261103"
     },
     "limits": [
       "完整HD1尚餘825缺槽／534獨特來源，#282保持開啟；事件61 HD呈現缺口由#290承接。",
@@ -311004,6 +311005,320 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-full-cells-r78/final-validation.json",
       "sha256": "8f3c62676105eee163f8655a3e7f9d36adc18faa75a81857d2726faae0287c71"
+    }
+  },
+  "hd1_field_event61_followup_20261103": {
+    "date": "2026-11-03",
+    "base_commit": "42b0c042635d8216d3016777e3d253c85a5491c3",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 290,
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "scope": "事件61保留同一次中立compose的typed input/work/VGA/palette及HD世界；既有59份8×2寫入依原位置nearest6覆蓋，無新插圖或規則。F2及F11沿私有預檢發布；原版美術／HD介面沿既有獨立HUD，原寫入在HUD之上。原版／原版最終像素容差0，其餘容差2。",
+    "proofs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/ready-source.json",
+        "sha256": "a3f071b364f9607c6382213f50521ec10efd2ceeaeda36a1a36f83fc0bb991d9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/ready-independent-hud.json",
+        "sha256": "c8545a363aa2c618f750d99cf1c3d77dc0aab825967cd906b1546d3db1b7f748"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/planned-commands.json",
+        "sha256": "5e888d215ee3601604f474192781a2267dbab2e160b6912d4d78b914dfcdb58c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/source-r1.log",
+        "sha256": "4733ee846b4611aa9341ee912696418172b8a75335a0c687a90a0e3fa665c555"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/source-r1.memory.json",
+        "sha256": "f727bb24e8689f6350b9e2c0a86dede771f9551d9aaf897dbbe0254acb95e332"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/source-r2.log",
+        "sha256": "443197b5cb52e54ea6db3f92ecef40c4eae54e38cb1859b320d49ff0fca8de1b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/source-r2.memory.json",
+        "sha256": "003d0dc9a33f4337c95834c5d79f9b385f8f9b8c8e0f099248a4f5757b9279c7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/source-r3.log",
+        "sha256": "a5875d0f49102dab595c93836bcd58946316bc4cca4ecab345cd92b7c0f33c35"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/source-r3.memory.json",
+        "sha256": "717aa12361240f0f0f9c1113da3f875b161cdb095696497640e9ceda0caa0bf8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/gpu-r1.log",
+        "sha256": "a831b5e62d18e47ccd1707127aa6b6e1ad5a40b33961e9dcb5b1c2e97733cec6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/gpu-r1.memory.json",
+        "sha256": "85c54ef5ca94adb42f4f6cd8a06c81e4e4af9ddeeb4dd9d9d75fcebf62c33626"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/gpu-r1-capture/receipt.json",
+        "sha256": "e50310fece16cbe4a42ae61dc8f91ec88506942b6d0e84c138be13af5f1e629d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/normal-r1.log",
+        "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/normal-r1.memory.json",
+        "sha256": "3a081ea0d0133c9790c46f8dab5d7977f89342f42bdb78299158015712ba9f96"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/normal-r1-capture/receipt.json",
+        "sha256": "a9ace7c7c7923c76cdffc1ac5dbbb414c9647d1bc0c2975464541ad82f052dde"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/formal-regression-r2.log",
+        "sha256": "1179e54726c65ce569eb6856053cbd266aaf54081e0fea0cc17698128975d807"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/formal-regression-r2.memory.json",
+        "sha256": "31da74d30e3d9d481a514e6af572b4b22883d08d55b3a08f628927633391919b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/consumers-formal-r2.json",
+        "sha256": "4acbc06b2641849acbca0c21dad83e44de6114beba35a1f9a131bd1721cdc528"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/consumers-verified-r2.json",
+        "sha256": "4f7f6a39b2d4032b5885517d7e5717d15d57cbad95969140321fca51cad75e21"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/inventory-r1.json",
+        "sha256": "603028ca04ec088f9b9ee482189a745e53cf040b2579be61288ee04a6e0eda34"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/review-migration.json",
+        "sha256": "3768bbb087c1b85b74aaa1271ed043a57d3fef7891a71e75b11c5dc3dc025a5a"
+      }
+    ],
+    "implementation": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_field_event61.go",
+        "sha256": "4bae36f33d02f09ba1d62b9ae1ad84e78783a463163a5a0a6277deda2d028bc8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_field_event61_test.go",
+        "sha256": "c39221bd4dfee7bdf534d976e6cb9b28f531dd6a011f4268c3cd3d24903ae22a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_field_event61_gpu_test.go",
+        "sha256": "f3eea41a6524fef8c1d8cc01107b10c80b7da0274c65686afcef28f068bc42f5"
+      },
+      {
+        "file": "remake/cmd/fd2/native_field_event61.go",
+        "sha256": "8a40b17cb7a77ded7bbf73a3e6a88ae53ead0963ee1c5f60f8601595ca261136"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "3d4e3c1c6e129e9836405d964c08dc0ed9ac16e0721d28d3bac2f0d374a1f3f4"
+      },
+      {
+        "file": "remake/cmd/fd2/player_interface_hud.go",
+        "sha256": "1115db38e3d8873a675d88f78f13ac746fdecfa01c4c4335181cc184a471677d"
+      }
+    ],
+    "existing_rule": {
+      "file": "remake/internal/battle/native_field_event.go",
+      "sha256": "93cf054fc8d49bde05b67f1725ef96a4ab0489c986c486591f560cddcf5c1a26"
+    },
+    "rule_bytes_unchanged": true,
+    "native": {
+      "resource": 45,
+      "frames": 59,
+      "width": 8,
+      "height": 2,
+      "offset": 48356,
+      "stride": 320,
+      "transparent": -1,
+      "delay_ticks": 2,
+      "raw_resource_sha256": "d7a0e73d7dec5403441c33cd84392a7683de329f7b0914a1bf23c47ccc56513a",
+      "native_frames_byte_identical": true,
+      "item": 208,
+      "state_index": 12,
+      "join": 31
+    },
+    "gpu": {
+      "cases": 236,
+      "frames": 59,
+      "controls": 4,
+      "f2": 8,
+      "f11": 8,
+      "pngs": 12,
+      "final_presenter": "modernHDPresentation.DrawFinalScreen",
+      "cpu_gpu_world_tolerance": 2,
+      "native_original_ui_tolerance": 0,
+      "scope": "既有章26測具、明示清除startup owner與直接開始原事件；不聲稱正常章26可達性。"
+    },
+    "cpu": {
+      "pass": 8,
+      "optional_gpu_skip": 1,
+      "source_rejections": 9,
+      "existing_completion_inventory_join_and_group_march_pass": true,
+      "initial_compile_failure": "source-r1 is new test image container type mismatch; corrected before source-r2 and final-r3",
+      "source_r2_scope": "初版HD世界診斷通過，完整獨立HUD以source-r3及gpu-r1為準"
+    },
+    "regression": {
+      "pass": 32,
+      "optional_skip": 2,
+      "consumer_cases": 21,
+      "consumer_frames": 416,
+      "consumer_negative": 19,
+      "reviewed_strings": 160,
+      "classification_signatures_unchanged": true
+    },
+    "normal_gui": {
+      "pngs": 10,
+      "four_controls": true,
+      "legal_walk_cancel": true,
+      "f5_both_art_and_ui": true,
+      "new_process_title_load": true,
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/fd2-player-r1",
+        "sha256": "f9fa55f1fa96ae74e70cf4a231020b2385a3d578118600492f44764c6ad42610"
+      }
+    },
+    "source": {
+      "go_files": 1275,
+      "go_tree_sha256": "8171727c629ca2cb5bb1943fb479b78feee2bf48f4a9226a4235952bde7f1131",
+      "normal_binary_built_from_current_production_go": true
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "99e1f281d8fb6f5a321c71f5149fe065f6b12ab8f87a6b6900b5730f41995356"
+      },
+      "catalog_assets": 2731,
+      "private_files": 9978,
+      "new_private_files": 0,
+      "private_commit": "46e3afd90dd7b4f5d4db829a628b882275f8340a",
+      "private_manifest_sha256": "3b1faaf8d724337c59e653d1dfd1a60ec451ed05efe3caa78ef6f510fca2e260",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+    },
+    "memory": {
+      "source-r3": {
+        "seconds": 303.302,
+        "peak_bytes": 5428867072,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "gpu-r1": {
+        "seconds": 213.583,
+        "peak_bytes": 5051224064,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "formal-regression-r2": {
+        "seconds": 215.483,
+        "peak_bytes": 4240207872,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "normal-r1": {
+        "seconds": 282.294,
+        "peak_bytes": 4899016704,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-field-event61-game.png",
+        "sha256": "c5794a9a913b9cac7802a6fd0984c871d7f04df56470a755a640949db46a65d4"
+      }
+    ],
+    "limits": [
+      "地形825缺槽／534獨特來源由#282續作，完整HD1未完成。",
+      "自然章26觀感、逐章與平台由使用者接手，沒有新原版oracle或E2。"
+    ],
+    "next_drafts": {
+      "status": "DRAFT-NOT-REGISTERED",
+      "artwork": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-02-r1/prototype.json",
+          "sha256": "fd261ee4cd514c368738028071d8542b5fe93feaaf98efbdda228222e7463aae"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-03-r1/prototype.json",
+          "sha256": "3d044bb90df8fc109c58e68be3e4cc59bfaa46c9a52921ca532a13eab0012ba7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-atlas-04-r1/prototype.json",
+          "sha256": "b1d6ad826f0ac829982b9cb8ffab66a58afe7247ee4dffbae9f60cc9275df03e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-01-r1/prototype.json",
+          "sha256": "600f78fcd3f7e52f479243cb384a22b8d62eae0e30887b29213ee6d61e546516"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-02-r1/prototype.json",
+          "sha256": "74211f3c394010952af2e1fee241ee8125a1f251a0515cf9b7a39b4ac3f7913c"
+        }
+      ],
+      "native_mask": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-00-r1/native-mask-prototype-r1/prototype.json",
+          "sha256": "77e55b161708efcf8d69098abea95fc646edaa380801596184725902c474f434"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-01-r1/native-mask-prototype-r1/prototype.json",
+          "sha256": "c889f408134e9390ed605f66195f8aa5e3527f63b21a879166512d0efd22fa8d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-atlas-02-r1/native-mask-prototype-r1/prototype.json",
+          "sha256": "3f165a6857e2d69fde5f56bbda5db8143e181bcedffd7fa5d98e597aecf60548"
+        }
+      ],
+      "geometry": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r3/prototype.json",
+          "sha256": "95b72d1346fa6e31add3bc5c0fb620d6e9a53db5e1909cc83aa52f59b71b2bdf"
+        }
+      ],
+      "not_counted_in_formal_coverage": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-field-event61-r79/final-validation.json",
+      "sha256": "8e70c4197453a910dedd68c57fc59af6ee9813d95be3f5281fa4c56924867dce"
     }
   }
 }

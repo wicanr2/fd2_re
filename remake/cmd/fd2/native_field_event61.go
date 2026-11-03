@@ -18,6 +18,7 @@ type nativeFieldEvent61Job struct {
 	hasTick  bool
 	clock    nativeBIOSClock
 	after    func()
+	hd       *modernHDFieldEvent61
 }
 
 func event61DialogueActions(g *Game, sceneIndex, line, count int) ([]battle.Action, bool) {
@@ -144,9 +145,21 @@ func (g *Game) beginNativeFieldEvent61Presentation(
 		}
 		frames[index] = append([]byte(nil), current...)
 	}
-	g.nativeFieldEvent61 = &nativeFieldEvent61Job{
+	job := &nativeFieldEvent61Job{
 		plan: plan, frames: frames, after: after,
 	}
+	job.hd = g.freezeModernHDFieldEvent61(job)
+	prepared, err := g.prepareModernHDFieldEvent61(job, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	hud, err := g.prepareModernHDFieldEvent61NativeHUD(job, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	job.hd.frames, job.hd.theme = prepared, g.modernStoryPortraits
+	job.hd.nativeHUD = hud
+	g.nativeFieldEvent61 = job
 	return nil
 }
 
@@ -236,9 +249,21 @@ func (g *Game) drawNativeFieldEvent61(screen *ebiten.Image) bool {
 		g.nativeMapAssets == nil || len(g.nativeMapAssets.Palette) < 256 {
 		return false
 	}
+	if g.modernStoryPortraits != nil && len(g.modernStoryPortraits.mapSpritesHD) == 125 {
+		if job.hd == nil || job.hd.theme != g.modernStoryPortraits || len(job.hd.frames) != len(job.frames) ||
+			!g.drawPreparedModernHDMapFrame(screen, job.hd.frames[job.frame], false) {
+			g.loadErr = "modern HD event61: prepared world unavailable"
+			return false
+		}
+		job.drawn = true
+		return true
+	}
 	g.presentNativeClassFrameWithPalette(
 		screen, job.frames[job.frame], g.nativeMapAssets.Palette,
 	)
+	if g.modernStoryPortraits == nil && g.modernHDInterfaceEnabled() && job.hd != nil && job.hd.nativeHUD != nil {
+		g.nativeInterfaceHUD, g.nativeInterfaceHUDVisible = job.hd.nativeHUD, true
+	}
 	job.drawn = true
 	return true
 }

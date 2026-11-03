@@ -8,8 +8,8 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
+| HD1事件61同來源世界 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；59來源四控制236完整Draw／最終GPU、八F2／八F11、九來源拒收、八事件回歸、32正式回歸／兩可選略過、21／416／19及普通首章十PNG／保存冷讀通過。1275 Go指紋8171727c，2731清冊／9978私人檔不改。主收據hd1_field_event61_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1事件61同來源世界) | #290技術完成；原生規則與59小寫入保持，無新原版E2。地形825缺槽／534獨特來源依#282，完整HD1續作 |
 | HD1完整草地與地形續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；683母稿／683成品新增1034槽，2731清冊／9978私人檔，11851舊美術保持。1034交易、4136來源GPU／16完整Draw／F2與保存、23編製／八登錄拒收、32回歸／兩可選略過及普通十PNG／保存冷讀通過。正式Go不改，故事測具與1272 Go指紋3400eb8b另記。主收據hd1_full_cell_terrain_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1完整草地與地形續補) | 33圖3163已接，餘825缺槽／534獨特來源，10純remap；十三格31槽仍缺，#282及完整HD1續作 |
-| HD1事件61呈現缺口 | OBSERVED-REMAKE-HD-PRESENTATION-GAP；有效HD中立控制經CPU／GPU與最終合成核對，首末事件幀四控制皆退回原生畫面，來源幀不變。證據依[61](61-modern-theme-runtime-spec.md#hd1完整草地與地形續補)與主收據map_event_followup | [#290](https://github.com/wicanr2/fd2_re/issues/290)待接線；其他57幀同消費端僅靜態推論，無新原版或正常可達性聲明 |
 | HD1完整輪廓與建築地形續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；187母稿／187成品新增281槽，1975清冊／8612私人檔，11477舊美術保持。281交易、1124來源GPU／16完整Draw／F2與保存、23編製／八登錄拒收、32回歸／兩可選略過及普通十PNG／保存冷讀通過。正式Go與編製工具未改。主收據hd1_context_terrain_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1完整輪廓與建築地形續補) | 現行缺圖依最新地形列；四格五槽保留原始收據，#282續作 |
 | HD1密集圖集地形續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；185份128裁切母稿／185成品新增263槽，1749清冊／8238私人檔，11107舊美術保持。263交易、1052來源GPU／16完整Draw／F2與保存、23編製／八登錄拒收、舊45圖逐byte保持；32回歸／兩可選略過及普通十PNG／保存冷讀通過。主收據hd1_dense_terrain_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1密集圖集地形續補) | 現行缺圖依最新地形列；七格13槽保留原始收據，#282續作 |
 | HD1多圖集地形第二批 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；189母稿及189成品追加260槽，1501清冊／7868私人檔，10729舊美術保持。260交易、1040來源GPU／16完整Draw／F2與保存、20編製／八登錄拒收、32回歸／兩可選略過及普通十PNG／保存冷讀通過。主收據hd1_multi_atlas_terrain_second_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1多圖集地形第二批) | 現行缺圖依最新地形列；三格五槽面板／曲線待核，#282續作 |
