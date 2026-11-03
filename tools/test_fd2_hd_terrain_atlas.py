@@ -61,6 +61,8 @@ class TerrainAtlasTests(unittest.TestCase):
                   'existing-file', 'geometry', 'alpha', 'shade-index', 'material-sha', 'shade-classification']
         if any('edge_pad_master_pixels' in g for g in atlas.read(self.recipe)['groups']):
             faults += ['edge-pad-negative', 'edge-pad-odd', 'edge-pad-type']
+        if atlas.read(self.recipe)['grid'] == [8, 12]:
+            faults += ['dense-grid-shape', 'dense-edge-pad-two', 'dense-nondirect-mode']
         for fault in faults:
             with self.subTest(fault=fault):
                 recipe = copy.deepcopy(atlas.read(self.recipe))
@@ -91,6 +93,12 @@ class TerrainAtlasTests(unittest.TestCase):
                     recipe['shade_policy']['material']['sha256'] = '0' * 64
                 elif fault == 'shade-classification':
                     recipe['shade_policy']['index_groups']['grass'].remove(137)
+                elif fault == 'dense-grid-shape':
+                    recipe['grid'] = [8, 6]
+                elif fault == 'dense-edge-pad-two':
+                    recipe['groups'][0]['edge_pad_master_pixels'] = 2
+                elif fault == 'dense-nondirect-mode':
+                    recipe['groups'][0]['compile_mode'] = 'atlas_cell'
                 elif fault.startswith('edge-pad-'):
                     recipe['groups'][0]['edge_pad_master_pixels'] = {
                         'edge-pad-negative': -2, 'edge-pad-odd': 1, 'edge-pad-type': True}[fault]

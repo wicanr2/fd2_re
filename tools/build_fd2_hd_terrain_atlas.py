@@ -148,10 +148,25 @@ def rgba_object_tile(raw, painting, grass, policy):
     return Image.alpha_composite(background, painting), shade
 
 
+def atlas_geometry(recipe):
+    grid = recipe['grid']
+    if (recipe['master_size'] != [1024, 1536] or not isinstance(grid, list) or
+            len(grid) != 2 or any(type(v) is not int for v in grid) or
+            grid not in ([4, 6], [8, 12])):
+        raise ValueError('圖集形狀只接受4x6或8x12')
+    if grid == [8, 12] and (recipe.get('master_alpha_contract', 'opaque') != 'opaque' or
+            any(g['compile_mode'] != 'atlas_direct' or
+                type(g.get('edge_pad_master_pixels', 0)) is not int or
+                g.get('edge_pad_master_pixels', 0) != 0 for g in recipe['groups'])):
+        raise ValueError('128密集圖集只接受完整不透明direct及校準0')
+    return grid[0], grid[1], 1024 // grid[0]
+
+
 def calibrate_direct_edges(master, padding):
     """只在編製複本向外延伸內側RGB；保留完整母稿及內部構圖。"""
     if (type(padding) is not int or padding not in (0, 2) or master.mode != 'RGBA' or
-            master.size != (256, 256) or master.getextrema()[3] != (255, 255)):
+            master.size not in ((128, 128), (256, 256)) or
+            master.size == (128, 128) and padding != 0 or master.getextrema()[3] != (255, 255)):
         raise ValueError('完整裁切邊緣校準契約不同')
     result = master.copy()
     if padding:
@@ -167,8 +182,9 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
     if not Path('/.dockerenv').exists() or os.path.lexists(out) or not out.parent.is_dir():
         raise ValueError('只在Docker寫入既有父目錄中的新候選')
     recipe, catalog, coverage, source = map(read, (recipe_path, catalog_path, coverage_path, sources / 'manifest.json'))
-    if (recipe['schema_version'], recipe['kind'], recipe['master_size'], recipe['grid'], recipe['size'], recipe['edge_blend']) != (
-            1, 'fd2_painted_terrain_atlas_v1', [1024, 1536], [4, 6], 144, 8):
+    columns, rows, cell_size = atlas_geometry(recipe)
+    if (recipe['schema_version'], recipe['kind'], recipe['master_size'], recipe['size'], recipe['edge_blend']) != (
+            1, 'fd2_painted_terrain_atlas_v1', [1024, 1536], 144, 8):
         raise ValueError('完整地表圖集契約不同')
     for path, key in [(catalog_path, 'base_catalog_sha256'), (coverage_path, 'coverage_sha256'),
                       (master_path, 'master_sha256'), (sources / 'manifest.json', 'source_manifest_sha256')]:
@@ -204,7 +220,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
         refs = ['remake/assets/themes/modern/' + recipe_path.name, 'docs/knowledge-base/61-modern-theme-runtime-spec.md']
         for group in recipe['groups']:
             cell = group['cell']
-            if type(cell) is not int or not 0 <= cell < 24:
+            if type(cell) is not int or not 0 <= cell < columns * rows:
                 raise ValueError('圖集來源格越界')
             frame = {'cell': cell, 'file': group['file'], 'compile_mode': group['compile_mode'],
                      'native_content_sha256': group['native_content_sha256']}
@@ -220,7 +236,8 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                                   'status': 'concept', 'file': group['master_file'], 'width': 248, 'height': 248,
                                   'sha256': frame['master_sha256'], 'source_refs': refs})
             elif group['compile_mode'] == 'atlas_direct':
-                crop = [cell % 4 * 256, cell // 4 * 256, cell % 4 * 256 + 256, cell // 4 * 256 + 256]
+                crop = [cell % columns * cell_size, cell // columns * cell_size,
+                        cell % columns * cell_size + cell_size, cell // columns * cell_size + cell_size]
                 if group['crop'] != crop:
                     raise ValueError('完整地表裁切不同')
                 piece = master.crop(crop)
@@ -233,7 +250,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                     frame.update(edge_pad_master_pixels=padding,
                                  calibrated_rgba_sha256=hashlib.sha256(calibrated.tobytes()).hexdigest())
                 additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
-                                  'status': 'concept', 'file': group['master_file'], 'width': 256, 'height': 256,
+                                  'status': 'concept', 'file': group['master_file'], 'width': cell_size, 'height': cell_size,
                                   'sha256': frame['master_sha256'], 'source_refs': refs})
             elif group['compile_mode'] == 'native_grass_shade':
                 raw = native(original, source, *group['anchor'])[:576]

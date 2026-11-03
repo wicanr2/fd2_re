@@ -11,7 +11,7 @@ from PIL import Image
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
-from build_fd2_hd_terrain_atlas import calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, read, write
+from build_fd2_hd_terrain_atlas import atlas_geometry, calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, read, write
 from build_fd2_hd_terrain_reuse import native, witness
 from verify_fd2_terrain_sources import check_binding, sha, verify
 
@@ -22,6 +22,7 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
     recipe, catalog, source = map(read, (recipe_path, catalog_path, sources / 'manifest.json'))
     if recipe['kind'] != 'fd2_painted_terrain_atlas_v1' or sha(sources / 'manifest.json') != recipe['source_manifest_sha256']:
         raise ValueError('原生來源契約不同')
+    columns, rows, cell_size = atlas_geometry(recipe)
     source_check = verify(original, maps, sources)
     policy, grass, _ = grass_policy(recipe, catalog, pack)
     slots = {(a['map_id'], f): (name, digest) for a in catalog['assets'] if a['role'] == 'native_terrain_hd_set'
@@ -56,8 +57,14 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                         Path(group['master_file']).name != group['master_file']):
                     raise ValueError('已登錄完整地表母稿不同')
                 master = pack / group['master_file']
-                if sha(master) != masters[0]['sha256'] or Image.open(master).size != (256, 256):
+                if sha(master) != masters[0]['sha256'] or Image.open(master).size != (cell_size, cell_size):
                     raise ValueError('完整地表母稿SHA或尺寸不同')
+                cell = group['cell']
+                crop = [cell % columns * cell_size, cell // columns * cell_size,
+                        cell % columns * cell_size + cell_size, cell // columns * cell_size + cell_size]
+                if (type(cell) is not int or not 0 <= cell < columns * rows or group['crop'] != crop or
+                        (masters[0]['width'], masters[0]['height']) != (cell_size, cell_size)):
+                    raise ValueError('完整裁切的格子、位置或登錄尺寸不同')
                 piece = Image.open(master).convert('RGBA')
                 if piece.getextrema()[3] != (255, 255):
                     raise ValueError('完整地表母稿必須不透明')

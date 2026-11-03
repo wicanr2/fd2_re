@@ -4970,9 +4970,9 @@
       "id": "sprite-mask-digest-follows-typed-representation",
       "date": "2026-11-02",
       "area": "型別化素材雜湊",
-      "rule": "固定遮罩雜湊前先讀實際載入器，分開標示PNG灰階位元組與型別化Mask的表示。LoadSeparatedRangeOverlayBank會把0／255規範成0／1，執行期來源驗證對載入後位元組取SHA；原PNG雜湊另存來源收據。入口為remake/internal/fdother/separated_range_overlay.go的loadRangeOverlayMask及modern_hd_preparation_cursor.go。",
-      "why": "R46游標初次把PNG遮罩SHA用於已規範成0／1的Sprite.Mask，導致正確來源被拒絕。確認既有解碼契約後分開記錄並修正執行期雜湊，未改原圖或放寬遮罩驗證。",
-      "evidence": "WORKLOG.md：2026-11-02 HD1整備名冊游標；61-modern-theme-runtime-spec.md；R46/cpu-r1-diagnostic.json",
+      "rule": "固定遮罩雜湊前先讀實際載入器，分開標示PNG灰階位元組與型別化Mask的表示。LoadSeparatedRangeOverlayBank會把0／255規範成0／1，執行期來源驗證對載入後位元組取SHA；原PNG雜湊另存來源收據。入口為remake/internal/fdother/separated_range_overlay.go的loadRangeOverlayMask及modern_hd_preparation_cursor.go。 地形三層內容同樣沿tools/build_fd2_hd_terrain_reuse.py的native正規化opaque／remap為0／1後計SHA，PNG灰階0／255另作影像來源。",
+      "why": "R46游標初次把PNG遮罩SHA用於已規範成0／1的Sprite.Mask，導致正確來源被拒絕。確認既有解碼契約後分開記錄並修正執行期雜湊，未改原圖或放寬遮罩驗證。 R76整體構件DRAFT直接雜湊PNG遮罩255而得到零候選；改用native後找到53份65槽，原圖PNG SHA保持，正式編製一直用標準解碼器。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1整備名冊游標；61-modern-theme-runtime-spec.md；R46/cpu-r1-diagnostic.json；docs/knowledge-base/61-modern-theme-runtime-spec.md：HD1密集圖集地形續補；WORKLOG.md：R76整體構件canonical雜湊勘誤",
       "guard": {
         "kind": "present",
         "paths": [

@@ -43,10 +43,17 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
     for name, key in [('source-pack.json', 'source_pack_sha256'), ('prototype-review.json', 'prototype_review_sha256')]:
         if sha(batch_root / name) != ready[key]:
             raise ValueError('READY圖源或審查不同')
+    grid = ready.get('grid', [4, 6])
+    if (not isinstance(grid, list) or len(grid) != 2 or any(type(v) is not int for v in grid) or
+            grid not in ([4, 6], [8, 12])):
+        raise ValueError('READY圖集形狀不同')
+    columns, cell_size = grid[0], 1024 // grid[0]
     row = next(a for a in ready['atlases'] if a['atlas'] == atlas)
     work = batch_root / f'atlas-{atlas:02d}'
     source_path, prototype_path = work / 'source-prototype.json', work / 'direct-prototype-r1/prototype.json'
     pack = read(batch_root / 'source-pack.json')
+    if pack.get('grid', [4, 6]) != grid:
+        raise ValueError('來源包與READY形狀不同')
     source_entry = next(a for a in pack['atlases'] if a['atlas'] == atlas)
     if sha(source_path) != source_entry['sha256']:
         raise ValueError('原型來源不同')
@@ -71,7 +78,8 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
         cell = g['cell']
         groups.append({'cell': cell, 'anchor': g['anchor'], 'native_content_sha256': g['native_content_sha256'],
                        'compile_mode': 'atlas_direct', 'edge_pad_master_pixels': row['edge_pad_master_pixels'],
-                       'crop': [cell % 4 * 256, cell // 4 * 256, cell % 4 * 256 + 256, cell // 4 * 256 + 256],
+                       'crop': [cell % columns * cell_size, cell // columns * cell_size,
+                                cell % columns * cell_size + cell_size, cell // columns * cell_size + cell_size],
                        'master_file': f'hd1-terrain-{batch_id}-a{atlas:02d}-cell{cell:02d}-master.png',
                        'file': f'hd1-terrain-{batch_id}-a{atlas:02d}-cell{cell:02d}-hd.png', 'targets': g['targets']})
     if (len(groups), sum(len(g['targets']) for g in groups)) != (row['accepted_cells'], row['bindings']):
@@ -86,6 +94,10 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
                   generation=read(work / 'imagegen-request-r1.json'), groups=groups,
                   scope='依原可見色群及高低輪廓重繪，身份／材質未知；原native透明、selector、cycle及規則保持。',
                   direct_policy='完整256裁切母稿保持；編製複本明示0或2像素內側RGB外延後LANCZOS144，無裁邊、UV環繞或對邊混合。')
+    recipe['grid'] = grid
+    if cell_size == 128:
+        recipe['master_cell_size'] = 128
+        recipe['direct_policy'] = '完整128裁切母稿及alpha保持，只LANCZOS144；校準0，不裁邊、UV環繞或對邊混合。'
     if len(accepted) != len(source['groups']):
         recipe['rejected_cells'] = [{'cell': g['cell'], 'anchor': g['anchor'], 'native_content_sha256': g['native_content_sha256'],
                                      'reason': '構件與圖案待原圖整體拼接核對，按格轉繪未接受'}

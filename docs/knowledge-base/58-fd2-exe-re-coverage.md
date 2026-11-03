@@ -8,7 +8,8 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
-| HD1多圖集地形第二批 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；189母稿及189成品追加260槽，1501清冊／7868私人檔，10729舊美術保持。260交易、1040來源GPU／16完整Draw／F2與保存、20編製／八登錄拒收、32回歸／兩可選略過及普通十PNG／保存冷讀通過。主收據hd1_multi_atlas_terrain_second_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1多圖集地形第二批) | 33圖1585已接，餘2403缺槽／1589獨特來源，10純remap；三格五槽面板／曲線待核，#282與完整HD1續作 |
+| HD1密集圖集地形續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；185份128裁切母稿／185成品新增263槽，1749清冊／8238私人檔，11107舊美術保持。263交易、1052來源GPU／16完整Draw／F2與保存、23編製／八登錄拒收、舊45圖逐byte保持；32回歸／兩可選略過及普通十PNG／保存冷讀通過。主收據hd1_dense_terrain_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1密集圖集地形續補) | 33圖1848已接，餘2140缺槽／1404獨特來源，10純remap；七格13槽仍缺，#282與完整HD1續作 |
+| HD1多圖集地形第二批 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；189母稿及189成品追加260槽，1501清冊／7868私人檔，10729舊美術保持。260交易、1040來源GPU／16完整Draw／F2與保存、20編製／八登錄拒收、32回歸／兩可選略過及普通十PNG／保存冷讀通過。主收據hd1_multi_atlas_terrain_second_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1多圖集地形第二批) | 現行缺圖依最新地形列；三格五槽面板／曲線待核，#282續作 |
 | HD1多圖集地形續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；174完整母稿及174成品追加202槽，1265清冊／7490私人檔，10381舊美術保持。202交易／21錯遮罩、808來源GPU／16完整Draw／F2及保存、20編製／八登錄拒收通過；32回歸／兩可選略過，普通十PNG與保存冷讀保持。主收據hd1_multi_atlas_terrain_followup_20261103及[61](61-modern-theme-runtime-spec.md#hd1多圖集地形續補) | 本批以外依最新地形列；18格39槽構件／圖案待核，#282續作 |
 | HD1淺灰地表續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；24完整裁切母稿／24成品追加41槽，1044舊項保持，正式1070清冊／7142私人檔。41交易／兩錯遮罩、164來源GPU／兩完整map15／F2與保存、17編製／八登錄拒收通過；32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_pale_terrain_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1淺灰地表續補) | 本批以外地形依最新地形列；人工由使用者接手 |
 | HD1透明物件續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；24裁切母稿／24成品追加66槽，1005舊項保持，正式1044清冊／7094私人檔。66交易／15錯遮罩、264來源GPU／兩完整map3／F2及保存、27編製／alpha及八登錄拒收通過；32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_rgba_objects_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1草地周圍物件第二批) | 本批以外地形依最新地形列；R71拒收的map6:131已續補，人工由使用者接手 |
