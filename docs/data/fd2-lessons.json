@@ -5180,6 +5180,22 @@
         "pattern": "^# 58 .*反組譯覆蓋與重製閉合矩陣",
         "note": "現況矩陣的正式標題保持，完整導言另由提交前差異核對。"
       }
+    },
+    {
+      "id": "art-rejection-needs-assembled-native-context",
+      "date": "2026-11-03",
+      "area": "HD圖源審查",
+      "rule": "判斷生成圖多畫或漏畫紋理前，先核原生相鄰圖格與完整構件，不從分散單格猜材質、符號或角色。入口docs/knowledge-base/61-modern-theme-runtime-spec.md的原生相鄰拼接脈絡；目前可重跑參考為work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/native-context-builder-r1.py，使用build_fd2_hd_terrain_reuse.py的native與既有selector0規則，只畫靜態索引／Mask，不含單位、目的地remap或原版執行期聲明。",
+      "why": "R80曾把map20／21原有石壁紋理當成AI新增石塊，去紋理後才以原圖拼接發現錯判；另六格276至281原是一個完整圓形圖案，應共同重繪。",
+      "evidence": "WORKLOG.md；work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-original-context.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "原生相鄰拼接脈絡",
+        "note": "保留原圖拼接入口；材質及圖案判斷仍需檢視原圖，不由此文字守衛自動證實。"
+      }
     }
   ]
 }

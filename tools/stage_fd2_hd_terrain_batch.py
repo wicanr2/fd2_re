@@ -34,7 +34,10 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
     batch_id = ready.get('batch_id', 'r74')
     rows = ready['atlases']
     max_cells = 96 if ready.get('grid', [4, 6]) == [8, 12] else 24
+    compile_mode = ready.get('compile_mode', 'atlas_direct')
     if (not re.fullmatch(r'r[1-9][0-9]{1,3}', batch_id) or ready['status'] != 'READY' or
+            compile_mode not in ('atlas_direct', 'atlas_native_mask') or
+            any(a.get('compile_mode', 'atlas_direct') != compile_mode for a in rows) or
             len(rows) != 8 or {a['atlas'] for a in rows} != set(range(8)) or
             any(type(a['accepted_cells']) is not int or not 1 <= a['accepted_cells'] <= max_cells or
                 type(a['bindings']) is not int or a['bindings'] < a['accepted_cells'] for a in rows) or
@@ -78,7 +81,7 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
                 raise ValueError('來源不再缺圖或selector不同')
         cell = g['cell']
         groups.append({'cell': cell, 'anchor': g['anchor'], 'native_content_sha256': g['native_content_sha256'],
-                       'compile_mode': 'atlas_direct', 'edge_pad_master_pixels': row['edge_pad_master_pixels'],
+                       'compile_mode': compile_mode, 'edge_pad_master_pixels': row['edge_pad_master_pixels'],
                        'crop': [cell % columns * cell_size, cell // columns * cell_size,
                                 cell % columns * cell_size + cell_size, cell // columns * cell_size + cell_size],
                        'master_file': f'hd1-terrain-{batch_id}-a{atlas:02d}-cell{cell:02d}-master.png',
@@ -99,6 +102,8 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
     if cell_size == 128:
         recipe['master_cell_size'] = 128
         recipe['direct_policy'] = '完整128裁切母稿及alpha保持，只LANCZOS144；校準0，不裁邊、UV環繞或對邊混合。'
+    if compile_mode == 'atlas_native_mask':
+        recipe['direct_policy'] = '完整128不透明母稿保持，RGB只LANCZOS144；再依原nativeMask nearest6裁切，alpha0的RGBA歸零，目的地remap保持透明。'
     if len(accepted) != len(source['groups']):
         recipe['rejected_cells'] = [{'cell': g['cell'], 'anchor': g['anchor'], 'native_content_sha256': g['native_content_sha256'],
                                      'reason': '構件與圖案待原圖整體拼接核對，按格轉繪未接受'}

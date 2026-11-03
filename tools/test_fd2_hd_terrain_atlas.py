@@ -54,6 +54,20 @@ class TerrainAtlasTests(unittest.TestCase):
                 self.assertEqual((out / frame[field]).read_bytes(), (self.candidate / frame[field]).read_bytes())
         base = atlas.read(self.base)['assets']
         self.assertEqual(atlas.read(out / 'catalog.json')['assets'][:len(base)], base)
+        source = atlas.read(self.repo / 'work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json')
+        for group in recipe['groups']:
+            if group['compile_mode'] != 'atlas_native_mask':
+                continue
+            raw = native(Path('/original'), source, *group['anchor'])
+            painting = Image.open(out / group['master_file']).convert('RGBA').resize((144, 144), Image.Resampling.LANCZOS).tobytes()
+            pixels = Image.open(out / group['file']).convert('RGBA').tobytes()
+            expected = bytearray()
+            for y in range(144):
+                for x in range(144):
+                    at = (y * 144 + x) * 4
+                    visible = raw[576 + y // 6 * 24 + x // 6]
+                    expected.extend(painting[at:at+4] if visible else bytes(4))
+            self.assertEqual(pixels, bytes(expected), group['cell'])
 
     def test_wrong_sources_never_publish_a_candidate(self):
         faults = ['master-sha', 'catalog-sha', 'coverage-sha', 'manifest-sha', 'duplicate-cell',
@@ -63,6 +77,8 @@ class TerrainAtlasTests(unittest.TestCase):
             faults += ['edge-pad-negative', 'edge-pad-odd', 'edge-pad-type']
         if atlas.read(self.recipe)['grid'] == [8, 12]:
             faults += ['dense-grid-shape', 'dense-edge-pad-two', 'dense-nondirect-mode']
+        if any(g['compile_mode'] == 'atlas_native_mask' for g in atlas.read(self.recipe)['groups']):
+            faults += ['native-mask-as-direct', 'native-mask-unknown-mode', 'native-mask-legacy-grid']
         for fault in faults:
             with self.subTest(fault=fault):
                 recipe = copy.deepcopy(atlas.read(self.recipe))
@@ -99,6 +115,12 @@ class TerrainAtlasTests(unittest.TestCase):
                     recipe['groups'][0]['edge_pad_master_pixels'] = 2
                 elif fault == 'dense-nondirect-mode':
                     recipe['groups'][0]['compile_mode'] = 'atlas_cell'
+                elif fault == 'native-mask-as-direct':
+                    recipe['groups'][0]['compile_mode'] = 'atlas_direct'
+                elif fault == 'native-mask-unknown-mode':
+                    recipe['groups'][0]['compile_mode'] = 'atlas_native_typo'
+                elif fault == 'native-mask-legacy-grid':
+                    recipe['grid'] = [4, 6]
                 elif fault.startswith('edge-pad-'):
                     recipe['groups'][0]['edge_pad_master_pixels'] = {
                         'edge-pad-negative': -2, 'edge-pad-odd': 1, 'edge-pad-type': True}[fault]
@@ -117,6 +139,21 @@ class TerrainAtlasTests(unittest.TestCase):
                     self.prepare(path, out, master)
                 self.assertFalse(out.exists())
                 self.assertFalse(list(self.root.glob('.terrain-atlas-*')))
+        if any(g['compile_mode'] == 'atlas_native_mask' for g in atlas.read(self.recipe)['groups']):
+            source = atlas.read(self.repo / 'work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json')
+            raw = native(Path('/original'), source, *atlas.read(self.recipe)['groups'][0]['anchor'])
+            painting = Image.new('RGBA', (144, 144), (30, 60, 90, 255))
+            no_mask = raw[:576] + bytes(576) + raw[1152:]
+            bad_mask, bad_remap, overlap = bytearray(raw), bytearray(raw), bytearray(raw)
+            bad_mask[576], bad_remap[1152] = 2, 2
+            overlap[576], overlap[1152] = 1, 1
+            for content in (raw[:-1], no_mask, bytes(bad_mask), bytes(bad_remap), bytes(overlap)):
+                with self.assertRaises(ValueError):
+                    atlas.native_mask_tile(content, painting)
+            for picture in (Image.new('RGB', (144, 144)), Image.new('RGBA', (143, 144)),
+                            Image.new('RGBA', (144, 144), (30, 60, 90, 254))):
+                with self.assertRaises(ValueError):
+                    atlas.native_mask_tile(raw, picture)
 
     def test_masked_objects_keep_native_boundary_and_painted_rgb(self):
         recipe = atlas.read(self.recipe)

@@ -75,7 +75,11 @@ func TestModernHDPaintedTerrainAtlasSourceTransactions(t *testing.T) {
 			bad := *bank
 			bad.Sprites = append(bank.Sprites[:0:0], bank.Sprites...)
 			bad.Sprites[binding.Frame].Mask = append([]byte(nil), bank.Sprites[binding.Frame].Mask...)
-			bad.Sprites[binding.Frame].Mask[0] = 0
+			if bad.Sprites[binding.Frame].Mask[0] == 0 {
+				bad.Sprites[binding.Frame].Mask[0] = 1
+			} else {
+				bad.Sprites[binding.Frame].Mask[0] = 0
+			}
 			if err = set.validateTerrainHD(binding.Map, &bad); err == nil {
 				t.Fatal("wrong source mask admitted", binding.Map)
 			}
@@ -318,14 +322,15 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 	}
 	// Keep the historical roof fixture; the cave batch uses its actual map and
 	// selector witness. Both are controlled cameras, not normal player input.
-	gameMap, gameFrame, cell := 1, 177, 480
+	gameMap, gameFrame, cell, gameRole := 1, 177, 480, "foreground"
 	firstSource := atlas || os.Getenv("FD2_HD_TERRAIN_REUSE_GAME") == "first"
 	if expected == 22 || firstSource {
 		first := receipt.Bindings[0]
-		if first.Role != "terrain" || first.Selector.Pass != 0 || expected == 22 && (first.Map != 24 || first.Frame != 32) {
+		if (first.Role != "terrain" && first.Role != "foreground") || first.Selector.Pass != 0 ||
+			expected == 22 && (first.Role != "terrain" || first.Map != 24 || first.Frame != 32) {
 			t.Fatal("cave batch needs an initial map24 source")
 		}
-		gameMap, gameFrame, cell = first.Map, first.Frame, first.Selector.Cell
+		gameMap, gameFrame, cell, gameRole = first.Map, first.Frame, first.Selector.Cell, first.Role
 	}
 	gameKind := os.Getenv("FD2_HD_TERRAIN_REUSE_GAME_KIND")
 	if gameKind == "" {
@@ -410,7 +415,7 @@ func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
 		t.Fatal(err)
 	}
 	found := false
-	if expected == 22 || firstSource {
+	if gameRole == "terrain" {
 		for _, tile := range g.modernHDMapFrame.Terrain {
 			found = found || tile.Frame == gameFrame && tile.Image != nil
 		}

@@ -74,7 +74,7 @@ def source_groups(recipe, coverage, source, original, maps):
                 continue
             witness(data, row)
             content = native(original, source, mp['map'], row['frame'])
-            if set(content[576:1152]) != {1} or any(content[1152:]):
+            if group['compile_mode'] != 'atlas_native_mask' and (set(content[576:1152]) != {1} or any(content[1152:])):
                 raise ValueError('本批只接受完整來源且無目的地重映射')
             anchor = tuple(group['anchor'])
             if anchor not in contents:
@@ -155,11 +155,26 @@ def atlas_geometry(recipe):
             grid not in ([4, 6], [8, 12])):
         raise ValueError('圖集形狀只接受4x6或8x12')
     if grid == [8, 12] and (recipe.get('master_alpha_contract', 'opaque') != 'opaque' or
-            any(g['compile_mode'] != 'atlas_direct' or
+            any(g['compile_mode'] not in ('atlas_direct', 'atlas_native_mask') or
                 type(g.get('edge_pad_master_pixels', 0)) is not int or
                 g.get('edge_pad_master_pixels', 0) != 0 for g in recipe['groups'])):
         raise ValueError('128密集圖集只接受完整不透明direct及校準0')
+    if grid != [8, 12] and any(g['compile_mode'] == 'atlas_native_mask' for g in recipe['groups']):
+        raise ValueError('原遮罩編製只接受128密集圖集')
     return grid[0], grid[1], 1024 // grid[0]
+
+
+def native_mask_tile(content, painting):
+    """原Mask決定alpha；原目的地重映色繼續由原生consumer處理。"""
+    if (len(content) != 1728 or set(content[576:1152]) - {0, 1} or
+            set(content[1152:]) - {0, 1} or not any(content[576:1152]) or
+            any(m and remap for m, remap in zip(content[576:1152], content[1152:])) or
+            painting.mode != 'RGBA' or painting.size != (144, 144) or
+            painting.getextrema()[3] != (255, 255)):
+        raise ValueError('原遮罩、重映色或手繪RGB來源不同')
+    alpha = Image.frombytes('L', (24, 24), bytes(255 if v else 0 for v in content[576:1152]))
+    alpha = alpha.resize((144, 144), Image.Resampling.NEAREST)
+    return Image.composite(painting, Image.new('RGBA', (144, 144)), alpha)
 
 
 def calibrate_direct_edges(master, padding):
@@ -235,7 +250,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                 additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
                                   'status': 'concept', 'file': group['master_file'], 'width': 248, 'height': 248,
                                   'sha256': frame['master_sha256'], 'source_refs': refs})
-            elif group['compile_mode'] == 'atlas_direct':
+            elif group['compile_mode'] in ('atlas_direct', 'atlas_native_mask'):
                 crop = [cell % columns * cell_size, cell // columns * cell_size,
                         cell % columns * cell_size + cell_size, cell // columns * cell_size + cell_size]
                 if group['crop'] != crop:
@@ -245,6 +260,11 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                 padding = group.get('edge_pad_master_pixels', 0)
                 calibrated = calibrate_direct_edges(piece, padding)
                 tile = calibrated.resize((144, 144), Image.Resampling.LANCZOS)
+                if group['compile_mode'] == 'atlas_native_mask':
+                    content = native(original, source, *group['anchor'])
+                    tile = native_mask_tile(content, tile)
+                    frame.update(native_mask_sha256=hashlib.sha256(content[576:1152]).hexdigest(),
+                                 native_remap_sha256=hashlib.sha256(content[1152:]).hexdigest())
                 frame.update(master_file=group['master_file'], master_sha256=sha(stage / group['master_file']), crop=crop)
                 if padding:
                     frame.update(edge_pad_master_pixels=padding,

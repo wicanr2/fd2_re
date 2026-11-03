@@ -11,7 +11,7 @@ from PIL import Image
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
-from build_fd2_hd_terrain_atlas import atlas_geometry, calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, read, write
+from build_fd2_hd_terrain_atlas import atlas_geometry, calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, native_mask_tile, read, write
 from build_fd2_hd_terrain_reuse import native, witness
 from verify_fd2_terrain_sources import check_binding, sha, verify
 
@@ -51,7 +51,7 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                 if sha(master) != masters[0]['sha256'] or Image.open(master).size != (248, 248):
                     raise ValueError('裁切母稿SHA或尺寸不同')
                 picture, _ = make_tile(master, 144, 8)
-            elif group['compile_mode'] == 'atlas_direct':
+            elif group['compile_mode'] in ('atlas_direct', 'atlas_native_mask'):
                 masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
                 if (len(masters) != 1 or masters[0]['file'] != group['master_file'] or
                         Path(group['master_file']).name != group['master_file']):
@@ -69,6 +69,8 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                 if piece.getextrema()[3] != (255, 255):
                     raise ValueError('完整地表母稿必須不透明')
                 picture = calibrate_direct_edges(piece, group.get('edge_pad_master_pixels', 0)).resize((144, 144), Image.Resampling.LANCZOS)
+                if group['compile_mode'] == 'atlas_native_mask':
+                    picture = native_mask_tile(content, picture)
             elif group['compile_mode'] == 'atlas_masked_object':
                 masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
                 actual_indices = sorted(set(content[:576]) - set(policy['index_groups']['grass']))

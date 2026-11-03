@@ -6414,3 +6414,41 @@ R79四控制的[獨立HUD補充READY](../../work/promo-cadence-20261018/hd-fonts
 八項事件來源／既有流程頂層回歸、九種來源／不完整世界拒收通過，涵蓋物品消耗、JOIN31及全軍移動續行；完整既有規則檔逐byte保持。32項正式回歸／兩可選略過與21來源／416幀／19反例通過。160字串的處置及來源簽名保持，清單重綁603028ca；1275 Go指紋8171727c。新程式f9fa55f1完成普通首章十PNG四控制、走行取消、F5及新程序LOAD，保存089b077b保持。
 
 GPU213.583秒／峰值5051224064 bytes，來源303.302秒／5428867072 bytes，普通282.294秒／4899016704 bytes，正式回歸215.483秒／4240207872 bytes，均零OOM。2731清冊／9978私人檔與R78完全相同，沒有新素材。首次source-r1僅新測試圖片容器型別編譯錯誤，修正後r2通過；獨立HUD補充及最終來源以r3／gpu-r1為準。主收據hd1_field_event61_followup_20261103保存READY、命令、來源與限制；#290技術工作可結案，#282與完整HD1續做。
+
+細線圖案另測[原幾何與手繪材質浮雕原型](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r4/prototype.json)，保留線段拓撲、以圓角輪廓取代模糊色區，再套手繪色票與有限浮雕明暗編製。這仍為DRAFT，未登錄或計入正式HD；實際144尺寸需確認線段與畫風。
+
+## HD1原遮罩地形續補
+
+R80 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。三份原稿分八子集，接受253格379槽，七格29槽孔槽面板及分散構件另重繪。依[來源包](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/source-pack.json)、[逐格審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/prototype-review.json)及[READY](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/ready-source.json)。新atlas_native_mask只取完整128母稿RGB放至144，依原Mask nearest6裁切；目的地remap保持透明，原稿及alpha不改，不依顏色猜透明。來源可為terrain／foreground，沿原圖層與selector，不新設身份或規則。
+
+編製／私人重生共用原遮罩核對，入口build_fd2_hd_terrain_atlas.py／rebuild_fd2_hd_terrain_atlas.py；stage_fd2_hd_terrain_batch.py只收READY明示模式，舊direct預設配方保持。audit_fd2_hd_terrain_batch.py核實際alpha／母稿／重生。modern_hd_terrain_reuse_gpu_test.go的錯遮罩反例改為翻轉複本位元，原為0也必定不同；完整Draw依實際foreground來源核消費端。379來源交易、1516來源GPU及16完整Draw／F2／邊界保存後才登錄。R79正式Go及普通程式保持，測具指紋如實更新。舊13217美術保持，新506PNG只依清冊同步私人；整包回歸與正常保存冷讀後才定CONFORMED。
+
+R80期間另備[其餘圖源完整盤點](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-remaining-sources.json)，在同一固定覆蓋排除R80的253格與三份一般地形222格後，餘59格。五十份圖案／構件分三張256格原圖，供後續更清楚的原圖重繪；九份全不透明單索引色面另列程式繪製原型，不添加紋理。全部DRAFT，來源與目標逐項綁原三層SHA，尚未登錄或算作HD完成。
+
+九份純色面另以[原色高解析矩形DRAFT](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-final-source-03-r1/code-native-request-r1.json)保存palette索引、RGB、SVG矩形及PNG雜湊；這些來源已核每格只含同一索引、全opaque、無remap，沒有圖案可重繪，不為它們發明材質。原始RGB來源如實標記true；後續仍需READY、正式圖源載入與消費端驗證，不能只改覆蓋類別就計完成。
+
+後續五十來源首輪三稿已保存，原始母稿／提示詞不覆寫；當時曾將深色底的石塊判為新增內容；原生拼接已更正，現行選擇依下方R1審查與六格完整圖案。[來源盤點](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-remaining-sources.json)仍為DRAFT，修訂另存r2，不計正式覆蓋。
+
+後續三份一般地形的[來源與手繪技術審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-direct-review.json)列222格306槽，核原生全opaque／無remap，並保存30組實際144像素對照。機械格紋及旗幟裝飾不推定成文字或角色設定，沒有逐像素美術聲明或人工接受。仍為DRAFT，實作前另定READY；此審查不計當前正式覆蓋。
+
+後續五十來源的r2修訂[原型00](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-final-source-00-r1/edited-prototype-r2/prototype.json)、[01](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-final-source-01-r1/edited-prototype-r2/prototype.json)及[02](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-final-source-02-r1/edited-prototype-r2/prototype.json)另存母稿／提示詞，當時曾移除暗色底紋理；原拼接勘誤後不採，母稿與提示詞保留供回查。全部DRAFT，尚未登錄，不取代原R1一般石壁。
+
+剩餘深色圖案另核[原生相鄰拼接脈絡](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-original-context.json)，只用既有flip0／cycle0 selector與原Mask，省略單位及目的地remap；不以片段外觀推定岩石、符號或角色身份。此為靜態DRAFT參考，不作原版執行期或正常路徑。
+
+原生拼接勘誤：map20／21的深色區本有石塊紋理，首輪三稿的石壁不能因片段看似線段就整批拒收。去紋理r2是放棄對照，不取代原R1一般石壁。map20幀276至281另由[六格完整圓形圖案來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-whole-round-pattern-r1/source-prototype.json)保留3×2拼接後重繪，不再各格猜線段；圖案身份與用途未知。[靜態原圖拼接](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-original-context.json)為勘誤依據，未新增原版執行期聲明。
+
+原生拼接勘誤後的[一般石壁與構件R1審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-final-r1-review.json)保留44份既定畫風來源，六份圓形圖案另用完整來源重繪，九份純色原型另計。去紋理R2不採，身份／文字／規則不推定；總數仍59，全部DRAFT，尚未登錄。
+
+[完整圓形圖案144原型](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-whole-round-pattern-r1/reviewed-prototype-r1/prototype.json)依六格整體重繪，保持原輪廓與中央線段，不命名身份、文字或用途。連同44份原稿構件及九份原色色面的[後續59格技術審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-final-reviewed.json)涵蓋140槽，仍為DRAFT，尚未READY／登錄，不計本批正式覆蓋。
+
+後續一般地形的[map32故事來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-map32-story-source.json)已核正式campaign兩個宮殿cutscene節點；之後完整Draw明示story測具，不再以地圖編號推算ch33戰鬥。僅DRAFT來源準備，普通宮殿玩家路徑與原版oracle聲明不新增。
+
+後續59來源與三份一般地形222來源可合併為[最後八份圖源DRAFT](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-native-mask-r80/next-all-remaining-batch.json)，共281格446槽。每份母稿沿既有4×6／256或8×12／128形狀，144執行期與配方schema不變；實作前另READY，才讓stage接受可選逐份grid與256原遮罩，舊預設配方保持。九份純色色面明示原RGB來源true。R80整批完成提交前不改其編製工具，此計畫未登錄或計正式完成。
+
+### R80驗證結果
+
+253份128裁切母稿與253份144成品已登錄，新增379槽；3028清冊／10484私人檔同步8db4669b1556a59b7cd1ff78830d9152688ee7aa，13217舊美術SHA、inode、mtime及擁有權保持。原nativeMask nearest6提供alpha，零alpha為零RGBA，目的地remap不著色，原稿與128完整裁切保持。三份舊配方逐byte相同，七種READY錯誤、26編製／八原遮罩helper與八登錄反例拒收。
+
+379來源交易、1516來源GPU／16完整Draw與F2、每份169 bytes邊界保存通過。GPU測具如實支援前景及地形；正式Go與R79普通程式不變，1275 Go指紋0f62faca1dab803ea68286557184415e5ccaf4dd08ea88491a8af4f7d3cbe89e。32回歸／兩可選略過、21來源／416幀／19反例與160字串通過；普通首章十PNG四控制、合法走行取消、兩美術／介面F5及冷LOAD保存089b077b保持。
+
+[受控map29畫面](../figures/hd1-terrain-native-mask-map29-game.png)僅證本批接線。33圖3542已接，餘446缺槽／281獨特來源，10純remap；最後圖源與原生相鄰脈絡見主收據hd1_native_mask_terrain_followup_20261103。圖案不推身份或用途，人工觀感／逐章／平台由使用者接手。#282續做，沒有新原版E2。

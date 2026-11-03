@@ -8,7 +8,7 @@ from pathlib import Path
 import shutil
 
 from PIL import Image
-from build_fd2_hd_terrain_atlas import read, write
+from build_fd2_hd_terrain_atlas import read, write, native
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -69,7 +69,15 @@ def audit(batch, atlas, gpu_run='gpu-r1'):
         if not candidate.read_bytes() == expected.read_bytes() == registered.read_bytes() == rebuilt.read_bytes():
             raise ValueError('原型／候選／私人／重編不同')
         with Image.open(registered) as image:
-            if image.size != (144, 144) or image.getextrema()[3] != (255, 255):
+            alpha_valid = image.getextrema()[3] == (255, 255)
+            if group['compile_mode'] == 'atlas_native_mask':
+                source_path = ROOT / 'work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json'
+                if sha(source_path) != recipe['source_manifest_sha256']:
+                    raise ValueError('原遮罩manifest不同')
+                content = native(Path('/original'), read(source_path), *group['anchor'])
+                mask = Image.frombytes('L', (24, 24), bytes(255 if v else 0 for v in content[576:1152]))
+                alpha_valid = image.getchannel('A').tobytes() == mask.resize((144, 144), Image.Resampling.NEAREST).tobytes()
+            if image.size != (144, 144) or not alpha_valid:
                 raise ValueError('成品尺寸或原生透明不同')
         private_master = Path('/modern') / group['master_file']
         if private_master.read_bytes() != (work / 'candidate-r2' / group['master_file']).read_bytes():
