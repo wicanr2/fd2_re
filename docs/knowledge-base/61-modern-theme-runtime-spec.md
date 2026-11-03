@@ -6282,3 +6282,31 @@ R74 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。八份原型接受174格202槽�
 32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過；1272 Go指紋db6b6c9a，正式Go未改。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存保持089b077b；沿R69正式程式以唯讀外部候選清冊驗證。
 
 [受控map2畫面](../figures/hd1-terrain-batch-map02-game.png)使用明示人物與相機，只證明正式Draw接線，不稱普通走遍或整張地圖HD。正式33圖1325已接，餘2663缺槽／1778獨特來源，10純remap。主收據[hd1_multi_atlas_terrain_followup_20261103](../data/fd2-modern-hd-battlefield-20261019.json)索引全部八份配方、原稿、完整提示詞、來源與命令；#282續作，人工由使用者接手。
+
+## HD1多圖集地形第二批
+
+R75 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。八份原型接受189格260槽，來源及逐份實測依[進度收據](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/progress.json)與下列READY；三格五槽面板／曲線保持待核。
+
+### R75 READY契約
+
+八份原型依原圖及144裁切複核，接受189格260槽；atlas-06第19、20、22格三格五槽面板／曲線需整體原圖核對，試稿不收。前批18格已排除，不重複試稿。沿[READY收據](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/ready-source.json)及[原型審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/prototype-review.json)，全部完整256母稿／原alpha保持，八份校準0後LANCZOS144，不裁邊、環繞UV或混合對邊。
+
+既有stage／audit工具改讀READY的batch_id及初始私人數量，以同一八份流程重用；缺省仍r74。需核八個不同圖集、接受格與槽合計、SHA及完整目標。配方hd1-terrain-r75-atlas00.recipe.json至hd1-terrain-r75-atlas07.recipe.json於各批實作前綁定正式清冊及官方覆蓋，逐份來源／真實GPU／兩完整Draw／F2與169 bytes保存通過才登錄；整批32回歸／兩可選略過、普通首章、字串及消費端最後驗證。私人僅同步378檔，10729舊美術保持，189圖可從未改裁切母稿逐byte重編。不改原生透明、selector、cycle、圖層、規則或保存。
+
+待核構件的[靜態原圖拼接](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/assembled-native-r1/reference.json)保存map20六格圖案與水平構件、map21斜向構件、map26三格面板及map28圓弧周邊。來源沿固定原生三層及可編輯地圖座標，紫色標目的地remap，來源透明暫顯黑；此為DRAFT製圖參考，不是原版執行期／玩家路徑或正式HD。
+
+可丟棄的[密集圖集來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/dense-atlas-prototype-r1/source-prototype.json)另用同尺寸母稿8×12格、每格128像素，評估144執行期尺寸的構圖與畫質。來源避開R75全部192候選與R74待核18格。此為DRAFT製圖效率原型，未改正式編製或清冊；通過原圖／既定風格對照及規格審查才考慮後續使用。
+
+地形完整後仍須依[地圖演出來源盤點](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/map-event-art-audit.json)受控檢查事件61的正式Draw。FDOTHER45分離包有59份8×2資料，drawNativeFieldEvent61呼叫原生全畫布呈現helper；目前只記靜態強推論，未驗動態HD結果，不據此宣稱需要重畫59張完整動畫。此來源不在FDSHAP3998槽統計內，歸既有素材覆蓋父項#201，操作介面#283及已核絕招保持閉合。
+
+第二份可丟棄的[密集圖集來源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/dense-atlas-second-prototype-r1/source-prototype.json)另用同尺寸母稿8×12格、每格128像素，評估144執行期尺寸的構圖與畫質。來源避開R75全部192候選與R74待核18格。此為DRAFT製圖效率原型，未改正式編製或清冊；通過原圖／既定風格對照及規格審查才考慮後續使用。
+
+兩份密集原型的[初審](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/dense-prototype-review.json)保留185格263槽作後續候選，七格面板／大型面部局部拒收。128母稿裁切放到144的畫質已作對照，原稿／alpha保持；此時仍為DRAFT，須待R75整批驗證與提交，再另立READY及擴充編製，不在目前八份中途改工具。
+
+### R75驗證結果
+
+189母稿／189成品已登錄，1501清冊與7868私人白名單同步9dd2bc8d，10729舊美術SHA／inode／mtime／owner保持。八份完整256裁切與原alpha不改，全部校準0後LANCZOS144，成品與原型及私人重編逐byte相同；R74兩份舊配方重生相同，三項無效批次metadata拒收。260來源交易、1040來源GPU／16完整Draw／F2及每份169 bytes保存通過，三項Python含20編製及八登錄拒收通過。每份真實GPU後才登錄，前後清冊與官方覆蓋鏈保持。
+
+32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過；1272 Go指紋db6b6c9a，正式Go未改。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5與新程序LOAD，保存保持089b077b；沿R69程式及唯讀外部候選清冊驗證。
+
+[受控map2畫面](../figures/hd1-terrain-second-map02-game.png)使用第三份實測的明示人物與相機，保留該fixture的原生HUD，不稱整張HD或自然走遍。正式33圖1585已接，餘2403缺槽／1589獨特來源，10純remap。主收據hd1_multi_atlas_terrain_second_followup_20261103索引八份原稿、提示詞、配方與實際程序收據。兩份密集原型的185格263槽仍為後續DRAFT，不計本批；事件61的靜態盤點待實際Draw，#282與完整HD1續作。

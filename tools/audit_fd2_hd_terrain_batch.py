@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""核對一份真實圖集收據並推進R74狀態；不產生GPU比較結果。"""
+"""核對一份真實圖集收據並推進批次狀態；不產生GPU比較結果。"""
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 
@@ -22,8 +23,11 @@ def audit(batch, atlas):
     batch.relative_to(ROOT / 'work')
     work = batch / f'atlas-{atlas:02d}'
     ready = read(batch / 'ready-source.json')
+    batch_id = ready.get('batch_id', 'r74')
+    if not re.fullmatch(r'r[1-9][0-9]{1,3}', batch_id) or ready['status'] != 'READY':
+        raise ValueError('批次名稱或READY不同')
     row = next(a for a in ready['atlases'] if a['atlas'] == atlas)
-    recipe_path = ROOT / f'remake/assets/themes/modern/hd1-terrain-r74-atlas{atlas:02d}.recipe.json'
+    recipe_path = ROOT / f'remake/assets/themes/modern/hd1-terrain-{batch_id}-atlas{atlas:02d}.recipe.json'
     recipe, manifest = read(recipe_path), read(work / 'candidate-r2/manifest.json')
     gpu = read(work / 'gpu-r1-capture/receipt.json')
     count = row['bindings']
@@ -85,7 +89,7 @@ def audit(batch, atlas):
         raise ValueError('官方覆蓋與本批增量不同')
     private_manifest = read(Path('/modern/private-manifest.json'))
     prefix_cells = sum(a['accepted_cells'] for a in ready['atlases'] if a['atlas'] <= atlas)
-    if private_manifest['file_count'] != 7142 + prefix_cells*2:
+    if private_manifest['file_count'] != ready['initial_private_files'] + prefix_cells*2:
         raise ValueError('私人白名單數不同')
     for target in [work, catalog_path, ROOT / 'docs/data/fd2-hd1-terrain-coverage.json']:
         if (target.stat().st_uid, target.stat().st_gid) != (1000, 1000):
