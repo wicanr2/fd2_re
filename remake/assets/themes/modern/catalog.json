@@ -73114,6 +73114,470 @@
         "tools/build_fd2_facility_success_hd.py",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map01.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 1,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        141
+      ],
+      "files": [
+        "hd1-terrain-r70-grass00-hd.png"
+      ],
+      "frame_sha256": [
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 6,
+      "width": 144,
+      "height": 144,
+      "frame_count": 6,
+      "frame_ids": [
+        24,
+        25,
+        32,
+        33,
+        40,
+        43
+      ],
+      "files": [
+        "hd1-terrain-r70-grass00-hd.png",
+        "hd1-terrain-r70-grass01-hd.png",
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0",
+        "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf",
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map07.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 7,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        315,
+        355
+      ],
+      "files": [
+        "hd1-terrain-r70-grass06-hd.png",
+        "hd1-terrain-r70-grass07-hd.png"
+      ],
+      "frame_sha256": [
+        "2b2ee821ddaae51d8b59cd102da2cedb10f256c102ddd16f14432c2a147e753a",
+        "207e67f1969c7c601488548d54ba1654c5ce09e6499f34e23e7bd7f061b99797"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 10,
+      "width": 144,
+      "height": 144,
+      "frame_count": 6,
+      "frame_ids": [
+        24,
+        25,
+        32,
+        33,
+        40,
+        43
+      ],
+      "files": [
+        "hd1-terrain-r70-grass00-hd.png",
+        "hd1-terrain-r70-grass01-hd.png",
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0",
+        "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf",
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map11.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 11,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        192,
+        203,
+        208,
+        209
+      ],
+      "files": [
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass05-hd.png",
+        "hd1-terrain-r70-grass00-hd.png",
+        "hd1-terrain-r70-grass01-hd.png"
+      ],
+      "frame_sha256": [
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8",
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0",
+        "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 13,
+      "width": 144,
+      "height": 144,
+      "frame_count": 6,
+      "frame_ids": [
+        24,
+        25,
+        32,
+        33,
+        40,
+        43
+      ],
+      "files": [
+        "hd1-terrain-r70-grass00-hd.png",
+        "hd1-terrain-r70-grass01-hd.png",
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0",
+        "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf",
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map14.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 14,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        32,
+        33,
+        40,
+        43
+      ],
+      "files": [
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 17,
+      "width": 144,
+      "height": 144,
+      "frame_count": 7,
+      "frame_ids": [
+        192,
+        193,
+        200,
+        208,
+        209,
+        212,
+        213
+      ],
+      "files": [
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass00-hd.png",
+        "hd1-terrain-r70-grass01-hd.png",
+        "hd1-terrain-r70-grass08-hd.png",
+        "hd1-terrain-r70-grass09-hd.png"
+      ],
+      "frame_sha256": [
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0",
+        "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf",
+        "4a240a994177fe262b68edb90936fdcc8172a4b828da7f2ca5b21791cde85c89",
+        "1d7ab73d6a7829b4bf724b7f642abdd5da9d5a3e4d419216c36b90f9a2e03a75"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 30,
+      "width": 144,
+      "height": 144,
+      "frame_count": 6,
+      "frame_ids": [
+        24,
+        25,
+        32,
+        33,
+        40,
+        43
+      ],
+      "files": [
+        "hd1-terrain-r70-grass00-hd.png",
+        "hd1-terrain-r70-grass01-hd.png",
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0",
+        "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf",
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map31.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 31,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        16,
+        17,
+        24,
+        27
+      ],
+      "files": [
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_r70.map32.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 32,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        160,
+        161,
+        168,
+        171
+      ],
+      "files": [
+        "hd1-terrain-r70-grass02-hd.png",
+        "hd1-terrain-r70-grass03-hd.png",
+        "hd1-terrain-r70-grass04-hd.png",
+        "hd1-terrain-r70-grass05-hd.png"
+      ],
+      "frame_sha256": [
+        "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562",
+        "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323",
+        "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e",
+        "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/hd1-terrain-grass-shadow-r70.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }

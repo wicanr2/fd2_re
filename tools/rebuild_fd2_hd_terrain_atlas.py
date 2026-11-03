@@ -64,7 +64,7 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
         report = {'status': 'PASS-REGISTERED-ATLAS-REBUILD', 'frames': frames,
                   'recipe_sha256': sha(recipe_path), 'catalog_sha256': sha(catalog_path),
                   'source_verification': source_check, 'tool_sha256': sha(Path(__file__)),
-                  'scope': '只用已登錄裁切母稿及既有草材，逐byte重生16份PNG；不需拒收草畫或未採圖集區域。'}
+                  'scope': f'只用已登錄裁切母稿及既有草材，逐byte重生{len(frames)}份PNG；不需拒收草畫或未採圖集區域。'}
         write(stage / 'receipt.json', report)
         stage.rename(out)
         return report

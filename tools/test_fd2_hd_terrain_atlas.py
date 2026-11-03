@@ -20,7 +20,8 @@ class TerrainAtlasTests(unittest.TestCase):
             raise unittest.SkipTest('explicit real atlas work root required')
         cls.work = Path(value).resolve()
         cls.repo = Path(__file__).resolve().parents[1]
-        cls.recipe = cls.repo / 'remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json'
+        cls.recipe = Path(os.environ.get('FD2_TERRAIN_ATLAS_TEST_RECIPE', str(cls.repo / 'remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json')))
+        cls.master = Path(os.environ.get('FD2_TERRAIN_ATLAS_TEST_MASTER', str(cls.work / 'terrain-pilot24-atlas-r1.png')))
         cls.base = cls.work / 'base-catalog.json'
         cls.candidate = cls.work / 'candidate-r2'
 
@@ -32,7 +33,7 @@ class TerrainAtlasTests(unittest.TestCase):
     def prepare(self, recipe, out, master=None):
         return atlas.prepare(recipe, self.base, Path('/modern'), Path('/original'),
                              self.repo / 'work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2',
-                             self.repo / 'remake/assets/maps', master or self.work / 'terrain-pilot24-atlas-r1.png',
+                             self.repo / 'remake/assets/maps', master or self.master,
                              self.work / 'base-coverage.json', out)
 
     def test_rebuild_preserves_every_asset_and_selected_pixel(self):
@@ -42,7 +43,8 @@ class TerrainAtlasTests(unittest.TestCase):
         self.assertEqual(result['frames'], original['frames'])
         self.assertEqual(result['bindings'], original['bindings'])
         self.assertEqual(atlas.read(out / 'catalog.json')['assets'], atlas.read(self.candidate / 'catalog.json')['assets'])
-        self.assertEqual(result['new_image_files'], 17)
+        recipe = atlas.read(self.recipe)
+        self.assertEqual(result['new_image_files'], recipe['expected_cells'] + recipe['expected_crop_masters'])
         for frame in result['frames']:
             for field in ('file', 'master_file'):
                 if field not in frame:
@@ -74,9 +76,11 @@ class TerrainAtlasTests(unittest.TestCase):
                 elif fault == 'wrong-native':
                     recipe['groups'][0]['native_content_sha256'] = '0' * 64
                 elif fault == 'crop':
-                    next(g for g in recipe['groups'] if g['compile_mode'] == 'atlas_cell')['crop'][0] = 0
+                    group = next((g for g in recipe['groups'] if g['compile_mode'] == 'atlas_cell'), recipe['groups'][0])
+                    group['crop'] = [0, 0, 1, 1]
                 elif fault == 'path':
-                    next(g for g in recipe['groups'] if g['compile_mode'] == 'atlas_cell')['master_file'] = '../outside.png'
+                    group = next((g for g in recipe['groups'] if g['compile_mode'] == 'atlas_cell'), recipe['groups'][0])
+                    group['master_file'] = '../outside.png'
                 elif fault == 'shade-index':
                     recipe['shade_policy']['index_shades']['137'] = 255
                 elif fault == 'material-sha':
@@ -138,8 +142,8 @@ class TerrainAtlasTests(unittest.TestCase):
         atlas.write(self.root / 'actual-gpu.json', real)
         shutil.copyfile(self.base, base)
         result = atlas.register(base, self.candidate, self.root / 'actual-gpu.json')
-        self.assertEqual(result['bindings'], 174)
-        self.assertEqual(result['catalog_assets'], 906)
+        self.assertEqual(result['bindings'], atlas.read(self.recipe)['expected_bindings'])
+        self.assertEqual(result['catalog_assets'], len(atlas.read(self.base)['assets']) + len(atlas.read(self.candidate / 'manifest.json')['new_assets']))
 
 
 if __name__ == '__main__':

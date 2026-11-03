@@ -41,13 +41,22 @@ func TestModernHDPaintedTerrainAtlasSourceTransactions(t *testing.T) {
 	var manifest struct {
 		Kind       string `json:"kind"`
 		CatalogSHA string `json:"catalog_sha256"`
+		NewSets    int    `json:"new_sets"`
 		Bindings   []struct {
 			Map int `json:"map"`
 			partialTerrainSource
 		} `json:"bindings"`
 	}
 	input, err := os.ReadFile(os.Getenv("FD2_HD_TERRAIN_REUSE_MANIFEST"))
-	if err != nil || json.Unmarshal(input, &manifest) != nil || manifest.Kind != "fd2_painted_terrain_atlas_v1" || len(manifest.Bindings) != 174 ||
+	expected := 174
+	if value := os.Getenv("FD2_HD_TERRAIN_REUSE_EXPECTED"); value != "" {
+		var countErr error
+		expected, countErr = strconv.Atoi(value)
+		if countErr != nil || expected <= 0 {
+			t.Fatal("invalid explicit atlas count", value)
+		}
+	}
+	if err != nil || json.Unmarshal(input, &manifest) != nil || manifest.Kind != "fd2_painted_terrain_atlas_v1" || len(manifest.Bindings) != expected ||
 		manifest.CatalogSHA != fmt.Sprintf("%x", sha256.Sum256(raw)) {
 		t.Fatal("complete authored atlas receipt required", err)
 	}
@@ -97,10 +106,10 @@ func TestModernHDPaintedTerrainAtlasSourceTransactions(t *testing.T) {
 			t.Fatal("missing source or mutated native input", binding.Map, binding.Frame, binding.Role)
 		}
 	}
-	if len(banks) != 22 {
+	if len(banks) == 0 || len(banks) != manifest.NewSets {
 		t.Fatal("all source banks required", len(banks))
 	}
-	t.Log("174 source transactions and 22 wrong-mask admissions checked; no GPU/player/parity claim")
+	t.Logf("%d source transactions and %d wrong-mask admissions checked; no GPU/player/parity claim", len(manifest.Bindings), len(banks))
 }
 
 func TestModernHDExactTerrainReuseSourceTransactions(t *testing.T) {

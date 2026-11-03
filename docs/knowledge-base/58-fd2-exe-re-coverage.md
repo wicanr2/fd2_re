@@ -8,7 +8,8 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
-| HD1操作介面接線收尾 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；JSON後備框保持原底與ABI，以獨立快取補三像素細框。16完整Draw／四GPU PNG容差0，六來源拒收、50回歸／四可選略過；普通四組／空槽拒收／取消／兩美術F5/F9及冷LOAD16PNG，保存089b077b保持。主收據hd1_json_load_frame_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1-json後備讀檔框) | #283技術接線完成，人工觀感／逐章／平台由使用者接手；地形#282仍餘3180缺槽／2033獨特來源，完整HD1未完成 |
+| HD1草地陰影續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；十份純草地來源追加50槽，957既有項保持，正式968清冊／7000私人檔。50交易／11錯遮罩、200來源GPU／兩完整map1 Draw／F2及保存通過；17編製／八登錄反例、32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_terrain_grass_shadow_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1既有材質缺圖續補) | 33圖已接858槽，餘3130缺槽／2023獨特來源，10純remap；岩塊／木質原型拒收，#282續作，人工由使用者接手 |
+| HD1操作介面接線收尾 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；JSON後備框保持原底與ABI，以獨立快取補三像素細框。16完整Draw／四GPU PNG容差0，六來源拒收、50回歸／四可選略過；普通四組／空槽拒收／取消／兩美術F5/F9及冷LOAD16PNG，保存089b077b保持。主收據hd1_json_load_frame_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1-json後備讀檔框) | #283技術接線完成，人工觀感／逐章／平台由使用者接手；地形#282現況依本表草地陰影續補，完整HD1未完成 |
 | HD1移動資訊窗 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；149×42來源沿原兩框位直繪894×252，F11獨立F2。11案例／22完整Draw、八PNG及說明／黑白遮蔽容差0；18拒收、49回歸／四可選略過。普通四組選人開窗／取消、兩美術F5與冷LOAD，保存089b077b保持。主收據hd1_movement_panel_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1移動資訊窗) | 首章JSON後備框與操作介面收尾依R69；地形另案，完整HD1仍未完成 |
 | HD1標題選單與四槽框線 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；六原字樣沿背景／寶石換Noto，四槽接同源細框，F11獨立。66完整Draw／8PNG，底圖0／字層2／最終字形合成1、區外0；72布局／21拒收、40回歸／三可選略過。普通16完整PNG、四控制／取消／保存冷讀保持190b9f8f。主收據hd1_title_interface_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1標題選單與四槽框線) | 移動資訊窗依R68；首章JSON後備框依R69。事件鏡頭／閃白歸地圖演出，native面板後備不重開；完整HD1仍未完成 |
 | HD1寶箱確認 | CONFORMED-SCOPED／RUNTIME-E1；沿原actor.BattleFig，物品／金錢及隱藏／可見、零金額、開收／回覆／ACK已接HD。213完整Draw／17PNG與五種系統147Draw／15PNG容差2；484原幀／11拒收、38回歸／三可選略過及保存bytes保持。主收據hd1_treasure_confirmation_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1寶箱確認) | 受控map23及寶物fixture，未新增正常開箱或原版E2；標題／四槽現況依R67，其餘正式介面與地形續核，完整HD1未完成 |

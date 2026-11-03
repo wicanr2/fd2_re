@@ -1,0 +1,789 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_painted_terrain_atlas_v1",
+  "master_sha256": "5432d804ba711e625378b547b5462706137524e5ccc93b79ca056826db74abb6",
+  "master_size": [
+    1024,
+    1536
+  ],
+  "grid": [
+    4,
+    6
+  ],
+  "size": 144,
+  "edge_blend": 8,
+  "shade_policy": {
+    "reference": {
+      "file": "remake/assets/themes/modern/relief-hd.recipe.json",
+      "sha256": "20b2b8ed3045cd7c758e60a345807573ee0198fac0e30d141cd13f7c1f59cbc1"
+    },
+    "index_groups": {
+      "grass": [
+        68,
+        69,
+        70,
+        71,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142
+      ]
+    },
+    "index_shades": {
+      "68": 255,
+      "69": 255,
+      "70": 255,
+      "71": 255,
+      "137": 153,
+      "138": 153,
+      "139": 153,
+      "140": 153,
+      "141": 153,
+      "142": 153
+    },
+    "mask_blur_hd_pixels": 2,
+    "exact_outer_edge_hd_pixels": 1,
+    "material": {
+      "asset_id": "modern.terrain.grass_olive.master",
+      "file": "grass-olive-hd1-painted-v2-master.png",
+      "sha256": "9a6f61a628f93ff50ef7626cccc0c812b0a4075204a4df2d693a6f4fc019e053"
+    }
+  },
+  "asset_id": "modern.terrain.grass_r70",
+  "base_catalog_sha256": "03087cf4c4e78c3bf4ed9a45b86a41cbf2b311ccc6b3b752a1caea71b0e925a4",
+  "coverage_sha256": "2c6c969d513c4ef05cdef0096644918eadae52a693a2e6ae09e712a9b91902d0",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "groups": [
+    {
+      "cell": 0,
+      "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
+      "anchor": [
+        1,
+        141
+      ],
+      "file": "hd1-terrain-r70-grass00-hd.png",
+      "targets": [
+        {
+          "map": 1,
+          "frame": 141,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 141,
+            "cell": 443,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 6,
+          "frame": 24,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 24,
+            "cell": 985,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 10,
+          "frame": 24,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 24,
+            "cell": 613,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 11,
+          "frame": 208,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 208,
+            "cell": 588,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 13,
+          "frame": 24,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 24,
+            "cell": 21,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 17,
+          "frame": 208,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 208,
+            "cell": 407,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 30,
+          "frame": 24,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 24,
+            "cell": 613,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 1,
+      "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
+      "anchor": [
+        6,
+        25
+      ],
+      "file": "hd1-terrain-r70-grass01-hd.png",
+      "targets": [
+        {
+          "map": 6,
+          "frame": 25,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 25,
+            "cell": 319,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 10,
+          "frame": 25,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 25,
+            "cell": 469,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 11,
+          "frame": 209,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 209,
+            "cell": 971,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 13,
+          "frame": 25,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 25,
+            "cell": 70,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 17,
+          "frame": 209,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 209,
+            "cell": 439,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 30,
+          "frame": 25,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 25,
+            "cell": 469,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 2,
+      "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
+      "anchor": [
+        6,
+        32
+      ],
+      "file": "hd1-terrain-r70-grass02-hd.png",
+      "targets": [
+        {
+          "map": 6,
+          "frame": 32,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 32,
+            "cell": 23,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 10,
+          "frame": 32,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 32,
+            "cell": 194,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 11,
+          "frame": 192,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 192,
+            "cell": 560,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 13,
+          "frame": 32,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 32,
+            "cell": 298,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 32,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 32,
+            "cell": 532,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 17,
+          "frame": 192,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 192,
+            "cell": 456,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 30,
+          "frame": 32,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 32,
+            "cell": 194,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 31,
+          "frame": 16,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 16,
+            "cell": 217,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 32,
+          "frame": 160,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 160,
+            "cell": 777,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 3,
+      "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
+      "anchor": [
+        6,
+        33
+      ],
+      "file": "hd1-terrain-r70-grass03-hd.png",
+      "targets": [
+        {
+          "map": 6,
+          "frame": 33,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 33,
+            "cell": 25,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 10,
+          "frame": 33,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 33,
+            "cell": 752,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 13,
+          "frame": 33,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 33,
+            "cell": 47,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 33,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 33,
+            "cell": 631,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 17,
+          "frame": 193,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 193,
+            "cell": 492,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 30,
+          "frame": 33,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 33,
+            "cell": 752,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 31,
+          "frame": 17,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 17,
+            "cell": 218,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 32,
+          "frame": 161,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 161,
+            "cell": 778,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 4,
+      "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
+      "anchor": [
+        6,
+        40
+      ],
+      "file": "hd1-terrain-r70-grass04-hd.png",
+      "targets": [
+        {
+          "map": 6,
+          "frame": 40,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 40,
+            "cell": 303,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 10,
+          "frame": 40,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 40,
+            "cell": 229,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 13,
+          "frame": 40,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 40,
+            "cell": 26,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 40,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 40,
+            "cell": 143,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 17,
+          "frame": 200,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 200,
+            "cell": 506,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 30,
+          "frame": 40,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 40,
+            "cell": 229,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 31,
+          "frame": 24,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 24,
+            "cell": 277,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 32,
+          "frame": 168,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 168,
+            "cell": 811,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 5,
+      "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
+      "anchor": [
+        6,
+        43
+      ],
+      "file": "hd1-terrain-r70-grass05-hd.png",
+      "targets": [
+        {
+          "map": 6,
+          "frame": 43,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 43,
+            "cell": 22,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 10,
+          "frame": 43,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 43,
+            "cell": 206,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 11,
+          "frame": 203,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 203,
+            "cell": 999,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 13,
+          "frame": 43,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 43,
+            "cell": 23,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 43,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 43,
+            "cell": 339,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 30,
+          "frame": 43,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 43,
+            "cell": 206,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 31,
+          "frame": 27,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 27,
+            "cell": 13,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 32,
+          "frame": 171,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 171,
+            "cell": 782,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 6,
+      "native_content_sha256": "f59c13de257bb949f6ef64e5c4fd73c0adc9feb88c98abf5b14100f60650ef85",
+      "anchor": [
+        7,
+        315
+      ],
+      "file": "hd1-terrain-r70-grass06-hd.png",
+      "targets": [
+        {
+          "map": 7,
+          "frame": 315,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 315,
+            "cell": 436,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 7,
+      "native_content_sha256": "5da308bf45867695387208abf3a803ee1752db1b25c9bfc63c0376e4b6086993",
+      "anchor": [
+        7,
+        355
+      ],
+      "file": "hd1-terrain-r70-grass07-hd.png",
+      "targets": [
+        {
+          "map": 7,
+          "frame": 355,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 355,
+            "cell": 147,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 8,
+      "native_content_sha256": "1a5ff04fa69a6856cd10c78adc9e8d364d21a381a2c223e21b4ca8558f410e38",
+      "anchor": [
+        17,
+        212
+      ],
+      "file": "hd1-terrain-r70-grass08-hd.png",
+      "targets": [
+        {
+          "map": 17,
+          "frame": 212,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 212,
+            "cell": 406,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    },
+    {
+      "cell": 9,
+      "native_content_sha256": "bcfba78452222ef6701adbae6839a5270c7235f3e7b86379ceac3750fb7e28f1",
+      "anchor": [
+        17,
+        213
+      ],
+      "file": "hd1-terrain-r70-grass09-hd.png",
+      "targets": [
+        {
+          "map": 17,
+          "frame": 213,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 213,
+            "cell": 405,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ],
+      "compile_mode": "native_grass_shade"
+    }
+  ],
+  "expected_cells": 10,
+  "expected_bindings": 50,
+  "expected_crop_masters": 0,
+  "generation": {
+    "new_generation": false,
+    "material": "existing registered grass-olive-hd1-painted-v2-master.png",
+    "unused_atlas_preflight": "existing v1 compiler validates R37 atlas SHA/shape but all groups use native_grass_shade; atlas RGB never enters output; registered rebuild uses only registered grass/source."
+  },
+  "scope": "10 pure-grass source signatures, 50 missing slots only; original shade/mask/selector and other 957 catalog assets remain unchanged; no rock/wood candidates."
+}

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_hd1_terrain_coverage",
   "scope": "33 native maps: initial selectors and active-event writer upper bound; catalog PNG/SHA/native-mask verified. Not normal reachability, original parity, or complete HD.",
-  "catalog_sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e",
+  "catalog_sha256": "0f214f6fbb1d263a64ab419e90b4338dba5f32fe1d5455c7d0c200668d61a01d",
   "palette": {
     "file": "palette/fdother_000.json",
     "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
@@ -5009,13 +5009,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 141,
             "cell": 443,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map01.native_hd",
+            "map": 1,
+            "frame": 141,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -13002,13 +13009,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 24,
             "cell": 985,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+            "map": 6,
+            "frame": 24,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -13017,13 +13031,20 @@
           "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 25,
             "cell": 319,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+            "map": 6,
+            "frame": 25,
+            "file": "hd1-terrain-r70-grass01-hd.png",
+            "sha256": "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
           }
         },
         {
@@ -13076,13 +13097,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 32,
             "cell": 23,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+            "map": 6,
+            "frame": 32,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -13091,13 +13119,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 33,
             "cell": 25,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+            "map": 6,
+            "frame": 33,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -13238,13 +13273,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 40,
             "cell": 303,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+            "map": 6,
+            "frame": 40,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -13297,13 +13339,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 43,
             "cell": 22,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map06.native_hd",
+            "map": 6,
+            "frame": 43,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -16633,13 +16682,20 @@
           "native_content_sha256": "f59c13de257bb949f6ef64e5c4fd73c0adc9feb88c98abf5b14100f60650ef85",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 315,
             "cell": 436,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map07.native_hd",
+            "map": 7,
+            "frame": 315,
+            "file": "hd1-terrain-r70-grass06-hd.png",
+            "sha256": "2b2ee821ddaae51d8b59cd102da2cedb10f256c102ddd16f14432c2a147e753a"
           }
         },
         {
@@ -16990,13 +17046,20 @@
           "native_content_sha256": "5da308bf45867695387208abf3a803ee1752db1b25c9bfc63c0376e4b6086993",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 355,
             "cell": 147,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map07.native_hd",
+            "map": 7,
+            "frame": 355,
+            "file": "hd1-terrain-r70-grass07-hd.png",
+            "sha256": "207e67f1969c7c601488548d54ba1654c5ce09e6499f34e23e7bd7f061b99797"
           }
         },
         {
@@ -20473,13 +20536,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 24,
             "cell": 613,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+            "map": 10,
+            "frame": 24,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -20488,13 +20558,20 @@
           "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 25,
             "cell": 469,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+            "map": 10,
+            "frame": 25,
+            "file": "hd1-terrain-r70-grass01-hd.png",
+            "sha256": "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
           }
         },
         {
@@ -20547,13 +20624,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 32,
             "cell": 194,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+            "map": 10,
+            "frame": 32,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -20562,13 +20646,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 33,
             "cell": 752,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+            "map": 10,
+            "frame": 33,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -20709,13 +20800,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 40,
             "cell": 229,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+            "map": 10,
+            "frame": 40,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -20768,13 +20866,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 43,
             "cell": 206,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map10.native_hd",
+            "map": 10,
+            "frame": 43,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -24091,13 +24196,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 192,
             "cell": 560,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map11.native_hd",
+            "map": 11,
+            "frame": 192,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -24260,13 +24372,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 203,
             "cell": 999,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map11.native_hd",
+            "map": 11,
+            "frame": 203,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -24341,13 +24460,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 208,
             "cell": 588,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map11.native_hd",
+            "map": 11,
+            "frame": 208,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -24356,13 +24482,20 @@
           "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 209,
             "cell": 971,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map11.native_hd",
+            "map": 11,
+            "frame": 209,
+            "file": "hd1-terrain-r70-grass01-hd.png",
+            "sha256": "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
           }
         },
         {
@@ -27653,13 +27786,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 24,
             "cell": 21,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+            "map": 13,
+            "frame": 24,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -27668,13 +27808,20 @@
           "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 25,
             "cell": 70,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+            "map": 13,
+            "frame": 25,
+            "file": "hd1-terrain-r70-grass01-hd.png",
+            "sha256": "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
           }
         },
         {
@@ -27727,13 +27874,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 32,
             "cell": 298,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+            "map": 13,
+            "frame": 32,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -27742,13 +27896,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 33,
             "cell": 47,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+            "map": 13,
+            "frame": 33,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -27889,13 +28050,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 40,
             "cell": 26,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+            "map": 13,
+            "frame": 40,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -27948,13 +28116,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 43,
             "cell": 23,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map13.native_hd",
+            "map": 13,
+            "frame": 43,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -29703,13 +29878,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 32,
             "cell": 532,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map14.native_hd",
+            "map": 14,
+            "frame": 32,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -29718,13 +29900,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 33,
             "cell": 631,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map14.native_hd",
+            "map": 14,
+            "frame": 33,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -29865,13 +30054,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 40,
             "cell": 143,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map14.native_hd",
+            "map": 14,
+            "frame": 40,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -29924,13 +30120,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 43,
             "cell": 339,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map14.native_hd",
+            "map": 14,
+            "frame": 43,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -36276,13 +36479,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 192,
             "cell": 456,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 192,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -36291,13 +36501,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 193,
             "cell": 492,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 193,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -36416,13 +36633,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 200,
             "cell": 506,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 200,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -36563,13 +36787,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 208,
             "cell": 407,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 208,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -36578,13 +36809,20 @@
           "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 209,
             "cell": 439,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 209,
+            "file": "hd1-terrain-r70-grass01-hd.png",
+            "sha256": "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
           }
         },
         {
@@ -36593,13 +36831,20 @@
           "native_content_sha256": "1a5ff04fa69a6856cd10c78adc9e8d364d21a381a2c223e21b4ca8558f410e38",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 212,
             "cell": 406,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 212,
+            "file": "hd1-terrain-r70-grass08-hd.png",
+            "sha256": "4a240a994177fe262b68edb90936fdcc8172a4b828da7f2ca5b21791cde85c89"
           }
         },
         {
@@ -36608,13 +36853,20 @@
           "native_content_sha256": "bcfba78452222ef6701adbae6839a5270c7235f3e7b86379ceac3750fb7e28f1",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 213,
             "cell": 405,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map17.native_hd",
+            "map": 17,
+            "frame": 213,
+            "file": "hd1-terrain-r70-grass09-hd.png",
+            "sha256": "1d7ab73d6a7829b4bf724b7f642abdd5da9d5a3e4d419216c36b90f9a2e03a75"
           }
         },
         {
@@ -63939,13 +64191,20 @@
           "native_content_sha256": "dcc18cacbac4bf0a8383c12a599afffead19c626bdb464df5df7508627c68c2b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 24,
             "cell": 613,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+            "map": 30,
+            "frame": 24,
+            "file": "hd1-terrain-r70-grass00-hd.png",
+            "sha256": "c5b1bae16650c81ea3e70859fe5080d5162e509db2a9918b754e1b4f2e9f3dd0"
           }
         },
         {
@@ -63954,13 +64213,20 @@
           "native_content_sha256": "2130b1e834f313c854f35f869debf3c9a802426b27b6753951037ff4e4856428",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 25,
             "cell": 469,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+            "map": 30,
+            "frame": 25,
+            "file": "hd1-terrain-r70-grass01-hd.png",
+            "sha256": "4d4ee7bb37b6ed0e456103632796ae511af4a1f3b4ee132493294fa4dee813bf"
           }
         },
         {
@@ -64013,13 +64279,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 32,
             "cell": 194,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+            "map": 30,
+            "frame": 32,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -64028,13 +64301,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 33,
             "cell": 752,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+            "map": 30,
+            "frame": 33,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -64175,13 +64455,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 40,
             "cell": 229,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+            "map": 30,
+            "frame": 40,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -64234,13 +64521,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 43,
             "cell": 206,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map30.native_hd",
+            "map": 30,
+            "frame": 43,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -66233,13 +66527,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 16,
             "cell": 217,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map31.native_hd",
+            "map": 31,
+            "frame": 16,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -66248,13 +66549,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 17,
             "cell": 218,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map31.native_hd",
+            "map": 31,
+            "frame": 17,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -66395,13 +66703,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 24,
             "cell": 277,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map31.native_hd",
+            "map": 31,
+            "frame": 24,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -66454,13 +66769,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 27,
             "cell": 13,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map31.native_hd",
+            "map": 31,
+            "frame": 27,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -69941,13 +70263,20 @@
           "native_content_sha256": "51c3baffb151cc1b5ba78625630ad16456004631b9bc61cf40a5ec4795d0d480",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 160,
             "cell": 777,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map32.native_hd",
+            "map": 32,
+            "frame": 160,
+            "file": "hd1-terrain-r70-grass02-hd.png",
+            "sha256": "ccb8d489a402b79ae49480f8ea5c4d416bd853daecab2fefa044e59bddc0b562"
           }
         },
         {
@@ -69956,13 +70285,20 @@
           "native_content_sha256": "929d360c7f3c1ca23cee66ac5a032f9614f7bb3defaec7614c0720980c6fe49b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 161,
             "cell": 778,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map32.native_hd",
+            "map": 32,
+            "frame": 161,
+            "file": "hd1-terrain-r70-grass03-hd.png",
+            "sha256": "6557c04744c2a86b4dccf19ba907bdd2995ee94bf08c07b2415bc7504f0d9323"
           }
         },
         {
@@ -70103,13 +70439,20 @@
           "native_content_sha256": "3770d63da6c2566c5ecfdc512d4720d17a140c872f7fb0b51f916990298cd2ee",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 168,
             "cell": 811,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map32.native_hd",
+            "map": 32,
+            "frame": 168,
+            "file": "hd1-terrain-r70-grass04-hd.png",
+            "sha256": "164379de188802261f370c43734b1c36a3b7a76eb2d6a3bdaab06c971c651a5e"
           }
         },
         {
@@ -70162,13 +70505,20 @@
           "native_content_sha256": "cba629d53fa9c953b67ef9e384ad8df6a22709b1af19df7f1374bfa0a729dd31",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 171,
             "cell": 782,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.grass_r70.map32.native_hd",
+            "map": 32,
+            "frame": 171,
+            "file": "hd1-terrain-r70-grass05-hd.png",
+            "sha256": "63cc78763ee5d78bab8b1d92765e429a99509e39421be9c61c14491a591662d8"
           }
         },
         {
@@ -70474,10 +70824,10 @@
   ],
   "summary": {
     "maps": 33,
-    "missing-art": 3180,
-    "missing_unique_native_content": 2033,
+    "missing-art": 3130,
+    "missing_unique_native_content": 2023,
     "native-remap-only": 10,
-    "registered-hd": 808,
+    "registered-hd": 858,
     "required_slots": 3998,
     "selector_checks": 617520
   }

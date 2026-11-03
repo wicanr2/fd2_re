@@ -265,9 +265,9 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 上圖為第二張地圖的受控繪製，人物位置用來確認屋頂前景遮擋。三層原生圖源完全相同的木屋、木材及植被已共用現有HD圖片；藍屋頂、石牆與部分介面仍為像素。完整地形缺口由[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)追蹤，畫面不代表整張地圖已完成HD。
 
-![沿原生陰影輪廓編製的HD1地表](docs/figures/hd1-terrain-shadow-map01-game.png)
+![沿原生陰影輪廓編製的HD1地表](docs/figures/hd1-terrain-grass-shadow-game.png)
 
-原圖的陰影輪廓已接入手繪草材，逐格銜接保留連續明暗；[原生／HD圖源對照](docs/figures/hd1-terrain-shadow-source-comparison.png)可核對目前編製結果。上圖是第二張地圖的受控繪製，人物與相機用來驗圖源，仍可見未替換的像素建築及局部圖源。完整缺口依[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)續作。
+原圖的陰影輪廓已接入手繪草材，逐格銜接保留連續明暗；[原生／HD圖源對照](docs/figures/hd1-terrain-shadow-source-comparison.png)可核對已登錄的編製方式，純草地陰影已沿同一配方續補。上圖是第二張地圖的受控繪製，人物與相機用來驗圖源，仍可見未替換的像素建築及局部圖源。完整缺口依[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)續作。
 
 ![HD1洞窟地板與石壁](docs/figures/hd1-cave-floor.png)
 
