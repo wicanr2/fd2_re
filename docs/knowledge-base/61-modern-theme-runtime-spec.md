@@ -6246,3 +6246,17 @@ R72 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿R71固定原生三層與1005
 24母稿／24成品已登錄，1044清冊與7094私人白名單同步19f88d34，10285份舊美術SHA／inode／mtime／owner保持。生成母稿e6cb8a89及其0～254原alpha不修改，成品與24格已審原型逐byte相同，從私人裁切母稿可逐byte重生，不依賴整張atlas。R71拒收的map6:131綠色前景由本批RGBA圖源續補，原拒收原型不改寫。
 
 66來源交易／15錯遮罩、264來源GPU與兩完整map3 Draw／F2／169 bytes受控保存通過；五項Python含27編製／alpha拒收與八登錄拒收，舊R70十圖及R71二十三圖重編保持。32正式回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、一格合法走行取消、兩美術／介面F5及新程序LOAD十PNG通過，保存089b077b保持。[受控綠色物件地圖](../figures/hd1-rgba-objects-game.png)仍有待補像素及物件其他部分；新66槽未宣稱由普通路徑全部自然看過。正式33圖1082已接，餘2906缺槽／1976獨特來源，10純remap；依主收據hd1_rgba_objects_followup_20261103及#282續作，人工由使用者接手。
+
+## HD1淺灰地表續補
+
+R73 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。24份淺灰高低輪廓圖源已新增41槽，固定三層完整opaque且無remap。圖源與方法依[原型清單](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/source-prototype.json)及下列READY契約；材質身份保留未知。
+
+### R73 READY契約
+
+24份／41槽淺灰圖源原型已核對原圖的亮面、暗部與定向裁切。存在高低輪廓，採[hd1-pale-terrain-r73.recipe.json](../../remake/assets/themes/modern/hd1-pale-terrain-r73.recipe.json)的atlas_direct完整256裁切再LANCZOS編144，不套atlas_cell的裁邊、UV環繞及邊緣混合。材質身份仍未知，手繪曲線不冒稱逐像素原輪廓；原生三層完整opaque／無remap及selector見證保持。
+
+[READY來源與驗收](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/ready-source.json)先登記再擴充[編製工具](../../tools/build_fd2_hd_terrain_atlas.py)及[私人重編](../../tools/rebuild_fd2_hd_terrain_atlas.py)。共用header的shade_policy與edge_blend僅沿原工具預檢，不作本批RGB或幾何來源；所有RGB來自新母稿，24裁切母稿需能獨立重生24成品。依[實際候選測試](../../tools/test_fd2_hd_terrain_atlas.py)、原生交易、四狀態GPU與完整map15 Draw／F2／保存、普通首章及正式回歸驗收，不宣稱新增原版E2。
+
+24母稿／24成品已登錄，1070清冊與7142私人白名單同步8b4a83aa，10333舊美術SHA／inode／mtime／owner保持。生成母稿dae966b7原bytes／alpha保持；24成品與原型及私人裁切母稿重編逐byte相同，不需整張atlas，舊R72二十四張RGBA物件重編保持。41來源交易／兩錯遮罩、164來源GPU／兩完整map15 Draw／F2與169 bytes受控保存、三項Python含17編製／八登錄拒收通過。
+
+32正式回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、一格合法走行取消、兩美術／介面F5與新程序LOAD十PNG保持089b077b；41新槽由來源與受控map15驗證，不稱自然走遍。[受控淺灰地圖](../figures/hd1-pale-terrain-game.png)仍有大量待補像素及物件，外部相鄰格不宣稱逐像素相同。正式33圖1123已接，餘2865缺槽／1952獨特來源，10純remap；主收據hd1_pale_terrain_followup_20261103保存原稿／提示詞／命令，#282續作，人工由使用者接手。

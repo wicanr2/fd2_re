@@ -399,7 +399,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1地形：補齊正式地形與前景圖源",
-      "body": "使用者2026-10-28確認地形列入HD1 milestone，2026-10-29確認清爽手繪材質方向。來源、接線與進度依58、61及HD主收據；人工觀感、逐章與平台由使用者接手。\n\n既有草、土、沙、水及石路與交界、洞窟及同源來源已列範圍接線。R37補174槽，R70補草地陰影50槽，R71補紅、藍、褐物件158槽。R72再補24格RGBA物件66槽，綠色前景與草材共用索引的問題改由新製圖alpha解決，包含R71拒收的map6:131。原native透明範圍、selector、cycle、圖層、通行、事件與保存保持；用途及材質身份未知，藝術重繪不宣稱逐像素原輪廓。\n\nR72內建imagegen依24格原圖及已定風格生成透明母稿，原bytes、0～254 alpha與完整提示詞保存。24份256裁切母稿與24份144成品登錄，成品alpha255保持原生完整來源；整張atlas不加入私人包。24成品與已審原型、私人裁切母稿重編均逐byte相同，舊R70十圖及R71二十三圖保持。\n\n66來源交易／15錯遮罩、264來源GPU與兩完整map3 Draw／F2／169 bytes受控保存、五項Python含27編製／alpha及八登錄拒收通過。32正式回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、一格合法走行取消、兩美術／介面保存及新程序LOAD十PNG，保存089b077b保持；未宣稱自然看過全部新槽。\n\n目前1044清冊／7094私人白名單。48份新增檔同步私人19f88d34dfae757d57216f7469add99c020213f5，10285舊美術SHA／inode／mtime／owner保持。主收據hd1_rgba_objects_followup_20261103、61與版本化配方保存來源、命令、提示詞、診斷及受控map3圖。\n\n正式Go重生33圖覆蓋：1082已登錄、2906缺槽／1976獨特來源、10純目的地remap，3998必要槽。其餘建築與物件仍未製作，本工單保持OPEN。操作介面#283已結案；完整HD1未完成，不新增原版oracle或整章E2。",
+      "body": "使用者2026-10-28確認地形列入HD1 milestone，2026-10-29確認清爽手繪材質方向。來源、接線與進度依58、61及HD主收據；人工觀感、逐章與平台由使用者接手。\n\n既有草、土、沙、水及石路與交界、洞窟及同源來源已列範圍接線。R37補174槽，R70補草地陰影50槽，R71補紅藍褐物件158槽，R72補RGBA物件66槽且保留綠色前景。R73新增24格淺灰地表41槽，原生三層完整opaque且無remap；原selector、cycle、圖層、通行、事件與保存保持。\n\nR73內建imagegen依24格原圖與已定風格生成母稿dae966b7，原bytes／alpha及完整提示詞保存。因有定向高低輪廓，atlas_direct採完整256裁切後LANCZOS144，不用裁邊、UV環繞或對邊混合。身份與材質未知，藝術重繪不宣稱原輪廓逐像素相同。24裁切母稿及24成品登錄，整張生成atlas留本機；成品與原型及私人裁切母稿重編逐byte相同，舊R72二十四張RGBA物件保持。\n\n41來源交易／兩錯遮罩、164來源GPU與兩完整map15 Draw／F2／169 bytes受控保存、三項Python含17編製及八登錄拒收通過。32正式回歸／兩可選略過、21來源／416幀／19反例及160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、合法一格走行取消、兩美術／介面保存與新程序LOAD十PNG，保存089b077b保持；新41槽由受控來源及map15驗證，未宣稱普通路徑自然走遍。\n\n目前1070清冊／7142私人白名單。48份新增檔同步私人8b4a83aa4c20c4d4929099a6a039ee560504562b，10333舊美術SHA／inode／mtime／owner保持。主收據hd1_pale_terrain_followup_20261103、61與版本化配方保存來源、命令、提示詞及受控map15圖。\n\n正式Go重生33圖覆蓋：1123已登錄、2865缺槽／1952獨特來源、10純目的地remap，3998必要槽。受控map15仍含大量待補圖源，外部相鄰格未宣稱逐像素相同。工單保持OPEN，操作介面#283已結案；完整HD1未完成，不新增原版oracle或整章E2。",
       "acceptance": "盤點全部正式地圖的原生地形／前景consumer，補齊HD1圖源並登錄私人庫；沿原輪廓、遮擋、視圖與事件更新呈現，缺件明示，保留原版模式。必要來源、載入及切換檢查通過，人工畫面驗證由使用者接手。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -416,11 +416,13 @@
         "remake/assets/themes/modern/hd1-colored-objects-r71.recipe.json",
         "docs/figures/hd1-colored-objects-game.png",
         "remake/assets/themes/modern/hd1-rgba-objects-r72.recipe.json",
-        "docs/figures/hd1-rgba-objects-game.png"
+        "docs/figures/hd1-rgba-objects-game.png",
+        "remake/assets/themes/modern/hd1-pale-terrain-r73.recipe.json",
+        "docs/figures/hd1-pale-terrain-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R72新增24圖66槽，正式Go為1082已接、2906缺槽／1976獨特來源及10純remap。264來源GPU／兩完整map3與F2／保存、27編製／alpha及八登錄拒收、32回歸及普通首章十PNG／保存冷讀通過；1044清冊／7094私人檔。綠色前景依新RGBA母稿合成，原生透明範圍保持，24圖可由私人裁切母稿逐byte重編。其餘地形續作，人工由使用者接手；依61與hd1_rgba_objects_followup_20261103。"
+        "note": "R73新增24圖41槽，正式Go為1123已接、2865缺槽／1952獨特來源與10純remap。164來源GPU／兩完整map15與F2／保存、17編製／八登錄拒收、32回歸及普通首章十PNG／保存冷讀通過；1070清冊／7142私人檔，24裁切母稿可獨立逐byte重編。完整裁切保留方向，身份未知；地形續作，人工由使用者接手，依61與hd1_pale_terrain_followup_20261103。"
       },
       "issue": 282
     }

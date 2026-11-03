@@ -8,7 +8,8 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
-| HD1透明物件續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；24裁切母稿／24成品追加66槽，1005舊項保持，正式1044清冊／7094私人檔。66交易／15錯遮罩、264來源GPU／兩完整map3／F2及保存、27編製／alpha及八登錄拒收通過；32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_rgba_objects_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1草地周圍物件第二批) | 33圖已接1082槽，餘2906缺槽／1976獨特來源，10純remap；R71拒收的map6:131已續補，#282續作，人工由使用者接手 |
+| HD1淺灰地表續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；24完整裁切母稿／24成品追加41槽，1044舊項保持，正式1070清冊／7142私人檔。41交易／兩錯遮罩、164來源GPU／兩完整map15／F2與保存、17編製／八登錄拒收通過；32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_pale_terrain_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1淺灰地表續補) | 33圖1123已接，餘2865缺槽／1952獨特來源，10純remap；#282續作，人工由使用者接手 |
+| HD1透明物件續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；24裁切母稿／24成品追加66槽，1005舊項保持，正式1044清冊／7094私人檔。66交易／15錯遮罩、264來源GPU／兩完整map3／F2及保存、27編製／alpha及八登錄拒收通過；32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_rgba_objects_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1草地周圍物件第二批) | 本批以外地形依最新地形列；R71拒收的map6:131已續補，人工由使用者接手 |
 | HD1紅藍褐物件續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；23母稿／23成品追加158槽，968舊項保持，正式1005清冊／7046私人檔。158交易／14錯遮罩、632來源GPU／兩完整map2 Draw／F2及保存、23編製／分區及八登錄反例通過；32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_colored_objects_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1紅藍褐物件圖源續補) | 本批以外地形依最新地形列；R71拒收的map6:131由透明物件續補完成，人工由使用者接手 |
 | HD1草地陰影續補 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；十份純草地來源追加50槽，957既有項保持，正式968清冊／7000私人檔。50交易／11錯遮罩、200來源GPU／兩完整map1 Draw／F2及保存通過；17編製／八登錄反例、32回歸／兩可選略過，普通十PNG／走行取消／保存冷讀保持。主收據hd1_terrain_grass_shadow_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1既有材質缺圖續補) | 本批以外地形現況依本表最新地形列；岩塊／木質直接套材質原型未收，人工由使用者接手 |
 | HD1操作介面接線收尾 | CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；JSON後備框保持原底與ABI，以獨立快取補三像素細框。16完整Draw／四GPU PNG容差0，六來源拒收、50回歸／四可選略過；普通四組／空槽拒收／取消／兩美術F5/F9及冷LOAD16PNG，保存089b077b保持。主收據hd1_json_load_frame_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1-json後備讀檔框) | #283技術接線完成，人工觀感／逐章／平台由使用者接手；地形#282現況依本表最新地形列，完整HD1未完成 |

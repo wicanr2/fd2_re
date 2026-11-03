@@ -50,6 +50,18 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                 if sha(master) != masters[0]['sha256'] or Image.open(master).size != (248, 248):
                     raise ValueError('裁切母稿SHA或尺寸不同')
                 picture, _ = make_tile(master, 144, 8)
+            elif group['compile_mode'] == 'atlas_direct':
+                masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
+                if (len(masters) != 1 or masters[0]['file'] != group['master_file'] or
+                        Path(group['master_file']).name != group['master_file']):
+                    raise ValueError('已登錄完整地表母稿不同')
+                master = pack / group['master_file']
+                if sha(master) != masters[0]['sha256'] or Image.open(master).size != (256, 256):
+                    raise ValueError('完整地表母稿SHA或尺寸不同')
+                piece = Image.open(master).convert('RGBA')
+                if piece.getextrema()[3] != (255, 255):
+                    raise ValueError('完整地表母稿必須不透明')
+                picture = piece.resize((144, 144), Image.Resampling.LANCZOS)
             elif group['compile_mode'] == 'atlas_masked_object':
                 masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
                 actual_indices = sorted(set(content[:576]) - set(policy['index_groups']['grass']))

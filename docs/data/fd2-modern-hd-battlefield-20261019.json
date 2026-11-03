@@ -307551,7 +307551,7 @@
       }
     ],
     "limits": [
-      "完整HD1尚餘2906缺槽／1976獨特來源，#282保持開啟；#283操作介面已關閉，人工觀感／逐章／平台由使用者接手。"
+      "完整HD1及剩餘缺圖依最新地形收據與#282；#283已關閉，人工觀感／逐章／平台由使用者接手。"
     ],
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-objects-r72/final-validation.json",
@@ -307561,6 +307561,274 @@
       "count": 411,
       "guards": 259,
       "new": "command-registry-required-string-keys"
+    }
+  },
+  "hd1_pale_terrain_followup_20261103": {
+    "date": "2026-11-03",
+    "base_commit": "50685a5774bfff2b4fc234cad2b6c9bedaf2dbfd",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 282,
+    "production_registered": true,
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "scope": "24格淺灰高低輪廓新增41槽。atlas_direct完整裁切256再LANCZOS144，不裁邊、不環繞UV、不混合對邊。原native完整alpha、selector、cycle、圖層、規則與保存保持。物件材質身份未知，手繪曲線不稱逐像素原輪廓。",
+    "recipe": {
+      "file": "remake/assets/themes/modern/hd1-pale-terrain-r73.recipe.json",
+      "sha256": "d323a58a7e2541b9d7dad5f7f0d20b2fff788faa4ce490167308f958a959ac8a"
+    },
+    "proofs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/commands.json",
+        "sha256": "f65f3f5928495c42b6027e7355d97645aaec7440e499b2d9fc43a755bea3fd9b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/ready-source.json",
+        "sha256": "bf964fbaada0af4bfcb40f27c2fcb7be6cf8b897a91bb9ae1e5dd7472f6eef3f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/source-prototype.json",
+        "sha256": "ab0a8b355ddbb7869ecde5f169898ba2cf9ac7b85e500bbeb725fb6cc2f8db73"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/candidate-r2/manifest.json",
+        "sha256": "32a1b0e71d033da8893a63724aea20697a321f5d577fdc5d65c0d011ea5f6c1b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/imagegen-request-r1.json",
+        "sha256": "103ac6dcb36fe9633d51d3da74abd144407ffaf706c3d350ee1ceb52c4a5faa7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/original-24-reference.png",
+        "sha256": "ed88b1e4d4c812d37e8079162c239285e0cacb0b82111f7408a36d0f871ef515"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/pale-atlas-r1-master.png",
+        "sha256": "dae966b7284aa157062e22bec063831d5d84dc7c36dbb985a646bfa5be0d5fa7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/production-source-unchanged.json",
+        "sha256": "65a475a3f4f83baec44bb94a56761636c565d7d7ea88b0ce8b4582cc7815b15e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/direct-prototype-r1/prototype.json",
+        "sha256": "4d9a30eab8b2cd501df66f8b94e693e422d0a2ca2c17c5753941dc8609bd39d8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/source-r1.log",
+        "sha256": "340572d5715d603d9710f0f41a9b74b4c1c27c4056420befc041770884757ad3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/source-r1.memory.json",
+        "sha256": "89af3fc7ab9c55fc4962dff7dc732e72a207529199d192de93274f2c851644ad"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/compilation-tests-r1.log",
+        "sha256": "276dd0991eb94f5f092940e66037bd944562fc9da1ed3be570fd7ecf6cf9d5bf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/compilation-tests-r1.memory.json",
+        "sha256": "20c8b0ce0ce00a0e855f29535e452792224fb22e5aa6d50784340d23beefe163"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/registration-tests-r1.log",
+        "sha256": "57ff5cd995448fbd5c4aa8eb27da2357119b1e29a9227158f58744110b5c339c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/registration-tests-r1.memory.json",
+        "sha256": "796ed1cf4e5eb2f34a4b1cf26df762a372498cba5550d03f812f37dfaa36e524"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/gpu-r1-capture/receipt.json",
+        "sha256": "16d7afe2085c944e8991b3f659c79ac96c1c6bd91bfeca97dd9510241b3caeda"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/gpu-r1.memory.json",
+        "sha256": "cf20fc2a4878896993bc97b37827f956c58688fdefa09648bab6a7319915dbd4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/normal-r1-capture/receipt.json",
+        "sha256": "d59c7dc979bcde4b14951688bc8038833143daf17419e4ec033a34e411affa7d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/normal-r1.memory.json",
+        "sha256": "f0b924bc4e893974b3e3e192a3191cedcf9b0b4dcdf388d8e392015aa377bd72"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/formal-regression-r2.log",
+        "sha256": "77dac7190e00f4d3d018503f10828b214e86bd0a6d6ffa844bfc6abebdbfc0df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/formal-regression-r2.memory.json",
+        "sha256": "ea9908aad2157b579044c6a210ffae2a9e7fd39f19735344db84afcfb3055d46"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/consumers-formal-r2.json",
+        "sha256": "1cd158a3da085f3e044f55a586c0b95f2f553a898d3da5f83e9ff5dee1f12cf7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/consumers-verified-r2.json",
+        "sha256": "d737f6baebf58252992cf662292f19208b9f9fdfe57a6986e9cd6fa1b9a1f4bb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/review-migration.json",
+        "sha256": "9b81f5009dae3643f23735c022af9a6e90bbb4254a53c57c48afb916cf576205"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/base-coverage.json",
+        "sha256": "21d11b5421c31de4d6a5f7bb5d4577ad1306f98ff05e1fd0685ac94f026950ac"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/formal-coverage-r1.json",
+        "sha256": "9d054ec8a7415582acb5aaf154472b01438adc56240976539c101fe457479de8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/private-preservation.json",
+        "sha256": "1ac2b870b3d4f29cdb5707bad27ef34cfe36c52eead23b475e5d10f55154a61b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/private-before-files.json",
+        "sha256": "8ad36ce0eebafaaf6ae7abcd908cd792461b25f3a8a9fb50575c89af7388260e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/catalog-validation.json",
+        "sha256": "a90da0a77cde7cea127351d14ddaa419a2644ddb2c15c4a2fae686e6c3eec879"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/catalog-validation.log",
+        "sha256": "0d8d02a8fa5d08130d4813fe6085cc20f1a74477a5b03fb32077ebfb978f13c9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/rebuilt-from-private-r2/receipt.json",
+        "sha256": "497ef47e88c1cc8bcb0cd24bdb65aa1e6428be2033fe037595b45f251d660b21"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/r72-backward-rebuild/receipt.json",
+        "sha256": "f7807c59a3e8dce6a44539b7494b1ce743fcb1bcd9b237195beb44bf45c1c1c5"
+      }
+    ],
+    "implementation": [
+      {
+        "file": "tools/build_fd2_hd_terrain_atlas.py",
+        "sha256": "a866594fa49ebde91a01288e5b9055777e69783f860284eff6b85693f3995c75"
+      },
+      {
+        "file": "tools/rebuild_fd2_hd_terrain_atlas.py",
+        "sha256": "4cdd0a6c04f7c4208e7115b55d6eef22fbaa4c3c919e0ed732813e98fcd78455"
+      }
+    ],
+    "native_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json",
+      "sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5"
+    },
+    "approved_style": {
+      "file": "docs/figures/hd1-terrain-redesign-style.png",
+      "sha256": "58b655b4207fe9e0dddb906dad8029ff44412a0f090089719be294fd37ccb07c"
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "calls": 1,
+      "size": [
+        1024,
+        1536
+      ],
+      "raw_master_bytes_and_alpha_preserved": true,
+      "registered_crop_masters": 24,
+      "whole_atlas_not_synced": true
+    },
+    "prototype": {
+      "accepted_cells": 24,
+      "accepted_bindings": 41,
+      "accepted_pngs_equal_to_compiled": 24,
+      "opposing_edge_mix_applied": false
+    },
+    "source": {
+      "go_files": 1272,
+      "go_tree_sha256": "db6b6c9ae709aef7776012ce1d2699697c941314bf5d84f18438a2b7c4d9be91",
+      "production_go_unchanged": true
+    },
+    "cpu": {
+      "source_transactions": 41,
+      "wrong_mask_rejections": 2
+    },
+    "python": {
+      "top_level_pass": 3,
+      "compilation_source_rejections": 17,
+      "registration_rejections": 8,
+      "old_r72_rebuilt_pngs": 24
+    },
+    "gpu": {
+      "source_cases": 164,
+      "complete_game_cases": 2,
+      "complete_game_map": 15,
+      "f2": 2,
+      "pngs": 2,
+      "rgba_tolerance": 2,
+      "save_bytes_unchanged": 169,
+      "scope": "受控來源／完整Draw與保存，不新增普通可達性或原版對拍。"
+    },
+    "normal_gui": {
+      "pngs": 10,
+      "display_modes": 4,
+      "legal_walk_cancel": true,
+      "f5_both_art_and_ui": true,
+      "new_process_title_load": true,
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "scope": "普通首章整包相容，41新槽另由受控來源及完整map15驗證。"
+    },
+    "regression": {
+      "pass": 32,
+      "optional_skip": 2,
+      "consumers": 21,
+      "frames": 416,
+      "negative": 19,
+      "review_count": 160
+    },
+    "coverage": {
+      "canonical": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "9d054ec8a7415582acb5aaf154472b01438adc56240976539c101fe457479de8"
+      },
+      "summary": {
+        "maps": 33,
+        "missing-art": 2865,
+        "missing_unique_native_content": 1952,
+        "native-remap-only": 10,
+        "registered-hd": 1123,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "delta": {
+        "new_registered_slots": 41,
+        "new_unique_sources": 24
+      }
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "35d7ae7eaf11d5fe38a464fadd8bb3bbee842af0cd08c5320d29c436d8b28b39"
+      },
+      "catalog_assets": 1070,
+      "private_files": 7142,
+      "new_files": 48,
+      "old_art_files_unchanged": 10333,
+      "private_commit": "8b4a83aa4c20c4d4929099a6a039ee560504562b",
+      "private_manifest_sha256": "86c1534a5e862961a6557ac09b78cda2da0b2c038c49020b1e05b36be3d18a65",
+      "original_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+    },
+    "public_pngs": [
+      {
+        "file": "docs/figures/hd1-pale-terrain-game.png",
+        "sha256": "8e4782cf155ba50f9932c32c46c5aef7951a9b1a661cabb0e9fe24747da31d5d"
+      }
+    ],
+    "limits": [
+      "完整HD1尚餘2865缺槽／1952獨特來源，#282保持開啟；#283已關閉，人工觀感／逐章／平台由使用者接手。",
+      "本批外部相鄰格未宣稱逐像素相同，完整map15仍含大量待補圖源。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/final-validation.json",
+      "sha256": "98123b170bfd06e940f3605299716b4faf2ec783129a08660d5e0a298b352b58"
     }
   }
 }

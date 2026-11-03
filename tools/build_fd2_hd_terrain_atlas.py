@@ -204,6 +204,17 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                 additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
                                   'status': 'concept', 'file': group['master_file'], 'width': 248, 'height': 248,
                                   'sha256': frame['master_sha256'], 'source_refs': refs})
+            elif group['compile_mode'] == 'atlas_direct':
+                crop = [cell % 4 * 256, cell // 4 * 256, cell % 4 * 256 + 256, cell // 4 * 256 + 256]
+                if group['crop'] != crop:
+                    raise ValueError('完整地表裁切不同')
+                piece = master.crop(crop)
+                piece.save(stage / group['master_file'])
+                tile = piece.resize((144, 144), Image.Resampling.LANCZOS)
+                frame.update(master_file=group['master_file'], master_sha256=sha(stage / group['master_file']), crop=crop)
+                additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
+                                  'status': 'concept', 'file': group['master_file'], 'width': 256, 'height': 256,
+                                  'sha256': frame['master_sha256'], 'source_refs': refs})
             elif group['compile_mode'] == 'native_grass_shade':
                 raw = native(original, source, *group['anchor'])[:576]
                 if set(raw) - set(policy['index_groups']['grass']) or 'master_file' in group or 'crop' in group:
