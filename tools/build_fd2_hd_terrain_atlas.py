@@ -148,6 +148,21 @@ def rgba_object_tile(raw, painting, grass, policy):
     return Image.alpha_composite(background, painting), shade
 
 
+def calibrate_direct_edges(master, padding):
+    """只在編製複本向外延伸內側RGB；保留完整母稿及內部構圖。"""
+    if (type(padding) is not int or padding not in (0, 2) or master.mode != 'RGBA' or
+            master.size != (256, 256) or master.getextrema()[3] != (255, 255)):
+        raise ValueError('完整裁切邊緣校準契約不同')
+    result = master.copy()
+    if padding:
+        source, target = master.load(), result.load()
+        for y in range(256):
+            for x in range(256):
+                if x < padding or x >= 256-padding or y < padding or y >= 256-padding:
+                    target[x, y] = source[max(padding, min(255-padding, x)), max(padding, min(255-padding, y))]
+    return result
+
+
 def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_path, coverage_path, out):
     if not Path('/.dockerenv').exists() or os.path.lexists(out) or not out.parent.is_dir():
         raise ValueError('只在Docker寫入既有父目錄中的新候選')
@@ -210,8 +225,13 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                     raise ValueError('完整地表裁切不同')
                 piece = master.crop(crop)
                 piece.save(stage / group['master_file'])
-                tile = piece.resize((144, 144), Image.Resampling.LANCZOS)
+                padding = group.get('edge_pad_master_pixels', 0)
+                calibrated = calibrate_direct_edges(piece, padding)
+                tile = calibrated.resize((144, 144), Image.Resampling.LANCZOS)
                 frame.update(master_file=group['master_file'], master_sha256=sha(stage / group['master_file']), crop=crop)
+                if padding:
+                    frame.update(edge_pad_master_pixels=padding,
+                                 calibrated_rgba_sha256=hashlib.sha256(calibrated.tobytes()).hexdigest())
                 additions.append({'asset_id': recipe['asset_id'] + f'.cell{cell:02d}.master', 'role': 'terrain_hd_master',
                                   'status': 'concept', 'file': group['master_file'], 'width': 256, 'height': 256,
                                   'sha256': frame['master_sha256'], 'source_refs': refs})

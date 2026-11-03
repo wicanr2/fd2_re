@@ -5141,6 +5141,29 @@
       "rule": "組合可重跑命令時使用實際儲存鍵，JSON序列化前逐名稱核對必填入口及非空字串。JavaScript的undefined欄位會被JSON略去，不能只驗序列化成功或猜測總數。入口為規格61「HD1草地周圍物件第二批」及主收據hd1_rgba_objects_followup_20261103的commands.json。",
       "why": "R72命令索引取值時把鍵的首字改大寫，序列化後只留下另行指定的R70入口。提交前總核對擋下，改回實際鍵後完整保存17個已執行命令，素材與測試產物未變。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_rgba_objects_followup_20261103；WORKLOG.md：R72提交前命令索引勘誤"
+    },
+    {
+      "id": "terrain-generated-divider-calibration-copy",
+      "date": "2026-11-03",
+      "area": "HD美術",
+      "rule": "生成圖集的細格線以READY配方明示校準，只在編製複本外延已畫RGB。原圖及完整裁切母稿pixels與alpha保持；不得為去格線混合對邊或改寫定向輪廓。入口tools/build_fd2_hd_terrain_atlas.py的calibrate_direct_edges只接受整數0或2，私人重編沿同一函式。",
+      "why": "R74首四份生成原稿有一至兩像素格線。兩像素外延後原型及實際GPU通過，原母稿不變；負數、奇數與bool均拒收。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_multi_atlas_terrain_followup_20261103",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd_terrain_atlas.py"
+        ],
+        "pattern": "def calibrate_direct_edges"
+      }
+    },
+    {
+      "id": "large-command-index-expand-inside-container",
+      "date": "2026-11-03",
+      "area": "驗證工具",
+      "rule": "大型命令索引在容器內由受版控模板及小參數展開到檔案，不將整批JSON放入shell命令列。執行前逐入口核名稱及非空字串；入口為61「HD1多圖集地形續補」的planned-commands.json及各atlas子目錄。",
+      "why": "R74把八份完整命令JSON送入python -c超過作業系統參數長度上限，容器未啟動。改由Docker內讀R73命令模板逐份展開後執行，素材與來源守門不變。",
+      "evidence": "WORKLOG.md：R74命令索引；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_multi_atlas_terrain_followup_20261103"
     }
   ]
 }

@@ -273,7 +273,7 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD1洞窟地板與石壁](docs/figures/hd1-cave-floor.png)
 
-洞窟石壁、外緣、部分地板與明暗變體已接入手繪HD，原生資料完全相同的其他地圖共用既有圖片，透明範圍保留原生背景。上圖為第二十五張地圖與第25章單位的受控繪製，人物位置與相機經明示設定；未替換的地板、熔岩與部分介面仍為像素，不代表整張洞窟已完成HD。技術範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。 淺灰地表也已續補，[受控畫面](docs/figures/hd1-pale-terrain-game.png)仍可見其他待補圖源。
+洞窟石壁、外緣、部分地板與明暗變體已接入手繪HD，原生資料完全相同的其他地圖共用既有圖片，透明範圍保留原生背景。上圖為第二十五張地圖與第25章單位的受控繪製，人物位置與相機經明示設定；未替換的地板、熔岩與部分介面仍為像素，不代表整張洞窟已完成HD。技術範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。 地表與連續邊緣已續補，[受控畫面](docs/figures/hd1-terrain-batch-map02-game.png)仍可見其他待補圖源。
 
 ![獨立介面與美術控制的浮出工具列](docs/figures/hd1-independent-toolbar.png)
 

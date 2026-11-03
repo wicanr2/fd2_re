@@ -11,7 +11,7 @@ from PIL import Image
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
-from build_fd2_hd_terrain_atlas import grass_policy, masked_object_tile, rgba_object_tile, read, write
+from build_fd2_hd_terrain_atlas import calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, read, write
 from build_fd2_hd_terrain_reuse import native, witness
 from verify_fd2_terrain_sources import check_binding, sha, verify
 
@@ -61,7 +61,7 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                 piece = Image.open(master).convert('RGBA')
                 if piece.getextrema()[3] != (255, 255):
                     raise ValueError('完整地表母稿必須不透明')
-                picture = piece.resize((144, 144), Image.Resampling.LANCZOS)
+                picture = calibrate_direct_edges(piece, group.get('edge_pad_master_pixels', 0)).resize((144, 144), Image.Resampling.LANCZOS)
             elif group['compile_mode'] == 'atlas_masked_object':
                 masters = [a for a in catalog['assets'] if a['asset_id'] == recipe['asset_id'] + f'.cell{group["cell"]:02d}.master']
                 actual_indices = sorted(set(content[:576]) - set(policy['index_groups']['grass']))

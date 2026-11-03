@@ -1,0 +1,436 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_painted_terrain_atlas_v1",
+  "master_size": [
+    1024,
+    1536
+  ],
+  "grid": [
+    4,
+    6
+  ],
+  "size": 144,
+  "edge_blend": 8,
+  "shade_policy": {
+    "reference": {
+      "file": "remake/assets/themes/modern/relief-hd.recipe.json",
+      "sha256": "20b2b8ed3045cd7c758e60a345807573ee0198fac0e30d141cd13f7c1f59cbc1"
+    },
+    "index_groups": {
+      "grass": [
+        68,
+        69,
+        70,
+        71,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142
+      ]
+    },
+    "index_shades": {
+      "68": 255,
+      "69": 255,
+      "70": 255,
+      "71": 255,
+      "137": 153,
+      "138": 153,
+      "139": 153,
+      "140": 153,
+      "141": 153,
+      "142": 153
+    },
+    "mask_blur_hd_pixels": 2,
+    "exact_outer_edge_hd_pixels": 1,
+    "material": {
+      "asset_id": "modern.terrain.grass_olive.master",
+      "file": "grass-olive-hd1-painted-v2-master.png",
+      "sha256": "9a6f61a628f93ff50ef7626cccc0c812b0a4075204a4df2d693a6f4fc019e053"
+    }
+  },
+  "asset_id": "modern.terrain.r74.atlas04",
+  "base_catalog_sha256": "fa5f940063a27814f69dbdbb6b011ffaf2fed81bf4c58d3bf9139e4c963208a6",
+  "coverage_sha256": "d8f8dd5a7cc88bfc0093d226f039741da5bea559c6a9cf00c8026eb94e18fe7c",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "master_sha256": "0a439c14c1abb0c8d3b837e8dd03b5eb22faf5cd180c0aa4b78f477ca0041dc1",
+  "expected_cells": 6,
+  "expected_crop_masters": 6,
+  "expected_bindings": 6,
+  "master_alpha_contract": "opaque",
+  "generation": {
+    "n": 4,
+    "prompt": "Edit reference1 into a production hand-painted RPG terrain atlas. EXACT1024x1536, 4 columns6 rows,24 cells of256 square, no gutters. Every cell must retain reference1's precise composition, dominant color, number/location of bright raised masses, dark lower regions, curves, straight seams, grooves and clipping at each cell side. Treat every256 cell as independent; never blend or connect unrelated cells into one new scene. Do not change the proportions, center or size of forms. Follow reference2 only for clean soft hand-painted brushwork and broad low-noise planes. Do not borrow its grass, paths, colors or scene objects.\n\nRetain reference1's own ochre/tan, blue/slate/gray, pale mint-gray, dark-brown/black colors per cell. Keep dark flat regions and sharp structural divisions where present. Never replace blue surfaces by water, add waves, replace pale regions by snow/ice, invent vegetation, buildings, crystals, lava, glyphs, icons or material-specific details. Preserve any actual visible incised lines/symbol fragments as exact geometric forms, do not add text or new symbols. Identity and material are unknown: repaint only visible shapes. Do not add people, characters, plants, objects, outlines, borders, tilegrid lines or labels.\n\nPreserve actual raised/lower volume, not flat noise. Use smooth natural rounded masses with restrained texture and broad light/dark planes, no enlarged pixel grid, no tiny grain, no photorealism or plastic. Keep the orthographic view. Full edge-to-edge, fully opaque atlas. We will cut full cells directly without recentering, edge wrapping or opposite-edge blend; keep original boundary shapes and palette.\nABSOLUTELY NO DRAWN GRID OR DIVIDER LINES. Cell boundaries are only conceptual crop coordinates. Do not outline or stroke any cell rectangle, not even one pixel. Keep the reference colors right up to the edge. Preserve actual dark terrain in source, but never add a dark rule at a tile boundary.\nThe first row is pale mint-gray height texture. Most remaining cells are dark blue-gray/black structural rounded surfaces, some straight slab/panel fragments and incised circular line fragments. Keep the exact original engraved line geometry, no new symbols. Last row last two cells are tan flat texture. No color leaking between unrelated cells.",
+    "refs": [
+      "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r74/atlas-04/original-24-reference.png",
+      "/home/anr2/cht/fd2/docs/figures/hd1-terrain-redesign-style.png",
+      "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-terrain-r73/pale-atlas-r1-master.png"
+    ],
+    "output_file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-de5fc21b-1c88-4971-8923-f85ad0312e84.png",
+    "output_sha256": "0a439c14c1abb0c8d3b837e8dd03b5eb22faf5cd180c0aa4b78f477ca0041dc1",
+    "bytes_and_alpha_preserved": true,
+    "tool": "built-in image_gen",
+    "transparent_background": false
+  },
+  "groups": [
+    {
+      "cell": 0,
+      "anchor": [
+        16,
+        124
+      ],
+      "native_content_sha256": "4812303f5c9e877a28477aa3bfe5debeec78ea6d02a57478f16c97e1a560c937",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "master_file": "hd1-terrain-r74-a04-cell00-master.png",
+      "file": "hd1-terrain-r74-a04-cell00-hd.png",
+      "targets": [
+        {
+          "map": 16,
+          "frame": 124,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 124,
+            "cell": 668,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 1,
+      "anchor": [
+        16,
+        125
+      ],
+      "native_content_sha256": "8e4e0e9fa360c1496a819fbeb8d1e8c1cc116867513efa6fc867f25cc150c3b9",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "master_file": "hd1-terrain-r74-a04-cell01-master.png",
+      "file": "hd1-terrain-r74-a04-cell01-hd.png",
+      "targets": [
+        {
+          "map": 16,
+          "frame": 125,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 125,
+            "cell": 621,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 2,
+      "anchor": [
+        16,
+        126
+      ],
+      "native_content_sha256": "c41720fe46e86876991c3f5641ef930e939e5ea95e69659eec9e0ade11de7d95",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "master_file": "hd1-terrain-r74-a04-cell02-master.png",
+      "file": "hd1-terrain-r74-a04-cell02-hd.png",
+      "targets": [
+        {
+          "map": 16,
+          "frame": 126,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 126,
+            "cell": 620,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 3,
+      "anchor": [
+        16,
+        127
+      ],
+      "native_content_sha256": "2d9046bb7533be9ac154b200b0a83360563e9e625eb6f6eda64271e5931d70d5",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "master_file": "hd1-terrain-r74-a04-cell03-master.png",
+      "file": "hd1-terrain-r74-a04-cell03-hd.png",
+      "targets": [
+        {
+          "map": 16,
+          "frame": 127,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 127,
+            "cell": 665,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 22,
+      "anchor": [
+        12,
+        64
+      ],
+      "native_content_sha256": "bbf40c43f1a4713f959e1c9c933ceb83cfe319f3c72c0acfbaea9e3180437b7f",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        512,
+        1280,
+        768,
+        1536
+      ],
+      "master_file": "hd1-terrain-r74-a04-cell22-master.png",
+      "file": "hd1-terrain-r74-a04-cell22-hd.png",
+      "targets": [
+        {
+          "map": 12,
+          "frame": 64,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 64,
+            "cell": 888,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 23,
+      "anchor": [
+        12,
+        65
+      ],
+      "native_content_sha256": "e1cb92fc4133262787a60868cdf316394b19b01c24b5f6ab541407719c60cd56",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        768,
+        1280,
+        1024,
+        1536
+      ],
+      "master_file": "hd1-terrain-r74-a04-cell23-master.png",
+      "file": "hd1-terrain-r74-a04-cell23-hd.png",
+      "targets": [
+        {
+          "map": 12,
+          "frame": 65,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 65,
+            "cell": 926,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "依原可見色群及高低輪廓重繪，身份／材質未知；原native透明、selector、cycle及規則保持。",
+  "direct_policy": "完整256裁切母稿保持；編製複本明示0或2像素內側RGB外延後LANCZOS144，無裁邊、UV環繞或對邊混合。",
+  "rejected_cells": [
+    {
+      "cell": 4,
+      "anchor": [
+        8,
+        109
+      ],
+      "native_content_sha256": "b5cd3d74a15416afef882310900eb7ed7ab30bab33bc3b94574d4f6b9e1b7eee",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 5,
+      "anchor": [
+        20,
+        48
+      ],
+      "native_content_sha256": "73462d7f5e6f55a1a98cd3603d9fe0905515aaca34afe98e1b13608dc927a20b",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 6,
+      "anchor": [
+        20,
+        49
+      ],
+      "native_content_sha256": "a5652efb007679ad682fa65c4c44f17af4b00f162a3fae349e99c8d6bc1b65eb",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 7,
+      "anchor": [
+        20,
+        51
+      ],
+      "native_content_sha256": "c98457553e754a756c802d87068c4f30bc1b70e73f231b07c1ca30c0143b856f",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 8,
+      "anchor": [
+        20,
+        57
+      ],
+      "native_content_sha256": "2079a1a79f92bc6a5b97bd0ffabe55f84e559901b8409f0d6810f9f0e3645ff5",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 9,
+      "anchor": [
+        20,
+        58
+      ],
+      "native_content_sha256": "1a23338208cdb9ff0e4267ef10021ba391b5d2dc3a9c722d4febdbd191768a5f",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 10,
+      "anchor": [
+        20,
+        276
+      ],
+      "native_content_sha256": "c83bdba006f83f2d9f80c1bebdab3fc17aa02f41cc9219a09445faaedbcb7bd0",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 11,
+      "anchor": [
+        20,
+        277
+      ],
+      "native_content_sha256": "02885e84befbb04950bc7d5057ba722a8c9beb3d47f69b8fce51795a65bed88b",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 12,
+      "anchor": [
+        20,
+        278
+      ],
+      "native_content_sha256": "feefff1346bff8ae89937924ab0bff40d4f91f8ea5b69c4cd5b863c29a48cdfc",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 13,
+      "anchor": [
+        20,
+        279
+      ],
+      "native_content_sha256": "a4d5600112fa67acda392950d7d54fd5a00e6d4d745b5d9079e576e079234e8e",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 14,
+      "anchor": [
+        20,
+        280
+      ],
+      "native_content_sha256": "a0fed35966841f2ad6fa6069e4449269fd25bb3197ccf321bfa9256823795bb2",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 15,
+      "anchor": [
+        20,
+        281
+      ],
+      "native_content_sha256": "06ecedca4fc68d920b5ff2a178e38e7ad387ac93d889bd67b27b300e6c2b83e0",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 16,
+      "anchor": [
+        21,
+        143
+      ],
+      "native_content_sha256": "c25d22b867d53f1bbccd63112b017304e1f3824b866583c14fa97f784832ef52",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 17,
+      "anchor": [
+        21,
+        224
+      ],
+      "native_content_sha256": "c6cf546dbea4ed3a96586e6e49d2b75dcfd665e243d9fbbd679c5dd153714381",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 18,
+      "anchor": [
+        21,
+        225
+      ],
+      "native_content_sha256": "93b30205f9cb5a35620455c56ed3d2611e600d9773824718fbf590dfc23eefae",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 19,
+      "anchor": [
+        21,
+        227
+      ],
+      "native_content_sha256": "2b22b2804a47a1a26fe262be4d76968f526309f40aea320acbdd7100a3a898b2",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 20,
+      "anchor": [
+        21,
+        228
+      ],
+      "native_content_sha256": "969b98ea79771affb14f7cd17e7646df8ac4d595110b1473df6cf5aa537eebc5",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    },
+    {
+      "cell": 21,
+      "anchor": [
+        21,
+        229
+      ],
+      "native_content_sha256": "18a8b5538403f41906772fb7229db15c2b69375bad1c0fe659561c4fcc7aafc6",
+      "reason": "構件與圖案待原圖整體拼接核對，按格轉繪未接受"
+    }
+  ]
+}

@@ -6260,3 +6260,25 @@ R73 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。24份淺灰高低輪廓圖源�
 24母稿／24成品已登錄，1070清冊與7142私人白名單同步8b4a83aa，10333舊美術SHA／inode／mtime／owner保持。生成母稿dae966b7原bytes／alpha保持；24成品與原型及私人裁切母稿重編逐byte相同，不需整張atlas，舊R72二十四張RGBA物件重編保持。41來源交易／兩錯遮罩、164來源GPU／兩完整map15 Draw／F2與169 bytes受控保存、三項Python含17編製／八登錄拒收通過。
 
 32正式回歸／兩可選略過、21來源／416幀／19反例與160字串保持，1272 Go指紋db6b6c9a，正式Go未改。普通首章四控制、一格合法走行取消、兩美術／介面F5與新程序LOAD十PNG保持089b077b；41新槽由來源與受控map15驗證，不稱自然走遍。[受控淺灰地圖](../figures/hd1-pale-terrain-game.png)仍有大量待補像素及物件，外部相鄰格不宣稱逐像素相同。正式33圖1123已接，餘2865缺槽／1952獨特來源，10純remap；主收據hd1_pale_terrain_followup_20261103保存原稿／提示詞／命令，#282續作，人工由使用者接手。
+
+## HD1多圖集地形續補
+
+R74 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。八份原型接受174格202槽，來源包、READY及逐份實測收據保存在[批次工作根](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r74/progress.json)。原生三層完整opaque、無remap，身份及材質未知；18格39槽連續構件與圖案保持待核。
+
+### R74 READY契約
+
+八份內建imagegen試稿已依原圖複核，接受174格202槽。atlas-04第4至21格共18格39槽的構件與圖案需整體原圖拼接核對，本批保持缺圖；其餘依[READY收據](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r74/ready-source.json)串接。所有原始母稿bytes／alpha與完整256裁切母稿保持，首四份配方明示edge_pad_master_pixels=2，只在編製複本以座標2至253的RGB向外延伸兩像素後LANCZOS144，消去生成分隔線。其餘用0；只允許整數0或2，不裁邊、不縮放UV、不混合對邊。
+
+沿[編製](../../tools/build_fd2_hd_terrain_atlas.py)、[私人重編](../../tools/rebuild_fd2_hd_terrain_atlas.py)及[候選測試](../../tools/test_fd2_hd_terrain_atlas.py)新增可重現邊緣校準，舊R73缺省0保持。各圖集配方hd1-terrain-r74-atlas00.recipe.json至hd1-terrain-r74-atlas07.recipe.json在編製前綁定當時清冊及官方Go覆蓋，後批以前批真實GPU／登錄及官方重算為基底。逐份來源、四狀態GPU、兩完整Draw／F2及保存通過才登錄／白名單同步；整批最後正式回歸、普通首章、消費端、字串及八配方私人重編。原生透明、selector、cycle、規則與保存不改；材質身份未知，藝術曲線不稱原輪廓逐像素一致。
+
+每份配方與基底快照由[stage_fd2_hd_terrain_batch.py](../../tools/stage_fd2_hd_terrain_batch.py)在Docker執行，指定--batch-root及--atlas 0至7。它先核READY、來源與已審原型SHA，再綁定當前正式清冊／官方覆蓋，拒絕覆寫不同的既有輸入；實際編製及GPU／登錄仍沿既有工具，不產生合成GPU收據。
+
+每份實際來源／GPU、白名單同步、官方覆蓋與私人重編後，由[audit_fd2_hd_terrain_batch.py](../../tools/audit_fd2_hd_terrain_batch.py)核對原型bytes、完整母稿pixels及真實程序收據，保存當時清冊並依序推進progress.json。它只審核實際GPU結果，不產生影像比較結果；八份後仍須整批正式與普通操作驗證。
+
+### R74驗證結果
+
+174母稿／174成品已登錄，1265清冊與7490私人白名單同步7b9a64ae，10381舊美術SHA／inode／mtime／owner保持。八份原稿及完整裁切pixels保持，成品與原型／私人重編逐byte相同；舊R73二十四圖缺省校準0重編保持。202來源交易／21錯遮罩、808來源GPU／16完整Draw／16次F2及每份169 bytes受控保存通過，共用Python反例只在首份跑一次，三項PASS含20編製及八登錄拒收。每份真實GPU後才登錄，清冊與官方覆蓋前後鏈已核。
+
+32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過；1272 Go指紋db6b6c9a，正式Go未改。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存保持089b077b；沿R69正式程式以唯讀外部候選清冊驗證。
+
+[受控map2畫面](../figures/hd1-terrain-batch-map02-game.png)使用明示人物與相機，只證明正式Draw接線，不稱普通走遍或整張地圖HD。正式33圖1325已接，餘2663缺槽／1778獨特來源，10純remap。主收據[hd1_multi_atlas_terrain_followup_20261103](../data/fd2-modern-hd-battlefield-20261019.json)索引全部八份配方、原稿、完整提示詞、來源與命令；#282續作，人工由使用者接手。

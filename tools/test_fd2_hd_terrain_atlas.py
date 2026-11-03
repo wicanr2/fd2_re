@@ -59,6 +59,8 @@ class TerrainAtlasTests(unittest.TestCase):
         faults = ['master-sha', 'catalog-sha', 'coverage-sha', 'manifest-sha', 'duplicate-cell',
                   'missing-cell', 'missing-target', 'wrong-selector', 'wrong-native', 'crop', 'path',
                   'existing-file', 'geometry', 'alpha', 'shade-index', 'material-sha', 'shade-classification']
+        if any('edge_pad_master_pixels' in g for g in atlas.read(self.recipe)['groups']):
+            faults += ['edge-pad-negative', 'edge-pad-odd', 'edge-pad-type']
         for fault in faults:
             with self.subTest(fault=fault):
                 recipe = copy.deepcopy(atlas.read(self.recipe))
@@ -89,6 +91,9 @@ class TerrainAtlasTests(unittest.TestCase):
                     recipe['shade_policy']['material']['sha256'] = '0' * 64
                 elif fault == 'shade-classification':
                     recipe['shade_policy']['index_groups']['grass'].remove(137)
+                elif fault.startswith('edge-pad-'):
+                    recipe['groups'][0]['edge_pad_master_pixels'] = {
+                        'edge-pad-negative': -2, 'edge-pad-odd': 1, 'edge-pad-type': True}[fault]
                 elif fault == 'existing-file':
                     recipe['groups'][0]['file'] = next(a['file'] for a in atlas.read(self.base)['assets'] if 'file' in a)
                 elif fault in ('geometry', 'alpha'):
