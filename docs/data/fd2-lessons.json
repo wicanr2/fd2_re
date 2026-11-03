@@ -5164,6 +5164,22 @@
       "rule": "大型命令索引在容器內由受版控模板及小參數展開到檔案，不將整批JSON放入shell命令列。執行前逐入口核名稱及非空字串；入口為61「HD1多圖集地形續補」的planned-commands.json及各atlas子目錄。",
       "why": "R74把八份完整命令JSON送入python -c超過作業系統參數長度上限，容器未啟動。改由Docker內讀R73命令模板逐份展開後執行，素材與來源守門不變。",
       "evidence": "WORKLOG.md：R74命令索引；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_multi_atlas_terrain_followup_20261103"
+    },
+    {
+      "id": "matrix-edit-preserves-heading-and-preamble",
+      "date": "2026-11-03",
+      "area": "現況文件更新",
+      "rule": "更新現況矩陣時，以完整列前綴逐行定位指定列，保存標題與表格前的規格導言。提交前審閱實際差異，並將導言與HEAD逐字比較；連結全有效不能證明文字沒有誤刪。入口為docs/knowledge-base/58-fd2-exe-re-coverage.md、git diff及本批final-validation.json。",
+      "why": "R77列更新的正規表示式轉義錯誤，曾誤改58標題與導言，連結稽核未抓到刪文。提交前差異審查發現後，恢復原導言並改為完整列前綴定位，補核標題與導言保持。",
+      "evidence": "WORKLOG.md；work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/final-validation.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+        ],
+        "pattern": "^# 58 .*反組譯覆蓋與重製閉合矩陣",
+        "note": "現況矩陣的正式標題保持，完整導言另由提交前差異核對。"
+      }
     }
   ]
 }

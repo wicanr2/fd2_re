@@ -6338,3 +6338,27 @@ R76 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。沿R75已審兩份96格原稿�
 32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過；1272 Go指紋db6b6c9a與R69程式保持。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存保持089b077b；唯讀外部候選清冊的整包載入另核。
 
 [受控map21畫面](../figures/hd1-terrain-dense-map21-game.png)明示人物及相機，保留fixture原生HUD；不稱自然走遍、整張HD或新原版E2。正式33圖1848已接，餘2140缺槽／1404獨特來源，10純remap；七格13槽仍缺。主收據hd1_dense_terrain_followup_20261103索引全部原稿、來源、配方、命令與真實程序收據。下一批整體構件／建築仍屬DRAFT，#282與完整HD1續作。
+
+## HD1完整輪廓與建築地形續補
+
+R77 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。三份完整試稿依八個子集接受187格281槽，四格五槽迷宮圖案不收。依[來源包](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/source-pack.json)、[審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/prototype-review.json)及[READY](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/ready-source.json)。沿既有128完整裁切→144，不改正式程式與編製工具；基礎暗眼與第二狀態微小亮點各依原圖，身份未知。兩個靜態邊框在兩狀態的native hash相同，分別只從第二原稿登錄一次；每個目標仍實測四態GPU。配方hd1-terrain-r77-atlas00.recipe.json至hd1-terrain-r77-atlas07.recipe.json依實際清冊／覆蓋逐份接線、驗證與私人重編，通過才登錄。完整Draw只抽樣各份第一個靜態來源，普通首章另驗證；不宣稱自然走遍新增槽。私人新增374PNG，11477舊美術保持。
+
+R77執行期間另整理[後續完整地形圖源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-direct-sources.json)，排除R77與先前待核來源，依原圖地圖／幀排序。此為DRAFT，未改當前READY與正式清冊；來源圖每格128，只有實際圖源格可接受，末尾空白不登錄。
+
+R77執行期間另整理[後續完整地形圖源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-full-grass-sources.json)，排除R77與先前待核來源，依原圖地圖／幀排序，僅選native三層全不透明且無remap的完整草地色群格；不依色號擦除任何前景。此為DRAFT，未改當前READY與正式清冊；來源圖每格128，只有實際圖源格可接受，末尾空白不登錄。
+
+R77執行期間另整理[後續完整地形圖源](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-native-masked-sources.json)，排除R77與先前待核來源，依原圖地圖／幀排序；黑底標示原生不可見或目的地重映色區，後續編製仍須套用原生遮罩，不畫入重映色像素。此為DRAFT，未改當前READY與正式清冊；來源圖每格128，只有實際圖源格可接受，末尾空白不登錄。
+
+上述一般地形前兩份與六份完整草地的[逐格試稿審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/next-full-atlas-review.json)接受683格，十三格細小圖案及灰色片段未收；這是後續DRAFT，不計R77正式成果。原稿／提示詞／144原型逐份雜湊保存，實作前另凍結READY。
+
+細線圖案另做[原索引幾何編製原型](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r1/prototype.json)，只依原索引恢復線段形狀，RGB與微小筆觸取手繪母稿，原生alpha保留。此為DRAFT，不改本批工具或正式圖源；實際144尺寸與色區幾何需審查後才定READY。
+
+第一份雙線性遮罩使原細線模糊，未採用；另做[原格邊界幾何編製原型](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-context-r77/index-geometry-prototype-r2/prototype.json)，只依原索引恢復線段形狀，RGB與微小筆觸取手繪母稿，原生alpha保留。此為DRAFT，不改本批工具或正式圖源；實際144尺寸與色區幾何需審查後才定READY。
+
+### R77驗證結果
+
+187母稿／187成品已登錄，1975清冊與8612私人白名單同步7b0ca0962，11477舊美術SHA／inode／mtime／owner保持。原R76三份完整母稿及alpha不改，八份來源保留原96格編號，128完整裁切後LANCZOS144，成品與原型／私人重編逐byte相同。本批正式Go與編製工具未改，沿R76已驗證形狀契約。281來源交易、1124來源GPU／16完整Draw／F2與每份169 bytes保存、三項Python含23編製／八登錄拒收通過。
+
+32正式回歸／兩可選略過、21來源／416幀／19反例及160字串通過；1272 Go指紋db6b6c9a與R69程式保持。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序LOAD，保存保持089b077b；唯讀外部候選清冊的整包載入另核。
+
+[受控map7畫面](../figures/hd1-terrain-context-map07-game.png)明示人物及相機，保留fixture原生HUD；不稱自然走遍、整張HD或新原版E2。正式33圖2129已接，餘1859缺槽／1217獨特來源，10純remap；四格五槽仍缺。主收據hd1_context_terrain_followup_20261103索引全部原稿、來源、配方、命令與真實程序收據。後續草地整格、一般地形及透明圖層仍屬DRAFT，#282與完整HD1續作。

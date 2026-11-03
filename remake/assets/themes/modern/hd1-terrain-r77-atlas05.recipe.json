@@ -1,0 +1,1138 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_painted_terrain_atlas_v1",
+  "master_size": [
+    1024,
+    1536
+  ],
+  "grid": [
+    8,
+    12
+  ],
+  "size": 144,
+  "edge_blend": 8,
+  "shade_policy": {
+    "reference": {
+      "file": "remake/assets/themes/modern/relief-hd.recipe.json",
+      "sha256": "20b2b8ed3045cd7c758e60a345807573ee0198fac0e30d141cd13f7c1f59cbc1"
+    },
+    "index_groups": {
+      "grass": [
+        68,
+        69,
+        70,
+        71,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142
+      ]
+    },
+    "index_shades": {
+      "68": 255,
+      "69": 255,
+      "70": 255,
+      "71": 255,
+      "137": 153,
+      "138": 153,
+      "139": 153,
+      "140": 153,
+      "141": 153,
+      "142": 153
+    },
+    "mask_blur_hd_pixels": 2,
+    "exact_outer_edge_hd_pixels": 1,
+    "material": {
+      "asset_id": "modern.terrain.grass_olive.master",
+      "file": "grass-olive-hd1-painted-v2-master.png",
+      "sha256": "9a6f61a628f93ff50ef7626cccc0c812b0a4075204a4df2d693a6f4fc019e053"
+    }
+  },
+  "asset_id": "modern.terrain.r77.atlas05",
+  "base_catalog_sha256": "bb390603d5b0452d30665e81b511fc4d1fc501a9825357ad9cf6a67f803365a9",
+  "coverage_sha256": "c20b5147dcc2e3fd7387038461e56ee11afc6efaa52dbbcbea786d94cecc201c",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "master_sha256": "f3d66d50b034e408ce47805cb46cb294196b73cedaf3584a6b9ce01416294743",
+  "expected_cells": 24,
+  "expected_crop_masters": 24,
+  "expected_bindings": 48,
+  "master_alpha_contract": "opaque",
+  "generation": {
+    "kind": "buildings",
+    "folder": "next-dense-atlas-01-r1",
+    "prompt": "Repaint reference1 into a clean hand-painted HD RPG tile atlas. EXACT1024x1536 canvas,8 columns12 rows,96 cells128px square. Every visible fragment stays at its EXACT source coordinate, size, orientation and color. No added gridlines, gutters, cell borders, rearrangement or recentering. Preserve source cut-offs at cell edges, exact diagonal roof boundaries, the number and direction of roof ridges, tan wall planes, black openings, blue/red roof shingles, actual pale cross fragments and the source's exact multicolored window arrangement. Do not invent new symbols or a new stained-glass scene; retain the source's visible color/line design without interpreting it. Preserve tan/brown irregular contours, wooden strips with red bands, red/orange/yellow flame snippets and blue/red rectangular snippets with gold bands exactly where shown. The tiny bottom characters/fragments retain their original silhouettes and colors; no added gear, facial features or poses. Identity/material are unknown, paint only visible forms. References2/3 are ONLY soft painterly brush style, not objects, colors or layout. Use broad clean shaded planes and restrained texture, preserve orthographic perspective, smooth source pixel stair-steps, no photorealism, plastic, fine grain, new people, vegetation, decoration or labels. Preserve flat blue/white/pale regions as flat areas with no new objects. Opaque full edge-to-edge atlas, no divider rules; we cut128px cells directly, so preserve the original per-cell geometry.",
+    "refs": [
+      "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-dense-r76/next-dense-atlas-01-r1/original-96-reference.png",
+      "/home/anr2/cht/fd2/docs/figures/hd1-terrain-redesign-style.png",
+      "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-batch-r75/atlas-03/atlas-r1-master.png"
+    ],
+    "output_file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-3634c1ef-4ab1-4238-8e2c-f6caf0e84687.png",
+    "output_sha256": "f3d66d50b034e408ce47805cb46cb294196b73cedaf3584a6b9ce01416294743",
+    "tool": "built-in image_gen",
+    "transparent_background": false,
+    "raw_bytes_and_alpha_preserved": true
+  },
+  "groups": [
+    {
+      "cell": 24,
+      "anchor": [
+        2,
+        135
+      ],
+      "native_content_sha256": "e6b98f6a3ced8c48b61c2931e126bb4e78b94cde290f3584994c7ce0bac1f16f",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        0,
+        384,
+        128,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell24-master.png",
+      "file": "hd1-terrain-r77-a05-cell24-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 135,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 135,
+            "cell": 398,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 25,
+      "anchor": [
+        2,
+        192
+      ],
+      "native_content_sha256": "d72d8c3429ed970a9a99a380bea2e5449d98fcd14657ef475205a758a663ca14",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        128,
+        384,
+        256,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell25-master.png",
+      "file": "hd1-terrain-r77-a05-cell25-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 192,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 192,
+            "cell": 41,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 2,
+          "frame": 193,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 193,
+            "cell": 48,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 192,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 192,
+            "cell": 2171,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 193,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 193,
+            "cell": 2174,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 26,
+      "anchor": [
+        2,
+        194
+      ],
+      "native_content_sha256": "2a71db1fb7dd1222bccd840145263227df2fed8fbb608886ce4d0f7d3126d480",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        256,
+        384,
+        384,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell26-master.png",
+      "file": "hd1-terrain-r77-a05-cell26-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 194,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 194,
+            "cell": 59,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 27,
+      "anchor": [
+        2,
+        195
+      ],
+      "native_content_sha256": "f2dbc53267758cc79c6e3a0675f0b267741d4fcc4c8f709b26bb3c943e236296",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        384,
+        384,
+        512,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell27-master.png",
+      "file": "hd1-terrain-r77-a05-cell27-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 195,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 195,
+            "cell": 60,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 28,
+      "anchor": [
+        2,
+        196
+      ],
+      "native_content_sha256": "404bd885d88be445aefb097c381918b482d27dc27f463ddaa133f15f1c4c1518",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        512,
+        384,
+        640,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell28-master.png",
+      "file": "hd1-terrain-r77-a05-cell28-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 196,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 196,
+            "cell": 66,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 29,
+      "anchor": [
+        2,
+        206
+      ],
+      "native_content_sha256": "bc88b5c9291188715a433b7f9a971a666b2e869f99647dcfec8fb391b8d12a1a",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        640,
+        384,
+        768,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell29-master.png",
+      "file": "hd1-terrain-r77-a05-cell29-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 206,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 206,
+            "cell": 383,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 30,
+      "anchor": [
+        2,
+        207
+      ],
+      "native_content_sha256": "e850fadc6cddd9eb8d2b08739b2b792f2e4e96d7798246bd2d85fedd61951edc",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        768,
+        384,
+        896,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell30-master.png",
+      "file": "hd1-terrain-r77-a05-cell30-hd.png",
+      "targets": [
+        {
+          "map": 2,
+          "frame": 207,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 207,
+            "cell": 384,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 14,
+          "frame": 207,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 207,
+            "cell": 2422,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 31,
+      "anchor": [
+        4,
+        14
+      ],
+      "native_content_sha256": "6f1e3a752b455c341523e3692701e65909556729123463c68dcbea556a8e422a",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        896,
+        384,
+        1024,
+        512
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell31-master.png",
+      "file": "hd1-terrain-r77-a05-cell31-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 14,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 14,
+            "cell": 108,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 32,
+      "anchor": [
+        4,
+        69
+      ],
+      "native_content_sha256": "ec6b5ef59802bfbfc425dbab6921f5a9bb34f9a01fc385754c25cf66ac087d06",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        0,
+        512,
+        128,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell32-master.png",
+      "file": "hd1-terrain-r77-a05-cell32-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 69,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 69,
+            "cell": 853,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 69,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 69,
+            "cell": 1193,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 33,
+      "anchor": [
+        4,
+        81
+      ],
+      "native_content_sha256": "cdbdbf6a5a6b5347e1c2045a93efab376c64b5d56f1a5c05642004457d304768",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        128,
+        512,
+        256,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell33-master.png",
+      "file": "hd1-terrain-r77-a05-cell33-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 81,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 81,
+            "cell": 629,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 34,
+      "anchor": [
+        4,
+        82
+      ],
+      "native_content_sha256": "ff7a2e980be5b586980cf66704d704f4f575b2732df205788cf6057272c3f8c0",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        256,
+        512,
+        384,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell34-master.png",
+      "file": "hd1-terrain-r77-a05-cell34-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 82,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 82,
+            "cell": 632,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 35,
+      "anchor": [
+        4,
+        94
+      ],
+      "native_content_sha256": "5d22d24d1506b89479ef0f1b6bb16a3a17229784db29116b01897d19ba26a2ee",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        384,
+        512,
+        512,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell35-master.png",
+      "file": "hd1-terrain-r77-a05-cell35-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 94,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 94,
+            "cell": 630,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 36,
+      "anchor": [
+        4,
+        95
+      ],
+      "native_content_sha256": "00bfa453c6e3d99b410d6704e4404bcfb8a152d9b2309f808498f0dcccf80267",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        512,
+        512,
+        640,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell36-master.png",
+      "file": "hd1-terrain-r77-a05-cell36-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 95,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 95,
+            "cell": 631,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 37,
+      "anchor": [
+        4,
+        100
+      ],
+      "native_content_sha256": "2ea6d58ac00bbaaafa2f4447c78d8c68887c88da85750251b4b581de196550cb",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        640,
+        512,
+        768,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell37-master.png",
+      "file": "hd1-terrain-r77-a05-cell37-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 100,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 100,
+            "cell": 294,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 8,
+          "frame": 72,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 72,
+            "cell": 10,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 38,
+      "anchor": [
+        4,
+        103
+      ],
+      "native_content_sha256": "e40afa434c9f8b538b8aa8bee0e2e1ab66b75051e470795610c63ea09cbbfdfd",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        768,
+        512,
+        896,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell38-master.png",
+      "file": "hd1-terrain-r77-a05-cell38-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 103,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 103,
+            "cell": 181,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 39,
+      "anchor": [
+        4,
+        109
+      ],
+      "native_content_sha256": "431ada53707461f8867d4c43575bf14ddf2ca6172d1c1aa6aab65a86f3af0691",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        896,
+        512,
+        1024,
+        640
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell39-master.png",
+      "file": "hd1-terrain-r77-a05-cell39-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 109,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 109,
+            "cell": 126,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 109,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 109,
+            "cell": 354,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 109,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 109,
+            "cell": 1074,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 40,
+      "anchor": [
+        4,
+        110
+      ],
+      "native_content_sha256": "c025ca540ad234ae9a45f84cf7482b0bdb862c45deeb0afbf703b16b124ed820",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        0,
+        640,
+        128,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell40-master.png",
+      "file": "hd1-terrain-r77-a05-cell40-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 110,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 110,
+            "cell": 119,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 110,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 110,
+            "cell": 373,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 110,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 110,
+            "cell": 1131,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 41,
+      "anchor": [
+        4,
+        111
+      ],
+      "native_content_sha256": "def9b486d028bb74e1e20bb2e54d2b3fd6740ec876463e8225b00ef4fc43a377",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        128,
+        640,
+        256,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell41-master.png",
+      "file": "hd1-terrain-r77-a05-cell41-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 111,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 111,
+            "cell": 120,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 111,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 111,
+            "cell": 374,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 111,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 111,
+            "cell": 1132,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 42,
+      "anchor": [
+        4,
+        114
+      ],
+      "native_content_sha256": "0da29e01b11ce72c6a5457abae7ece0075b27bff69e251ea8dc24011e2e1fd84",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        256,
+        640,
+        384,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell42-master.png",
+      "file": "hd1-terrain-r77-a05-cell42-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 114,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 114,
+            "cell": 80,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 114,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 114,
+            "cell": 333,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 114,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 114,
+            "cell": 1044,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 43,
+      "anchor": [
+        4,
+        115
+      ],
+      "native_content_sha256": "cca3a762db356a707386bcee9d9460cf5aa70b67cfcc9c52b00153409a88e40a",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        384,
+        640,
+        512,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell43-master.png",
+      "file": "hd1-terrain-r77-a05-cell43-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 115,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 115,
+            "cell": 81,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 115,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 115,
+            "cell": 334,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 115,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 115,
+            "cell": 1045,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 44,
+      "anchor": [
+        4,
+        116
+      ],
+      "native_content_sha256": "f1695fcf5869fe08f06b752bdfdbefd699da362a97bba6f73e4719dfac884dfb",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        512,
+        640,
+        640,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell44-master.png",
+      "file": "hd1-terrain-r77-a05-cell44-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 116,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 116,
+            "cell": 121,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 116,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 116,
+            "cell": 355,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 116,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 116,
+            "cell": 1106,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 45,
+      "anchor": [
+        4,
+        117
+      ],
+      "native_content_sha256": "ebfbf161930dd313c9d291c059241dc25fcbc36b79814278e4ac861647a832c0",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        640,
+        640,
+        768,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell45-master.png",
+      "file": "hd1-terrain-r77-a05-cell45-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 117,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 117,
+            "cell": 122,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 117,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 117,
+            "cell": 358,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 117,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 117,
+            "cell": 1109,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 46,
+      "anchor": [
+        4,
+        118
+      ],
+      "native_content_sha256": "ccd04bba7de00f0e5c23a5743492ad3aecb3c0b5ce1436463dc31efe0c7c4489",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        768,
+        640,
+        896,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell46-master.png",
+      "file": "hd1-terrain-r77-a05-cell46-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 118,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 118,
+            "cell": 78,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 118,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 118,
+            "cell": 360,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 118,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 118,
+            "cell": 1075,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    },
+    {
+      "cell": 47,
+      "anchor": [
+        4,
+        122
+      ],
+      "native_content_sha256": "291a80e7bde57ec8324f7520552d0baee29ea94d49e846a3295499b8838854f8",
+      "compile_mode": "atlas_direct",
+      "edge_pad_master_pixels": 0,
+      "crop": [
+        896,
+        640,
+        1024,
+        768
+      ],
+      "master_file": "hd1-terrain-r77-a05-cell47-master.png",
+      "file": "hd1-terrain-r77-a05-cell47-hd.png",
+      "targets": [
+        {
+          "map": 4,
+          "frame": 122,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 122,
+            "cell": 156,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 5,
+          "frame": 122,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 122,
+            "cell": 393,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        },
+        {
+          "map": 7,
+          "frame": 122,
+          "role": "terrain",
+          "selector": {
+            "tile_word": 122,
+            "cell": 1160,
+            "flip": 0,
+            "cycle": 0,
+            "event_update_pass": 0
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "依原可見色群及高低輪廓重繪，身份／材質未知；原native透明、selector、cycle及規則保持。",
+  "direct_policy": "完整128裁切母稿及alpha保持，只LANCZOS144；校準0，不裁邊、UV環繞或對邊混合。",
+  "master_cell_size": 128
+}
