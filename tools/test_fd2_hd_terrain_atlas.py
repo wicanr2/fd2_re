@@ -14,6 +14,46 @@ import build_fd2_hd_terrain_atlas as atlas
 from build_fd2_hd_terrain_reuse import native
 
 
+class PaletteSourceTests(unittest.TestCase):
+    def test_flat_source_rgb_requires_original_palette_and_uniform_native(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = root / 'palette.json'
+            values = [0] * 768
+            values[6:9] = [7, 31, 63]
+            atlas.write(path, {'dac_6bit_components': values})
+            source = {'palette': {'file': path.name, 'sha256': atlas.sha(path)}}
+            recipe = {'source_rgb_used': True, 'groups': [{'compile_mode': 'atlas_native_mask'}]}
+            raw = bytes([2]) * 576 + bytes([1]) * 576 + bytes(576)
+            color = (28, 125, 255, 255)
+            for size in (128, 256):
+                atlas.validate_source_rgb(recipe, raw, Image.new('RGBA', (size, size), color), root, source)
+            faults = {}
+            def add(name, recipe_arg=None, content=None, painting=None, source_arg=None):
+                faults[name] = (recipe_arg or recipe, content or raw,
+                                painting or Image.new('RGBA', (256, 256), color), root, source_arg or source)
+            bad = bytearray(raw); bad[0] = 1; add('multiple-index', content=bytes(bad))
+            bad = bytearray(raw); bad[576] = 0; add('partial-mask', content=bytes(bad))
+            bad = bytearray(raw); bad[1152] = 1; add('destination-remap', content=bytes(bad))
+            add('truncated', content=raw[:-1])
+            add('non-boolean', recipe_arg={'source_rgb_used': 1, 'groups': recipe['groups']})
+            add('wrong-mode', recipe_arg={'source_rgb_used': True, 'groups': [{'compile_mode': 'atlas_direct'}]})
+            add('palette-sha', source_arg={'palette': {'file': path.name, 'sha256': '0' * 64}})
+            add('wrong-rgb', painting=Image.new('RGBA', (256, 256), (29, 125, 255, 255)))
+            add('wrong-alpha', painting=Image.new('RGBA', (256, 256), (28, 125, 255, 254)))
+            add('wrong-size', painting=Image.new('RGBA', (255, 256), color))
+            add('rgb-mode', painting=Image.new('RGB', (256, 256), color[:3]))
+            for name, arguments in faults.items():
+                with self.subTest(fault=name), self.assertRaises(ValueError):
+                    atlas.validate_source_rgb(*arguments)
+            values[6] = 64
+            atlas.write(path, {'dac_6bit_components': values})
+            source['palette']['sha256'] = atlas.sha(path)
+            with self.assertRaises(ValueError):
+                atlas.validate_source_rgb(recipe, raw, Image.new('RGBA', (256, 256), color), root, source)
+
+
+
 class TerrainAtlasTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -78,7 +118,7 @@ class TerrainAtlasTests(unittest.TestCase):
         if atlas.read(self.recipe)['grid'] == [8, 12]:
             faults += ['dense-grid-shape', 'dense-edge-pad-two', 'dense-nondirect-mode']
         if any(g['compile_mode'] == 'atlas_native_mask' for g in atlas.read(self.recipe)['groups']):
-            faults += ['native-mask-as-direct', 'native-mask-unknown-mode', 'native-mask-legacy-grid']
+            faults += ['native-mask-as-direct', 'native-mask-unknown-mode', 'native-mask-edge-policy']
         for fault in faults:
             with self.subTest(fault=fault):
                 recipe = copy.deepcopy(atlas.read(self.recipe))
@@ -119,8 +159,8 @@ class TerrainAtlasTests(unittest.TestCase):
                     recipe['groups'][0]['compile_mode'] = 'atlas_direct'
                 elif fault == 'native-mask-unknown-mode':
                     recipe['groups'][0]['compile_mode'] = 'atlas_native_typo'
-                elif fault == 'native-mask-legacy-grid':
-                    recipe['grid'] = [4, 6]
+                elif fault == 'native-mask-edge-policy':
+                    recipe['groups'][0]['edge_pad_master_pixels'] = 2
                 elif fault.startswith('edge-pad-'):
                     recipe['groups'][0]['edge_pad_master_pixels'] = {
                         'edge-pad-negative': -2, 'edge-pad-odd': 1, 'edge-pad-type': True}[fault]

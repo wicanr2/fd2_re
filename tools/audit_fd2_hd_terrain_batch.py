@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """核對一份真實圖集收據並推進批次狀態；不產生GPU比較結果。"""
 import argparse
+from collections import Counter
 import hashlib
 import json
 import re
@@ -30,6 +31,9 @@ def audit(batch, atlas, gpu_run='gpu-r1'):
     row = next(a for a in ready['atlases'] if a['atlas'] == atlas)
     recipe_path = ROOT / f'remake/assets/themes/modern/hd1-terrain-{batch_id}-atlas{atlas:02d}.recipe.json'
     recipe, manifest = read(recipe_path), read(work / 'candidate-r2/manifest.json')
+    if not (manifest.get('source_rgb_used', False) == recipe.get('source_rgb_used', False) ==
+            row.get('source_rgb_used', False)):
+        raise ValueError('原色來源政策與實際編製不同')
     gpu = read(work / (gpu_run + '-capture/receipt.json'))
     count = row['bindings']
     if (manifest['recipe_sha256'] != sha(recipe_path) or len(manifest['bindings']) != count or
@@ -49,10 +53,13 @@ def audit(batch, atlas, gpu_run='gpu-r1'):
             '--- PASS: TestModernHDPaintedTerrainAtlasSourceTransactions' not in source_log):
         raise ValueError('來源交易沒有真正執行')
     if atlas == 0:
-        for name, tests in [('compilation-tests-r1.log', 2), ('registration-tests-r1.log', 1)]:
+        uses_palette = any(a.get('source_rgb_used', False) for a in ready['atlases'])
+        for name, tests in [('compilation-tests-r1.log', 3 if uses_palette else 2), ('registration-tests-r1.log', 1)]:
             text = (work / name).read_text()
             if f'Ran {tests} test' not in text or 'OK' not in text or 'skipped' in text:
                 raise ValueError('首份Python驗證缺項')
+            if uses_palette and name.startswith('compilation') and 'test_flat_source_rgb_requires_original_palette_and_uniform_native' not in text:
+                raise ValueError('原色palette拒收驗證缺項')
     prototype_path = work / 'direct-prototype-r1/prototype.json'
     if sha(prototype_path) != row['prototype_sha256']:
         raise ValueError('已審原型不同')
@@ -90,9 +97,14 @@ def audit(batch, atlas, gpu_run='gpu-r1'):
         raise ValueError('正式與私人清冊不同')
     before, coverage = read(work / 'base-coverage.json'), read(work / 'formal-coverage-r1.json')
     summary = coverage['summary']
+    actual = Counter(frame['status'] for item in coverage['maps'] for frame in item['required'])
+    if (sum(actual.values()) != summary['required_slots'] or
+            any(summary.get(status, 0) != actual[status] for status in
+                ('registered-hd', 'missing-art', 'native-remap-only'))):
+        raise ValueError('覆蓋計數與逐槽狀態不同')
     if (coverage['catalog_sha256'] != sha(catalog_path) or summary['maps'] != 33 or
             summary['registered-hd'] != before['summary']['registered-hd']+count or
-            summary['missing-art'] != before['summary']['missing-art']-count or
+            summary.get('missing-art', 0) != before['summary'].get('missing-art', 0)-count or
             summary['missing_unique_native_content'] != before['summary']['missing_unique_native_content']-len(recipe['groups']) or
             summary['required_slots'] != 3998 or summary['native-remap-only'] != 10):
         raise ValueError('官方覆蓋與本批增量不同')
@@ -140,7 +152,7 @@ def audit(batch, atlas, gpu_run='gpu-r1'):
     state = read(state_path)
     state['active_slice'].update(status='RUNTIME-E1-MULTI-ATLAS-PROGRESS',
                                  scope=f'八份中已核{atlas+1}份，新增{progress["registered_bindings"]}槽；整批正常操作／正式回歸待驗。')
-    state['independent_terrain'].update(registered_hd=summary['registered-hd'], missing_slots=summary['missing-art'],
+    state['independent_terrain'].update(registered_hd=summary['registered-hd'], missing_slots=summary.get('missing-art', 0),
                                         missing_unique=summary['missing_unique_native_content'], work_root=str(batch.relative_to(ROOT)))
     write(state_path, state)
     return {k: v for k, v in result.items() if k != 'proofs'}

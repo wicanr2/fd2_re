@@ -11,7 +11,7 @@ from PIL import Image
 
 from build_fd2_hd_ground import make_tile
 from build_fd2_hd_ground_edges import composite_relief
-from build_fd2_hd_terrain_atlas import atlas_geometry, calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, native_mask_tile, read, write
+from build_fd2_hd_terrain_atlas import atlas_geometry, calibrate_direct_edges, grass_policy, masked_object_tile, rgba_object_tile, native_mask_tile, validate_source_rgb, read, write
 from build_fd2_hd_terrain_reuse import native, witness
 from verify_fd2_terrain_sources import check_binding, sha, verify
 
@@ -68,6 +68,7 @@ def rebuild(recipe_path, catalog_path, pack, original, sources, maps, out):
                 piece = Image.open(master).convert('RGBA')
                 if piece.getextrema()[3] != (255, 255):
                     raise ValueError('完整地表母稿必須不透明')
+                validate_source_rgb(recipe, content, piece, original, source)
                 picture = calibrate_direct_edges(piece, group.get('edge_pad_master_pixels', 0)).resize((144, 144), Image.Resampling.LANCZOS)
                 if group['compile_mode'] == 'atlas_native_mask':
                     picture = native_mask_tile(content, picture)

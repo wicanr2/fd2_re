@@ -17,11 +17,19 @@
 
 [v.1.0.0-20261017](https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.0-20261017) 提供 macOS 通用版 ZIP、Windows x86_64 ZIP 與 Linux x86_64 AppImage，附版本、來源提交、SHA-256 與原生封包自檢紀錄。
 
-公開包只含引擎與可散布資料，遊玩需自備完整合法分離素材。現有單一匯入工具尚不能產生完整可玩包；素材契約與工具範圍見[分離素材規格](docs/knowledge-base/60-editor-separated-assets-spec.md)。30章受控流程與保存例外見[驗收進度](docs/REMAKE-STATUS.md)。HD仍未完成，Windows／macOS未簽署，macOS尚未公證。
+公開包只含引擎與可散布資料，遊玩需自備完整合法分離素材。現有單一匯入工具尚不能產生完整可玩包；素材契約與工具範圍見[分離素材規格](docs/knowledge-base/60-editor-separated-assets-spec.md)。30章受控流程與保存例外見[驗收進度](docs/REMAKE-STATUS.md)。此下載版尚未包含目前開發主線已完成的HD1。Windows／macOS未簽署，macOS尚未公證。
+
+## HD1開發版
+
+開發主線的HD1素材與接線已完成，包含33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。必要來源、載入、缺件拒收、切換及保存冷讀均已驗證；細部觀感、逐章操作與平台實機交由使用者確認。範圍及重跑證據見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[HD1完成紀錄](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1最後地形與前景)。既有下載版未重發，HD2與HD-2D另期。
+
+![HD1地形與Q版人物的受控完整畫面](docs/figures/hd1-terrain-final-round-pattern-game.png)
+
+這是依原六格圖案重繪後的受控完整畫面，圖案用途仍保留未知；最後宮殿圖源與普通首章操作驗證見HD1完成紀錄。
 
 開發版將滑鼠移至頂端即可顯示單列工具列，離開後自動隱藏。美術主題與操作介面可分開選擇原版／HD，快捷鍵為 F2／F11；另提供四語 F4、字級 F7、遊戲速度 F8、全螢幕 Alt+Enter 與海報 F10。海報可獨立選擇兩組或關閉，並調整內緣漸層、淡入時間及重播。這些選擇保存在設定檔，不改戰役存檔。戰場檢視角色使用 Home。具備合法的完整 HD 素材包時，故事頭像以
-480×480 圖源直接繪製，關閉海報時預設視窗與遊戲區域均為1920×1200；開啟海報後中央維持原比例，兩側另加側欄。浮出列暫時覆蓋頂端，不移動遊戲。故事對話、商店文字與數字、旅館／教會、角色／物品狀態、整備與標題讀檔的穩定畫面採用直接高解析繪製的 Noto Sans CJK 黑體；忠實像素模式保留。整備問句的開收動畫也已接入高解析文字。商店金幣的扣款／入款滾動也直接繪字，出售確認會同步清除被覆蓋的歡迎詞。角色／物品面板的開收與命令滑動，也會同步移動及裁切高解析文字。[戰場角色狀態](docs/figures/hd-battlefield-status.png)只覆蓋面板區域，保留框外現代地圖。戰場人物已接入144×144圖源，沿原生312×192窗格與相同視圖繪製，保留F2與正常走行／指令環。經驗／升級下框的開收動畫也保留HD人物，已用明示章前EXP校準槽驗證正常操作、F2與保存冷讀。可見戰鬥背景與台座圖源已補齊，接入已驗證的共背景、分離背景物理、一般法術、指令24／29及四種召喚流程。物理攻防、法術與召喚的姓名、LV、HP／MP文字直接繪製高解析黑體，戰鬥面板框線與血條也已直接HD繪製；其他介面與完整地形仍待。兩種主題均已驗證首章 JSON 的標題 LOAD 與 F9。
-首章原始底圖、前景及寶箱開合圖源已接入手繪HD，包含屋簷遮擋、草土水岸、石路、寶箱與小石塊。正常移鏡頭、F2與保存冷讀已抽驗，開箱呈現另有事件更新後的受控繪圖驗證。地圖資訊窗的細框、A／D及血量數字也直接HD繪製，地形縮圖沿用已登錄的HD來源。未登錄地形與其餘操作介面仍待。
+480×480 圖源直接繪製，關閉海報時預設視窗與遊戲區域均為1920×1200；開啟海報後中央維持原比例，兩側另加側欄。浮出列暫時覆蓋頂端，不移動遊戲。故事對話、商店文字與數字、旅館／教會、角色／物品狀態、整備與標題讀檔的穩定畫面採用直接高解析繪製的 Noto Sans CJK 黑體；忠實像素模式保留。整備問句的開收動畫也已接入高解析文字。商店金幣的扣款／入款滾動也直接繪字，出售確認會同步清除被覆蓋的歡迎詞。角色／物品面板的開收與命令滑動，也會同步移動及裁切高解析文字。[戰場角色狀態](docs/figures/hd-battlefield-status.png)只覆蓋面板區域，保留框外現代地圖。戰場人物已接入144×144圖源，沿原生312×192窗格與相同視圖繪製，保留F2與正常走行／指令環。經驗／升級下框的開收動畫也保留HD人物，已用明示章前EXP校準槽驗證正常操作、F2與保存冷讀。可見戰鬥背景與台座圖源已補齊，接入已驗證的共背景、分離背景物理、一般法術、指令24／29及四種召喚流程。物理攻防、法術與召喚的姓名、LV、HP／MP文字直接繪製高解析黑體，戰鬥面板框線與血條也已直接HD繪製；完整地形與介面現況依下方HD1完成紀錄。兩種主題均已驗證首章 JSON 的標題 LOAD 與 F9。
+首章原始底圖、前景及寶箱開合圖源已接入手繪HD，包含屋簷遮擋、草土水岸、石路、寶箱與小石塊。正常移鏡頭、F2與保存冷讀已抽驗，開箱呈現另有事件更新後的受控繪圖驗證。地圖資訊窗的細框、A／D及血量數字也直接HD繪製，地形縮圖沿用已登錄的HD來源。正式地形與操作介面接線均已完成。
 
 ![亞雷斯目前HD1面容的普通首章戰場與資訊窗](docs/figures/hd1-base-ares-normal.png)
 
@@ -29,7 +37,7 @@
 
 ![哈諾、鐵諾與哈瓦特的早期Q版比例對照](docs/figures/hd1-chibi-party-comparison.png)
 
-哈諾、鐵諾與哈瓦特也已接入新版大頭Q版圖源。鐵諾已依原版灰綠布兜帽修正，並保留原版左向被身體遮蔽的直劍；[完整受控戰場與資訊窗](docs/figures/hd1-tino-hood-game.png)可查看這次接線。哈瓦特已再修為成熟五官、收斂眼神與寬厚大鬍子，保留紅褐髮鬚；[完整受控戰場圖](docs/figures/hd1-harvat-mature-game.png)可查看地圖與資訊窗呈現。上圖保留三人早期的四向及144／72／48像素比例對照，並非目前全套圖源或遊戲截圖。哈諾目前面容見下圖；鐵諾與哈瓦特目前版本依各自戰場連結。地圖與資訊窗已做受控繪圖核對，普通首章另驗完整候選載入與既有角色的切換／保存相容性；三人自然出場與造型由使用者人工確認。目前人物圖源總覽已依正式清冊更新，造型批次複核及集中人工仍待。
+哈諾、鐵諾與哈瓦特也已接入新版大頭Q版圖源。鐵諾已依原版灰綠布兜帽修正，並保留原版左向被身體遮蔽的直劍；[完整受控戰場與資訊窗](docs/figures/hd1-tino-hood-game.png)可查看這次接線。哈瓦特已再修為成熟五官、收斂眼神與寬厚大鬍子，保留紅褐髮鬚；[完整受控戰場圖](docs/figures/hd1-harvat-mature-game.png)可查看地圖與資訊窗呈現。上圖保留三人早期的四向及144／72／48像素比例對照，並非目前全套圖源或遊戲截圖。哈諾目前面容見下圖；鐵諾與哈瓦特目前版本依各自戰場連結。地圖與資訊窗已做受控繪圖核對，普通首章另驗完整候選載入與既有角色的切換／保存相容性；三人自然出場與造型由使用者人工確認。目前人物圖源總覽已依正式清冊更新，圖源接線已結案，細部觀感由使用者集中人工確認。
 
 ![哈諾與亞雷斯基底形態的原版及HD1個別面容](docs/figures/hd1-base-faces-reference.png)
 
@@ -87,7 +95,7 @@
 
 ![最後三組原圖三拍與正式HD1 Q版對照](docs/figures/hd1-final-static-comparison.png)
 
-HD1地圖人物的125組、1455個來源幀已完成定版圖源與接線。第66、74、75組採用已確認的[原圖Q版試稿](docs/figures/hd1-final-static-approved-prototype.png)，連同第67組保留身份與頭像綁定未知；第75組維持原橫向輪廓。可看[66](docs/figures/hd1-final-static-066-game.png)、[74](docs/figures/hd1-final-static-074-game.png)、[75](docs/figures/hd1-final-static-075-game.png)的三拍受控呈現。測具使用原有載體，只換選圖來源，不代表這些圖組的自然出場。人物造型、逐章及平台人工待驗，地形與其餘介面繼續製作。
+HD1地圖人物的125組、1455個來源幀已完成定版圖源與接線。第66、74、75組採用已確認的[原圖Q版試稿](docs/figures/hd1-final-static-approved-prototype.png)，連同第67組保留身份與頭像綁定未知；第75組維持原橫向輪廓。可看[66](docs/figures/hd1-final-static-066-game.png)、[74](docs/figures/hd1-final-static-074-game.png)、[75](docs/figures/hd1-final-static-075-game.png)的三拍受控呈現。測具使用原有載體，只換選圖來源，不代表這些圖組的自然出場。人物造型、逐章及平台人工待驗；地形與介面接線已完成。
 
 ![第116、122與135組原版頭像及目前HD1面容](docs/figures/hd1-final-known-faces-reference.png)
 
@@ -115,7 +123,7 @@ HD1地圖人物的125組、1455個來源幀已完成定版圖源與接線。第6
 
 ![第99、100、101與107組的原版頭像及目前HD1面容](docs/figures/hd1-shadow-faces-reference.png)
 
-第99、100與101組依各自頭像保留窄眼、角形鼻及深陰影，黑色區域不另推定為面罩材質；第107組恢復灰綠長鼻面孔與窄紅眼，保留寬帽及無露腳袍底。可看[四向及144／72／48尺寸](docs/figures/hd1-shadow-faces-comparison.png)，以及[99](docs/figures/hd1-shadow-099-game.png)、[100](docs/figures/hd1-shadow-100-game.png)、[101](docs/figures/hd1-shadow-101-game.png)、[107](docs/figures/hd1-shadow-107-game.png)的完整受控戰場與資訊窗。四組沿原名冊、陣營及位置，不新增身份或圖組投影；普通首章另驗整包切換與保存相容，不代表四人自然出場或480對話頭像驗收。其餘人物造型、介面與地形續作。
+第99、100與101組依各自頭像保留窄眼、角形鼻及深陰影，黑色區域不另推定為面罩材質；第107組恢復灰綠長鼻面孔與窄紅眼，保留寬帽及無露腳袍底。可看[四向及144／72／48尺寸](docs/figures/hd1-shadow-faces-comparison.png)，以及[99](docs/figures/hd1-shadow-099-game.png)、[100](docs/figures/hd1-shadow-100-game.png)、[101](docs/figures/hd1-shadow-101-game.png)、[107](docs/figures/hd1-shadow-107-game.png)的完整受控戰場與資訊窗。四組沿原名冊、陣營及位置，不新增身份或圖組投影；普通首章另驗整包切換與保存相容，不代表四人自然出場或480對話頭像驗收。其餘人物、介面與地形圖源接線已完成，造型由使用者人工確認。
 
 ![第67組原地圖三拍與HD1來源對照](docs/figures/hd1-anonymous-067-comparison.png)
 
@@ -171,7 +179,7 @@ HD1地圖人物的125組、1455個來源幀已完成定版圖源與接線。第6
 
 ![珊與賽可邦勒選用轉職圖組的原版及HD1面容對照](docs/figures/hd1-shan-and-beast-optionals-faces.png)
 
-珊第64組與賽可邦勒第65組的原版十二姿態三層，分別與第46、47組逐檔相同，因此共用同角色已核對的HD1素材。珊保留藍低馬尾、暖褐杏眼與紅唇，綠衣領、紅背布及紅頂金杆沿原版；賽可邦勒保留深藍獸形長吻、黑鼻與細眼，採灰綠腰腕件及紫腰布，保持空手。可看[四向與144／72／48尺寸](docs/figures/hd1-shan-and-beast-optionals-comparison.png)、[珊](docs/figures/hd1-shan-optional-refresh-game.png)及[賽可邦勒](docs/figures/hd1-saikobanler-optional-refresh-game.png)的完整受控戰場圖。兩組由轉職表選用目標綁原身份14／15；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，其餘人物及完整總覽仍待。
+珊第64組與賽可邦勒第65組的原版十二姿態三層，分別與第46、47組逐檔相同，因此共用同角色已核對的HD1素材。珊保留藍低馬尾、暖褐杏眼與紅唇，綠衣領、紅背布及紅頂金杆沿原版；賽可邦勒保留深藍獸形長吻、黑鼻與細眼，採灰綠腰腕件及紫腰布，保持空手。可看[四向與144／72／48尺寸](docs/figures/hd1-shan-and-beast-optionals-comparison.png)、[珊](docs/figures/hd1-shan-optional-refresh-game.png)及[賽可邦勒](docs/figures/hd1-saikobanler-optional-refresh-game.png)的完整受控戰場圖。兩組由轉職表選用目標綁原身份14／15；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，完整人物圖源總覽已依正式清冊更新。
 
 ![貝克威與珊預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-bekwei-and-shan-faces.png)
 
@@ -179,7 +187,7 @@ HD1地圖人物的125組、1455個來源幀已完成定版圖源與接線。第6
 
 ![賽可邦勒與米亞斯多德預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-beast-and-red-dragon-faces.png)
 
-賽可邦勒第47組保留自身深藍獸形長吻、黑鼻、細眼及耳形輪廓，採原版灰綠腰腕件與紫腰布，保持空手。米亞斯多德第49組的原版十二姿態三層與第17組逐檔相同，直接共用已登錄的紅龍面容、藍劍與灰綠盾。可看[四向與實際尺寸](docs/figures/hd1-beast-and-red-dragon-comparison.png)、[賽可邦勒](docs/figures/hd1-saikobanler-default-refresh-game.png)及[米亞斯多德](docs/figures/hd1-miasdord-default-refresh-game.png)的完整受控戰場圖。四組由轉職表預設目標綁原身份13／14／15／17；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，其餘人物及完整總覽仍待。
+賽可邦勒第47組保留自身深藍獸形長吻、黑鼻、細眼及耳形輪廓，採原版灰綠腰腕件與紫腰布，保持空手。米亞斯多德第49組的原版十二姿態三層與第17組逐檔相同，直接共用已登錄的紅龍面容、藍劍與灰綠盾。可看[四向與實際尺寸](docs/figures/hd1-beast-and-red-dragon-comparison.png)、[賽可邦勒](docs/figures/hd1-saikobanler-default-refresh-game.png)及[米亞斯多德](docs/figures/hd1-miasdord-default-refresh-game.png)的完整受控戰場圖。四組由轉職表預設目標綁原身份13／14／15／17；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，完整人物圖源總覽已依正式清冊更新。
 
 ![悠妮與瑪琳預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-unni-and-marin-faces.png)
 
@@ -259,7 +267,7 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD1新版戶外地形的普通遊玩畫面](docs/figures/hd1-painted-ground-game.png)
 
-上圖是首章標題LOAD後，正常選取亞雷斯、走行一格再取消的完整視窗。新版地形已接入遊戲，原版／HD介面與美術可獨立切換，保存及新程序讀檔已抽驗。重繪方向採用[已同意的風格原型](docs/figures/hd1-terrain-redesign-style.png)；原型為概念圖，洞窟與其他地形後續沿同一方向續作。
+上圖是首章標題LOAD後，正常選取亞雷斯、走行一格再取消的完整視窗。新版地形已接入遊戲，原版／HD介面與美術可獨立切換，保存及新程序讀檔已抽驗。重繪方向採用[已同意的風格原型](docs/figures/hd1-terrain-redesign-style.png)；原型為概念圖，洞窟與其他地形已沿同一方向補齊正式圖源。
 
 ![HD1跨地圖同源地形與前景](docs/figures/hd1-terrain-reuse-map1.png)
 
@@ -267,21 +275,21 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![沿原生陰影輪廓編製的HD1地表](docs/figures/hd1-terrain-grass-shadow-game.png)
 
-原圖的陰影輪廓已接入手繪草材，逐格銜接保留連續明暗；[原生／HD圖源對照](docs/figures/hd1-terrain-shadow-source-comparison.png)可核對已登錄的編製方式，純草地陰影已沿同一配方續補。上圖是第二張地圖的受控繪製，人物與相機用來驗圖源，仍可見未替換的像素建築及局部圖源。完整缺口依[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)續作。
+原圖的陰影輪廓已接入手繪草材，逐格銜接保留連續明暗；[原生／HD圖源對照](docs/figures/hd1-terrain-shadow-source-comparison.png)可核對已登錄的編製方式，純草地陰影已沿同一配方續補。上圖是第二張地圖的受控繪製，人物與相機用來驗圖源，仍可見未替換的像素建築及局部圖源。完整覆蓋依[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)，已無缺圖槽位。
 
 紅、藍、褐色物件已依原輪廓續補手繪圖源，[受控地圖範例](docs/figures/hd1-colored-objects-game.png)可見褐色輪廓的新圖，橋與建築仍保留待補像素。綠色前景也已用獨立透明製圖續補，[受控地圖](docs/figures/hd1-rgba-objects-game.png)仍可見其他待補像素。來源、製圖方式及範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1草地周圍物件第二批)。
 
 ![HD1洞窟地板與石壁](docs/figures/hd1-cave-floor.png)
 
-洞窟石壁、外緣、部分地板與明暗變體已接入手繪HD，原生資料完全相同的其他地圖共用既有圖片，透明範圍保留原生背景。上圖為第二十五張地圖與第25章單位的受控繪製，人物位置與相機經明示設定；未替換的地板、熔岩與部分介面仍為像素，不代表整張洞窟已完成HD。技術範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。 地表與連續邊緣已續補，[受控畫面](docs/figures/hd1-terrain-native-mask-map29-game.png)仍可見其他待補圖源。事件61播放也會保留HD世界與獨立資訊窗，可查看[受控演出畫面](docs/figures/hd1-field-event61-game.png)；其餘地形續補中。
+洞窟石壁、外緣、部分地板與明暗變體已接入手繪HD，原生資料完全相同的其他地圖共用既有圖片，透明範圍保留原生背景。上圖為第二十五張地圖與第25章單位的受控繪製，人物位置與相機經明示設定；這張早期截圖保留當時的像素區域，最新接線依HD1完成紀錄。技術範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。 正式地形與前景已補齊，可看最後圖源的[受控宮殿畫面](docs/figures/hd1-terrain-final-map32-game.png)。事件61播放也會保留HD世界與獨立資訊窗，可查看[受控演出畫面](docs/figures/hd1-field-event61-game.png)；其餘正式地形圖源也已補齊。
 
 ![獨立介面與美術控制的浮出工具列](docs/figures/hd1-independent-toolbar.png)
 
-上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；此圖保留前批人物，現行城鎮人物見下圖。完整地形與其餘介面依 [HD1 里程碑](https://github.com/wicanr2/fd2_re/milestone/1)繼續完成，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。
+上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；此圖保留前批人物，現行城鎮人物見下圖。地形、介面與完整工具列已完成[HD1里程碑](https://github.com/wicanr2/fd2_re/milestone/1)的技術接線，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。
 
 ![城鎮人物與介面獨立切換](docs/figures/hd1-town-interface-four-modes.png)
 
-四格為同一受控城鎮的實際繪製，左上至右下依序為原版美術／原版介面、原版美術／HD介面、HD美術／原版介面、HD美術／HD介面。人物隨美術主題，字型隨介面切換。測試隊伍用來核對圖源接線，不代表自然出場；其餘介面仍續作，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+四格為同一受控城鎮的實際繪製，左上至右下依序為原版美術／原版介面、原版美術／HD介面、HD美術／原版介面、HD美術／HD介面。人物隨美術主題，字型隨介面切換。測試隊伍用來核對圖源接線，不代表自然出場；介面接線已完成，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![HD1城鎮離開轉場](docs/figures/hd1-town-departure-game.png)
 
@@ -373,7 +381,7 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![HD1古金雙層對話框的普通父王對話](docs/figures/hd1-gold-dialogue-game.png)
 
-HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像與文字區；故事開收框及既有提示也已接入。上圖是正常START到父王對話的完整視窗，四組美術／介面切換與續句已抽驗。框線隨F11介面，頭像仍隨F2美術主題。其他介面與集中人工確認仍待，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像與文字區；故事開收框及既有提示也已接入。上圖是正常START到父王對話的完整視窗，四組美術／介面切換與續句已抽驗。框線隨F11介面，頭像仍隨F2美術主題。其他介面接線已完成，集中人工確認由使用者接手，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![四語系狀態到期提示的HD背景、頭像與文字](docs/figures/hd-transient-expiry-locales.png)
 
@@ -408,7 +416,7 @@ HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像�
 
 ![戰場資訊的繁中、簡中、日文與英文實際HD畫面](docs/figures/hd-system-info-locales.png)
 
-資訊窗已接上四語勝敗條件與標籤。四格取自同份章前存檔的普通開窗操作，完整視窗半縮，沒有補畫；像素主題也已抽驗，繁中仍保留原始圖字。正常切換、返回與保存冷讀通過，完整HD1與平台驗收仍待。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_locales_followup_20261026`。
+資訊窗已接上四語勝敗條件與標籤。四格取自同份章前存檔的普通開窗操作，完整視窗半縮，沒有補畫；像素主題也已抽驗，繁中仍保留原始圖字。正常切換、返回與保存冷讀通過；HD1技術接線完成，平台實機由使用者驗證。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_locales_followup_20261026`。
 
 ![四種回復術的正常操作HD畫面](docs/figures/hd-heal-normal.png)
 
@@ -424,7 +432,7 @@ HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像�
 
 ![故事人物走位、轉彎與跟隨移鏡的HD實際畫面](docs/figures/hd-story-motion.png)
 
-故事人物走位、轉彎與插值移鏡也已接上HD，沿既有事件控制器推進。四格依序為往東、往北、轉彎及跟隨移鏡，皆為受控測試的完整遊戲畫面半縮。未登錄地形保留像素圖源，其他背景、特殊演出與集中玩家驗收仍待。繪製及主題切換不改寫故事進度，範圍依同份收據的`story_motion_hd_followup_20261024`。
+故事人物走位、轉彎與插值移鏡也已接上HD，沿既有事件控制器推進。四格依序為往東、往北、轉彎及跟隨移鏡，皆為受控測試的完整遊戲畫面半縮。這張早期截圖保留當時未登錄地形的像素圖源；背景與特殊演出接線現況依HD1完成紀錄，集中玩家驗收由使用者接手。繪製及主題切換不改寫故事進度，範圍依同份收據的`story_motion_hd_followup_20261024`。
 
 ![HD徑向轉場的起始、末階、加亮與返回世界](docs/figures/hd-indexed-transition.png)
 
@@ -476,7 +484,7 @@ HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像�
 
 ![滿背包獎勵對話的HD細框與既有物品選擇流程](docs/figures/hd-full-inventory-reward-chrome.png)
 
-滿背包獎勵的問句、放棄回覆與取消選擇對話已採用HD細框，保留原版位置與開收框流程。四格為受控測試的完整遊戲畫面半縮，頭像及文字沿既有圖源。本圖保留前版原生YES／NO，現行四語選項見上圖；共用選擇器細框見上圖；圖示與城堡地形仍為像素，完整介面及集中人工確認仍待。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+滿背包獎勵的問句、放棄回覆與取消選擇對話已採用HD細框，保留原版位置與開收框流程。四格為受控測試的完整遊戲畫面半縮，頭像及文字沿既有圖源。本圖保留前版原生YES／NO，現行四語選項見上圖；共用選擇器細框見上圖；本圖的圖示與城堡地形保留早期像素畫面；目前圖示、地形與介面接線已完成，集中人工確認由使用者接手。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![滿背包獎勵的HD問句、回覆與物品選擇](docs/figures/hd-full-inventory-reward.png)
 
@@ -563,7 +571,7 @@ HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像�
 
 ![森林小屋背景接入HD近戰的實際遊戲畫面](docs/figures/hd-battle-forest-background.png)
 
-森林小屋背景與草地台座已分別使用1920×600及924×252圖源，接入共用背景物理戰鬥的預備、主攻、反擊與淡出。上圖是明示換用地形索引與攻防結果的測試場景，取自正式 Game.Draw 最終合成的完整遊戲區縮圖；不是一般遊玩或原版對拍截圖。上圖保留當時的像素面板，現行面板文字已接入高解析字型。更多背景、台座與一般法術接線見下方圖組，地圖尾段與其他效果仍待完成。手繪山線、樹形及材質屬現代詮釋，來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+森林小屋背景與草地台座已分別使用1920×600及924×252圖源，接入共用背景物理戰鬥的預備、主攻、反擊與淡出。上圖是明示換用地形索引與攻防結果的測試場景，取自正式 Game.Draw 最終合成的完整遊戲區縮圖；不是一般遊玩或原版對拍截圖。上圖保留當時的像素面板，現行面板文字已接入高解析字型。更多背景、台座與一般法術接線見下方圖組；地形與特殊效果的技術接線現況依HD1完成紀錄。手繪山線、樹形及材質屬現代詮釋，來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![森林內部與海岸背景、台座的HD實際戰鬥畫面](docs/figures/hd-battle-forest-coast.png)
 

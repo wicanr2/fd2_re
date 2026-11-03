@@ -149,6 +149,10 @@ def rgba_object_tile(raw, painting, grass, policy):
 
 
 def atlas_geometry(recipe):
+    if (type(recipe.get('source_rgb_used', False)) is not bool or
+            recipe.get('source_rgb_used', False) and
+            any(g['compile_mode'] != 'atlas_native_mask' for g in recipe['groups'])):
+        raise ValueError('原色來源政策與編製模式不同')
     grid = recipe['grid']
     if (recipe['master_size'] != [1024, 1536] or not isinstance(grid, list) or
             len(grid) != 2 or any(type(v) is not int for v in grid) or
@@ -159,9 +163,33 @@ def atlas_geometry(recipe):
                 type(g.get('edge_pad_master_pixels', 0)) is not int or
                 g.get('edge_pad_master_pixels', 0) != 0 for g in recipe['groups'])):
         raise ValueError('128密集圖集只接受完整不透明direct及校準0')
-    if grid != [8, 12] and any(g['compile_mode'] == 'atlas_native_mask' for g in recipe['groups']):
-        raise ValueError('原遮罩編製只接受128密集圖集')
+    if any(g['compile_mode'] == 'atlas_native_mask' for g in recipe['groups']) and (
+            recipe.get('master_alpha_contract', 'opaque') != 'opaque' or
+            any(type(g.get('edge_pad_master_pixels', 0)) is not int or
+                g.get('edge_pad_master_pixels', 0) != 0 for g in recipe['groups'])):
+        raise ValueError('原遮罩編製只接受完整不透明母稿及校準0')
     return grid[0], grid[1], 1024 // grid[0]
+
+
+def validate_source_rgb(recipe, content, painting, original, source):
+    """只有原生單色全遮罩格可明示使用原palette RGB。"""
+    used = recipe.get('source_rgb_used', False)
+    if type(used) is not bool:
+        raise ValueError('原色來源政策必須明示布林值')
+    if not used:
+        return
+    if (any(g['compile_mode'] != 'atlas_native_mask' for g in recipe['groups']) or
+            len(content) != 1728 or len(set(content[:576])) != 1 or
+            set(content[576:1152]) != {1} or any(content[1152:])):
+        raise ValueError('原色色面必須單索引、全遮罩且無目的地重映色')
+    palette = read(check_binding(original, source['palette']))['dac_6bit_components']
+    if len(palette) != 768 or any(type(v) is not int or not 0 <= v <= 63 for v in palette):
+        raise ValueError('原色palette契約不同')
+    index = content[0] * 3
+    rgba = tuple((v << 2) | (v >> 4) for v in palette[index:index+3]) + (255,)
+    if (painting.mode != 'RGBA' or painting.size not in ((128, 128), (256, 256)) or
+            painting.getextrema() != tuple((v, v) for v in rgba)):
+        raise ValueError('原色色面與palette RGBA不同')
 
 
 def native_mask_tile(content, painting):
@@ -259,6 +287,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                 piece.save(stage / group['master_file'])
                 padding = group.get('edge_pad_master_pixels', 0)
                 calibrated = calibrate_direct_edges(piece, padding)
+                validate_source_rgb(recipe, native(original, source, *group['anchor']), piece, original, source)
                 tile = calibrated.resize((144, 144), Image.Resampling.LANCZOS)
                 if group['compile_mode'] == 'atlas_native_mask':
                     content = native(original, source, *group['anchor'])
@@ -353,7 +382,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
                   'catalog_validation': check, 'frames': frames, 'bindings': bindings, 'new_assets': additions,
                   'new_image_files': len(frames) + recipe['expected_crop_masters'],
                   'new_master_files': recipe['expected_crop_masters'], 'shade_policy': policy,
-                  'new_sets': len(by_map), 'source_rgb_used': False,
+                  'new_sets': len(by_map), 'source_rgb_used': recipe.get('source_rgb_used', False),
                   'tool_sha256': sha(Path(__file__))}
         write(stage / 'manifest.json', result)
         stage.rename(out)

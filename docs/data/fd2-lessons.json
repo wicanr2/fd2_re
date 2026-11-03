@@ -5196,6 +5196,39 @@
         "pattern": "原生相鄰拼接脈絡",
         "note": "保留原圖拼接入口；材質及圖案判斷仍需檢視原圖，不由此文字守衛自動證實。"
       }
+    },
+    {
+      "id": "batch-audit-tracks-enabled-test-bundle",
+      "date": "2026-11-03",
+      "area": "驗證腳本",
+      "rule": "批次加入條件式測試時，同步更新稽核的啟用條件、預期數量與實際測試名稱，再要求無略過的通過收據。HD地形入口tools/audit_fd2_hd_terrain_batch.py依READY的source_rgb_used判定，舊批次兩項、新原色批次三項；原色反例見tools/test_fd2_hd_terrain_atlas.py的PaletteSourceTests。 擷取圖數量同樣依實際收據file／sha256核對，完整畫面與條件式來源預覽分列；keepPNG條件在remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go。",
+      "why": "R81新增原palette嚴格驗證後，三項Python測試已通過，audit仍硬編碼兩項而誤拒首份；修正同一命令即通過，不是產品缺陷。 同批首份另保留29張前景steady來源PNG，最終圖片稽核也須依案例清單核對，不能只預期每份兩張完整畫面。",
+      "evidence": "WORKLOG.md；docs/knowledge-base/61-modern-theme-runtime-spec.md的HD1最後地形與前景",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_fd2_hd_terrain_batch.py",
+          "tools/test_fd2_hd_terrain_atlas.py"
+        ],
+        "pattern": "test_flat_source_rgb_requires_original_palette_and_uniform_native",
+        "note": "原色測試與收據消費端保留同名索引；數量仍由實際測試收據核對。"
+      }
+    },
+    {
+      "id": "sparse-zero-counts-need-complete-row-check",
+      "date": "2026-11-03",
+      "area": "驗證腳本",
+      "rule": "分類計數可能只輸出實際出現的類別；讀取零值先查產生端，再以逐筆狀態總數核對完整性，才將未出現分類視為零。HD地形產生端為remake/cmd/fd2-terrain-sources/coverage.go，讀取與Counter核對在tools/audit_fd2_hd_terrain_batch.py；目前支援33圖3998必要槽的registered-hd、missing-art與native-remap-only。",
+      "why": "R81首次補齊全部地形時，Go報告自然省略零次missing-art，舊audit以必要鍵讀取而KeyError。依原資料格式改get零值，另逐槽加總3998與分類數相符，同素材同命令即通過；沒有改Go或覆蓋報告。",
+      "evidence": "WORKLOG.md；docs/knowledge-base/61-modern-theme-runtime-spec.md的HD1最後地形與前景",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_fd2_hd_terrain_batch.py"
+        ],
+        "pattern": "actual = Counter",
+        "note": "保留逐槽獨立計數，不把缺鍵本身當成完成證據。"
+      }
     }
   ]
 }

@@ -33,13 +33,19 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
     ready = read(batch_root / 'ready-source.json')
     batch_id = ready.get('batch_id', 'r74')
     rows = ready['atlases']
-    max_cells = 96 if ready.get('grid', [4, 6]) == [8, 12] else 24
+    def row_grid(a):
+        grid = a.get('grid', ready.get('grid', [4, 6]))
+        if (not isinstance(grid, list) or grid not in ([4, 6], [8, 12]) or
+                any(type(v) is not int for v in grid)):
+            raise ValueError('READY圖集形狀不同')
+        return grid
+
     compile_mode = ready.get('compile_mode', 'atlas_direct')
     if (not re.fullmatch(r'r[1-9][0-9]{1,3}', batch_id) or ready['status'] != 'READY' or
             compile_mode not in ('atlas_direct', 'atlas_native_mask') or
             any(a.get('compile_mode', 'atlas_direct') != compile_mode for a in rows) or
             len(rows) != 8 or {a['atlas'] for a in rows} != set(range(8)) or
-            any(type(a['accepted_cells']) is not int or not 1 <= a['accepted_cells'] <= max_cells or
+            any(type(a['accepted_cells']) is not int or not 1 <= a['accepted_cells'] <= row_grid(a)[0] * row_grid(a)[1] or
                 type(a['bindings']) is not int or a['bindings'] < a['accepted_cells'] for a in rows) or
             ready['accepted_cells'] != sum(a['accepted_cells'] for a in rows) or
             ready['accepted_bindings'] != sum(a['bindings'] for a in rows)):
@@ -47,18 +53,18 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
     for name, key in [('source-pack.json', 'source_pack_sha256'), ('prototype-review.json', 'prototype_review_sha256')]:
         if sha(batch_root / name) != ready[key]:
             raise ValueError('READY圖源或審查不同')
-    grid = ready.get('grid', [4, 6])
+    row = next(a for a in ready['atlases'] if a['atlas'] == atlas)
+    grid = row_grid(row)
     if (not isinstance(grid, list) or len(grid) != 2 or any(type(v) is not int for v in grid) or
             grid not in ([4, 6], [8, 12])):
         raise ValueError('READY圖集形狀不同')
     columns, cell_size = grid[0], 1024 // grid[0]
-    row = next(a for a in ready['atlases'] if a['atlas'] == atlas)
     work = batch_root / f'atlas-{atlas:02d}'
     source_path, prototype_path = work / 'source-prototype.json', work / 'direct-prototype-r1/prototype.json'
     pack = read(batch_root / 'source-pack.json')
-    if pack.get('grid', [4, 6]) != grid:
-        raise ValueError('來源包與READY形狀不同')
     source_entry = next(a for a in pack['atlases'] if a['atlas'] == atlas)
+    if source_entry.get('grid', pack.get('grid', [4, 6])) != grid:
+        raise ValueError('來源包與READY形狀不同')
     if sha(source_path) != source_entry['sha256']:
         raise ValueError('原型來源不同')
     for path, key in [(work / 'atlas-r1-master.png', 'raw_master_sha256'),
@@ -66,6 +72,9 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
         if sha(path) != row[key]:
             raise ValueError('原稿、提示詞或已審原型不同')
     source, prototype, coverage = read(source_path), read(prototype_path), read(coverage_path)
+    if (any(type(x.get('source_rgb_used', False)) is not bool for x in (row, source, prototype)) or
+            len({x.get('source_rgb_used', False) for x in (row, source, prototype)}) != 1):
+        raise ValueError('原色來源政策不同')
     if coverage['catalog_sha256'] != sha(catalog_path):
         raise ValueError('正式覆蓋與當前清冊不同')
     slots = {(m['map'], f['frame'], f['role']): f for m in coverage['maps'] for f in m['required']}
@@ -104,6 +113,10 @@ def stage(batch_root, atlas, catalog_path, coverage_path):
         recipe['direct_policy'] = '完整128裁切母稿及alpha保持，只LANCZOS144；校準0，不裁邊、UV環繞或對邊混合。'
     if compile_mode == 'atlas_native_mask':
         recipe['direct_policy'] = '完整128不透明母稿保持，RGB只LANCZOS144；再依原nativeMask nearest6裁切，alpha0的RGBA歸零，目的地remap保持透明。'
+        if cell_size == 256:
+            recipe['direct_policy'] = recipe['direct_policy'].replace('128', '256')
+    if row.get('source_rgb_used', False):
+        recipe['source_rgb_used'] = True
     if len(accepted) != len(source['groups']):
         recipe['rejected_cells'] = [{'cell': g['cell'], 'anchor': g['anchor'], 'native_content_sha256': g['native_content_sha256'],
                                      'reason': '構件與圖案待原圖整體拼接核對，按格轉繪未接受'}

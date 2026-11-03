@@ -6452,3 +6452,21 @@ R80期間另備[其餘圖源完整盤點](../../work/promo-cadence-20261018/hd-f
 379來源交易、1516來源GPU／16完整Draw與F2、每份169 bytes邊界保存通過。GPU測具如實支援前景及地形；正式Go與R79普通程式不變，1275 Go指紋0f62faca1dab803ea68286557184415e5ccaf4dd08ea88491a8af4f7d3cbe89e。32回歸／兩可選略過、21來源／416幀／19反例與160字串通過；普通首章十PNG四控制、合法走行取消、兩美術／介面F5及冷LOAD保存089b077b保持。
 
 [受控map29畫面](../figures/hd1-terrain-native-mask-map29-game.png)僅證本批接線。33圖3542已接，餘446缺槽／281獨特來源，10純remap；最後圖源與原生相鄰脈絡見主收據hd1_native_mask_terrain_followup_20261103。圖案不推身份或用途，人工觀感／逐章／平台由使用者接手。#282續做，沒有新原版E2。
+
+## HD1最後地形與前景
+
+R81 CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。依[來源包](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-final-r81/source-pack.json)、[審查](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-final-r81/prototype-review.json)與[READY](../../work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-final-r81/ready-source.json)，八份既有母稿合併281格446槽。每份沿原4×6／256或8×12／128，stage新增可選逐份grid，不改公開配方schema或144執行期。原遮罩可用既有256完整裁切，校準0及nativeMask nearest6保持；舊R74兩份、R77與R80配方逐byte保持才前進。
+
+九份純色色面以SVG矩形表示原palette顏色，source_rgb_used如實true；build_fd2_hd_terrain_atlas.py及rebuild_fd2_hd_terrain_atlas.py核palette SHA、單索引／全opaque／無remap與常數RGBA，其餘手繪維持false。完整圓形圖案依原六格整體後裁切，不採舊碎片及去紋理R2。身份、文字及用途不推定。stage_fd2_hd_terrain_batch.py／audit_fd2_hd_terrain_batch.py沿既有來源、GPU與私人重編；modern_hd_terrain_reuse_gpu_test.go沿R80，最後map32明示story，沒有ch33戰鬥聲明。
+
+446來源交易、1784來源GPU及16完整Draw／F2／邊界保存通過才逐份登錄；新562PNG只含母稿與成品，13723舊美術保持。正式Go與R79普通程式不變。整包32回歸／兩可選略過、消費端與字串、普通保存冷讀及33圖覆蓋零缺件後才結案HD1；人工觀感／逐章／平台由使用者接手，沒有新原版E2或發行。
+
+### R81驗證結果與HD1交接
+
+HD1素材與接線完成。最後281份完整裁切母稿與281份144成品新增446槽；五份4×6／256與三份8×12／128維持原稿，alpha沿原nativeMask nearest6，目的地remap不著色。44構件沿原有石紋，六格圓形圖案依完整原圖重繪；九原色色面以SVG／PNG保留原palette，source_rgb_used明示true並核全遮罩、單索引、無remap及常數RGBA。去紋理R2、舊圓形碎片與幾何原型均未收，身份及用途未知。
+
+四份舊配方逐byte相同，十一種錯誤READY拒收；首份三項編製測試包含23來源反例、八原遮罩helper及十二原色反例，另八登錄反例通過。audit依原色測試是否啟用核對兩項或三項及實際名稱，沒有降低通過門檻。零缺槽時報告可省略missing-art分類，audit以缺省零值讀取，並逐槽Counter核對3998必要槽與各分類數，保留Go原格式。446來源交易、1784來源GPU／16完整Draw與F2、每份169 bytes受控邊界保存通過。最後map32為原campaign宮殿story，保存限共用邊界載體，不作任意故事保存或自然出場證據。
+
+正式Go及Go_test保持，1275 Go指紋0f62faca；R79普通程式載入完整唯讀候選包。32正式回歸／兩可選略過、21消費來源／416幀／19反例及160字串處置通過。普通首章十PNG涵蓋四控制、合法走行取消、兩美術／介面F5及新程序冷LOAD，保存089b077b保持。3355正式清冊／11046私人白名單同步59334c9cc8290aa3efb697452c339bf92d1ff674，13723舊美術SHA、inode、mtime及擁有權保持，新增562檔僅裁切母稿及成品。
+
+正式33圖3988已接、零缺圖槽、零獨特缺圖；另10純目的地remap沿原生處理，3998必要槽及617520 selector檢查完整。主收據hd1_final_terrain_followup_20261103索引八份來源、原稿、配方、命令與收據；[六格圓形圖案的受控畫面](../figures/hd1-terrain-final-round-pattern-game.png)保留原圖脈絡，[受控map32宮殿畫面](../figures/hd1-terrain-final-map32-game.png)呈現最後正式圖源。人物125組1455來源與四組未知身份例外、介面、事件61、獨立控制及完整工具列沿各自已結案範圍。HD1人工細部觀感／逐章／平台由使用者接手，沒有新增原版E2、發行或HD2／HD-2D聲明。
