@@ -161,6 +161,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		contentGeometry.Concat(geometry)
 	}
 	p.drawPosters(screen, geometry)
+	p.drawModernHDOpening(screen, contentGeometry)
 	p.drawModernFacilityScene(screen, contentGeometry)
 	if p.Game.modernHDBattleVisible && p.Game.modernHDBattleGPU != nil {
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
@@ -184,7 +185,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		overlay = nil
 	}
 	brightness := 1.0
-	if g.fade != nil && g.fade.total > 0 {
+	if g.titlePhase == "" && g.fade != nil && g.fade.total > 0 {
 		brightness = float64(g.fade.t) / float64(g.fade.total)
 		if g.fade.out {
 			brightness = 1 - brightness

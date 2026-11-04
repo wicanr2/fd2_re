@@ -2,7 +2,7 @@
   "schema": "fd2-hd1-feedback/1",
   "date": "2026-11-04",
   "base_head": "760642ae303d68e019e962b6fc1f4ddca2fe8365",
-  "status": "UI-CONFORMED-SCOPED-PROMO-AND-OPENING-IN-PROGRESS",
+  "status": "UI-CONFORMED-SCOPED-OPENING-RUNTIME-E1-NATURAL-OPENING-RECORDED-PROMO-IN-PROGRESS",
   "issues": {
     "interface": 292,
     "opening_promo_delivery": 293,
@@ -80,12 +80,12 @@
     "cadence_status": "PENDING_EDITING_AND_REVIEW; preload, software rendering and capture wall-clock are not platform acceptance"
   },
   "pending": [
-    "沿原版分鏡逐幕HD重繪、編製、接線與正常START驗證",
-    "完整版推廣片：開始選單、皇城F2切換、首關站位、蓋亞／亞雷斯攻擊、悠妮施法、黃金之鑰合成、蜜蒂／鐵諾／將軍絕招、人物簡介",
-    "文案與節奏潤飾、HD2概念／Android／劇情與戰場編輯器開發預告",
+    "普通START完整序章至第一關入場驗證與修正版選單影片抽樣",
+    "完整版推廣片：首關蓋亞／亞雷斯攻擊與悠妮施法、蜜蒂音速刃／鐵諾熾炎刀／羅德曼淒煌斬、天空之鑰合成與32人簡介的實際剪輯及影音驗收",
+    "HD2概念、Android與劇情／戰場編輯器的後續計畫片尾",
     "新版三平台完整版乾淨重建與交付驗證"
   ],
-  "opening_art_status": "DRAFT_NOT_REGISTERED; work/hd1-feedback-20261104-r83/opening-art-drafts.json",
+  "opening_art_status": "ADMITTED-RUNTIME-E1; 12 banks173 frames and sharedANI0 96 frames; complete original-storyboard redraw metadata in opening",
   "original_oracle": "NOT_RUN_NO_NEW_DOS_PARITY_CLAIM",
   "platform_performance": "NOT_ACCEPTED_FROM_SOFTWARE_CAPTURE",
   "release_status": "v.1.1.0-20261103 preserved; no new tag or Release",
@@ -113,5 +113,242 @@
     "docker": "owned_r83_containers_cleaned",
     "ownership": "UID/GID 1000:1000; no root-owned task outputs or md-named directories"
   },
-  "implementation_commit": "d8d901bc2909ca1cb96f3b16fe2df66422f72b9e"
+  "implementation_commit": "d8d901bc2909ca1cb96f3b16fe2df66422f72b9e",
+  "opening": {
+    "status": "RUNTIME-E1-ASSETS-ADMITTED-NORMAL-START-PENDING",
+    "catalog_asset_count": 3367,
+    "role": "opening_presentation_hd_set",
+    "banks": 12,
+    "frames": 173,
+    "shared_ani0_frames": 96,
+    "source": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "build_receipt": "work/hd1-feedback-20261104-r83/opening-hd-candidate-r5/build-receipt.json",
+    "gpu_full": "work/hd1-feedback-20261104-r83/opening-gpu-r1/opening-gpu.json",
+    "gpu_full_cases": 277,
+    "gpu_changed_scene": "work/hd1-feedback-20261104-r83/opening-gpu-r2/opening-gpu.json",
+    "gpu_changed_scene_cases": 35,
+    "unchanged_scene_png_hashes_equal": true,
+    "original_parity": false,
+    "normal_player_verified": false,
+    "generation_records": [
+      {
+        "source": "exec-b4057e36-a631-49e2-964a-cca801d269d7.png",
+        "file": "opening-sol-hd-draft-v2.png",
+        "decision": "ADMITTED-RUNTIME-E1；候選；修正髮辮後待編製與原圖對照",
+        "prompt": "Use case: precise-object-edit, identity preserve. Image 1 is the edit target, a transparent HD opening character layer. Images 2 and 3 are the original full pose and his original portrait, authoritative references. Change only the hair details that drifted from the original: REMOVE the large braided blue lock draped over his right shoulder and chest, and remove the long braided blue strand hanging down the front of his lower clothes. This character does NOT have any braids or hair over the front of his breastplate in the original. Restore the visible armor, leather strap, and dark green cloth that should be behind those invented braided locks. Keep his blue medium-length straight layered hair and face-framing side locks as in the original, ending behind the neck and shoulders. No braids, rope-like hair, ornamental cords or new hairstyle. Keep the exact same face, expression, red headband, folded arms, hands, original armor, sword, canvas geometry, transparent background and subject placement from image 1. Do not change anything else. Preserve alpha transparency, no text, background or shadow.",
+        "sha256": "f427b82bbd2a720a027fa79a306745fd623976b04df7e3aa9e754fbbb40d7210",
+        "size": [
+          1585,
+          992
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "source": "exec-aeaa1fe6-949f-4eb5-bbbe-aaa207a0c1f4.png",
+        "file": "opening-ares-hd-draft-v1.png",
+        "decision": "ADMITTED-RUNTIME-E1；候選；待編製與原圖對照",
+        "prompt": "Use case: identity-preserve / style-transfer. Asset type: transparent character layer for Flame Dragon 2 original opening ANI_006. Image 1 is the exact original pose/composition target. Image 2 is the character's own original portrait, the authority for face identity. Image 3 is only the HD painting finish and shading style, not identity or outfit. Repaint ONLY the man in image 1 as a high-resolution hand-painted 1990s fantasy anime game character. Preserve the full landscape 8:5 canvas with the subject occupying the RIGHT part, his placement, size and bottom/right crop, so it overlays the original 320x200 composition unchanged. Preserve the flat cropped dark-blue crew cut, stern angular face with a broad square jaw, strong arched brows, narrow eyes and straight projecting nose from his own portrait. Keep image 1's dark blue-gray steel plate armor, broad segmented shoulder guards, metal-studded long gloves, bare muscular upper arms, folded arms at the chest, and dark blue cloak hanging on the right. Keep image 1's pose and all equipment, not the outfit from another reference. He should look like a mature disciplined warrior, distinct from the red-headband man in image 3. No braids, long hair, beard, extra weapons, ornaments, added armor spikes or invented emblems. Remove the blue horizontal stripe and all black background entirely; output only the character on genuine transparency. Empty left part remains transparent, no recentering, floor, halo, typography, watermark or border. Canvas about 1600x1000, transparent PNG.",
+        "sha256": "2bd55979c5adedbb008644ee293ee471950d30ad139bac9afeeb63ab5f87c04e",
+        "size": [
+          1586,
+          992
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "source": "exec-d72759ef-1827-4104-aaa0-5c58112e17fa.png",
+        "file": "opening-guardian-hd-draft-v1.png",
+        "prompt": "Use case: style-transfer / identity-preserve. Asset type: the armored guardian character layer from the original Flame Dragon 2 opening, FDOTHER_100 and ANI_003. Image 1 is the authoritative source for subject, silhouette, pose, colors, costume and face. Image 2 is the established HD1 hand-painted finish only, not the subject. Redraw ONLY the anonymous armored figure as a high-resolution, carefully shaded 1990s Japanese fantasy game illustration on genuine transparent background. Preserve the landscape 8:5 original full-canvas composition: centered broad figure between x=45 and x=278 of the original 320 width, helmet beginning around y=26, lower body cropped by the bottom at y=200. Preserve the bowed enclosed helmet, narrow concealed eye area, angular segmented mechanical mask and mouth grille, large rounded gray-green shoulder plates, dark navy joints and inner plates, gray-green breastplate with pointed central lower edge, symmetrical upper arms, elbow armor and forearms hanging down the sides. Preserve the precise original armor design, silhouette, pose and crop. Do not expose a human face, do not add eyes, skin, hair, beard, horns, wings, spikes, weapons, symbols or unfamiliar armor. Keep the palette muted steel gray-green and deep navy. The body is mechanical and armored, not made of stone. Do not turn this into the red-headband man of image 2. Remove ALL red stripes and black background. No scenery, floor, halo, text, label, shadow or border. Transparent PNG, about 1600x1000.",
+        "decision": "ADMITTED-RUNTIME-E1；候選；待原圖對照及動畫編製",
+        "sha256": "4b5c0ed7e2001fe9b0fcab9a168acd0c4a81641de7665481412d0663b9aacb2e",
+        "size": [
+          1586,
+          992
+        ],
+        "mode": "RGBA"
+      },
+      {
+        "source": "exec-fe857ba4-6edd-467c-8c13-f372529b7098.png",
+        "file": "opening-castle-hd-draft-v1.png",
+        "prompt": "Use case: style-transfer, identity-preserve. Asset type: the floating castle full-frame plate FDOTHER_075 in the original Flame Dragon 2 HD opening. Image 1 is the exact source composition. Repaint this same scene in the project's detailed hand-painted 1990s fantasy game style at about 1600x1000, landscape 8:5. Preserve the huge pale blue-gray full moon behind the tiny distant castle, the moon partially clipped by the top edge, the exact original centered arrangement of the castle's dark towers and the narrow inverted floating rock beneath it, and the dark blue-black swirling cloud bands across the lower half. Keep the castle distant and SMALL, only about one-quarter of the canvas width, centered at 50% of the width and 40% of the height. Preserve the original camera, cloud shapes, negative space and proportions. Use restrained detailed stonework, moon crater texture and painted blue cloud wisps, with the original nearly monochrome midnight blue, slate, black and pale moonlight palette. Do not turn this into a wide city, ground castle, new island landscape or 3D game screenshot. No additional towers, floating islands, giant bridges, waterfalls, stars, galaxies, rings, portals, bright magic effects, characters, dragons, captions, logos, text, border or watermark. Opaque full-bleed illustration. The original silhouette and scene composition must remain recognizable.",
+        "decision": "ADMITTED-RUNTIME-E1；候選；待原圖對照及執行期接線",
+        "sha256": "bcbc64786003132544cda2bf2929ff4da8c2d02cda2c357b129da7ac03a0a872",
+        "size": [
+          1586,
+          992
+        ],
+        "mode": "RGB"
+      },
+      {
+        "source": "exec-e0914445-e3e2-474a-aa9c-2b6f3946c7f2.png",
+        "file": "opening-scroll-hd-draft-v2.png",
+        "prompt": "將第一張原版開場長幅立繪，以精緻手繪 1990 年代日式奇幻 RPG 宣傳插畫風格逐處重繪。第一張是原版較亮調色盤，第二張是原版常態暗紅調色盤，第三張是需修正的草稿。嚴格沿第一張的完整姿勢、臉型、衣甲構造、胸腹肌輪廓、雙臂交疊、露出的前臂、銀白色外緣光與 320:735 長幅構圖。這是穿深藍黑色盔甲的健壯成年男性，不是罩袍人物。頭部依第一張的深藍短髮、尖角狀護額、細小自然眼睛、鼻樑與面部陰影重畫，絕不能畫紅色發光雙眼，不能新增面罩、角、兜帽、飾品。胸腹為原圖的護甲與清楚輪廓，不要改為層層斗篷或長袍。整體主調沿原版常態的黑與暗紅，適量深藍輪廓可辨識，保留陰影的神秘感與銀白外緣，不要把面容全部抹黑。背景純黑。全幅重繪到清晰的高解析度，比例必須 320:735，所有主要身體輪廓及錨點沿原版位置。不加文字、不加場景、不加新人物。這是對已授權重繪的逐幕修正。",
+        "decision": "ADMITTED-RUNTIME-E1；保留短髮護額、交疊雙臂與胸腹輪廓，移除發光雙眼",
+        "sha256": "e34b2aa4ca0e7c59f2002a3533e8dc674283066507e0bf572e948c27b233a898",
+        "size": [
+          828,
+          1900
+        ],
+        "mode": "RGB",
+        "alpha_extrema": null,
+        "public_distribution": false,
+        "rights": "local-only_original-derived"
+      },
+      {
+        "source": "exec-f94d1d36-37b0-40ae-967d-f3e2ea812325.png",
+        "file": "opening-title-hd-draft-v1.png",
+        "prompt": "以所附《炎龍騎士團2》原版標題畫面作唯一構圖，重繪為乾淨銳利、高解析度的 1990 年代奇幻遊戲手繪標題主視覺。完整保留同一個標誌：上方巨大銀藍色金屬數字 2 的字形及斜向筆鋒，下方烈焰金色 FLAME DRAGON 英文字標誌，底下深藍小橫幅的 LEGEND OF GOLDEN CASTLE。每個字母逐字忠實，不新增或刪字。數字 2、英文字與小橫幅的外輪廓、位置、大小及前後關係需與參考圖相同。黑紅背景，頂端深藍光暈，底端暗紅漸層，全幅 8:5 寬高比。保留底部 y164 到 y195 對應區域的乾淨深紅黑色背景，這裡由遊戲繪製選單，請勿加入 START、LOAD、CONTINUE 或任何新文字。強化金屬立體切面、火焰層次與邊緣高光，但維持原作識別，不重設字體、沒有新圖案、沒有角色或城堡。輸出可作正式遊戲高解析標題底圖的完整畫面。",
+        "decision": "ADMITTED-RUNTIME-E1；原標誌文字與構圖重繪",
+        "sha256": "395156da3c9306585adfcb2651c82c70bb8e94d3bedd1b4b029d148efecb3ab4",
+        "size": [
+          1586,
+          992
+        ],
+        "mode": "RGB",
+        "alpha_extrema": null,
+        "public_distribution": false,
+        "rights": "local-only_original-derived"
+      },
+      {
+        "source": "exec-bb8cda24-c359-4b08-a33a-7a946882ec63.png",
+        "file": "opening-number2-hd-draft-v1.png",
+        "prompt": "將第一張圖的銀藍色金屬數字 2 單獨精緻重繪。原圖是 1995《炎龍騎士團2》開場的數字：上部如彎曲圓頭，斜下筆，底部極長且細尖的橫向斜鋒向右上延伸。務必保持第一張的字形、比例、外緣輪廓、透視、深藍金屬側面與冰銀高光。第二張只用來參考本輪已選的手繪金屬細節畫風，不能改用第二張較厚的外輪廓。清除第一張殘留在數字底下的紅色字母，只保留這一個完整的金屬數字2，不能出現任何英文字、火焰、橫幅、其他符號、陰影背景或新裝飾。透明背景，數字完整不裁切，主體居中並留很少安全透明邊，輸出約1200像素寬，作沿原版分鏡動畫的可縮放母稿。",
+        "decision": "ADMITTED-RUNTIME-E1；原數字2形狀及金屬風格重繪",
+        "sha256": "8ca1072bbdb85a571282cc48e56d8ba02ba3f1988756dfafb79c0a15355c11a9",
+        "size": [
+          1326,
+          1187
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "public_distribution": false,
+        "rights": "local-only_original-derived"
+      },
+      {
+        "source": "exec-54c0dd90-b2d6-4205-952d-5b35f55f804b.png",
+        "file": "opening-ani5-frame30-hd-draft-v1.png",
+        "prompt": "以第一張原版開場動畫第30影格逐幕重繪成HD手繪畫面。第二張是同一幕已定的HD畫風與角色造型，只作筆觸、盔甲、髮色、龍鱗參考。構圖、動作、站位與遮擋全部服從第一張：320:200的8:5橫幅；右下方是背朝觀眾的成年男劍士，深藍長髮束起、銀綠肩甲、深藍斗篷，稍微彎身，右手的細劍斜指左方，腳下有紅褐色橢圓地台。左邊巨大的紅褐色龍頭正被一束強烈的淡金白色水平光柱遮住，只有原圖確實露出的頭部、牙齒與左下爪可見。光柱從畫面左側的巨大圓形亮面延伸到最右側，在畫面上半部占很大範圍，圓形亮面的右側有原圖那種鋸齒狀衝擊邊緣，外圈橙金發光，中心接近淡金白。嚴格保留第一張光柱的形狀、位置與寬度，不改成噴火的龍、不改成斜向火焰，不增加粒子或新動作。沿原圖可見的褐色洞窟背景和黑色空區繪製，保留黑色區域，不補成整張風景。畫面要有擊破的氣勢，強烈但乾淨的光，不模糊，不加文字、狀態框或新角色。不新增原圖看不到的裝備。輸出至少1600像素寬的完整HD畫面。",
+        "decision": "ADMITTED-RUNTIME-E1；直接沿ANI5第30影格重繪，未猜補內部分層",
+        "sha256": "1f9b55d7759fe562f800fab2275deaefe0fc0cbeacfa77bf99e798d6bc3bf9ab",
+        "size": [
+          1586,
+          992
+        ],
+        "mode": "RGB",
+        "alpha_extrema": null,
+        "public_distribution": false,
+        "rights": "local-only_original-derived"
+      }
+    ],
+    "rejected_generation_notes": [
+      {
+        "file": "opening-scroll-hd-draft-v1.png",
+        "sha256": "d78a44a4ea0fffac2b759a37c95987096c7167fa4b38831df539c187bef727b5",
+        "decision": "REJECTED：原圖短暫調色盤揭露的是深藍護甲與自然眼睛，首稿新增紅色發光雙眼及斗篷層次"
+      },
+      {
+        "file": "opening-sol-hd-draft-v1.png",
+        "sha256": "03af59375ae6b84eb47b35f41d8f380241ff273bee4c8ea0a724387319ce77b5",
+        "decision": "REJECTED：新增原版沒有的髮辮"
+      },
+      {
+        "file": "opening-medallion-hd-draft-v1.png",
+        "sha256": "c14a1aaf26d6df21e98ec69e37a7bfd52df3dbcaacd8487a03efd9ffe19b8ebc",
+        "decision": "NOT_USED：沿用已登錄且通過驗證的ANI0圓盤HD序列，不建立重複正式素材"
+      }
+    ],
+    "rights": "本機限定原版衍生重繪；正式母稿與逐幀圖只進私人保存庫",
+    "normal_recording_current": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r5",
+    "normal_failed_recordings": [
+      {
+        "path": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r1",
+        "classification": "ENVIRONMENT-SOURCE-LAYOUT",
+        "reason": "開發AppDir/modern指向部分generated來源，fdicon001缺件，正式載入拒絕"
+      },
+      {
+        "path": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r2",
+        "classification": "ENVIRONMENT-ASSET-ROOT-OVERLAY",
+        "reason": "只有HD清冊的使用者assets目錄遮蔽啟動地圖根，map.json缺件"
+      },
+      {
+        "path": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4",
+        "classification": "GUI錄影預算不足；無遊戲error。完整22段開場與皇城五狀態已錄，第一關未達。舊R7選單文字黑，另以修正版錄製。",
+        "controller_exit": "普通序章未於錄製預算內抵達第一關",
+        "elapsed_seconds": 2669.013
+      }
+    ],
+    "private_local_sync": {
+      "status": "PASS-PRIVATE-LOCAL-SYNC",
+      "file_count": 11240,
+      "catalog_assets": 3367,
+      "catalog_sha256": "d8a78a641aa472f3d9eeb9b1dd99a3d6497fdc61a675db69e5591fc31def5b89",
+      "manifest_sha256": "e72dac726730f51748e25878d89813a9921213017d7165f8450ba24ea17f3473",
+      "remote_push": false,
+      "source": "catalog allow-list only; rejected drafts excluded"
+    },
+    "private_commit": "9d7cba01",
+    "capture_source_preflight": "work/hd1-feedback-20261104-r83/capture-source-preflight-regression-r2.json",
+    "normal_recording_appdir_selfcheck": "PASS-FD2-dev-package-selfcheck; complete AppDir/assets; no user assets overlay",
+    "natural_opening_recording": {
+      "receipt": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/natural-opening.json",
+      "steps": 22,
+      "status": "PASS-NATURAL-HD-OPENING-TO-MENU",
+      "state_injection": false,
+      "menu_visual_retake_required": true
+    },
+    "title_menu_fix": {
+      "cause": "標題後方已排程的劇情淡入亮度為0，HD選單文字錯誤沿用該亮度。",
+      "change": "有標題階段時獨立介面亮度維持1，劇情淡入僅在titlePhase空白時套用。",
+      "gpu_report": "work/hd1-feedback-20261104-r83/opening-title-menu-gpu-r1/title-gpu-report.json",
+      "gpu_frames": 66,
+      "display_modes": 4,
+      "save_bytes_unchanged": true,
+      "binary": "work/hd1-feedback-20261104-r83/fd2-player-r8",
+      "binary_sha256": "b84617b32a09a1a5fa8cd91693296215d5b1e739cc385e41b1b43a4cde903892",
+      "normal_retake": "修正版R8的首關實錄會先經正常標題LOAD選單；普通START重錄R5也保留實際選單。"
+    }
+  },
+  "promo_storyboard": "docs/data/fd2-hd1-promo-storyboard-20261104.json",
+  "promo_character_cards": {
+    "receipt": "work/hd1-feedback-20261104-r83/character-cards-r3/character-cards.json",
+    "characters": 32,
+    "pages": 16,
+    "seconds": 128,
+    "original_portrait_fallback": [
+      7,
+      15,
+      28,
+      29
+    ],
+    "gameplay_capture": false
+  },
+  "promo_special_sources": {
+    "builder": "remake/cmd/fd2/native_command30_gui_source_test.go:TestPromoSpecialGUISources",
+    "receipt_root": "work/hd1-feedback-20261104-r83/special-sources-r2",
+    "status": "PASS-CONTROLLED-PROMO-SOURCES-GUI-PENDING",
+    "state_injection": true,
+    "normal_progression_proven": false,
+    "commands": [
+      28,
+      29
+    ]
+  },
+  "promo_encoder_smoke": {
+    "status": "PASS-TECHNICAL",
+    "receipt": "work/hd1-feedback-20261104-r83/encoder-smoke-r1/out/VALIDATION.json",
+    "seconds": 6,
+    "scope": "測調速、雙人卡及分行字幕，非正式完整版交付。"
+  },
+  "target_release": "v.1.1.1-20261104; planned, not built or published"
 }

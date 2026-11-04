@@ -24,7 +24,7 @@ def main() -> None:
     parser.add_argument(
         "--runtime-only",
         action="store_true",
-        help="只複製 runtime_candidate 的 file/files，不帶 concept 與高解析 master",
+        help="一般只帶執行期素材；開場保留載入所需的母稿與來源計畫",
     )
     args = parser.parse_args()
 
@@ -42,12 +42,12 @@ def main() -> None:
             runtime_hashes[asset["file"]] = asset["sha256"]
         if "master_file" in asset and not args.runtime_only:
             names.add(asset["master_file"])
-        if not args.runtime_only or asset.get('role')=='story_animation_hd_set':
+        if not args.runtime_only or asset.get('role') in {'story_animation_hd_set', 'opening_presentation_hd_set'}:
             sources, hashes = asset.get('source_files', []), asset.get('source_sha256', [])
             if len(sources) != len(hashes):
                 raise SystemExit('source provenance length mismatch')
             for name, sha256 in zip(sources, hashes):
-                if args.runtime_only and Path(name).suffix!='.json':
+                if args.runtime_only and Path(name).suffix!='.json' and asset.get('role')!='opening_presentation_hd_set':
                     continue
                 if name in runtime_hashes and runtime_hashes[name] != sha256:
                     raise SystemExit(f'conflicting source digest: {name}')

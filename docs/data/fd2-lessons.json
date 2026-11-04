@@ -5277,6 +5277,22 @@
         "pattern": "--continuous-hd-action",
         "note": "錄影模式與原版切換測試可分開選擇。"
       }
+    },
+    {
+      "id": "promo-complete-catalog-source-preflight",
+      "date": "2026-11-04",
+      "area": "推廣影片",
+      "rule": "錄影AppDir/modern使用完整清冊來源。完整私人包在/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a；候選按catalog允許清單疊加。入口tools/capture_fd2_release_promo.sh在啟動前核對實際生效的清冊與執行期檔案，收據為capture-source-preflight.json；不把部分generated-assets暫存目錄當作完整包。",
+      "why": "自然HD開場首輪的開發AppDir指到部分暫存目錄，正式執行期拒絕fdicon001缺件。相同清冊改用已逐檔驗證的完整私人包後，來源路徑檢查通過。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json；capture-source-preflight-regression.json的實際不完整來源拒收及完整來源通過。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/capture_fd2_release_promo.sh"
+        ],
+        "pattern": "capture-source-preflight.json",
+        "note": "錄影在啟動遊戲前驗證現代素材來源。"
+      }
     }
   ]
 }

@@ -388,6 +388,12 @@ func (g *Game) recordInputAuditState() {
 		r["movement_panel_presented"] = map[string]any{"interface_hd": drawn.hd, "art_hd": drawn.artHD, "rect": drawn.rect, "source_key": drawn.key}
 	}
 	r["title_phase"] = g.titlePhase
+	r["hd_opening"] = g.modernOpeningEnabled()
+	if g.titlePhase == "cutscene" {
+		r["opening_step"] = g.cutIdx
+		r["opening_frame"] = g.cutFrame
+		r["opening_step_count"] = len(cutScript)
+	}
 	r["title_selection"] = g.titleSel
 	r["title_slot"] = g.titleSlotSel
 	r["preparation_selecting"] = g.prepSelecting

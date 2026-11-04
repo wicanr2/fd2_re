@@ -27,17 +27,24 @@ def prepare(plan, work, font_path):
         bounds.append({'text': caption, 'box': list(box)})
         draw.text(at, caption, font=font(size), fill=fill)
     for i,scene in enumerate(plan['scenes']):
-        if scene['kind'] == 'card':
+        if scene['kind'] == 'still':
+            canvas = Image.open(scene['source']).convert('RGBA')
+            assert canvas.size == (1920,1080)
+        elif scene['kind'] == 'card':
             image = Image.open(scene['background']).convert('RGB').resize((1728,1080), Image.Resampling.LANCZOS)
             canvas = Image.new('RGB',(1920,1080),(8,18,30)); canvas.paste(image,(96,0))
             veil = Image.new('RGBA',canvas.size,(5,15,27,195)); canvas = Image.alpha_composite(canvas.convert('RGBA'),veil)
             draw = ImageDraw.Draw(canvas)
             draw.rectangle((0,900,1920,1080),fill=(8,18,30,255))
             draw.rectangle((116,330,124,780), fill=(220,183,102,255))
-            line(draw,scene['title'],(160,350),100,(247,239,216,255))
-            line(draw,scene['subtitle'],(160,510),82,(237,196,112,255))
-            line(draw,scene['detail'],(166,670),40,(227,233,237,255))
-            line(draw,'Windows　macOS　Linux',(166,750),34,(184,202,217,255))
+            if scene.get('lines'):
+                for row in scene['lines']:
+                    line(draw,row['text'],tuple(row['at']),row['size'],row.get('color','#eee9db'))
+            else:
+                line(draw,scene['title'],(160,350),100,(247,239,216,255))
+                line(draw,scene['subtitle'],(160,510),82,(237,196,112,255))
+                line(draw,scene['detail'],(166,670),40,(227,233,237,255))
+                line(draw,'Windows　macOS　Linux',(166,750),34,(184,202,217,255))
             line(draw,'github.com/wicanr2/fd2_re',(166,970),30,(184,202,217,255))
         else:
             canvas=Image.new('RGBA',(1920,1080),(0,0,0,0));draw=ImageDraw.Draw(canvas)
@@ -58,11 +65,14 @@ def encode(plan, work, out):
         base=['ffmpeg','-nostdin','-hide_banner','-loglevel','warning','-threads','2',
               '-filter_threads','1','-filter_complex_threads','1']
         duration=scene['duration']
-        if scene['kind']=='card':
-            command=base+['-loop','1','-framerate','30','-i',str(overlay),'-ss',str(scene.get('music_start',0)),
+        if scene['kind'] in ('card','still'):
+            command=base+['-loop','1','-framerate','30','-i',str(overlay),'-stream_loop','-1','-ss',str(scene.get('music_start',0)),
                           '-i',plan['card_music']]
             filters=f'[0:v]fps=30,format=yuv420p,fade=t=in:st=0:d=0.3[v];[1:a]atrim=duration={duration},asetpts=PTS-STARTPTS,afade=t=in:d=0.12,afade=t=out:st={duration-.12}:d=0.12[a]'
         else:
+            source_duration=scene.get('source_duration',duration)
+            rate=source_duration/duration
+            assert .25<=rate<=32, ('unsupported editorial playback rate',rate)
             command=base+['-ss',str(scene['start']),'-i',scene['source']]
             if scene.get('audio'):
                 command+=['-ss',str(max(0,scene['start']-scene.get('audio_offset',0))),'-i',scene['audio']]
@@ -70,7 +80,15 @@ def encode(plan, work, out):
             else:
                 audio_index,overlay_index=0,1
             command+=['-loop','1','-framerate','30','-i',str(overlay)]
-            filters=f'[0:v]setpts=PTS-STARTPTS,fps=30,scale=1536:960:flags=lanczos,pad=1920:1080:192:20:color=0x08121e,setsar=1[game];[game][{overlay_index}:v]overlay=shortest=1,format=yuv420p[v];[{audio_index}:a]atrim=duration={duration},asetpts=PTS-STARTPTS,afade=t=in:d=0.08,afade=t=out:st={duration-.08}:d=0.08[a]'
+            tempos=[]
+            remainder=rate
+            while remainder>2:
+                tempos.append('atempo=2');remainder/=2
+            while remainder<.5:
+                tempos.append('atempo=0.5');remainder/=.5
+            tempos.append(f'atempo={remainder:.12g}')
+            tempo=','.join(tempos)
+            filters=f'[0:v]trim=duration={source_duration},setpts=(PTS-STARTPTS)/{rate:.12g},fps=30,scale=1536:960:flags=lanczos,pad=1920:1080:192:20:color=0x08121e,setsar=1[game];[game][{overlay_index}:v]overlay=shortest=1,format=yuv420p[v];[{audio_index}:a]atrim=duration={source_duration},asetpts=PTS-STARTPTS,{tempo},afade=t=in:d=0.08,afade=t=out:st={duration-.08}:d=0.08[a]'
         command+=['-filter_complex',filters,'-map','[v]','-map','[a]','-t',str(duration),
                   '-c:v','libx264','-preset','veryfast','-crf','18','-threads','2',
                   '-c:a','aac','-b:a','192k','-ar','48000','-ac','2','-movflags','+faststart',str(segment)]

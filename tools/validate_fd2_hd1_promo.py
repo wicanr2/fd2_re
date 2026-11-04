@@ -37,7 +37,7 @@ def main():
     assert 'black_start:' not in run.stderr and 'silence_start:' not in run.stderr
     allowed=[];cursor=0
     for scene in manifest['scenes']:
-        if scene['kind']=='card' or scene.get('group') in ['balance_editor','skill_hit']:
+        if scene['kind'] in ('card','still') or scene.get('intentional_static') or scene.get('group') in ['balance_editor','skill_hit']:
             allowed.append((cursor,cursor+scene['duration'],scene.get('group',scene['kind'])))
         cursor+=scene['duration']
     freezes=[];start=None

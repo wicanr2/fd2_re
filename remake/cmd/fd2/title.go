@@ -715,6 +715,16 @@ func (g *Game) titleUpdate() bool {
 // drawTitle 畫開頭動畫/主選單。
 func (g *Game) drawTitle(screen *ebiten.Image) {
 	ta := g.titleAssets
+	modern := g.modernOpeningEnabled()
+	if modern {
+		screen.Clear()
+		if g.titlePhase == "cutscene" {
+			if g.cutIdx >= 0 && g.cutIdx < len(cutScript) && cutScript[g.cutIdx].kind == "redhold" {
+				screen.Fill(color.RGBA{R: 255, A: 255})
+			}
+			return
+		}
+	}
 	switch g.titlePhase {
 	case "cutscene":
 		if g.cutIdx >= len(cutScript) {
@@ -805,7 +815,9 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 	case "menu":
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
-		screen.DrawImage(ta.title, op)
+		if !modern {
+			screen.DrawImage(ta.title, op)
+		}
 		// 選單項(置中;y 位置對照原版標題畫面下半)
 		for i := 0; i < 3; i++ {
 			st := 0

@@ -9,6 +9,8 @@ import signal
 import subprocess
 import time
 
+from verify_fd2_hd_gui import latest
+
 
 def stop(process):
     if process is None or process.poll() is not None:
@@ -70,7 +72,27 @@ def main():
                         '-f','pulse','-i','fd2_hd_fonts.monitor','-vn',
                         '-c:a','pcm_s16le',str(args.out/'audio.wav')], 'audio.log')
         result['recording_offset_seconds'] = recording_started-started
-        code = verifier.wait(timeout=max(1,args.timeout-(time.monotonic()-started)))
+        # Read-only timing index for editing. Software rendering can stretch
+        # wall-clock duration; retain the actual frames and scene boundaries.
+        verifier_out = Path(tail[tail.index('--out')+1])
+        timing_rows, previous = 0, None
+        with (args.out/'frame-times.jsonl').open('w') as timing:
+            while verifier.poll() is None:
+                if time.monotonic()-started >= args.timeout:
+                    raise TimeoutError('正常鍵盤錄影超過明示預算')
+                state = latest(verifier_out/'input-audit.jsonl')
+                signature = (state.get('frame'), state.get('title_phase'))
+                if state and signature != previous:
+                    timing.write(json.dumps(dict(seconds=time.monotonic()-recording_started,
+                        state={k:state.get(k) for k in ['frame','node','title_phase','battle_scene',
+                            'command_scene','command_id','command_phase','command_frame','command_target_index',
+                            'hd_theme','hd_battle','walking','dialogues','cursor']}))+'\n')
+                    timing.flush()
+                    timing_rows += 1
+                    previous = signature
+                time.sleep(.1)
+        code = verifier.wait()
+        result['frame_timing_rows'] = timing_rows
         result['verifier_exit_code'] = code
         if code != 0:
             raise RuntimeError(f'正常鍵盤驗證器失敗：{code}')

@@ -217,7 +217,7 @@ def main():
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
     parser.add_argument('--buy-bekwei-bow', action='store_true',
                         help='原生第九章出發前，普通購買黑暗弓並立即裝備貝克威')
-    parser.add_argument('--battle-command', type=int, choices=[0,1,2,8,30], help='改以正常指令0／1／2／8／30抽樣；原地候選再由正式目標格驗證，需--battle-only')
+    parser.add_argument('--battle-command', type=int, choices=[0,1,2,8,28,29,30], help='改以正常指令0／1／2／8／28／29／30抽樣；原地候選再由正式目標格驗證，需--battle-only')
     parser.add_argument('--battle-advance-route', type=battle_advance_route, default=[],
                         help='各次END前的明示進軍格，以x,y;x,y指定；每格仍須在當回合正式可達集合')
     parser.add_argument('--battle-repetitions', type=int, choices=[1,2], default=2,
@@ -309,7 +309,7 @@ def main():
     assert not args.buy_bekwei_bow or (args.capture_native_battle_save
            and args.battle_node=='battle_ch09' and args.revive_before_departure is None)
     assert args.battle_command is None or (args.battle_only and args.battle_hd and not args.battle_end_art and not args.timed_dialogue)
-    assert not args.continuous_hd_action or (args.battle_command == 30 and args.battle_hd)
+    assert not args.continuous_hd_action or (args.battle_command in (28,29,30) and args.battle_hd)
     action_label=f'command{args.battle_command}' if args.battle_command is not None else 'physical'
     assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
@@ -1204,9 +1204,9 @@ def main():
                             assert args.battle_command in (attacker.get('command_ids') or []),'目前單位沒有指定正式指令'
                             record=next(r for r in json.loads((args.assets/'assets/spells.json').read_text()) if r['id']==args.battle_command)
                             assert attacker['mp']>=record['mp'],'目前MP不足'
-                            expected={0:(5,0,0,2),1:(5,0,0,6),2:(5,1,0,20),8:(8,0,0,24),30:(20,0,0,24)}[args.battle_command]
+                            expected={0:(5,0,0,2),1:(5,0,0,6),2:(5,1,0,20),8:(8,0,0,24),28:(1,0,0,22),29:(0,2,0,26),30:(20,0,0,24)}[args.battle_command]
                             assert (record['dist'],record['range'],record['target'],record['mp'])==expected,'指定法術資料與已核契約不同'
-                            minimum,maximum=1,(4 if args.battle_command==30 else record['dist'])  # 僅預篩；正式目標格仍須接納。
+                            minimum,maximum=1,(4 if args.battle_command==30 else record['range'] if args.battle_command==29 else record['dist'])  # 僅預篩；正式目標格仍須接納。
                         assert 1<=minimum<=maximum,'目前觀測的正式射程無效'
                         choices=[]
                         for target in targets:
@@ -1351,16 +1351,18 @@ def main():
                         key('Escape');wait(lambda s:s.get('command_grid'))
                         shot(prefix+'-'+action_label+'-cancelled-target')
                         key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==args.battle_command)
-                        assert [target['x'],target['y']] in latest(audit).get('command_target_cells',[]),'正式法術目標格拒收'
+                        command_destination = cell if args.battle_command==29 else [target['x'],target['y']]
+                        assert command_destination in latest(audit).get('command_target_cells',[]),'正式法術目標格拒收'
                     else:
                         key('Return');wait(lambda s:not s.get('ring'))
-                    move_cursor([target['x'],target['y']]);shot(prefix+'-attack-target')
+                    move_cursor(command_destination if args.battle_command is not None else [target['x'],target['y']]);shot(prefix+'-attack-target')
                     scene_started=time.monotonic()
                     scene_key='command_scene' if args.battle_command is not None else 'battle_scene'
                     command30_probe=None
-                    if args.battle_command==30:
+                    if args.battle_command in (28,29,30):
                         command30_probe=Command30Probe(args.out,audit,lambda p:command('import','-window',window,str(p)),prefix,
-                                                       continuous_hd=args.continuous_hd_action)
+                                                       continuous_hd=args.continuous_hd_action, command_id=args.battle_command,
+                                                       actor_identity=args.battle_own_identity)
                         command30_probe.thread.start()
                     key('Return');wait(lambda s:s.get(scene_key) is True)
                     if args.battle_command==30 and not args.continuous_hd_action:

@@ -4,12 +4,14 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 // Controlled chapter-entry source only. JOIN and AwardExpNative own the
@@ -138,4 +140,128 @@ func TestCommand30NormalGUISource(t *testing.T) {
 		}
 	}
 	write("manifest.json", map[string]any{"status": "PASS-CONTROLLED-COMMAND30-GUI-SOURCE", "base_sha256": baseSHA, "output_sha256": fmt.Sprintf("%x", sha256.Sum256(output)), "node": source.Node, "actor_identity": 18, "original_map": 16, "original_unit_slot": 36, "before_joined_growth": before, "after_growth_and_rest": learned, "after_policy": joined, "growth_events": events, "growth_exp": 300, "growth_seed_before": 7, "growth_seed_after": seed, "policy": map[string]int{"base_ap": 5000, "base_dp": 300, "base_dx": 60, "max_hp": 1000}, "party_membership_added": 18, "all_other_roster_rows_preserved": true, "chapter_state_injection": false, "direct_command_grant": false, "normal_recruitment_proven": false, "scope": "原JOIN與原生升級writer建構的章前組隊來源；非自然招募或完整章節。正常鍵盤GUI另驗。"})
+}
+
+// Promotional staging only. These saves do not prove natural recruitment or
+// progression. Command writers and identities still use the admitted tables.
+func TestPromoSpecialGUISources(t *testing.T) {
+	out, base := os.Getenv("FD2_PROMO_SPECIAL_SOURCE_OUT"), os.Getenv("FD2_PROMO_SPECIAL_SOURCE_BASE")
+	if out == "" || base == "" {
+		t.Skip("explicit promotional source export")
+	}
+	if _, err := os.Stat(out); !os.IsNotExist(err) {
+		t.Fatal("fresh output required")
+	}
+	raw, err := os.ReadFile(base)
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(raw)) != "56aac676d2c8bd4da3c9315c700e721a72f658eb03577f3d3e658563907799a2" {
+		t.Fatal("reviewed source required", err)
+	}
+	for _, c := range []struct{ identity, command, originalMap, slot int }{{2, 29, 2, 0}, {19, 28, 22, 1}} {
+		var source saveData
+		if err := json.Unmarshal(raw, &source); err != nil {
+			t.Fatal(err)
+		}
+		st, err := battle.Load(assetPath(fmt.Sprintf("assets/maps/map%d/map%d_units.json", c.originalMap, c.originalMap)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := &Game{st: st}
+		if err := g.bindNativeFutureItemRows(st); err != nil {
+			t.Fatal(err)
+		}
+		st.NativeGrowthRows, err = battle.LoadNativeGrowthSlots(assetPath("assets/data/native_growth_slots.json"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		st.CommandLearn, err = battle.LoadCommandLearn(assetPath("assets/data/command_learn.json"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		st.CommandLearnSelectors, err = battle.LoadCommandLearnSelectors(assetPath("assets/data/native_growth_slots.json"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		original := *st.Units[c.slot]
+		u, err := g.materializeNativeJoinPersistentUnit(c.identity, original)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if c.identity == 2 {
+			table, err := campaign.LoadClassChangeTable(assetPath("assets/data/class_change_targets.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			growth, err := campaign.LoadClassChangeGrowth(assetPath("assets/data/class_change_growth.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			branch, ok := campaign.NativeClassChangeTarget(&u, table)
+			if !ok || branch.Portrait != 34 {
+				t.Fatal("Tino default promotion differs")
+			}
+			if err := campaign.ApplyClassChange(&u, branch.Portrait, branch.ClassID, branch.MobilityIncrement, growth[branch.Portrait], rand.New(rand.NewSource(7)), -1); err != nil {
+				t.Fatal(err)
+			}
+			// Explicit source policy, not a claim that the ordinary church resets Lv.
+			u.Lv, u.Exp = 1, 0
+		} else {
+			if original.NativeCommandMask != [5]byte{0, 0, 0, 16, 0} {
+				t.Fatal("map22 source mask differs")
+			}
+			if err := u.SetInitialCommandMask(original.NativeCommandMask[:4]); err != nil {
+				t.Fatal(err)
+			}
+		}
+		before := cloneNativeShopUnit(u)
+		_, events, seed := st.AwardExpNative(&u, 300, 7)
+		if c.identity == 2 {
+			_, extra, next := st.AwardExpNative(&u, 300, seed)
+			events, seed = append(events, extra...), next
+		}
+		g.partyRoster = map[int]battle.Unit{c.identity: u}
+		g.resetPersistentRosterState()
+		u = g.partyRoster[c.identity]
+		found := false
+		for _, id := range u.NativeCommandIDs() {
+			found = found || id == c.command
+		}
+		if !found || u.MP < map[int]int{28: 22, 29: 26}[c.command] {
+			t.Fatalf("unavailable command %d: %+v", c.command, u)
+		}
+		entities, err := loadOfficialLocaleEntities("zh-Hant")
+		if err != nil {
+			t.Fatal(err)
+		}
+		u.Name, err = entities.CharacterName(c.identity)
+		if err != nil {
+			t.Fatal(err)
+		}
+		u.AP, u.BaseAP = u.AP+5000, u.BaseAP+5000
+		u.DP, u.BaseDP = u.DP+300, u.BaseDP+300
+		if !source.PartyMembers[c.identity] {
+			source.PartyJoinOrder = append(source.PartyJoinOrder, c.identity)
+		}
+		source.PartyMembers[c.identity], source.PartyDeploy[c.identity] = true, true
+		source.PartyRoster[c.identity] = u
+		if err := validateSavePartyTopology(source); err != nil {
+			t.Fatal(err)
+		}
+		dir := filepath.Join(out, fmt.Sprintf("command%d", c.command))
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			t.Fatal(err)
+		}
+		write := func(name string, value any) []byte {
+			b, err := json.MarshalIndent(value, "", "  ")
+			if err != nil {
+				t.Fatal(err)
+			}
+			b = append(b, '\n')
+			if err := os.WriteFile(filepath.Join(dir, name), b, 0644); err != nil {
+				t.Fatal(err)
+			}
+			return b
+		}
+		output := write("fd2_save.json", source)
+		write("manifest.json", map[string]any{"status": "PASS-CONTROLLED-PROMO-SOURCE", "base_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "output_sha256": fmt.Sprintf("%x", sha256.Sum256(output)), "identity": c.identity, "command": c.command, "source_map": c.originalMap, "source_slot": c.slot, "before_growth": before, "after_policy": u, "growth_events": events, "seed_before": 7, "seed_after": seed, "state_injection": true, "normal_progression_proven": false, "policy": map[string]any{"exp": 300, "base_ap_increment": 5000, "base_dp_increment": 300, "tino_level_before_growth": 1, "rodman_mask": "map22 units[1] constructor mask"}})
+	}
 }

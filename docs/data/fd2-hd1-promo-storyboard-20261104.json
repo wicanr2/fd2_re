@@ -1,0 +1,400 @@
+{
+  "schema_version": 1,
+  "status": "READY-COPY-AND-CAPTURE-SCOPE-NOT-FINAL-EDIT",
+  "theme": "讓經典再現",
+  "scope": "完整版推廣片；目標約五分鐘，實際長度依素材與可讀性調整。原版指重製引擎內原版畫風，未宣稱全片由DOS原版執行。",
+  "beats": [
+    {
+      "id": "invitation",
+      "target_seconds": 7,
+      "copy": [
+        "那些並肩作戰的日子，現在，再走一次。",
+        "炎龍騎士團 2",
+        "讓經典再現"
+      ],
+      "source": "HD開場實錄"
+    },
+    {
+      "id": "opening-menu",
+      "target_seconds": 25,
+      "copy": [
+        "熟悉的序幕，全新的筆觸。"
+      ],
+      "source": "逐幕HD開場與實際START／LOAD／CONTINUE選單"
+    },
+    {
+      "id": "game-introduction",
+      "target_seconds": 8,
+      "copy": [
+        "重溫1995年的戰棋冒險。",
+        "走位、魔法與劍技，一步步改寫戰局。",
+        "Windows・macOS・Linux"
+      ],
+      "source": "README專案定位、普通遊玩與已交付桌面平台"
+    },
+    {
+      "id": "royal",
+      "target_seconds": 20,
+      "copy": [
+        "從皇城的一席話，再次踏上旅途。",
+        "原版畫風與HD，隨時切換。"
+      ],
+      "source": "普通START皇城對話與F2／F11切換"
+    },
+    {
+      "id": "deployment",
+      "target_seconds": 10,
+      "copy": [
+        "第一場戰役，熟悉的伙伴，再度就位。"
+      ],
+      "source": "普通START至第一關站位入場"
+    },
+    {
+      "id": "first-battle",
+      "target_seconds": 30,
+      "copy": [
+        "蓋亞，重拳出擊。",
+        "亞雷斯，守住騎士的誓言。",
+        "悠妮，讓魔法點亮戰場。"
+      ],
+      "source": "第一關普通操作的蓋亞與亞雷斯攻擊、悠妮施法"
+    },
+    {
+      "id": "specials",
+      "target_seconds": 27,
+      "copy": [
+        "劍光落下，勝負就在一瞬之間。"
+      ],
+      "source": "蜜蒂音速刃30、鐵諾熾炎刀29、羅德曼淒煌斬28"
+    },
+    {
+      "id": "key",
+      "target_seconds": 10,
+      "copy": [
+        "散落的線索，終將化作開啟傳說的鑰匙。"
+      ],
+      "source": "天空之鑰合成實錄；使用者概稱黃金之鑰，正式道具名依items[100]",
+      "item_id": 100,
+      "item_name": "天空之鑰"
+    },
+    {
+      "id": "balance",
+      "target_seconds": 15,
+      "copy": [
+        "照自己的步調，重溫這段冒險。"
+      ],
+      "source": "工具列三次警告及能力／成長調整；不改動預設規則"
+    },
+    {
+      "id": "companions",
+      "target_seconds": 128,
+      "copy": [
+        "一起走過的每個名字，都值得再次記住。"
+      ],
+      "source": "README結局人物卡樣式；32人，每組兩人，來源文字另附",
+      "layout": "16組雙人卡，每組8秒；保留每人簡介閱讀時間"
+    },
+    {
+      "id": "legacy",
+      "target_seconds": 10,
+      "copy": [
+        "1995，那段冒險，成了傳說。",
+        "2026，我們再次出發。",
+        "讓經典再現。"
+      ],
+      "source": "使用者主題與年代文案"
+    },
+    {
+      "id": "future",
+      "target_seconds": 18,
+      "copy": [
+        "下一段旅程，正在準備。",
+        "HD2：讓世界展開新的風貌。",
+        "Android：把冒險帶在身邊。",
+        "劇情與戰場編輯器：讓新的傳說，由你寫下。",
+        "後續開發計畫，畫面為概念展示。"
+      ],
+      "source": "docs/figures/fd2-hd2-style-reference.png",
+      "status": "future-plan-no-date-or-shipped-claim"
+    }
+  ],
+  "characters": [
+    {
+      "identity": 0,
+      "name": "索爾",
+      "headline": "王子的遠行",
+      "copy": "來自羅特帝亞的王子，在旅途中走向自己的宿命。",
+      "source_string_id": "FDTXT_031/string_0012",
+      "source_text_sha256": "70d959f6864d43a7a0a0bee19d98bfdd24ba3b8aa073ee6a23f0e72d5938ac08"
+    },
+    {
+      "identity": 1,
+      "name": "哈諾",
+      "headline": "戰士的證明",
+      "copy": "與伙伴共度險境，盼能獲得父親認可的年輕戰士。",
+      "source_string_id": "FDTXT_031/string_0013",
+      "source_text_sha256": "6616ce92c66acea09282a2aa7699386b9327eba543a60412dfab0d8f23a996a8"
+    },
+    {
+      "identity": 2,
+      "name": "鐵諾",
+      "headline": "浪跡天涯",
+      "copy": "懷著與王國軍的恩怨，走在尚未結束的旅途上。",
+      "source_string_id": "FDTXT_031/string_0014",
+      "source_text_sha256": "d7c1dbff597569355f7ba7bbe65a872a859c1882abdead2eea60155bedc4b75d"
+    },
+    {
+      "identity": 3,
+      "name": "哈瓦特",
+      "headline": "老而彌堅",
+      "copy": "閒不住的老冒險者，心中始終裝著下一場尋寶。",
+      "source_string_id": "FDTXT_031/string_0015",
+      "source_text_sha256": "3c64e077be4c58ac131a7e4b844343900bca4e2c65263d463d416b47b1a15e8c"
+    },
+    {
+      "identity": 4,
+      "name": "亞雷斯",
+      "headline": "騎士的誓言",
+      "copy": "肩負保護王子的使命，以忠誠與勇氣守住承諾。",
+      "source_string_id": "FDTXT_031/string_0016",
+      "source_text_sha256": "a34144306caa6c06f981fdf0a4f2bdceb801b50f87eeb10bf25c8a43358c4eb3"
+    },
+    {
+      "identity": 5,
+      "name": "洛娜",
+      "headline": "追隨心意",
+      "copy": "勇敢走向自己的心意，也不肯錯過與伙伴的重逢。",
+      "source_string_id": "FDTXT_031/string_0017",
+      "source_text_sha256": "2f3578caabe9adc5262677ecf225d6dbb17d44be89df94d58fbeadcef2043b03"
+    },
+    {
+      "identity": 6,
+      "name": "萊汀",
+      "headline": "禁衛軍之盾",
+      "copy": "守護亞克斯的禁衛軍隊長，也在旅途中尋得新的目標。",
+      "source_string_id": "FDTXT_031/string_0018",
+      "source_text_sha256": "1f9df0eeef7528406281b07fe0f4b4d47a4bcaeabe2d5f5154a9daf575ba73b1"
+    },
+    {
+      "identity": 7,
+      "name": "蘭斯洛特",
+      "headline": "沉默的同行者",
+      "copy": "與約拿同行的沉默騎士，過去始終籠罩著謎團。",
+      "source_string_id": "FDTXT_031/string_0019",
+      "source_text_sha256": "61a88e85d64f59864ef018ef6c733a47d88f587144e99ab59b2ca02c7cb0dda7"
+    },
+    {
+      "identity": 8,
+      "name": "希莉亞",
+      "headline": "堅定的心意",
+      "copy": "將心意藏在耐心之中，等待對方真正明白的那一天。",
+      "source_string_id": "FDTXT_031/string_0020",
+      "source_text_sha256": "46eb6f30293690966ec7bed3969e4b6b7c1fb897225247c9a5b2cdf18fdfe392"
+    },
+    {
+      "identity": 9,
+      "name": "悠妮",
+      "headline": "黃金城之謎",
+      "copy": "與黃金城和另一個時空緊緊相連的神祕少女。",
+      "source_string_id": "FDTXT_031/string_0021",
+      "source_text_sha256": "ed6a4d2287a767407105d707ccf3ba8a839d5481a2f3b681e37282c4c7f33741"
+    },
+    {
+      "identity": 10,
+      "name": "瑪琳",
+      "headline": "神術的修行",
+      "copy": "在冒險中學會成長，繼續走在僧侶神術的修行之路。",
+      "source_string_id": "FDTXT_031/string_0022",
+      "source_text_sha256": "ca0494a967612460f38756e0c2025900e650488e0cbad8841e8adeede7f0160c"
+    },
+    {
+      "identity": 11,
+      "name": "索菲亞",
+      "headline": "光之祈禱",
+      "copy": "侍奉光之神卡爾汀的大祭司，以沉靜的祈禱陪伴眾人。",
+      "source_string_id": "FDTXT_031/string_0023",
+      "source_text_sha256": "5baea4435255df53c72ae5cbe57063ace7ad3dbe2e59ce1e2691e94e24565fba"
+    },
+    {
+      "identity": 12,
+      "name": "凱麗",
+      "headline": "武神門下",
+      "copy": "陪伴武神卡里斯的弟子，期待見識更遠方的世界。",
+      "source_string_id": "FDTXT_031/string_0024",
+      "source_text_sha256": "6b175b44194e49e6300ec6388d9ce719fb2ae5119ad9f0329517d872edf00f73"
+    },
+    {
+      "identity": 13,
+      "name": "貝克威",
+      "headline": "森林之外",
+      "copy": "嚮往廣大世界的年輕精靈，選擇走出熟悉的森林。",
+      "source_string_id": "FDTXT_031/string_0025",
+      "source_text_sha256": "6f102780aec9ff9dbe9abb7bb922638303349ec37bb53105b712a42e3d95f0be"
+    },
+    {
+      "identity": 14,
+      "name": "珊",
+      "headline": "大法師之約",
+      "copy": "為了與伙伴的約定，努力朝真正的大法師邁進。",
+      "source_string_id": "FDTXT_031/string_0026",
+      "source_text_sha256": "e606b4939bd56c700f604c38e81888174be8b96f4e733664c3c3bd1a2c767cbb"
+    },
+    {
+      "identity": 15,
+      "name": "塞可邦勒",
+      "headline": "豹人的傳承",
+      "copy": "出身豹人族的卡里斯弟子，將武藝傳承給年輕族人。",
+      "source_string_id": "FDTXT_031/string_0027",
+      "source_text_sha256": "8df81b47304ee1685893707440450a7f1a7aa7ad0fbebfc97a3edd6631eb37f9"
+    },
+    {
+      "identity": 16,
+      "name": "凱拉斯",
+      "headline": "不忘舊部",
+      "copy": "背負部下的血仇，與伙伴一同迎向黑暗軍的威脅。",
+      "source_string_id": "FDTXT_031/string_0028",
+      "source_text_sha256": "3436e83193651a47ba7af323df353f1cec490cff5a5154b31b8c28b1eb2db8ae"
+    },
+    {
+      "identity": 17,
+      "name": "米亞斯多德",
+      "headline": "龍人的歷練",
+      "copy": "在自由的旅程中累積經驗，迎向龍人衛隊的責任。",
+      "source_string_id": "FDTXT_031/string_0029",
+      "source_text_sha256": "246236b11e635cf02e17ee93926aa4404b24c0891892f5f2616937f59a5a1d19"
+    },
+    {
+      "identity": 18,
+      "name": "蜜蒂",
+      "headline": "劍與心",
+      "copy": "隱居修行的劍士，以劍術與心靈的磨練面對過往。",
+      "source_string_id": "FDTXT_031/string_0030",
+      "source_text_sha256": "86c28b2b025660df683dcdcd92f0224ee85bb140a318d0565e130b9c25641076"
+    },
+    {
+      "identity": 19,
+      "name": "羅德曼",
+      "headline": "領主的冒險",
+      "copy": "離開領地投身冒險，與眾人結下難忘的戰友情誼。",
+      "source_string_id": "FDTXT_031/string_0031",
+      "source_text_sha256": "3e0d17f16d440e80fce499e01d9cc87d0a6630026abd6fade7527ed6a7e77aee"
+    },
+    {
+      "identity": 20,
+      "name": "莎拉",
+      "headline": "飛龍的遠方",
+      "copy": "乘著飛龍尋找散落的族人，懷抱復興龍騎士一族的心願。",
+      "source_string_id": "FDTXT_031/string_0032",
+      "source_text_sha256": "469932c63e9739f7a98240d5e25a77b0d822e5ef6d2c89cc1f007d329968fdae"
+    },
+    {
+      "identity": 21,
+      "name": "約拿",
+      "headline": "無名的去向",
+      "copy": "始終充滿神祕的賢者，每次道別都通往另一段旅程。",
+      "source_string_id": "FDTXT_031/string_0033",
+      "source_text_sha256": "0ee23d27bc181df0ad9b769da414885691b4309485736184385f70977ddd4d08"
+    },
+    {
+      "identity": 22,
+      "name": "卡里斯",
+      "headline": "武神歸途",
+      "copy": "多年行走馬拉大陸的武神，心中仍記掛著故鄉羅特帝亞。",
+      "source_string_id": "FDTXT_031/string_0034",
+      "source_text_sha256": "2ca6624a2bfe668348e1832cb7b8c17bc1498910ccc193f16c34364c95f716ed"
+    },
+    {
+      "identity": 23,
+      "name": "羅蘭",
+      "headline": "精靈的求知",
+      "copy": "在協助希爾法之餘，也希望學會能守護自己的戰鬥魔法。",
+      "source_string_id": "FDTXT_031/string_0035",
+      "source_text_sha256": "6188692d6f4db69f23344e3d490046017d0a4f87f0ce19d65d06adb7aeacf01d"
+    },
+    {
+      "identity": 24,
+      "name": "希爾法",
+      "headline": "時空的追尋",
+      "copy": "研究時空魔法的大法師，盼能再次尋回黃金城的所在。",
+      "source_string_id": "FDTXT_031/string_0036",
+      "source_text_sha256": "65f18e1974559db50eceb2f1b5190f2c2accc9102d1e81a18ef233c0b033f963"
+    },
+    {
+      "identity": 25,
+      "name": "謝多",
+      "headline": "黑森林隱者",
+      "copy": "隱居黑森林，與遠方伙伴仍保持著溫暖的牽繫。",
+      "source_string_id": "FDTXT_031/string_0037",
+      "source_text_sha256": "160c3217376380ccf466828a2faf5d0b9f256329fc88fca21688d37271cb3255"
+    },
+    {
+      "identity": 26,
+      "name": "聖寇拉斯",
+      "headline": "龍人之王",
+      "copy": "為族人的未來奔走，盼望龍人一族迎向更興盛的生活。",
+      "source_string_id": "FDTXT_031/string_0038",
+      "source_text_sha256": "8de2d6770777a2248e5a700dfb303b5e531dc045e1266231dcae6af6905b1263"
+    },
+    {
+      "identity": 27,
+      "name": "巴拿羅西亞",
+      "headline": "武術與人品",
+      "copy": "憑武藝與品格贏得信任，連結龍人族與亞克斯的使節。",
+      "source_string_id": "FDTXT_031/string_0039",
+      "source_text_sha256": "b0dd162371d821c0a99253eec01fd9b361262b8dafc530b29d2929cc7feea0b6"
+    },
+    {
+      "identity": 28,
+      "name": "達克塞",
+      "headline": "跨越邊界",
+      "copy": "理解人類的惡魔族守將，在兩個文明之間化解紛爭。",
+      "source_string_id": "FDTXT_031/string_0040",
+      "source_text_sha256": "a298c348aa4cc2262ef6044f320a7a364ede6fa60123e87659f6b12e5ec87545"
+    },
+    {
+      "identity": 29,
+      "name": "亞齊梅吉",
+      "headline": "和平的橋梁",
+      "copy": "回到宰相之位後，仍致力於族群之間的和平與友誼。",
+      "source_string_id": "FDTXT_031/string_0041",
+      "source_text_sha256": "6635343312da8ae3aa22d6d44b8b4ef7a7d6d5f1d352ed44499410b6d50d37f9"
+    },
+    {
+      "identity": 30,
+      "name": "蓋亞",
+      "headline": "沉默的伙伴",
+      "copy": "與悠妮的意念相連，也承載著伙伴不願放下的回憶。",
+      "source_string_id": "FDTXT_031/string_0042",
+      "source_text_sha256": "0e42a7811367d5098924798c9893d438797e093f0ce80805c455bce6bd67a339"
+    },
+    {
+      "identity": 31,
+      "name": "渥德",
+      "headline": "留待重逢",
+      "copy": "與悠妮和黃金城維繫聯繫，留下再次甦醒的期盼。",
+      "source_string_id": "FDTXT_031/string_0043",
+      "source_text_sha256": "afdcb962af1a363ca57b6592ce3be5d7cfda9166e67222279dd4253a2ebfc5b7"
+    }
+  ],
+  "character_source": {
+    "file": "FDTXT.DAT",
+    "resource": 31,
+    "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69",
+    "name_source": "remake/assets/locales/zh-Hant/entities.json",
+    "style_reference": "docs/figures/ending-campaign-montage-remake-e1.png"
+  },
+  "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+  "special_identity_evidence": {
+    "tino": [
+      "native_character_catalog identity2",
+      "class_change_targets portrait2->34",
+      "class_change_growth idx34.learn_idx6",
+      "command_learn idx6 level4->29"
+    ],
+    "rodman": [
+      "remake/assets/maps/map22/map22_units.json units[1] native_record_byte8=19,battle_fig=19,initial_command_mask[3]=16 => command28",
+      "entities.json character19／command28"
+    ],
+    "scope": "既有正式資料與消費端；不把攻略的100%命中表述提升為原版對拍。"
+  }
+}

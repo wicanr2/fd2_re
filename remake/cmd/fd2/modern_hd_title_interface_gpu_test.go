@@ -84,6 +84,19 @@ func (p *titleInterfaceGPUProbe) expected(c titleInterfaceGPUCase, frame *modern
 	g := p.g
 	raw := make([]byte, 64000)
 	if c.phase == "menu" {
+		hdBackdrop := c.art && p.set.openingHD != nil
+		var backdrop image.Image
+		if hdBackdrop {
+			bank := p.set.openingHD.banks[modernOpeningKey{"FDOTHER.DAT", 7}]
+			if bank == nil {
+				return nil, fmt.Errorf("missing admitted title bank")
+			}
+			var err error
+			backdrop, err = png.Decode(bytes.NewReader(bank.encoded[0]))
+			if err != nil {
+				return nil, err
+			}
+		}
 		_, palette, err := fdother.LoadSeparatedFDOTHERPalette(separatedAssetPath("palette"), 8)
 		if err != nil {
 			return nil, err
@@ -113,6 +126,24 @@ func (p *titleInterfaceGPUProbe) expected(c titleInterfaceGPUCase, frame *modern
 			}
 		}
 		native := titlePrototypeRaster(raw, palette)
+		if hdBackdrop {
+			// Rebuild the title and each original menu-cell rectangle independently.
+			// Native pixels outside those rectangles must not cover the HD title.
+			draw.Draw(native, native.Bounds(), backdrop, image.Point{}, draw.Src)
+			for i := 0; i < 3; i++ {
+				state := 0
+				if i == c.selection && (c.flash == 0 || (c.flash/3)%2 == 0) {
+					state = 1
+				}
+				source, err := fdother.LoadSeparatedNestedSingleFrame(separatedAssetPath("surfaces"), 7, 1+i*2+state)
+				if err != nil {
+					return nil, err
+				}
+				r := image.Rect((320-source.Width)/2*6, titleMenuY(i)*6, (320+source.Width)/2*6, (titleMenuY(i)+source.Height)*6)
+				original := titlePrototypeRaster(raw, palette)
+				draw.Draw(native, r, original, r.Min, draw.Src)
+			}
+		}
 		return titleInterfaceGPUCPU(g, native.Pix, frame), nil
 	}
 	a := g.nativeLoadSlotsUI
@@ -443,6 +474,9 @@ func TestModernHDTitleInterfaceRuntimeGPU(t *testing.T) {
 	// switching, even while the title covers its world layer.
 	g.titleAssets, g.nativeLoadSlotsUI = a, slots
 	g.modernThemeCache, g.interfaceMode, g.fontScale, g.localeID = set, playerInterfaceOriginal, 1, "zh-Hant"
+	// Normal startup has already staged the first story fade behind the title.
+	// Its zero brightness must not hide the title menu's independent HD text.
+	g.fade = &storyFade{total: storyFadeFrames}
 	source := filepath.Join("..", "..", "..", "work", "ch01-flow-20261017", "remake-full-r10", "hotel-save.json")
 	// The complete existing hotel JSON is copied unchanged into temporary slots.
 	sourceRaw, err := os.ReadFile(source)

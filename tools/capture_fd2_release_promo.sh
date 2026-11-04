@@ -16,9 +16,11 @@ out=${2:?capture directory}
 duration=${3:-900}
 size=${4:-640x400}
 fps=${5:-60}
-[[ "$duration" =~ ^[1-9][0-9]*$ ]] && (( duration <= 900 ))
+startup_timeout=${FD2_CAPTURE_STARTUP_TIMEOUT:-90}
+[[ "$duration" =~ ^[1-9][0-9]*$ ]] && (( duration <= 3600 ))
 [[ "$size" == 640x400 || "$size" == 1280x800 || "$size" == 1920x1200 ]]
 [[ "$fps" == 30 || "$fps" == 60 ]]
+[[ "$startup_timeout" == 90 || "$startup_timeout" == 180 || "$startup_timeout" == 360 ]]
 test -x "$game/AppRun"
 test -f "$game/pack/manifest.json"
 test ! -e "$out/live.mkv"
@@ -31,6 +33,32 @@ export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
 export GOMAXPROCS=2 GOMEMLIMIT="${FD2_CAPTURE_GO_MEMORY:-6GiB}" LP_NUM_THREADS=2
 mkdir -p "$HOME" "$XDG_RUNTIME_DIR" "$XDG_DATA_HOME"
 chmod 700 "$XDG_RUNTIME_DIR"
+python3 - "$game" "$out" <<'PY'
+import hashlib,json,pathlib,sys
+game,out=map(pathlib.Path,sys.argv[1:])
+pack=game/'modern'
+report={'status':'PASS-CAPTURE-SOURCE-PATHS','modern_present':pack.is_dir(),'scope':'只核對清冊來源路徑，內容與形狀仍由正式執行期驗證。'}
+user_assets=out/'user-data/fd2_re/assets'
+bootstrap=user_assets if user_assets.is_dir() else game/'assets'
+if not (bootstrap/'map.json').is_file():
+    raise SystemExit(f'錄影啟動素材目錄缺少map.json：{bootstrap}')
+report['bootstrap_map_sha256']=hashlib.sha256((bootstrap/'map.json').read_bytes()).hexdigest()
+if pack.is_dir():
+    overlay=out/'user-data/fd2_re/assets/themes/modern/catalog.json'
+    catalog=overlay if overlay.is_file() else game/'assets/themes/modern/catalog.json'
+    raw=catalog.read_bytes();assets=json.loads(raw)['assets'];names=set()
+    for asset in assets:
+        if asset.get('status') not in {'runtime_candidate','runtime_ready'}:continue
+        names.update(asset.get('files',[]))
+        if asset.get('file'):names.add(asset['file'])
+        if asset.get('role')=='opening_presentation_hd_set':names.update(asset.get('source_files',[]))
+        elif asset.get('role')=='story_animation_hd_set':names.update(n for n in asset.get('source_files',[]) if n.endswith('.json'))
+    for name in sorted(names):
+        if pathlib.Path(name).name!=name or not (pack/name).is_file():
+            raise SystemExit(f'錄影素材來源不完整：{name}')
+    report.update(catalog_sha256=hashlib.sha256(raw).hexdigest(),runtime_paths=len(names))
+(out/'capture-source-preflight.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+PY
 export PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
 # Polling is bounded even when an X11 read or GL swap does not return.
 stop_children() {
@@ -94,7 +122,8 @@ cd /tmp
 FD2_INPUT_AUDIT_LOG="$out/input-audit.jsonl" FD2_CUTSCENE_LOG=1 \
   "$game/AppRun" >"$out/game.log" 2>&1 & game_pid=$!
 window=""
-for attempt in $(seq 1 900); do
+for attempt in $(seq 1 "$((startup_timeout * 10))"); do
+  test ! -e "$out/STOP" || break
   window=$(xdotool search --name '炎龍騎士團' 2>/dev/null | head -1 || true)
   if test -n "$window"; then
     xdotool windowsize "$window" "${size%x*}" "${size#*x}"
@@ -105,7 +134,10 @@ for attempt in $(seq 1 900); do
   kill -0 "$game_pid" "$record_pid" "$audio_pid" 2>/dev/null || break
   sleep .1
 done
-test -n "$window"
+if test -z "$window"; then
+  printf '遊戲視窗未在 %s 秒啟動預算內出現。\n' "$startup_timeout" >&2
+  exit 2
+fi
 for attempt in $(seq 1 "$duration"); do
   test ! -e "$out/STOP" || break
   kill -0 "$game_pid" "$record_pid" "$audio_pid" 2>/dev/null || break

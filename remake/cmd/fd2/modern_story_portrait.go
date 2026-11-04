@@ -25,6 +25,7 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
+	openingHD         *modernOpeningHD
 	facilitySuccess   map[int]*modernFacilitySuccessBank
 	uiPanelIcons      map[int]*modernUIPanelIcon
 	uiServiceIcons    map[[2]int]*modernHDServiceIcon
@@ -116,6 +117,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == modernOpeningRole {
+			if err := loadModernOpeningHDAsset(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == playerPosterAssetRole {
 			continue // Independent optional presentation assets load on selection.
 		}
@@ -472,6 +479,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		return nil, err
 	}
 	if err := validateModernFacilityPortraitScenePairs(set); err != nil {
+		return nil, err
+	}
+	if err := validateModernOpeningHDGroup(set); err != nil {
 		return nil, err
 	}
 	return set, nil
