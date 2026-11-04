@@ -53,6 +53,25 @@ func ApplyNativeItemRelocation(
 	if !ok || verified != route {
 		return NativeItemRelocationResult{}, fmt.Errorf("native item relocation route is invalid: %#v", route)
 	}
+	actorBase := actorUnit * nativeRecordSize
+	if actorUnit < 0 || actorBase < 0 || actorBase+nativeRecordSize > len(records) {
+		return NativeItemRelocationResult{}, recordBoundsError(actorUnit)
+	}
+	actor := records[actorBase : actorBase+nativeRecordSize]
+	if actor[0x08] != route.RequiredIdentity || binary.LittleEndian.Uint16(actor[0x46:]) < route.RequiredMaxMP {
+		return NativeItemRelocationResult{}, fmt.Errorf("native item relocation identity/max MP gate failed")
+	}
+	return applyNativeCommand23Relocation(records, actorUnit, targets, destinationX, destinationY, commandBook, false)
+}
+
+// ApplyNativeCommand23Relocation is the spell dispatch to sub_2218A.
+// Item-only identity/max-MP guards belong to the item caller, not this handler.
+// The spell caller has already checked current MP; preserve that atomic gate.
+func ApplyNativeCommand23Relocation(records []byte, actorUnit int, targets []byte, destinationX, destinationY byte, commandBook []NativeCommandRecord) (NativeItemRelocationResult, error) {
+	return applyNativeCommand23Relocation(records, actorUnit, targets, destinationX, destinationY, commandBook, true)
+}
+
+func applyNativeCommand23Relocation(records []byte, actorUnit int, targets []byte, destinationX, destinationY byte, commandBook []NativeCommandRecord, requireMP bool) (NativeItemRelocationResult, error) {
 	if len(targets) == 0 {
 		return NativeItemRelocationResult{}, fmt.Errorf("native item relocation has no target")
 	}
@@ -65,23 +84,16 @@ func ApplyNativeItemRelocation(
 	if targetBase < 0 || targetBase+nativeRecordSize > len(records) {
 		return NativeItemRelocationResult{}, recordBoundsError(targetUnit)
 	}
-	if route.CommandID >= len(commandBook) || commandBook[route.CommandID].ID != route.CommandID {
-		return NativeItemRelocationResult{}, fmt.Errorf("native command record %d is unavailable", route.CommandID)
+	if len(commandBook) != NativeCommandRecordCount || commandBook[23].ID != 23 {
+		return NativeItemRelocationResult{}, fmt.Errorf("native command record23 is unavailable")
 	}
 	actor := records[actorBase : actorBase+nativeRecordSize]
-	if actor[0x08] != route.RequiredIdentity {
-		return NativeItemRelocationResult{}, fmt.Errorf(
-			"native item relocation identity=%d want %d", actor[0x08], route.RequiredIdentity,
-		)
-	}
-	if maxMP := binary.LittleEndian.Uint16(actor[0x46:]); maxMP < route.RequiredMaxMP {
-		return NativeItemRelocationResult{}, fmt.Errorf(
-			"native item relocation max MP=%d want at least %d", maxMP, route.RequiredMaxMP,
-		)
-	}
-	cost := commandBook[route.CommandID].MPCost
+	cost := commandBook[23].MPCost
 	if cost < 0 || cost > 0xff {
-		return NativeItemRelocationResult{}, fmt.Errorf("native command %d MP cost=%d is invalid", route.CommandID, cost)
+		return NativeItemRelocationResult{}, fmt.Errorf("native command23 MP cost=%d is invalid", cost)
+	}
+	if requireMP && int(binary.LittleEndian.Uint16(actor[0x44:])) < cost {
+		return NativeItemRelocationResult{}, fmt.Errorf("native command23 insufficient MP")
 	}
 
 	target := records[targetBase : targetBase+nativeRecordSize]

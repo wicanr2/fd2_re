@@ -24,6 +24,7 @@ type nativeCommand29TargetPresentation struct {
 }
 
 type nativeCommand29PresentationJob struct {
+	command28                       *nativeCommand28Sequence
 	hd                              *modernHDSplitStrike
 	actor                           *battle.Unit
 	plan                            *battle.NativeCommandDerivedStrikePlan
@@ -69,11 +70,19 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	return g.startNativeDerivedStrikePresentation(actor, confirmed, 29, battle.Cell{}, battle.Cell{}, then)
 }
 
+func (g *Game) startNativeCommand29PresentationAtCursor(actor *battle.Unit, cursor battle.Cell, then func([]battle.NativeCommand24Damage)) error {
+	return g.startNativeDerivedStrikePresentationTarget(actor, nil, 29, battle.Cell{}, battle.Cell{}, &cursor, then)
+}
+
 func (g *Game) startNativeDerivedStrikePresentation(actor, confirmed *battle.Unit, command int, savedCursor, confirmedCursor battle.Cell, then func([]battle.NativeCommand24Damage)) error {
+	return g.startNativeDerivedStrikePresentationTarget(actor, confirmed, command, savedCursor, confirmedCursor, nil, then)
+}
+
+func (g *Game) startNativeDerivedStrikePresentationTarget(actor, confirmed *battle.Unit, command int, savedCursor, confirmedCursor battle.Cell, cursor *battle.Cell, then func([]battle.NativeCommand24Damage)) error {
 	if !g.nativeFullPresentationEnabled() {
 		return errors.New("native abbreviated presentation owner unavailable")
 	}
-	if g == nil || g.st == nil || g.rng == nil || actor == nil || confirmed == nil ||
+	if g == nil || g.st == nil || g.rng == nil || actor == nil || (confirmed == nil && cursor == nil) ||
 		g.nativeCmd29Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil ||
 		g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.atk != nil {
 		return fmt.Errorf("native command%d presentation context unavailable", command)
@@ -129,9 +138,35 @@ func (g *Game) startNativeDerivedStrikePresentation(actor, confirmed *battle.Uni
 			plan, err = g.st.PlanNativeCommand30(actor, savedCursor, confirmedCursor, g.rng)
 		}
 	} else {
-		publishHD, err = g.stageModernHDSplitStrikeBanks(actor, confirmed, command)
+		var selected []*battle.Unit
+		if cursor != nil {
+			selected, err = g.st.NativeCommand29EffectTargets(actor, *cursor)
+		} else {
+			var flags []byte
+			flags, err = g.st.NativeCommandBaseFlags()
+			if err == nil && len(g.st.NativeCommandBook) == battle.NativeCommandRecordCount {
+				record := g.st.NativeCommandBook[command]
+				selected, err = battle.NativeCommandEffectTargets(g.st.W, g.st.H, actor, confirmed, record.SelectionMode, record.EffectMode, record.TargetCode, flags, g.st.Units)
+			} else if err == nil {
+				err = errors.New("native derived-strike command book unavailable")
+			}
+		}
+		if err != nil {
+			return err
+		}
+		if len(selected) == 0 {
+			return errors.New("native derived-strike final target list is empty")
+		}
+		if err := g.preflightNativeDerivedStrikeSources(actor, selected, effect, command); err != nil {
+			return err
+		}
+		publishHD, err = g.stageModernHDSplitStrikeTargetBanks(actor, selected)
 		if err == nil {
-			plan, err = g.st.PlanNativeCommandDerivedStrike(actor, confirmed, command, g.rng)
+			if cursor != nil {
+				plan, err = g.st.PlanNativeCommand29AtCursor(actor, *cursor, g.rng)
+			} else {
+				plan, err = g.st.PlanNativeCommandDerivedStrike(actor, confirmed, command, g.rng)
+			}
 		}
 	}
 	if err != nil {
@@ -365,8 +400,8 @@ func (g *Game) failNativeCommand29Presentation(err error) {
 	battle.RestoreNativeCommand30Targets(j.plan)
 	g.nativeCmd29Presentation = nil
 	command := 29
-	if j.plan != nil && j.plan.CommandID == 30 {
-		command = 30
+	if j.plan != nil {
+		command = j.plan.CommandID
 	}
 	g.loadErr = fmt.Sprintf("native command%d presentation: %v", command, err)
 }
@@ -374,6 +409,10 @@ func (g *Game) failNativeCommand29Presentation(err error) {
 func (g *Game) stepNativeCommand29Presentation() {
 	j := g.nativeCmd29Presentation
 	if j == nil || !j.drawn {
+		return
+	}
+	if j.command28 != nil {
+		g.stepNativeCommand28Presentation()
 		return
 	}
 	j.drawn = false
@@ -466,6 +505,9 @@ func (g *Game) stepNativeCommand29Presentation() {
 
 func (g *Game) drawNativeCommand29Presentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd29Presentation
+	if j != nil && j.command28 != nil {
+		return g.drawNativeCommand28Presentation(screen)
+	}
 	if j == nil || j.frame < 0 || j.frame >= len(j.effectFrames) || j.targetIndex < 0 || j.targetIndex >= len(j.targets) {
 		return false
 	}

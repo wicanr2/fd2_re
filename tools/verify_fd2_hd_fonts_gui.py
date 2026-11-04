@@ -225,7 +225,7 @@ def main():
                         help='普通攻防場數；一場模式仍完整自然返回與保存冷讀，需--battle-only')
     parser.add_argument('--battle-art-samples', type=int, choices=[32,64], default=64,
                         help='每場實際演出PNG取樣上限；完整逐幀Draw另驗')
-    parser.add_argument('--startup-timeout', type=int, choices=[60,120,180,360], default=60,
+    parser.add_argument('--startup-timeout', type=int, choices=[60,120,180,360,900], default=60,
                         help='明示等待真實視窗的上限，主流程與新程序冷讀共用')
     parser.add_argument('--run-timeout', type=int, choices=[660,900,1200,1500,1800,2400],
                         help='整輪有界秒數，包含兩次啟動與冷讀；省略時沿既有流程預算')

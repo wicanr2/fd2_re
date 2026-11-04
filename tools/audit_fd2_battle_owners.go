@@ -381,7 +381,7 @@ func auditCommandRoutes(root, out string) {
 				case *ast.CallExpr:
 					if selector, ok := node.Fun.(*ast.SelectorExpr); ok {
 						name := selector.Sel.Name
-						if strings.HasPrefix(name, "startNativeCommand") || name == "ExecuteNativeCommandDerivedStrike" {
+						if strings.HasPrefix(name, "startNativeCommand") || name == "beginNativeCommand23Destination" || name == "ExecuteNativeCommandDerivedStrike" {
 							found[name] = true
 						}
 					}

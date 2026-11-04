@@ -24,11 +24,13 @@ type NativeCommand24Damage struct {
 // 0x276EC selector, damage RNG and HP clamp. Presentation owners may publish
 // MP and each target HP at their raw FIGANI markers without rerolling damage.
 type NativeCommandDerivedStrikePlan struct {
-	Actor     *Unit
-	CommandID int
-	MPBefore  int
-	MPAfter   int
-	Results   []NativeCommand24Damage
+	Actor                 *Unit
+	CommandID             int
+	MPBefore              int
+	MPAfter               int
+	Results               []NativeCommand24Damage
+	TargetImpactCount     int
+	publishedTargetStages []int
 }
 
 func nativeCommandDerivedStrikeMultiplier(commandID int) (int, bool) {
@@ -89,8 +91,16 @@ func (s *State) ExecuteNativeCommandDerivedStrike(actor, confirmed *Unit, comman
 		return nil, err
 	}
 	for i := range plan.Results {
-		if err := ApplyNativeCommandDerivedStrikeTarget(plan, i); err != nil {
-			return nil, err
+		if commandID == 28 {
+			for stage := 1; stage <= plan.TargetImpactCount; stage++ {
+				if err := ApplyNativeCommand28TargetStage(plan, i, stage); err != nil {
+					return nil, err
+				}
+			}
+		} else {
+			if err := ApplyNativeCommandDerivedStrikeTarget(plan, i); err != nil {
+				return nil, err
+			}
 		}
 	}
 	if err := CompleteNativeCommandDerivedStrike(plan); err != nil {
@@ -105,11 +115,7 @@ func (s *State) PlanNativeCommandDerivedStrike(actor, confirmed *Unit, commandID
 	if s == nil || rng == nil {
 		return nil, fmt.Errorf("missing native derived-strike state/rng")
 	}
-	multiplier, ok := nativeCommandDerivedStrikeMultiplier(commandID)
-	if !ok {
-		return nil, fmt.Errorf("native derived-strike command unavailable id=%d", commandID)
-	}
-	if len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID {
+	if len(s.NativeCommandBook) != 36 || commandID < 0 || commandID >= len(s.NativeCommandBook) || s.NativeCommandBook[commandID].ID != commandID {
 		return nil, fmt.Errorf("native derived-strike record unavailable id=%d", commandID)
 	}
 	record := s.NativeCommandBook[commandID]
@@ -121,12 +127,58 @@ func (s *State) PlanNativeCommandDerivedStrike(actor, confirmed *Unit, commandID
 	if err != nil {
 		return nil, err
 	}
+	return s.planNativeCommandDerivedStrikeTargets(actor, targets, commandID, rng)
+}
+
+// NativeCommand29EffectTargets keeps the original self-centered cursor separate
+// from the affected enemy units. The direct-unit entry above remains available.
+func (s *State) NativeCommand29EffectTargets(actor *Unit, cursor Cell) ([]*Unit, error) {
+	if s == nil || actor == nil || actor.Camp == Enemy || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[29].ID != 29 {
+		return nil, fmt.Errorf("native player command29 record/actor unavailable")
+	}
+	record := s.NativeCommandBook[29]
+	flags, err := s.NativeCommandBaseFlags()
+	if err != nil {
+		return nil, err
+	}
+	if record.SelectionMode == 0 {
+		return NativeCommandSelfCenteredTargets(s.W, s.H, actor, cursor, record.EffectMode, flags, s.Units)
+	}
+	return NativeCommandEffectTargetsAtCursor(s.W, s.H, actor, cursor, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
+}
+
+func (s *State) PlanNativeCommand29AtCursor(actor *Unit, cursor Cell, rng *rand.Rand) (*NativeCommandDerivedStrikePlan, error) {
+	targets, err := s.NativeCommand29EffectTargets(actor, cursor)
+	if err != nil {
+		return nil, err
+	}
+	return s.planNativeCommandDerivedStrikeTargets(actor, targets, 29, rng)
+}
+
+func (s *State) planNativeCommandDerivedStrikeTargets(actor *Unit, targets []*Unit, commandID int, rng *rand.Rand) (*NativeCommandDerivedStrikePlan, error) {
+	if s == nil || rng == nil || commandID < 0 || commandID >= len(s.NativeCommandBook) || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
+		return nil, fmt.Errorf("native derived-strike record/rng unavailable id=%d", commandID)
+	}
+	multiplier, ok := nativeCommandDerivedStrikeMultiplier(commandID)
+	if !ok {
+		return nil, fmt.Errorf("native derived-strike command unavailable id=%d", commandID)
+	}
+	record := s.NativeCommandBook[commandID]
 	if actor == nil || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
 		return nil, fmt.Errorf("native command %d insufficient MP", commandID)
+	}
+	if commandID == 28 && (!actor.HasBattleFig || actor.BattleFig != 19) {
+		return nil, fmt.Errorf("native command28 requires proven selector19 impact contract")
 	}
 	plan := &NativeCommandDerivedStrikePlan{
 		Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
 		Results: make([]NativeCommand24Damage, 0, len(targets)),
+	}
+	if commandID == 28 {
+		// FIGANI59 has eight target raw+4 markers. Other selectors require
+		// their own reviewed contract rather than a single-marker guess.
+		plan.TargetImpactCount = 8
+		plan.publishedTargetStages = make([]int, len(targets))
 	}
 	for _, target := range targets {
 		if target == nil {
@@ -140,14 +192,8 @@ func (s *State) PlanNativeCommandDerivedStrike(actor, confirmed *Unit, commandID
 		if appliedDamage < 0 {
 			appliedDamage = 0
 		}
-		// 0x27c6d..0x27d4d publishes damage*impactCount/denominator.
-		// Command 28 selects denominator 8 and its reachable FIGANI target tail
-		// contains one raw +4 impact marker; there is no final reconciliation at
-		// 0x27e51..0x27fc8.  The state-only result therefore is damage/8, not the
-		// full pre-presentation roll used by commands 24, 29 and 31.
-		if commandID == 28 {
-			appliedDamage /= 8
-		}
+		// 0x27C44 clamps the roll to original HP before command28 divides
+		// its cumulative eight impact stages. Keep the final capped damage.
 		if appliedDamage > target.HP {
 			appliedDamage = target.HP
 		}
@@ -178,6 +224,9 @@ func ApplyNativeCommandDerivedStrikeTarget(plan *NativeCommandDerivedStrikePlan,
 	if plan == nil || index < 0 || index >= len(plan.Results) {
 		return fmt.Errorf("native derived-strike target publish index unavailable")
 	}
+	if plan.CommandID == 28 {
+		return fmt.Errorf("native command28 requires ordered impact-stage publication")
+	}
 	result := plan.Results[index]
 	if result.Target == nil || result.Target.HP != result.HPBefore ||
 		(result.Target.HasNativeRecordByte5 && result.Target.NativeRecordByte5 != result.NativeRecordByte5Before) {
@@ -191,6 +240,49 @@ func ApplyNativeCommandDerivedStrikeTarget(plan *NativeCommandDerivedStrikePlan,
 	if result.Target.HasNativeRecordByte5 {
 		result.Target.NativeRecordByte5 = result.NativeRecordByte5After
 	}
+	return nil
+}
+
+// NativeCommand28StageResult is a frozen panel/HP projection. Stage0 denotes
+// the original target; stages1..8 use the original capped-damage denominator.
+func NativeCommand28StageResult(plan *NativeCommandDerivedStrikePlan, index, stage int) (NativeCommand24Damage, error) {
+	if plan == nil || plan.CommandID != 28 || plan.TargetImpactCount != 8 || index < 0 || index >= len(plan.Results) || stage < 0 || stage > 8 {
+		return NativeCommand24Damage{}, fmt.Errorf("native command28 stage projection unavailable")
+	}
+	result := plan.Results[index]
+	if result.Target == nil {
+		return NativeCommand24Damage{}, fmt.Errorf("native command28 target projection unavailable")
+	}
+	result.Damage = result.Damage * stage / 8
+	result.HPAfter = result.HPBefore - result.Damage
+	result.NativeRecordByte5After = result.NativeRecordByte5Before
+	if result.HPAfter == 0 && result.Target.HasNativeRecordByte5 {
+		result.NativeRecordByte5After = 1
+	}
+	return result, nil
+}
+
+func ApplyNativeCommand28TargetStage(plan *NativeCommandDerivedStrikePlan, index, stage int) error {
+	if plan == nil || plan.Actor == nil || plan.Actor.MP != plan.MPAfter || plan.Actor.Acted || index < 0 || index >= len(plan.publishedTargetStages) || stage != plan.publishedTargetStages[index]+1 {
+		return fmt.Errorf("native command28 stage publication state changed")
+	}
+	before, err := NativeCommand28StageResult(plan, index, stage-1)
+	if err != nil {
+		return err
+	}
+	after, err := NativeCommand28StageResult(plan, index, stage)
+	if err != nil {
+		return err
+	}
+	target := after.Target
+	if target == nil || target.HP != before.HPAfter || (target.HasNativeRecordByte5 && target.NativeRecordByte5 != before.NativeRecordByte5After) {
+		return fmt.Errorf("native command28 target changed before impact")
+	}
+	target.HP = after.HPAfter
+	if target.HasNativeRecordByte5 {
+		target.NativeRecordByte5 = after.NativeRecordByte5After
+	}
+	plan.publishedTargetStages[index] = stage
 	return nil
 }
 
@@ -214,6 +306,16 @@ func RestoreNativeCommand30Targets(plan *NativeCommandDerivedStrikePlan) {
 func CompleteNativeCommandDerivedStrike(plan *NativeCommandDerivedStrikePlan) error {
 	if plan == nil || plan.Actor == nil || plan.Actor.MP != plan.MPAfter || plan.Actor.Acted {
 		return fmt.Errorf("native derived-strike completion state changed")
+	}
+	if plan.CommandID == 28 {
+		if len(plan.publishedTargetStages) != len(plan.Results) {
+			return fmt.Errorf("native command28 impact publication unavailable")
+		}
+		for _, stage := range plan.publishedTargetStages {
+			if stage != 8 {
+				return fmt.Errorf("native command28 impacts are incomplete")
+			}
+		}
 	}
 	for _, result := range plan.Results {
 		if result.Target == nil || result.Target.HP != result.HPAfter ||

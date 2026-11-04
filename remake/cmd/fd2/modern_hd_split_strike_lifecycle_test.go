@@ -128,7 +128,7 @@ func (p *modernHDSplitStrikeProbe) Update() error {
 	if mp != p.actor.MP {
 		p.mpChanges++
 		impact := 4
-		if p.command == 29 {
+		if p.command == 28 || p.command == 29 {
 			impact = 6
 		}
 		if c.Prelude < 9 || c.Transition >= 0 || c.Effect != impact || p.mpChanges != 1 {
@@ -138,6 +138,13 @@ func (p *modernHDSplitStrikeProbe) Update() error {
 	for i, target := range p.targets {
 		if hp[i] != target.HP {
 			p.hpChanges[i]++
+			if p.command == 28 {
+				event := p.j29.command28.events[p.j29.command28.index-1]
+				if c.Target != i || event.impact != p.hpChanges[i] || event.impact < 1 || event.impact > 8 {
+					p.err = fmt.Errorf("command28 HP publication outside ordered original impact%d", i)
+				}
+				continue
+			}
 			impact := 10
 			if p.command == 29 {
 				impact = 14
@@ -292,8 +299,8 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 		t.Skip("dedicated split strike lifecycle process required")
 	}
 	command, err := strconv.Atoi(os.Getenv("FD2_TEST_SPLIT_STRIKE_COMMAND"))
-	if err != nil || command != 24 && command != 29 && command != 30 {
-		t.Fatal("explicit command24,29 or30 required")
+	if err != nil || command != 24 && command != 28 && command != 29 && command != 30 {
+		t.Fatal("explicit command24,28,29 or30 required")
 	}
 	g, actor, targets := splitStrikeHDTestGame(t, command)
 	var set *modernStoryPortraitSet
@@ -371,12 +378,20 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 			t.Fatalf("missing F2 for%s", phase)
 		}
 	}
-	if len(p.phases) != 2+len(targets)*3 {
+	expectedPhases := 2 + len(targets)*3
+	if command == 28 {
+		expectedPhases = 2 + len(targets)
+	}
+	if len(p.phases) != expectedPhases {
 		t.Fatalf("phase count%d", len(p.phases))
 	}
 	for _, count := range p.hpChanges {
-		if count != 1 {
-			t.Fatal("target HP did not publish once")
+		want := 1
+		if command == 28 {
+			want = 8
+		}
+		if count != want {
+			t.Fatalf("target HP publications %d want %d", count, want)
 		}
 	}
 	expected := rand.New(rand.NewSource(seed))

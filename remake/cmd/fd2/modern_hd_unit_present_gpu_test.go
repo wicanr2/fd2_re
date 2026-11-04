@@ -53,6 +53,17 @@ func unitPresentHDRelocationGame(t *testing.T, set *modernStoryPortraitSet) (*Ga
 		book[i].ID = i
 	}
 	book[23].MPCost = 20
+	spell23 := os.Getenv("FD2_HD_UNIT_PRESENT_SPELL23") == "1"
+	if spell23 {
+		var err error
+		book, err = battle.LoadNativeCommandRecords("../../assets/spells.json")
+		if err != nil {
+			t.Fatal(err)
+		}
+		actor.NativeIdentity, actor.NativeRecordByte8 = 7, 7
+		actor.Inventory, actor.Equipped = nil, nil
+		actor.InventorySlots[0], actor.NativeInventoryFlags[0] = 255, 128
+	}
 	g.nativeCommandBook, g.st.NativeCommandBook = book, book
 	g.sel, g.moved, g.itemOpen = actor, true, true
 	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
@@ -75,19 +86,35 @@ func unitPresentHDRelocationGame(t *testing.T, set *modernStoryPortraitSet) (*Ga
 	if err != nil {
 		t.Fatal(err)
 	}
-	if targeting, err := g.beginNativeTargetItem(0, 101); err != nil || !targeting {
+	if spell23 {
+		g.itemOpen = false
+		if err := g.beginNativeCommandTargetSelection(23); err != nil {
+			t.Fatal(err)
+		}
+	} else if targeting, err := g.beginNativeTargetItem(0, 101); err != nil || !targeting {
 		t.Fatalf("target input: %t %v", targeting, err)
 	}
 	if err := g.composeNativeMapFrame(); err != nil {
 		t.Fatal(err)
 	}
-	if applied, err := g.applyNativeTargetItem(target); err != nil || applied || !g.nativeItemRelocating {
+	if spell23 {
+		g.confirm()
+		if !g.nativeCommand23Relocating {
+			t.Fatalf("spell23 first confirm: %s", g.msg)
+		}
+	} else if applied, err := g.applyNativeTargetItem(target); err != nil || applied || !g.nativeItemRelocating {
 		t.Fatalf("target confirm: %t %v", applied, err)
 	}
 	if err := g.composeNativeMapFrame(); err != nil {
 		t.Fatal(err)
 	}
-	if applied, err := g.applyNativeRelocationDestination(8, 7); err != nil || !applied {
+	if spell23 {
+		g.curX, g.curY = 8, 7
+		g.confirm()
+		if g.nativeModifierPresentation == nil {
+			t.Fatalf("spell23 destination confirm: %s", g.msg)
+		}
+	} else if applied, err := g.applyNativeRelocationDestination(8, 7); err != nil || !applied {
 		t.Fatalf("destination confirm: %t %v", applied, err)
 	}
 	return g, actor, target
@@ -531,6 +558,7 @@ func runModernHDUnitPresentGPU(t *testing.T, story bool) {
 				game.moved = false
 				game.itemOpen = false
 				game.nativeItemRelocating = false
+				game.nativeCommand23Relocating = false
 				if !game.st.Units[1].SetNativeMapCoordinatesRaw(255, 255) {
 					t.Fatal("staging source failed")
 				}
@@ -600,6 +628,7 @@ func runModernHDUnitPresentGPU(t *testing.T, story bool) {
 		status = "PASS-UNIT-PRESENT-HD-STORY-GAME"
 	}
 	report := map[string]any{"status": status, "cases": cases, "sources": p.sources, "rows": p.rows, "fixed_clock_unix": 1000, "native_seed": 7, "rgba_tolerance": 2, "scope": "actual target/destination or story staging/direct-unit handlers and Game.Draw, controlled records/placement; no new original oracle or normal-player proof"}
+	report["spell23_player_confirm"] = os.Getenv("FD2_HD_UNIT_PRESENT_SPELL23") == "1"
 	raw, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

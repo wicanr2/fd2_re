@@ -139,6 +139,47 @@ func TestNativeCommand28ScheduleKeepsCallerSpecificPresentationBranches(t *testi
 	}
 }
 
+func TestNativeCommand28Resource59HasEightImpactsAndOwnCues(t *testing.T) {
+	pack := os.Getenv("FD2_ASSET_PACK")
+	if pack == "" {
+		t.Skip("explicit original separated pack required")
+	}
+	animation, err := LoadSeparatedResource(pack+"/animations", 59)
+	if err != nil {
+		t.Fatal(err)
+	}
+	schedule, err := BuildNativeCommandDerivedStrikeSchedule(animation, 28)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if animation.HeaderByte1 != 0 || schedule.TargetStart != 7 || schedule.ActorImpactFrame != 6 || len(animation.Frames) != 19 ||
+		!slices.Equal(schedule.TargetImpactFrames, []int{7, 8, 9, 10, 11, 12, 13, 14}) || schedule.DamageDenominator != 8 || schedule.AudioResource != 50 {
+		t.Fatalf("resource59 schedule differs: %+v", schedule)
+	}
+	if !slices.Equal(schedule.ActorCues, []NativeCommandFrameCue{{Frame: 2, Sample: 2}, {Frame: 6, Sample: 4}}) || len(schedule.TargetCues) != 8 {
+		t.Fatal("resource59 actor or target cues differ")
+	}
+	for i, cue := range schedule.TargetCues {
+		if cue.Frame != 7+i || cue.Sample != 3+i%2 {
+			t.Fatalf("resource59 cue%d=%+v", i, cue)
+		}
+	}
+	if _, err := BuildNativeCommandDerivedStrikeSchedule(animation, 29); err == nil {
+		t.Fatal("header0 must not relax command29 contract")
+	}
+	mutated := *animation
+	mutated.Frames = append([]Frame(nil), animation.Frames...)
+	mutated.Frames[15].RawByte4 = 1
+	if _, err := BuildNativeCommandDerivedStrikeSchedule(&mutated, 28); err == nil {
+		t.Fatal("more than eight impacts accepted")
+	}
+	mutated.Frames = append([]Frame(nil), animation.Frames...)
+	mutated.Frames[0].RawByte4 = 1
+	if _, err := BuildNativeCommandDerivedStrikeSchedule(&mutated, 28); err == nil {
+		t.Fatal("duplicate actor MP marker accepted")
+	}
+}
+
 func TestDecodeOriginalPlayerClass19HeaderFlags(t *testing.T) {
 	const path = "../../../org_game/炎龍騎士團/FLAME2/FIGANI.DAT"
 	// Player-reachable class-19 sources use visual groups 4..7 (optional

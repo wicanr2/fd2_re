@@ -102,19 +102,30 @@ func (s *State) PlanNativeCommandDamageWalk(actor, confirmed *Unit, commandID in
 // PlanNativeCommand6DamageAtCursor 驗證玩家游標中心並沿用完整損傷預檢交易。
 // 指令6的其他演出與發布時點仍由原有 owner 處理。
 func (s *State) PlanNativeCommand6DamageAtCursor(actor *Unit, cursor Cell, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {
-	if s == nil || actor == nil || actor.Camp == Enemy || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[6].ID != 6 {
-		return nil, fmt.Errorf("native player command6 record/actor unavailable")
+	return s.PlanNativeCommandDamageAtCursor(actor, cursor, 6, resistByClass, rngState, walk)
+}
+
+// Player commands 6 and10..12 use the common confirmed-cursor caller. In
+// particular, selection mode0 must not require an enemy on the actor's cell.
+func (s *State) PlanNativeCommandDamageAtCursor(actor *Unit, cursor Cell, commandID int, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {
+	if s == nil || actor == nil || actor.Camp == Enemy || (commandID != 6 && (commandID < 10 || commandID > 12)) || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
+		return nil, fmt.Errorf("native player command%d cursor record/actor unavailable", commandID)
 	}
-	record := s.NativeCommandBook[6]
+	record := s.NativeCommandBook[commandID]
 	flags, err := s.NativeCommandBaseFlags()
 	if err != nil {
 		return nil, err
 	}
-	targets, err := NativeCommandEffectTargetsAtCursor(s.W, s.H, actor, cursor, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
+	var targets []*Unit
+	if record.SelectionMode == 0 {
+		targets, err = NativeCommandSelfCenteredTargets(s.W, s.H, actor, cursor, record.EffectMode, flags, s.Units)
+	} else {
+		targets, err = NativeCommandEffectTargetsAtCursor(s.W, s.H, actor, cursor, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
+	}
 	if err != nil {
 		return nil, err
 	}
-	return s.planNativeCommandDamageTargets(actor, 6, record, targets, resistByClass, rngState, walk)
+	return s.planNativeCommandDamageTargets(actor, commandID, record, targets, resistByClass, rngState, walk)
 }
 
 func (s *State) planNativeCommandDamageTargets(actor *Unit, commandID int, record NativeCommandRecord, targets []*Unit, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {

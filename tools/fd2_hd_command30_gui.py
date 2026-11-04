@@ -7,6 +7,21 @@ from pathlib import Path
 from verify_fd2_hd_gui import digest, latest
 
 
+def validate_hp_changes(command_id, changes):
+    for sequence in changes.values():
+        assert sequence and all(before > after >= 0 for before, after in sequence), ('傷害變化不合法', sequence)
+        if command_id != 28:
+            assert len(sequence) == 1, ('傷害重複', sequence)
+            continue
+        # sub_276EC caps the rolled total at original HP, then publishes
+        # cumulative total*stage/8 at resource59 frames7..14. Tiny totals
+        # legitimately contain stages with no visible HP change.
+        hp, total = sequence[0][0], sequence[0][0]-sequence[-1][1]
+        expected = [[hp-total*stage//8, hp-total*(stage+1)//8] for stage in range(8)]
+        expected = [pair for pair in expected if pair[0] != pair[1]]
+        assert sequence == expected, ('淒煌斬八次累計傷害不同', sequence, expected)
+
+
 class Command30Probe:
     def __init__(self, out, audit, capture, label, continuous_hd=False, command_id=30, actor_identity=None):
         self.out, self.audit, self.capture, self.label = out, audit, capture, label
@@ -68,7 +83,7 @@ class Command30Probe:
             prior = current
         cost = {28:22,29:26,30:24}[self.command_id]
         assert len(mp) == 2 and mp[0]-mp[1] == cost, ('MP非唯一正式消耗',mp,cost)
-        assert all(len(v)==1 and v[0][0]>v[0][1] for v in changes.values()), ('傷害重複',changes)
+        validate_hp_changes(self.command_id, changes)
         target_count=active[0]['command_target_count']
         if self.command_id==30:
             assert changes and len(changes) == target_count, '未涵蓋完整音速刃目標交易'
@@ -76,6 +91,10 @@ class Command30Probe:
             # Native misses and zero damage remain valid; never reroll a seed.
             visited={r.get('command_target_index') for r in active}
             assert set(range(target_count)).issubset(visited), '未走過完整目標演出'
+        if self.command_id == 28:
+            for target in range(target_count):
+                frames = {r.get('command_frame') for r in active if r.get('command_target_index') == target}
+                assert set(range(7, 15)).issubset(frames), ('缺少淒煌斬正式命中畫格', target, frames)
         assert any(r.get('command_mp_published') for r in active), '未觀測到MP發布'
         return dict(status=f'PASS-COMMAND{self.command_id}-NORMAL-OBSERVATION', command_id=self.command_id, actor_identity=self.actor_identity, owner=next(iter(owners)),
                     mp_sequence=mp, hp_changes=changes, target_count=len(changes),

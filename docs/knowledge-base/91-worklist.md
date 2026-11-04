@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -339,22 +339,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
-
-### P1 玩家法術入口被擋：正式學習招式、範圍中心與熾炎刀確認
-
-`native-player-command-entry-gaps` · 缺陷 · [#294](https://github.com/wicanr2/fd2_re/issues/294) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
-
-36筆正式指令的Go AST盤點確認：nativeCommandTargetSupported未開放3／4／5／7／9／10／11／12／23。其中天火術3、神雷術7、碎岩術10、地震術11、裂地術12、傳送術23有正式學習表列。前五者已有confirm演出呼叫，卻在選單先被擋；23缺完整法術入口，物品移位效果不能代替。
-
-4電擊術、5落雷術、9咒殺術有敵方演出，4／5另見map10友軍身份14初始遮罩；正常玩家JOIN後取得要分列查核，不猜補。
-
-10至12及29的距離0需要自身中心，現有直接單位helper卻要求中心為敵方候選。熾炎刀29的正常鍵盤錄影已在確認時拒收。修正須沿已證實AtCursor及原生確認，不放寬範圍或借其他動畫。
-
-唯一36筆矩陣與來源SHA：docs/data/fd2-hd1-feedback-20261104.json的battle_animation_audit.command_routes。重跑：Docker內go run /repo/tools/audit_fd2_battle_owners.go -root /repo -routes-only -out <全新輸出.json>。這是靜態入口盤點，不代表GPU、正常取得或全部動畫完成。淒煌斬正式動畫依#293及61既有READY規格處理；31名稱與角色、FIGANI408仍未知，父項#263保持OPEN。
-
-怎樣算做完：補齊原始資料支持的玩家法術入口；對3／7／10／11／12／23逐項驗正式選單、合法中心、MP與效果、動畫自然返回及保存相容性。29用真實record及自身中心正常確認，不以改造selectionMode的測具代替。4／5／9玩家取得與敵方入口分列，不新增未證實技能。原版／HD、F2及缺件原子性保持，不由圖源清冊外推完整動畫。
-
-證據：`docs/data/fd2-hd1-feedback-20261104.json`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

@@ -105,6 +105,7 @@ func modernSplitStrikeScenery(background fdother.Frame, selector int, platform *
 
 // 消費既有24／29 owner的索引及乾淨base，不寫入排程或交易。
 type modernHDSplitStrike struct {
+	sourceOverride                   []nativeCompoundPresentedFrame
 	panelText                        *[]*modernBattlePanelText
 	prelude                          []nativeCompoundPresentedFrame
 	effect                           *figani.Animation
@@ -234,6 +235,9 @@ func (h *modernHDSplitStrike) sourceFrames() []nativeCompoundPresentedFrame {
 	if h == nil {
 		return nil
 	}
+	if h.sourceOverride != nil {
+		return h.sourceOverride
+	}
 	frames := append([]nativeCompoundPresentedFrame(nil), h.prelude...)
 	f := modernHDCommandFrame(h.actorBefore, []modernHDBattleSource{modernHDCommandFigure(h.effect, h.effectID, 0)}, h.palette, "actor")
 	f.hdSources.BaseScenery = h.actorScenery
@@ -304,6 +308,13 @@ func (j *nativeCommand24PresentationJob) modernFrame() *nativeCompoundPresentedF
 }
 
 func (j *nativeCommand29PresentationJob) modernFrame() *nativeCompoundPresentedFrame {
+	if j != nil && j.command28 != nil {
+		sequence := j.command28
+		if sequence.index >= 0 && sequence.index < len(sequence.frames) {
+			return &sequence.frames[sequence.index]
+		}
+		return nil
+	}
 	if j == nil || j.hd == nil || j.targetIndex < 0 || j.targetIndex >= len(j.targets) {
 		return nil
 	}

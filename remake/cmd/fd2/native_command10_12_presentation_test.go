@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"path/filepath"
 	"testing"
@@ -10,6 +11,60 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
+
+// Use the unchanged official records with the existing controlled map fixture.
+// This verifies player confirmation and presentation, not natural acquisition.
+func TestNativeCommand1012FormalPlayerConfirmAndReturn(t *testing.T) {
+	for _, id := range []int{10, 11, 12} {
+		t.Run(fmt.Sprintf("command%d", id), func(t *testing.T) {
+			t.Setenv("FD2_MUTE", "1")
+			g, actor, target := command1012HDTestGame(t, id, true)
+			book, err := battle.LoadNativeCommandRecords("../../assets/spells.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			g.st.NativeCommandBook = book
+			actor.MP, actor.MaxMP = 150, 150
+			target.HP, target.MaxHP = 900, 900
+			for _, unit := range g.st.Units {
+				unit.HasNativeRecordByte5 = true
+				if unit != actor && unit != target {
+					unit.NativeRecordByte5 |= 1
+				}
+			}
+			g.sel, g.curX, g.curY = actor, actor.X, actor.Y
+			if err := g.beginNativeCommandTargetSelection(id); err != nil {
+				t.Fatal(err)
+			}
+			g.confirm()
+			job := g.nativeCmd1012
+			if job == nil || len(job.plan.Results) != 1 || job.plan.Results[0].Target != target {
+				t.Fatalf("formal command%d did not enter its map owner: %s", id, g.msg)
+			}
+			if actor.MP != 150 || actor.Acted || target.HP != 900 {
+				t.Fatal("confirm published state before Draw")
+			}
+			screen := ebiten.NewImage(640, 400)
+			for steps := 0; g.nativeCmd1012 != nil && steps < 1024; steps++ {
+				if g.native2189A != nil {
+					if !g.drawNative2189A(screen) {
+						t.Fatal("formal map command prelude did not draw")
+					}
+					g.stepNative2189A()
+				} else if !g.drawNativeCommand1012Presentation(screen) {
+					t.Fatalf("formal command%d did not draw at step%d", id, steps)
+				}
+				g.stepNativeCommand1012Presentation()
+			}
+			if g.nativeCmd1012 != nil || g.native2189A != nil || actor.MP != 150-book[id].MPCost || !actor.Acted {
+				t.Fatalf("formal command%d did not complete: %s", id, g.loadErr)
+			}
+			if g.nativeCommand0Targeting || g.sel != nil || g.st.NativeMapRangeMode != 1 {
+				t.Fatal("formal map command did not restore player targeting")
+			}
+		})
+	}
+}
 
 func TestExecuteNativeAICommand10UsesOriginalIndexedOwner(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1") // bounded fixture; command sound resources are still explicitly loaded below

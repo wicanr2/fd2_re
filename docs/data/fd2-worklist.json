@@ -407,24 +407,6 @@
         "note": "新HD開場、推廣片與封包尚未交付；舊片技術通過不等於本輪視覺回饋已解決。"
       },
       "issue": 293
-    },
-    {
-      "id": "native-player-command-entry-gaps",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P1 玩家法術入口被擋：正式學習招式、範圍中心與熾炎刀確認",
-      "body": "36筆正式指令的Go AST盤點確認：nativeCommandTargetSupported未開放3／4／5／7／9／10／11／12／23。其中天火術3、神雷術7、碎岩術10、地震術11、裂地術12、傳送術23有正式學習表列。前五者已有confirm演出呼叫，卻在選單先被擋；23缺完整法術入口，物品移位效果不能代替。\n\n4電擊術、5落雷術、9咒殺術有敵方演出，4／5另見map10友軍身份14初始遮罩；正常玩家JOIN後取得要分列查核，不猜補。\n\n10至12及29的距離0需要自身中心，現有直接單位helper卻要求中心為敵方候選。熾炎刀29的正常鍵盤錄影已在確認時拒收。修正須沿已證實AtCursor及原生確認，不放寬範圍或借其他動畫。\n\n唯一36筆矩陣與來源SHA：docs/data/fd2-hd1-feedback-20261104.json的battle_animation_audit.command_routes。重跑：Docker內go run /repo/tools/audit_fd2_battle_owners.go -root /repo -routes-only -out <全新輸出.json>。這是靜態入口盤點，不代表GPU、正常取得或全部動畫完成。淒煌斬正式動畫依#293及61既有READY規格處理；31名稱與角色、FIGANI408仍未知，父項#263保持OPEN。",
-      "acceptance": "補齊原始資料支持的玩家法術入口；對3／7／10／11／12／23逐項驗正式選單、合法中心、MP與效果、動畫自然返回及保存相容性。29用真實record及自身中心正常確認，不以改造selectionMode的測具代替。4／5／9玩家取得與敵方入口分列，不新增未證實技能。原版／HD、F2及缺件原子性保持，不由圖源清冊外推完整動畫。",
-      "evidence": "docs/data/fd2-hd1-feedback-20261104.json",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/main.go"
-        ],
-        "pattern": "case 0, 1, 2, 6, 8, 13",
-        "note": "目前選單仍排除正式學習招式；訊號消失須重跑36筆入口與正常施放，不能只改清單就關閉。"
-      },
-      "issue": 294
     }
   ]
 }

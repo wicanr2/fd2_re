@@ -415,6 +415,7 @@ type Game struct {
 	nativeItemTargetID        int
 	nativeItemTargetRawSlot   int
 	nativeItemRelocating      bool
+	nativeCommand23Relocating bool
 	nativeItemRelocationUnit  int
 	nativeMovementCostRows    [][]byte
 	nativeRNGState            uint16                   // original 0x627b8: initialized to zero, process-lifetime only
@@ -6088,7 +6089,7 @@ func (g *Game) ringInput() bool {
 // transaction owner; other command labels remain visible but fail closed at confirm.
 func (g *Game) nativeCommandTargetSupported(id int) bool {
 	switch id {
-	case 0, 1, 2, 6, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35:
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35:
 		return true
 	default:
 		return false
@@ -6119,6 +6120,9 @@ func (g *Game) nativeCommandTargetUnitsFor(id int) ([]*battle.Unit, error) {
 	if err != nil {
 		return nil, err
 	}
+	if id == 23 {
+		return battle.NativeAttackCandidates(g.st.W, g.st.H, battle.Cell{X: g.sel.X, Y: g.sel.Y}, record.SelectionMode, 1, record.TargetCode, flags, g.st.Units)
+	}
 	return battle.NativeCommandTargets(
 		g.st.W, g.st.H,
 		battle.Cell{X: g.sel.X, Y: g.sel.Y},
@@ -6135,18 +6139,27 @@ func (g *Game) materializeNativeCommandTargetField(record battle.NativeCommandRe
 	if err != nil {
 		return err
 	}
+	selectionMode := record.SelectionMode
+	overlaySelector := battle.NativeMapOverlaySelectorFromRecordByte(byte(record.EffectMode))
+	if selectionMode == 0 {
+		// sub_1CFF0 0x1D366 fixes the actor-centered effect field before
+		// confirmation; its overlay is1, not record+4 plus2.
+		selectionMode, overlaySelector = record.EffectMode, 1
+	}
+	innerRadius := 0
+	if record.ID == 23 {
+		innerRadius = 1
+	}
 	fieldBytes, err := battle.NativeCommandTargetFieldBytes(
 		g.st.W, g.st.H,
 		battle.Cell{X: g.sel.X, Y: g.sel.Y},
-		record.SelectionMode, 0, flags,
+		selectionMode, innerRadius, flags,
 	)
 	if err != nil || len(g.st.NativeTileBlitModes) != len(fieldBytes) {
 		return fmt.Errorf("native command target field incomplete")
 	}
 	if record.EffectMode < 0 || record.EffectMode > 0xff ||
-		!g.st.MaterializeNativeMapRangeMode(
-			battle.NativeMapOverlaySelectorFromRecordByte(byte(record.EffectMode)),
-		) {
+		!g.st.MaterializeNativeMapRangeMode(overlaySelector) {
 		return fmt.Errorf("native command overlay selector invalid")
 	}
 	copy(g.st.NativeTileBlitModes, fieldBytes)
@@ -6200,6 +6213,11 @@ func (g *Game) cancelNativeItemTargetModal() bool {
 	g.nativeItemTargeting = false
 	g.nativeItemRelocating = false
 	g.nativeMovementCostRows = nil
+	if g.nativeCommand23Relocating {
+		g.nativeCommand23Relocating = false
+		g.nativeCommandOpen = true
+		return true
+	}
 	g.itemOpen = true
 	// The native item panel remains the caller-owned parent while either
 	// selector is active.  Redraw the retained panel state; re-preparing it
@@ -7538,10 +7556,18 @@ func (g *Game) confirm() {
 	if g.nativeItemRelocating {
 		applied, err := g.applyNativeRelocationDestination(g.curX, g.curY)
 		if err != nil {
+			if g.nativeCommand23Relocating {
+				g.msg = fmt.Sprintf("傳送術：%v", err)
+				return
+			}
 			g.msg = fmt.Sprintf("物品 %02Xh：%v", g.nativeItemTargetID, err)
 			return
 		}
 		if applied {
+			if g.nativeCommand23Relocating {
+				g.msg = "傳送術：演出進行中"
+				return
+			}
 			if g.nativeModifierPresentation != nil || g.nativeUnitPresent != nil {
 				if message, ok := g.localeMessage("battle.item.relocation_presenting", g.nativeItemTargetID); ok {
 					g.msg = message
@@ -7564,13 +7590,34 @@ func (g *Game) confirm() {
 			return
 		}
 		record := g.st.NativeCommandBook[id]
+		targetCode := record.TargetCode
+		if record.SelectionMode == 0 {
+			flags, err := g.st.NativeCommandBaseFlags()
+			if err == nil {
+				_, err = battle.NativeCommandSelfCenteredTargets(g.st.W, g.st.H, g.sel,
+					battle.Cell{X: g.curX, Y: g.curY}, record.EffectMode, flags, g.st.Units)
+			}
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：自身範圍確認不合法", id)
+				return
+			}
+			targetCode = 4
+		}
 		allowed, gateErr := battle.NativeCursorConfirmationAllowed(
 			battle.Cell{X: g.curX, Y: g.curY},
 			g.st.NativeTileBlitModes[g.curY*g.st.W+g.curX],
-			g.st.NativeMapRangeMode, record.TargetCode, g.st.Units,
+			g.st.NativeMapRangeMode, targetCode, g.st.Units,
 		)
 		if gateErr != nil || !allowed {
 			g.msg = fmt.Sprintf("原始指令 %d：游標確認不合法", id)
+			return
+		}
+		if id == 23 {
+			if err := g.beginNativeCommand23Destination(tgt); err != nil {
+				g.msg = fmt.Sprintf("傳送術：%v", err)
+			} else {
+				g.msg = "傳送術：選擇目的地"
+			}
 			return
 		}
 		if id == 32 {
@@ -7894,9 +7941,9 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 3：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
-		case id == 5:
+		case id == 4 || id == 5:
 			actor := g.sel
-			err = g.startNativeCommand5Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
+			err = g.startNativeCommand45Presentation(actor, tgt, id, func(results []battle.NativeCommandDamageResult) {
 				hit, total := 0, 0
 				for _, result := range results {
 					if result.Hit {
@@ -7906,7 +7953,7 @@ func (g *Game) confirm() {
 					}
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
-				g.msg = fmt.Sprintf("原始指令 5：命中 %d，傷害 %d", hit, total)
+				g.msg = fmt.Sprintf("原始指令 %d：命中 %d，傷害 %d", id, hit, total)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7915,7 +7962,7 @@ func (g *Game) confirm() {
 				g.checkResult()
 			})
 			if err != nil {
-				g.msg = "原始指令 5：indexed 演出不可用 (" + err.Error() + ")"
+				g.msg = fmt.Sprintf("原始指令 %d：演出不可用 (%v)", id, err)
 			}
 			return
 		case id == 7:
@@ -7992,7 +8039,7 @@ func (g *Game) confirm() {
 			return
 		case id >= 10 && id <= 12:
 			actor := g.sel
-			err = g.startNativeCommand1012Presentation(actor, tgt, id, func(results []battle.NativeCommandDamageResult) {
+			err = g.startNativeCommand1012PresentationAtCursor(actor, battle.Cell{X: g.curX, Y: g.curY}, id, func(results []battle.NativeCommandDamageResult) {
 				hit, total := 0, 0
 				for _, result := range results {
 					if result.Hit {
@@ -8038,7 +8085,7 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 6：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
-		case id == 29 || id == 30:
+		case id == 28 || id == 29 || id == 30:
 			actor := g.sel
 			then := func(results []battle.NativeCommand24Damage) {
 				total := 0
@@ -8059,20 +8106,22 @@ func (g *Game) confirm() {
 				g.checkResult()
 			}
 			var err error
-			if id == 30 {
+			if id == 28 {
+				err = g.startNativeCommand28Presentation(actor, tgt, then)
+			} else if id == 30 {
 				if g.nativeCommand30SavedCursor == nil {
 					g.msg = "原始指令 30：缺少選取前游標"
 					return
 				}
 				err = g.startNativeCommand30PresentationAtCursor(actor, *g.nativeCommand30SavedCursor, battle.Cell{X: g.curX, Y: g.curY}, then)
 			} else {
-				err = g.startNativeCommand29Presentation(actor, tgt, then)
+				err = g.startNativeCommand29PresentationAtCursor(actor, battle.Cell{X: g.curX, Y: g.curY}, then)
 			}
 			if err != nil {
 				g.msg = fmt.Sprintf("原始指令 %d：indexed 演出不可用 (%v)", id, err)
 			}
 			return
-		case id == 28 || id == 31:
+		case id == 31:
 			results, e := g.st.ExecuteNativeCommandDerivedStrike(g.sel, tgt, id, g.rng)
 			err = e
 			total := 0

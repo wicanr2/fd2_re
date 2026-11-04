@@ -55,6 +55,96 @@ func nativeCommand24Book() []NativeCommandRecord {
 	return book
 }
 
+func TestNativeCommand29FormalSelfCenterKeepsEnemyListAndTransaction(t *testing.T) {
+	book, err := LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if book[29].SelectionMode != 0 || book[29].EffectMode != 2 || book[29].MPCost != 26 {
+		t.Fatal("formal command29 record changed")
+	}
+	actor := &Unit{Camp: Own, X: 2, Y: 2, HP: 180, MP: 40, AP: 120, OnField: true, HasNativeRecordByte5: true}
+	near := &Unit{Camp: Enemy, X: 3, Y: 2, HP: 500, DP: 20, OnField: true, HasNativeRecordByte5: true}
+	edge := &Unit{Camp: Enemy, X: 4, Y: 2, HP: 500, DP: 25, OnField: true, HasNativeRecordByte5: true}
+	far := &Unit{Camp: Enemy, X: 5, Y: 2, HP: 500, OnField: true, HasNativeRecordByte5: true}
+	friend := &Unit{Camp: Own, X: 2, Y: 3, HP: 180, OnField: true, HasNativeRecordByte5: true}
+	inactive := &Unit{Camp: Enemy, X: 2, Y: 1, HP: 500, OnField: true, HasNativeRecordByte5: true, NativeRecordByte5: 1}
+	st := &State{W: 7, H: 5, Units: []*Unit{actor, near, edge, far, friend, inactive}, NativeCommandBook: book, NativeCompositionEventBytes: make([]byte, 35)}
+	var plan *NativeCommandDerivedStrikePlan
+	for _, cursor := range []Cell{{2, 2}, {3, 2}, {2, 3}} {
+		plan, err = st.PlanNativeCommand29AtCursor(actor, cursor, rand.New(rand.NewSource(7)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(plan.Results) != 2 || plan.Results[0].Target != near || plan.Results[1].Target != edge || plan.MPAfter != 14 {
+			t.Fatalf("confirmation cursor%v changed fixed list=%+v MP=%d", cursor, plan.Results, plan.MPAfter)
+		}
+	}
+	if actor.MP != 40 || actor.Acted || near.HP != 500 || edge.HP != 500 {
+		t.Fatal("planning changed live units")
+	}
+	if err := ApplyNativeCommandDerivedStrikeMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	for i := range plan.Results {
+		if err := ApplyNativeCommandDerivedStrikeTarget(plan, i); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := CompleteNativeCommandDerivedStrike(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.MP != 14 || !actor.Acted || near.HP >= 500 || edge.HP >= 500 || far.HP != 500 || friend.HP != 180 || inactive.HP != 500 {
+		t.Fatal("self-center publication changed excluded units or missed final transaction")
+	}
+}
+
+func TestNativeCommand29InvalidCursorKeepsUnitsAndRNG(t *testing.T) {
+	book, err := LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, c := range []struct {
+		name         string
+		cursor       Cell
+		missingRaw   bool
+		inactive     bool
+		insufficient bool
+	}{
+		{name: "outside-effect-field", cursor: Cell{3, 0}},
+		{name: "outside-grid", cursor: Cell{-1, 0}},
+		{name: "missing-raw", missingRaw: true},
+		{name: "inactive-enemy", inactive: true},
+		{name: "insufficient-mp", insufficient: true},
+	} {
+		t.Run(c.name, func(t *testing.T) {
+			actor := &Unit{Camp: Own, X: 0, Y: 0, HP: 180, MP: 40, AP: 120, OnField: true, HasNativeRecordByte5: true}
+			target := &Unit{Camp: Enemy, X: 1, Y: 0, HP: 500, OnField: true, HasNativeRecordByte5: !c.missingRaw}
+			if c.inactive {
+				target.NativeRecordByte5 = 1
+			}
+			if c.insufficient {
+				actor.MP = 25
+			}
+			beforeActor, beforeTarget := *actor, *target
+			st := &State{W: 4, H: 1, Units: []*Unit{actor, target}, NativeCommandBook: book, NativeCompositionEventBytes: make([]byte, 4)}
+			rng, control := rand.New(rand.NewSource(7)), rand.New(rand.NewSource(7))
+			if _, err := st.PlanNativeCommand29AtCursor(actor, c.cursor, rng); err == nil {
+				t.Fatal("invalid self-center admission accepted")
+			}
+			if !reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*target, beforeTarget) || rng.Int63() != control.Int63() {
+				t.Fatal("rejected admission changed units or RNG")
+			}
+		})
+	}
+	for _, id := range []int{-1, 36, 255} {
+		st := &State{NativeCommandBook: book}
+		if _, err := st.PlanNativeCommandDerivedStrike(nil, nil, id, rand.New(rand.NewSource(7))); err == nil {
+			t.Fatalf("invalid command accepted: %d", id)
+		}
+	}
+}
+
 func TestExecuteNativeCommand24UsesDerivedStatsAndOneMPDebit(t *testing.T) {
 	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30}
 	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 200}
@@ -148,18 +238,70 @@ func TestPlanNativeCommand24DoesNotTurnNegativeDamageIntoHealing(t *testing.T) {
 }
 
 func TestExecuteNativeCommandDerivedStrikeUsesRecoveredID28MultiplierAndDenominator(t *testing.T) {
-	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30}
+	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30, BattleFig: 19, HasBattleFig: true}
 	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 300}
 	book := nativeCommand24Book()
 	book[28] = NativeCommandRecord{ID: 28, SelectionMode: 1, EffectMode: 0, MPCost: 22, TargetCode: 0}
 	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
 
 	got, err := st.ExecuteNativeCommandDerivedStrike(actor, target, 28, rand.New(rand.NewSource(2)))
-	if err != nil || len(got) != 1 || got[0].Amount != 180 || got[0].Damage < 20 || got[0].Damage > 22 {
+	if err != nil || len(got) != 1 || got[0].Amount != 180 || got[0].Damage < 162 || got[0].Damage > 179 {
 		t.Fatalf("ID28 result=%#v err=%v", got, err)
 	}
 	if actor.MP != 8 || !actor.Acted || target.HP != 300-got[0].Damage {
 		t.Fatalf("ID28 state actor=%#v target=%#v result=%#v", actor, target, got[0])
+	}
+}
+
+func TestNativeCommand28EightStagesClampBeforeDivision(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30, BattleFig: 19, HasBattleFig: true, HasNativeRecordByte5: true}
+	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 7, HasNativeRecordByte5: true}
+	book := nativeCommand24Book()
+	book[28] = NativeCommandRecord{ID: 28, SelectionMode: 1, EffectMode: 0, MPCost: 22, TargetCode: 0}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
+	plan, err := st.PlanNativeCommandDerivedStrike(actor, target, 28, rand.New(rand.NewSource(2)))
+	if err != nil || plan.TargetImpactCount != 8 || plan.Results[0].Damage != 7 || target.HP != 7 || actor.MP != 30 {
+		t.Fatalf("capped stage plan=%+v err=%v", plan, err)
+	}
+	if err := ApplyNativeCommand28TargetStage(plan, 0, 1); err == nil || target.HP != 7 {
+		t.Fatal("target impact preceded MP")
+	}
+	if err := ApplyNativeCommandDerivedStrikeMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	if err := ApplyNativeCommand28TargetStage(plan, 0, 2); err == nil || target.HP != 7 {
+		t.Fatal("target impact skipped a stage")
+	}
+	for stage := 1; stage <= 8; stage++ {
+		if err := ApplyNativeCommand28TargetStage(plan, 0, stage); err != nil {
+			t.Fatal(err)
+		}
+		if target.HP != 7-7*stage/8 || actor.MP != 8 || actor.Acted {
+			t.Fatalf("stage%d: HP%d MP%d acted%v", stage, target.HP, actor.MP, actor.Acted)
+		}
+		if err := ApplyNativeCommand28TargetStage(plan, 0, stage); err == nil {
+			t.Fatal("duplicate marker published twice")
+		}
+		if stage < 8 {
+			if target.NativeRecordByte5 != 0 || CompleteNativeCommandDerivedStrike(plan) == nil {
+				t.Fatal("command28 completed or killed target before eight impacts")
+			}
+		}
+	}
+	if err := CompleteNativeCommandDerivedStrike(plan); err != nil || !actor.Acted || target.HP != 0 || target.NativeRecordByte5 != 1 {
+		t.Fatalf("final stage did not complete: %v", err)
+	}
+}
+
+func TestNativeCommand28UnprovenSelectorRejectsBeforeRNG(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, AP: 100, MP: 30, BattleFig: 20, HasBattleFig: true}
+	target := &Unit{Camp: Enemy, OnField: true, X: 1, HP: 300}
+	book := nativeCommand24Book()
+	book[28] = NativeCommandRecord{ID: 28, SelectionMode: 1, MPCost: 22}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
+	rng, control := rand.New(rand.NewSource(2)), rand.New(rand.NewSource(2))
+	if _, err := st.PlanNativeCommandDerivedStrike(actor, target, 28, rng); err == nil || actor.MP != 30 || actor.Acted || target.HP != 300 || rng.Int63() != control.Int63() {
+		t.Fatal("unproven command28 source reached RNG or state publication")
 	}
 }
 

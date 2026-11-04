@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"path/filepath"
 	"testing"
@@ -8,6 +9,73 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
+
+func TestNativeCommand29FormalSelfCenterThroughConfirm(t *testing.T) {
+	for _, side := range []byte{0, 1} {
+		t.Run(fmt.Sprintf("side%d", side), func(t *testing.T) {
+			g, actor, targets := newNativeCommand29PresentationTestGame(t)
+			book, err := battle.LoadNativeCommandRecords("../../assets/spells.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			actor.HasNativeRecordByte5 = true
+			actor.NativeRecordByte6, actor.NativeRecordByte8 = side, 2
+			g.st.NativeCommandBook = book
+			g.st.HasNativeMapViewState = true
+			g.st.NativeTileBlitModes = make([]byte, 3)
+			g.sel, g.curX, g.curY = actor, actor.X, actor.Y
+			if err := g.beginNativeCommandTargetSelection(29); err != nil {
+				t.Fatal(err)
+			}
+			if g.st.NativeMapRangeMode != 1 || g.st.NativeTileBlitModes[1] == 0xff {
+				t.Fatal("selection-mode0 did not show its effect field with overlay1")
+			}
+			g.curX = 1 // Confirmation may move; the effect list stays actor-centered.
+			g.confirm()
+			job := g.nativeCmd29Presentation
+			if job == nil || len(job.targets) != 2 {
+				t.Fatalf("formal self center did not enter animation: %s", g.msg)
+			}
+			if job.plan.Results[0].Target != targets[0] || job.plan.Results[1].Target != targets[1] {
+				t.Fatal("self-center occupant became damage target")
+			}
+			g.stepNativeCommand29Presentation()
+			if actor.MP != 40 || actor.Acted || targets[0].HP != 210 || targets[1].HP != 220 {
+				t.Fatal("confirm or an undrawn frame published the transaction")
+			}
+			screen := ebiten.NewImage(640, 400)
+			for steps := 0; g.nativeCmd29Presentation != nil && steps < 1000; steps++ {
+				if !g.drawNativeCommand29Presentation(screen) {
+					t.Fatalf("draw failed at step%d", steps)
+				}
+				g.stepNativeCommand29Presentation()
+			}
+			if g.nativeCmd29Presentation != nil || actor.MP != 14 || !actor.Acted || targets[0].HP >= 210 || targets[1].HP >= 220 {
+				t.Fatalf("formal animation did not finish: MP%d HP%d/%d error%s", actor.MP, targets[0].HP, targets[1].HP, g.loadErr)
+			}
+			if g.nativeCommand0Targeting || g.sel != nil || g.st.NativeMapRangeMode != 1 {
+				t.Fatal("formal animation did not restore player targeting")
+			}
+		})
+	}
+}
+
+func TestNativeCommand29MissingNativeSourcesRejectsBeforeDamageRNG(t *testing.T) {
+	g, actor, targets := newNativeCommand29PresentationTestGame(t)
+	book, err := battle.LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.st.NativeCommandBook = book
+	actor.HasNativeRecordByte5 = true
+	targets[1].BattleFig = 99999
+	if err := g.startNativeCommand29PresentationAtCursor(actor, battle.Cell{X: actor.X, Y: actor.Y}, nil); err == nil {
+		t.Fatal("missing target FIGANI entered animation")
+	}
+	if g.nativeCmd29Presentation != nil || actor.MP != 40 || actor.Acted || targets[0].HP != 210 || targets[1].HP != 220 || g.rng.Int63() != rand.New(rand.NewSource(29)).Int63() {
+		t.Fatal("missing source changed owner, units or damage RNG")
+	}
+}
 
 func newNativeCommand29PresentationTestGame(t *testing.T) (*Game, *battle.Unit, []*battle.Unit) {
 	t.Helper()

@@ -1,12 +1,66 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
 )
+
+func TestNativePlayerFormalCommandEntryAndPresentation(t *testing.T) {
+	for _, command := range []int{3, 4, 5, 7} {
+		for _, side := range []byte{0, 2} {
+			t.Run(fmt.Sprintf("command%d-side%d", command, side), func(t *testing.T) {
+				g, actor, target := ordinaryCommand0HDTestGame(t)
+				book, err := battle.LoadNativeCommandRecords("../../assets/spells.json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				g.st.NativeCommandBook = book
+				g.st.NativeCommandResistances, err = battle.LoadNativeCommandResistances("../../assets/data/native_command_resistances.json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				actor.MP, actor.MaxMP, actor.NativeRecordByte6 = 200, 200, side
+				if command == 4 || command == 5 {
+					actor.BattleFig, actor.NativeRecordByte8 = 14, 14
+					actor.NativeIdentity, actor.HasNativeIdentity = 14, true
+				}
+				target.HP, target.MaxHP = 900, 900
+				g.sel, g.curX, g.curY = actor, target.X, target.Y
+				if err := g.beginNativeCommandTargetSelection(command); err != nil {
+					t.Fatal(err)
+				}
+				g.confirm()
+				active := func() bool {
+					return g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd7Presentation != nil
+				}
+				if !active() {
+					t.Fatalf("formal command did not enter presentation: %s", g.msg)
+				}
+				screen := ebiten.NewImage(640, 400)
+				for steps := 0; active() && steps < 5000; steps++ {
+					switch command {
+					case 3:
+						g.drawNativeCommand3Presentation(screen)
+						g.stepNativeCommand3Presentation()
+					case 4, 5:
+						g.drawNativeCommand5Presentation(screen)
+						g.stepNativeCommand5Presentation()
+					case 7:
+						g.drawNativeCommand7Presentation(screen)
+						g.stepNativeCommand7Presentation()
+					}
+				}
+				if active() || actor.MP != 200-book[command].MPCost || !actor.Acted || g.nativeCommand0Targeting || g.sel != nil || g.loadErr != "" {
+					t.Fatalf("formal command did not complete and restore cursor: MP%d acted%v error%s", actor.MP, actor.Acted, g.loadErr)
+				}
+			})
+		}
+	}
+}
 
 func nativeCommand3PresentationTestPlan(t *testing.T) (*battle.NativeCommandDamagePlan, *battle.Unit, *battle.Unit) {
 	t.Helper()

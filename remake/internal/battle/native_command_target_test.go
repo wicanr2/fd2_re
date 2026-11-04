@@ -1,6 +1,7 @@
 package battle
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -461,6 +462,34 @@ func TestNativeCommand6PlayerCursorCenterOutsideDirectCandidates(t *testing.T) {
 	}
 	if actor.MP != 1101 || actor.Acted || target.HP != 83 || center.HP != 877 {
 		t.Fatal("planning mutated state")
+	}
+}
+
+func TestNativeCommand1012FormalSelfCenterPlansEnemyEffects(t *testing.T) {
+	book, err := LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []int{10, 11, 12} {
+		t.Run(fmt.Sprintf("command%d", id), func(t *testing.T) {
+			actor := &Unit{Camp: Own, X: 2, Y: 2, HP: 180, MP: 100, OnField: true, HasNativeRecordByte5: true}
+			target := &Unit{Camp: Enemy, X: 3, Y: 2, HP: 500, ClassID: 4, OnField: true, HasNativeRecordByte5: true}
+			st := &State{W: 5, H: 5, Units: []*Unit{actor, target}, NativeCommandBook: book, NativeCompositionEventBytes: make([]byte, 25)}
+			plan, err := st.PlanNativeCommandDamageAtCursor(actor, Cell{2, 2}, id, map[int]int{4: 4}, 7, nil)
+			if err != nil || len(plan.Results) != 1 || plan.Results[0].Target != target || plan.MPAfter != 100-book[id].MPCost {
+				t.Fatalf("command%d plan=%+v err=%v", id, plan, err)
+			}
+			if actor.MP != 100 || actor.Acted || target.HP != 500 {
+				t.Fatal("planning mutated live units")
+			}
+			moved, err := st.PlanNativeCommandDamageAtCursor(actor, Cell{3, 2}, id, map[int]int{4: 4}, 7, nil)
+			if err != nil || len(moved.Results) != 1 || moved.Results[0].Target != target {
+				t.Fatal("selection-mode0 confirmation changed its fixed enemy list")
+			}
+			if _, err := st.PlanNativeCommandDamageAtCursor(actor, Cell{5, 2}, id, map[int]int{4: 4}, 7, nil); err == nil {
+				t.Fatal("out-of-grid confirmation accepted")
+			}
+		})
 	}
 }
 

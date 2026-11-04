@@ -237,7 +237,11 @@ func TestPromoSpecialGUISources(t *testing.T) {
 			t.Fatal(err)
 		}
 		u.AP, u.BaseAP = u.AP+5000, u.BaseAP+5000
-		u.DP, u.BaseDP = u.DP+300, u.BaseDP+300
+		defenseIncrement := 300
+		if c.identity == 19 {
+			defenseIncrement = 3000
+		}
+		u.DP, u.BaseDP = u.DP+defenseIncrement, u.BaseDP+defenseIncrement
 		if !source.PartyMembers[c.identity] {
 			source.PartyJoinOrder = append(source.PartyJoinOrder, c.identity)
 		}
@@ -262,6 +266,10 @@ func TestPromoSpecialGUISources(t *testing.T) {
 			return b
 		}
 		output := write("fd2_save.json", source)
-		write("manifest.json", map[string]any{"status": "PASS-CONTROLLED-PROMO-SOURCE", "base_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "output_sha256": fmt.Sprintf("%x", sha256.Sum256(output)), "identity": c.identity, "command": c.command, "source_map": c.originalMap, "source_slot": c.slot, "before_growth": before, "after_policy": u, "growth_events": events, "seed_before": 7, "seed_after": seed, "state_injection": true, "normal_progression_proven": false, "policy": map[string]any{"exp": 300, "base_ap_increment": 5000, "base_dp_increment": 300, "tino_level_before_growth": 1, "rodman_mask": "map22 units[1] constructor mask"}})
+		expTotal := 300
+		if c.identity == 2 {
+			expTotal = 600
+		}
+		write("manifest.json", map[string]any{"status": "PASS-CONTROLLED-PROMO-SOURCE", "base_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "output_sha256": fmt.Sprintf("%x", sha256.Sum256(output)), "identity": c.identity, "command": c.command, "source_map": c.originalMap, "source_slot": c.slot, "before_growth": before, "after_policy": u, "growth_events": events, "seed_before": 7, "seed_after": seed, "state_injection": true, "normal_progression_proven": false, "policy": map[string]any{"exp": expTotal, "base_ap_increment": 5000, "base_dp_increment": defenseIncrement, "tino_level_before_growth": 1, "rodman_mask": "map22 units[1] constructor mask"}})
 	}
 }

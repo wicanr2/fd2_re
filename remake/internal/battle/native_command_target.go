@@ -496,6 +496,38 @@ func NativeCommandEffectTargetsAtCursor(w, h int, actor *Unit, cursor Cell, sele
 	return targets, nil
 }
 
+// NativeCommandSelfCenteredTargets follows sub_1CFF0 0x1D366..0x1D3B4.
+// SelectionMode0 fixes the enemy list and effect field at the invoking actor.
+// A nonempty list confirms with literal targetCode4 and overlay1; an empty list
+// uses targetCode5. Moving the confirmation cursor never recenters the list.
+func NativeCommandSelfCenteredTargets(w, h int, actor *Unit, cursor Cell, effectMode int, flags []byte, units []*Unit) ([]*Unit, error) {
+	if !nativeTargetRosterRawComplete(units) || !nativeTargetActorUsable(actor, true) ||
+		cursor.X < 0 || cursor.Y < 0 || cursor.X >= w || cursor.Y >= h {
+		return nil, fmt.Errorf("invalid native self-centered command cursor/raw roster")
+	}
+	origin := Cell{X: actor.X, Y: actor.Y}
+	field, err := NativeCommandTargetFieldBytes(w, h, origin, effectMode, 0, flags)
+	if err != nil {
+		return nil, err
+	}
+	targets, err := NativeCommandTargets(w, h, origin, effectMode, 0, flags, units)
+	if err != nil {
+		return nil, err
+	}
+	code := 5
+	if len(targets) > 0 {
+		code = 4
+	}
+	allowed, err := NativeCursorConfirmationAllowed(cursor, field[cursor.Y*w+cursor.X], 1, code, units)
+	if err != nil {
+		return nil, err
+	}
+	if !allowed {
+		return nil, fmt.Errorf("native self-centered command confirmation refused")
+	}
+	return targets, nil
+}
+
 // NativeCommand30Targets mirrors the special 0x149F8 selector used only by
 // player command 30.  It starts at the cursor position saved before 0x115B6,
 // advances SelectionMode-0x10 cells towards the confirmed cursor, and keeps

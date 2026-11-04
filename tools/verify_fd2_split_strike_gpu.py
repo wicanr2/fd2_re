@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""核對24／29／30完整最終GPU、固定FIGANI來源及原生空拍。須在資產Docker執行。"""
+"""核對24／28／29／30完整最終GPU與固定FIGANI來源。須在資產Docker執行。"""
 import argparse
 import hashlib
 import json
@@ -12,6 +12,7 @@ from build_fd2_gaia_battle_hd import digest
 from validate_modern_theme_catalog import validate
 from verify_fd2_compound_caster_gpu import pinned_native_blank
 from audit_fd2_battle_background_sources import audit as audit_backgrounds
+from audit_fd2_battle_animation_hd import audit as audit_animations
 
 INVENTORY_SHA = 'd019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51'
 
@@ -90,28 +91,46 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         raise ValueError('固定來源盤點不同')
     proof = json.loads(inventory.read_text())
     if (proof.get('status') != 'PASS-SOURCE-INVENTORY'
-        or proof.get('archive_reconstruction', {}).get('matches_pinned_original') is not True
-        or digest(original_pack/'manifest.json') != proof['pack_manifest_sha256']):
+        or proof.get('archive_reconstruction', {}).get('matches_pinned_original') is not True):
         raise ValueError('原始包或重建證據不同')
+    revalidation = None
+    if digest(original_pack/'manifest.json') != proof['pack_manifest_sha256']:
+        current = audit_animations(original_pack, catalog, 19)
+        for field in ('source_inputs', 'archive_reconstruction', 'resources'):
+            if current[field] != proof[field]:
+                raise ValueError('目前素材包與固定盤點的完整原圖證據不同：'+field)
+        revalidation = {'status': 'PASS-FULL-SOURCE-REVALIDATION',
+                        'previous_manifest_sha256': proof['pack_manifest_sha256'],
+                        'current_manifest_sha256': current['pack_manifest_sha256'],
+                        'verified_manifest_assets': current['verified_manifest_assets'],
+                        'resource_count': current['resource_count'],
+                        'archive_reconstruction': current['archive_reconstruction'],
+                        'auditor_sha256': current['tool_sha256']}
     doc = validate(False, catalog)
     entries = {a['source_resource']: a for a in doc['assets'] if a['role'] == 'battle_animation_hd_set'}
     surfaces = {(a['source_archive'],a['source_resource']):a for a in doc['assets'] if a['role']=='battle_surface_hd'}
     d = json.loads(receipt.read_text())
     command = d.get('command_id')
-    profiles = {24: (32, 15, 9, 1, 2, 22), 29: (34, 18, 11, 2, 29, 26),
+    profiles = {24: (32, 15, 9, 1, 2, 22), 28: (19, 19, 7, 1, 28, 22), 29: (34, 18, 11, 2, 29, 26),
                 30: (18, 14, 9, 2, 30, 24)}
     if command not in profiles:
-        raise ValueError('需要24／29／30收據')
+        raise ValueError('需要24／28／29／30收據')
     figure, count, start, target_count, seed, mp_cost = profiles[command]
     resource = figure*3+2
+    # Mode0 layers a moving translucent actor over the idle target. The GPU
+    # rounds at each Over; the independent float reference rounds at readback.
+    # Retain the existing one-channel bound for the other profiles.
+    tolerance = 2 if command == 28 else 1
     phases = {'prelude', 'actor'} | {p+str(i) for i in range(target_count)
                                                 for p in ('transition-out-', 'transition-in-', 'target-')}
+    if command == 28:
+        phases = {'prelude', 'actor', 'target-0'}
     if (d.get('status') != 'PASS-SPLIT-STRIKE-RUNTIME-E1' or d.get('actor_figure') != figure
         or d.get('catalog_sha256') != digest(catalog) or d.get('hashes_only') is not False
         or d.get('continuations') != 1 or d.get('owner_released') is not True
         or d.get('gpu_sources_cleared') is not True or d.get('mp_changes') != 1
         or d.get('mp_before', 0)-d.get('mp_after', 0) != mp_cost
-        or d.get('hp_changes') != [1]*target_count or len(d.get('hp_before', [])) != target_count
+        or d.get('hp_changes') != ([8] if command == 28 else [1]*target_count) or len(d.get('hp_before', [])) != target_count
         or len(d.get('hp_after', [])) != target_count
         or any(a <= b for a, b in zip(d['hp_before'], d['hp_after']))
         or d.get('go_seed') != seed or d.get('go_rng_planning_calls') != target_count
@@ -139,7 +158,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
     row, asset = bank(resource)
     if len(row['frames']) != count:
         raise ValueError('分段打擊幀數不同')
-    blank = pinned_native_blank(original_pack, proof, resource, count-1, source/asset['files'][-1])
+    blank = None if command == 28 else pinned_native_blank(original_pack, proof, resource, count-1, source/asset['files'][-1])
     found, coverage, outputs, worst = set(), {p: set() for p in phases}, {}, 0
     used_surfaces=set(); surface_proofs={}
     shots = d.get('source_shots', {})
@@ -169,7 +188,18 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             if archive in ('BG.DAT','TAI.DAT'):
                 if frame!=0 or not isinstance(rid,int) or not 0<=rid<56:
                     raise ValueError('場景來源或單圖索引不同')
-                row=background_inventory(original_pack)['banks'][archive[:-4]]['entries'][rid]
+                if command == 28:
+                    # This profile uses two registered HD surfaces and no
+                    # native BG0..2 transition. Pin its descriptor directly to
+                    # the reviewed catalog; do not substitute an old whole-pack
+                    # manifest for the source-metadata hash.
+                    meta_path = original_pack/'surfaces'/f'{archive[:-4]}_{rid:03d}'/'resource.json'
+                    meta = json.loads(meta_path.read_text())
+                    row = dict(width=meta['width'], height=meta['height'], metadata_sha256=digest(meta_path))
+                    if (archive, rid) not in surfaces or row['metadata_sha256'] != surfaces[archive, rid]['source_metadata_sha256']:
+                        raise ValueError('淒煌斬場景描述子不是已登錄原圖')
+                else:
+                    row=background_inventory(original_pack)['banks'][archive[:-4]]['entries'][rid]
                 origin=(0,50) if archive=='BG.DAT' else (164,157)
                 if [x,y,w,h]!=[origin[0],origin[1],row['width'],row['height']]:
                     raise ValueError('場景原描述子／metadata／HD身分不同')
@@ -221,13 +251,14 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         actual = checked_image(receipt.parent, sample['file'], sample['sha256'], (1920, 1200))
         error = max(v[1] for v in ImageChops.difference(expected, actual).getextrema())
         worst = max(worst, error)
-        if error > 1:
+        if error > tolerance:
             raise ValueError(f'完整GPU與獨立CPU Over不同：{label}，最大差{error}')
         outputs[label] = sample['sha256']
     required = {'prelude': set(range(9)), 'actor': set(range(start))}
     for i in range(target_count):
-        required.update({f'transition-out-{i}': set(range(10)),
-                         f'transition-in-{i}': set(range(10, 20)), f'target-{i}': set(range(start, count))})
+        required[f'target-{i}'] = set(range(start, count))
+        if command != 28:
+            required.update({f'transition-out-{i}': set(range(10)), f'transition-in-{i}': set(range(10, 20))})
     if coverage != required or found != set(range(count)):
         raise ValueError('完整原生相位、來源幀或空拍缺少實際Draw')
     if d.get('scenery_triple') is not None:
@@ -235,9 +266,12 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         if triple not in ('4:5:6','5:6:4','6:4:5','7:9:10','34:36:37','40:43:47') or side not in ('0','2'):
             raise ValueError('明示場景測試槽不同')
         indices=list(map(int,triple.split(':')))
-        wanted={('BG.DAT',i) for i in indices[:target_count+1]}
-        wanted.update(('BG.DAT',i) for i in range(3) if ('BG.DAT',i) in surfaces)
-        if side=='2':wanted.add(('TAI.DAT',indices[0]))
+        if command == 28:
+            wanted = {('BG.DAT', indices[1]), ('TAI.DAT', indices[0])}
+        else:
+            wanted={('BG.DAT',i) for i in indices[:target_count+1]}
+            wanted.update(('BG.DAT',i) for i in range(3) if ('BG.DAT',i) in surfaces)
+            if side=='2':wanted.add(('TAI.DAT',indices[0]))
         if used_surfaces!=wanted:
             raise ValueError('缺少全部實際BG／TAI來源Draw')
     runtime_sha = None
@@ -256,8 +290,10 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             'receipt_sha256': digest(receipt), 'runtime_receipt_sha256': runtime_sha,
             'catalog_sha256': digest(catalog), 'inventory_sha256': digest(inventory),
             'original_manifest_sha256': digest(original_pack/'manifest.json'), 'verifier_sha256': digest(Path(__file__)),
+            'manifest_inventory_revalidation': revalidation,
             'native_metadata': native_proofs, 'surface_metadata':surface_proofs,'blank': blank, 'special_frames': sorted(found),
             'phase_indices': {p: sorted(v) for p, v in coverage.items()}, 'screens': outputs, 'worst_channel_error': worst,
+            'rgba_tolerance': tolerance,
             'scope': '實際Game.Draw最終1920全畫布對獨立Pillow Over及固定FIGANI描述子／成品；'
                      '原生背景與viewport幾何另由雙側來源矩陣驗證。非原版RGB parity、正常玩家或人工美術驗收。'}
 

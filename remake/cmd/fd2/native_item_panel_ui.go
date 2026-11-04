@@ -718,6 +718,40 @@ func (g *Game) applyNativeTargetItem(confirmed *battle.Unit) (bool, error) {
 	return true, nil
 }
 
+func (g *Game) beginNativeCommand23Destination(target *battle.Unit) error {
+	if g == nil || g.st == nil || g.sel == nil || target == nil || !g.nativeCommand0Targeting || g.nativeCommandTargetID != 23 || len(g.st.NativeCommandBook) != 36 || g.sel.MP < g.st.NativeCommandBook[23].MPCost {
+		return fmt.Errorf("native command23 target/MP context unavailable")
+	}
+	candidates, err := g.nativeCommandTargetUnitsFor(23)
+	if err != nil {
+		return err
+	}
+	targetSlot := -1
+	for _, candidate := range candidates {
+		if candidate == target {
+			for i, unit := range g.st.Units {
+				if unit == target {
+					targetSlot = i
+				}
+			}
+		}
+	}
+	if targetSlot < 0 || len(g.st.NativeTerrainMoveCodes) != g.st.W*g.st.H {
+		return fmt.Errorf("native command23 target/terrain unavailable")
+	}
+	rows, err := battle.LoadNativeMovementCostRows(assetPath("assets/data/native_movement_cost_rows.json"))
+	if err != nil {
+		return err
+	}
+	if !g.resetNativeTargetField() || !g.st.MaterializeNativeMapRangeMode(1) {
+		return fmt.Errorf("native command23 destination field unavailable")
+	}
+	g.nativeMovementCostRows, g.nativeItemRelocationUnit = rows, targetSlot
+	g.nativeCommand0Targeting, g.nativeItemRelocating, g.nativeCommand23Relocating = false, true, true
+	g.curX, g.curY = target.X, target.Y
+	return nil
+}
+
 func (g *Game) nativeRelocationDestinationAllowed(x, y int) (bool, error) {
 	if g == nil || g.st == nil || !g.nativeItemRelocating ||
 		x < 0 || y < 0 || x >= g.st.W || y >= g.st.H ||
@@ -779,22 +813,24 @@ func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error) {
 	if sourceUnit < 0 {
 		return false, fmt.Errorf("native relocation source is absent")
 	}
-	rowOffset, err := battle.NativeItemEffectRowOffset(g.nativeItemTargetID)
-	if err != nil {
-		return false, err
-	}
-	row := g.nativeItemEffectRows[rowOffset : rowOffset+battle.NativeItemEffectRowSize]
-	route, ok := battle.NativeItemRelocationRouteForType(
-		row[0x0d], binary.LittleEndian.Uint16(row[0x0e:0x10]),
-	)
-	if !ok {
-		return false, fmt.Errorf("native relocation route is unavailable")
-	}
 	plannedRecords := append([]byte(nil), records...)
-	if _, err := battle.ApplyNativeItemRelocation(
-		plannedRecords, sourceUnit, []byte{byte(g.nativeItemRelocationUnit)},
-		byte(x), byte(y), route, g.nativeCommandBook,
-	); err != nil {
+	command23 := g.nativeCommand23Relocating
+	var relocation battle.NativeItemRelocationResult
+	if command23 {
+		relocation, err = battle.ApplyNativeCommand23Relocation(plannedRecords, sourceUnit, []byte{byte(g.nativeItemRelocationUnit)}, byte(x), byte(y), g.st.NativeCommandBook)
+	} else {
+		rowOffset, rowErr := battle.NativeItemEffectRowOffset(g.nativeItemTargetID)
+		if rowErr != nil || rowOffset+battle.NativeItemEffectRowSize > len(g.nativeItemEffectRows) {
+			return false, fmt.Errorf("native relocation item row unavailable")
+		}
+		row := g.nativeItemEffectRows[rowOffset : rowOffset+battle.NativeItemEffectRowSize]
+		route, ok := battle.NativeItemRelocationRouteForType(row[0x0d], binary.LittleEndian.Uint16(row[0x0e:0x10]))
+		if !ok {
+			return false, fmt.Errorf("native relocation route is unavailable")
+		}
+		relocation, err = battle.ApplyNativeItemRelocation(plannedRecords, sourceUnit, []byte{byte(g.nativeItemRelocationUnit)}, byte(x), byte(y), route, g.nativeCommandBook)
+	}
+	if err != nil {
 		return false, err
 	}
 	if g.nativeUnitPresent != nil || g.native2189A != nil || g.transitionReveal != nil ||
@@ -859,15 +895,24 @@ func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error) {
 		}
 		actor.NativeRecordByte5 |= 0x80
 		actor.HasNativeRecordByte5 = true
+		if command23 {
+			g.st.NativeExperienceAccumulator += relocation.AccumulatorDelta
+		}
 		g.finishSuccessfulUnitAction(actor, func() {
 			g.resetNativeTargetField()
 			g.st.MaterializeNativeMapRangeMode(1)
 			g.nativeItemRelocating = false
+			g.nativeCommand23Relocating = false
+			g.nativeCommandTargetID = 0
 			g.nativeMovementCostRows = nil
 			g.nativeItemEffectRows = nil
 			g.sel, g.reach, g.moved = nil, nil, false
 		})
-		g.msg = fmt.Sprintf("物品 %02Xh：原始移位效果完成", g.nativeItemTargetID)
+		if command23 {
+			g.msg = "傳送術：完成"
+		} else {
+			g.msg = fmt.Sprintf("物品 %02Xh：原始移位效果完成", g.nativeItemTargetID)
+		}
 	}
 	disappearJob.then = func() {
 		g.nativeUnitPresent = appearJob

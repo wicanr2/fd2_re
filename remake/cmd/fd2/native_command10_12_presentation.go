@@ -47,7 +47,15 @@ type nativeCommand1012Job struct {
 }
 
 func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit, commandID int, then func([]battle.NativeCommandDamageResult)) error {
-	if !g.nativeFullPresentationEnabled() || g == nil || g.st == nil || actor == nil || confirmed == nil || g.nativeCmd1012 != nil || g.native2189A != nil {
+	return g.startNativeCommand1012PresentationTarget(actor, confirmed, nil, commandID, then)
+}
+
+func (g *Game) startNativeCommand1012PresentationAtCursor(actor *battle.Unit, cursor battle.Cell, commandID int, then func([]battle.NativeCommandDamageResult)) error {
+	return g.startNativeCommand1012PresentationTarget(actor, nil, &cursor, commandID, then)
+}
+
+func (g *Game) startNativeCommand1012PresentationTarget(actor, confirmed *battle.Unit, cursor *battle.Cell, commandID int, then func([]battle.NativeCommandDamageResult)) error {
+	if !g.nativeFullPresentationEnabled() || g == nil || g.st == nil || actor == nil || (confirmed == nil && cursor == nil) || g.nativeCmd1012 != nil || g.native2189A != nil {
 		return errors.New("native command10-12 presentation context unavailable")
 	}
 	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil ||
@@ -69,7 +77,12 @@ func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit,
 		(!osMuteOrShot(g) && (len(g.sfxCommand1012Main) == 0 || schedule.Prelude.Enabled && len(g.sfxCommand1012Prelude) == 0)) {
 		return errors.New("native command10-12 map/result/audio assets unavailable")
 	}
-	plan, err := g.st.PlanNativeCommandDamage(actor, confirmed, commandID, g.st.NativeCommandResistances, g.nativeRNGState)
+	var plan *battle.NativeCommandDamagePlan
+	if cursor != nil {
+		plan, err = g.st.PlanNativeCommandDamageAtCursor(actor, *cursor, commandID, g.st.NativeCommandResistances, g.nativeRNGState, nil)
+	} else {
+		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, commandID, g.st.NativeCommandResistances, g.nativeRNGState)
+	}
 	if err != nil {
 		return err
 	}

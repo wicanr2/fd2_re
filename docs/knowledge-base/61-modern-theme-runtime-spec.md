@@ -25,27 +25,46 @@
 
 #### 戰鬥指令入口稽核
 
-狀態：已證實的正式程式缺口，完整戰鬥HD未完成。先前圖源及快取owner清冊保持各自範圍，不能證明選單可進場。本次已確認入口缺陷列於[#294](https://github.com/wicanr2/fd2_re/issues/294)，父項#263保持開啟。唯一36筆指令矩陣、來源SHA與數量為[本批現況表](../data/fd2-hd1-feedback-20261104.json)的battle_animation_audit.command_routes。
+狀態：本批已知玩家入口與淒煌斬正式演出已補接，驗證範圍為RUNTIME-E1與明示建構槽的正常鍵盤操作。完整戰鬥HD與原版對拍仍分列。本次入口缺陷列於[#294](https://github.com/wicanr2/fd2_re/issues/294)，父項#263保持開啟。唯一36筆指令矩陣、來源SHA與數量為[本批現況表](../data/fd2-hd1-feedback-20261104.json)的battle_animation_audit.command_routes。
 
 | 分類 | 已查明範圍 | 下一步 |
 |---|---|---|
-| 正式學習表招式被選單擋住 | 天火術、神雷術、碎岩術、地震術、裂地術、傳送術 | 前五者已有confirm演出呼叫，須接通正式入口並驗正常確認；傳送術仍缺法術完整施放入口，物品移位效果不能代替 |
-| 其他玩家選單未開放指令 | 電擊術、落雷術、咒殺術 | 敵方已有各自演出。前兩者另見map10友軍14初始遮罩；玩家JOIN後取得需分別核對，不把全部當成敵方專用或正常玩家完成 |
-| 僅數值結算 | 淒煌斬、未命名指令31 | 28依下節READY規格補正式演出；31名稱與正常角色未證實，保留未知 |
-| 演出存在、正常確認拒收 | 熾炎刀 | 修正自身中心與共用目標選取的正式入口，再驗施放與自然返回；不繞過原生確認閘門 |
+| 正式學習表入口已補接 | 天火術、神雷術、碎岩術、地震術、裂地術、傳送術 | 正式record確認、完整演出與返回通過；傳送術另驗實際HD、F2及雙段移位，不宣稱自然習得 |
+| 珊的原有初始招式已補接 | 電擊術、落雷術 | JOIN身份14的defaults[8:12]證實持有；雙側正式確認通過。咒殺術保持已有敵方入口，不新增我方取得 |
+| 淒煌斬正式演出已補接 | 羅德曼28 | resource59的49拍、八次累計傷害、雙側HD及正常鍵盤建構槽錄影通過；31仍只有數值入口，名稱與正常角色未知 |
+| 熾炎刀自身中心已修正 | 鐵諾29 | 正式record固定自身作用名單，欄內移動確認不平移名單；正常鍵盤完整施放與返回錄影通過 |
 | 接線存在但不能外推 | 其餘指令、物理攻防、反擊、死亡與共用地圖效果 | 已有收據保持；角色、側別、目標中心與正常取得的未驗組合分列，不以素材齊全宣稱全部通過 |
 
 重跑沿用[既有Go AST稽核器](../../tools/audit_fd2_battle_owners.go)，在維護中的Go容器內執行`go run /repo/tools/audit_fd2_battle_owners.go -root /repo -routes-only -out <全新輸出.json>`。此模式只核對正式選單閘門、confirm直接派送、AI派送閘門與學習表，輸出固定標示full_battle_hd_complete=false。原有觀測／反擊／快取owner模式保持，不能用它代替玩家入口檢查。
 
-碎岩術、地震術、裂地術及熾炎刀的選取距離0還須處理自身中心：既有直接單位helper先要求中心是敵方候選，與自身格不相容。已證實的AtCursor契約可表示自身或空格中心；補入口時仍須通過原生游標確認與作用名單檢查，不在錄影器放寬規則。其他範圍招式的空格中心屬待驗組合，不直接判為整招沒有動畫。
+碎岩術、地震術、裂地術及熾炎刀已依SelectionMode0原始分支固定自身作用名單，原生游標確認與作用名單守衛保持。既有直接單位入口保留給原有消費端，不在錄影器放寬規則。其他範圍招式的空格中心屬待驗組合，不直接判為整招沒有動畫。
+
+#### 玩家自身中心與已驗法術入口補接
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1，原始分支及正式record回歸通過。固定EXE、IDA 9.4線性位址與raw bytes依[既有游標caller契約](../data/ida/fd2_player_command6_cursor_center_20261004.json)。sub_1CFF0的0x1D181..0x1D188以record+4加2設定overlay selector，0x1D2BF依record+3建選取欄，0x1D2E3確認游標，0x1D32A以游標及record+4重建作用名單。SelectionMode0另走0x1D366；正式23的SelectionMode3走0x1D1B0，30另走0x1D339。本節不把這些分支套進一般選取。
+
+- 指令29沿正式record的SelectionMode0、EffectMode2、TargetCode0及MP26，以自己的格子固定作用名單。10至12也沿SelectionMode0分支，以各自EffectMode建立敵方名單與選取欄，overlay selector設1；非空以targetCode4接受欄內確認，空名單用targetCode5拒收。確認游標可在欄內移動，但不改變固定名單。共用raw inactive與範圍邊界保持；只有原本的指令6仍用NativeCommandEffectTargetsAtCursor一般分支。零距離原始分支與bytes已先記入本批現況表的player_zero_selection_evidence。
+- 新增游標入口供正式玩家confirm呼叫；原有直接單位入口保留給已驗受控及敵方路徑。29完整原生圖源與HD圖庫須在Go傷害亂數消耗前預檢；MP、HP、行動完成與返回仍沿既有owner的Draw邊界各發布一次。10至12沿既有typed native RNG計畫及地圖owner，不改傷害、時序、音效或存檔格式。
+- 天火術3、神雷術7、碎岩術10、地震術11、裂地術12已有正式confirm演出呼叫及學習資料，可補入選單支援清單。各自原有caster與資產守衛保持，不能只因清單放行便宣稱正常施放完成。傳送術23及4／5／9的玩家取得另核。
+- 驗收使用未改寫的正式record，涵蓋自身格／欄內移動確認且名單固定、欄外游標、空名單、raw inactive、缺原始來源與零交易／零亂數消耗，以及正式confirm、逐拍演出與自然返回。既有直接單位及30路徑回歸保持；原版／HD及F2驗證仍分列，不提升為新的原版同狀態或自然養成證據。
+
+#### 傳送術正式玩家入口
+
+電擊術4與落雷術5的玩家入口亦為READY：正式JOIN表身份14的default_raw為`02051042002800043200000037a8ffffffff000000000000`，defaults[8:12]為`32 00 00 00`，直接持有1、4、5。既有`startNativeCommand45Presentation`已按陣營區分玩家與AI數值規劃；本輪只補4／5選單放行與共用confirm派送，共用原有場景、RNG、MP／HP及HD owner，不新增習得規則。咒殺術9沒有這份我方來源，保持原有敵方入口，不自行授予。
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。正式確認、取消、完整消失／重現、HD與20次F2往返通過。固定EXE的IDA 9.4原始表項`0x51D5D`為`8a210200`，正式指令23指向`sub_2218A`。該函式與物品23共用，但身份24及最大MP20限制位於物品入口，不能套入法術。原始bytes、函式及caller回填本批現況表的command23_evidence；既有unit-present與移位證據沿[原生單位呈現](../data/ida/fd2_unit_present_stage_20261025.json)。
+
+- 正式record保持SelectionMode3、EffectMode0、MP20、TargetCode3。`sub_1CFF0`的`0x1D1B0..0x1D1DA`先以內半徑1排除自己，選取我方單位。`0x1D1F4..0x1D226`建立該目標名單後重設範圍欄，落點沿targetCode6的地形、佔位及移動種類守衛，不受第一階段範圍限制。取消回法術選單，不開道具面板。
+- 獨立法術入口沿既有移位owner共用色盤閃光、消失與重現的完整HD鏈。法術只消費MP，不要求或消耗道具；經驗累計沿目標等級及職業加成，行動完成只發布一次。正式UI與開始演出前均驗MP，保留道具分支原有無號扣除契約。
+- 兩段原始與HD圖源均先預檢，失敗不改MP、位置、經驗、行動或亂數。演出途中禁止存檔，F2沿既有unit-present來源切換；結束恢復一般戰場及存檔路徑。驗收涵蓋正式選單、排除自己／敵方、遠距合法落點、非法地形與佔位、取消、缺件及完整續行。不擴大成自然習得或原版同狀態聲明。
 
 #### 淒煌斬正式演出補齊
 
-狀態：READY。使用者2026-11-04決定先補正式動畫再交片，不採招式素材預覽替代。其他已驗動畫不重開；未確認角色來源或名稱的指令31列未知，不借用羅德曼、蜜蒂或索爾圖源。
+狀態：CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI-CONTROLLED-SOURCE。雙側49拍、完整GPU、八次命中、MP一次及正常返回通過。使用者2026-11-04決定先補正式動畫再交片，不採招式素材預覽替代。其他已驗動畫不重開；未確認角色來源或名稱的指令31列未知，不借用羅德曼、蜜蒂或索爾圖源。
 
 - 固定原檔與原始位址依[28／29／31既有證據](../data/ida/fd2_command28_29_31_presentation_ida.txt)。FDFIELD map22第1槽明示身份19、BattleFig19及指令28初始遮罩；它支持這組演出來源，不能提升為自然招募後仍保留該招的證據。
-- FIGANI59實際header=(19,0,7,3)，actor為0至6、MP發布於6，target為7至18。7至14共八個raw+4=1傷害標記；每拍按原始rolledDamage乘已發布標記數除8，再從原HP扣除，不重擲、不補扣或提前扣完整傷害。聲音沿每幀raw+5與既有FDOTHER50來源，硬體時間保持既有規格近似。
-- 沿sub_276EC已證實的command28分支：first-target背景／面板、mode0前導、actor phase疊first-target idle、不接背景轉場。位置、層序、side及每幀delay沿原始描述子與既有共用primitive。前導、每次Draw ACK、MP／HP發布及一次續行均需覆蓋。
+- FIGANI59實際header=(19,0,7,3)，actor為0至6、MP發布於6，target為7至18。7至14共八個raw+4=1傷害標記；先依0x27C44..0x27C54把正傷害截到原HP，每拍再按該傷害乘已發布標記數除8，從原HP扣除，不重擲、不補扣或提前扣完整傷害。聲音沿每幀raw+5與既有FDOTHER50來源，硬體時間保持既有規格近似。
+- 沿sub_276EC已證實的command28分支：first-target背景與雙面板、actor所在格的TAI、mode0前導、不接背景轉場。Base按actor面板、first-target背景、first-target面板建立，前導後保留TAI；actor phase先疊first-target idle再疊actor effect，target phase每tick由獨立Base重建再疊current-target idle與effect，不帶前個effect殘影。位置、層序、side及每幀delay沿原始描述子與既有共用primitive。前導、每次Draw ACK、MP／HP發布及一次續行均需覆蓋。正式入口沿[native_command28_presentation.go](../../remake/cmd/fd2/native_command28_presentation.go)補接既有共用owner，F2沿同一組預建來源與銀行預檢，不另建busy或存檔狀態。
 - 原版像素模式與HD共用同一正式owner。完整原版資產、已登錄HD圖源及所有目標預檢成功後才發布；缺件、錯header或中途切換失敗不得改MP、HP、亂數、游標或既有演出。F2僅改呈現，保存後回到一般戰場；不修改存檔格式。
 - 驗證包含固定seed的原始marker數與整數取整、多目標與單次MP、完整像素模式／HD繪圖、雙側、F2、缺件原子性及正常鍵盤選招後完整返回。來源槽若經建構，逐欄揭露，不宣稱自然招募或新的原版同狀態對拍。
 

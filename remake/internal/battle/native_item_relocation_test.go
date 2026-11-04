@@ -1,9 +1,35 @@
 package battle
 
 import (
+	"bytes"
 	"encoding/binary"
 	"testing"
 )
+
+func TestNativeCommand23RelocationUsesSpellGatesAndIsAtomic(t *testing.T) {
+	book, err := LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, mp := range []uint16{19, 30} {
+		records := make([]byte, 3*nativeRecordSize)
+		records[0x08] = 7 // The spell handler does not require item caster24.
+		binary.LittleEndian.PutUint16(records[0x44:], mp)
+		target := records[nativeRecordSize : 2*nativeRecordSize]
+		target[0], target[1], target[0x20], target[0x21] = 1, 0, 9, 7
+		before := append([]byte(nil), records...)
+		got, err := ApplyNativeCommand23Relocation(records, 0, []byte{1, 2}, 8, 7, book)
+		if mp < 20 {
+			if err == nil || !bytes.Equal(before, records) {
+				t.Fatal("insufficient spell MP changed records")
+			}
+			continue
+		}
+		if err != nil || got.AccumulatorDelta != 370 || got.RemainingMP != 10 || target[0] != 8 || target[1] != 7 || !bytes.Equal(records[2*nativeRecordSize:], before[2*nativeRecordSize:]) {
+			t.Fatalf("spell relocation: %+v error%v", got, err)
+		}
+	}
+}
 
 func nativeRelocationCommandBook() []NativeCommandRecord {
 	book := make([]NativeCommandRecord, NativeCommandRecordCount)

@@ -7,30 +7,31 @@ import "fmt"
 // command24 schedule, it does not assign an actor selector: the caller must
 // supply the actor raw +7 resource and retain that provenance.
 type NativeCommandDerivedStrikeSchedule struct {
-	CommandID         int
-	TargetStart       int
-	ActorImpactFrame  int
-	TargetImpactFrame int
-	DamageDenominator int
-	AudioResource     int
-	ActorSample       int
-	ActorCues         []NativeCommandFrameCue
-	TargetSample      int
-	FrameDelays       []int
-	UsesTargetBase    bool
-	PreludeMode       byte
-	UsesBGTransition  bool
-	ShakeOffsets      [6]int
+	CommandID          int
+	TargetStart        int
+	ActorImpactFrame   int
+	TargetImpactFrame  int
+	TargetImpactFrames []int
+	DamageDenominator  int
+	AudioResource      int
+	ActorSample        int
+	ActorCues          []NativeCommandFrameCue
+	TargetCues         []NativeCommandFrameCue
+	TargetSample       int
+	FrameDelays        []int
+	UsesTargetBase     bool
+	PreludeMode        byte
+	UsesBGTransition   bool
+	ShakeOffsets       [6]int
 }
 
 type NativeCommandFrameCue struct{ Frame, Sample int }
 
 // BuildNativeCommandDerivedStrikeSchedule extracts only directly consumed
-// header/marker fields.  Every fixed-version reachable effect has exactly one
-// actor and one target raw +4 marker; accepting another shape would make the
-// state publisher diverge from 0x2B659/0x276EC and therefore fails closed.
+// header/marker fields. The selector19 command28 source is header0 with eight
+// target impacts. Existing header1 strike contracts retain one target impact.
 func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int) (NativeCommandDerivedStrikeSchedule, error) {
-	if animation == nil || animation.HeaderByte1 != 1 || animation.HeaderByte2 <= 0 ||
+	if animation == nil || (animation.HeaderByte1 != 1 && !(commandID == 28 && animation.HeaderByte1 == 0)) || animation.HeaderByte2 <= 0 ||
 		int(animation.HeaderByte2) >= len(animation.Frames) || animation.HeaderByte4 < 1 || animation.HeaderByte4 > 6 {
 		return NativeCommandDerivedStrikeSchedule{}, fmt.Errorf("figani: derived-strike header unavailable for command %d", commandID)
 	}
@@ -46,6 +47,8 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 	actorImpact, targetImpact := -1, -1
 	delays := make([]int, len(animation.Frames))
 	var actorCues []NativeCommandFrameCue
+	var targetCues []NativeCommandFrameCue
+	var targetImpacts []int
 	for i, frame := range animation.Frames {
 		if frame.Delay <= 0 || frame.Delay > 0xff {
 			return NativeCommandDerivedStrikeSchedule{}, fmt.Errorf("figani: derived-strike frame %d delay=%d", i, frame.Delay)
@@ -53,6 +56,9 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 		delays[i] = frame.Delay
 		if i < targetStart && frame.RawByte5 != 0 {
 			actorCues = append(actorCues, NativeCommandFrameCue{Frame: i, Sample: int(frame.RawByte5)})
+		}
+		if commandID == 28 && i >= targetStart && frame.RawByte5 != 0 {
+			targetCues = append(targetCues, NativeCommandFrameCue{Frame: i, Sample: int(frame.RawByte5)})
 		}
 		if frame.RawByte4 != 1 {
 			continue
@@ -63,10 +69,18 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 			}
 			actorImpact = i
 		} else {
-			if targetImpact >= 0 {
+			if targetImpact >= 0 && commandID != 28 {
 				return NativeCommandDerivedStrikeSchedule{}, fmt.Errorf("figani: derived-strike has multiple target impact markers")
 			}
-			targetImpact = i
+			if targetImpact < 0 {
+				targetImpact = i
+			}
+			if commandID == 28 {
+				targetImpacts = append(targetImpacts, i)
+				if len(targetImpacts) > 8 {
+					return NativeCommandDerivedStrikeSchedule{}, fmt.Errorf("figani: command28 impact count exceeds denominator")
+				}
+			}
 		}
 	}
 	if actorImpact < 0 || targetImpact < 0 {
@@ -75,12 +89,14 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 	return NativeCommandDerivedStrikeSchedule{
 		CommandID: commandID, TargetStart: targetStart,
 		ActorImpactFrame: actorImpact, TargetImpactFrame: targetImpact,
-		DamageDenominator: denominator,
-		AudioResource:     47 + int(animation.HeaderByte4),
-		ActorSample:       int(animation.Frames[actorImpact].RawByte5),
-		ActorCues:         actorCues,
-		TargetSample:      int(animation.Frames[targetImpact].RawByte5),
-		FrameDelays:       delays, UsesTargetBase: usesTargetBase, PreludeMode: preludeMode,
+		TargetImpactFrames: targetImpacts,
+		DamageDenominator:  denominator,
+		AudioResource:      47 + int(animation.HeaderByte4),
+		ActorSample:        int(animation.Frames[actorImpact].RawByte5),
+		ActorCues:          actorCues,
+		TargetCues:         targetCues,
+		TargetSample:       int(animation.Frames[targetImpact].RawByte5),
+		FrameDelays:        delays, UsesTargetBase: usesTargetBase, PreludeMode: preludeMode,
 		UsesBGTransition: usesTransition, ShakeOffsets: [6]int{0, 4, 9, 14, 18, 14},
 	}, nil
 }
