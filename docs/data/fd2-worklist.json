@@ -395,20 +395,6 @@
       "issue": 278
     },
     {
-      "id": "hd1-feedback-interface-20261104",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P1 HD1玩家回饋：原版美術下雙重指令框、暗圖示與狀態框層次",
-      "body": "使用者回報原版美術＋HD介面出現錯色方塊，HD指令框過暗、戰鬥狀態框不如原版。已定位前者為原版指令框仍畫在底圖，再疊上HD框。使用者指定沿原版加強，保留有層次的框線。",
-      "acceptance": "兩種美術下HD介面只畫一組指令框；圖示清楚，原版多層框線與選取相位保留。四種介面／美術組合經正常開環、走行取消、F5與新程序LOAD核對，面板數值、原版介面與保存回歸通過。",
-      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
-      "verify": {
-        "kind": "manual",
-        "note": "需實際視窗核對四種組合與玩家回報圖，通過測試本身不能代替視覺驗收。"
-      },
-      "issue": 292
-    },
-    {
       "id": "hd1-feedback-opening-promo-20261104",
       "layer": "release",
       "category": "工作",

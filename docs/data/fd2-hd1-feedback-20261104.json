@@ -5,7 +5,9 @@
   "status": "UI-CONFORMED-SCOPED-PROMO-AND-OPENING-IN-PROGRESS",
   "issues": {
     "interface": 292,
-    "opening_promo_delivery": 293
+    "opening_promo_delivery": 293,
+    "interface_status": "CLOSED",
+    "opening_promo_delivery_status": "OPEN"
   },
   "source_files_sha256": {
     "remake/cmd/fd2/main.go": "c59c8673bc6b69fd5f7b56e6795b733ced231194b04c0d7f0c810aaad7a67275",
@@ -101,7 +103,7 @@
     },
     "worklist": {
       "status": "PASS",
-      "open_items": 27,
+      "open_items": 26,
       "log": "work/hd1-feedback-20261104-r83/worklist-verify.log"
     },
     "docs": {
@@ -110,5 +112,6 @@
     },
     "docker": "owned_r83_containers_cleaned",
     "ownership": "UID/GID 1000:1000; no root-owned task outputs or md-named directories"
-  }
+  },
+  "implementation_commit": "d8d901bc2909ca1cb96f3b16fe2df66422f72b9e"
 }

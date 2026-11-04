@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -337,16 +337,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 物理、法術及絕招計算須可按正式規格調整；忠實模式保留已還原的原版預設。先盤點正式規則及玩家consumer，再定義設定、相容性與驗收。資料格式、調整介面與存檔方式尚未選定，不先行改平衡。規格入口為61「傷害公式可調整」。
 
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
-
-證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
-
-### P1 HD1玩家回饋：原版美術下雙重指令框、暗圖示與狀態框層次
-
-`hd1-feedback-interface-20261104` · 缺陷 · [#292](https://github.com/wicanr2/fd2_re/issues/292) · 仍未完成 · 要人判
-
-使用者回報原版美術＋HD介面出現錯色方塊，HD指令框過暗、戰鬥狀態框不如原版。已定位前者為原版指令框仍畫在底圖，再疊上HD框。使用者指定沿原版加強，保留有層次的框線。
-
-怎樣算做完：兩種美術下HD介面只畫一組指令框；圖示清楚，原版多層框線與選取相位保留。四種介面／美術組合經正常開環、走行取消、F5與新程序LOAD核對，面板數值、原版介面與保存回歸通過。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
