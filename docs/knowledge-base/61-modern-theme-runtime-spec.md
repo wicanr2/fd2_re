@@ -2,7 +2,7 @@
 
 ## 2026-11-04 玩家視覺修訂
 
-介面修正已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；HD開場、新推廣片與新版封包仍在實作。現況與重跑來源見[玩家回饋收據](../data/fd2-hd1-feedback-20261104.json)，工單為[#292](https://github.com/wicanr2/fd2_re/issues/292)與[#293](https://github.com/wicanr2/fd2_re/issues/293)。沒有新增DOS原版E2或平台效能聲明。
+介面修正與HD開場已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；新版完整版推廣片、README截圖與三平台本機封包已驗收。唯一交付現況與重跑來源見[玩家回饋收據](../data/fd2-hd1-feedback-20261104.json)，工單為[#292](https://github.com/wicanr2/fd2_re/issues/292)與[#293](https://github.com/wicanr2/fd2_re/issues/293)。沒有新增DOS原版E2或平台效能聲明。
 
 使用者回報指令框與範圍標示配色、HD指令框過暗、狀態框層次不足，並指定以原版加強。狀態框保留FDOTHER#5第22格原有三像素周邊的外框、內框與陰影，不再縮成單色細線；HD文字提高可讀性，數值、量條長度、色盤淡入與原版介面保持既有契約。指令框同樣沿原版明暗層次調整。範圍配色只屬呈現，移動範圍、合法目標與命中規則不變。
 
@@ -20,7 +20,7 @@
 
 人物卡編製入口：[build_fd2_promo_character_cards.py](../../tools/build_fd2_promo_character_cards.py)。每人使用正式姓名、JOIN初始職業與BattleFig、自己的DATO頭像；已登錄HD頭像優先，缺少HD的四人保留原版頭像並標示。介紹卡是來源資料導出的剪輯素材，不冒稱實機結局錄影。
 
-目前清冊新增12組、173張逐幕開場圖，ANI0共用既有96張。整套3367筆清冊通過實檔驗證，開場277個GPU案例與後續ANI5的35幀修訂通過，其他影格雜湊未變。普通開場到選單、皇城與第一關入場仍另行錄製，不以直接影格控制提升正常玩家或原版對拍等級。母稿提示詞、圖源及拒收理由保存於[本輪收據](../data/fd2-hd1-feedback-20261104.json)。
+目前清冊新增12組、173張逐幕開場圖，ANI0共用既有96張。整套3367筆清冊通過實檔驗證，開場277個GPU案例與後續ANI5的35幀修訂通過，其他影格雜湊未變。普通開場到選單、皇城與第一關入場已錄製，與直接影格控制收據分列，不提升原版對拍等級。母稿提示詞、圖源及拒收理由保存於[本輪收據](../data/fd2-hd1-feedback-20261104.json)。
 
 
 #### 戰鬥指令入口稽核
@@ -72,7 +72,7 @@
 
 #### HD開場素材與呈現契約
 
-狀態：素材及RUNTIME-E1已接納；普通開場22段已錄至選單，皇城四組切換已錄。普通START至第一關入場另已通過；新版完整版剪輯待驗。
+狀態：素材及RUNTIME-E1已接納；普通開場22段已錄至選單，皇城四組切換已錄。普通START至第一關入場另已通過；新版完整版剪輯已通過影音與視覺抽驗。
 
 實際Game.Draw／DrawFinalScreen的開場277案例與修訂後ANI5的35案例通過。標題另外完成66個GPU畫面、四組美術／介面組合、三種翻譯及字級抽樣，存檔bytes保持。普通啟動揭露標題背後的劇情淡入將HD選單文字壓黑，已限制劇情亮度只消費於無標題階段，並以同一零亮度狀態加入回歸。普通序章來源仍保留舊執行檔SHA，選單片段改用修正版另錄，不把受控GPU矩陣改稱普通玩家證據。收據依[本批現況表](../data/fd2-hd1-feedback-20261104.json)。
 
@@ -6600,12 +6600,16 @@ HD1地形素材與接線完成。最後281份完整裁切母稿與281份144成�
 
 ## HD1推廣片與三平台本機完整版
 
-推廣片主題為「讓經典再現」，包含介紹、片頭、普通遊玩與原版／HD切換、物理戰鬥、蜜蒂音速刃及能力工具列。錄製來源與限制依剪輯清冊；新字幕與片頭文字卡不宣稱是原版介面。
+現行本機交付為v.1.1.1-20261104，唯一入口為`dist-all/v.1.1.1-20261104/`，引擎來源38eff878。三平台原生CI與自檢通過，publish步驟略過。三份完整包逐檔核對54543份共用資產、ZIP CRC、架構、引擎雜湊、啟動器與可攜字型；最終Linux AppImage另從空白工作目錄啟動自檢通過。Windows／macOS完整版實體平台試玩仍由使用者接手。完整包與影片限本機，不建立新版tag或Release。
+
+推廣片「讓經典再現」長313.022秒，9390幀，1080p／30fps與AAC雙聲道48kHz。包含遊戲介紹、逐幕HD開場及實際選單、皇城四組切換、第一關入場與站位、蓋亞／亞雷斯攻擊、悠妮施法、音速刃／熾炎刀／淒煌斬、天空之鑰合成、能力工具列、32人簡介與後續計畫片尾。音量、非靜音、黑幀、非預期凍結與字幕安全區通過，43幕及七張關鍵畫面已檢視。蜜蒂錄影缺少尾段音訊，依已證實的原始sample及可見影格明示重建剪輯音軌；不宣稱硬體同步或另有人耳試聽收據。特技使用已揭露的建構進度，天空之鑰採202張實際GPU受控影格，人物卡是原始結局文字導出素材。
+
+唯一剪輯配方、成品雜湊及驗收路徑為[本批現況表](../data/fd2-hd1-feedback-20261104.json)的`render_plan`、`promo_final`與`release_build`。製片工具可直接用`--plan docs/data/fd2-hd1-feedback-20261104.json`讀入該配方。本機影片目錄保存EDIT-MANIFEST、FFprobe、音量／黑幀／凍結紀錄、字幕邊界、逐幕圖、視覺抽驗及RIGHTS。根目錄SHA256SUMS統一列出三份CI輸入、三份完整包與影片。沿[build_fd2_full_local.py](../../tools/build_fd2_full_local.py)的`finalize --version v.1.1.1-20261104`在既有promo容器重核清冊，不修改原生CI輸入。
 
 重跑入口：[build_fd2_hd1_promo.py](../../tools/build_fd2_hd1_promo.py)依具雜湊剪輯表製作，字幕先由既有Pillow映像準備，再由既有promo映像編碼；[validate_fd2_hd1_promo.py](../../tools/validate_fd2_hd1_promo.py)核對時長、視訊、音訊、音量、黑幀、凍結與字幕安全區。正式影片與技術收據位於本機dist-all同版號promo目錄，片段選擇需實際檢視；不得將初始化等待當作遊玩。
 
-完整版沿[build_fd2_full_local.py](../../tools/build_fd2_full_local.py)，由同版號三平台原生CI引擎包加上正式清冊白名單素材及Noto字型／授權重建，留在full-local。Linux以實際AppImage解出唯讀執行，遮蔽系統候選字型並從空白工作目錄測試；Windows與macOS為原生CI引擎自檢及完整版內容／雜湊核對，未宣稱完整包實體平台試玩。新版沒有建立tag或Release，既有已發布版本保持。
+完整版沿[build_fd2_full_local.py](../../tools/build_fd2_full_local.py)，由同版號三平台原生CI引擎包加上正式清冊白名單素材及Noto字型／授權重建，留在full-local。Linux以最終AppImage從空白工作目錄執行正式啟動器與自檢，可攜字型與授權逐檔核對；Windows與macOS為原生CI引擎自檢及完整版內容／雜湊核對，未宣稱完整包實體平台試玩。新版沒有建立tag或Release，既有已發布版本保持。
 
-遊玩截圖入口：[原版／HD與戰鬥總覽](../figures/hd1-release-gameplay-overview.png)。
+遊玩截圖入口：[皇城原版／HD與正式戰鬥總覽](../figures/hd1-release-gameplay-overview.png)。[build_readme_visual_overview.py](../../tools/build_readme_visual_overview.py)以`--hd1-feedback docs/data/fd2-hd1-feedback-20261104.json`重生片頭與六格總覽；來源PNG、影片時間戳、擷取命令、字型與輸出SHA記於同份現況表的`readme_gallery`。皇城比較同句呈現，其餘畫面不宣稱同狀態原版對拍。
 
-交付版本v.1.1.0-20261103已通過上述驗證，唯一清冊為[HD1交付收據](../data/fd2-hd1-delivery-20261103.json)。原生CI來源a71f1717；完整版54349份共用資產檔與三包雜湊均已核對，推廣片90.022秒、1080p／30fps、AAC雙聲道，沒有黑幀或靜音區間，凍結僅預期文字卡與警告。正式成品位於dist-all同版號；Windows／macOS完整版實機與集中人工範圍保持揭露。
+前版本機交付v.1.1.0-20261103保持不動，唯一清冊為[HD1交付收據](../data/fd2-hd1-delivery-20261103.json)。原生CI來源a71f1717；當批完整版54349份共用資產檔與三包雜湊均已核對，推廣片90.022秒、1080p／30fps、AAC雙聲道，沒有黑幀或靜音區間，凍結僅預期文字卡與警告。成品位於dist-all同版號；Windows／macOS完整版實機與集中人工範圍保持揭露。

@@ -21,15 +21,17 @@
 
 ## HD1開發版
 
-開發主線已接入33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。這些範圍的必要來源、載入、缺件拒收、切換及保存冷讀已驗證；細部觀感、逐章操作與平台實機交由使用者確認。戰鬥動畫仍有正式入口及淒煌斬演出缺口，完整HD1尚未完成。範圍及重跑證據見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[戰鬥指令入口稽核](docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)。既有下載版未重發，HD2與HD-2D另期。
+開發主線已接入33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。這些範圍的必要來源、載入、缺件拒收、切換及保存冷讀已驗證；細部觀感、逐章操作與平台實機交由使用者確認。本批確認的玩家法術入口與羅德曼淒煌斬正式動畫已補齊，完整戰鬥HD仍依[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[戰鬥指令入口稽核](docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)分列，不外推全部角色組合或原版對拍。既有下載版未重發，HD2與HD-2D另期。
 
 ![推廣片「讓經典再現」片頭](docs/figures/hd1-promo-title.png)
 
-現有推廣片「讓經典再現」以90秒串接遊戲介紹、片頭、實際遊玩、原版／HD切換、戰鬥動畫與能力工具列。本機三平台完整版與影片統一放在同版號的dist-all目錄；[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)。逐幕HD開場與新版完整推廣片的新增內容，依[玩家回饋範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#完整版推廣片與hd開場的已確認範圍ready)實作。
+新版推廣片「讓經典再現」長5分13秒，從逐幕HD開場、開始選單與皇城對話，走到第一關站位、原版／HD切換與戰鬥。蓋亞、亞雷斯、悠妮的攻擊與魔法，接上音速刃、熾炎刀、淒煌斬及天空之鑰合成，再以32位伙伴簡介回望這段旅程。片尾展示HD2概念、Android與劇情／戰場編輯器的後續計畫。
 
-![原版與HD1即時切換、物理攻防與蜜蒂音速刃的實際畫面](docs/figures/hd1-release-gameplay-overview.png)
+三平台本機完整版與影片位於`dist-all/v.1.1.1-20261104/`，附來源、SHA-256與驗收紀錄；[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)。完整素材包與影片限本機保存，尚未建立新版公開下載。
 
-這是示範進度的實際鍵盤遊玩與戰鬥畫面。原版／HD美術可即時切換；特技片段使用已揭露的受控章前來源，不代表自然招募或全戰役驗收。原六格圖案的[受控完整畫面](docs/figures/hd1-terrain-final-round-pattern-game.png)、最後宮殿圖源與普通首章操作驗證仍見HD1完成紀錄，圖案用途保留未知。
+![皇城原版與HD1對照、首章戰場及三種正式絕招的實際畫面](docs/figures/hd1-release-gameplay-overview.png)
+
+這些是重製引擎的實際畫面。皇城在同句對話切換原版／HD美術與介面；特技片段使用已揭露的建構進度，不代表自然招募或全戰役驗收。原六格圖案的[受控完整畫面](docs/figures/hd1-terrain-final-round-pattern-game.png)、最後宮殿圖源與普通首章操作驗證仍見HD1完成紀錄，圖案用途保留未知。
 
 ![原版與HD美術、介面的四種指令框組合](docs/figures/hd1-command-frames-four-styles.png)
 

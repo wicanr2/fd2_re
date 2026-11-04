@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -505,22 +505,6 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
-
-### P1 HD1逐幕開場與完整版推廣片：皇城、首戰、絕招、合成及人物介紹
-
-`hd1-feedback-opening-promo-20261104` · 工作 · [#293](https://github.com/wicanr2/fd2_re/issues/293) · 仍未完成 · 要人判
-
-2026-11-04全動畫入口稽核：使用者決定先補淒煌斬正式動畫再交片。36筆指令的Go AST盤點確認，正式學習表中的天火術、神雷術、碎岩術、地震術、裂地術、傳送術被玩家選單擋住；4／5／9的玩家取得與敵方演出分列。淒煌斬28僅結算，31名稱／角色未知，熾炎刀29自身中心確認拒收。圖源全登錄不能證明完整HD1動畫完成，#263保持OPEN。
-
-新版v.1.1.1-20261104最終封包暫緩，舊bf8a6cb2三平台CI與素材組裝僅屬中間驗證，修正正式流程後重建。普通START至皇城切換／首關入場、蓋亞攻擊、悠妮施法、蜜蒂全HD音速刃已錄；亞雷斯攻擊／返回已錄但整輪冷讀超時分列。天空之鑰202幕實際GPU、12次F2及一次續行完成，仍是受控來源E1。32人人物卡已備，完整版剪輯與影音驗收仍待。
-
-現況、逐項入口與SHA依docs/data/fd2-hd1-feedback-20261104.json及61「戰鬥指令入口稽核」。
-
-使用者已選沿原版分鏡逐幕重繪HD開場。新版推廣片包含遊戲介紹、片頭、實際START選單、皇城對話與原版／HD切換、第一關站位入場，以及蓋亞與亞雷斯攻擊、悠妮施法。後段剪入蜜蒂音速刃、鐵諾絕招、經查證將軍的淒煌斬、黃金之鑰合成，以及依README最後結局角色卡樣式製作的全員簡介。文案須潤飾並保留「讓經典再現」，片尾由1995傳說接2026重新出發，再展示既有HD2概念圖、Android與劇情／戰場編輯器後續計畫。音速刃從第一個可見畫面保持HD，修正近戰與特技剪輯節奏。使用新版本重建三平台本機完整版並更新README截圖，既有v.1.1.0不覆寫。
-
-怎樣算做完：HD開場每個原分鏡有來源與接線，普通開場可達實際選單；各項指定畫面皆有實際錄影或明確標示的來源導出角色／未來計畫卡，原版／HD切換可追溯。音速刃無驗證器中途F2閃回，節奏與字幕實際檢視。影片通過視訊、音訊、非靜音、黑幀、凍結與裁切驗證；新版三平台封包清冊、雜湊、啟動及平台能力範圍驗證通過，README與私人素材清冊同步。
-
-證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
 ## tooling — 工具、編輯器與工作流程
 

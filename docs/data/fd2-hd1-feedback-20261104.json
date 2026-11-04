@@ -2,12 +2,12 @@
   "schema": "fd2-hd1-feedback/1",
   "date": "2026-11-04",
   "base_head": "760642ae303d68e019e962b6fc1f4ddca2fe8365",
-  "status": "UI-CONFORMED-SCOPED-OPENING-RUNTIME-E1-NATURAL-OPENING-RECORDED-PROMO-IN-PROGRESS",
+  "status": "CONFORMED-SCOPED-LOCAL-DELIVERY-PASS",
   "issues": {
     "interface": 292,
     "opening_promo_delivery": 293,
     "interface_status": "CLOSED",
-    "opening_promo_delivery_status": "OPEN"
+    "opening_promo_delivery_status": "CLOSED"
   },
   "source_files_sha256": {
     "remake/cmd/fd2/main.go": "e9f2add04052901b9a0f5c2d3d40ae17e6e4a138a80fc349cb2e7971668c89e6",
@@ -79,16 +79,11 @@
     "observed_wall_seconds": 39.48906175699085,
     "cadence_status": "PENDING_EDITING_AND_REVIEW; preload, software rendering and capture wall-clock are not platform acceptance"
   },
-  "pending": [
-    "補齊已確認戰鬥正式入口、熾炎刀自身中心確認與淒煌斬完整正式動畫；未知31分列",
-    "完整版推廣片：首關蓋亞／亞雷斯攻擊與悠妮施法、蜜蒂音速刃／鐵諾熾炎刀／羅德曼淒煌斬、天空之鑰合成與32人簡介的實際剪輯及影音驗收",
-    "HD2概念、Android與劇情／戰場編輯器的後續計畫片尾",
-    "新版三平台完整版乾淨重建與交付驗證"
-  ],
+  "pending": [],
   "opening_art_status": "ADMITTED-RUNTIME-E1; 12 banks173 frames and sharedANI0 96 frames; complete original-storyboard redraw metadata in opening",
   "original_oracle": "NOT_RUN_NO_NEW_DOS_PARITY_CLAIM",
   "platform_performance": "NOT_ACCEPTED_FROM_SOFTWARE_CAPTURE",
-  "release_status": "v.1.1.1-20261104 native-CI and full staging validated for bf8a6cb2 only; final full packaging PAUSED for confirmed battle runtime fixes; v.1.1.0 preserved; no new tag/Release",
+  "release_status": "Three native CI engines at 38eff878, three complete local packages, final AppImage self-check, 313-second promo and README gallery validated. v.1.1.0 preserved; no new tag/Release.",
   "verification_followup": {
     "string_inventory": {
       "status": "PASS",
@@ -359,20 +354,52 @@
     "seconds": 6,
     "scope": "測調速、雙人卡及分行字幕，非正式完整版交付。"
   },
-  "target_release": "v.1.1.1-20261104; planned, not built or published",
+  "target_release": "v.1.1.1-20261104; built and validated locally; not tagged or published",
   "release_build": {
     "version": "v.1.1.1-20261104",
-    "source_commit": "bf8a6cb203ae446b307a31a6feb471270ca28fde",
-    "run_id": 41804274198,
-    "url": "https://github.com/wicanr2/fd2_re/actions/runs/41804274198",
+    "source_commit": "38eff878dcffbcddb9b288bf31e948d75e81474d",
+    "run_id": 41836110195,
+    "url": "https://github.com/wicanr2/fd2_re/actions/runs/41836110195",
     "platform_native_jobs": "linux/windows/macos success; collect success; publish skipped",
-    "artifact_id": 13308334991,
-    "artifact_sha256": "5240fb821f8f79ec1411d8187cdbc6d52d89a4f8c4bea3f944a6e55700c6a3bd",
+    "artifact_id": 13325802174,
+    "artifact_sha256": "1277d014741436c11b3c9580dbd0dad58f8b321b415d304ed925662db9242c62",
     "staging": "work/full-local-v.1.1.1-20261104",
     "asset_rows": 54543,
     "asset_bytes": 3781640441,
-    "linux_selfcheck": "work/hd1-feedback-20261104-r83/full-local-selfcheck-r2.log",
-    "packaging_status": "IN-PROGRESS"
+    "packages": [
+      {
+        "path": "full-local/FD2-v.1.1.1-20261104-windows-x86_64-full-local.zip",
+        "bytes": 3667703687,
+        "sha256": "3915a5fd75792ae2ff07f59a193156e88e9b0713612e5cb14285de3cb1a86fcf"
+      },
+      {
+        "path": "full-local/FD2-v.1.1.1-20261104-macos-universal-full-local.zip",
+        "bytes": 3676260315,
+        "sha256": "ef9894f85ce99cc8f5f1b1f1d98850bed2458e8dfd518011bbcc3f7286b12ab0"
+      },
+      {
+        "path": "full-local/FD2-v.1.1.1-20261104-linux-x86_64-full-local.AppImage",
+        "bytes": 3160545784,
+        "sha256": "4cace785ec4edb5daf0cc5f287204c9efdc4d4c72b52fc856fe48261054e70e9"
+      }
+    ],
+    "packaging_status": "PASS-SCOPED-LOCAL-ONLY",
+    "content_validation": "dist-all/v.1.1.1-20261104/smoke/full-local-content.json",
+    "linux_selfcheck": "dist-all/v.1.1.1-20261104/smoke/linux-full-local-selfcheck.json",
+    "unified_manifest": "dist-all/v.1.1.1-20261104/SHA256SUMS.json",
+    "unified_manifest_sha256": "50879f7592312e957b32f122c917056f167e1f85ddd47081b8088f24722ec1fe",
+    "limits": [
+      "Windows／macOS完整包尚未實機驗收，同來源引擎已通過原生CI自檢。",
+      "Windows／macOS未簽署，macOS未公證。",
+      "30章為受控流程抽樣，並非所有分支或自然難度驗收。"
+    ],
+    "modern_private_commit": "9d7cba017c460a15df0541eac8f45d7ef76443d7",
+    "modern": {
+      "catalog_sha256": "d8a78a641aa472f3d9eeb9b1dd99a3d6497fdc61a675db69e5591fc31def5b89",
+      "source_manifest_sha256": "e72dac726730f51748e25878d89813a9921213017d7165f8450ba24ea17f3473",
+      "pack_manifest_sha256": "e72dac726730f51748e25878d89813a9921213017d7165f8450ba24ea17f3473"
+    },
+    "rejected_previous_inputs": "work/unaccepted-bf8a-v.1.1.1-20261104/"
   },
   "promo_recordings": {
     "ares": {
@@ -2957,5 +2984,985 @@
       "new_original_parity": false,
       "scope": "Formal confirm fixtures, actual HD GPU, fixed sources, F2, failure atomicity, controlled-source normal keyboard recordings and existing save regressions; not normal recruitment or every spell cold-load."
     }
+  },
+  "readme_gallery": {
+    "producer": "tools/build_readme_visual_overview.py --hd1-feedback docs/data/fd2-hd1-feedback-20261104.json",
+    "title": "讓經典再現｜從皇城到戰場",
+    "font": "/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "font_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+    "captures": [
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/royal-original-original.png",
+        "sha256": "60087b5cd40db874f2cf4cc61a64ca1de1d9c0cce5b7aef5abc9a4e3e641096b",
+        "label": "皇城｜原版美術與介面"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/royal-hd-hd-restored.png",
+        "sha256": "be791f81da820907525b88ca5e4c1743a64601e1325fa6e66aad6a2492144a10",
+        "label": "皇城｜HD美術與介面"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/readme-first-battle-hd.png",
+        "sha256": "0f789bb2a5f233d6c5233b282e41bc960ed900ad0bc235c8ea6d526252afeff2",
+        "label": "首章｜HD戰場與角色",
+        "extraction": {
+          "source": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2-record/video.mkv",
+          "source_sha256": "b85a35a9d1703e70a07791f866fa81b4e00765d057130808900266538e0ba2cd",
+          "seconds": 491,
+          "command": [
+            "ffmpeg",
+            "-nostdin",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "2",
+            "-ss",
+            "491",
+            "-i",
+            "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2-record/video.mkv",
+            "-frames:v",
+            "1",
+            "-threads",
+            "1",
+            "/repo/work/hd1-feedback-20261104-r83/readme-first-battle-hd.png"
+          ]
+        }
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/readme-middy-impact.png",
+        "sha256": "48c1d03539c42c77b764a0df828cff6dbf47c741fdffb7e2d5fe72d2fc91915d",
+        "label": "蜜蒂｜音速刃",
+        "extraction": {
+          "source": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/video.mkv",
+          "source_sha256": "2b1057f2d6f7c1bf1cd3f44af860aa8cf45874cd585880a0d6cae9934ecc389f",
+          "seconds": 941.6,
+          "command": [
+            "ffmpeg",
+            "-nostdin",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "2",
+            "-ss",
+            "941.6",
+            "-i",
+            "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/video.mkv",
+            "-frames:v",
+            "1",
+            "-threads",
+            "1",
+            "/repo/work/hd1-feedback-20261104-r83/readme-middy-impact.png"
+          ]
+        }
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/readme-tino.png",
+        "sha256": "fad3cea370884def2641c27aa7e43ee8fb932bc11acfa265254e0b75e2295fd8",
+        "label": "鐵諾｜熾炎刀",
+        "extraction": {
+          "source": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4-record/video.mkv",
+          "source_sha256": "87bc288cfec2fd39f00ff924af134ad0d3639d8319e18225d3c16d0aa8c3f2e7",
+          "seconds": 497,
+          "command": [
+            "ffmpeg",
+            "-nostdin",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "2",
+            "-ss",
+            "497",
+            "-i",
+            "/repo/work/hd1-feedback-20261104-r83/tino-special-r4-record/video.mkv",
+            "-frames:v",
+            "1",
+            "-threads",
+            "1",
+            "/repo/work/hd1-feedback-20261104-r83/readme-tino.png"
+          ]
+        }
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png",
+        "sha256": "de33750c2f30027710d1d447053b2b512917ec692e88ff9dfc7e1eb98ffd72d5",
+        "label": "羅德曼｜淒煌斬",
+        "extraction": {
+          "source": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+          "source_sha256": "03e6395c534ae7c435be1617c18dca2f1a52cc8f18d69e479871df65ee2e5f89",
+          "seconds": 548.4,
+          "command": [
+            "ffmpeg",
+            "-nostdin",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-threads",
+            "2",
+            "-ss",
+            "548.4",
+            "-i",
+            "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+            "-frames:v",
+            "1",
+            "-threads",
+            "1",
+            "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png"
+          ]
+        }
+      }
+    ],
+    "output": "docs/figures/hd1-release-gameplay-overview.png",
+    "title_capture": {
+      "path": "/repo/work/hd1-feedback-20261104-r83/promo-render-r1/overlay-00.png",
+      "sha256": "0f14f7ad74cab7e9f09d68cf9a481739fb1ec806b4d66ef01fae82384bdb89f1",
+      "output": "docs/figures/hd1-promo-title.png",
+      "output_sha256": "69a27d1f41530eb0c78f3f97973342e6b472e26ff220b753c5b8459881cdbc2d"
+    },
+    "note": "重製引擎實際畫面。皇城比較呈現；特技使用已揭露的建構進度。",
+    "output_sha256": "c9f4505c975a06aecda22e6ab291353505d034a2c3385f3369dcf9578da33b89"
+  },
+  "promo_final": {
+    "status": "PASS-TECHNICAL-AND-SAMPLED-VISUAL",
+    "output": "dist-all/v.1.1.1-20261104/promo/FD2-v.1.1.1-20261104-hd1-promo.mp4",
+    "movie": {
+      "file": "FD2-v.1.1.1-20261104-hd1-promo.mp4",
+      "bytes": 58288601,
+      "sha256": "94982fe1f992252cd9dbe514043bfdf15188d8570f8962a1fb02b356c1672ac7"
+    },
+    "duration_seconds": 313.022,
+    "frames": 9390,
+    "scenes": 43,
+    "character_count": 32,
+    "technical_validation": "dist-all/v.1.1.1-20261104/promo/VALIDATION.json",
+    "technical_validation_sha256": "9a9ee1278debf8ca4ab71d78089b41ce94158e6b12db57ffba800f4708052236",
+    "visual_review": "dist-all/v.1.1.1-20261104/promo/VISUAL-REVIEW.json",
+    "visual_review_sha256": "d93f1491258396a6db82f17fdc58a867a8a75361a6d6c8a28bc23da52a2b9215",
+    "edit_manifest": "dist-all/v.1.1.1-20261104/promo/EDIT-MANIFEST.json",
+    "edit_manifest_sha256": "fe48e29beef01df9d54fb4424bd3e09e907932b14f3ff3ed44ca32a4c086b205",
+    "caption_bounds": "dist-all/v.1.1.1-20261104/promo/CAPTION-BOUNDS.json",
+    "rights": "dist-all/v.1.1.1-20261104/promo/RIGHTS.json",
+    "audio": {
+      "codec": "AAC",
+      "sample_rate": 48000,
+      "channels": 2,
+      "mean_db": -19.6,
+      "peak_db": -1.5,
+      "silent_intervals": []
+    },
+    "black_intervals": [],
+    "unexpected_freezes": [],
+    "limits": [
+      "實際畫面為重製引擎；原版指原版美術與介面。",
+      "特技使用已揭露建構進度；天空之鑰為202張實際GPU受控影格。",
+      "剪輯加速不代表平台效能；音效為原版sample的剪輯對位，不宣稱硬體時序。",
+      "技術音訊檢查已通過，未另記錄人耳試聽。"
+    ],
+    "render_plan_key": "render_plan"
+  },
+  "delivery_tools_sha256": {
+    "tools/build_fd2_full_local.py": "369d85b4e6494463a1dda0f75e9fb8bcc283dc6d6696c249dd771f456f447cfb",
+    "tools/build_fd2_hd1_promo.py": "cb7acc3d08aa51979747feb3f4737d611622966eb5b711ad0c6159d39383d932",
+    "tools/build_readme_visual_overview.py": "0cc241ac27208f9f71cf59388076764001746a8c39d936d49f1954a04f711ecf",
+    "tools/validate_fd2_hd1_promo.py": "b05ba183f519afb486ec66affce119616d3eabc648a0002840fa3074c49f33d0"
+  },
+  "delivery_scope_limits": [
+    "指令31名稱與角色、FIGANI408來源仍未知；#263保持開啟，不宣稱全部戰鬥HD或原版對拍。",
+    "Windows／macOS完整包實體平台試玩、集中造型與逐章人工由使用者接手。",
+    "亞雷斯錄影只採已觀測的攻擊與返回；該整輪後續冷讀超時未提升為通過。"
+  ],
+  "render_plan": {
+    "schema_version": 1,
+    "version": "v.1.1.1-20261104",
+    "title": "炎龍騎士團2：讓經典再現",
+    "theme": "讓經典再現",
+    "target_release_engine_commit": "38eff878dcffbcddb9b288bf31e948d75e81474d",
+    "duration_seconds": 313.0,
+    "card_music": "/repo/remake/assets/music_fm/FDMUS_018.ogg",
+    "scenes": [
+      {
+        "id": "invitation",
+        "kind": "card",
+        "duration": 7,
+        "background": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/start-menu.png",
+        "lines": [
+          {
+            "text": "炎龍騎士團 2",
+            "at": [
+              160,
+              350
+            ],
+            "size": 100
+          },
+          {
+            "text": "讓經典再現",
+            "at": [
+              160,
+              510
+            ],
+            "size": 82
+          },
+          {
+            "text": "那些並肩作戰的日子，現在，再走一次。",
+            "at": [
+              160,
+              690
+            ],
+            "size": 42
+          }
+        ]
+      },
+      {
+        "id": "opening",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/video.mkv",
+        "start": 218,
+        "source_duration": 242,
+        "duration": 27,
+        "caption": "熟悉的序幕，全新的筆觸。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/audio.mka",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/natural-opening.json"
+      },
+      {
+        "id": "start-menu",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/video.mkv",
+        "start": 639.4,
+        "source_duration": 13.800000000000068,
+        "duration": 6,
+        "caption": "從這一刻，再次踏上旅途。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/audio.mka",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/controller-result.json",
+        "intentional_static": "實際開始選單停留，保留START／LOAD／CONTINUE"
+      },
+      {
+        "id": "game-introduction",
+        "kind": "card",
+        "duration": 8,
+        "background": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/start-menu.png",
+        "lines": [
+          {
+            "text": "重溫1995年的戰棋冒險。",
+            "at": [
+              160,
+              330
+            ],
+            "size": 72
+          },
+          {
+            "text": "走位、魔法與劍技，一步步改寫戰局。",
+            "at": [
+              160,
+              485
+            ],
+            "size": 48
+          },
+          {
+            "text": "Windows　macOS　Linux",
+            "at": [
+              160,
+              685
+            ],
+            "size": 44
+          }
+        ]
+      },
+      {
+        "id": "royal-switch",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/video.mkv",
+        "start": 736,
+        "source_duration": 48,
+        "duration": 20,
+        "caption": "從皇城的一席話，再次出發。原版畫風與HD，隨時切換。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/audio.mka",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/controller-result.json",
+        "intentional_static": "皇城同句對話四組美術／介面比較，文字停留供閱讀"
+      },
+      {
+        "id": "first-deployment",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/video.mkv",
+        "start": 1434,
+        "source_duration": 27,
+        "duration": 10,
+        "caption": "第一場戰役，熟悉的伙伴，再度就位。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/audio.mka",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/controller-result.json",
+        "audio_bed": 0.18
+      },
+      {
+        "id": "map-switch",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/video.mkv",
+        "start": 691,
+        "source_duration": 9,
+        "duration": 4,
+        "caption": "一個按鍵，喚回熟悉的模樣。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2/promo-action.json"
+      },
+      {
+        "id": "gaia-original",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/video.mkv",
+        "start": 601,
+        "source_duration": 42,
+        "duration": 4,
+        "caption": "蓋亞，重拳出擊。原版畫風。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2/promo-action.json"
+      },
+      {
+        "id": "gaia-hd",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/video.mkv",
+        "start": 715,
+        "source_duration": 64,
+        "duration": 7,
+        "caption": "相同的戰場，全新的筆觸。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2/promo-action.json"
+      },
+      {
+        "id": "ares",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1-record/video.mkv",
+        "start": 563,
+        "source_duration": 50,
+        "duration": 7,
+        "caption": "亞雷斯，守住騎士的誓言。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1/battle-observation.json",
+        "capture_scope": "Action and natural return observed; original full verifier later timed out during cold load. No cold-load PASS claim."
+      },
+      {
+        "id": "yuni",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2-record/video.mkv",
+        "start": 478.5,
+        "source_duration": 11.5,
+        "duration": 7,
+        "caption": "悠妮，讓魔法點亮戰場。",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2/promo-action.json"
+      },
+      {
+        "id": "middy",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/video.mkv",
+        "start": 938.4,
+        "source_duration": 11.600000000000023,
+        "duration": 5.5,
+        "caption": "蜜蒂｜音速刃",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3/promo-action.json",
+        "audio_cues": [
+          {
+            "path": "/original/sfx/FDOTHER_049/sample_002.ogg",
+            "seconds": 2.0,
+            "native_resource": 49,
+            "native_sample": 2,
+            "native_frame": 2,
+            "observation_seconds": 941.8765938933939,
+            "synchronization": "approximate visual alignment to encoded recording frames; observation_seconds retained as controller clock"
+          },
+          {
+            "path": "/original/sfx/FDOTHER_049/sample_004.ogg",
+            "seconds": 2.65,
+            "native_resource": 49,
+            "native_sample": 4,
+            "native_frame": 4,
+            "observation_seconds": 942.1854097093455,
+            "synchronization": "approximate visual alignment to encoded recording frames; observation_seconds retained as controller clock"
+          },
+          {
+            "path": "/original/sfx/FDOTHER_049/sample_003.ogg",
+            "seconds": 6.85,
+            "native_resource": 49,
+            "native_sample": 3,
+            "native_frame": 11,
+            "observation_seconds": 947.0618442613631,
+            "synchronization": "approximate visual alignment to encoded recording frames; observation_seconds retained as controller clock"
+          }
+        ],
+        "audio_note": "Recording WAV omitted its late tail. Resource56 raw+5 selects the original FDOTHER49 samples. Cue offsets follow visible encoded actor/impact frames; controller observation clock differs from queued video. Editorial audio reconstruction with original FM bed; not original hardware timing."
+      },
+      {
+        "id": "tino",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4-record/video.mkv",
+        "start": 484,
+        "source_duration": 21,
+        "duration": 6.5,
+        "caption": "鐵諾｜熾炎刀",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4/promo-action.json"
+      },
+      {
+        "id": "rodman",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+        "start": 536,
+        "source_duration": 17,
+        "duration": 6,
+        "caption": "羅德曼｜淒煌斬",
+        "audio": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3/promo-action.json"
+      },
+      {
+        "id": "sky-key",
+        "kind": "game",
+        "source": "/repo/work/hd1-feedback-20261104-r83/skykey-movie-r1.mp4",
+        "start": 0,
+        "source_duration": 6.733333333333333,
+        "duration": 8,
+        "caption": "散落的線索，終將化作開啟傳說的鑰匙。",
+        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/skykey-frames-r1/receipt.json"
+      },
+      {
+        "id": "balance-warning-zero",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-zero.png",
+        "duration": 2,
+        "caption": "三次確認，再開啟能力調整。"
+      },
+      {
+        "id": "balance-warning-one",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-one.png",
+        "duration": 2,
+        "caption": "留一點猶豫，保留冒險的樂趣。"
+      },
+      {
+        "id": "balance-warning-two",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-two.png",
+        "duration": 2,
+        "caption": "由你決定，怎樣重溫這段旅程。"
+      },
+      {
+        "id": "balance-abilities-hd",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/abilities-hd.png",
+        "duration": 3,
+        "caption": "當前能力，逐人調整。"
+      },
+      {
+        "id": "balance-growth-hd",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/growth-hd.png",
+        "duration": 3,
+        "caption": "升級成長，全體預設與逐人覆寫。"
+      },
+      {
+        "id": "balance-yuni-hit-100",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/probe/skill-gui-r1/skill/yuni-hit-100.png",
+        "duration": 3,
+        "caption": "有命中判定的特技，可逐人調整。"
+      },
+      {
+        "id": "balance-enemy-120",
+        "kind": "capture",
+        "source": "/repo/work/hd1-promo-release-20261103-r82/probe/balance-gui-r1/start/enemy-120.png",
+        "duration": 3,
+        "caption": "敵軍強度，照自己的步調調整。"
+      },
+      {
+        "id": "companions-intro",
+        "kind": "card",
+        "duration": 5,
+        "background": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/start-menu.png",
+        "lines": [
+          {
+            "text": "再一次，並肩作戰。",
+            "at": [
+              160,
+              350
+            ],
+            "size": 82
+          },
+          {
+            "text": "一起走過的每個名字，",
+            "at": [
+              160,
+              510
+            ],
+            "size": 56
+          },
+          {
+            "text": "都值得再次記住。",
+            "at": [
+              160,
+              620
+            ],
+            "size": 56
+          }
+        ]
+      },
+      {
+        "id": "companions-01",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-01.png",
+        "duration": 8,
+        "music_start": 0
+      },
+      {
+        "id": "companions-02",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-02.png",
+        "duration": 8,
+        "music_start": 8
+      },
+      {
+        "id": "companions-03",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-03.png",
+        "duration": 8,
+        "music_start": 16
+      },
+      {
+        "id": "companions-04",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-04.png",
+        "duration": 8,
+        "music_start": 24
+      },
+      {
+        "id": "companions-05",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-05.png",
+        "duration": 8,
+        "music_start": 32
+      },
+      {
+        "id": "companions-06",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-06.png",
+        "duration": 8,
+        "music_start": 40
+      },
+      {
+        "id": "companions-07",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-07.png",
+        "duration": 8,
+        "music_start": 48
+      },
+      {
+        "id": "companions-08",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-08.png",
+        "duration": 8,
+        "music_start": 56
+      },
+      {
+        "id": "companions-09",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-09.png",
+        "duration": 8,
+        "music_start": 64
+      },
+      {
+        "id": "companions-10",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-10.png",
+        "duration": 8,
+        "music_start": 72
+      },
+      {
+        "id": "companions-11",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-11.png",
+        "duration": 8,
+        "music_start": 80
+      },
+      {
+        "id": "companions-12",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-12.png",
+        "duration": 8,
+        "music_start": 88
+      },
+      {
+        "id": "companions-13",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-13.png",
+        "duration": 8,
+        "music_start": 96
+      },
+      {
+        "id": "companions-14",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-14.png",
+        "duration": 8,
+        "music_start": 104
+      },
+      {
+        "id": "companions-15",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-15.png",
+        "duration": 8,
+        "music_start": 112
+      },
+      {
+        "id": "companions-16",
+        "kind": "still",
+        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-16.png",
+        "duration": 8,
+        "music_start": 120
+      },
+      {
+        "id": "legacy",
+        "kind": "card",
+        "duration": 10,
+        "background": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/start-menu.png",
+        "lines": [
+          {
+            "text": "1995，那段冒險，成了傳說。",
+            "at": [
+              160,
+              325
+            ],
+            "size": 65
+          },
+          {
+            "text": "2026，我們再次出發。",
+            "at": [
+              160,
+              485
+            ],
+            "size": 72
+          },
+          {
+            "text": "讓經典再現。",
+            "at": [
+              160,
+              675
+            ],
+            "size": 50
+          }
+        ]
+      },
+      {
+        "id": "hd2",
+        "kind": "concept",
+        "background": "/repo/docs/figures/fd2-hd2-style-reference.png",
+        "duration": 7,
+        "title": "HD2：讓世界展開新的風貌。",
+        "detail": "後續開發計畫・概念畫面"
+      },
+      {
+        "id": "android",
+        "kind": "card",
+        "duration": 5,
+        "background": "/repo/docs/figures/fd2-hd2-style-reference.png",
+        "lines": [
+          {
+            "text": "Android",
+            "at": [
+              160,
+              350
+            ],
+            "size": 100
+          },
+          {
+            "text": "把冒險帶在身邊。",
+            "at": [
+              160,
+              510
+            ],
+            "size": 72
+          },
+          {
+            "text": "後續開發計畫，尚未發行。",
+            "at": [
+              160,
+              690
+            ],
+            "size": 38
+          }
+        ]
+      },
+      {
+        "id": "editors",
+        "kind": "card",
+        "duration": 7,
+        "background": "/repo/docs/figures/fd2-hd2-style-reference.png",
+        "lines": [
+          {
+            "text": "劇情與戰場編輯器",
+            "at": [
+              160,
+              335
+            ],
+            "size": 84
+          },
+          {
+            "text": "讓新的傳說，由你寫下。",
+            "at": [
+              160,
+              510
+            ],
+            "size": 64
+          },
+          {
+            "text": "後續開發計畫，尚未發行。",
+            "at": [
+              160,
+              690
+            ],
+            "size": 38
+          }
+        ]
+      }
+    ],
+    "inputs": [
+      {
+        "path": "/original/sfx/FDOTHER_049/sample_002.ogg",
+        "sha256": "bf9d230d95227335999b1f2947649d2061a8a06afdc577987b6322153d0106b5"
+      },
+      {
+        "path": "/original/sfx/FDOTHER_049/sample_003.ogg",
+        "sha256": "595c62cb72b28ba051912cfd12ab126bc9d7acf09196f1a71ca0630e63234d25"
+      },
+      {
+        "path": "/original/sfx/FDOTHER_049/sample_004.ogg",
+        "sha256": "5b128efb10934f2427a3c28e0e93384f2441ed0faefe7bfc82cefff8e561a556"
+      },
+      {
+        "path": "/repo/docs/data/fd2-hd1-promo-storyboard-20261104.json",
+        "sha256": "7ef24c34ffc97a0e0aeb6682b363344d57be954faf04e2a4b23c254024a19634"
+      },
+      {
+        "path": "/repo/docs/figures/fd2-hd2-style-reference.png",
+        "sha256": "a18f75cf8a72a11367fb26a11098a2dc11b282a1063acd9991980d6c87c36f5b"
+      },
+      {
+        "path": "/repo/remake/assets/music_fm/FDMUS_018.ogg",
+        "sha256": "3bb0e09bc45e67f1fcaa142495cc730bf3d0115e5313c4fd7ed21436b6a8c67e"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1-record/audio.wav",
+        "sha256": "83c058f74e17449cadeddbf6ff67334160984eb4a40fb60cf63cdcfcbeacbabd"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1-record/video.mkv",
+        "sha256": "1c8b03ac2e4b2203b683a53ccbc348e66550490de1edeffdd487dbfae95a3bad"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1/battle-observation.json",
+        "sha256": "cd647911450d7b91d000bbeb7ea71f96517bb083b20808972d07c5d446684cb9"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-01.png",
+        "sha256": "778acf299c07b7ded8a865bfb9d97936b510b375389e9565e7b6bf21a5d36e09"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-02.png",
+        "sha256": "d32e230be3806c29920db3fad9232d5b4e3a8b91241fcdf9f2eb5da7e2ecb4c7"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-03.png",
+        "sha256": "61c9c20c01a224385eac73e810f19b9e27ef685b06c5df927daf188645f4cc9f"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-04.png",
+        "sha256": "e56ee0374e1e716c6802cbdd4e9670e2099919f812f5a545f70f126bcea38aa4"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-05.png",
+        "sha256": "bd38a4f24979c75d211ae19d4d41470e47f209efb64dac276daf5e95899c9bfd"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-06.png",
+        "sha256": "caf80856c0f66a65edd456c6608f7e03d542dcf861b92d44adf394416f396e4f"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-07.png",
+        "sha256": "012684e98b11d0b14ce3a517e367f2dabd2f54717cb5e3156df779356ac80051"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-08.png",
+        "sha256": "d4aceae70ebef2a435afbf138864e1db0dc8dd0e1e7a86ccb0a3be9c10e9c7f9"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-09.png",
+        "sha256": "6088f5ca77810b3cd7c3c520e6918ff5885c2fb3cc97c9e1e74727f87a691db1"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-10.png",
+        "sha256": "994ef51cc6448a0431c2e0636995cb3172592ce3fb19162b7b7ce302e98b5066"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-11.png",
+        "sha256": "4f0695ce46016891972815fb9c15cc148021a72da1883e724de30b530c89f9da"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-12.png",
+        "sha256": "7df21383076821a24bb6cd1ba827618f21dcf122b20f1907e0936643486987ef"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-13.png",
+        "sha256": "196ac31992e02ffc0eb68bb32adf6fdb00854e24cfca609348c590fa889586bd"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-14.png",
+        "sha256": "967c87d2f60daffbedf67a82fd632e6e9cd352c01fdb8bf040785584cdbb436f"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-15.png",
+        "sha256": "66af70321e6f4dcdf352623350d0915ca072cc16cb3450f9040438ad529e33fa"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-16.png",
+        "sha256": "28eea4d19e7233dd0da80d3978f952684ea3f7fafa63023a3b17de541826f7d4"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/audio.wav",
+        "sha256": "e338823f4e5f058923256f06fc1a240f413e991d85acef0025a4d90b6e557737"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/video.mkv",
+        "sha256": "3c71ffdd1050cbdb8c6f861024a7f31b3e106a90f23ff05a481bb2adb41576a1"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2/promo-action.json",
+        "sha256": "ccde7319151bef1cc18a74b3d85fed54cc0704ff1f644f08736005b2430c8b4f"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/frame-times.jsonl",
+        "sha256": "02c3fecb9808a37f8c76a5efc2c0ce46cf34b71fde4b5ce454bd74a8d78eb0a9"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/video.mkv",
+        "sha256": "2b1057f2d6f7c1bf1cd3f44af860aa8cf45874cd585880a0d6cae9934ecc389f"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3/promo-action.json",
+        "sha256": "9eaf5ad0bd6e55aab75d0c0f3bea81484817eb960067f429f4104b4a6648bbce"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/audio.mka",
+        "sha256": "0bc011ddb9ae68d13999b0dcfce7b50f422ded105540d79d8d1f20874e0b90f7"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/natural-opening.json",
+        "sha256": "a8125fed6b15027d69ca289f9c6ecdf96b28530e52fbef37b9bdef64b1ae678f"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r4/video.mkv",
+        "sha256": "df1c970747a16348fde658bc2c2a0a00e92811b94e258a2cc2a59864e36976b3"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/audio.mka",
+        "sha256": "5a37421ba96abd9b35e4d5038faa42e77eeaa0f3905e02cecc606976f698bcba"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/controller-result.json",
+        "sha256": "bdf5d2c04771fbe3f7c67d6f232aebc66316789945b748d4483f92c3c4a03e5a"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/start-menu.png",
+        "sha256": "967720ac94cf5521891f6c9cb6a7f06c9a77e121bb68f22c14d2db8257c4a6b9"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6/video.mkv",
+        "sha256": "595c99adaf5d782bb60f250ca678100a837ae5bf3c26164c6ad1d67dc4755baa"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/audio.wav",
+        "sha256": "67b0b82a4d59874409a5cc5d2ed17299c95a576fcbe7e971cda1d81bca015a9e"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+        "sha256": "03e6395c534ae7c435be1617c18dca2f1a52cc8f18d69e479871df65ee2e5f89"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3/promo-action.json",
+        "sha256": "6677e5478dc4941498fd494c2e64fb2a2db8486b69a33f58d304957f9c42ee01"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/skykey-frames-r1/receipt.json",
+        "sha256": "58fbaeb83e75e24f992f022389341efc86b06ba6ee748a10ab7c1b3314c6003a"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/skykey-movie-r1.mp4",
+        "sha256": "2e180936ab1c1d7681b9d9b5e5672036efd9873a797fada2c57a456d87441f97"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4-record/audio.wav",
+        "sha256": "f7e678ce57563beef4272a01e8b0c93ce6bfa8c7e502743eeceb56e48247a3e0"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4-record/video.mkv",
+        "sha256": "87bc288cfec2fd39f00ff924af134ad0d3639d8319e18225d3c16d0aa8c3f2e7"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/tino-special-r4/promo-action.json",
+        "sha256": "e64b735f77c46394e7023d549337558e7f836ccad927466c992a5a987306db77"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2-record/audio.wav",
+        "sha256": "3c7dc32c90892e0394970ca53ee9165f682c7d18d6c94d4ab5af01a754362658"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2-record/video.mkv",
+        "sha256": "b85a35a9d1703e70a07791f866fa81b4e00765d057130808900266538e0ba2cd"
+      },
+      {
+        "path": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2/promo-action.json",
+        "sha256": "4f779392d84317d7453044401323c3de7e185c805e5b6c0df9876fb1434fce01"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/abilities-hd.png",
+        "sha256": "578b81a9f60c45829ea37b6fdfb670967a87d84632aa47e0db20495ec3afdae7"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/growth-hd.png",
+        "sha256": "b22f97b9980b34f3bd0253532b5b8b2cf9b953566d7679b13747647118c16197"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-one.png",
+        "sha256": "c304a7a6efc827678e22f80cdab4fde57c6269ba413f487bf223974794ba897a"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-two.png",
+        "sha256": "c3a0af3cc606dbb73b3175a4998cdfd5d98eaa78fd496bd19e4cc6d5c6f18759"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-zero.png",
+        "sha256": "08252a36687cff21b4abacdbff43004b38489428c8c5c4801a43cd4f05abc3da"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/probe/balance-gui-r1/start/enemy-120.png",
+        "sha256": "2bf0174ba14ad6c91575db0c9e6a389c36e5588e430cf1414bc9aca2bdbd3fba"
+      },
+      {
+        "path": "/repo/work/hd1-promo-release-20261103-r82/probe/skill-gui-r1/skill/yuni-hit-100.png",
+        "sha256": "c88861f020eca973abdfbc577828daa09912b7ef4519398d8ab803b0c8faadc1"
+      },
+      {
+        "path": "/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+      },
+      {
+        "path": "/font-license/copyright",
+        "sha256": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b"
+      }
+    ],
+    "rights": "LOCAL-ONLY. Contains original game art and music; not approved for public redistribution.",
+    "scope": "Gameplay in the remake with original/HD art. Per-capture binaries are pinned in capture_receipt; special source saves and sky-key fixture are explicitly constructed. No normal recruitment, DOS RGB parity, shipped HD2/Android/editors or new platform manual acceptance claim.",
+    "timing": "Movie PTS cuts checked by contact sheets; waiting footage is shortened editorially. Source wall-clock is not a platform performance claim. MIDI/PCM hardware timing is not claimed.",
+    "font_file": "/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "font_license": "/font-license/copyright"
+  },
+  "worklist_final": {
+    "open_items": 25,
+    "stale_items": 0,
+    "source": "host gh issue list after #293/#294 closed",
+    "verification": "work/hd1-feedback-20261104-r83/worklist-final-verify.log"
   }
 }

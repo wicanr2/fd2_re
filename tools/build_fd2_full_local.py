@@ -120,9 +120,47 @@ def write_zip(root, output, version, resume=False):
                 assert hashlib.sha256(z.read(name)).hexdigest() == sha(path), name
 
 
+def finalize(release, version):
+    """Freeze validated local deliverables without changing native CI inputs."""
+    manifest = json.loads((release / 'SHA256SUMS.json').read_text())
+    full = json.loads((release / 'full-local/VALIDATION.json').read_text())
+    content = json.loads((release / 'smoke/full-local-content.json').read_text())
+    linux = json.loads((release / 'smoke/linux-full-local-selfcheck.json').read_text())
+    promo = json.loads((release / 'promo/VALIDATION.json').read_text())
+    visual = json.loads((release / 'promo/VISUAL-REVIEW.json').read_text())
+    assert manifest['version'] == full['version'] == promo['version'] == version
+    assert manifest['source_commit'] == full['engine_source_commit']
+    assert content['status'] == 'STATIC-CONTENT-PASSED' and linux['status'] == 'PASS'
+    assert promo['status'] == 'PASS-TECHNICAL' and visual['status'] == 'PASS-SAMPLED'
+    assert visual['movie_sha256'] == promo['movie']['sha256']
+    assert len(manifest['files']) == 3 and len(full['packages']) == 3
+    for row in manifest['files']:
+        path = release / 'patch' / row['file']
+        assert path.stat().st_size == row['size'] and sha(path) == row['sha256']
+        row['path'] = path.relative_to(release).as_posix()
+    for row in full['packages']:
+        path = release / row['path']
+        assert path.stat().st_size == row['bytes'] and sha(path) == row['sha256']
+    movie = promo['movie']
+    path = release / 'promo' / movie['file']
+    assert path.stat().st_size == movie['bytes'] and sha(path) == movie['sha256']
+    manifest.update(
+        full_local=full['packages'],
+        promo=dict(movie, path=path.relative_to(release).as_posix()),
+        local_only=['full-local/', 'promo/'],
+        validation={'content': 'smoke/full-local-content.json',
+                    'linux': 'smoke/linux-full-local-selfcheck.json',
+                    'promo': 'promo/VALIDATION.json',
+                    'visual': 'promo/VISUAL-REVIEW.json'},
+    )
+    dump(release / 'SHA256SUMS.json', manifest)
+    print(json.dumps({'version': version, 'native_inputs': 3, 'full_packages': 3,
+                      'promo_sha256': movie['sha256'], 'status': 'PASS-SCOPED'}))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['stage', 'package'])
+    parser.add_argument('action', choices=['stage', 'package', 'finalize'])
     parser.add_argument('--resume', action='store_true', help='只接續尚無VALIDATION的封包工作；既有ZIP逐檔核對，不覆寫')
     parser.add_argument('--version', default=(Path(__file__).resolve().parents[1] / 'VERSION').read_text().strip())
     parser.add_argument('--original-pack', type=Path)
@@ -139,6 +177,9 @@ def main():
     release = repo / 'dist-all' / version
     work = repo / 'work' / ('full-local-' + version)
     owned(repo / 'work'); owned(release)
+    if args.action == 'finalize':
+        finalize(release, version)
+        return
     if args.action == 'stage':
         assert not work.exists(), '已有 staging，先核對，不自動覆寫'
         pack = args.original_pack or repo / 'remake/generated-assets/fd2-original-b97caf22'
@@ -202,7 +243,7 @@ def main():
         if modern is not None:
             mac_binary.write_text(mac_binary.read_text().replace('exec "$here/fd2-engine"', 'export FD2_MODERN_THEME_PACK="$here/../Resources/modern"\nexec "$here/fd2-engine"'))
         mac_binary.chmod(0o755)
-        metadata = {'schema_version': 1, 'kind': 'fd2-local-full-non-hd', 'version': version, 'engine_source_commit': source['source_commit'], 'public_distribution': False, 'theme': 'faithful-original-pixel-art', 'hd': False, 'asset_pack_manifest_sha256': sha(pack / 'manifest.json'), 'public_inputs': inputs, 'engine_binary_sha256': binaries, 'save_location': '$XDG_DATA_HOME/fd2_re or ~/.local/share/fd2_re', 'limits': ['Windows／macOS完整包尚未實機驗收，已發布的相同引擎已通過原生自檢。', 'Windows／macOS未簽署，macOS未公證。', '30章為受控流程抽樣，並非所有分支或自然難度驗收。']}
+        metadata = {'schema_version': 1, 'kind': 'fd2-local-full-non-hd', 'version': version, 'engine_source_commit': source['source_commit'], 'public_distribution': False, 'theme': 'faithful-original-pixel-art', 'hd': False, 'asset_pack_manifest_sha256': sha(pack / 'manifest.json'), 'public_inputs': inputs, 'engine_binary_sha256': binaries, 'save_location': '$XDG_DATA_HOME/fd2_re or ~/.local/share/fd2_re', 'limits': ['Windows／macOS完整包尚未實機驗收，同來源引擎已通過原生CI自檢。', 'Windows／macOS未簽署，macOS未公證。', '30章為受控流程抽樣，並非所有分支或自然難度驗收。']}
         text = f'炎龍騎士團 2 重製 {version} 本機完整版\n\n本包已含完整合法來源的分離素材，採原版像素風格，尚未 HD。\n只供原版合法持有者本機使用，不得公開上傳或再散布。\n\nWindows：解壓整個資料夾後執行「開始遊戲.bat」。\nmacOS：解壓後開啟 FD2.app。尚未簽署或公證。\nLinux：執行完整包 AppImage；無 FUSE 時加 --appimage-extract-and-run。\n存檔與設定：$XDG_DATA_HOME/fd2_re；未設定時為家目錄的 .local/share/fd2_re。\n\n方向鍵移動，Enter／Space 確認，Esc 返回。F5 快存，F9 快讀。\n使用全新設定時是原版忠實主題；沿用舊設定請確認沒有選擇現代主題。\n引擎授權見 LICENSE；原版素材不適用引擎授權。\n'
         if modern is not None:
             metadata.update(kind='fd2-local-full-hd1', theme='faithful-original-and-hd1', hd=True,

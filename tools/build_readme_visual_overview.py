@@ -6,6 +6,9 @@ original data pack.  It only composes already reviewed screenshots in docs/figur
 """
 
 from pathlib import Path
+import argparse
+import hashlib
+import json
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -35,6 +38,12 @@ def centered(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], text: st
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--hd1-feedback', type=Path)
+    args = parser.parse_args()
+    if args.hd1_feedback:
+        runtime_gallery(args.hd1_feedback)
+        return
     original_dialogue = Image.open(
         FIGURES / "ch01-dialogue-original-dosbox.png"
     ).convert("RGB").resize((640, 400), Image.Resampling.NEAREST)
@@ -76,6 +85,33 @@ def main() -> None:
         "#f3e2ad",
     )
     canvas.save(OUTPUT, optimize=True)
+
+
+def runtime_gallery(feedback: Path) -> None:
+    """Compose only the explicitly approved runtime captures in the recipe."""
+    assert Path('/.dockerenv').exists()
+    recipe = json.loads(feedback.read_text())['readme_gallery']
+    font_path = Path(recipe['font'])
+    assert hashlib.sha256(font_path.read_bytes()).hexdigest() == recipe['font_sha256']
+    face = lambda n: ImageFont.truetype(str(font_path), n, index=3)
+    canvas = Image.new('RGB', (1920, 1080), '#08121e')
+    draw = ImageDraw.Draw(canvas)
+    draw.text((36, 20), recipe['title'], font=face(44), fill='#f3e2ad')
+    assert len(recipe['captures']) == 6
+    for i, row in enumerate(recipe['captures']):
+        source = Path(row['path'])
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == row['sha256'], source
+        picture = Image.open(source).convert('RGB')
+        picture.thumbnail((608, 380), Image.Resampling.LANCZOS)
+        left, top = 32 + (i % 3) * 624, 104 + (i // 3) * 442
+        canvas.paste(picture, (left + (608 - picture.width) // 2, top))
+        draw.text((left + 8, top + 387), row['label'], font=face(28), fill='#e8edf5')
+    draw.text((36, 1005), recipe['note'], font=face(25), fill='#b8cad9')
+    canvas.save(ROOT / recipe['output'], optimize=True)
+    title = recipe['title_capture']
+    source = Path(title['path'])
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == title['sha256']
+    Image.open(source).convert('RGB').save(ROOT / title['output'], optimize=True)
 
 
 if __name__ == "__main__":

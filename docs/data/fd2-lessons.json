@@ -5325,6 +5325,14 @@
         "pattern": "202",
         "note": "逐幕匯出須檢查完整圖數與收據。"
       }
+    },
+    {
+      "id": "promo-controller-clock-is-not-recording-pts",
+      "date": "2026-11-04",
+      "area": "推廣片",
+      "rule": "剪輯前用FFprobe核對每份視訊與音訊的實際時長，再用有時間標記的接觸表校準影片時間。控制器時鐘不能直接當影片時間，也不以兩條串流的結尾硬對齊。缺尾音訊只依已證實原始cue明示重建，並對照可見起手與命中影格。入口為tools/build_fd2_hd1_promo.py與docs/data/fd2-hd1-feedback-20261104.json的promo_final。",
+      "why": "音速刃WAV缺少尾段，控制器與佇列錄影時間也有偏移。硬套時鐘會錯剪悠妮與音速刃，或把命中音效放到返回地圖後。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json；work/hd1-feedback-20261104-r83/promo-source-streams-r1.json。"
     }
   ]
 }

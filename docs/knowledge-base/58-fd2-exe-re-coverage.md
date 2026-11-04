@@ -4,7 +4,7 @@
 
 指令框雙重疊畫、HD圖示亮度與戰鬥面板層次修正已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。正常首章四組呈現、環內切換、走行取消、F5與新程序LOAD通過；音速刃原版閃現另已定位於錄影器主動F2比較，整段HD的正常施放與保存冷讀通過。未新增DOS原版E2或平台效能聲明。唯一現況與輸入／輸出指紋見[玩家回饋收據](../data/fd2-hd1-feedback-20261104.json)與[61](61-modern-theme-runtime-spec.md#2026-11-04-玩家視覺修訂)。
 
-逐幕HD開場已接入並錄至開始選單；普通START、皇城切換與第一關入場另有完整收據。完整版剪輯及新版三平台交付仍待，範圍依[61](61-modern-theme-runtime-spec.md#完整版推廣片與hd開場的已確認範圍ready)及[#293](https://github.com/wicanr2/fd2_re/issues/293)。本批淒煌斬正式動畫及已知玩家法術入口已補接，證據依61與本批現況表；仍不由圖源清冊外推全部組合或原版對拍。
+逐幕HD開場已接入並錄至開始選單；普通START、皇城切換與第一關入場另有完整收據。完整版剪輯、README截圖及新版三平台本機交付已驗收，範圍依[61](61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)及[#293](https://github.com/wicanr2/fd2_re/issues/293)。本批淒煌斬正式動畫及已知玩家法術入口已補接，證據依61與本批現況表；仍不由圖源清冊外推全部組合或原版對拍。
 
 全36筆指令的Go語法樹盤點確認：玩家選單阻擋的指令、其中正式學習表列出的招式，以及僅數值結算的指令，統一由[本批現況表](../data/fd2-hd1-feedback-20261104.json)的battle_animation_audit.command_routes產生。本批學習表入口、珊的原有電擊／落雷及熾炎刀自身中心已修正，相關正式確認與動畫回歸通過；指令31的名稱與角色、FIGANI408來源仍保留未知。重跑入口與逐項說明見[61「戰鬥指令入口稽核」](61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)。
 
