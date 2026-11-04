@@ -414,7 +414,8 @@ func (g *Game) drawModernHDMapRing() error {
 	}
 	base := indexedmap.NativeUnitPresentStripLayoutFor(0, 0, 0, 0).WorkOffset
 	for direction, offset := range offsets {
-		if _, err := overlay.CellIndex(direction); err != nil {
+		index, err := overlay.CellIndex(direction)
+		if err != nil {
 			return err
 		}
 		icon := g.ringIcons[direction]
@@ -425,28 +426,15 @@ func (g *Game) drawModernHDMapRing() error {
 		x := (position%fdicon.NativeMapStride - base%fdicon.NativeMapStride + 4) * 6
 		y := (position/fdicon.NativeMapStride - base/fdicon.NativeMapStride + 4) * 6
 		if steady && direction == g.ringSel && fdother.ActionOverlayAcceptsDirection(overlay.Availability, direction) {
-			if _, err := overlay.SelectedCellIndex(direction, g.actionOverlayBlink.Phase); err != nil {
+			index, err = overlay.SelectedCellIndex(direction, g.actionOverlayBlink.Phase)
+			if err != nil {
 				return err
 			}
-			shade := color.RGBA{255, 168, 32, 255}
-			if g.actionOverlayBlink.Phase != 0 {
-				shade = color.RGBA{255, 224, 64, 255}
-			}
-			for _, rect := range [][4]int{{x - 9, y - 9, 186, 9}, {x - 9, y + 156, 186, 9}, {x - 9, y, 9, 156}, {x + 168, y, 9, 156}} {
-				border := &ebiten.DrawImageOptions{}
-				border.GeoM.Scale(float64(rect[2]), float64(rect[3]))
-				border.GeoM.Translate(float64(rect[0]), float64(rect[1]))
-				border.ColorScale.ScaleWithColor(shade)
-				r.World.SubImage(modernHDMapViewport()).(*ebiten.Image).DrawImage(r.Pixel, border)
-			}
 		}
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(6, 6)
-		op.GeoM.Translate(float64(x), float64(y))
-		if !fdother.ActionOverlayAcceptsDirection(overlay.Availability, direction) {
-			op.ColorScale.Scale(0.55, 0.55, 0.6, 1)
+		if err := g.drawModernActionIcon(r.World.SubImage(modernHDMapViewport()).(*ebiten.Image), icon,
+			image.Rect(x, y, x+168, y+156), index, fdother.ActionOverlayAcceptsDirection(overlay.Availability, direction)); err != nil {
+			return err
 		}
-		r.World.SubImage(modernHDMapViewport()).(*ebiten.Image).DrawImage(icon, op)
 	}
 	if !closing && g.modernHDMapFrame != nil {
 		for _, raw := range g.st.Units {

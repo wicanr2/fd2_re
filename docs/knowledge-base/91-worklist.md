@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -340,6 +340,16 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
+### P1 HD1玩家回饋：原版美術下雙重指令框、暗圖示與狀態框層次
+
+`hd1-feedback-interface-20261104` · 缺陷 · [#292](https://github.com/wicanr2/fd2_re/issues/292) · 仍未完成 · 要人判
+
+使用者回報原版美術＋HD介面出現錯色方塊，HD指令框過暗、戰鬥狀態框不如原版。已定位前者為原版指令框仍畫在底圖，再疊上HD框。使用者指定沿原版加強，保留有層次的框線。
+
+怎樣算做完：兩種美術下HD介面只畫一組指令框；圖示清楚，原版多層框線與選取相位保留。四種介面／美術組合經正常開環、走行取消、F5與新程序LOAD核對，面板數值、原版介面與保存回歸通過。
+
+證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -505,6 +515,16 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
+
+### P1 HD1開場與推廣片修訂：HD動畫、開始選單、完整音速刃與節奏
+
+`hd1-feedback-opening-promo-20261104` · 工作 · [#293](https://github.com/wicanr2/fd2_re/issues/293) · 仍未完成 · 要人判
+
+使用者要求開頭也有HD動畫，推廣片錄到實際START／LOAD／CONTINUE選單，保留「讓經典再現」。0:49近戰與蜜蒂音速刃節奏偏慢；音速刃原版閃現已定位於驗證器在演出開始後主動F2比較，須以整段HD錄影模式重錄。新片與三平台完整版沿新版本重建，既有v.1.1.0交付不覆寫。
+
+怎樣算做完：原圖來源、HD開場素材與動畫接線可追溯，從第一個可見畫面保持所選美術；正常操作錄到開始選單與遊玩切換，完整HD音速刃，近戰／特技節奏實際檢視。新版影片技術檢查、三平台封包清冊／雜湊與平台能力範圍驗證通過，更新README截圖與本機交付。
+
+證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
 ## tooling — 工具、編輯器與工作流程
 

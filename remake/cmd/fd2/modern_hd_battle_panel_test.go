@@ -168,12 +168,22 @@ func TestModernBattlePanelChromeNativeSpans(t *testing.T) {
 			}
 		}
 		for point, index := range map[image.Point]byte{
-			{2, 60}: p.chrome.border, {3, 60}: p.background,
+			{8, 60}: p.chrome.border, {20, 60}: p.background,
 			{600, 120}: p.chrome.border, {600, 122}: p.background,
 			{126, 132}: p.chrome.border, {743, 221}: p.chrome.border,
 		} {
 			if picture.At(point.X, point.Y) != color.RGBAModel.Convert(g.nativeUIPalette[index]) {
 				t.Fatalf("fine HD chrome missing at %v", point)
+			}
+		}
+		for y := 0; y < 42; y++ {
+			for x := 0; x < 149; x++ {
+				if x >= 3 && x < 146 && y >= 3 && y < 39 {
+					continue
+				}
+				if got, want := picture.At(x*6+3, y*6+3), color.RGBAModel.Convert(g.nativeUIPalette[assets.BattlePanel.Pixels[y*149+x]]); got != want {
+					t.Fatalf("native bevel changed at %d,%d: %v want %v", x, y, got, want)
+				}
 			}
 		}
 	}
@@ -208,7 +218,7 @@ func TestModernBattlePanelChromeFrozenPaletteAndReject(t *testing.T) {
 	palette[p.chrome.border] = color.RGBA{17, 28, 39, 255}
 	palette[p.chrome.ink[0]] = color.RGBA{41, 52, 63, 255}
 	third, thirdKey, err := p.raster(palette)
-	if err != nil || thirdKey == nextKey || third.At(2, 60) != palette[p.chrome.border] || third.At(300, 150) != palette[p.chrome.ink[0]] {
+	if err != nil || thirdKey == nextKey || third.At(8, 60) != palette[p.chrome.border] || third.At(300, 150) != palette[p.chrome.ink[0]] {
 		t.Fatal("fixed RGB chrome ignored current palette", err)
 	}
 	broken := *p

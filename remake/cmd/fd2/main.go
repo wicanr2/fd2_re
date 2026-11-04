@@ -10146,6 +10146,12 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 		}
 		return
 	}
+	if g.nativeMapPresented && g.usesModernBattleActionIcons() {
+		if err := g.drawModernNativeMapRing(screen); err != nil {
+			g.loadErr = err.Error()
+		}
+		return
+	}
 	tw, th := g.m.TileW, g.m.TileH
 	ux, uy, _ := g.actionOverlayAnchor(g.sel)
 	if !g.usesModernBattleActionIcons() && g.drawNativeActionOverlay(screen, ux, uy) {
@@ -10188,6 +10194,21 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 			continue
 		}
 		x, y := pos[i][0], pos[i][1]
+		if g.usesModernBattleActionIcons() {
+			state := g.nativeActionOverlayState()
+			index, err := state.CellIndex(i)
+			enabled := fdother.ActionOverlayAcceptsDirection(state.Availability, i)
+			if err == nil && i == g.ringSel && enabled && !g.actionOverlayBlocksInput() {
+				index, err = state.SelectedCellIndex(i, g.actionOverlayBlink.Phase)
+			}
+			if err == nil {
+				err = g.drawModernActionIcon(screen, ic, image.Rect(int(x), int(y), int(x+iw), int(y+ih)), index, enabled)
+			}
+			if err != nil {
+				g.loadErr = err.Error()
+			}
+			continue
+		}
 		if i == g.ringSel { // 選中:橘黃框(orig 選中樣式)
 			border(x, y, color.RGBA{0xff, 0xa8, 0x20, 0xff})
 		}
@@ -12538,7 +12559,7 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 			in.Frame.RangeMode = 0
 		}
 	}
-	if g.modernHDMapComposing && g.ring && g.usesModernBattleActionIcons() {
+	if g.ring && g.usesModernBattleActionIcons() {
 		in.Frame.SelectionOverlay = nil
 		in.Frame.RangeMode = 0
 	}

@@ -8,8 +8,9 @@ from verify_fd2_hd_gui import digest, latest
 
 
 class Command30Probe:
-    def __init__(self, out, audit, capture, label):
+    def __init__(self, out, audit, capture, label, continuous_hd=False):
         self.out, self.audit, self.capture, self.label = out, audit, capture, label
+        self.continuous_hd = continuous_hd
         self.audit_start = audit.stat().st_size
         self.stop = threading.Event()
         self.samples, self.rejected, self.errors = [], [], []
@@ -22,7 +23,7 @@ class Command30Probe:
                 before = latest(self.audit)
                 layers = before.get('command_source_layers') or []
                 signature = (before.get('command_owner'), before.get('command_phase'),
-                             before.get('command_frame'), before.get('command_target_index'))
+                             None if self.continuous_hd else before.get('command_frame'), before.get('command_target_index'))
                 if (before.get('command_id') != 30 or not before.get('command_scene')
                         or not before.get('hd_battle') or not layers or signature in seen):
                     self.stop.wait(.005);continue
@@ -49,6 +50,9 @@ class Command30Probe:
         active = [r for r in rows if r.get('command_id') == 30 and r.get('command_scene')]
         owners = {r['command_owner'] for r in active}
         assert len(owners) == 1 and self.samples, '缺少實際音速刃owner或HD取樣'
+        if self.continuous_hd:
+            assert all(r.get('hd_theme') for r in active), '整段HD錄影中出現原版美術模式'
+            assert any(s['before'].get('command_phase') == 'prelude' for s in self.samples), '缺少HD起手的實際視窗取樣'
         mp, changes, prior = [], {}, None
         for row in active:
             actor = next(u for u in row['units'] if u.get('native_identity') == 18 and u['camp'] == 0)
@@ -66,4 +70,5 @@ class Command30Probe:
         return dict(status='PASS-COMMAND30-NORMAL-OBSERVATION', owner=next(iter(owners)),
                     mp_sequence=mp, hp_changes=changes, target_count=len(changes),
                     samples=self.samples, rejected=self.rejected, audit_rows=len(active),
+                    continuous_hd_checked=self.continuous_hd,
                     scope='實際鍵盤施放的唯讀PNG與交易觀測；單幀相容來源由獨立核對器判定。')

@@ -186,8 +186,8 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 		size   int
 		colour byte
 	}
-	fields := []field{{p.name, image.Rect(5, 4, 114, 20), 96, 0xcd}, {"LV·", image.Rect(115, 4, 131, 13), 48, 0xcd},
-		{"HP", image.Rect(3, 21, 20, 30), 48, 0xcd}, {"MP", image.Rect(3, 30, 20, 39), 48, 0xcd}}
+	fields := []field{{p.name, image.Rect(5, 4, 114, 20), 96, p.digitInk[0]}, {"LV·", image.Rect(115, 4, 131, 13), 48, p.digitInk[0]},
+		{"HP", image.Rect(3, 21, 20, 30), 48, p.digitInk[0]}, {"MP", image.Rect(3, 30, 20, 39), 48, p.digitInk[0]}}
 	for _, v := range []struct{ value, max, width, x, y int }{
 		{p.values.Level, 99, 2, 132, 4}, {p.values.HP, 999, 3, 126, 21}, {p.values.MP, 999, 3, 126, 30},
 	} {

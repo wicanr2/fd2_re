@@ -192,6 +192,8 @@ def main():
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     parser.add_argument('--battle-hd', action='store_true', help='要求兩次普通攻擊確實使用可選HD戰鬥繪製層；需--world')
+    parser.add_argument('--continuous-hd-action', action='store_true',
+                        help='推廣錄影用：特技開始後保持HD，略過演出中的F2比較；戰場切換與保存驗證照常')
     parser.add_argument('--battle-art', action='store_true', help='另擷取兩次普通攻擊的有界PNG序列供實際圖源核對；需--battle-hd')
     parser.add_argument('--player-toolbar', action='store_true',
                         help='以1920×1272完整擷取工具列視窗；戰鬥圖源另精確裁出下方1920×1200遊戲區')
@@ -307,6 +309,7 @@ def main():
     assert not args.buy_bekwei_bow or (args.capture_native_battle_save
            and args.battle_node=='battle_ch09' and args.revive_before_departure is None)
     assert args.battle_command is None or (args.battle_only and args.battle_hd and not args.battle_end_art and not args.timed_dialogue)
+    assert not args.continuous_hd_action or (args.battle_command == 30 and args.battle_hd)
     action_label=f'command{args.battle_command}' if args.battle_command is not None else 'physical'
     assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
@@ -1356,10 +1359,11 @@ def main():
                     scene_key='command_scene' if args.battle_command is not None else 'battle_scene'
                     command30_probe=None
                     if args.battle_command==30:
-                        command30_probe=Command30Probe(args.out,audit,lambda p:command('import','-window',window,str(p)),prefix)
+                        command30_probe=Command30Probe(args.out,audit,lambda p:command('import','-window',window,str(p)),prefix,
+                                                       continuous_hd=args.continuous_hd_action)
                         command30_probe.thread.start()
                     key('Return');wait(lambda s:s.get(scene_key) is True)
-                    if args.battle_command==30:
+                    if args.battle_command==30 and not args.continuous_hd_action:
                         entered=latest(audit)
                         assert entered.get('command_id')==30 and entered.get('command_actor_fig')==18
                         key('F2');native=wait(lambda s:not s.get('hd_theme'))
@@ -2145,6 +2149,8 @@ def main():
         if args.world:
             (args.out/'battle-observation.json').write_text(json.dumps(
                 {'status':'OBSERVATION-ONLY','battle_hd_scenes':battle_hd_scenes,
+                 'continuous_hd_action':args.continuous_hd_action,
+                 'in_action_theme_switch_checked':args.battle_command==30 and not args.continuous_hd_action,
                  'battle_art_samples':battle_art_samples,'battle_end_art_samples':battle_end_art_samples,
                  'battle_end_command_samples':battle_end_command_samples,
                  'battle_approach_steps':battle_approach_steps,'battle_post_dialogue_cleanup':battle_post_dialogue_cleanup,

@@ -5245,6 +5245,38 @@
         "pattern": "result\\['files'\\]",
         "note": "錄製器保留具檔名與雜湊的輸出清冊，作為清理白名單來源。"
       }
+    },
+    {
+      "id": "independent-interface-ring-single-owner",
+      "date": "2026-11-04",
+      "area": "HD介面",
+      "rule": "美術與介面可獨立切換時，指令框的底圖抑制與最終繪製都依所選介面決定；變更前後用同一進度驗四種組合與中央人物原生位置。入口remake/cmd/fd2/main.go的composeNativeMapFrameAtWithPaletteCycle、modern_hd_action_icon.go，以及tools/fd2_hd1_chibi_gui.py的ring_styles。",
+      "why": "原版美術＋HD介面曾留下原版四框，再疊HD框，露出錯位紅黃藍色塊；改用正規化人物重繪又會產生錯位重影，須沿原生位置、遮罩及色盤writer。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json；正常首章四組開環／取消／保存冷讀。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "if g\\.ring && g\\.usesModernBattleActionIcons\\(\\) \\{\\s*in\\.Frame\\.SelectionOverlay = nil",
+        "note": "原版及HD美術均依HD介面略過底圖原生指令框。"
+      }
+    },
+    {
+      "id": "promo-continuous-hd-separate-toggle-check",
+      "date": "2026-11-04",
+      "area": "推廣影片",
+      "rule": "推廣片採用的完整特技演出，使用明示連續HD錄影模式；演出中F2比較另外驗證，保留原有預設測試。入口tools/verify_fd2_hd_fonts_gui.py的--continuous-hd-action與tools/fd2_hd_command30_gui.py的HD起手取樣、全段主題及一次交易檢查。",
+      "why": "音速刃舊片的原版閃現來自驗證器在起手後主動按F2，並非已證實正式HD起手缺圖。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json；command30-continuous-r2正常施放、返回與保存冷讀。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "--continuous-hd-action",
+        "note": "錄影模式與原版切換測試可分開選擇。"
+      }
     }
   ]
 }

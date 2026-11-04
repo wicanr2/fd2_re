@@ -25,11 +25,15 @@
 
 ![推廣片「讓經典再現」片頭](docs/figures/hd1-promo-title.png)
 
-推廣片「讓經典再現」以90秒串接遊戲介紹、片頭、實際遊玩、原版／HD切換、戰鬥動畫與能力工具列。本機三平台完整版與影片統一放在同版號的dist-all目錄；[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)。
+現有推廣片「讓經典再現」以90秒串接遊戲介紹、片頭、實際遊玩、原版／HD切換、戰鬥動畫與能力工具列。本機三平台完整版與影片統一放在同版號的dist-all目錄；[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)。逐幕HD開場與新版完整推廣片的新增內容，依[玩家回饋範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#完整版推廣片與hd開場的已確認範圍ready)實作。
 
 ![原版與HD1即時切換、物理攻防與蜜蒂音速刃的實際畫面](docs/figures/hd1-release-gameplay-overview.png)
 
 這是示範進度的實際鍵盤遊玩與戰鬥畫面。原版／HD美術可即時切換；特技片段使用已揭露的受控章前來源，不代表自然招募或全戰役驗收。原六格圖案的[受控完整畫面](docs/figures/hd1-terrain-final-round-pattern-game.png)、最後宮殿圖源與普通首章操作驗證仍見HD1完成紀錄，圖案用途保留未知。
+
+![原版與HD美術、介面的四種指令框組合](docs/figures/hd1-command-frames-four-styles.png)
+
+HD指令框沿用原版立體框線與選取閃爍，並提亮圖示。戰鬥狀態框也保留原版多層邊線，提高姓名與標籤對比。上圖為同份進度、相同站位的正常鍵盤切換，均是重製引擎畫面，僅比較呈現。[規格與驗證](docs/knowledge-base/61-modern-theme-runtime-spec.md#2026-11-04-玩家視覺修訂)。
 
 ![能力設定的三次警告、當前能力、升級成長與敵人強度](docs/figures/hd1-balance-editor-overview.png)
 

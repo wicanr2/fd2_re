@@ -36,6 +36,15 @@ def run_normal_chibi(args,audit,key,wait,shot,saved,command,window,restart,opera
     actual=next(u for u in arrival['units'] if u.get('native_identity')==4 and u['camp']==0)
     assert [actual['x'],actual['y']]==destination and not actual['acted']
     shot('ares-chibi-walk-arrived')
+    ring_styles=[]
+    for label,keys in [('hd-hd',[]),('hd-original',['F11']),('original-original',['F2']),('original-hd',['F11']),('hd-hd-restored',['F2'])]:
+        for k in keys:
+            before=latest(audit);key(k)
+            wait(lambda s:s.get('hd_theme')!=before.get('hd_theme') if k=='F2' else s.get('interface_mode')!=before.get('interface_mode'),timeout=180)
+        state=latest(audit)
+        assert units(state)==units(arrival) and state.get('ring') and state.get('ring_phase')=='open' and not state['error']
+        shot('ares-ring-'+label)
+        ring_styles.append(dict(label=label,state=latest(audit)))
     key('Escape');wait(lambda s:not s.get('ring') and not s.get('walking'),timeout=180)
     if latest(audit).get('move_preview'):key('Escape');wait(lambda s:not s.get('move_preview'))
     returned=latest(audit);assert units(returned)==units(initial)
@@ -48,5 +57,5 @@ def run_normal_chibi(args,audit,key,wait,shot,saved,command,window,restart,opera
     restart('battle_ch01',returned['gold'],'ares-chibi-cold-title-load')
     cold=latest(audit);assert units(cold)==units(returned) and saved.read_bytes()==saved_hd
     assert digest(args.town_save)==SOURCE_SHA
-    report=dict(schema='fd2-hd1-chibi-normal-gui-v1',status='PASS',source_sha256=SOURCE_SHA,binary_sha256=digest(args.binary),catalog_sha256=digest(args.assets/'assets/themes/modern/catalog.json'),gui_tool_sha256=tool_hash,helper_sha256=digest(Path(__file__)),initial=initial,styles=styles,arrival=arrival,returned=returned,cold=cold,origin=origin,destination=destination,screenshots=shots,operations=operations,saved_sha256=digest(saved),theme_and_interface_save_bytes_equal=True,state_injection=False,recording_created=False,new_process_title_load=True,scope='既有普通首章來源經標題LOAD、游標選亞雷斯、四組呈現、合法一格走行與取消、F5及新程序LOAD；不改寫名冊／HP／移動或規則，不宣稱整章或原版動態對拍。')
+    report=dict(schema='fd2-hd1-chibi-normal-gui-v1',status='PASS',source_sha256=SOURCE_SHA,binary_sha256=digest(args.binary),catalog_sha256=digest(args.assets/'assets/themes/modern/catalog.json'),gui_tool_sha256=tool_hash,helper_sha256=digest(Path(__file__)),initial=initial,styles=styles,ring_styles=ring_styles,arrival=arrival,returned=returned,cold=cold,origin=origin,destination=destination,screenshots=shots,operations=operations,saved_sha256=digest(saved),theme_and_interface_save_bytes_equal=True,state_injection=False,recording_created=False,new_process_title_load=True,scope='既有普通首章來源經標題LOAD、游標選亞雷斯、四組呈現、合法一格走行與取消、F5及新程序LOAD；不改寫名冊／HP／移動或規則，不宣稱整章或原版動態對拍。')
     (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

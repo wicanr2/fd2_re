@@ -1,0 +1,114 @@
+{
+  "schema": "fd2-hd1-feedback/1",
+  "date": "2026-11-04",
+  "base_head": "760642ae303d68e019e962b6fc1f4ddca2fe8365",
+  "status": "UI-CONFORMED-SCOPED-PROMO-AND-OPENING-IN-PROGRESS",
+  "issues": {
+    "interface": 292,
+    "opening_promo_delivery": 293
+  },
+  "source_files_sha256": {
+    "remake/cmd/fd2/main.go": "c59c8673bc6b69fd5f7b56e6795b733ced231194b04c0d7f0c810aaad7a67275",
+    "remake/cmd/fd2/modern_hd_action_icon.go": "f3ce214ca63736a1d3935ff7ef8ee4cf927366de6ba603973d2530f88e81709c",
+    "remake/cmd/fd2/modern_hd_map_gpu.go": "4711372c5deffc7beb19e091e9d4aaffd2a8afdf741db55d7dfbeeb4b687a9b8",
+    "remake/cmd/fd2/modern_hd_battle_panel.go": "256b0cfebfbe61ac65642c035417aa2a92cfa521166c92e761e9ddf8644041c0",
+    "remake/cmd/fd2/modern_hd_battle_panel_chrome.go": "30a0b9d94dbb23c4c12851b154b96b17b31eb0f3785570c07150e3bc6d7fc12a",
+    "remake/cmd/fd2/modern_hd_battle_panel_test.go": "441deaaee0c95e54caa626a9897680ada961289ee4e4ce34b74c7a7ad0d3ccad",
+    "tools/fd2_hd1_chibi_gui.py": "13e5fb56c86d359319d920bb915591de7e556acd80fb3c7e4396f67be720532e",
+    "tools/fd2_hd_command30_gui.py": "795c85ad3752f171bed28eb7fa08b06f4093cf46b0377612e47d8df1b9583ad4",
+    "tools/verify_fd2_hd_fonts_gui.py": "99a21543c0719fc2941db92ee493b900bf6f594be891e8935e35894262ee34c5"
+  },
+  "source_reference": "docs/data/fd2-reference-files.json",
+  "interface": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "changes": [
+      "依介面獨佔指令框，移除原版美術＋HD介面的底圖原版框殘影",
+      "兩種美術共用原版指令框邊線與選取相位，提亮HD圖示",
+      "中央人物依原生位置、遮罩與色盤band writer重繪",
+      "戰鬥面板保留FDOTHER#5/22原始三像素周邊與角落，姓名／標籤沿亮字色盤"
+    ],
+    "normal_gui": {
+      "receipt": "work/hd1-feedback-20261104-r83/ring-four-styles-r2/receipt.json",
+      "sha256": "6468b148ba15f2508ffe0946c7127074752d748906aff27331772d321c2353e6",
+      "binary": "work/hd1-feedback-20261104-r83/fd2-player-r4",
+      "binary_sha256": "c9d9035f41836b82fa95608727e5c26abb48ed240985d9dfe41f719843888676",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "state_injection": false,
+      "new_process_title_load": true,
+      "theme_and_interface_save_bytes_equal": true,
+      "ring_styles": [
+        "hd-hd",
+        "hd-original",
+        "original-original",
+        "original-hd",
+        "hd-hd-restored"
+      ]
+    },
+    "go_regression": {
+      "status": "PASS",
+      "image": "fd2-go-test-local:latest",
+      "go_version": "go1.22.12",
+      "package": "./cmd/fd2",
+      "run": "TestModernThemeOwnsBattleActionIconPresentation|TestNative.*(Ring|Overlay)|TestPlayerInterface|TestModernBattlePanel",
+      "count": 1,
+      "observed_elapsed_seconds": 2.097
+    },
+    "public_figure": {
+      "file": "docs/figures/hd1-command-frames-four-styles.png",
+      "sha256": "17ade11adc899f77578b2a2f92b2a086bd284080b0a6f62df23fa079ef83b44f"
+    }
+  },
+  "command30_recording": {
+    "status": "PASS-CONTINUOUS-HD-NORMAL-GUI",
+    "root_cause": "GUI驗證器在演出起手後主動送出F2、擷取原版，再F2回HD；這段被舊推廣片採用",
+    "fix": "新增明示--continuous-hd-action，預設切換驗證保持",
+    "receipt": "work/hd1-feedback-20261104-r83/command30-continuous-r2/receipt.json",
+    "receipt_sha256": "8905765d4c95300964491e5f79db94f1667a8a27a0a7a84f67f845d7390fd125",
+    "recording": "work/hd1-feedback-20261104-r83/command30-continuous-r2-record/recording.json",
+    "recording_sha256": "bb9cef73f698ec62aaaa8f3f791defc69844204e3ea94136320dc6e9eee139d2",
+    "continuous_hd_checked": true,
+    "mp_sequence": [
+      29,
+      5
+    ],
+    "target_count": 1,
+    "normal_return_and_cold_load": true,
+    "source_kind": "明示JOIN與升級writer建構章前來源；章內普通鍵盤，不代表自然招募或完整原版戰役",
+    "observed_wall_seconds": 39.48906175699085,
+    "cadence_status": "PENDING_EDITING_AND_REVIEW; preload, software rendering and capture wall-clock are not platform acceptance"
+  },
+  "pending": [
+    "沿原版分鏡逐幕HD重繪、編製、接線與正常START驗證",
+    "完整版推廣片：開始選單、皇城F2切換、首關站位、蓋亞／亞雷斯攻擊、悠妮施法、黃金之鑰合成、蜜蒂／鐵諾／將軍絕招、人物簡介",
+    "文案與節奏潤飾、HD2概念／Android／劇情與戰場編輯器開發預告",
+    "新版三平台完整版乾淨重建與交付驗證"
+  ],
+  "opening_art_status": "DRAFT_NOT_REGISTERED; work/hd1-feedback-20261104-r83/opening-art-drafts.json",
+  "original_oracle": "NOT_RUN_NO_NEW_DOS_PARITY_CLAIM",
+  "platform_performance": "NOT_ACCEPTED_FROM_SOFTWARE_CAPTURE",
+  "release_status": "v.1.1.0-20261103 preserved; no new tag or Release",
+  "verification_followup": {
+    "string_inventory": {
+      "status": "PASS",
+      "log": "work/hd1-feedback-20261104-r83/string-review-r1/regression.log",
+      "classification": "四條balanceUI.message由正式label消費，人工分類player_visible後共164項；其餘處置保持"
+    },
+    "lessons": {
+      "status": "PASS",
+      "lessons": 420,
+      "guards": 267,
+      "log": "work/hd1-feedback-20261104-r83/lessons-check.log"
+    },
+    "worklist": {
+      "status": "PASS",
+      "open_items": 27,
+      "log": "work/hd1-feedback-20261104-r83/worklist-verify.log"
+    },
+    "docs": {
+      "status": "PASS-NO-NEW-BROKEN-TARGETS",
+      "report": "work/hd1-feedback-20261104-r83/docs-validation.json"
+    },
+    "docker": "owned_r83_containers_cleaned",
+    "ownership": "UID/GID 1000:1000; no root-owned task outputs or md-named directories"
+  }
+}
