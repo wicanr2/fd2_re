@@ -1,4 +1,4 @@
-"""在一次性IDA資料庫複核22253背景來源，保留原始位址、bytes與分級索引。"""
+"""在一次性IDA資料庫複核指定已知函式，預設22253，保留bytes與分級索引。"""
 import hashlib
 import json
 import os
@@ -32,27 +32,31 @@ def main():
         exporter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         database_function_count=sum(1 for _ in idautils.Functions()),imagebase=idaapi.get_imagebase())
     if os.environ.get('FD2_IDA_SMOKE')!='1':
-        fn=ida_funcs.get_func(0x22253)
-        assert fn and fn.start_ea==0x22253
-        callers=[]
-        ea=ida_xref.get_first_cref_to(fn.start_ea)
-        while ea!=idaapi.BADADDR:
-            caller=ida_funcs.get_func(ea)
-            callers.append(dict(ida_linear_address=hex(ea),function_start=hex(caller.start_ea) if caller else None,
-                original_instruction=ida_lines.tag_remove(idc.generate_disasm_line(ea,0) or '')))
-            ea=ida_xref.get_next_cref_to(fn.start_ea,ea)
-        instructions=[]
-        for ea in idautils.FuncItems(fn.start_ea):
-            if not ida_bytes.is_code(ida_bytes.get_full_flags(ea)):continue
-            size=idc.get_item_size(ea)
-            annotations=semantics.get(ea,[])
-            instructions.append(dict(ida_linear_address=hex(ea),original_name=idc.get_name(ea),
-                raw_bytes=ida_bytes.get_bytes(ea,size).hex(),
-                original_instruction=ida_lines.tag_remove(idc.generate_disasm_line(ea,0) or ''),
-                semantic_annotations=annotations,semantic_confidence=annotations[0]['confidence'] if annotations else '未知',
-                unconfirmed_semantics=not annotations or any(a['confidence']!='已證實' for a in annotations)))
-        result['function']=dict(start=hex(fn.start_ea),end=hex(fn.end_ea),original_name=idc.get_func_name(fn.start_ea),
-            semantic_annotations=semantics.get(fn.start_ea,[]),callers=callers,instructions=instructions)
+        functions=[]
+        for address in [int(value,0) for value in os.environ.get('FD2_IDA_ADDRESSES','0x22253').split()]:
+            fn=ida_funcs.get_func(address)
+            assert fn and fn.start_ea==address
+            callers=[]
+            ea=ida_xref.get_first_cref_to(fn.start_ea)
+            while ea!=idaapi.BADADDR:
+                caller=ida_funcs.get_func(ea)
+                callers.append(dict(ida_linear_address=hex(ea),function_start=hex(caller.start_ea) if caller else None,
+                    original_instruction=ida_lines.tag_remove(idc.generate_disasm_line(ea,0) or '')))
+                ea=ida_xref.get_next_cref_to(fn.start_ea,ea)
+            instructions=[]
+            for ea in idautils.FuncItems(fn.start_ea):
+                if not ida_bytes.is_code(ida_bytes.get_full_flags(ea)):continue
+                size=idc.get_item_size(ea)
+                annotations=semantics.get(ea,[])
+                instructions.append(dict(ida_linear_address=hex(ea),original_name=idc.get_name(ea),
+                    raw_bytes=ida_bytes.get_bytes(ea,size).hex(),
+                    original_instruction=ida_lines.tag_remove(idc.generate_disasm_line(ea,0) or ''),
+                    semantic_annotations=annotations,semantic_confidence=annotations[0]['confidence'] if annotations else '未知',
+                    unconfirmed_semantics=not annotations or any(a['confidence']!='已證實' for a in annotations)))
+            functions.append(dict(start=hex(fn.start_ea),end=hex(fn.end_ea),original_name=idc.get_func_name(fn.start_ea),
+                semantic_annotations=semantics.get(fn.start_ea,[]),callers=callers,instructions=instructions))
+        if len(functions)==1:result['function']=functions[0]
+        else:result['functions']=functions
     output=Path(os.environ['FD2_IDA_OUTPUT'])
     assert not output.exists()
     output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

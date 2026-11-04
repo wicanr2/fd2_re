@@ -17,11 +17,11 @@
 
 [v.1.0.0-20261017](https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.0-20261017) 提供 macOS 通用版 ZIP、Windows x86_64 ZIP 與 Linux x86_64 AppImage，附版本、來源提交、SHA-256 與原生封包自檢紀錄。
 
-公開包只含引擎與可散布資料，遊玩需自備完整合法分離素材。現有單一匯入工具尚不能產生完整可玩包；素材契約與工具範圍見[分離素材規格](docs/knowledge-base/60-editor-separated-assets-spec.md)。30章受控流程與保存例外見[驗收進度](docs/REMAKE-STATUS.md)。此下載版尚未包含目前開發主線已完成的HD1。Windows／macOS未簽署，macOS尚未公證。
+公開包只含引擎與可散布資料，遊玩需自備完整合法分離素材。現有單一匯入工具尚不能產生完整可玩包；素材契約與工具範圍見[分離素材規格](docs/knowledge-base/60-editor-separated-assets-spec.md)。30章受控流程與保存例外見[驗收進度](docs/REMAKE-STATUS.md)。此下載版尚未包含目前開發主線的HD1。Windows／macOS未簽署，macOS尚未公證。
 
 ## HD1開發版
 
-開發主線的HD1素材與接線已完成，包含33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。必要來源、載入、缺件拒收、切換及保存冷讀均已驗證；細部觀感、逐章操作與平台實機交由使用者確認。範圍及重跑證據見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[HD1完成紀錄](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1最後地形與前景)。既有下載版未重發，HD2與HD-2D另期。
+開發主線已接入33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。這些範圍的必要來源、載入、缺件拒收、切換及保存冷讀已驗證；細部觀感、逐章操作與平台實機交由使用者確認。戰鬥動畫仍有正式入口及淒煌斬演出缺口，完整HD1尚未完成。範圍及重跑證據見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[戰鬥指令入口稽核](docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)。既有下載版未重發，HD2與HD-2D另期。
 
 ![推廣片「讓經典再現」片頭](docs/figures/hd1-promo-title.png)
 
@@ -436,7 +436,7 @@ HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像�
 
 ![戰場資訊的繁中、簡中、日文與英文實際HD畫面](docs/figures/hd-system-info-locales.png)
 
-資訊窗已接上四語勝敗條件與標籤。四格取自同份章前存檔的普通開窗操作，完整視窗半縮，沒有補畫；像素主題也已抽驗，繁中仍保留原始圖字。正常切換、返回與保存冷讀通過；HD1技術接線完成，平台實機由使用者驗證。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_locales_followup_20261026`。
+資訊窗已接上四語勝敗條件與標籤。四格取自同份章前存檔的普通開窗操作，完整視窗半縮，沒有補畫；像素主題也已抽驗，繁中仍保留原始圖字。正常切換、返回與保存冷讀通過；地形與介面接線已驗；完整戰鬥缺口依58首節，平台實機由使用者驗證。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_locales_followup_20261026`。
 
 ![四種回復術的正常操作HD畫面](docs/figures/hd-heal-normal.png)
 

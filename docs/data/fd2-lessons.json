@@ -5293,6 +5293,38 @@
         "pattern": "capture-source-preflight.json",
         "note": "錄影在啟動遊戲前驗證現代素材來源。"
       }
+    },
+    {
+      "id": "battle-animation-entry-before-coverage-completion",
+      "date": "2026-11-04",
+      "area": "HD戰鬥",
+      "rule": "宣稱戰鬥動畫接線完成前，分別核對正式選單、confirm、演出owner與圖源清冊。在Docker內用tools/audit_fd2_battle_owners.go的-routes-only模式重生36筆入口，再沿61「戰鬥指令入口稽核」查正常施放；素材全登錄與快取owner覆蓋不代表玩家可進場。",
+      "why": "36筆AST盤點發現正式學習表六招被選單支援清單擋住，28／31只有狀態結算，先前完整HD1宣稱跨越了驗證範圍。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json；GitHub #294。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_fd2_battle_owners.go"
+        ],
+        "pattern": "routes-only",
+        "note": "正式玩家入口與快取owner分開稽核。"
+      }
+    },
+    {
+      "id": "gpu-export-skip-is-not-artifact-success",
+      "date": "2026-11-04",
+      "area": "繪圖驗證",
+      "rule": "依相對路徑讀測具的Go GUI測試從套件cwd啟動。GPU逐幕匯出以完整receipt及預期圖片數驗收，不以go test退出0作完成證據。天空之鑰沿tools/export_fd2_skykey_frames.sh，固定202幕與完整收據，輸入缺件先拒收。",
+      "why": "從remake根目錄直接啟動編譯測試檔時，原始資料相對路徑錯誤導致SKIP，退出0卻沒有202幕或receipt。改由go test套件入口與收據檢查後通過。",
+      "evidence": "work/hd1-feedback-20261104-r83/skykey-frames-r3.log；docs/data/fd2-hd1-feedback-20261104.json。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/export_fd2_skykey_frames.sh"
+        ],
+        "pattern": "202",
+        "note": "逐幕匯出須檢查完整圖數與收據。"
+      }
     }
   ]
 }

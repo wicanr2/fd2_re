@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--skip-opening', action='store_true')
     parser.add_argument('--faithful-transit', action='store_true', help='皇城切換後以原版畫風走完序章，第一關進場時恢復HD；只送F2。')
     parser.add_argument('--menu-only', action='store_true', help='正常鍵盤略過開場後，只錄實際開始選單。')
+    parser.add_argument('--startup-timeout', type=int, choices=(360,900), default=360)
     parser.add_argument('--duration', type=int, choices=(900, 1800, 2700, 3600), default=1800)
     parser.add_argument('--capture-appdir', type=Path, help='由本程序擁有既有錄影工具及其清理，供有界容器使用。')
     parser.add_argument('--capture-size', choices=('640x400', '1280x800', '1920x1200'), default='1920x1200')
@@ -93,12 +94,12 @@ def main():
             assert (args.capture_appdir / 'AppRun').is_file()
             os.environ['DISPLAY'] = ':95'
             env = dict(os.environ)
-            env.setdefault('FD2_CAPTURE_STARTUP_TIMEOUT', '360')
+            env.setdefault('FD2_CAPTURE_STARTUP_TIMEOUT', str(args.startup_timeout))
             owner_stream = (args.out / 'owner.log').open('w')
             owner = subprocess.Popen(['bash', str(Path(__file__).with_name('capture_fd2_release_promo.sh')),
                                       str(args.capture_appdir), str(args.out), str(args.duration), args.capture_size, '30'],
                                      env=env, stdout=owner_stream, stderr=owner_stream, start_new_session=True)
-        wait(lambda s: bool(s.get('title_phase')), 360)
+        wait(lambda s: bool(s.get('title_phase')), args.startup_timeout)
         window = command('xdotool', 'search', '--name', '炎龍騎士團').splitlines()[0]
         command('xdotool', 'windowfocus', window)
         if args.skip_opening:

@@ -97,20 +97,23 @@ def install_cjk_font(target, source, license_path):
             'license': 'third-party/noto-cjk/copyright', 'license_sha256': sha(license_path)}
 
 
-def write_zip(root, output, version):
-    assert not output.exists(), f'禁止覆寫：{output}'
-    with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as z:
-        for path in sorted(root.rglob('*')):
-            if not path.is_file():
-                continue
-            date = datetime.strptime(version.rsplit('-', 1)[1], '%Y%m%d')
-            entry = zipfile.ZipInfo((Path(root.name) / path.relative_to(root)).as_posix(), (date.year, date.month, date.day, 0, 0, 0))
-            entry.create_system = 3
-            entry.external_attr = (stat.S_IFREG | (path.stat().st_mode & 0o777)) << 16
-            entry.compress_type = zipfile.ZIP_DEFLATED
-            z.writestr(entry, path.read_bytes())
+def write_zip(root, output, version, resume=False):
+    assert not output.exists() or resume, f'禁止覆寫：{output}'
+    if not output.exists():
+        with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+            for path in sorted(root.rglob('*')):
+                if not path.is_file():
+                    continue
+                date = datetime.strptime(version.rsplit('-', 1)[1], '%Y%m%d')
+                entry = zipfile.ZipInfo((Path(root.name) / path.relative_to(root)).as_posix(), (date.year, date.month, date.day, 0, 0, 0))
+                entry.create_system = 3
+                entry.external_attr = (stat.S_IFREG | (path.stat().st_mode & 0o777)) << 16
+                entry.compress_type = zipfile.ZIP_DEFLATED
+                z.writestr(entry, path.read_bytes())
     with zipfile.ZipFile(output) as z:
         assert z.testzip() is None
+        expected = {(Path(root.name) / p.relative_to(root)).as_posix() for p in root.rglob('*') if p.is_file()}
+        assert len(z.namelist()) == len(expected) and set(z.namelist()) == expected, 'ZIP檔案清單不符'
         for path in root.rglob('*'):
             if path.is_file():
                 name = (Path(root.name) / path.relative_to(root)).as_posix()
@@ -120,6 +123,7 @@ def write_zip(root, output, version):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['stage', 'package'])
+    parser.add_argument('--resume', action='store_true', help='只接續尚無VALIDATION的封包工作；既有ZIP逐檔核對，不覆寫')
     parser.add_argument('--version', default=(Path(__file__).resolve().parents[1] / 'VERSION').read_text().strip())
     parser.add_argument('--original-pack', type=Path)
     parser.add_argument('--modern-pack', type=Path)
@@ -256,14 +260,21 @@ def main():
             path = root / row['path']
             assert path.stat().st_size == row['bytes'] and sha(path) == row['sha256'], path
     out = release / 'full-local'
-    assert not out.exists(), '正式完整版已存在，禁止覆寫'
-    out.mkdir()
+    if out.exists():
+        assert args.resume and not (out / 'VALIDATION.json').exists(), '正式完整版已存在，禁止覆寫'
+        allowed = {f'FD2-{version}-{platform}-{arch}-full-local.zip' for platform,arch in [('windows','x86_64'),('macos','universal')]}
+        assert all(p.is_file() and p.name in allowed for p in out.iterdir()), '不接受未知或已完成的接續輸出'
+        owned(out)
+    else:
+        out.mkdir()
     packages = []
     for platform, arch in [('windows', 'x86_64'), ('macos', 'universal')]:
         root = repo / metadata['staging'][platform]
         output = out / f'FD2-{version}-{platform}-{arch}-full-local.zip'
-        write_zip(root, output, version)
+        print(f'驗證及封裝 {platform}', flush=True)
+        write_zip(root, output, version, resume=args.resume)
         packages.append({'path': output.relative_to(release).as_posix(), 'bytes': output.stat().st_size, 'sha256': sha(output)})
+        print(f'{platform} ZIP逐檔驗證通過', flush=True)
     output = out / f'FD2-{version}-linux-x86_64-full-local.AppImage'
     epoch = calendar.timegm(datetime.strptime(version.rsplit('-', 1)[1], '%Y%m%d').timetuple())
     environment = dict(os.environ, ARCH='x86_64', APPIMAGE_EXTRACT_AND_RUN='1', SOURCE_DATE_EPOCH=str(epoch))

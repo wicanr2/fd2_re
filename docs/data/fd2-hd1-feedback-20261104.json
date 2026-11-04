@@ -80,7 +80,7 @@
     "cadence_status": "PENDING_EDITING_AND_REVIEW; preload, software rendering and capture wall-clock are not platform acceptance"
   },
   "pending": [
-    "普通START完整序章至第一關入場驗證與修正版選單影片抽樣",
+    "補齊已確認戰鬥正式入口、熾炎刀自身中心確認與淒煌斬完整正式動畫；未知31分列",
     "完整版推廣片：首關蓋亞／亞雷斯攻擊與悠妮施法、蜜蒂音速刃／鐵諾熾炎刀／羅德曼淒煌斬、天空之鑰合成與32人簡介的實際剪輯及影音驗收",
     "HD2概念、Android與劇情／戰場編輯器的後續計畫片尾",
     "新版三平台完整版乾淨重建與交付驗證"
@@ -88,7 +88,7 @@
   "opening_art_status": "ADMITTED-RUNTIME-E1; 12 banks173 frames and sharedANI0 96 frames; complete original-storyboard redraw metadata in opening",
   "original_oracle": "NOT_RUN_NO_NEW_DOS_PARITY_CLAIM",
   "platform_performance": "NOT_ACCEPTED_FROM_SOFTWARE_CAPTURE",
-  "release_status": "v.1.1.0-20261103 preserved; no new tag or Release",
+  "release_status": "v.1.1.1-20261104 native-CI and full staging validated for bf8a6cb2 only; final full packaging PAUSED for confirmed battle runtime fixes; v.1.1.0 preserved; no new tag/Release",
   "verification_followup": {
     "string_inventory": {
       "status": "PASS",
@@ -113,7 +113,7 @@
     "docker": "owned_r83_containers_cleaned",
     "ownership": "UID/GID 1000:1000; no root-owned task outputs or md-named directories"
   },
-  "implementation_commit": "d8d901bc2909ca1cb96f3b16fe2df66422f72b9e",
+  "implementation_commit": "bf8a6cb203ae446b307a31a6feb471270ca28fde",
   "opening": {
     "status": "RUNTIME-E1-ASSETS-ADMITTED-NORMAL-START-PENDING",
     "catalog_asset_count": 3367,
@@ -269,7 +269,7 @@
       }
     ],
     "rights": "本機限定原版衍生重繪；正式母稿與逐幀圖只進私人保存庫",
-    "normal_recording_current": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r5",
+    "normal_recording_current": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6",
     "normal_failed_recordings": [
       {
         "path": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r1",
@@ -286,6 +286,11 @@
         "classification": "GUI錄影預算不足；無遊戲error。完整22段開場與皇城五狀態已錄，第一關未達。舊R7選單文字黑，另以修正版錄製。",
         "controller_exit": "普通序章未於錄製預算內抵達第一關",
         "elapsed_seconds": 2669.013
+      },
+      {
+        "path": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r5",
+        "classification": "完整主題預檢仍在載入，360秒啟動逾時；memory.events無OOM，尚無Update收據，不作遊戲功能結論。",
+        "elapsed_seconds": 362.168
       }
     ],
     "private_local_sync": {
@@ -335,14 +340,16 @@
   },
   "promo_special_sources": {
     "builder": "remake/cmd/fd2/native_command30_gui_source_test.go:TestPromoSpecialGUISources",
-    "receipt_root": "work/hd1-feedback-20261104-r83/special-sources-r2",
+    "receipt_root": "work/hd1-feedback-20261104-r83/special-sources-r3",
     "status": "PASS-CONTROLLED-PROMO-SOURCES-GUI-PENDING",
     "state_injection": true,
     "normal_progression_proven": false,
     "commands": [
       28,
-      29
-    ]
+      29,
+      30
+    ],
+    "middy_hp_policy": "保留JOIN與原生成長後HP321，不加舊錄影來源的1000生命增量，避免原生三位數HUD顯示???。"
   },
   "promo_encoder_smoke": {
     "status": "PASS-TECHNICAL",
@@ -350,5 +357,1152 @@
     "seconds": 6,
     "scope": "測調速、雙人卡及分行字幕，非正式完整版交付。"
   },
-  "target_release": "v.1.1.1-20261104; planned, not built or published"
+  "target_release": "v.1.1.1-20261104; planned, not built or published",
+  "release_build": {
+    "version": "v.1.1.1-20261104",
+    "source_commit": "bf8a6cb203ae446b307a31a6feb471270ca28fde",
+    "run_id": 41804274198,
+    "url": "https://github.com/wicanr2/fd2_re/actions/runs/41804274198",
+    "platform_native_jobs": "linux/windows/macos success; collect success; publish skipped",
+    "artifact_id": 13308334991,
+    "artifact_sha256": "5240fb821f8f79ec1411d8187cdbc6d52d89a4f8c4bea3f944a6e55700c6a3bd",
+    "staging": "work/full-local-v.1.1.1-20261104",
+    "asset_rows": 54543,
+    "asset_bytes": 3781640441,
+    "linux_selfcheck": "work/hd1-feedback-20261104-r83/full-local-selfcheck-r2.log",
+    "packaging_status": "IN-PROGRESS"
+  },
+  "promo_recordings": {
+    "ares": {
+      "path": "work/hd1-feedback-20261104-r83/ares-attack-r1",
+      "status": "ACTION-RECORDED-NATURAL-RETURN-OBSERVATION; full verifier cold-load timeout, not PASS of cold-load"
+    },
+    "gaia": {
+      "path": "work/hd1-feedback-20261104-r83/gaia-attack-r2",
+      "status": "PASS-NORMAL-KEYBOARD-PROMO-ACTION",
+      "identity": 30,
+      "battle_actor_fig": 30,
+      "recording": "PASS"
+    },
+    "yuni": {
+      "path": "work/hd1-feedback-20261104-r83/yuni-magic-r2",
+      "status": "PASS-NORMAL-KEYBOARD-PROMO-ACTION",
+      "identity": 9,
+      "command": 0
+    },
+    "specials": {
+      "middy": "middy-special-r3",
+      "tino": "tino-special-r2",
+      "rodman": "rodman-special-r1",
+      "status": "MIDDY-PASS; TINO-CONFIRM-REFUSED; RODMAN-DIED-BEFORE-CAST; not a complete special-animation recording",
+      "middy_status": "PASS-NORMAL-KEYBOARD-PROMO-ACTION; continuous HD, controlled source HP321; cold-load not claimed"
+    },
+    "sky_key": {
+      "path": "work/hd1-feedback-20261104-r83/skykey-frames-r1",
+      "status": "PASS-SKY-KEY-HD-GAME",
+      "movie_frames": 202,
+      "receipt_sha256": "58fbaeb83e75e24f992f022389341efc86b06ba6ee748a10ab7c1b3314c6003a",
+      "f2_round_trips": 12,
+      "continuations": 1,
+      "normal_player": false,
+      "scope": "Actual GPU frames from controlled2-actor fixture; not normal chapter20 acquisition"
+    },
+    "opening_royal_deployment": {
+      "path": "work/hd1-feedback-20261104-r83/natural-royal-deployment-record-r6",
+      "status": "PASS-NORMAL-START-ROYAL-DEPLOYMENT",
+      "receipt_sha256": "060bf9e459488db18c41f3ab1387cde685161a0368a2bb6b50dbd3e5918253a3",
+      "opening_skipped": true,
+      "natural_hd_opening_source": "natural-royal-deployment-record-r4;22 opening steps completed separately"
+    }
+  },
+  "battle_animation_audit": {
+    "status": "CURRENT-CODE-36-COMMAND-ROUTE-AUDIT-WITH-CONFIRMED-GAPS",
+    "source_commit": "bf8a6cb203ae446b307a31a6feb471270ca28fde",
+    "source_coverage_is_not_all_runtime_paths": true,
+    "existing_inventory_full_battle_hd_complete": false,
+    "worklist_issue": 263,
+    "confirmed_gaps": [
+      {
+        "commands": [
+          3,
+          7,
+          10,
+          11,
+          12,
+          23
+        ],
+        "names": [
+          "天火術",
+          "神雷術",
+          "碎岩術",
+          "地震術",
+          "裂地術",
+          "傳送術"
+        ],
+        "status": "Formal learning table entries blocked by nativeCommandTargetSupported; 3/7/10/11/12 have confirm presentation calls;23 lacks spell entry"
+      },
+      {
+        "command": 28,
+        "name": "淒煌斬",
+        "status": "STATE-ONLY; full presentation owner absent",
+        "formal_source": "main.go confirm ExecuteNativeCommandDerivedStrike"
+      },
+      {
+        "command": 29,
+        "name": "熾炎刀",
+        "status": "HD owner present; actual keyboard confirm refused at self center with enemy distance2; cursor gate and unit-only effect selector require separate diagnosis"
+      },
+      {
+        "command": 31,
+        "name": null,
+        "status": "STATE-ONLY; no confirmed normal actor or official name; do not invent"
+      }
+    ],
+    "independent_route_check": {
+      "command23": "Formal spell entry absent and menu gate blocks23; item relocation visual primitive exists separately. Do not call item route a completed teleport spell.",
+      "command4": "AI演出另有startNativeCommand45Presentation；不以玩家switch未列4就判定敵方電擊術缺失。",
+      "command4_5_9": "Player gate also blocks4/5/9. AI has formal presentation routes;4/5 also occur on map10 allied identity14. Player JOIN/inheritance and natural acquisition require distinct evidence."
+    },
+    "user_decision": "2026-11-04：先補齊淒煌斬正式動畫再交片；不採素材預覽替代。",
+    "release_gate": "新版正式交付暫緩：先修正式入口與淒煌斬完整演出，再重建新引擎與三平台完整版；既有已驗圖源與動畫不重開。",
+    "command28_evidence": {
+      "level": "confirmed source shape + existing confirmed caller writer; normal recruitment not proven",
+      "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "figani_sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f",
+      "original_locator": "IDA 9.4 linear sub_276EC 0x27982..0x27D4D, sub_2B659 0x2B6F4..0x2B801",
+      "source": "docs/data/ida/fd2_command28_29_31_presentation_ida.txt",
+      "roster": "map22 units[1], raw identity19, BattleFig19, initial mask [0,0,0,16]",
+      "resource": 59,
+      "metadata_sha256": "76472a0326b8210c45180ce9c92f815a803c067e8b010c1dd42d5c9833624300",
+      "header": {
+        "byte_1": 0,
+        "byte_2": 7,
+        "byte_4": 3
+      },
+      "actor_frames": [
+        0,
+        6
+      ],
+      "mp_marker": 6,
+      "target_frames": [
+        7,
+        18
+      ],
+      "target_impact_frames": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "damage_denominator": 8,
+      "frame_cues": [
+        {
+          "frame": 2,
+          "sample": 2,
+          "delay": 2
+        },
+        {
+          "frame": 6,
+          "sample": 4,
+          "delay": 2
+        },
+        {
+          "frame": 7,
+          "sample": 3,
+          "delay": 2
+        },
+        {
+          "frame": 8,
+          "sample": 4,
+          "delay": 2
+        },
+        {
+          "frame": 9,
+          "sample": 3,
+          "delay": 2
+        },
+        {
+          "frame": 10,
+          "sample": 4,
+          "delay": 2
+        },
+        {
+          "frame": 11,
+          "sample": 3,
+          "delay": 2
+        },
+        {
+          "frame": 12,
+          "sample": 4,
+          "delay": 2
+        },
+        {
+          "frame": 13,
+          "sample": 3,
+          "delay": 2
+        },
+        {
+          "frame": 14,
+          "sample": 4,
+          "delay": 2
+        }
+      ],
+      "correction": "原先僅盤點header1而推定command28只有一個target marker，不適用已查證的selector19/header0；resource59實際8個impact，必須逐拍發布，不能先扣1/8即結束。"
+    },
+    "command_routes": {
+      "commands": [
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 0,
+          "effect_mode": 0,
+          "learn_table_entries": null,
+          "name": "火炎術",
+          "player_confirm_calls": [
+            "startNativeCommand0Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 1,
+          "effect_mode": 0,
+          "learn_table_entries": [
+            {
+              "learn_idx": 0,
+              "level": 9
+            }
+          ],
+          "name": "烈炎術",
+          "player_confirm_calls": [
+            "startNativeCommand1Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 2,
+          "effect_mode": 1,
+          "learn_table_entries": [
+            {
+              "learn_idx": 0,
+              "level": 21
+            },
+            {
+              "learn_idx": 8,
+              "level": 4
+            }
+          ],
+          "name": "炎龍術",
+          "player_confirm_calls": [
+            "startNativeCommand2Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 3,
+          "effect_mode": 1,
+          "learn_table_entries": [
+            {
+              "learn_idx": 7,
+              "level": 7
+            },
+            {
+              "learn_idx": 10,
+              "level": 8
+            },
+            {
+              "learn_idx": 14,
+              "level": 25
+            },
+            {
+              "learn_idx": 19,
+              "level": 15
+            }
+          ],
+          "name": "天火術",
+          "player_confirm_calls": [
+            "startNativeCommand3Presentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 4,
+          "effect_mode": 1,
+          "learn_table_entries": null,
+          "name": "電擊術",
+          "player_confirm_calls": [],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 5,
+          "effect_mode": 1,
+          "learn_table_entries": null,
+          "name": "落雷術",
+          "player_confirm_calls": [
+            "startNativeCommand5Presentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 6,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 3,
+              "level": 24
+            }
+          ],
+          "name": "轟雷術",
+          "player_confirm_calls": [
+            "startNativeCommand6PresentationAtCursor"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 7,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 8,
+              "level": 8
+            },
+            {
+              "learn_idx": 10,
+              "level": 14
+            },
+            {
+              "learn_idx": 13,
+              "level": 24
+            }
+          ],
+          "name": "神雷術",
+          "player_confirm_calls": [
+            "startNativeCommand7Presentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 8,
+          "effect_mode": 0,
+          "learn_table_entries": [
+            {
+              "learn_idx": 10,
+              "level": 20
+            },
+            {
+              "learn_idx": 11,
+              "level": 9
+            },
+            {
+              "learn_idx": 12,
+              "level": 8
+            },
+            {
+              "learn_idx": 13,
+              "level": 10
+            },
+            {
+              "learn_idx": 14,
+              "level": 9
+            }
+          ],
+          "name": "聖光彈",
+          "player_confirm_calls": [
+            "startNativeCommand8Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 8,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 9,
+          "effect_mode": 0,
+          "learn_table_entries": null,
+          "name": "咒殺術",
+          "player_confirm_calls": [
+            "startNativeCommand9PlayerPresentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 3,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 10,
+          "effect_mode": 5,
+          "learn_table_entries": [
+            {
+              "learn_idx": 3,
+              "level": 20
+            }
+          ],
+          "name": "碎岩術",
+          "player_confirm_calls": [
+            "startNativeCommand1012Presentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 0,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 11,
+          "effect_mode": 7,
+          "learn_table_entries": [
+            {
+              "learn_idx": 7,
+              "level": 22
+            },
+            {
+              "learn_idx": 8,
+              "level": 12
+            },
+            {
+              "learn_idx": 17,
+              "level": 15
+            },
+            {
+              "learn_idx": 17,
+              "level": 23
+            }
+          ],
+          "name": "地震術",
+          "player_confirm_calls": [
+            "startNativeCommand1012Presentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 0,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 12,
+          "effect_mode": 9,
+          "learn_table_entries": [
+            {
+              "learn_idx": 10,
+              "level": 24
+            }
+          ],
+          "name": "裂地術",
+          "player_confirm_calls": [
+            "startNativeCommand1012Presentation"
+          ],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 0,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 13,
+          "effect_mode": 0,
+          "learn_table_entries": null,
+          "name": "治療術",
+          "player_confirm_calls": [
+            "startNativeCommandHealPresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 14,
+          "effect_mode": 1,
+          "learn_table_entries": [
+            {
+              "learn_idx": 1,
+              "level": 11
+            }
+          ],
+          "name": "回復術",
+          "player_confirm_calls": [
+            "startNativeCommandHealPresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 15,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 9,
+              "level": 3
+            },
+            {
+              "learn_idx": 10,
+              "level": 4
+            },
+            {
+              "learn_idx": 11,
+              "level": 3
+            },
+            {
+              "learn_idx": 12,
+              "level": 3
+            },
+            {
+              "learn_idx": 13,
+              "level": 4
+            },
+            {
+              "learn_idx": 14,
+              "level": 3
+            },
+            {
+              "learn_idx": 15,
+              "level": 11
+            },
+            {
+              "learn_idx": 16,
+              "level": 9
+            },
+            {
+              "learn_idx": 18,
+              "level": 4
+            }
+          ],
+          "name": "再生術",
+          "player_confirm_calls": [
+            "startNativeCommandHealPresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 16,
+          "effect_mode": 3,
+          "learn_table_entries": [
+            {
+              "learn_idx": 9,
+              "level": 23
+            },
+            {
+              "learn_idx": 11,
+              "level": 26
+            },
+            {
+              "learn_idx": 12,
+              "level": 25
+            },
+            {
+              "learn_idx": 18,
+              "level": 18
+            }
+          ],
+          "name": "神恩術",
+          "player_confirm_calls": [
+            "startNativeCommandHealPresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 17,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 0,
+              "level": 5
+            }
+          ],
+          "name": "魔刃術",
+          "player_confirm_calls": [
+            "startNativeCommandPalettePresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 18,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 1,
+              "level": 16
+            },
+            {
+              "learn_idx": 14,
+              "level": 21
+            },
+            {
+              "learn_idx": 15,
+              "level": 4
+            },
+            {
+              "learn_idx": 17,
+              "level": 20
+            },
+            {
+              "learn_idx": 18,
+              "level": 24
+            }
+          ],
+          "name": "魔鎧術",
+          "player_confirm_calls": [
+            "startNativeCommandPalettePresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 19,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 2,
+              "level": 18
+            },
+            {
+              "learn_idx": 7,
+              "level": 13
+            },
+            {
+              "learn_idx": 9,
+              "level": 18
+            },
+            {
+              "learn_idx": 11,
+              "level": 16
+            },
+            {
+              "learn_idx": 16,
+              "level": 3
+            }
+          ],
+          "name": "風行術",
+          "player_confirm_calls": [
+            "startNativeCommandPalettePresentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 20,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 1,
+              "level": 7
+            },
+            {
+              "learn_idx": 13,
+              "level": 20
+            },
+            {
+              "learn_idx": 15,
+              "level": 18
+            },
+            {
+              "learn_idx": 16,
+              "level": 16
+            }
+          ],
+          "name": "解毒術",
+          "player_confirm_calls": [
+            "startNativeCommand2022Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 21,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 2,
+              "level": 24
+            },
+            {
+              "learn_idx": 9,
+              "level": 9
+            },
+            {
+              "learn_idx": 11,
+              "level": 21
+            },
+            {
+              "learn_idx": 12,
+              "level": 20
+            },
+            {
+              "learn_idx": 14,
+              "level": 16
+            }
+          ],
+          "name": "祛麻術",
+          "player_confirm_calls": [
+            "startNativeCommand2022Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 22,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 1,
+              "level": 24
+            },
+            {
+              "learn_idx": 13,
+              "level": 15
+            },
+            {
+              "learn_idx": 18,
+              "level": 10
+            }
+          ],
+          "name": "封咒術",
+          "player_confirm_calls": [
+            "startNativeCommand2022Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 23,
+          "effect_mode": 0,
+          "learn_table_entries": [
+            {
+              "learn_idx": 1,
+              "level": 30
+            },
+            {
+              "learn_idx": 10,
+              "level": 30
+            },
+            {
+              "learn_idx": 19,
+              "level": 11
+            }
+          ],
+          "name": "傳送術",
+          "player_confirm_calls": [],
+          "player_menu_accepts": false,
+          "player_state_only": false,
+          "selection_mode": 3,
+          "target_code": 3
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 24,
+          "effect_mode": 1,
+          "learn_table_entries": [
+            {
+              "learn_idx": 4,
+              "level": 4
+            }
+          ],
+          "name": "破龍擊",
+          "player_confirm_calls": [
+            "startNativeCommand24Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 25,
+          "effect_mode": 1,
+          "learn_table_entries": [
+            {
+              "learn_idx": 2,
+              "level": 30
+            }
+          ],
+          "name": "行動術",
+          "player_confirm_calls": [
+            "startNativeCommand2022Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 3,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 26,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 0,
+              "level": 15
+            }
+          ],
+          "name": "毒擊術",
+          "player_confirm_calls": [
+            "startNativeCommand2022Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": true,
+          "command": 27,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 0,
+              "level": 26
+            },
+            {
+              "learn_idx": 7,
+              "level": 3
+            },
+            {
+              "learn_idx": 12,
+              "level": 15
+            }
+          ],
+          "name": "麻痺術",
+          "player_confirm_calls": [
+            "startNativeCommand2022Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 28,
+          "effect_mode": 0,
+          "learn_table_entries": null,
+          "name": "淒煌斬",
+          "player_confirm_calls": [
+            "ExecuteNativeCommandDerivedStrike"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": true,
+          "selection_mode": 1,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 29,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 6,
+              "level": 4
+            }
+          ],
+          "name": "熾炎刀",
+          "player_confirm_calls": [
+            "startNativeCommand29Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 0,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 30,
+          "effect_mode": 0,
+          "learn_table_entries": [
+            {
+              "learn_idx": 5,
+              "level": 2
+            }
+          ],
+          "name": "音速刃",
+          "player_confirm_calls": [
+            "startNativeCommand30PresentationAtCursor"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 20,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 31,
+          "effect_mode": 2,
+          "learn_table_entries": null,
+          "name": "",
+          "player_confirm_calls": [
+            "ExecuteNativeCommandDerivedStrike"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": true,
+          "selection_mode": 0,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 32,
+          "effect_mode": 3,
+          "learn_table_entries": [
+            {
+              "learn_idx": 19,
+              "level": 23
+            }
+          ],
+          "name": "熾天使",
+          "player_confirm_calls": [
+            "startNativeCommand32Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 0
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 33,
+          "effect_mode": 3,
+          "learn_table_entries": [
+            {
+              "learn_idx": 19,
+              "level": 19
+            }
+          ],
+          "name": "風妖精",
+          "player_confirm_calls": [
+            "startNativeCommand33Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 34,
+          "effect_mode": 3,
+          "learn_table_entries": [
+            {
+              "learn_idx": 19,
+              "level": 2
+            }
+          ],
+          "name": "破壞神",
+          "player_confirm_calls": [
+            "startNativeCommand34Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 5,
+          "target_code": 1
+        },
+        {
+          "ai_dispatch_gate_accepts": false,
+          "command": 35,
+          "effect_mode": 2,
+          "learn_table_entries": [
+            {
+              "learn_idx": 19,
+              "level": 6
+            }
+          ],
+          "name": "暗邪鬼",
+          "player_confirm_calls": [
+            "startNativeCommand35Presentation"
+          ],
+          "player_menu_accepts": true,
+          "player_state_only": false,
+          "selection_mode": 4,
+          "target_code": 0
+        }
+      ],
+      "full_battle_hd_complete": false,
+      "gpu_verified": false,
+      "learn_table_commands_blocked_by_player_menu": [
+        3,
+        7,
+        10,
+        11,
+        12,
+        23
+      ],
+      "locations": {
+        "ai_gate": {
+          "file": "remake/cmd/fd2/native_ai_execute.go",
+          "line": 21
+        },
+        "confirm": {
+          "file": "remake/cmd/fd2/main.go",
+          "line": 7557
+        },
+        "player_gate": {
+          "file": "remake/cmd/fd2/main.go",
+          "line": 6089
+        }
+      },
+      "normal_player_verified": false,
+      "player_menu_blocked": [
+        3,
+        4,
+        5,
+        7,
+        9,
+        10,
+        11,
+        12,
+        23
+      ],
+      "player_state_only": [
+        28,
+        31
+      ],
+      "schema_version": 1,
+      "scope": "正式36筆指令、Go AST玩家選單閘門、confirm直接派送及AI派送閘門；學習表只證明資料列，不證明自然取得、動畫播放或完整玩家路徑。",
+      "source_files_sha256": {
+        "remake/assets/data/command_learn.json": "c84861b1b8a101b519a39f5e360aef2ebe8c6e16bfffb98d34c07d4274684a67",
+        "remake/assets/locales/zh-Hant/entities.json": "504782335f160884f5efbb52743e653b9d51d8e37ad48ae121cffd4950896851",
+        "remake/assets/spells.json": "b5c7dd55d4b2dd83d4714dfc740a99ac48f201068011367cf1b586816c7f9613",
+        "remake/cmd/fd2/main.go": "c59c8673bc6b69fd5f7b56e6795b733ced231194b04c0d7f0c810aaad7a67275",
+        "remake/cmd/fd2/native_ai_execute.go": "83eb1bb8dfc7e086c77b7c3d34fe8a800e5b4dab6e9cb7c2aac8150ae4d59186",
+        "tools/audit_fd2_battle_owners.go": "ca0cbdae509b42933f77c29d6213a4abfc00a59b5776acd85b6df54bb4a67c08"
+      },
+      "status": "PASS-STATIC-COMMAND-ROUTE-AUDIT-WITH-GAPS",
+      "unverified": [
+        "全部角色、側別、反擊資格與參數組合",
+        "每個建構器的素材預檢、HD及音效完整性",
+        "自我或空格範圍中心的正常確認",
+        "全部正常玩家與敵方流程、保存與返回",
+        "FIGANI408未知來源"
+      ]
+    },
+    "route_report": {
+      "file": "work/hd1-feedback-20261104-r83/battle-command-routes-r1.json",
+      "sha256": "b4738bf1345eaafb4685f09700e97630aa900e0c880f7ec56c102d27a433175c"
+    },
+    "tool_validation": {
+      "file": "work/hd1-feedback-20261104-r83/battle-command-route-audit-validation-r1.json",
+      "sha256": "69217ad673d135ae9e818fee32c1f6c2a6c6f7ed5dbd189922cea7086550aaf0"
+    },
+    "tool_legacy_regression": {
+      "file": "work/hd1-feedback-20261104-r83/battle-owners-legacy-regression-r1.json",
+      "sha256": "1114f2f744335cff8a4d3bb6d85d4024968023ffd55978052a38c84bf6c0b925",
+      "scope": "16 cache owners and17 constructors; this does not verify player entry"
+    },
+    "self_center_issue": {
+      "commands": [
+        10,
+        11,
+        12,
+        29
+      ],
+      "status": "SelectionMode0 selects actor cell, while unit-only NativeCommandEffectTargets requires confirmed enemy candidate; current helper cannot represent self center.10..12 are also blocked earlier by menu gate.",
+      "sources": [
+        "remake/internal/battle/native_command_target.go:446",
+        "remake/internal/battle/native_command0.go:95",
+        "remake/internal/battle/native_command24.go:120"
+      ],
+      "level": "confirmed current-code incompatibility; not a new original execution claim"
+    },
+    "entry_defect_issue": 294,
+    "source_statement_correction": "原先完整HD1素材與接線完成的跨範圍宣稱已撤回。地形、地圖人物、介面及已驗動畫保持各自證據；目前動畫缺口依36筆正式入口矩陣。",
+    "final_validation": {
+      "audit": {
+        "file": "work/hd1-feedback-20261104-r83/battle-command-route-audit-validation-r1.json",
+        "sha256": "69217ad673d135ae9e818fee32c1f6c2a6c6f7ed5dbd189922cea7086550aaf0",
+        "status": "PASS-STATIC-AUDIT-REGRESSION"
+      },
+      "capture_and_zip_tools": {
+        "file": "work/hd1-feedback-20261104-r83/continuation-tools-validation-r1.json",
+        "sha256": "ea5edb78a977368f63347d28fbf4abc085526e94a2133700bdf0558df8dd6299",
+        "status": "PASS-CAPTURE-TOOL-SYNTAX-AND-ZIP-RESUME"
+      },
+      "documents": {
+        "file": "work/hd1-feedback-20261104-r83/battle-route-documents-validation-r1.json",
+        "sha256": "5154454e53e049e98ef2e33aba74395255db10d4009e6bbfc8ef41efa65b35ac",
+        "status": "PASS-DOCUMENTS-AND-OWNERSHIP"
+      },
+      "worklist": {
+        "open": 27,
+        "stale": 0,
+        "remote_issues_verified": [
+          263,
+          293,
+          294
+        ]
+      },
+      "lessons": {
+        "count": 423,
+        "guards": 270,
+        "all_guards_pass": true
+      },
+      "runtime_changed": false,
+      "release_completed": false,
+      "fd2_task_containers_remaining": []
+    }
+  }
 }

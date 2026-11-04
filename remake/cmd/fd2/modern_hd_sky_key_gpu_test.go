@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"image"
+	"image/draw"
+	"image/png"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,6 +27,30 @@ type skyKeyGPUProbe struct {
 	counts                                map[nativeCh20SkyKeyPhase]int
 	switches, continued, controlContinued int
 	done                                  bool
+}
+
+func (p *skyKeyGPUProbe) saveFrame(name string, pixels []byte) error {
+	path := filepath.Join(p.out, name)
+	if os.Getenv("FD2_SKY_KEY_RESUME_FRAMES") == "1" {
+		if raw, err := os.ReadFile(path); err == nil {
+			decoded, err := png.Decode(bytes.NewReader(raw))
+			if err != nil {
+				return err
+			}
+			if decoded.Bounds() != image.Rect(0, 0, 1920, 1200) {
+				return fmt.Errorf("resume frame shape differs: %s", name)
+			}
+			rgba := image.NewRGBA(decoded.Bounds())
+			draw.Draw(rgba, rgba.Bounds(), decoded, image.Point{}, draw.Src)
+			if !bytes.Equal(rgba.Pix, pixels) {
+				return fmt.Errorf("resume GPU pixels differ: %s", name)
+			}
+			return nil
+		} else if !os.IsNotExist(err) {
+			return err
+		}
+	}
+	return (&rowShakeGPUProbe{out: p.out}).save(name, pixels)
 }
 
 func (p *skyKeyGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
@@ -71,6 +99,12 @@ func (p *skyKeyGPUProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	digest := sha256.Sum256(pixels)
+	if os.Getenv("FD2_SKY_KEY_EXPORT_FRAMES") == "1" {
+		if err := p.saveFrame(fmt.Sprintf("movie-%04d.png", len(p.rows)), pixels); err != nil {
+			p.checker.err = err
+			return
+		}
+	}
 	sample := p.counts[j.phase] == 0 || j.phase == nativeCh20SkyKeyFirstFrames && (j.frame == 34 || j.frame == 68) || j.phase == nativeCh20SkyKeyANI && (j.frame == 48 || j.frame == 95) || j.phase == nativeCh20SkyKeyTailFrames && (j.frame == 85 || j.frame == 100)
 	if sample {
 		if err := g.applyTheme(nil); err != nil {
@@ -96,7 +130,7 @@ func (p *skyKeyGPUProbe) Draw(screen *ebiten.Image) {
 			return
 		}
 		p.switches++
-		if err := (&rowShakeGPUProbe{out: p.out}).save(fmt.Sprintf("phase%d-frame%03d.png", j.phase, j.frame), pixels); err != nil {
+		if err := p.saveFrame(fmt.Sprintf("phase%d-frame%03d.png", j.phase, j.frame), pixels); err != nil {
 			p.checker.err = err
 			return
 		}
@@ -136,7 +170,7 @@ func (p *skyKeyGPUProbe) Draw(screen *ebiten.Image) {
 	if !ok {
 		return
 	}
-	p.checker.err = (&rowShakeGPUProbe{out: p.out}).save("return.png", pixels)
+	p.checker.err = p.saveFrame("return.png", pixels)
 	p.done = true
 }
 
@@ -149,7 +183,12 @@ func TestModernHDSkyKeyGameGPU(t *testing.T) {
 		t.Fatal("fresh output required")
 	}
 	if err := os.Mkdir(out, 0755); err != nil {
-		t.Fatal(err)
+		if !os.IsExist(err) || os.Getenv("FD2_SKY_KEY_RESUME_FRAMES") != "1" || os.Getenv("FD2_SKY_KEY_EXPORT_FRAMES") != "1" {
+			t.Fatal(err)
+		}
+		if _, err := os.Stat(filepath.Join(out, "receipt.json")); !os.IsNotExist(err) {
+			t.Fatal("completed output cannot be resumed")
+		}
 	}
 	p := &skyKeyGPUProbe{out: out, now: time.Unix(1000, 0), counts: map[nativeCh20SkyKeyPhase]int{}, controlScreen: ebiten.NewImage(640, 400)}
 	p.g, p.control = skyKeyHDTestGame(t, &p.now), skyKeyHDTestGame(t, &p.now)

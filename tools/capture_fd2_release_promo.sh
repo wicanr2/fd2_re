@@ -20,7 +20,7 @@ startup_timeout=${FD2_CAPTURE_STARTUP_TIMEOUT:-90}
 [[ "$duration" =~ ^[1-9][0-9]*$ ]] && (( duration <= 3600 ))
 [[ "$size" == 640x400 || "$size" == 1280x800 || "$size" == 1920x1200 ]]
 [[ "$fps" == 30 || "$fps" == 60 ]]
-[[ "$startup_timeout" == 90 || "$startup_timeout" == 180 || "$startup_timeout" == 360 ]]
+[[ "$startup_timeout" == 90 || "$startup_timeout" == 180 || "$startup_timeout" == 360 || "$startup_timeout" == 900 ]]
 test -x "$game/AppRun"
 test -f "$game/pack/manifest.json"
 test ! -e "$out/live.mkv"

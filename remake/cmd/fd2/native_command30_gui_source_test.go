@@ -156,7 +156,7 @@ func TestPromoSpecialGUISources(t *testing.T) {
 	if err != nil || fmt.Sprintf("%x", sha256.Sum256(raw)) != "56aac676d2c8bd4da3c9315c700e721a72f658eb03577f3d3e658563907799a2" {
 		t.Fatal("reviewed source required", err)
 	}
-	for _, c := range []struct{ identity, command, originalMap, slot int }{{2, 29, 2, 0}, {19, 28, 22, 1}} {
+	for _, c := range []struct{ identity, command, originalMap, slot int }{{2, 29, 2, 0}, {19, 28, 22, 1}, {18, 30, 16, 36}} {
 		var source saveData
 		if err := json.Unmarshal(raw, &source); err != nil {
 			t.Fatal(err)
@@ -204,7 +204,7 @@ func TestPromoSpecialGUISources(t *testing.T) {
 			}
 			// Explicit source policy, not a claim that the ordinary church resets Lv.
 			u.Lv, u.Exp = 1, 0
-		} else {
+		} else if c.identity == 19 {
 			if original.NativeCommandMask != [5]byte{0, 0, 0, 16, 0} {
 				t.Fatal("map22 source mask differs")
 			}
@@ -225,7 +225,7 @@ func TestPromoSpecialGUISources(t *testing.T) {
 		for _, id := range u.NativeCommandIDs() {
 			found = found || id == c.command
 		}
-		if !found || u.MP < map[int]int{28: 22, 29: 26}[c.command] {
+		if !found || u.MP < map[int]int{28: 22, 29: 26, 30: 24}[c.command] {
 			t.Fatalf("unavailable command %d: %+v", c.command, u)
 		}
 		entities, err := loadOfficialLocaleEntities("zh-Hant")

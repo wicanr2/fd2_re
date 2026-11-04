@@ -199,6 +199,7 @@ def main():
                         help='以1920×1272完整擷取工具列視窗；戰鬥圖源另精確裁出下方1920×1200遊戲區')
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
+    parser.add_argument('--promo-action-only', action='store_true', help='只錄普通LOAD、選人、移動與一次攻擊返回；略過重複走行比較及冷讀驗證，不宣稱那些項目通過。')
     parser.add_argument('--heal-normal', action='store_true', help='正常第23章既有希爾法依次施放13～16，滿HP上限、HD效果、F2與保存冷讀；需--battle-status --world')
     parser.add_argument('--status-death-normal', action='store_true', help='明示章前狀態來源，正常END觸發狀態致死HD、F2及章界保存冷讀')
     parser.add_argument('--system-info', action='store_true', help='正常第23章空地系統環開關資訊，HD／原版、F2、返回與保存冷讀；需--battle-status --world')
@@ -266,6 +267,7 @@ def main():
     parser.add_argument('--facility-money-panel', action='store_true', help='搭配--gold-roll或--church要求設施金額框實際HD呈現')
     parser.add_argument('--facility-success', action='store_true', help='搭配--gold-roll要求實際HD成功畫格及金額接續')
     args = parser.parse_args()
+    assert not args.promo_action_only or (args.battle_only and args.battle_hd and args.world and args.battle_repetitions==1)
     if args.title_json_fallback and not args.title_interface:
         parser.error('--title-json-fallback需要--title-interface')
     if args.facility_success and not args.gold_roll:
@@ -1142,42 +1144,45 @@ def main():
                     raise AssertionError('正常循環選人未抵達指定在場單位')
                 wait(lambda s:s.get('hd_world') is True)
                 baseline=latest(audit)
-                key('Return');wait(lambda s:s.get('move_preview') is True)
-                shot('world-hd-move-preview')
-                origin=latest(audit)['cursor']
-                if args.battle_only:
-                    state=latest(audit)
-                    occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
-                    candidates=[cell for cell in state['move_reachable'] if tuple(cell) not in occupied
-                                and 2<=abs(cell[0]-origin[0])+abs(cell[1]-origin[1])<=3]
-                    assert candidates,'正式可達集合沒有短走行抽驗位置'
-                    destination=min(candidates,key=lambda cell:(cell!=[origin[0]+3,origin[1]],cell[1],cell[0]))
-                    for _ in range(abs(destination[0]-origin[0])):key('Right' if destination[0]>origin[0] else 'Left')
-                    current=latest(audit)['cursor']
-                    for _ in range(abs(destination[1]-current[1])):key('Down' if destination[1]>current[1] else 'Up')
+                if not args.promo_action_only:
+                    key('Return');wait(lambda s:s.get('move_preview') is True)
+                    shot('world-hd-move-preview')
+                    origin=latest(audit)['cursor']
+                    if args.battle_only:
+                        state=latest(audit)
+                        occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
+                        candidates=[cell for cell in state['move_reachable'] if tuple(cell) not in occupied
+                                    and 2<=abs(cell[0]-origin[0])+abs(cell[1]-origin[1])<=3]
+                        assert candidates,'正式可達集合沒有短走行抽驗位置'
+                        destination=min(candidates,key=lambda cell:(cell!=[origin[0]+3,origin[1]],cell[1],cell[0]))
+                        for _ in range(abs(destination[0]-origin[0])):key('Right' if destination[0]>origin[0] else 'Left')
+                        current=latest(audit)['cursor']
+                        for _ in range(abs(destination[1]-current[1])):key('Down' if destination[1]>current[1] else 'Up')
+                    else:
+                        for _ in range(3):key('Right')
+                    destination=latest(audit)['cursor']
+                    assert destination in latest(audit).get('move_reachable',[]),'普通走行目的地不在正式可達集合'
+                    shot('world-hd-move-destination')
+                    if not args.performance_skip_walk_gpu:
+                        world_thread=threading.Thread(target=capture_world_walk,daemon=True)
+                        world_thread.start()
+                    key('Return');wait(lambda s:s.get('ring') is True and not s.get('walking'))
+                    wait(lambda s:s.get('ring_phase')=='open')
+                    shot('world-hd-ring')
+                    ring=latest(audit)
+                    key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'));shot('world-faithful-ring')
+                    key('F2');wait(lambda s:s.get('hd_world') is True);shot('world-hd-ring-restored')
+                    assert latest(audit)['units']==ring['units'] and latest(audit)['view']==ring['view']
+                    key('Escape');wait(lambda s:not s.get('ring') and not s.get('walking'))
+                    if latest(audit).get('move_preview'):key('Escape');wait(lambda s:not s.get('move_preview'))
+                    shot('world-hd-move-cancelled')
+                    if not args.performance_skip_walk_gpu:
+                        world_stop.set();world_thread.join(timeout=15)
+                        assert not world_thread.is_alive() and world_shots,'未取得有效實際走行GPU'
+                    key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('ring') and not s.get('move_preview'))
+                    settle_world_battle()
                 else:
-                    for _ in range(3):key('Right')
-                destination=latest(audit)['cursor']
-                assert destination in latest(audit).get('move_reachable',[]),'普通走行目的地不在正式可達集合'
-                shot('world-hd-move-destination')
-                if not args.performance_skip_walk_gpu:
-                    world_thread=threading.Thread(target=capture_world_walk,daemon=True)
-                    world_thread.start()
-                key('Return');wait(lambda s:s.get('ring') is True and not s.get('walking'))
-                wait(lambda s:s.get('ring_phase')=='open')
-                shot('world-hd-ring')
-                ring=latest(audit)
-                key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'));shot('world-faithful-ring')
-                key('F2');wait(lambda s:s.get('hd_world') is True);shot('world-hd-ring-restored')
-                assert latest(audit)['units']==ring['units'] and latest(audit)['view']==ring['view']
-                key('Escape');wait(lambda s:not s.get('ring') and not s.get('walking'))
-                if latest(audit).get('move_preview'):key('Escape');wait(lambda s:not s.get('move_preview'))
-                shot('world-hd-move-cancelled')
-                if not args.performance_skip_walk_gpu:
-                    world_stop.set();world_thread.join(timeout=15)
-                    assert not world_thread.is_alive() and world_shots,'未取得有效實際走行GPU'
-                key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('ring') and not s.get('move_preview'))
-                settle_world_battle()
+                    settle_world_battle()
                 def ordinary_physical_attack(prefix):
                     def move_cursor(destination):
                         current=latest(audit)['cursor']
@@ -1455,6 +1460,18 @@ def main():
                 settle_world_battle()
                 wait(lambda s:s.get('hd_world') and not s.get('battle_scene'))
                 shot('world-hd-physical-return')
+                if args.promo_action_only:
+                    assert digest(saved)==digest(args.town_save), '演出錄影改寫了來源槽'
+                    report=dict(status='PASS-NORMAL-KEYBOARD-PROMO-ACTION',
+                        binary_sha256=digest(args.binary),source_save_sha256=digest(args.town_save),
+                        actor_identity=args.battle_own_identity,command_id=args.battle_command,
+                        action_kind=action_label,battle_hd_scenes=battle_hd_scenes,
+                        command_observations=command30_observations,screenshots=shots,
+                        operations=operations,elapsed_seconds=time.monotonic()-started,
+                        runtime_state_injection=False,cold_load_verified=False,
+                        scope='既有明示來源槽，普通標題LOAD、選人、合法移動／回合與一次攻擊自然返回；來源建構程度依上游manifest，未重驗完整介面或保存冷讀。')
+                    (args.out/'promo-action.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+                    return
                 if timed_probe:timed_result=timed_probe.finish(validate=True)
                 if not args.battle_only:key('F9')
                 settle_world_battle()
