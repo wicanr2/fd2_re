@@ -6604,7 +6604,7 @@ HD1地形素材與接線完成。最後281份完整裁切母稿與281份144成�
 
 推廣片「讓經典再現」長313.022秒，9390幀，1080p／30fps與AAC雙聲道48kHz。包含遊戲介紹、逐幕HD開場及實際選單、皇城四組切換、第一關入場與站位、蓋亞／亞雷斯攻擊、悠妮施法、音速刃／熾炎刀／淒煌斬、天空之鑰合成、能力工具列、32人簡介與後續計畫片尾。音量、非靜音、黑幀、非預期凍結與字幕安全區通過，43幕及九張關鍵動作已檢視；混音前後視訊封包相同，52張已檢視抽樣核對SHA後沿用。全片36段溫柔可愛的悠妮原創角色旁白已混音並通過時間窗驗證，說話時降低遊戲底音。蜜蒂錄影缺少尾段音訊，依已證實的原始sample及可見影格明示重建剪輯音軌；不宣稱硬體同步或另有人耳試聽收據。特技使用已揭露的建構進度，天空之鑰採202張實際GPU受控影格，人物卡是原始結局文字導出素材。
 
-前版v.1.1.1-20261104的影片、完整包與其清冊保持不動。
+前版v.1.1.1-20261104的影片與驗收清冊保留；已被新版取代的本機完整包、拒收包與封包展開副本，依使用者要求清理。移除項目、原始雜湊及保留範圍見[工作區清理紀錄](../data/fd2-workspace-cleanup-20261105.json)。最新v.1.1.2-20261105三平台包與配音影片保持完整，既有公開tag與Release不變。
 
 唯一剪輯配方、成品雜湊及驗收路徑為[本批現況表](../data/fd2-hd1-feedback-20261104.json)的`render_plan`、`promo_final`與`release_build`。製片工具可直接用`--plan docs/data/fd2-hd1-feedback-20261104.json`讀入該配方。本機影片目錄保存EDIT-MANIFEST、FFprobe、音量／黑幀／凍結紀錄、字幕邊界、逐幕圖、視覺抽驗及RIGHTS。根目錄SHA256SUMS統一列出三份CI輸入、三份完整包與影片。沿[build_fd2_full_local.py](../../tools/build_fd2_full_local.py)的`finalize --version v.1.1.2-20261105`在既有promo容器重核清冊，不修改原生CI輸入。
 
@@ -6614,7 +6614,7 @@ HD1地形素材與接線完成。最後281份完整裁切母稿與281份144成�
 
 遊玩截圖入口：[皇城原版／HD與正式戰鬥總覽](../figures/hd1-release-gameplay-overview.png)。[build_readme_visual_overview.py](../../tools/build_readme_visual_overview.py)以`--hd1-feedback docs/data/fd2-hd1-feedback-20261104.json`重生片頭與六格總覽；來源PNG、影片時間戳、擷取命令、字型與輸出SHA記於同份現況表的`readme_gallery`。皇城比較同句呈現，其餘畫面不宣稱同狀態原版對拍。
 
-前版本機交付v.1.1.0-20261103保持不動，唯一清冊為[HD1交付收據](../data/fd2-hd1-delivery-20261103.json)。原生CI來源a71f1717；當批完整版54349份共用資產檔與三包雜湊均已核對，推廣片90.022秒、1080p／30fps、AAC雙聲道，沒有黑幀或靜音區間，凍結僅預期文字卡與警告。成品位於dist-all同版號；Windows／macOS完整版實機與集中人工範圍保持揭露。
+前版本機交付v.1.1.0-20261103保留影片與驗收清冊，舊完整包已依工作區清理紀錄移除；唯一清冊為[HD1交付收據](../data/fd2-hd1-delivery-20261103.json)。原生CI來源a71f1717；當批完整版54349份共用資產檔與三包雜湊均已核對，推廣片90.022秒、1080p／30fps、AAC雙聲道，沒有黑幀或靜音區間，凍結僅預期文字卡與警告。保留的影片與收據位於dist-all同版號；Windows／macOS完整版實機與集中人工範圍保持揭露。
 
 
 旁白重跑入口：[mix_fd2_promo_narration.py](../../tools/mix_fd2_promo_narration.py)。先以剪輯表產生底片，再傳入`--base`底片目錄、`--voice-plan`旁白配方、四次`--voice-receipt`收據與`--work`全新暫存目錄。`--out`採`<全新目錄>/v.1.1.2-20261105/promo`，版號須與底片相同，不能覆寫既有交付。配方檔與四份收據路徑記於本輪現況表的`battle_animation_review_20261105.voice.full_plan`及`battle_animation_review_20261105.voice.generation_receipts`。旁白聲線、生成批次種子與逐段文字均保留。後32段記錄模型及權重SHA，最初4段保留WAV與原編製器SHA，原工作在輸出模型雜湊收據前已停止；不冒稱原版官方配音，全片人耳複核尚未記錄。[逐幕檢視工具](../../tools/review_fd2_hd1_promo.py)的extract核對混音前後視訊封包，contact產生接觸表。

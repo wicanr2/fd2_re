@@ -1018,3 +1018,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [旁白混音器](../../tools/mix_fd2_promo_narration.py)核對逐段文字、聲線、音訊SHA、分鏡時間窗與不重疊，再正規化、混音及壓低旁白期間的遊戲底音；保留原影片畫面，產出獨立旁白來源清冊及可開啟的影片。
 
 [HD1影片逐幕檢視工具](../../tools/review_fd2_hd1_promo.py)的extract在既有推廣片容器擷取43幕與三招九張動作，核對混音前後視訊封包一致；contact在Pillow容器重生接觸表。搭配[HD1音畫驗證器](../../tools/validate_fd2_hd1_promo.py)核對36段旁白時間、音量、黑幀、凍結與字幕安全區。視覺與人耳確認仍分開記錄。
+
+[工作區清理紀錄](../data/fd2-workspace-cleanup-20261105.json)保存明示清單、移除原因、封包／錄影雜湊與清理前後用量。[清理工具](../../tools/cleanup_fd2_workspace.py)僅在Docker使用，傳入`--plan`清單、`--tracked-list`受版控檔案清單及`--report`紀錄；預設只檢查，`--apply`才移除。它保護最新成品、受版控來源與兩份未提交工作樹，拒絕指紋已變動或經符號連結轉向的候選。歷次驗收保留原有雜湊，已清理的中間產物依本紀錄辨識。
