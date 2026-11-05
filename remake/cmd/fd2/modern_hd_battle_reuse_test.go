@@ -135,11 +135,11 @@ func (p *battleReuseGPUProbe) Draw(screen *ebiten.Image) {
 		p.err = fmt.Errorf("case%d did not invalidate changed/reset frame", p.index)
 		return
 	}
-	p.gpu.World.ReadPixels(p.want)
+	readHDQualityWorldPixels(p.gpu.World, p.want)
 	if p.err = p.gpu.draw(plan); p.err != nil {
 		return
 	}
-	p.gpu.World.ReadPixels(p.pixels)
+	readHDQualityWorldPixels(p.gpu.World, p.pixels)
 	if p.gpu.rendered != rendered+1 || p.gpu.reused != reused+1 || !bytes.Equal(p.pixels, p.want) {
 		p.err = fmt.Errorf("case%d reuse changed pixels or repeated composition", p.index)
 		return
@@ -151,7 +151,7 @@ func (p *battleReuseGPUProbe) Draw(screen *ebiten.Image) {
 	if p.err = p.gpu.draw(plan); p.err != nil {
 		return
 	}
-	p.gpu.World.ReadPixels(p.pixels)
+	readHDQualityWorldPixels(p.gpu.World, p.pixels)
 	if p.gpu.rendered != rendered+2 || !bytes.Equal(p.pixels, p.want) {
 		p.err = fmt.Errorf("case%d forced full redraw differs from reuse", p.index)
 		return
@@ -163,7 +163,7 @@ func (p *battleReuseGPUProbe) Draw(screen *ebiten.Image) {
 		p.err = fmt.Errorf("case%d cached frame bypassed validation", p.index)
 		return
 	}
-	p.gpu.World.ReadPixels(p.pixels)
+	readHDQualityWorldPixels(p.gpu.World, p.pixels)
 	if !bytes.Equal(p.pixels, p.want) || p.gpu.reused != reused+1 {
 		p.err = fmt.Errorf("case%d rejected frame changed published canvas", p.index)
 		return
@@ -180,12 +180,12 @@ func (p *battleReuseGPUProbe) Draw(screen *ebiten.Image) {
 			if p.err = p.gpu.draw(plan); p.err != nil {
 				return
 			}
-			p.gpu.World.ReadPixels(p.want)
+			readHDQualityWorldPixels(p.gpu.World, p.want)
 			p.gpu.frameValid = false
 			if p.err = p.gpu.draw(plan); p.err != nil {
 				return
 			}
-			p.gpu.World.ReadPixels(p.pixels)
+			readHDQualityWorldPixels(p.gpu.World, p.pixels)
 			if p.gpu.rendered != before+2 || !bytes.Equal(p.pixels, p.want) {
 				p.err = fmt.Errorf("in-place slice mutation reused stale frame")
 				return
@@ -204,6 +204,9 @@ func TestModernHDBattleFrameReuseGPU(t *testing.T) {
 		t.Skip("dedicated complete-canvas reuse GPU process required")
 	}
 	probe := &battleReuseGPUProbe{pixels: make([]byte, 1920*1200*4), want: make([]byte, 1920*1200*4)}
+	if quality := os.Getenv("FD2_HD_BATTLE_REUSE_QUALITY"); quality != "" {
+		probe.gpu.setQuality(parseHDTextureQuality(quality))
+	}
 	defer probe.gpu.close()
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)

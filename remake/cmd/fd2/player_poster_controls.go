@@ -11,7 +11,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
-var playerPosterMenu = image.Rect(362, 26, 634, 158)
+var playerPosterMenu = image.Rect(362, 26, 634, 200)
+var playerHDQualityChoices = [3]image.Rectangle{image.Rect(374, 176, 454, 196), image.Rect(458, 176, 538, 196), image.Rect(542, 176, 622, 196)}
 var playerPosterChoices = [3]image.Rectangle{image.Rect(374, 49, 454, 68), image.Rect(458, 49, 538, 68), image.Rect(542, 49, 622, 68)}
 var playerPosterSlider = image.Rect(380, 84, 620, 104)
 var playerPosterFadeChoices = [4]image.Rectangle{image.Rect(374, 109, 433, 129), image.Rect(437, 109, 496, 129), image.Rect(500, 109, 559, 129), image.Rect(563, 109, 622, 129)}
@@ -33,13 +34,13 @@ type playerPosterLabels struct {
 func (p *modernHDPresentation) posterLabels() playerPosterLabels {
 	switch p.Game.localeID {
 	case "en":
-		return playerPosterLabels{"Posters", "Posters · F10", "Blend", "Replay", "Close", "Posters unavailable: ", [3]string{"Off", "HD 1", "Classic 2"}}
+		return playerPosterLabels{"Video", "Posters · F10", "Blend", "Replay", "Close", "Posters unavailable: ", [3]string{"Off", "HD 1", "Classic 2"}}
 	case "ja":
-		return playerPosterLabels{"ポスター", "ポスター · F10", "境界", "再生", "閉じる", "ポスターを読めません：", [3]string{"なし", "HD 1", "原画 2"}}
+		return playerPosterLabels{"表示", "ポスター · F10", "境界", "再生", "閉じる", "ポスターを読めません：", [3]string{"なし", "HD 1", "原画 2"}}
 	case "zh-Hans":
-		return playerPosterLabels{"海报", "海报 · F10", "渐层", "重播", "收起", "海报不可用：", [3]string{"关闭", "HD 第一组", "原稿第二组"}}
+		return playerPosterLabels{"影像", "海报 · F10", "渐层", "重播", "收起", "海报不可用：", [3]string{"关闭", "HD 第一组", "原稿第二组"}}
 	default:
-		return playerPosterLabels{"海報", "海報 · F10", "漸層", "重播", "收合", "海報不可用：", [3]string{"關閉", "HD 第一組", "原稿第二組"}}
+		return playerPosterLabels{"影像", "海報 · F10", "漸層", "重播", "收合", "海報不可用：", [3]string{"關閉", "HD 第一組", "原稿第二組"}}
 	}
 }
 
@@ -69,6 +70,12 @@ func (p *modernHDPresentation) queuePosterPoint(point image.Point) bool {
 		return true
 	}
 	p.poster.consumeInput = true
+	for i, rect := range playerHDQualityChoices {
+		if point.In(rect) {
+			p.Game.setHDTextureQuality(hdTextureQuality(i))
+			return true
+		}
+	}
 	for i, rect := range playerPosterChoices {
 		if point.In(rect) {
 			if err := p.applyPosterMode([]string{"off", "hd", "classic"}[i], true); err != nil {
@@ -160,6 +167,22 @@ func (p *modernHDPresentation) drawPosterMenu(screen ebiten.FinalScreen, geometr
 	}
 	p.drawCompactToolbarButton(surface, playerPosterReplay, l.replay, false)
 	p.drawCompactToolbarButton(surface, playerPosterClose, l.close, false)
+	qualityTitle := "HD1畫質"
+	if p.Game.localeID == "en" {
+		qualityTitle = "HD1 quality"
+	} else if p.Game.localeID == "ja" {
+		qualityTitle = "HD1画質"
+	} else if p.Game.localeID == "zh-Hans" {
+		qualityTitle = "HD1画质"
+	}
+	var graphics ebiten.DebugInfo
+	ebiten.ReadDebugInfo(&graphics)
+	qualityTitle = fmt.Sprintf("%s · %s · %.0f fps", qualityTitle, graphics.GraphicsLibrary.String(), ebiten.ActualFPS())
+	p.drawCompactToolbarButton(surface, image.Rect(374, 157, 622, 173), qualityTitle, false)
+	qualityLabels := hdTextureQualityLabels(p.Game.localeID)
+	for i, rect := range playerHDQualityChoices {
+		p.drawCompactToolbarButton(surface, rect, qualityLabels[i], p.Game.playerHDQuality == hdTextureQuality(i))
+	}
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(1.0/3, 1.0/3)
 	op.GeoM.Concat(geometry)

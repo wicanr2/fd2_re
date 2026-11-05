@@ -45,6 +45,14 @@ type modernHDBattleGPU struct {
 	frameValid  bool
 	rendered    uint64
 	reused      uint64
+	quality     hdTextureQuality
+}
+
+func (r *modernHDBattleGPU) setQuality(q hdTextureQuality) {
+	if r.quality != q {
+		r.resetSources()
+		r.quality = q
+	}
 }
 
 const modernHDBattleShader = `//kage:unit pixels
@@ -224,9 +232,17 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	if r.sources == nil {
 		r.sources = make(map[string]*ebiten.Image)
 	}
-	if r.World == nil {
-		r.World = ebiten.NewImage(modernHDWidth, modernHDHeight)
-		r.base = ebiten.NewImage(320, 200)
+	if r.World == nil || r.World.Bounds() != r.quality.rasterBounds() {
+		// Keep the previous published canvas until the entire new plan has
+		// passed validation, including when a quality switch is pending.
+		if r.World != nil {
+			r.World.Dispose()
+		}
+		b := r.quality.rasterBounds()
+		r.World = ebiten.NewImage(b.Dx(), b.Dy())
+		if r.base == nil {
+			r.base = ebiten.NewImage(320, 200)
+		}
 	}
 	r.World.Clear()
 	base := make([]byte, 64000*4)
@@ -235,12 +251,12 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	}
 	r.base.WritePixels(base)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(6, 6)
+	op.GeoM.Scale(6*r.quality.density(), 6*r.quality.density())
 	r.World.DrawImage(r.base, op)
 	for _, layer := range plan.Layers {
 		destination := r.World
 		if layer.Clip != nil {
-			clip := r.World.Bounds().Intersect(*layer.Clip)
+			clip := r.World.Bounds().Intersect(r.quality.rasterRect(*layer.Clip))
 			if clip.Empty() {
 				continue
 			}
@@ -276,13 +292,16 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		}
 		texture := r.sources[key]
 		if texture == nil {
+			if layer.HD != nil {
+				picture = r.quality.textureSource(picture)
+			}
 			texture = ebiten.NewImageFromImage(picture)
 			r.sources[key] = texture
 		}
 		draw := &ebiten.DrawRectShaderOptions{}
 		draw.Images[0] = texture
-		draw.GeoM.Scale(float64(layer.Rect.Dx())/float64(texture.Bounds().Dx()), float64(layer.Rect.Dy())/float64(texture.Bounds().Dy()))
-		draw.GeoM.Translate(float64(layer.Rect.Min.X), float64(layer.Rect.Min.Y))
+		draw.GeoM.Scale(float64(layer.Rect.Dx())*r.quality.density()/float64(texture.Bounds().Dx()), float64(layer.Rect.Dy())*r.quality.density()/float64(texture.Bounds().Dy()))
+		draw.GeoM.Translate(float64(layer.Rect.Min.X)*r.quality.density(), float64(layer.Rect.Min.Y)*r.quality.density())
 		fill := []float32{0, 0, 0, 0}
 		if layer.Fill == 33 {
 			fill = []float32{float32(palette[132]) / 255, float32(palette[133]) / 255, float32(palette[134]) / 255, 1}

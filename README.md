@@ -317,6 +317,12 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；此圖保留前批人物，現行城鎮人物見下圖。地形、介面與完整工具列已完成[HD1里程碑](https://github.com/wicanr2/fd2_re/milestone/1)的技術接線，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。
 
+目前開發版的HD1提供完整、均衡、輕量三種畫質，預設均衡。從工具列「影像」切換，可查看繪圖後端與fps；均衡與輕量降低地圖及戰鬥的內部繪製尺寸，文字與獨立介面維持原解析度。Windows實機60fps仍待確認，接線、驗證及範圍見[效能現況](docs/data/fd2-hd1-performance-20261105.json)。
+
+![HD1完整、均衡與輕量的實際影像選單](docs/figures/hd1-texture-quality-overview.png)
+
+上圖為具有建構祖先的來源槽，正常LOAD後實際點選三種畫質。圖中fps含Xvfb、llvmpipe、輸入稽核與截圖開銷，不代表Windows實機幀率；下排為同張截圖的選單放大。
+
 ![城鎮人物與介面獨立切換](docs/figures/hd1-town-interface-four-modes.png)
 
 四格為同一受控城鎮的實際繪製，左上至右下依序為原版美術／原版介面、原版美術／HD介面、HD美術／原版介面、HD美術／HD介面。人物隨美術主題，字型隨介面切換。測試隊伍用來核對圖源接線，不代表自然出場；介面接線已完成，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。

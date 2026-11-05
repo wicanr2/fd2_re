@@ -16,28 +16,32 @@ import (
 )
 
 type playerPosterPresentation struct {
-	catalogPath    string
-	packRoot       string
-	settings       playerPosterSettings
-	pair           *playerPosterPair
-	masked         [2]*ebiten.Image
-	maskSet        string
-	maskEdge       int
-	started        time.Time
-	clock          func() time.Time
-	menuOpen       bool
-	consumeInput   bool
-	sliderMouse    bool
-	sliderTouch    bool
-	touchID        ebiten.TouchID
-	clean          *ebiten.Image
-	terrainBase    *ebiten.Image
-	native         *ebiten.Image
-	cleanFrame     *modernHDMapFrame
-	nativeSource   *indexedmap.NativeFrameInput
-	nativeDAC      [32]byte
-	backdropSource string
-	backdropError  string
+	catalogPath                string
+	packRoot                   string
+	settings                   playerPosterSettings
+	pair                       *playerPosterPair
+	masked                     [2]*ebiten.Image
+	maskSet                    string
+	maskEdge                   int
+	started                    time.Time
+	clock                      func() time.Time
+	menuOpen                   bool
+	consumeInput               bool
+	sliderMouse                bool
+	sliderTouch                bool
+	touchID                    ebiten.TouchID
+	clean                      *ebiten.Image
+	terrainBase                *ebiten.Image
+	native                     *ebiten.Image
+	cleanFrame                 *modernHDMapFrame
+	cleanQuality               hdTextureQuality
+	cleanKey                   [32]byte
+	cleanValid                 bool
+	cleanRendered, cleanReused uint64
+	nativeSource               *indexedmap.NativeFrameInput
+	nativeDAC                  [32]byte
+	backdropSource             string
+	backdropError              string
 }
 
 func (p *modernHDPresentation) posterNow() time.Time {
@@ -164,7 +168,8 @@ func (p *modernHDPresentation) cleanPosterBackground() (*ebiten.Image, image.Rec
 		if p.poster.clean == nil {
 			p.poster.clean = ebiten.NewImage(modernHDWidth, modernHDHeight)
 		}
-		if p.poster.cleanFrame != frame {
+		key := modernHDSceneryFrameKey(frame)
+		if !p.poster.cleanValid || p.poster.cleanKey != key || p.poster.cleanQuality != gpu.quality {
 			base := frame.TerrainViewBase
 			if base < 0 || base+191*fdicon.NativeMapStride+312 > len(frame.TerrainSeed) {
 				p.poster.backdropSource = "neutral"
@@ -192,12 +197,24 @@ func (p *modernHDPresentation) cleanPosterBackground() (*ebiten.Image, image.Rec
 			clip := modernHDMapViewport()
 			for _, terrain := range frame.Terrain {
 				op := &ebiten.DrawImageOptions{}
-				if terrain.ScaleToRect {
-					op.GeoM.Scale(float64(terrain.Rect.Dx())/float64(terrain.Image.Bounds().Dx()), float64(terrain.Rect.Dy())/float64(terrain.Image.Bounds().Dy()))
+				texture := gpu.terrainImage(terrain.Image)
+				if gpu.quality != hdTextureFull {
+					op.Filter = ebiten.FilterLinear
 				}
+				w, h := terrain.Image.Bounds().Dx(), terrain.Image.Bounds().Dy()
+				if terrain.ScaleToRect {
+					w, h = terrain.Rect.Dx(), terrain.Rect.Dy()
+				}
+				op.GeoM.Scale(float64(w)/float64(texture.Bounds().Dx()), float64(h)/float64(texture.Bounds().Dy()))
 				op.GeoM.Translate(float64(terrain.Rect.Min.X), float64(terrain.Rect.Min.Y))
-				p.poster.clean.SubImage(clip).(*ebiten.Image).DrawImage(gpu.terrainImage(terrain.Image), op)
+				p.poster.clean.SubImage(clip).(*ebiten.Image).DrawImage(texture, op)
 			}
+			p.poster.cleanFrame = frame
+			p.poster.cleanQuality = gpu.quality
+			p.poster.cleanKey, p.poster.cleanValid = key, true
+			p.poster.cleanRendered++
+		} else {
+			p.poster.cleanReused++
 			p.poster.cleanFrame = frame
 		}
 		p.poster.backdropSource = "hd-terrain"

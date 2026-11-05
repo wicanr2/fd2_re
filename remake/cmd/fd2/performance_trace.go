@@ -49,9 +49,27 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		default:
 		}
 	}
-	var rendered, reused uint64
+	var rendered, reused, mapRendered, mapReused uint64
+	var mapRaster, battleRaster [2]int
+	var posterRendered, posterReused uint64
+	quality := "unknown"
+	var graphics ebiten.DebugInfo
+	ebiten.ReadDebugInfo(&graphics)
+	if p.modernHDPresentation != nil && p.Game != nil {
+		quality = p.Game.playerHDQuality.name()
+		posterRendered, posterReused = p.poster.cleanRendered, p.poster.cleanReused
+	}
 	if p.modernHDPresentation != nil && p.Game != nil && p.modernHDBattleGPU != nil {
 		rendered, reused = p.modernHDBattleGPU.rendered, p.modernHDBattleGPU.reused
+		if world := p.modernHDBattleGPU.World; world != nil {
+			battleRaster = [2]int{world.Bounds().Dx(), world.Bounds().Dy()}
+		}
+	}
+	if p.modernHDPresentation != nil && p.Game != nil && p.modernHDMapGPU != nil {
+		mapRendered, mapReused = p.modernHDMapGPU.rendered, p.modernHDMapGPU.reused
+		if world := p.modernHDMapGPU.World; world != nil {
+			mapRaster = [2]int{world.Bounds().Dx(), world.Bounds().Dy()}
+		}
 	}
 	p.err = p.encoder.Encode(struct {
 		ElapsedSeconds  float64        `json:"elapsed_seconds"`
@@ -66,8 +84,16 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		CPUFinished     bool           `json:"cpu_profile_finished,omitempty"`
 		BattleRendered  uint64         `json:"battle_gpu_rendered_total"`
 		BattleReused    uint64         `json:"battle_gpu_reused_total"`
+		MapRendered     uint64         `json:"map_gpu_rendered_total"`
+		MapReused       uint64         `json:"map_gpu_reused_total"`
+		GraphicsLibrary string         `json:"graphics_library"`
+		TextureQuality  string         `json:"hd_texture_quality"`
+		MapRaster       [2]int         `json:"map_raster_size"`
+		BattleRaster    [2]int         `json:"battle_raster_size"`
+		PosterRendered  uint64         `json:"poster_background_rendered_total"`
+		PosterReused    uint64         `json:"poster_background_reused_total"`
 	}{now.Sub(p.started).Seconds(), interval, ebiten.ActualFPS(), ebiten.ActualTPS(),
-		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished, rendered, reused})
+		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished, rendered, reused, mapRendered, mapReused, graphics.GraphicsLibrary.String(), quality, mapRaster, battleRaster, posterRendered, posterReused})
 	p.previous = now
 	p.updates, p.draws, p.finals = 0, 0, 0
 	p.scenes = make(map[string]int)
@@ -84,7 +110,12 @@ func (p *performanceTrace) Update() error {
 }
 
 func (p *performanceTrace) Draw(screen *ebiten.Image) {
-	if !p.cpuAttempted && p.modernHDPresentation.Game.atk != nil {
+	g := p.modernHDPresentation.Game
+	profileScene := g.atk != nil
+	if os.Getenv("FD2_PERFORMANCE_CPU_PROFILE_SCENE") == "world" {
+		profileScene = g.modernHDWorldVisible && g.atk == nil
+	}
+	if !p.cpuAttempted && profileScene {
 		p.cpuAttempted = true
 		if path := os.Getenv("FD2_PERFORMANCE_CPU_PROFILE"); path != "" {
 			p.cpu, p.err = startPerformanceCPUProfile(path, 30*time.Second)
@@ -95,7 +126,6 @@ func (p *performanceTrace) Draw(screen *ebiten.Image) {
 	}
 	p.modernHDPresentation.Draw(screen)
 	p.draws++
-	g := p.modernHDPresentation.Game
 	scene := "world-or-ui"
 	if g.atk != nil {
 		scene = "physical"

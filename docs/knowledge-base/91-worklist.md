@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -467,6 +467,18 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 怎樣算做完：修正髖／膝／踝與腳底的連續結構及原版右腳承重落點，六母稿與20影格接入；完整來源GPU、Game.Draw／F2／返回及兩包載入／缺件原子性通過，以新普通GUI擷取更新README GIF；集中人工確認自然度後才關閉。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 HD1 Windows切換掉速：貼圖品質、GPU後端與60fps驗證
+
+`hd1-windows-performance-60fps` · 缺陷 · [#298](https://github.com/wicanr2/fd2_re/issues/298) · 仍未完成 · 要人判
+
+使用者回報Windows／i7-9700K切至HD1後變慢，顯卡型號未知。已選定預設均衡，可切完整／輕量；原始母稿、文字與介面保持。
+
+先量測真正Update／Draw與顯示後端，沿正式GPU路徑減少重複合成及縮減上傳貼圖。影片30fps不代表遊戲幀率，CPU型號也不足以判定硬體加速。
+
+本輪唯一現況：docs/data/fd2-hd1-performance-20261105.json；規格：docs/knowledge-base/61-modern-theme-runtime-spec.md「HD1繪製效能與60fps量測」。HD2依使用者指示延後。
+
+怎樣算做完：三品質、設定保存、GPU像素／幾何與正常選人攻擊返回、F2及新程序LOAD通過；公開可重跑量測與範圍。Windows實際裝置核對顯卡／後端、取得幀率，未達60fps的場景分列，不能由軟體GPU測試或補幀宣稱達標。
 
 ## release — 發行、平台與封包
 

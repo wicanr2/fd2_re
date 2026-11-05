@@ -410,6 +410,19 @@
         "note": "實際觀看82至93秒的人名、人物、圖說與旁白；目前已確認未修。"
       },
       "issue": 297
+    },
+    {
+      "id": "hd1-windows-performance-60fps",
+      "layer": "player",
+      "category": "缺陷",
+      "title": "P1 HD1 Windows切換掉速：貼圖品質、GPU後端與60fps驗證",
+      "body": "使用者回報Windows／i7-9700K切至HD1後變慢，顯卡型號未知。已選定預設均衡，可切完整／輕量；原始母稿、文字與介面保持。\n\n先量測真正Update／Draw與顯示後端，沿正式GPU路徑減少重複合成及縮減上傳貼圖。影片30fps不代表遊戲幀率，CPU型號也不足以判定硬體加速。\n\n本輪唯一現況：docs/data/fd2-hd1-performance-20261105.json；規格：docs/knowledge-base/61-modern-theme-runtime-spec.md「HD1繪製效能與60fps量測」。HD2依使用者指示延後。",
+      "acceptance": "三品質、設定保存、GPU像素／幾何與正常選人攻擊返回、F2及新程序LOAD通過；公開可重跑量測與範圍。Windows實際裝置核對顯卡／後端、取得幀率，未達60fps的場景分列，不能由軟體GPU測試或補幀宣稱達標。",
+      "verify": {
+        "kind": "manual",
+        "note": "需Windows實際GPU與幀率觀測；本機軟體繪圖僅供定位。"
+      },
+      "issue": 298
     }
   ]
 }

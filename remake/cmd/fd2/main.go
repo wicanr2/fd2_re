@@ -611,6 +611,7 @@ type Game struct {
 	playerInterfaceRequested            bool
 	interfaceMode                       string
 	playerSpeed                         int
+	playerHDQuality                     hdTextureQuality
 	playerClock                         playerGameClock
 	playerSpeedRequested                bool
 	playerFontRequested                 bool
@@ -11590,6 +11591,14 @@ func loadGame() *Game {
 	}
 	configured := loadSettings()
 	g.playerSpeed = normalizePlayerSpeed(configured.GameSpeed)
+	g.playerHDQuality = parseHDTextureQuality(configured.HDTextureQuality)
+	if quality := os.Getenv("FD2_HD_TEXTURE_QUALITY"); quality != "" {
+		if quality != "full" && quality != "balanced" && quality != "light" {
+			g.loadErr = "HD texture quality: unsupported value " + quality
+			return g
+		}
+		g.playerHDQuality = parseHDTextureQuality(quality)
+	}
 	g.playerClock.speed = g.playerSpeed
 	g.bgmSource = configured.BGMSource // 音源設定(預設 fm=Sound Blaster)
 	g.localeID = configured.LocaleID

@@ -5387,6 +5387,36 @@
         ],
         "pattern": "decoded_pcm"
       }
+    },
+    {
+      "id": "hd-quality-measures-raster-and-sampling",
+      "area": "HD1效能",
+      "date": "2026-11-05",
+      "rule": "縮圖效能同時量測來源貼圖、實體GPU畫布及最終取樣成本；不由PNG容量或貼圖畫素量推算fps。入口remake/cmd/fd2/player_hd_quality.go與規格61「貼圖品質選項」。",
+      "why": "僅縮貼圖後逐圖線性放大的候選在受限llvmpipe測試更慢；改保留HD6座標並同步縮減GPU畫布，再重跑同綁定快取與正常流程。軟體合成數字不能外推Windows實體GPU。",
+      "evidence": "docs/data/fd2-hd1-performance-20261105.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/player_hd_quality.go"
+        ],
+        "pattern": "rasterBounds"
+      }
+    },
+    {
+      "id": "gui-pointer-release-waits-game-updates",
+      "area": "GUI驗證",
+      "date": "2026-11-05",
+      "rule": "GUI點選後等待實際遊戲Update確認，再送下一個按鍵；固定sleep不能保證低fps或畫布重建時已處理完輸入。入口tools/verify_fd2_hd_fonts_gui.py的click_quality_point。",
+      "why": "品質選單收合後Z沒有按下收據。依UI消費端強推論為兩者落在同一展示Update而吞掉輸入；改等Game.frame前進後通過，沒有改遊戲按鍵規則或延長所有等待。",
+      "evidence": "docs/data/fd2-hd1-performance-20261105.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "before_frame"
+      }
     }
   ]
 }

@@ -164,6 +164,7 @@ def main():
     parser.add_argument('--town-save', type=Path, help='既有JSON來源槽；原生槽轉普通F5時不需指定')
     parser.add_argument('--performance', action='store_true', help='各遊戲程序另輸出唯讀頻率觀測，關閉後封存清冊')
     parser.add_argument('--cpu-profile', action='store_true', help='搭配--performance，首個物理Draw開始30秒CPU效能觀測')
+    parser.add_argument('--texture-quality-check', action='store_true', help='正常工具列切完整／輕量／均衡，核對保存及遊戲狀態；需--world --player-toolbar')
     parser.add_argument('--render-threads', type=int, choices=[2,4,8], default=2,
                         help='只控制本次軟體GPU測試執行緒，須與Docker CPU配額一同記錄')
     parser.add_argument('--performance-skip-walk-gpu', action='store_true',
@@ -293,6 +294,7 @@ def main():
     run_limit = args.run_timeout or (2400 if args.battle_end_art else 1800 if args.battle_advance else
                                     1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660)
     window_height = '1272' if args.player_toolbar else '1200'
+    assert not args.texture_quality_check or (args.world and args.player_toolbar and args.battle_status)
     assert not args.heal_normal or (args.battle_status and args.world and args.battle_node=='battle_ch23'
                                   and not any([args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only]))
     assert not args.status_death_normal or (args.battle_status and args.world and args.battle_node=='battle_ch01'
@@ -975,6 +977,38 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
+            if args.texture_quality_check:
+                initial=latest(audit)
+                assert initial['hd_texture_quality']=='balanced', '新設定預設品質未採均衡'
+                protected=('native_identity','x','y','hp','mp','lv','exp','acted','on_field')
+                unit_values=lambda s:[{k:u.get(k) for k in protected} for u in s['units']]
+                source_save_hash=digest(saved)
+                rows=[]
+                def click_quality_point(x,y):
+                    before_frame=latest(audit).get('frame',0)
+                    command('xdotool','mousemove','--window',window,str(x*3),str(y*3))
+                    time.sleep(.15)
+                    command('xdotool','click','1')
+                    # Presentation consumes the click update. Wait for actual
+                    # game updates before the next key, even at low draw rates.
+                    wait(lambda s:s.get('frame',0)>=before_frame+2)
+                click_quality_point(455,12)
+                shot('quality-menu-balanced')
+                for quality,x in [('full',414),('light',582),('balanced',498)]:
+                    click_quality_point(x,186)
+                    state=wait(lambda s:s.get('hd_texture_quality')==quality and s.get('hd_map_texture_quality')==quality)
+                    assert unit_values(state)==unit_values(initial), '品質操作改變隊伍數值或位置'
+                    assert state['cursor']==initial['cursor'] and state['camera']==initial['camera'], '品質點擊穿透戰場'
+                    assert digest(saved)==source_save_hash, '品質操作改寫戰役存檔'
+                    settings_file=next((args.out/'user-data').rglob('fd2_settings.json'))
+                    assert json.loads(settings_file.read_text())['hd_texture_quality']==quality
+                    shot('quality-menu-'+quality)
+                    rows.append({'quality':quality,'game_save_sha256':digest(saved),'units_and_view_equal':True})
+                click_quality_point(560,144)
+                (args.out/'texture-quality-ui.json').write_text(json.dumps({
+                    'status':'PASS-NORMAL-TOOLBAR-QUALITY','default':'balanced','operations':rows,
+                    'source_save_sha256':source_save_hash,'cold_load_verified':False,
+                    'scope':'正常LOAD後實際指標點擊三品質，原位置／能力／戰役檔保持；冷讀另依主GUI收據。'},ensure_ascii=False,indent=2)+'\n')
             if args.movement_panel:
                 initial=latest(audit)
                 fields=('native_identity','x','y','hp','mp','lv','exp','acted','on_field')

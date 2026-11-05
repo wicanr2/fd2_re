@@ -295,7 +295,7 @@ func (g *Game) drawModernHDCompoundMapFrame(screen *ebiten.Image, frame *nativeC
 	if s.mix != 0 {
 		r := g.modernHDMapGPU
 		if r.CompoundMix == nil {
-			r.CompoundMix = ebiten.NewImage(modernHDWidth, modernHDHeight)
+			r.CompoundMix = ebiten.NewImage(r.World.Bounds().Dx(), r.World.Bounds().Dy())
 		}
 		if r.CompoundShader == nil {
 			var err error
@@ -308,7 +308,7 @@ func (g *Game) drawModernHDCompoundMapFrame(screen *ebiten.Image, frame *nativeC
 		op := &ebiten.DrawRectShaderOptions{}
 		op.Images[0] = r.World
 		op.Uniforms = map[string]interface{}{"FillColor": []float32{0, 0, 0, 0}, "Subtract": float32(0), "Tint": s.target[:], "Mix": s.mix}
-		r.CompoundMix.DrawRectShader(modernHDWidth, modernHDHeight, r.CompoundShader, op)
+		r.CompoundMix.DrawRectShader(r.World.Bounds().Dx(), r.World.Bounds().Dy(), r.CompoundShader, op)
 		r.World.Clear()
 		r.World.DrawImage(r.CompoundMix, nil)
 	}

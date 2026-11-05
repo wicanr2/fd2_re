@@ -165,13 +165,13 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	p.drawModernFacilityScene(screen, contentGeometry)
 	if p.Game.modernHDBattleVisible && p.Game.modernHDBattleGPU != nil {
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-		op.GeoM.Scale(1.0/3, 1.0/3)
+		op.GeoM.Scale(float64(logicalW)/float64(p.Game.modernHDBattleGPU.World.Bounds().Dx()), float64(logicalH)/float64(p.Game.modernHDBattleGPU.World.Bounds().Dy()))
 		op.GeoM.Concat(contentGeometry)
 		screen.DrawImage(p.Game.modernHDBattleGPU.World, op)
 	}
 	if p.Game.modernHDWorldVisible && p.Game.modernHDMapGPU != nil {
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-		op.GeoM.Scale(1.0/3, 1.0/3)
+		op.GeoM.Scale(float64(logicalW)/float64(p.Game.modernHDMapGPU.World.Bounds().Dx()), float64(logicalH)/float64(p.Game.modernHDMapGPU.World.Bounds().Dy()))
 		op.GeoM.Concat(contentGeometry)
 		screen.DrawImage(p.Game.modernHDMapGPU.World, op)
 	}

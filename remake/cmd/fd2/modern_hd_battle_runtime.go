@@ -221,6 +221,7 @@ func (g *Game) publishModernHDBattlePlan(screen *ebiten.Image, plan modernHDBatt
 		g.modernHDBattleGPU = &modernHDBattleGPU{}
 	}
 	g.syncModernHDBattleOwner()
+	g.modernHDBattleGPU.setQuality(g.playerHDQuality)
 	if err := g.modernHDBattleGPU.draw(plan); err != nil {
 		return err
 	}

@@ -32,6 +32,40 @@ type modernHDMapGPU struct {
 	HUDPanelTerrain, HUDPanelNativeUnit *ebiten.Image
 	PaletteSource                       *ebiten.Image
 	PaletteShader                       *ebiten.Shader
+	frameKey                            [32]byte
+	frameValid                          bool
+	rendered, reused                    uint64
+	quality                             hdTextureQuality
+}
+
+func (r *modernHDMapGPU) setQuality(q hdTextureQuality) {
+	if r.quality == q {
+		return
+	}
+	for _, texture := range r.TerrainImages {
+		texture.Dispose()
+	}
+	for _, frames := range r.Units {
+		for _, texture := range frames {
+			texture.Dispose()
+		}
+	}
+	r.TerrainImages = nil
+	r.Units = make(map[int]map[int]*ebiten.Image)
+	r.quality, r.frameValid = q, false
+	for _, texture := range []*ebiten.Image{r.World, r.Banner, r.PaletteSource, r.CompoundMix} {
+		if texture != nil {
+			texture.Dispose()
+		}
+	}
+	b := q.rasterBounds()
+	r.World = ebiten.NewImage(b.Dx(), b.Dy())
+	r.Banner, r.PaletteSource, r.CompoundMix = nil, nil, nil
+	r.BannerName = ""
+}
+
+func (r *modernHDMapGPU) scaleUnitTexture(op *ebiten.DrawImageOptions, texture *ebiten.Image) {
+	op.GeoM.Scale(144*r.quality.density()/float64(texture.Bounds().Dx()), 144*r.quality.density()/float64(texture.Bounds().Dy()))
 }
 
 const modernHDMapPaletteAddSource = `//kage:unit pixels
@@ -52,7 +86,7 @@ func (r *modernHDMapGPU) addPalette(delta int) error {
 		return nil
 	}
 	if r.PaletteSource == nil {
-		r.PaletteSource = ebiten.NewImage(modernHDWidth, modernHDHeight)
+		r.PaletteSource = ebiten.NewImage(r.World.Bounds().Dx(), r.World.Bounds().Dy())
 	}
 	if r.PaletteShader == nil {
 		var err error
@@ -67,7 +101,7 @@ func (r *modernHDMapGPU) addPalette(delta int) error {
 	op := &ebiten.DrawRectShaderOptions{}
 	op.Images[0] = r.PaletteSource
 	op.Uniforms = map[string]interface{}{"Add": float32(delta) / 63}
-	r.World.DrawRectShader(modernHDWidth, modernHDHeight, r.PaletteShader, op)
+	r.World.DrawRectShader(r.World.Bounds().Dx(), r.World.Bounds().Dy(), r.PaletteShader, op)
 	return nil
 }
 
@@ -75,7 +109,7 @@ func (r *modernHDMapGPU) drawHUDUnit(patch *modernHDMapHUDUnit, clip image.Recta
 	if patch == nil {
 		return
 	}
-	region := patch.Unit.Rect.Intersect(clip).Intersect(r.World.Bounds())
+	region := r.quality.rasterRect(patch.Unit.Rect.Intersect(clip)).Intersect(r.World.Bounds())
 	if region.Empty() {
 		return
 	}
@@ -86,17 +120,18 @@ func (r *modernHDMapGPU) drawHUDUnit(patch *modernHDMapHUDUnit, clip image.Recta
 	r.HUDAbove.WritePixels(patch.Above.Pix)
 	target := r.World.SubImage(region).(*ebiten.Image)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(6, 6)
-	op.GeoM.Translate(float64(patch.Unit.Rect.Min.X), float64(patch.Unit.Rect.Min.Y))
+	op.GeoM.Scale(6*r.quality.density(), 6*r.quality.density())
+	op.GeoM.Translate(float64(patch.Unit.Rect.Min.X)*r.quality.density(), float64(patch.Unit.Rect.Min.Y)*r.quality.density())
 	target.DrawImage(r.HUDBase, op)
 	unit := &ebiten.DrawImageOptions{}
-	unit.GeoM.Translate(float64(patch.Unit.Rect.Min.X), float64(patch.Unit.Rect.Min.Y))
 	var picture *ebiten.Image
 	if patch.Unit.ColourImage != nil {
 		picture = r.terrainImage(patch.Unit.ColourImage)
 	} else {
 		picture = r.unit(patch.Unit.Group, patch.Unit.Frame)
 	}
+	r.scaleUnitTexture(unit, picture)
+	unit.GeoM.Translate(float64(patch.Unit.Rect.Min.X)*r.quality.density(), float64(patch.Unit.Rect.Min.Y)*r.quality.density())
 	target.DrawImage(picture, unit)
 	target.DrawImage(r.HUDAbove, op)
 }
@@ -107,7 +142,7 @@ func (r *modernHDMapGPU) drawHUD(frame *modernHDMapFrame, clip image.Rectangle) 
 		r.drawHUDUnit(frame.HUDUnit, clip)
 		return
 	}
-	region := panel.Rect.Intersect(clip).Intersect(r.World.Bounds())
+	region := r.quality.rasterRect(panel.Rect.Intersect(clip)).Intersect(r.World.Bounds())
 	if region.Empty() {
 		return
 	}
@@ -121,7 +156,8 @@ func (r *modernHDMapGPU) drawHUD(frame *modernHDMapFrame, clip image.Rectangle) 
 	target := r.World.SubImage(region).(*ebiten.Image)
 	paint := func(pic *ebiten.Image, at image.Point) {
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(at.X), float64(at.Y))
+		op.GeoM.Scale(r.quality.density(), r.quality.density())
+		op.GeoM.Translate(float64(at.X)*r.quality.density(), float64(at.Y)*r.quality.density())
 		target.DrawImage(pic, op)
 	}
 	paint(r.HUDPanelBase, panel.Rect.Min)
@@ -132,7 +168,10 @@ func (r *modernHDMapGPU) drawHUD(frame *modernHDMapFrame, clip image.Rectangle) 
 		if h.Unit.ColourImage != nil {
 			picture = r.terrainImage(h.Unit.ColourImage)
 		}
-		paint(picture, h.Unit.Rect.Min)
+		op := &ebiten.DrawImageOptions{}
+		r.scaleUnitTexture(op, picture)
+		op.GeoM.Translate(float64(h.Unit.Rect.Min.X)*r.quality.density(), float64(h.Unit.Rect.Min.Y)*r.quality.density())
+		target.DrawImage(picture, op)
 	} else if panel.NativeUnit != nil {
 		r.HUDPanelNativeUnit.WritePixels(panel.NativeUnit.Pix)
 		paint(r.HUDPanelNativeUnit, slot)
@@ -145,7 +184,7 @@ func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
 		r.TerrainImages = make(map[*image.RGBA]*ebiten.Image)
 	}
 	if r.TerrainImages[picture] == nil {
-		r.TerrainImages[picture] = ebiten.NewImageFromImage(picture)
+		r.TerrainImages[picture] = ebiten.NewImageFromImage(r.quality.textureSource(picture))
 	}
 	return r.TerrainImages[picture]
 }
@@ -159,24 +198,29 @@ func (r *modernHDMapGPU) drawTerrainClipped(picture *image.RGBA, rect, clip imag
 }
 
 func (r *modernHDMapGPU) drawTerrainRegion(picture *image.RGBA, rect, clip image.Rectangle, scale bool) {
+	texture := r.terrainImage(picture)
 	op := &ebiten.DrawImageOptions{}
 	if scale {
-		op.GeoM.Scale(float64(rect.Dx())/float64(picture.Bounds().Dx()), float64(rect.Dy())/float64(picture.Bounds().Dy()))
+		op.GeoM.Scale(float64(rect.Dx())/float64(texture.Bounds().Dx()), float64(rect.Dy())/float64(texture.Bounds().Dy()))
+	} else {
+		op.GeoM.Scale(float64(picture.Bounds().Dx())/float64(texture.Bounds().Dx()), float64(picture.Bounds().Dy())/float64(texture.Bounds().Dy()))
 	}
-	op.GeoM.Translate(float64(rect.Min.X), float64(rect.Min.Y))
-	r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.terrainImage(picture), op)
+	op.GeoM.Scale(r.quality.density(), r.quality.density())
+	op.GeoM.Translate(float64(rect.Min.X)*r.quality.density(), float64(rect.Min.Y)*r.quality.density())
+	r.World.SubImage(r.quality.rasterRect(clip)).(*ebiten.Image).DrawImage(texture, op)
 }
 
 const modernHDMapMosaicSource = `//kage:unit pixels
 package main
 var BlockSize float
 var Dim float
+var Density float
 func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
     origin:=imageSrc0Origin()
     p:=texCoord-origin
     sample:=texCoord
-    if p.x>=24 && p.y>=24 && p.x<1896 && p.y<1176 {
-        sample=origin+vec2(24,24)+floor((p-vec2(24,24))/BlockSize)*BlockSize
+    if p.x>=24*Density && p.y>=24*Density && p.x<1896*Density && p.y<1176*Density {
+        sample=origin+vec2(24,24)*Density+floor((p-vec2(24,24)*Density)/BlockSize)*BlockSize
     }
     c:=imageSrc0At(sample)
     return vec4(max(c.rgb-vec3(Dim)*c.a,vec3(0)),c.a)
@@ -187,7 +231,7 @@ func (r *modernHDMapGPU) unit(group, frame int) *ebiten.Image {
 		r.Units[group] = make(map[int]*ebiten.Image)
 	}
 	if r.Units[group][frame] == nil {
-		r.Units[group][frame] = ebiten.NewImageFromImage(r.Theme.mapSpritesHD[group][frame])
+		r.Units[group][frame] = ebiten.NewImageFromImage(r.quality.textureSource(r.Theme.mapSpritesHD[group][frame]))
 	}
 	return r.Units[group][frame]
 }
@@ -198,7 +242,6 @@ func (r *modernHDMapGPU) drawUnit(unit modernHDMapUnitDraw) {
 
 func (r *modernHDMapGPU) drawUnitClipped(unit modernHDMapUnitDraw, clip image.Rectangle) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(unit.Rect.Min.X), float64(unit.Rect.Min.Y))
 	if unit.PaletteBand {
 		op.ColorScale.Scale(0.55, 0.55, 0.6, 1)
 	}
@@ -208,7 +251,9 @@ func (r *modernHDMapGPU) drawUnitClipped(unit modernHDMapUnitDraw, clip image.Re
 	} else {
 		picture = r.unit(unit.Group, unit.Frame)
 	}
-	r.World.SubImage(clip).(*ebiten.Image).DrawImage(picture, op)
+	r.scaleUnitTexture(op, picture)
+	op.GeoM.Translate(float64(unit.Rect.Min.X)*r.quality.density(), float64(unit.Rect.Min.Y)*r.quality.density())
+	r.World.SubImage(r.quality.rasterRect(clip)).(*ebiten.Image).DrawImage(picture, op)
 }
 
 func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
@@ -281,6 +326,29 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		r.Pixel.Fill(color.White)
 		g.modernHDMapGPU = r
 	}
+	r.setQuality(g.playerHDQuality)
+	// Owners with extra passes always use the complete renderer. A ring also
+	// invalidates this result before writing onto World below.
+	cacheable := !frame.TransientTerrain && frame.CompoundOwner == nil &&
+		!frame.OverlaysAboveUI && frame.PaletteAdd6 == 0 && !(banner && g.bannerT > 0 && g.banner != "")
+	var key [32]byte
+	if cacheable {
+		key = modernHDMapFrameKey(frame)
+		if r.frameValid && r.frameKey == key {
+			r.reused++
+			screen.Clear()
+			g.clearModernHDText()
+			uiop := &ebiten.DrawImageOptions{}
+			uiop.GeoM.Scale(2, 2)
+			screen.DrawImage(r.UI, uiop)
+			g.modernHDWorldVisible = true
+			g.modernHDMapPresentedFrame = g.frame
+			g.modernHDMapPresented = frame
+			return true
+		}
+	}
+	r.frameValid = false
+	r.rendered++
 	r.World.Clear()
 	if frame.TransientTerrain || r.TerrainKey != frame.TerrainColourKey || r.CompoundOwner != frame.CompoundOwner {
 		for _, texture := range r.TerrainImages {
@@ -292,7 +360,7 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	}
 	r.Background.WritePixels(frame.Background.Pix)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(6, 6)
+	op.GeoM.Scale(6*r.quality.density(), 6*r.quality.density())
 	r.World.DrawImage(r.Background, op)
 	for _, terrain := range frame.Terrain {
 		r.drawTerrainRegion(terrain.Image, terrain.Rect, clip, terrain.ScaleToRect)
@@ -317,9 +385,9 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		}
 		r.Foreground[i].WritePixels(foreground.Image.Pix)
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(6, 6)
-		op.GeoM.Translate(float64(foreground.Rect.Min.X), float64(foreground.Rect.Min.Y))
-		r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.Foreground[i], op)
+		op.GeoM.Scale(6*r.quality.density(), 6*r.quality.density())
+		op.GeoM.Translate(float64(foreground.Rect.Min.X)*r.quality.density(), float64(foreground.Rect.Min.Y)*r.quality.density())
+		r.World.SubImage(r.quality.rasterRect(clip)).(*ebiten.Image).DrawImage(r.Foreground[i], op)
 	}
 	if !frame.OverlaysAboveUI {
 		for _, overlay := range frame.Overlays {
@@ -328,7 +396,7 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	}
 	if banner && g.bannerT > 0 && g.banner != "" {
 		if r.Banner == nil {
-			r.Banner = ebiten.NewImage(modernHDWidth, modernHDHeight)
+			r.Banner = ebiten.NewImage(r.World.Bounds().Dx(), r.World.Bounds().Dy())
 		}
 		if r.BannerName != g.banner {
 			r.Banner.Clear()
@@ -349,8 +417,8 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 			}
 			op := &ebiten.DrawRectShaderOptions{}
 			op.Images[0] = r.Banner
-			op.Uniforms = map[string]interface{}{"BlockSize": float32(indexedmap.PhaseBannerBlock(step) * 6), "Dim": float32(indexedmap.PhaseBannerDim(step)) / 63}
-			r.World.DrawRectShader(modernHDWidth, modernHDHeight, r.Mosaic, op)
+			op.Uniforms = map[string]interface{}{"BlockSize": float32(float64(indexedmap.PhaseBannerBlock(step)*6) * r.quality.density()), "Dim": float32(indexedmap.PhaseBannerDim(step)) / 63, "Density": float32(r.quality.density())}
+			r.World.DrawRectShader(r.World.Bounds().Dx(), r.World.Bounds().Dy(), r.Mosaic, op)
 		}
 	} else {
 		r.BannerName = ""
@@ -380,6 +448,9 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	g.modernHDWorldVisible = true
 	g.modernHDMapPresentedFrame = g.frame
 	g.modernHDMapPresented = frame
+	if cacheable {
+		r.frameKey, r.frameValid = key, true
+	}
 	return true
 }
 
@@ -390,6 +461,7 @@ func (g *Game) drawModernHDMapRing() error {
 	if r == nil || g.st == nil || !g.st.HasNativeMapViewState || len(g.ringIcons) != 4 {
 		return errors.New("modern HD ring: incomplete sources")
 	}
+	r.frameValid = false
 	overlay := g.nativeActionOverlayState()
 	frame, closing := g.actionOverlayRenderState()
 	offsets, err := fdother.ActionOverlayFrameOffsets(frame, closing)
@@ -431,8 +503,8 @@ func (g *Game) drawModernHDMapRing() error {
 				return err
 			}
 		}
-		if err := g.drawModernActionIcon(r.World.SubImage(modernHDMapViewport()).(*ebiten.Image), icon,
-			image.Rect(x, y, x+168, y+156), index, fdother.ActionOverlayAcceptsDirection(overlay.Availability, direction)); err != nil {
+		if err := g.drawModernActionIcon(r.World.SubImage(r.quality.rasterRect(modernHDMapViewport())).(*ebiten.Image), icon,
+			r.quality.rasterRect(image.Rect(x, y, x+168, y+156)), index, fdother.ActionOverlayAcceptsDirection(overlay.Availability, direction)); err != nil {
 			return err
 		}
 	}
@@ -486,7 +558,7 @@ func (g *Game) modernHDMapLogicalImage(screen *ebiten.Image) *ebiten.Image {
 	}
 	result := ebiten.NewImage(logicalW, logicalH)
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-	op.GeoM.Scale(1.0/3, 1.0/3)
+	op.GeoM.Scale(float64(logicalW)/float64(world.Bounds().Dx()), float64(logicalH)/float64(world.Bounds().Dy()))
 	result.DrawImage(world, op)
 	result.DrawImage(screen, nil)
 	return result

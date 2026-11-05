@@ -37,6 +37,10 @@ func (g *Game) recordInputAuditState() {
 	r["balance_editor"] = g.balanceAuditState()
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
+	r["hd_texture_quality"] = g.playerHDQuality.name()
+	if g.modernHDMapGPU != nil {
+		r["hd_map_texture_quality"] = g.modernHDMapGPU.quality.name()
+	}
 	r["battle_scene"] = g.atk != nil
 	g.recordNativeDeathAuditState(r)
 	r["command_scene"] = g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil ||

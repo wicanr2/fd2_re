@@ -1,0 +1,232 @@
+{
+  "schema": "fd2-hd1-performance-v1",
+  "date": "2026-11-05",
+  "status": "CONFORMED-SCOPED-RUNTIME; WINDOWS-60FPS-PENDING",
+  "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1繪製效能與60fps量測",
+  "priority": "使用者要求先處理HD1，之後再繼續HD2。",
+  "user_evidence": "最初由推廣片感覺慢；使用者隨後確認 Windows／i7-9700K 實際切換HD1變慢。顯卡型號與實測fps未知。使用者建議縮減圖片並加入GPU支援。",
+  "source_head": "e5224800cc2846c8feee444a1bb8230d2dbb3be9",
+  "source_movie": {
+    "path": "dist-all/v.1.1.2-20261105/promo/FD2-v.1.1.2-20261105-hd1-promo.mp4",
+    "sha256": "ffd0828fd8c30fd8f1ae8ccc25f246796a8c1f82fcff008f2d73193d023c8bcb",
+    "fps": 30
+  },
+  "work_root": "work/hd1-performance-60fps-20261105-r89",
+  "baseline": {
+    "binary": "work/hd1-performance-60fps-20261105-r89/squashfs-root/usr/bin/fd2",
+    "engine_source": "69f7d336b49f3d11900473cd2702637f8ce89d27",
+    "normal_gui": "work/hd1-performance-60fps-20261105-r89/baseline-gui-r2",
+    "cpus": 2,
+    "memory_gib": 6,
+    "renderer": "Xvfb / llvmpipe",
+    "render_threads": 2,
+    "window": [
+      1920,
+      1200
+    ]
+  },
+  "limits": [
+    "Windows／i7-9700K顯卡與實際fps未知，#298保持開啟。",
+    "GPU測試只驗重製端像素、幾何與來源；不提升原版parity。",
+    "軟體GPU微量測不是整個遊戲fps，兩個不同CPU配額的GUI觀測也不作直接效能比較。",
+    "原PNG、母稿、清冊、規則、RNG、遊戲速度及戰役save格式保持。",
+    "開場、設施、黃金之鑰、頭像等專用圖源維持原品質。",
+    "推廣片仍30fps，本輪未重錄或補幀。"
+  ],
+  "issue": "https://github.com/wicanr2/fd2_re/issues/298",
+  "decision": {
+    "default": "balanced",
+    "options": [
+      "full",
+      "balanced",
+      "light"
+    ],
+    "user_confirmed": true,
+    "settings_field": "hd_texture_quality",
+    "preview": "work/hd1-performance-60fps-20261105-r89/texture-preview/texture-comparison.png",
+    "quality_operations_change_campaign_save": false
+  },
+  "implementation": {
+    "logical_world": [
+      1920,
+      1200
+    ],
+    "full": [
+      1920,
+      1200
+    ],
+    "balanced": [
+      1280,
+      800
+    ],
+    "light": [
+      960,
+      600
+    ],
+    "tile_texture_sizes": [
+      144,
+      96,
+      72
+    ],
+    "final_scale": "一次還原顯示尺寸；字型及獨立介面維持原解析度。",
+    "poster_background": "依乾淨地形內容重用，不依frame指標。",
+    "gpu_backend": "Ebitengine 2.6.6既有自動後端；選單與觀測新增實際library名稱，未宣稱它就是硬體型號。",
+    "dedicated_art_not_scaled": [
+      "opening",
+      "facility scenes",
+      "golden key",
+      "portraits"
+    ]
+  },
+  "gpu_verification": {
+    "full": {
+      "map_report": "work/hd1-performance-60fps-20261105-r89/raster-map-full.json",
+      "map_report_sha256": "62c330a678f42e8d200afb26b94dbe60ce76246c5e4e109daefb351e15c59c74",
+      "map_cases": 40,
+      "raster_size": {
+        "X": 1920,
+        "Y": 1200
+      },
+      "unit_texture_size": {
+        "X": 144,
+        "Y": 144
+      },
+      "same_target_cache_exact": true,
+      "independent_target_max_delta": 0,
+      "battle_report": "work/hd1-performance-60fps-20261105-r89/raster-battle-full.log",
+      "battle_cases": 26,
+      "battle_report_sha256": "7d3d888dd5787027fd7a887fc76f8666888369e46a58d4b91306174c9f32b42f"
+    },
+    "balanced": {
+      "map_report": "work/hd1-performance-60fps-20261105-r89/raster-map-balanced.json",
+      "map_report_sha256": "7a815a44eec0695b794cc12efc1a6c0b735ba601b55af6bda6ec6f670692c13f",
+      "map_cases": 40,
+      "raster_size": {
+        "X": 1280,
+        "Y": 800
+      },
+      "unit_texture_size": {
+        "X": 96,
+        "Y": 96
+      },
+      "same_target_cache_exact": true,
+      "independent_target_max_delta": 0,
+      "battle_report": "work/hd1-performance-60fps-20261105-r89/raster-battle-balanced.log",
+      "battle_cases": 26,
+      "battle_report_sha256": "f51ba22d3ab6473bf90d96a413a9953685b48f07489b6c004eda490bb5e5872d"
+    },
+    "light": {
+      "map_report": "work/hd1-performance-60fps-20261105-r89/raster-map-light.json",
+      "map_report_sha256": "59bcc2eb3c81fc793affdb00125746da9a2ab16c4dbb10d9b799787fb3cac896",
+      "map_cases": 40,
+      "raster_size": {
+        "X": 960,
+        "Y": 600
+      },
+      "unit_texture_size": {
+        "X": 72,
+        "Y": 72
+      },
+      "same_target_cache_exact": true,
+      "independent_target_max_delta": 0,
+      "battle_report": "work/hd1-performance-60fps-20261105-r89/raster-battle-light.log",
+      "battle_cases": 26,
+      "battle_report_sha256": "e1fb3c959db27963935055f017ec39005f0b42a744aa55a2f9e12db862caf8f4"
+    },
+    "geometry": {
+      "path": "work/hd1-performance-60fps-20261105-r89/raster-geometry.log",
+      "sha256": "5ffeca5e825367676bea5dd7cb0b55b1c9d4c9e25ab021bb9bdff542d4222da5",
+      "scope": "三品質與往返完整，固定色塊／已知座標獨立核對地圖及戰鬥幾何、裁切與畫布尺寸。"
+    },
+    "post_gui_atomic_quality_change": {
+      "status": "PASS",
+      "log": "work/hd1-performance-60fps-20261105-r89/quality-atomic-geometry.log",
+      "sha256": "3d46d7a09aff84046af3a2eb6479a7ad87a4f145e718da003f5e908d801cf3fe",
+      "scope": "最終僅延後切畫質時的戰鬥畫布替換，直到計畫驗證成功；拒收計畫保留已發布畫布，三品質與往返的已知幾何再驗通過。正常GUI收據沿用先前二進位並分列SHA，沒有宣稱它與最終封包二進位相同。"
+    }
+  },
+  "regression": {
+    "path": "work/hd1-performance-60fps-20261105-r89/raster-player-regression.log",
+    "sha256": "06b7239fd1a85f8c0fac8dad432b7629658ec31f9055620f999b0fae448e3286",
+    "top_level_passes": 23,
+    "poster_gpu": "work/hd1-performance-60fps-20261105-r89/poster-terrain-gpu.log",
+    "poster_gpu_sha256": "b86f172903f6234264ffcf08bedef5bca9ba83c5fbee6cb37eca16557b8e0944"
+  },
+  "normal_gui": {
+    "path": "work/hd1-performance-60fps-20261105-r89/raster-normal-gui-r2",
+    "status": "PASS",
+    "cpus": 8,
+    "memory_gib": 6,
+    "render_threads": 8,
+    "software_gpu": true,
+    "source_slot": "work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r2/user-data/fd2_re/fd2_save.json",
+    "source_slot_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "source_scope": "具有建構祖先的來源槽；普通標題LOAD、合法鍵盤及工具列操作。不代表自然難度或完整章節PLAYER-E2。",
+    "receipt": "work/hd1-performance-60fps-20261105-r89/raster-normal-gui-r2/receipt.json",
+    "receipt_sha256": "05fde7baa9b8cc0180e6ce949a76d6f88290b6b02548e3993980363874e471e0",
+    "binary_sha256": "f0c1d6d8f0e9ad42bd03375eaa7069088e194e0929dceb9259f415ac47c417a5",
+    "natural_attack_return": true,
+    "theme_save_bytes_equal": true,
+    "node_boundary_save": true,
+    "cold_loaded_units_equal": true,
+    "new_process_title_load": true,
+    "quality_ui": {
+      "path": "work/hd1-performance-60fps-20261105-r89/raster-normal-gui-r2/texture-quality-ui.json",
+      "sha256": "f67adf6abcce53edfb00d303d5b65b5c9b5438b4ed67cfc21f845482319049a9"
+    },
+    "frequency_observation": {
+      "path": "work/hd1-performance-60fps-20261105-r89/raster-performance-verified.json",
+      "sha256": "b326860d00c68208cb247e89aa7cc4641fe3d669143a31e120b1a92f5f3d1bd2",
+      "platform_acceptance": false,
+      "note": "含軟體GPU、稽核及逐步截圖；不是Windows60fps。"
+    }
+  },
+  "superseded": [
+    {
+      "candidate": "source-only texture reduction",
+      "status": "WITHDRAWN",
+      "reason": "逐貼圖平滑放大在受限軟體GPU測試增加成本，改為同步縮減GPU畫布。",
+      "passed_partial_normal_gui": "work/hd1-performance-60fps-20261105-r89/quality-normal-gui/receipt.json"
+    },
+    {
+      "run": "baseline-gui",
+      "classification": "harness path error",
+      "reason": "assets根誤填為remake/assets，修為remake。"
+    },
+    {
+      "run": "baseline-gui-r2 / candidate-gui",
+      "classification": "2CPU software timing limit",
+      "reason": "普通END觀測超時，不當正常流程通過。"
+    },
+    {
+      "run": "raster-normal-gui",
+      "classification": "GUI automation input sequencing",
+      "reason": "固定sleep後Z沒有按下收據；依UI消費端強推論為與收合落在同一展示Update。改等實際Game.frame前進後乾淨重跑通過。"
+    }
+  ],
+  "readme_gallery": {
+    "file": "docs/figures/hd1-texture-quality-overview.png",
+    "sha256": "c8d067384166221e1e6cf9a5630f5e9f0c14f601a555615532195f34a0d4f6bd",
+    "source_manifest": "work/hd1-performance-60fps-20261105-r89/readme-quality-gallery/overview.json",
+    "source_manifest_sha256": "cad3434e437840d9722f5e6459dd7e8938fa42330f5e525fbc1021e7092ad328",
+    "nature": "受控來源槽，正常LOAD後實際三品質點選。含軟體GPU開銷，不代表Windows幀率或原版逐像素比較。"
+  },
+  "delivery_plan": {
+    "version": "v.1.1.3-20261105",
+    "kind": "Windows替換測試包",
+    "base_install": "v.1.1.2-20261105完整版",
+    "windows_binary": "work/hd1-performance-60fps-20261105-r89/fd2-v.1.1.3-20261105-windows.exe",
+    "windows_binary_sha256": "5c3cf308c0d635242181e21964698879a8e203af36c0597e95d544fa5e674bea",
+    "windows_build_info": "work/hd1-performance-60fps-20261105-r89/windows-versioned-buildinfo.txt",
+    "native_windows_runtime": "PENDING",
+    "release_tag_created": false,
+    "three_platform_full_packages_rebuilt": false,
+    "windows_build_info_sha256": "190a859cde6d46db1df7bb632534b6407e40a1fe1087c232471f7a9a06986af3",
+    "linux_versioned_binary_sha256": "189ab67bec390e6c68082e7105164f43cdcdb74156a5314f28d84ed84903cf14",
+    "linux_package_selfcheck": {
+      "status": "PASS",
+      "path": "work/hd1-performance-60fps-20261105-r89/versioned-linux-selfcheck-final.log",
+      "sha256": "b97735c6eee075fb2076a822e90680cabddcc520f2f7d652799da4582407fe53"
+    }
+  }
+}
