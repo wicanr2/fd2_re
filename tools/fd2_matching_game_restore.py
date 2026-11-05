@@ -53,6 +53,10 @@ BINDINGS.update({"dword_53A71": 0x53A71, "dword_53A85": 0x53A85,
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
+    "numeric1": ("tools/fd2_matching_game_numeric1.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
+    "numeric2": ("tools/fd2_matching_game_numeric2.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
+    "numeric3": ("tools/fd2_matching_game_numeric3.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
+    "numeric4": ("tools/fd2_matching_game_numeric4.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
     "game_copy": ("tools/fd2_matching_game_copy.c", tuple(macro for macro, _ in COPY_CASES)),

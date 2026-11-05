@@ -50,10 +50,11 @@ unsigned sub_1B722(int unit, int slot)
     unsigned char *record;
     unsigned char *cell;
     int offset = unit;
+    int slot_offset = slot;
     offset *= 80;
     record = dword_53A45;
     record += offset;
-    cell = record + 2 * slot;
+    cell = record + (slot_offset + slot_offset);
     cell += 11;
     return *cell;
 }
@@ -93,8 +94,13 @@ unsigned sub_25089(void)
 {
     unsigned char unit;
     for (unit = 0; unit < dword_53BFB; ++unit) {
-        unsigned char *record = dword_53BF7 + 80 * unit;
+        int offset = unit;
+        unsigned char *record;
         unsigned short value;
+        offset <<= 2;
+        offset += unit;
+        offset <<= 4;
+        record = dword_53BF7 + offset;
         record[5] = 0;
         value = *(unsigned short *)(record + 66);
         *(unsigned short *)(record + 64) = value;
