@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-11-05",
+  "status": "DRAFT-PRESENTATION-VERIFIED-SIZE-CHOICE-PENDING",
+  "source_branch": "feature/hd2-first-slice-20261105",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/204",
+  "canonical_spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd2首章站姿原型draft呈現驗證",
+  "approved_direction": {
+    "status": "CONFIRMED-20261024",
+    "reference": {
+      "file": "docs/figures/fd2-hd2-style-reference.png",
+      "sha256": "a18f75cf8a72a11367fb26a11098a2dc11b282a1063acd9991980d6c87c36f5b"
+    },
+    "scope": "中央戰場斜角站姿與手繪地形；獨立HD2主題，原版與HD1保留。概念圖不是精確投影或座標契約。"
+  },
+  "source_evidence": {
+    "map": {
+      "file": "remake/assets/maps/map0/map.json",
+      "sha256": "ed67a8a86f2451a173f78ba77a26556f0cac45faa7bda3ed2a6e657aa8cdd045"
+    },
+    "deployment": {
+      "file": "remake/assets/map0_units.json",
+      "sha256": "912de3ba1d3a944e7b771baf7496c5f3d13c9ed9846ed94bfd29cc3597d7cfa3"
+    },
+    "placement": {
+      "x": 7,
+      "y": 20,
+      "meaning": "首章own_deploy第一格的展示測具；沒有執行正常START或宣稱索爾自然可達此狀態。"
+    },
+    "identity": {
+      "id": 0,
+      "name": "索爾",
+      "sex": "男性",
+      "native_direction_equivalence": "unknown"
+    },
+    "terrain": {
+      "role": "native_terrain_hd_set",
+      "registered_frames": 138,
+      "cell_pixels": 144,
+      "classification": "HD1地形暫作排版背景，並非HD2地形定版或正式原生圖塊合成驗收。"
+    },
+    "references": [
+      {
+        "file": "/home/anr2/cht/fd2/docs/figures/fd2-hd2-style-reference.png",
+        "sha256": "a18f75cf8a72a11367fb26a11098a2dc11b282a1063acd9991980d6c87c36f5b"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_000_m0.png",
+        "sha256": "17b99873a61e7e2681f7333839b92165f42abff610f7cbcabe6879bd572292ad"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/party-000-portrait-style-a-v2-480.png",
+        "sha256": "e62bb4e9af308c6fa6608cfecf80c811ac899fb718a6b081c2575c516d86d10b"
+      }
+    ]
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "request": {
+      "file": "work/hd2-first-map-20261105-r85/sol-standing-request.json",
+      "sha256": "087019d8b91ddf680c050f4f25b5c94c6390a65526085d2c24deccd1b6c6597c"
+    },
+    "parameters": {
+      "prompt": "Use case: stylized-concept. Create ONE new transparent full-body HD2 tactical-map sprite of 索爾 (Sol/Thor) from Flame Dragon Knights 2. Reference image 1 is the USER-APPROVED HD2 style: use ONLY the small blue-haired hero standing in the CENTRAL battlefield as the costume, elevated three-quarter camera, chibi proportions and smooth hand-painted style reference. Do not copy the tall side poster figure. Reference image 2 is this character's OWN original DATO portrait. Reference image 3 is his OWN HD face portrait. Preserve his blue-black long hair, RED forehead band, firm straight nose, serious masculine eyebrows and angular young adult male face. His hair is loose as in his own portraits, no invented braid or tied ponytail. Full body standing in a calm alert idle, viewed from above at the same elevated three-quarter angle as the central battlefield reference, facing toward the lower right. His head is about 40 percent of his full body height, following the approved HD2 central small character, with short legs and a readable but not baby-like face. Preserve the blue/navy original hero clothing, small gold trim, red inner collar, brown boots and gloves, belt, and ONE straight steel sword held in his right hand pointing gently forward and down. Follow the CENTRAL small hero's outfit; no extra shield, extra cape, horns or new equipment. Both boots and the full sword must be visible with clear separation of arms and legs. Soft painted daylight, clean silhouette readable at 144 to 192 pixels high, subtle detail, no pixel art and no plastic 3D render. Center one complete character with comfortable transparent margins on every side. Truly transparent RGBA background, no scenery, no ground tile, no pedestal, no text, no UI, no second character, no duplicated sword, no watermark. This is a draft for an isolated HD2 presentation prototype, not a combat or walking frame.",
+      "referenced_image_paths": [
+        "/home/anr2/cht/fd2/docs/figures/fd2-hd2-style-reference.png",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_000_m0.png",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/party-000-portrait-style-a-v2-480.png"
+      ],
+      "transparent_background": true
+    },
+    "master": {
+      "file": "work/hd2-first-map-20261105-r85/sol-hd2-standing-v1-master.png",
+      "sha256": "519d1250b6637abb6f4fe5431f9156a6d0e5022ab201da4cae24235329ade1a9"
+    },
+    "receipt": {
+      "file": "work/hd2-first-map-20261105-r85/sol-standing-generation.json",
+      "sha256": "c7f14a820bcfd9e32d91444063f12dc74798d34876984606127e265344f70738"
+    },
+    "status": "DRAFT-ONE-POSE-NOT-REGISTERED",
+    "public_asset_upload": false
+  },
+  "presentation": {
+    "cell_pixels": 144,
+    "height_candidates": [
+      144,
+      168,
+      192
+    ],
+    "temporary_default": 168,
+    "user_size_choice": null,
+    "choice_status": "pending",
+    "foot": [
+      232,
+      1090
+    ],
+    "geometry": "既有方格及固定落腳點；未選新投影，未改正式座標、射程、碰撞或存檔。",
+    "local_page": "work/hd2-first-map-20261105-r85/prototype-r2/index.html",
+    "size_comparison": {
+      "file": "work/hd2-first-map-20261105-r85/standing-height-comparison.png",
+      "sha256": "cc26d2fce4c7b5097fafbc03bc17fc31ab08c8aaec0c12858c0783b05f393301"
+    }
+  },
+  "implementation": [
+    {
+      "file": "tools/build_fd2_hd2_first_map_prototype.py",
+      "sha256": "b27f1b9096810fa0777bdb9c367245ee8482113ec37318538a2ff057bda933e6"
+    },
+    {
+      "file": "tools/fd2_hd2_first_map_prototype.html",
+      "sha256": "59817b03111ee36c649fce3a8fdbc668c455674a3e3fd14be74e5bfb0a724149"
+    },
+    {
+      "file": "tools/verify_fd2_hd2_first_map_prototype.mjs",
+      "sha256": "59ffbbae3de1a2a2f189910e8c5ad15f9ef884883e385a075c0309325ec7ed45"
+    }
+  ],
+  "verification": {
+    "status": "PASS-HD2-STANDING-PRESENTATION-PROTOTYPE",
+    "compiled": {
+      "file": "work/hd2-first-map-20261105-r85/prototype-r2/PROTOTYPE.json",
+      "sha256": "cc7a88291ec112ff83c46fa7265cd05a6d0a0dd5748b0a5469f0e86c899ce5f4"
+    },
+    "browser_receipt": {
+      "file": "work/hd2-first-map-20261105-r85/browser-r3/receipt.json",
+      "sha256": "7a6b6f22df2267a1f54e087bc209f3e2e169e4f9b96b30a2a351134acd852581"
+    },
+    "cases": [
+      {
+        "kind": "height",
+        "height": 144,
+        "foot": {
+          "x": 1104,
+          "y": 744
+        },
+        "pixel_hash": 2599159356
+      },
+      {
+        "kind": "height",
+        "height": 168,
+        "foot": {
+          "x": 1104,
+          "y": 744
+        },
+        "pixel_hash": 1284720877
+      },
+      {
+        "kind": "height",
+        "height": 192,
+        "foot": {
+          "x": 1104,
+          "y": 744
+        },
+        "pixel_hash": 3959822920
+      },
+      {
+        "kind": "original-toggle",
+        "same_identity": true,
+        "same_anchor": true
+      },
+      {
+        "kind": "bounded-camera-and-cursor",
+        "minimum": [
+          0,
+          0
+        ],
+        "maximum": [
+          23,
+          23
+        ],
+        "maximum_camera": [
+          11,
+          16
+        ]
+      },
+      {
+        "kind": "scaled-pointer-and-layout",
+        "width": 1800,
+        "layout": {
+          "controls": [
+            {
+              "x": 124,
+              "y": 57.5,
+              "width": 124.578125,
+              "height": 33,
+              "top": 57.5,
+              "right": 248.578125,
+              "bottom": 90.5,
+              "left": 124
+            },
+            {
+              "x": 260.578125,
+              "y": 56.5,
+              "width": 148.390625,
+              "height": 35,
+              "top": 56.5,
+              "right": 408.96875,
+              "bottom": 91.5,
+              "left": 260.578125
+            },
+            {
+              "x": 420.96875,
+              "y": 64,
+              "width": 54,
+              "height": 20,
+              "top": 64,
+              "right": 474.96875,
+              "bottom": 84,
+              "left": 420.96875
+            },
+            {
+              "x": 486.96875,
+              "y": 57.5,
+              "width": 95.015625,
+              "height": 33,
+              "top": 57.5,
+              "right": 581.984375,
+              "bottom": 90.5,
+              "left": 486.96875
+            }
+          ],
+          "info": {
+            "x": 1097.015625,
+            "y": 758.21875,
+            "width": 551.59375,
+            "height": 236.390625,
+            "top": 758.21875,
+            "right": 1648.609375,
+            "bottom": 994.609375,
+            "left": 1097.015625
+          },
+          "copy": {
+            "height": 210,
+            "scroll": 210
+          },
+          "bodyWidth": 1800,
+          "viewport": 1800,
+          "toolbarWidth": 1576,
+          "toolbarScroll": 1576
+        }
+      },
+      {
+        "kind": "scaled-pointer-and-layout",
+        "width": 720,
+        "layout": {
+          "controls": [
+            {
+              "x": 24,
+              "y": 50,
+              "width": 124.578125,
+              "height": 33,
+              "top": 50,
+              "right": 148.578125,
+              "bottom": 83,
+              "left": 24
+            },
+            {
+              "x": 160.578125,
+              "y": 49,
+              "width": 148.390625,
+              "height": 35,
+              "top": 49,
+              "right": 308.96875,
+              "bottom": 84,
+              "left": 160.578125
+            },
+            {
+              "x": 320.96875,
+              "y": 56.5,
+              "width": 54,
+              "height": 20,
+              "top": 56.5,
+              "right": 374.96875,
+              "bottom": 76.5,
+              "left": 320.96875
+            },
+            {
+              "x": 386.96875,
+              "y": 50,
+              "width": 95.015625,
+              "height": 33,
+              "top": 50,
+              "right": 481.984375,
+              "bottom": 83,
+              "left": 386.96875
+            }
+          ],
+          "info": {
+            "x": 447.015625,
+            "y": 362.21875,
+            "width": 243.59375,
+            "height": 104.390625,
+            "top": 362.21875,
+            "right": 690.609375,
+            "bottom": 466.609375,
+            "left": 447.015625
+          },
+          "copy": {
+            "height": 78,
+            "scroll": 78
+          },
+          "bodyWidth": 720,
+          "viewport": 720,
+          "toolbarWidth": 696,
+          "toolbarScroll": 736
+        }
+      }
+    ],
+    "captures": [
+      {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-144.png",
+        "sha256": "48cad15800c28f3a128810f26b96af262cd7c10b5018b9b79c6e21bb06bbe61e"
+      },
+      {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-168.png",
+        "sha256": "946ddf6a9d19a8cd6a9687c8b3923743a753b0cd54e6fd405853c9cc3482a01d"
+      },
+      {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-192.png",
+        "sha256": "ae5566a0676726e78b4555239b59eaa070604923359ef09ce524ec54a1575446"
+      },
+      {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/original-actor.png",
+        "sha256": "cf123a0034e368a01331c2fbb9ee618737d0d2a22a7562c973663a954b04f64b"
+      },
+      {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/layout-1800.png",
+        "sha256": "d5355e7175705c297e3991fed34a3849525587a1754da51a6a725a0f9aada939"
+      },
+      {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/layout-720.png",
+        "sha256": "690292bb1c93b64145de9f0438a2ad23804647e4bb8dd111096573ea07be2707"
+      }
+    ],
+    "inspected_captures": [
+      "work/hd2-first-map-20261105-r85/browser-r3/standing-168.png",
+      "work/hd2-first-map-20261105-r85/browser-r3/layout-720.png",
+      "work/hd2-first-map-20261105-r85/standing-height-comparison.png"
+    ],
+    "evidence_level": "standalone presentation prototype only",
+    "normal_player_path_claimed": false,
+    "original_parity_claimed": false,
+    "final_audit": {
+      "hashed_files": 14,
+      "local_markdown_targets": 6276,
+      "new_broken_links": 0,
+      "historical_broken_links": 9,
+      "worklist_open": 25,
+      "worklist_suspected_completed": 0,
+      "docker_cleanup": "No fd2-hd2 containers remained after the batch."
+    }
+  },
+  "runtime": {
+    "production_game_connected": false,
+    "theme_enum_changed": false,
+    "catalog_changed": false,
+    "rules_changed": false,
+    "save_schema_changed": false
+  },
+  "next_stages": [
+    {
+      "stage": "人物比例",
+      "status": "DRAFT",
+      "gate": "使用者選定三種高度之一後，才將其作為後續人物試稿基準。"
+    },
+    {
+      "stage": "首關素材切片",
+      "status": "PLANNED",
+      "scope": "沿原圖核對首關人物身份、方向與走行圖源；製作HD2人物與地形試稿，不猜補裝備。"
+    },
+    {
+      "stage": "正式呈現與載入",
+      "status": "DRAFT-NOT-IMPLEMENTED",
+      "gate": "載入邊界、原方格定位、遮擋與繪製順序、八組介面／主題組合、缺件拒收先成READY規格，再接Game.Draw。"
+    },
+    {
+      "stage": "擴充與封包",
+      "status": "NOT-STARTED",
+      "gate": "首關切片驗證後擴充章節、戰鬥、劇情與完整平台封包；HD-2D另期。"
+    }
+  ],
+  "upload_check": {
+    "public_main": "e82a4c7422cac520177852a49902efd461a01c87",
+    "private_main": "0ba8d8ddcdf52cebf94ec4f43a09ae8c3dc955bf",
+    "backups": {
+      "backup/matching-copy-20261008-20261105": "7074338e4da6ba1846edf94cb49ece67df87b557",
+      "backup/matching-inventory-20261008-20261105": "a74c32f0fe1fc14e95f2dce681960ebbf072fd5b"
+    },
+    "draft_image_and_compiled_page": "local only; no unregistered source added to the public or private asset pack"
+  },
+  "limitations": [
+    "單張站姿，沒有走行／攻擊／受傷／死亡影格。",
+    "資訊窗與相同人物圖源只驗索爾一人，不代表敵人及所有角色覆蓋。",
+    "地形暫沿HD1；原版對照按鈕只切人物，不能稱完整原版／HD2切換。",
+    "未執行正式Game.Draw、戰役、亂數、存檔或三平台程式；現有HD1交付保持。"
+  ]
+}

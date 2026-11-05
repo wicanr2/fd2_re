@@ -5351,6 +5351,12 @@
       "rule": "GUI控制器依實際輸入收據同步按下與放開，並核對目前角色；工具列若在一般Update前消費輸入，須在該消費端記錄唯讀稽核。入口為tools/verify_fd2_balance_gui.py與player_balance.go的balanceAuditState。",
       "why": "R84固定延遲漏掉選人點擊；只在一般Update記錄又漏掉開窗按下。補上消費端觀測後，同一來源的悠妮100%與蜜蒂無命中骰操作通過。",
       "source": "docs/data/fd2-hd1-feedback-20261104.json#battle_animation_review_20261105"
+    },
+    {
+      "id": "floating-toolbar-browser-visual-state",
+      "rule": "浮出工具列的瀏覽器驗證同時檢查實際幾何、鍵盤焦點與擷取PNG；不能只由CSS class判斷顯示或隱藏。重跑入口為tools/verify_fd2_hd2_first_map_prototype.mjs。",
+      "why": "R85的class檢查未涵蓋focus-within，窄視窗擷取也曾裁到工具列。改查實際邊界，等待畫面更新並採可視視窗擷取後，重新檢視PNG才確認。",
+      "source": "docs/data/fd2-hd2-first-slice-20261105.json#verification"
     }
   ]
 }
