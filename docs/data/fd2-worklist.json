@@ -395,24 +395,6 @@
       "issue": 278
     },
     {
-      "id": "promo-bgm-editorial-speed",
-      "layer": "release",
-      "category": "缺陷",
-      "title": "P1 推廣片主音樂隨畫面加速，需分軌正常速度重混",
-      "body": "使用者回報悠妮第一段說話後主音樂加快。原剪輯opening為242秒壓至27秒，build_fd2_hd1_promo.py將完整擷取音軌一起套atempo，含BGM約8.96倍速。其他已調速片段也受影響。本輪改用既有原遊戲FDMUS_018正常速度及明示PCM cue，保留36段原旁白與視訊封包。技術波形驗證與人耳試聽分開記錄。",
-      "acceptance": "正式本機影片配樂1倍速且與鏡頭速度獨立；正常原波形與錯誤2倍速反例、原旁白及視訊封包一致性、完整影片技術品質通過；清冊與文件更新。集中人耳驗收仍沿既有音訊工單。",
-      "evidence": [
-        "docs/data/fd2-hd1-feedback-20261104.json#promo_audio_repair_20261105",
-        "tools/remix_fd2_promo_music.py",
-        "tools/verify_fd2_promo_audio_repair.py"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "核對波形、混合音軌拒收、36段旁白與視訊封包及正式交付SHA；不是硬體逐波形或人耳通過宣稱。"
-      },
-      "issue": 296
-    },
-    {
       "id": "promo-gaia-original-caption-identity",
       "layer": "release",
       "category": "缺陷",
