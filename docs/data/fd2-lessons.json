@@ -5417,6 +5417,21 @@
         ],
         "pattern": "before_frame"
       }
+    },
+    {
+      "id": "trimpath-build-info-omits-linker-flags",
+      "area": "封包驗證",
+      "date": "2026-11-05",
+      "rule": "Go trimpath產物的版號以實際二進位與封裝自檢核對，不要求go version -m保存ldflags；入口tools/build_fd2_hd1_performance_patch.py的PE與內嵌版號檢查。",
+      "why": "Go1.22.12在cmd/go/internal/load/pkg.go 2389至2398行明確因系統路徑隱私省略ldflags。首輪編製器錯誤拒收已注入版號的引擎，修正格式假設，沒有改引擎或放寬PE架構驗證。",
+      "evidence": "docs/data/fd2-hd1-performance-20261105.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd1_performance_patch.py"
+        ],
+        "pattern": "CGO_ENABLED=0"
+      }
     }
   ]
 }

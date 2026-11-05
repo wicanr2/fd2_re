@@ -40,7 +40,9 @@ def main():
     assert args.version.encode() in raw
     build_info = args.build_info.read_text()
     assert 'GOOS=windows' in build_info and 'GOARCH=amd64' in build_info
-    assert 'main.buildVersion='+args.version in build_info
+    # Go 1.22 load/pkg.go deliberately omits -ldflags under -trimpath.
+    # Validate the actual embedded version above, not an absent metadata field.
+    assert '\tbuild\t-trimpath=true' in build_info and 'CGO_ENABLED=0' in build_info
     gui = json.loads(args.gui_receipt.read_text())
     assert gui['status'] == 'PASS'
     assert gui['binary_sha256'] == digest(args.tested_linux.read_bytes())
@@ -61,6 +63,7 @@ def main():
         'status': 'LOCAL-WINDOWS-TEST-PATCH', 'source_commit': args.source_commit,
         'source_tree_sha256': source_hash, 'source_files_sha256': sources,
         'binary_sha256': digest(raw), 'build_info_sha256': digest(args.build_info.read_bytes()),
+        'version_verification': 'PE內含指定完整版號；Go trimpath建置資訊省略ldflags，另核對架構與CGO。',
         'linux_normal_gui_receipt_sha256': digest(args.gui_receipt.read_bytes()),
         'linux_normal_gui_binary_sha256': gui['binary_sha256'],
         'post_gui_delta': '最後僅調整錯誤計畫的畫布保留時機；正常GUI二進位與最終封包分列。',

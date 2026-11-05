@@ -5229,3 +5229,5 @@ R87／R88結案：471267d8已推送main，#296附該提交及正常速度波形�
 唯一現況為docs/data/fd2-hd1-performance-20261105.json，正式工作項#298保持OPEN等待Windows實機。README三品質總覽由通過收據的實際PNG核SHA重生，圖上5fps是含Xvfb／llvmpipe／稽核及截圖開銷的觀測。Windows交叉編譯已完成，效能記錄與DirectX11比較啟動器供後續實機補測；本輪計畫以獨立v.1.1.3-20261105替換測試包提供，不重寫v.1.1.2三平台完整版或推廣片，也未發布tag／Release。HD2保留四人DRAFT，不繼續製作。
 
 最後補驗：切畫質時的戰鬥畫布保留到新計畫驗證成功，錯誤計畫不丟棄已發布畫布；三品質幾何與往返GPU重跑通過，最終版本Linux封裝自檢通過。正常GUI二進位f0c1d6d8與最終Windows二進位5c3cf308分列，沒有冒稱相同二進位或Windows實機驗收。Windows啟動器固定工作目錄，僅逐次程序設定後端。官方工單pull／render／verify為27開項、20人工、零疑似完成。
+
+編製器首輪誤要求trimpath版的go version -m包含ldflags而拒收，尚未建立輸出。核對Go1.22.12的cmd/go/internal/load/pkg.go 2389至2398行，確認trimpath明確省略該欄，修正為驗實際PE內嵌版號、架構、GUI子系統與CGO，並保留原建置資訊SHA；引擎未改。此為封包驗證器問題。
