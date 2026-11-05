@@ -5333,6 +5333,24 @@
       "rule": "剪輯前用FFprobe核對每份視訊與音訊的實際時長，再用有時間標記的接觸表校準影片時間。控制器時鐘不能直接當影片時間，也不以兩條串流的結尾硬對齊。缺尾音訊只依已證實原始cue明示重建，並對照可見起手與命中影格。入口為tools/build_fd2_hd1_promo.py與docs/data/fd2-hd1-feedback-20261104.json的promo_final。",
       "why": "音速刃WAV缺少尾段，控制器與佇列錄影時間也有偏移。硬套時鐘會錯剪悠妮與音速刃，或把命中音效放到返回地圖後。",
       "evidence": "docs/data/fd2-hd1-feedback-20261104.json；work/hd1-feedback-20261104-r83/promo-source-streams-r1.json。"
+    },
+    {
+      "id": "battle-master-alpha-anchor",
+      "rule": "戰鬥母稿的定位錨點採已檢視的實體輪廓；編製前用tools/build_fd2_character_battle_hd.py的配方source anchor與review.png核對，排除低透明邊緣污染，不把任何alpha大於零的外框直接當人物大小。",
+      "why": "R84生成圖邊緣的低alpha像素擴大外框，讓羅德曼舉劍姿勢被過度縮小；使用已檢視的高覆蓋輪廓後人物比例恢復。",
+      "source": "docs/data/fd2-hd1-feedback-20261104.json#battle_animation_review_20261105"
+    },
+    {
+      "id": "registered-hd-portrait-style-review",
+      "rule": "檢查群像頭像時，同時核對480像素圖源及實際畫風；以tools/build_modern_portrait_overview.py --party-only --font重生正式32人總覽，不能只以清冊HD角色齊全或沒有fallback判定風格一致。",
+      "why": "R84補齊四份缺件後，實際人物卡仍顯示前七位是像素母稿。逐人總覽才發現HD標籤沒有代表平滑重繪。",
+      "source": "docs/data/fd2-hd1-feedback-20261104.json#battle_animation_review_20261105"
+    },
+    {
+      "id": "modal-mouse-audit-before-consumer-return",
+      "rule": "GUI控制器依實際輸入收據同步按下與放開，並核對目前角色；工具列若在一般Update前消費輸入，須在該消費端記錄唯讀稽核。入口為tools/verify_fd2_balance_gui.py與player_balance.go的balanceAuditState。",
+      "why": "R84固定延遲漏掉選人點擊；只在一般Update記錄又漏掉開窗按下。補上消費端觀測後，同一來源的悠妮100%與蜜蒂無命中骰操作通過。",
+      "source": "docs/data/fd2-hd1-feedback-20261104.json#battle_animation_review_20261105"
     }
   ]
 }

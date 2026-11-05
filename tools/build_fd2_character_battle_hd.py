@@ -50,7 +50,10 @@ def main():
     p.add_argument('--base-catalog', type=Path, default=ROOT/'remake/assets/themes/modern/catalog.json')
     p.add_argument('--with-cast', action='store_true', help='明示編製完整待機、攻擊及已解碼施術三組，不猜零header回退')
     p.add_argument('--layered', action='store_true', help='明示接受既有schema1有序圖層，不增加或補造施術銀行')
+    p.add_argument('--revision', type=int, default=1, help='母稿及成品檔名版本；既有預設保持v1')
     args = p.parse_args(); out = args.out.resolve()
+    if not 1 <= args.revision <= 999:
+        raise SystemExit('圖源版本須介於1與999')
     if out.exists() or not out.is_relative_to(ROOT) or out.parent.stat().st_uid != os.getuid():
         raise SystemExit('使用本人擁有的工作區新候選目錄')
     inventory = json.loads(args.inventory.read_text()); recipe = json.loads(args.recipe.read_text())
@@ -185,12 +188,22 @@ def main():
     for name in sorted(old_names): (pack/name).symlink_to(os.path.relpath(private/name, pack))
     source_names = {}
     for key, value in source_records.items():
-        name = f'figure-{figure:03d}-{key}-battle-hd6-master-v1.png'; shutil.copyfile(ROOT/value['file'], pack/name); source_names[key] = name
+        name = f'figure-{figure:03d}-{key}-battle-hd6-master-v{args.revision}.png'
+        target = pack/name
+        if target.exists():
+            if digest(target) != value['sha256']:
+                raise SystemExit('母稿名稱與基底圖源衝突，請使用新的revision；禁止經符號連結覆寫來源')
+        else:
+            shutil.copyfile(ROOT/value['file'], target)
+        source_names[key] = name
     sheet = Image.new('RGB', (1600, ((len(prepared)+3)//4)*400), (35, 40, 48)); draw = ImageDraw.Draw(sheet)
     records = []
     for i, (record, canvas, original) in enumerate(prepared):
         resource, index = record['resource'], record['frame']; frame = record['native_descriptor']
-        name = f'figani-{resource:03d}-hd6-v1-f{index:02d}.png'; canvas.save(pack/name)
+        name = f'figani-{resource:03d}-hd6-v{args.revision}-f{index:02d}.png'
+        if (pack/name).exists() or (pack/name).is_symlink():
+            raise SystemExit('成品名稱與基底清冊衝突，禁止經符號連結覆寫來源')
+        canvas.save(pack/name)
         record.update(file=name, sha256=digest(pack/name)); records.append(record)
         x, y = i%4*400, i//4*400
         for dy, picture, scale, label in [(0, original, 1, 'native source'), (200, canvas, 6, 'HD candidate')]:
@@ -201,7 +214,7 @@ def main():
     for resource in resources:
         row = natives[resource]; selected = [r for r in records if r['resource'] == resource]
         keys = sorted({layer['pose'] for r in selected for layer in r.get('layers', [r])})
-        candidate['assets'].append({'asset_id': f'modern.figani.{resource:03d}.hd6.v1', 'role': 'battle_animation_hd_set',
+        candidate['assets'].append({'asset_id': f'modern.figani.{resource:03d}.hd6.v{args.revision}', 'role': 'battle_animation_hd_set',
             'status': 'runtime_candidate', 'files': [r['file'] for r in selected], 'width': 1920, 'height': 1200,
             'frame_count': len(selected), 'frame_sha256': [r['sha256'] for r in selected],
             'consumer_contract': 'native_figani_rgba_hd6_v1', 'alpha_contract': 'coverage',

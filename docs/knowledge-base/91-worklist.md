@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -467,6 +467,16 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 怎樣算做完：修正髖／膝／踝與腳底的連續結構及原版右腳承重落點，六母稿與20影格接入；完整來源GPU、Game.Draw／F2／返回及兩包載入／缺件原子性通過，以新普通GUI擷取更新README GIF；集中人工確認自然度後才關閉。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### HD1推廣片回饋：羅德曼補頭、群像畫風、蘭斯洛特與悠妮配音
+
+`hd1-promo-character-voice-feedback-20261105` · 缺陷 · [#295](https://github.com/wicanr2/fd2_re/issues/295) · 仍未完成 · 要人判
+
+使用者2026-11-05回報羅德曼缺頭、蘭斯洛特女性化、群像混用畫風及能力視窗風格，並要求逐人戰鬥Markdown與悠妮旁白。已依自己的DATO補羅德曼三銀行27幀，淒煌斬正常鍵鼠重錄、完整GPU／F2與八段傷害通過。蘭斯洛特已由使用者選定男性面容與原版長棕盔纓，完整21幀及50幀來源GPU、Game.Draw／F2／返回通過。四份缺件與七份像素頭像已完成80／480平滑配對，正式32人卡無原版頭像回退。能力視窗普通START至首章、三次確認、四分頁及保存冷讀通過。136圖組Markdown與SHA、圖片及錨點均已核對。悠妮已選定溫柔可愛Serena原創角色演繹，36段旁白製作中。修正版影片與v.1.1.2-20261105三平台本機完整包尚待最後混音、剪輯及驗收，因此保持OPEN。
+
+怎樣算做完：羅德曼完整三銀行、普通攻防及淒煌斬GPU／F2／返回通過；32位群像頭像風格一致；能力視窗正常三次警告與保存冷讀通過；136圖組總覽有來源與缺件註記；蘭斯洛特造型及原創聲線選定後更新影片並驗收。
+
+證據：`docs/data/fd2-hd1-feedback-20261104.json`
 
 ## release — 發行、平台與封包
 

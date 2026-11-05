@@ -3086,13 +3086,13 @@
         }
       },
       {
-        "path": "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png",
-        "sha256": "de33750c2f30027710d1d447053b2b512917ec692e88ff9dfc7e1eb98ffd72d5",
+        "path": "/repo/work/hd1-battle-review-20261105-r84/readme-rodman-r2.png",
+        "sha256": "4da7b838d02871a3a3168fc56bb7d9a4c9a56caeaa0505a9552b21db8f975a90",
         "label": "羅德曼｜淒煌斬",
         "extraction": {
-          "source": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
-          "source_sha256": "03e6395c534ae7c435be1617c18dca2f1a52cc8f18d69e479871df65ee2e5f89",
-          "seconds": 548.4,
+          "source": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1-record/video.mkv",
+          "source_sha256": "ef52479d3590936ec965fdf9330c60b6500f5a08c548abb9cc04f69a1142c00a",
+          "seconds": 460,
           "command": [
             "ffmpeg",
             "-nostdin",
@@ -3102,14 +3102,14 @@
             "-threads",
             "2",
             "-ss",
-            "548.4",
+            "460",
             "-i",
-            "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+            "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1-record/video.mkv",
             "-frames:v",
             "1",
             "-threads",
             "1",
-            "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png"
+            "/repo/work/hd1-battle-review-20261105-r84/readme-rodman-r2.png"
           ]
         }
       }
@@ -3964,5 +3964,3234 @@
     "stale_items": 0,
     "source": "host gh issue list after #293/#294 closed",
     "verification": "work/hd1-feedback-20261104-r83/worklist-final-verify.log"
+  },
+  "battle_animation_review_20261105": {
+    "status": "IN-PROGRESS",
+    "base_commit": "f9f8bee633935fcd2276b495536e7853fc2b28b4",
+    "reported_defect": "羅德曼HD戰鬥人物缺頭",
+    "request": "逐人戰鬥動畫總覽圖與Markdown",
+    "work": "work/hd1-battle-review-20261105-r84",
+    "scope": "先列32名我方角色與原始資料明示的轉職形態；原版及正式HD來源逐幀並排，未知不補造",
+    "requests": [
+      "羅德曼缺頭修正",
+      "逐人動畫總覽與Markdown",
+      "蘭斯洛特造型核對與修稿",
+      "群像四個缺件頭像改HD",
+      "能力工具列視窗沿炎龍2藍底、多層框線修訂",
+      "原創悠妮可愛聲線與推廣片配音"
+    ],
+    "overview": {
+      "status": "SOURCE-CONTACT-SHEETS",
+      "figures": 136,
+      "markdown": "work/hd1-battle-review-20261105-r84/overview-r3/README.md",
+      "manifest": "work/hd1-battle-review-20261105-r84/overview-r3/overview-manifest.json",
+      "source_only_not_runtime_oracle": true,
+      "manifest_sha256": "c67bb8890d1bbe4a9d92c03e323071af27c7edd5ccffcb6a3edc5215a41a6701",
+      "catalog_sha256": "99d68d41fc70588106847d84f95825314411a496587aa86ddf366e3d8d81327a",
+      "link_check": "PASS-136-SHEETS-AND-ANCHORS"
+    },
+    "voice": {
+      "concept": "USER-CONFIRMED-ORIGINAL-YUNI-CHARACTER-PERFORMANCE",
+      "preview_receipt": "work/hd1-battle-review-20261105-r84/voice-preview-r1/voice-receipt.json",
+      "warm": "work/hd1-battle-review-20261105-r84/yuni-warm-preview.mp3",
+      "bright": "work/hd1-battle-review-20261105-r84/yuni-bright-preview.mp3",
+      "voice_selection": "USER-CONFIRMED-WARM-CUTE",
+      "speaker": "Serena",
+      "full_plan": "work/hd1-battle-review-20261105-r84/voice-full-plan.json",
+      "partial_receipt": "work/hd1-battle-review-20261105-r84/voice-full-r2/voice-receipt.json",
+      "batch_out": "work/hd1-battle-review-20261105-r84/voice-full-batch-r1",
+      "mix_smoke": "work/hd1-battle-review-20261105-r84/narration-mix-smoke.json"
+    },
+    "lancelot_design": "USER-CONFIRMED-ORIGINAL-LONG-CHESTNUT-PLUME-MALE-FACE",
+    "rodman_candidate": "work/hd1-battle-review-20261105-r84/rodman-candidate-r4",
+    "portrait_candidates": "work/hd1-battle-review-20261105-r84/portrait-source-r1",
+    "portrait_style_audit": {
+      "missing_speakers": [
+        7,
+        15,
+        28,
+        29
+      ],
+      "registered_pixel_style_speakers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "full_sheet": "work/hd1-battle-review-20261105-r84/party-portraits-audit-r1.png",
+      "finding": "清冊HD角色齊全仍不代表平滑畫風一致；四份缺件已補候選，七份像素母稿另行逐人平滑重繪"
+    },
+    "rodman_command28_gpu": {
+      "receipt": "work/hd1-battle-review-20261105-r84/rodman-command28-gpu-r1/receipt.json",
+      "status": "PASS-SPLIT-STRIKE-RUNTIME-E1",
+      "head_visible": true,
+      "hd_draws": 69,
+      "hp_publications": 8,
+      "f2_phases": 3,
+      "normal_player_or_original_oracle": false
+    },
+    "balance_window": {
+      "status": "CONFORMED-SCOPED",
+      "normal_gui": "work/hd1-battle-review-20261105-r84/balance-gui-r1/result.json",
+      "warning": "work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-0.png",
+      "ordinary_start_to_ch01": true,
+      "three_ack_reopen_reset_and_cold_load": true,
+      "rules_test": "work/hd1-battle-review-20261105-r84/balance-rules-test-r2.log",
+      "save_test": "work/hd1-battle-review-20261105-r84/balance-save-test-r2.log",
+      "overview_receipt": "work/hd1-battle-review-20261105-r84/balance-overview.json",
+      "skill_gui": "work/hd1-battle-review-20261105-r84/skill-gui-r3/result.json",
+      "skill_overview": "docs/figures/hd1-skill-hit-editor.png",
+      "input_observer": {
+        "status": "PASS",
+        "regression": "work/hd1-battle-review-20261105-r84/audit-balance-regression-r3.log",
+        "nonmutation_test": "TestBalanceAuditSelectionDoesNotNormalizeOrChangeState",
+        "scope": "僅啟用輸入稽核時記錄滑鼠邊緣與目前選擇，按實際事件同步測試控制器，不改規則或存檔"
+      },
+      "string_review": "work/hd1-battle-review-20261105-r84/string-review-r3/test.log"
+    },
+    "lancelot_user_correction": "蘭斯洛特是男性；修正原稿女性化面容與髮束解讀，保留原版長棕色盔纓",
+    "issue": 295,
+    "character_cards": {
+      "directory": "work/hd1-battle-review-20261105-r84/character-cards-r3",
+      "manifest": "work/hd1-battle-review-20261105-r84/character-cards-r3/character-cards.json",
+      "portrait_style": "ALL-32-SMOOTH-HD",
+      "lancelot_body": "MALE-ORIGINAL-LONG-PLUME"
+    },
+    "art_registration": {
+      "rodman": {
+        "status": "PASS-REGISTERED-ART-REVISION",
+        "base_catalog_sha256": "d8a78a641aa472f3d9eeb9b1dd99a3d6497fdc61a675db69e5591fc31def5b89",
+        "candidate_catalog_sha256": "904d9d9779d9a8e3b63f7dced2d703ffa92e6b482d7074e54af94697819b05e9",
+        "formal_catalog_sha256": "a3da75b33d0d00bc4d2677c4a2332c36373e351e06b5de943a0ff1250976f3a5",
+        "registered_assets": 3375,
+        "new_files": [
+          {
+            "file": "figani-057-hd6-v2-f00.png",
+            "sha256": "2908852c51a9ca92d1ad3ee09d6a32f60faf6b7618e809ae773e3ff65454d3ec",
+            "size": 848966
+          },
+          {
+            "file": "figani-058-hd6-v2-f00.png",
+            "sha256": "0ef3dc71c8b16584bbaef8ca009ef786082352360e540ecac45628fee48f9a7a",
+            "size": 478759
+          },
+          {
+            "file": "figani-058-hd6-v2-f01.png",
+            "sha256": "350eba68c7f966527810e9ed87561599430e68a1a3fa6f6faa8904a1ec0f8151",
+            "size": 488494
+          },
+          {
+            "file": "figani-058-hd6-v2-f02.png",
+            "sha256": "0ef3dc71c8b16584bbaef8ca009ef786082352360e540ecac45628fee48f9a7a",
+            "size": 478759
+          },
+          {
+            "file": "figani-058-hd6-v2-f03.png",
+            "sha256": "59de1d906b81b3eac93952ea41a37e97cceb77afa3502306998ee3390c896d32",
+            "size": 861483
+          },
+          {
+            "file": "figani-058-hd6-v2-f04.png",
+            "sha256": "37abdd4fb807a9b7261a2dfa1552cf89c3444b0a78b4edf6e70bebc9c9a12054",
+            "size": 661005
+          },
+          {
+            "file": "figani-058-hd6-v2-f05.png",
+            "sha256": "9bbd1da40104a477c7369da682c19ae2a42bf1fb8b897ddf54d4144f80db2456",
+            "size": 612160
+          },
+          {
+            "file": "figani-058-hd6-v2-f06.png",
+            "sha256": "9949418f86146e51a62857d51389395d23a5902ffde4af5f794217434c63cef4",
+            "size": 581334
+          },
+          {
+            "file": "figani-059-hd6-v2-f00.png",
+            "sha256": "350eba68c7f966527810e9ed87561599430e68a1a3fa6f6faa8904a1ec0f8151",
+            "size": 488494
+          },
+          {
+            "file": "figani-059-hd6-v2-f01.png",
+            "sha256": "e4582f7bce1529bd6643b0fa0360c97c48bbbde506f316ce28912e724a9ff9b9",
+            "size": 485739
+          },
+          {
+            "file": "figani-059-hd6-v2-f02.png",
+            "sha256": "3f484d71d24ef922dc69956ecef705349cbb1911dea5cb3cc62da77822d22d69",
+            "size": 488770
+          },
+          {
+            "file": "figani-059-hd6-v2-f03.png",
+            "sha256": "e03f15d7b232b61c8007d104d19ad5cb17e6469b8fbc915be4c1c7b6894c2d1d",
+            "size": 531712
+          },
+          {
+            "file": "figani-059-hd6-v2-f04.png",
+            "sha256": "2af587927b85c81ed37f4eb31aa81a07063ea007c88dacb24a76b1bc5d4de8ac",
+            "size": 514266
+          },
+          {
+            "file": "figani-059-hd6-v2-f05.png",
+            "sha256": "2cb93ec61e3a9181c810a36cbed011bcb9f208b056980d6eb174961fda27ef63",
+            "size": 514000
+          },
+          {
+            "file": "figani-059-hd6-v2-f06.png",
+            "sha256": "2cb93ec61e3a9181c810a36cbed011bcb9f208b056980d6eb174961fda27ef63",
+            "size": 514000
+          },
+          {
+            "file": "figani-059-hd6-v2-f07.png",
+            "sha256": "49b97d4784405f4297fb8f72991ff52c6cf17bf7309b9e99f1bf9792733a7c48",
+            "size": 856482
+          },
+          {
+            "file": "figani-059-hd6-v2-f08.png",
+            "sha256": "ca7570ba2d707ed2bb5662707900f5c459b363bb4ee286b09728e6163223d6e2",
+            "size": 879276
+          },
+          {
+            "file": "figani-059-hd6-v2-f09.png",
+            "sha256": "39f92b6bbdf26fe8354e345f50a439ce7d6c53e7cb489a89969915ab363b8c32",
+            "size": 859393
+          },
+          {
+            "file": "figani-059-hd6-v2-f10.png",
+            "sha256": "ca7570ba2d707ed2bb5662707900f5c459b363bb4ee286b09728e6163223d6e2",
+            "size": 879276
+          },
+          {
+            "file": "figani-059-hd6-v2-f11.png",
+            "sha256": "39f92b6bbdf26fe8354e345f50a439ce7d6c53e7cb489a89969915ab363b8c32",
+            "size": 859393
+          },
+          {
+            "file": "figani-059-hd6-v2-f12.png",
+            "sha256": "ca7570ba2d707ed2bb5662707900f5c459b363bb4ee286b09728e6163223d6e2",
+            "size": 879276
+          },
+          {
+            "file": "figani-059-hd6-v2-f13.png",
+            "sha256": "39f92b6bbdf26fe8354e345f50a439ce7d6c53e7cb489a89969915ab363b8c32",
+            "size": 859393
+          },
+          {
+            "file": "figani-059-hd6-v2-f14.png",
+            "sha256": "ca7570ba2d707ed2bb5662707900f5c459b363bb4ee286b09728e6163223d6e2",
+            "size": 879276
+          },
+          {
+            "file": "figani-059-hd6-v2-f15.png",
+            "sha256": "b38911d508dab693d17d3f1388bd84793f4a7de7a3f0e1ce9725dee7d5fd0d38",
+            "size": 697448
+          },
+          {
+            "file": "figani-059-hd6-v2-f16.png",
+            "sha256": "40880950da03158c0db7da831a01706497e97635c626ba32d71c724770ee9ba8",
+            "size": 615214
+          },
+          {
+            "file": "figani-059-hd6-v2-f17.png",
+            "sha256": "160b2e4f01a188736b19b21f778aa1d99533c8f8c786cf4021b7afa16b3f6646",
+            "size": 597185
+          },
+          {
+            "file": "figani-059-hd6-v2-f18.png",
+            "sha256": "a0e877f7f769ca4b78a9a32373c892a78ba40d7136a24a64e84ff7f1472c920b",
+            "size": 581117
+          },
+          {
+            "file": "figure-019-blue_beam-battle-hd6-master-v2.png",
+            "sha256": "20d6e229b815b2d5e6775f64360d1616de475a4a1568c6eadb39ff1082a00f8f",
+            "size": 475992
+          },
+          {
+            "file": "figure-019-gold_beam-battle-hd6-master-v2.png",
+            "sha256": "2cc7f75b8e50767d7269555b5ec13b66d9729cc0f9f8b4b072a9e2a2c6d7d5c4",
+            "size": 473250
+          },
+          {
+            "file": "figure-019-gold_c-battle-hd6-master-v2.png",
+            "sha256": "b5d1cf9e236adbd21cf59913e7a21611bc8b66aa1ef7a7615902faacf6f20a4d",
+            "size": 356026
+          },
+          {
+            "file": "figure-019-idle-battle-hd6-master-v2.png",
+            "sha256": "305b5ed8f840b21688ca051f2b5613e5de616a4df96fa73caf4c911bb00e6ffb",
+            "size": 1165583
+          },
+          {
+            "file": "figure-019-raise-battle-hd6-master-v2.png",
+            "sha256": "25426a36302c3b2cd768d138954a9c5285c6658eaeca8de82ed822a645ac2200",
+            "size": 925922
+          },
+          {
+            "file": "figure-019-spark-battle-hd6-master-v2.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "size": 671206
+          },
+          {
+            "file": "figure-019-swing-battle-hd6-master-v2.png",
+            "sha256": "597098c6f8ff03b4427e7d4d43b4b42130b8082025621b597ea09bd128b33d0c",
+            "size": 1203109
+          },
+          {
+            "file": "party-000-portrait-style-a-v2-480.png",
+            "sha256": "e62bb4e9af308c6fa6608cfecf80c811ac899fb718a6b081c2575c516d86d10b",
+            "size": 359169
+          },
+          {
+            "file": "party-000-portrait-style-a-v2-80.png",
+            "sha256": "5a130d52ef9c4b1d53c19f8a4ceb6dad4f481abff4c4f0624fb997d07b439116",
+            "size": 13472
+          },
+          {
+            "file": "party-000-portrait-style-a-v2-master.png",
+            "sha256": "e41fc80a4a30275e12b442a2a12a5982c01284e295148f208d06a24e14974941",
+            "size": 1988387
+          },
+          {
+            "file": "party-001-portrait-style-a-v2-480.png",
+            "sha256": "0985c4e9198e43447930edd783f4faf4a569333b7924e108fe4582a748ca2499",
+            "size": 351690
+          },
+          {
+            "file": "party-001-portrait-style-a-v2-80.png",
+            "sha256": "0fc12e93f44e659d17b17d108d7df1a071fb6e63d6d924c8c009f44584f019b3",
+            "size": 13539
+          },
+          {
+            "file": "party-001-portrait-style-a-v2-master.png",
+            "sha256": "213a66c55d979766ba1363210bd6e8362e201017664ce91023ba354f2e62c69b",
+            "size": 2009732
+          },
+          {
+            "file": "party-002-portrait-style-a-v2-480.png",
+            "sha256": "1cee5b2262a6310c48004e3d748365c7e819780c7a856f988c3b9d846e7531d6",
+            "size": 337996
+          },
+          {
+            "file": "party-002-portrait-style-a-v2-80.png",
+            "sha256": "c2a17d401a2f7cbf43904b4102631fd32e94d272e27d7c3c743fb8d49ea91b88",
+            "size": 13614
+          },
+          {
+            "file": "party-002-portrait-style-a-v2-master.png",
+            "sha256": "f7f418806e15345da45ccb878ef5105f3cced15230e985628fe972dd019a16a3",
+            "size": 2150652
+          },
+          {
+            "file": "party-003-portrait-style-a-v2-480.png",
+            "sha256": "279661e403751bf27405f48036eb418a3f7d28f4c035284807a8a9096657dd2b",
+            "size": 412935
+          },
+          {
+            "file": "party-003-portrait-style-a-v2-80.png",
+            "sha256": "0604d0f562713b37a955f8e43f1c6e1e9499102a3d6ccc03d097afba27bb15ce",
+            "size": 15038
+          },
+          {
+            "file": "party-003-portrait-style-a-v2-master.png",
+            "sha256": "49c59df16629d22f9b59bff54ff7f52ecec35e6f4ad874d6b94136358b945677",
+            "size": 2285908
+          },
+          {
+            "file": "party-004-portrait-style-a-v2-480.png",
+            "sha256": "f5b5ed96e852f03370ab85babfce3599dc622ab62b16108e68a444261664a3de",
+            "size": 363249
+          },
+          {
+            "file": "party-004-portrait-style-a-v2-80.png",
+            "sha256": "713a2d67ad7b59655019245f629003d049e1064246be5ca7e64ec0a794814555",
+            "size": 14186
+          },
+          {
+            "file": "party-004-portrait-style-a-v2-master.png",
+            "sha256": "90579c4bfae356a3ce50f55295181cf9652d3f2e20da39b4ddc1aea2a8bd59d3",
+            "size": 2076407
+          },
+          {
+            "file": "party-005-portrait-style-a-v2-480.png",
+            "sha256": "5d571fc982b6358a05f9a939cdf8213b2c9723263cad96ccda968e8dd9468219",
+            "size": 404184
+          },
+          {
+            "file": "party-005-portrait-style-a-v2-80.png",
+            "sha256": "eb4d8566b3fd5112817c19abf9b0fc45c8952003e52a9989064ce4b10eca26ba",
+            "size": 14649
+          },
+          {
+            "file": "party-005-portrait-style-a-v2-master.png",
+            "sha256": "908157c520f93a166d06a61c45de471e55225809b2d27bdddb46d4708ccde1bb",
+            "size": 2400592
+          },
+          {
+            "file": "party-006-portrait-style-a-v2-480.png",
+            "sha256": "39dbc4dac67e213f5b96e563e16ba830385eb6896080c24f0f05d1a591542496",
+            "size": 342257
+          },
+          {
+            "file": "party-006-portrait-style-a-v2-80.png",
+            "sha256": "d0eebb0149d8bb65d034aea14fee475e4eb10902db3743fa890fffe82078c327",
+            "size": 13553
+          },
+          {
+            "file": "party-006-portrait-style-a-v2-master.png",
+            "sha256": "ecef1be3e243b153b1599c4f29f0a24c329be533d63405b030c5c2822c6f02a9",
+            "size": 1889938
+          },
+          {
+            "file": "party-007-portrait-style-a-v1-480.png",
+            "sha256": "47ee682a810f946957f474241fb0126c440fb365544e6749f1cfc2869910beb6",
+            "size": 421659
+          },
+          {
+            "file": "party-007-portrait-style-a-v1-80.png",
+            "sha256": "8db59eb7247cc1f67bb890d66dfa353ac25984f61bd46f59ea4d7bd3efbea1ff",
+            "size": 15292
+          },
+          {
+            "file": "party-007-portrait-style-a-v1-master.png",
+            "sha256": "cc08a3edaa542729d690cfe41a84a24be2aca4d67f8c7b36cc4b6dea7d1bafc5",
+            "size": 2371257
+          },
+          {
+            "file": "party-015-portrait-style-a-v1-480.png",
+            "sha256": "d0911eeff25a9e44ab54c1baf49829b5f5d56c21be886916d9270490284bc476",
+            "size": 385045
+          },
+          {
+            "file": "party-015-portrait-style-a-v1-80.png",
+            "sha256": "77b21e3c5859edd616035d346f7ecd10088d337363c7a3dd77512e487fe4d736",
+            "size": 12898
+          },
+          {
+            "file": "party-015-portrait-style-a-v1-master.png",
+            "sha256": "e82cd7f3341469108c1a003a49fddb3d2430307e55466665d7864875c724e4e6",
+            "size": 2376915
+          },
+          {
+            "file": "party-028-portrait-style-a-v1-480.png",
+            "sha256": "e13e19ad9422e549fd5b19dbde93a4b1f5bae623c8fe7dd0c7841d092f0e9630",
+            "size": 320076
+          },
+          {
+            "file": "party-028-portrait-style-a-v1-80.png",
+            "sha256": "38feacac223734faa38ca162be103f897b7ef5589f31332ba691b0c2617d880e",
+            "size": 11572
+          },
+          {
+            "file": "party-028-portrait-style-a-v1-master.png",
+            "sha256": "e2408f3aadd0546c755b2ce7f3707e788559dbcad113135a0d8a13249ef132a0",
+            "size": 1994972
+          },
+          {
+            "file": "party-029-portrait-style-a-v1-480.png",
+            "sha256": "50b054a97b7ccd519fd6388336deb0ba2621eaea0ea83669035ec76f505d035f",
+            "size": 314144
+          },
+          {
+            "file": "party-029-portrait-style-a-v1-80.png",
+            "sha256": "b939ab46832e0b49f3849351d3c18c2a4ec7366eedea095a4c2d5c21b67baa80",
+            "size": 11839
+          },
+          {
+            "file": "party-029-portrait-style-a-v1-master.png",
+            "sha256": "3a9027c1b423005961b9bb5b07541fd26236f8063629c7a89b480b8172481550",
+            "size": 1924079
+          }
+        ],
+        "changed_battle_resources": [
+          57,
+          58,
+          59
+        ],
+        "changed_portrait_speakers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          15,
+          28,
+          29
+        ],
+        "other_rows_byte_equivalent": true
+      },
+      "lancelot": {
+        "status": "PASS-REGISTERED-MALE-LONG-CREST",
+        "candidate_catalog_sha256": "914108bf94173f200774693997a5101a1fc755520d1151feffecb134b0260412",
+        "formal_catalog_sha256": "99d68d41fc70588106847d84f95825314411a496587aa86ddf366e3d8d81327a",
+        "registered_assets": 3375,
+        "new_files": [
+          {
+            "file": "figani-021-hd6-v2-f00.png",
+            "sha256": "5d96079605aec19ec7b6fa669e521e11ee5962cdd65c25b49b48b397ac86345a",
+            "size": 1182311
+          },
+          {
+            "file": "figani-021-hd6-v2-f01.png",
+            "sha256": "e5b93a241a2e6d57b73472424f954fb70040590a1ec3d1a722719dd467bd32b5",
+            "size": 1183203
+          },
+          {
+            "file": "figani-021-hd6-v2-f02.png",
+            "sha256": "18982a693bd55d582d0c10d86f77ecaf7934e0c356258e228bc21f9aca5de38a",
+            "size": 1171761
+          },
+          {
+            "file": "figani-021-hd6-v2-f03.png",
+            "sha256": "e5b93a241a2e6d57b73472424f954fb70040590a1ec3d1a722719dd467bd32b5",
+            "size": 1183203
+          },
+          {
+            "file": "figani-022-hd6-v2-f00.png",
+            "sha256": "593d60d647ac592a09cc4679665bc3a5bf4e84d57cf14c9a6c84f02d379bf49d",
+            "size": 1207265
+          },
+          {
+            "file": "figani-022-hd6-v2-f01.png",
+            "sha256": "193dc436308fc146e089ef31e3aa77204a691d23005b7aa7029940780945ee74",
+            "size": 1164304
+          },
+          {
+            "file": "figani-022-hd6-v2-f02.png",
+            "sha256": "9caebeed4655bf74973e3cab2224f2ad438e89d3f85176b022a91f080910e8ba",
+            "size": 1165397
+          },
+          {
+            "file": "figani-022-hd6-v2-f03.png",
+            "sha256": "6c557cf70485088e1367bed78c8fcd8a681c2593557c8b8936e5c83915f33196",
+            "size": 1165917
+          },
+          {
+            "file": "figani-022-hd6-v2-f04.png",
+            "sha256": "246d6cd17c5975c263a34b39432d0bfe8ff078cd54a8128c0a380d70a4cec8e4",
+            "size": 1218471
+          },
+          {
+            "file": "figani-022-hd6-v2-f05.png",
+            "sha256": "b00cf7d7d512bffa3f2a5380fbeffbec9ddd9b1eddb5d5b8925a6c9b8c6d9b6a",
+            "size": 1210917
+          },
+          {
+            "file": "figani-022-hd6-v2-f06.png",
+            "sha256": "9a284bebaa2b98146c354820b579bfba6df1a892eb300ed67fed3ff8fceea340",
+            "size": 1231141
+          },
+          {
+            "file": "figani-022-hd6-v2-f07.png",
+            "sha256": "c5602a2b9a8b061e4e9a7e72a44ef57f3c5a3ba0e16a4719ea05ecd7e28e9d34",
+            "size": 1211109
+          },
+          {
+            "file": "figani-022-hd6-v2-f08.png",
+            "sha256": "d72aaa8a3b0d2b8e2bb62ba6c2d153246ef5e6c8d757035cf9e64422cda6bbfa",
+            "size": 1238651
+          },
+          {
+            "file": "figani-022-hd6-v2-f09.png",
+            "sha256": "75ff44bdf1acc5a9ad0a96816ca7e1e599d95abe6536a3ae1b238ae0e725cae0",
+            "size": 1204332
+          },
+          {
+            "file": "figani-022-hd6-v2-f10.png",
+            "sha256": "b816cad9110587c7f1570c151c2761c1bf55ecb4943e1491c28e19b3fd2313bd",
+            "size": 1204917
+          },
+          {
+            "file": "figani-022-hd6-v2-f11.png",
+            "sha256": "d5ad031a09108ca79099582e7136a9acbe88ce09a67a39639809649421b2930b",
+            "size": 1175604
+          },
+          {
+            "file": "figani-022-hd6-v2-f12.png",
+            "sha256": "563194864c836fcede013452119ada533951391fdb82fabed7e24620e6953e51",
+            "size": 1175211
+          },
+          {
+            "file": "figani-022-hd6-v2-f13.png",
+            "sha256": "5da2ff44a08e8db06fae5303de0477823dfdc4bf2dbb03cebe792a4b0166534a",
+            "size": 2074725
+          },
+          {
+            "file": "figani-022-hd6-v2-f14.png",
+            "sha256": "38047711dc61cf7380772f9b23e6d4ca8b9a84e799411ac82511af13a348b36b",
+            "size": 1217048
+          },
+          {
+            "file": "figani-022-hd6-v2-f15.png",
+            "sha256": "0b10ba53a3d194f280f43c74f26904691864f2f190bba5391b67090f8630f9f1",
+            "size": 1146088
+          },
+          {
+            "file": "figani-022-hd6-v2-f16.png",
+            "sha256": "9caebeed4655bf74973e3cab2224f2ad438e89d3f85176b022a91f080910e8ba",
+            "size": 1165397
+          },
+          {
+            "file": "figure-007-blue_c-battle-hd6-master-v2.png",
+            "sha256": "38e70b3e87780ffdaeee08b49ca4404f3dc9e8bdfd51f490ac1731354ee4dada",
+            "size": 961349
+          },
+          {
+            "file": "figure-007-blue_lower-battle-hd6-master-v2.png",
+            "sha256": "ca2aba8b9f399bb826794fcfdd0e67c031bae2f97e12d56c48ec8f8fb4784047",
+            "size": 398148
+          },
+          {
+            "file": "figure-007-blue_tail-battle-hd6-master-v2.png",
+            "sha256": "3fbf3b7bf73788d06a140422792c94efa311ead48ead556ddf5d6768f5ce40d3",
+            "size": 125898
+          },
+          {
+            "file": "figure-007-blue_upper-battle-hd6-master-v2.png",
+            "sha256": "4da7c43c62dc954c1c4d30c1e8d170908c01313291bc81498199380fe05f65de",
+            "size": 276741
+          },
+          {
+            "file": "figure-007-gold_arc-battle-hd6-master-v2.png",
+            "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+            "size": 539724
+          },
+          {
+            "file": "figure-007-gold_bolt-battle-hd6-master-v2.png",
+            "sha256": "e124dd00e1cd512d84528574ad9f79a1d5087204e5282cea702213f94ba426c2",
+            "size": 449254
+          },
+          {
+            "file": "figure-007-high-battle-hd6-master-v2.png",
+            "sha256": "88b52a96bf19536ca938424af5f402f1318140a53603699642e47a2894f82678",
+            "size": 1334108
+          },
+          {
+            "file": "figure-007-idle-battle-hd6-master-v2.png",
+            "sha256": "c7e7fd8ae91b905dd7f8701b9bf7bdf42cc78aa8d507bb6b6eca8c84c9832b28",
+            "size": 1589164
+          },
+          {
+            "file": "figure-007-raise-battle-hd6-master-v2.png",
+            "sha256": "e9a8a8dab8f74a6cff4fd3cd35a12ea43056066f3d8b44a549324e834136cac4",
+            "size": 1464743
+          },
+          {
+            "file": "figure-007-ready-battle-hd6-master-v2.png",
+            "sha256": "c630c8a618909d67770b7b74e5f2cae32d1b640232031d975e8293fc09975c75",
+            "size": 1596792
+          },
+          {
+            "file": "figure-007-spark-battle-hd6-master-v2.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "size": 671206
+          },
+          {
+            "file": "figure-007-thrust-battle-hd6-master-v2.png",
+            "sha256": "198d79e650d4f20860f93ea24e0389bbafd2a8c97e63d2fb5ee21d2e369fb999",
+            "size": 1607056
+          }
+        ],
+        "changed_battle_resources": [
+          21,
+          22
+        ],
+        "other_rows_byte_equivalent": true
+      }
+    },
+    "reproduction": {
+      "rodman": {
+        "schema_version": 1,
+        "figure": 19,
+        "inventory_sha256": "f9e2d219b2ca190688f17e3e7960265888cfa6b07427459886ce18f508267a81",
+        "sources": {
+          "idle": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/rodman-idle-master-v2.png",
+            "sha256": "305b5ed8f840b21688ca051f2b5613e5de616a4df96fa73caf4c911bb00e6ffb",
+            "anchor": [
+              243,
+              17,
+              1114,
+              1251
+            ]
+          },
+          "raise": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/rodman-raise-master-v2.png",
+            "sha256": "25426a36302c3b2cd768d138954a9c5285c6658eaeca8de82ed822a645ac2200",
+            "anchor": [
+              253,
+              15,
+              1047,
+              1240
+            ]
+          },
+          "swing": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/rodman-swing-master-v2.png",
+            "sha256": "597098c6f8ff03b4427e7d4d43b4b42130b8082025621b597ea09bd128b33d0c",
+            "anchor": [
+              13,
+              14,
+              1243,
+              1180
+            ]
+          },
+          "gold_c": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/figure-019-gold_c-battle-hd6-master-v1.png",
+            "sha256": "b5d1cf9e236adbd21cf59913e7a21611bc8b66aa1ef7a7615902faacf6f20a4d",
+            "anchor": [
+              71,
+              48,
+              976,
+              757
+            ]
+          },
+          "gold_beam": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/figure-020-main_right-battle-hd6-master-v1.png",
+            "sha256": "2cc7f75b8e50767d7269555b5ec13b66d9729cc0f9f8b4b072a9e2a2c6d7d5c4",
+            "anchor": [
+              0,
+              17,
+              1443,
+              613
+            ]
+          },
+          "blue_beam": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/figure-019-blue_beam-battle-hd6-master-v1.png",
+            "sha256": "20d6e229b815b2d5e6775f64360d1616de475a4a1568c6eadb39ff1082a00f8f",
+            "anchor": [
+              0,
+              15,
+              1454,
+              628
+            ]
+          },
+          "spark": {
+            "file": "work/hd1-battle-review-20261105-r84/rodman-source-inputs/figure-022-orb-battle-hd6-master-v1.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "anchor": [
+              333,
+              255,
+              996,
+              939
+            ]
+          }
+        },
+        "resources": {
+          "57": [
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  125,
+                  185
+                ],
+                "scale_group": "b57_0"
+              }
+            ]
+          ],
+          "58": [
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b58_0"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  95,
+                  192
+                ],
+                "scale_group": "b58_1"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b58_2"
+              }
+            ],
+            [
+              {
+                "pose": "gold_c",
+                "anchor": [
+                  0,
+                  0,
+                  147,
+                  146
+                ],
+                "scale_group": "f58_3_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  49,
+                  60,
+                  195,
+                  191
+                ],
+                "scale_group": "b58_3"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  36,
+                  1,
+                  37
+                ],
+                "scale_group": "f58_4_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  3,
+                  40,
+                  7,
+                  45
+                ],
+                "scale_group": "f58_4_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  7,
+                  46,
+                  8,
+                  47
+                ],
+                "scale_group": "f58_4_2"
+              },
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  9,
+                  48,
+                  67,
+                  84
+                ],
+                "scale_group": "f58_4_3"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  34,
+                  0,
+                  180,
+                  131
+                ],
+                "scale_group": "b58_4"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  56,
+                  2,
+                  58
+                ],
+                "scale_group": "f58_5_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  4,
+                  61,
+                  9,
+                  67
+                ],
+                "scale_group": "f58_5_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  52,
+                  64,
+                  55,
+                  66
+                ],
+                "scale_group": "f58_5_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  50,
+                  66,
+                  51,
+                  67
+                ],
+                "scale_group": "f58_5_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  48,
+                  67,
+                  49,
+                  68
+                ],
+                "scale_group": "f58_5_4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  46,
+                  68,
+                  47,
+                  69
+                ],
+                "scale_group": "f58_5_5"
+              },
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  10,
+                  69,
+                  41,
+                  85
+                ],
+                "scale_group": "f58_5_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  44,
+                  69,
+                  45,
+                  70
+                ],
+                "scale_group": "f58_5_7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  42,
+                  70,
+                  43,
+                  71
+                ],
+                "scale_group": "f58_5_8"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  21,
+                  0,
+                  167,
+                  131
+                ],
+                "scale_group": "b58_5"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  146,
+                  131
+                ],
+                "scale_group": "b58_6"
+              }
+            ]
+          ],
+          "59": [
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  95,
+                  192
+                ],
+                "scale_group": "b59_0"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  53,
+                  19,
+                  70,
+                  27
+                ],
+                "scale_group": "f59_1_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_1"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  53,
+                  17,
+                  71,
+                  27
+                ],
+                "scale_group": "f59_2_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_2"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  57,
+                  0,
+                  86,
+                  24
+                ],
+                "scale_group": "f59_3_0"
+              },
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  71,
+                  0,
+                  104,
+                  25
+                ],
+                "scale_group": "f59_3_1"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_3"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  56,
+                  0,
+                  107,
+                  25
+                ],
+                "scale_group": "f59_4_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  76,
+                  9,
+                  77,
+                  10
+                ],
+                "scale_group": "f59_4_1"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_4"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  56,
+                  0,
+                  107,
+                  25
+                ],
+                "scale_group": "f59_5_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_5"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  56,
+                  0,
+                  107,
+                  25
+                ],
+                "scale_group": "f59_6_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_6"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  108
+                ],
+                "scale_group": "f59_7_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_7"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_8_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_8"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  106
+                ],
+                "scale_group": "f59_9_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_9"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_10_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_10"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  106
+                ],
+                "scale_group": "f59_11_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_11"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_12_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_12"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  106
+                ],
+                "scale_group": "f59_13_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_13"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_14_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_14"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  90,
+                  0,
+                  91,
+                  1
+                ],
+                "scale_group": "f59_15_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  85,
+                  4,
+                  87,
+                  6
+                ],
+                "scale_group": "f59_15_1"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  48,
+                  8,
+                  83,
+                  40
+                ],
+                "scale_group": "f59_15_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  69,
+                  8,
+                  70,
+                  9
+                ],
+                "scale_group": "f59_15_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  64,
+                  12,
+                  66,
+                  14
+                ],
+                "scale_group": "f59_15_4"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  29,
+                  16,
+                  62,
+                  46
+                ],
+                "scale_group": "f59_15_5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  39,
+                  21,
+                  40,
+                  22
+                ],
+                "scale_group": "f59_15_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  34,
+                  26,
+                  35,
+                  27
+                ],
+                "scale_group": "f59_15_7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  29,
+                  30,
+                  31,
+                  32
+                ],
+                "scale_group": "f59_15_8"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  35,
+                  32,
+                  74
+                ],
+                "scale_group": "f59_15_9"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  46,
+                  147,
+                  177
+                ],
+                "scale_group": "b59_15"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  60,
+                  0,
+                  61,
+                  1
+                ],
+                "scale_group": "f59_16_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  44,
+                  2,
+                  45,
+                  3
+                ],
+                "scale_group": "f59_16_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  56,
+                  4,
+                  58,
+                  6
+                ],
+                "scale_group": "f59_16_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  40,
+                  6,
+                  42,
+                  8
+                ],
+                "scale_group": "f59_16_3"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  41,
+                  7,
+                  55,
+                  21
+                ],
+                "scale_group": "f59_16_4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  26,
+                  10,
+                  39,
+                  24
+                ],
+                "scale_group": "f59_16_5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  20,
+                  16,
+                  21,
+                  17
+                ],
+                "scale_group": "f59_16_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  16,
+                  20,
+                  17,
+                  21
+                ],
+                "scale_group": "f59_16_7"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  29,
+                  8,
+                  44
+                ],
+                "scale_group": "f59_16_8"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  9,
+                  36,
+                  11,
+                  37
+                ],
+                "scale_group": "f59_16_9"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  12,
+                  37,
+                  13,
+                  38
+                ],
+                "scale_group": "f59_16_10"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  21,
+                  146,
+                  152
+                ],
+                "scale_group": "b59_16"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  144,
+                  133
+                ],
+                "scale_group": "b59_17"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  144,
+                  131
+                ],
+                "scale_group": "b59_18"
+              }
+            ]
+          ]
+        }
+      },
+      "lancelot": {
+        "schema_version": 1,
+        "figure": 7,
+        "inventory_sha256": "f9e2d219b2ca190688f17e3e7960265888cfa6b07427459886ce18f508267a81",
+        "sources": {
+          "idle": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/lancelot-idle-master-v2.png",
+            "sha256": "c7e7fd8ae91b905dd7f8701b9bf7bdf42cc78aa8d507bb6b6eca8c84c9832b28",
+            "anchor": [
+              133,
+              24,
+              1206,
+              1174
+            ]
+          },
+          "ready": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/lancelot-ready-master-v2.png",
+            "sha256": "c630c8a618909d67770b7b74e5f2cae32d1b640232031d975e8293fc09975c75",
+            "anchor": [
+              159,
+              29,
+              1257,
+              1165
+            ]
+          },
+          "raise": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/lancelot-raise-master-v2.png",
+            "sha256": "e9a8a8dab8f74a6cff4fd3cd35a12ea43056066f3d8b44a549324e834136cac4",
+            "anchor": [
+              160,
+              8,
+              1216,
+              1165
+            ]
+          },
+          "thrust": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/lancelot-thrust-master-v2.png",
+            "sha256": "198d79e650d4f20860f93ea24e0389bbafd2a8c97e63d2fb5ee21d2e369fb999",
+            "anchor": [
+              172,
+              68,
+              1283,
+              1157
+            ]
+          },
+          "high": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/lancelot-high-master-v2.png",
+            "sha256": "88b52a96bf19536ca938424af5f402f1318140a53603699642e47a2894f82678",
+            "anchor": [
+              153,
+              7,
+              1201,
+              1176
+            ]
+          },
+          "gold_arc": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-016-crescent-battle-hd6-master-v1.png",
+            "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+            "anchor": [
+              71,
+              48,
+              1719,
+              833
+            ]
+          },
+          "spark": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-022-orb-battle-hd6-master-v1.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "anchor": [
+              333,
+              255,
+              996,
+              939
+            ]
+          },
+          "gold_bolt": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-007-gold_bolt-battle-hd6-master-v1.png",
+            "sha256": "e124dd00e1cd512d84528574ad9f79a1d5087204e5282cea702213f94ba426c2",
+            "anchor": [
+              286,
+              0,
+              2072,
+              470
+            ]
+          },
+          "blue_c": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-007-blue_c-battle-hd6-master-v1.png",
+            "sha256": "38e70b3e87780ffdaeee08b49ca4404f3dc9e8bdfd51f490ac1731354ee4dada",
+            "anchor": [
+              25,
+              69,
+              1235,
+              1189
+            ]
+          },
+          "blue_upper": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-007-blue_upper-battle-hd6-master-v1.png",
+            "sha256": "4da7c43c62dc954c1c4d30c1e8d170908c01313291bc81498199380fe05f65de",
+            "anchor": [
+              92,
+              6,
+              786,
+              504
+            ]
+          },
+          "blue_lower": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-007-blue_lower-battle-hd6-master-v1.png",
+            "sha256": "ca2aba8b9f399bb826794fcfdd0e67c031bae2f97e12d56c48ec8f8fb4784047",
+            "anchor": [
+              0,
+              0,
+              786,
+              392
+            ]
+          },
+          "blue_tail": {
+            "file": "work/hd1-battle-review-20261105-r84/lancelot-male-long-inputs/figure-007-blue_tail-battle-hd6-master-v1.png",
+            "sha256": "3fbf3b7bf73788d06a140422792c94efa311ead48ead556ddf5d6768f5ce40d3",
+            "anchor": [
+              28,
+              0,
+              605,
+              157
+            ]
+          }
+        },
+        "resources": {
+          "21": [
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  156,
+                  176
+                ],
+                "scale_group": "body-7-idle"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  158,
+                  176
+                ],
+                "scale_group": "body-7-idle"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  160,
+                  175
+                ],
+                "scale_group": "body-7-idle"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  158,
+                  176
+                ],
+                "scale_group": "body-7-idle"
+              }
+            ]
+          ],
+          "22": [
+            [
+              {
+                "pose": "ready",
+                "anchor": [
+                  0,
+                  0,
+                  160,
+                  176
+                ],
+                "scale_group": "body-7-ready"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  158,
+                  192
+                ],
+                "scale_group": "body-7-raise"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  160,
+                  192
+                ],
+                "scale_group": "body-7-raise"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  162,
+                  192
+                ],
+                "scale_group": "body-7-raise"
+              }
+            ],
+            [
+              {
+                "pose": "gold_bolt",
+                "anchor": [
+                  0,
+                  2,
+                  92,
+                  22
+                ],
+                "scale_group": "fx-22-4-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  80,
+                  22,
+                  82,
+                  23
+                ],
+                "scale_group": "fx-22-4-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  94,
+                  6,
+                  96,
+                  7
+                ],
+                "scale_group": "fx-22-4-2"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  94,
+                  17,
+                  96,
+                  19
+                ],
+                "scale_group": "fx-22-4-3"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  84,
+                  23,
+                  85,
+                  24
+                ],
+                "scale_group": "fx-22-4-4"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  87,
+                  15,
+                  88,
+                  16
+                ],
+                "scale_group": "fx-22-4-5"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  97,
+                  0,
+                  275,
+                  171
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  0,
+                  0,
+                  30,
+                  16
+                ],
+                "scale_group": "fx-22-5-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  20,
+                  16,
+                  22,
+                  17
+                ],
+                "scale_group": "fx-22-5-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  32,
+                  1,
+                  33,
+                  2
+                ],
+                "scale_group": "fx-22-5-2"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  135,
+                  3,
+                  293,
+                  176
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold_bolt",
+                "anchor": [
+                  41,
+                  49,
+                  122,
+                  69
+                ],
+                "scale_group": "fx-22-6-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  0,
+                  0,
+                  16,
+                  11
+                ],
+                "scale_group": "fx-22-6-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  137,
+                  53,
+                  142,
+                  57
+                ],
+                "scale_group": "fx-22-6-2"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  11,
+                  12,
+                  12,
+                  13
+                ],
+                "scale_group": "fx-22-6-3"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  17,
+                  2,
+                  18,
+                  3
+                ],
+                "scale_group": "fx-22-6-4"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  20,
+                  3,
+                  21,
+                  4
+                ],
+                "scale_group": "fx-22-6-5"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  120,
+                  55,
+                  121,
+                  56
+                ],
+                "scale_group": "fx-22-6-6"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  124,
+                  49,
+                  125,
+                  50
+                ],
+                "scale_group": "fx-22-6-7"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  124,
+                  68,
+                  125,
+                  69
+                ],
+                "scale_group": "fx-22-6-8"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  126,
+                  68,
+                  127,
+                  69
+                ],
+                "scale_group": "fx-22-6-9"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  129,
+                  68,
+                  130,
+                  69
+                ],
+                "scale_group": "fx-22-6-10"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  140,
+                  53,
+                  141,
+                  54
+                ],
+                "scale_group": "fx-22-6-11"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  143,
+                  10,
+                  310,
+                  181
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  0,
+                  45,
+                  29,
+                  61
+                ],
+                "scale_group": "fx-22-7-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  32,
+                  45,
+                  34,
+                  46
+                ],
+                "scale_group": "fx-22-7-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  31,
+                  60,
+                  32,
+                  61
+                ],
+                "scale_group": "fx-22-7-2"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  35,
+                  45,
+                  36,
+                  46
+                ],
+                "scale_group": "fx-22-7-3"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  138,
+                  0,
+                  300,
+                  173
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  65,
+                  68,
+                  144,
+                  104
+                ],
+                "scale_group": "fx-22-8-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  0,
+                  45,
+                  11,
+                  56
+                ],
+                "scale_group": "fx-22-8-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  145,
+                  89,
+                  147,
+                  90
+                ],
+                "scale_group": "fx-22-8-2"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  11,
+                  56,
+                  12,
+                  57
+                ],
+                "scale_group": "fx-22-8-3"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  12,
+                  45,
+                  13,
+                  46
+                ],
+                "scale_group": "fx-22-8-4"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  134,
+                  67,
+                  135,
+                  68
+                ],
+                "scale_group": "fx-22-8-5"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  145,
+                  76,
+                  146,
+                  77
+                ],
+                "scale_group": "fx-22-8-6"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  149,
+                  88,
+                  150,
+                  89
+                ],
+                "scale_group": "fx-22-8-7"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  156,
+                  0,
+                  316,
+                  171
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  0,
+                  101,
+                  19,
+                  116
+                ],
+                "scale_group": "fx-22-9-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  15,
+                  99,
+                  16,
+                  100
+                ],
+                "scale_group": "fx-22-9-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  17,
+                  98,
+                  18,
+                  99
+                ],
+                "scale_group": "fx-22-9-2"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  21,
+                  113,
+                  22,
+                  114
+                ],
+                "scale_group": "fx-22-9-3"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  25,
+                  112,
+                  26,
+                  113
+                ],
+                "scale_group": "fx-22-9-4"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  118,
+                  0,
+                  276,
+                  173
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  0,
+                  117,
+                  13,
+                  129
+                ],
+                "scale_group": "fx-22-10-0"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  9,
+                  115,
+                  10,
+                  116
+                ],
+                "scale_group": "fx-22-10-1"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  14,
+                  128,
+                  15,
+                  129
+                ],
+                "scale_group": "fx-22-10-2"
+              },
+              {
+                "pose": "gold_arc",
+                "anchor": [
+                  17,
+                  128,
+                  18,
+                  129
+                ],
+                "scale_group": "fx-22-10-3"
+              },
+              {
+                "pose": "thrust",
+                "anchor": [
+                  149,
+                  0,
+                  309,
+                  173
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "thrust",
+                "anchor": [
+                  0,
+                  0,
+                  162,
+                  173
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "thrust",
+                "anchor": [
+                  0,
+                  0,
+                  160,
+                  173
+                ],
+                "scale_group": "body-7-thrust"
+              }
+            ],
+            [
+              {
+                "pose": "blue_c",
+                "anchor": [
+                  3,
+                  0,
+                  256,
+                  192
+                ],
+                "scale_group": "fx-22-13-0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  87,
+                  161,
+                  94,
+                  165
+                ],
+                "scale_group": "fx-22-13-1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  86,
+                  44,
+                  94,
+                  48
+                ],
+                "scale_group": "fx-22-13-2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  87,
+                  50,
+                  94,
+                  53
+                ],
+                "scale_group": "fx-22-13-3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  68,
+                  164,
+                  72,
+                  166
+                ],
+                "scale_group": "fx-22-13-4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  2,
+                  40,
+                  3,
+                  42
+                ],
+                "scale_group": "fx-22-13-5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  6,
+                  68,
+                  7,
+                  70
+                ],
+                "scale_group": "fx-22-13-6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  47,
+                  1,
+                  48
+                ],
+                "scale_group": "fx-22-13-7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  6,
+                  73,
+                  7,
+                  74
+                ],
+                "scale_group": "fx-22-13-8"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  37,
+                  128,
+                  38,
+                  129
+                ],
+                "scale_group": "fx-22-13-9"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  40,
+                  130,
+                  41,
+                  131
+                ],
+                "scale_group": "fx-22-13-10"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  51,
+                  154,
+                  52,
+                  155
+                ],
+                "scale_group": "fx-22-13-11"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  53,
+                  154,
+                  54,
+                  155
+                ],
+                "scale_group": "fx-22-13-12"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  93,
+                  40,
+                  94,
+                  41
+                ],
+                "scale_group": "fx-22-13-13"
+              },
+              {
+                "pose": "high",
+                "anchor": [
+                  94,
+                  0,
+                  256,
+                  192
+                ],
+                "scale_group": "body-7-high"
+              }
+            ],
+            [
+              {
+                "pose": "blue_lower",
+                "anchor": [
+                  8,
+                  133,
+                  36,
+                  165
+                ],
+                "scale_group": "fx-22-14-0"
+              },
+              {
+                "pose": "blue_upper",
+                "anchor": [
+                  0,
+                  0,
+                  26,
+                  35
+                ],
+                "scale_group": "fx-22-14-1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  32,
+                  53,
+                  36,
+                  58
+                ],
+                "scale_group": "fx-22-14-2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  31,
+                  46,
+                  36,
+                  48
+                ],
+                "scale_group": "fx-22-14-3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  12,
+                  17,
+                  13,
+                  19
+                ],
+                "scale_group": "fx-22-14-4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  37,
+                  1,
+                  38
+                ],
+                "scale_group": "fx-22-14-5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  39,
+                  1,
+                  40
+                ],
+                "scale_group": "fx-22-14-6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  6,
+                  150,
+                  7,
+                  151
+                ],
+                "scale_group": "fx-22-14-7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  11,
+                  164,
+                  12,
+                  165
+                ],
+                "scale_group": "fx-22-14-8"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  12,
+                  20,
+                  13,
+                  21
+                ],
+                "scale_group": "fx-22-14-9"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  12,
+                  131,
+                  13,
+                  132
+                ],
+                "scale_group": "fx-22-14-10"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  24,
+                  166,
+                  25,
+                  167
+                ],
+                "scale_group": "fx-22-14-11"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  35,
+                  44,
+                  36,
+                  45
+                ],
+                "scale_group": "fx-22-14-12"
+              },
+              {
+                "pose": "high",
+                "anchor": [
+                  36,
+                  0,
+                  198,
+                  192
+                ],
+                "scale_group": "body-7-high"
+              }
+            ],
+            [
+              {
+                "pose": "blue_tail",
+                "anchor": [
+                  0,
+                  152,
+                  27,
+                  160
+                ],
+                "scale_group": "fx-22-15-0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  33,
+                  158,
+                  36,
+                  159
+                ],
+                "scale_group": "fx-22-15-1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  3,
+                  147,
+                  4,
+                  148
+                ],
+                "scale_group": "fx-22-15-2"
+              },
+              {
+                "pose": "high",
+                "anchor": [
+                  45,
+                  0,
+                  207,
+                  192
+                ],
+                "scale_group": "body-7-high"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  160,
+                  192
+                ],
+                "scale_group": "body-7-raise"
+              }
+            ]
+          ]
+        }
+      },
+      "missing_portraits": {
+        "schema_version": 1,
+        "portraits": [
+          {
+            "speaker_id": 7,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-source-r1/portrait-007-generated.png",
+            "sha256": "cc08a3edaa542729d690cfe41a84a24be2aca4d67f8c7b36cc4b6dea7d1bafc5",
+            "original_sha256": "177d266deac72f8bc7832f3869d99f8c09d9e06291c22d2a5f4c6ebdae0b0688"
+          },
+          {
+            "speaker_id": 15,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-source-r1/portrait-015-generated.png",
+            "sha256": "e82cd7f3341469108c1a003a49fddb3d2430307e55466665d7864875c724e4e6",
+            "original_sha256": "d1a05761fee165e01cbbc82d77114672e0afab0a8335c2fb2fb3826f784f442b"
+          },
+          {
+            "speaker_id": 28,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-source-r1/portrait-028-generated.png",
+            "sha256": "e2408f3aadd0546c755b2ce7f3707e788559dbcad113135a0d8a13249ef132a0",
+            "original_sha256": "9ce4df9edfbe02ec072edb54e291d533e81810f13e1f837e464d3453262a9d72"
+          },
+          {
+            "speaker_id": 29,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-source-r1/portrait-029-generated.png",
+            "sha256": "3a9027c1b423005961b9bb5b07541fd26236f8063629c7a89b480b8172481550",
+            "original_sha256": "a9f1c5b473b9a6e2ee5bfd7f0e6b4a764eea6c56cf1bb4bfb2f81310236f26e3"
+          }
+        ]
+      },
+      "smooth_portraits": {
+        "schema_version": 1,
+        "portraits": [
+          {
+            "speaker_id": 0,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-000-generated.png",
+            "sha256": "e41fc80a4a30275e12b442a2a12a5982c01284e295148f208d06a24e14974941",
+            "original_sha256": "17b99873a61e7e2681f7333839b92165f42abff610f7cbcabe6879bd572292ad",
+            "revision": 2
+          },
+          {
+            "speaker_id": 1,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-001-generated.png",
+            "sha256": "213a66c55d979766ba1363210bd6e8362e201017664ce91023ba354f2e62c69b",
+            "original_sha256": "22a9796ee1163468d9dff99c8d4fce21ec7022600e3ba243db84e84288b85306",
+            "revision": 2
+          },
+          {
+            "speaker_id": 2,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-002-generated.png",
+            "sha256": "f7f418806e15345da45ccb878ef5105f3cced15230e985628fe972dd019a16a3",
+            "original_sha256": "bfacd81659237a959cc45f123490d5da766f1568861d9f866529d54b350961e1",
+            "revision": 2
+          },
+          {
+            "speaker_id": 3,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-003-generated.png",
+            "sha256": "49c59df16629d22f9b59bff54ff7f52ecec35e6f4ad874d6b94136358b945677",
+            "original_sha256": "03d2d8f1ecb017dd07d328c41ebfec5b1499331340e37f664fc1ddc294f91a77",
+            "revision": 2
+          },
+          {
+            "speaker_id": 4,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-004-generated.png",
+            "sha256": "90579c4bfae356a3ce50f55295181cf9652d3f2e20da39b4ddc1aea2a8bd59d3",
+            "original_sha256": "fab627f07a6dd908f049c0c8c0892364c176d9b669b43acccf28746bfafa879d",
+            "revision": 2
+          },
+          {
+            "speaker_id": 5,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-005-generated.png",
+            "sha256": "908157c520f93a166d06a61c45de471e55225809b2d27bdddb46d4708ccde1bb",
+            "original_sha256": "79c9d14125b9195e5abc7092094e2b30a5258ddea6f8262924c123a1efdb2339",
+            "revision": 2
+          },
+          {
+            "speaker_id": 6,
+            "master": "work/hd1-battle-review-20261105-r84/portrait-smooth-source-r1/portrait-006-generated.png",
+            "sha256": "ecef1be3e243b153b1599c4f29f0a24c329be533d63405b030c5c2822c6f02a9",
+            "original_sha256": "d5ab1256ee36e61ec2e9e37b69f1c07ae4eb9017bdc21073e6d8195b105aba23",
+            "revision": 2
+          }
+        ]
+      },
+      "smooth_generation_requests": {
+        "tool": "image_gen.imagegen",
+        "identity_policy": "自己的原版DATO決定臉型與造型；羅德曼僅供平滑畫風與背景參考"
+      },
+      "lancelot_generation_requests": {
+        "user_decision": "男性、保留原版長棕色盔纓，修面容與質感",
+        "requests": [
+          {
+            "pose": "idle",
+            "prompt": "EDIT reference 1 only into a corrected production HD battle sprite of Lancelot from Flame Dragon Knights 2. IMPORTANT: Lancelot is a MAN. The previous rider reads as a woman, which must be corrected. Reference 2 is HIS OWN original male DATO portrait, and reference 3 is HIS OWN male HD portrait: preserve this man's angular jaw, straight strong eyebrows, straight nose, masculine cheekbones and serious expression. Draw the visible portion of his face beneath the helmet as unmistakably a young adult male knight, with a firm square lower jaw, thicker male neck and masculine armored shoulders. Keep his original blue-and-gold helmet; reveal enough side-profile nose, cheek and jaw beneath its brim to read as male. His actual brown hair under the helmet is distinct from the helmet decoration. Preserve the original LONG helmet plume and its flowing swept-back footprint: render a dark chestnut-brown coarse HORSEHAIR HELMET PLUME, visibly mounted in a metal crest socket at the top of the helmet, not loose orange human hair or a woman's ponytail. Keep the plume long down to the shoulder blades in the same silhouette as the first reference; do NOT shorten it to a Roman crest. Preserve the original pose exactly: idle. Preserve the chestnut horse, blue-black mane and tail, blue cape, original dark steel and blue armor with gold trim, reins, sword, hand and leg positions, camera, canvas framing and every horse hoof. Only refine the knight's face/gender reading, neck and crest interpretation/color. Do not replace him with a woman, do not add breasts, eyelashes, makeup, beard or new equipment. Smooth handpainted fantasy game sprite finish matching the original base. One complete rider-and-horse cutout, fully transparent background, no text or frame. Preserve alpha and full object without clipping.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/figure-007-idle-battle-hd6-master-v1.png",
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_007_m0.png",
+              "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/party-007-portrait-style-a-v1-480.png"
+            ],
+            "transparent_background": true
+          },
+          {
+            "pose": "ready",
+            "prompt": "EDIT reference 1 only into a corrected production HD battle sprite of Lancelot from Flame Dragon Knights 2. IMPORTANT: Lancelot is a MAN. The previous rider reads as a woman, which must be corrected. Reference 2 is HIS OWN original male DATO portrait, and reference 3 is HIS OWN male HD portrait: preserve this man's angular jaw, straight strong eyebrows, straight nose, masculine cheekbones and serious expression. Draw the visible portion of his face beneath the helmet as unmistakably a young adult male knight, with a firm square lower jaw, thicker male neck and masculine armored shoulders. Keep his original blue-and-gold helmet; reveal enough side-profile nose, cheek and jaw beneath its brim to read as male. His actual brown hair under the helmet is distinct from the helmet decoration. Preserve the original LONG helmet plume and its flowing swept-back footprint: render a dark chestnut-brown coarse HORSEHAIR HELMET PLUME, visibly mounted in a metal crest socket at the top of the helmet, not loose orange human hair or a woman's ponytail. Keep the plume long down to the shoulder blades in the same silhouette as the first reference; do NOT shorten it to a Roman crest. Preserve the original pose exactly: ready. Preserve the chestnut horse, blue-black mane and tail, blue cape, original dark steel and blue armor with gold trim, reins, sword, hand and leg positions, camera, canvas framing and every horse hoof. Only refine the knight's face/gender reading, neck and crest interpretation/color. Do not replace him with a woman, do not add breasts, eyelashes, makeup, beard or new equipment. Smooth handpainted fantasy game sprite finish matching the original base. One complete rider-and-horse cutout, fully transparent background, no text or frame. Preserve alpha and full object without clipping.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/figure-007-ready-battle-hd6-master-v1.png",
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_007_m0.png",
+              "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/party-007-portrait-style-a-v1-480.png"
+            ],
+            "transparent_background": true
+          },
+          {
+            "pose": "raise",
+            "prompt": "EDIT reference 1 only into a corrected production HD battle sprite of Lancelot from Flame Dragon Knights 2. IMPORTANT: Lancelot is a MAN. The previous rider reads as a woman, which must be corrected. Reference 2 is HIS OWN original male DATO portrait, and reference 3 is HIS OWN male HD portrait: preserve this man's angular jaw, straight strong eyebrows, straight nose, masculine cheekbones and serious expression. Draw the visible portion of his face beneath the helmet as unmistakably a young adult male knight, with a firm square lower jaw, thicker male neck and masculine armored shoulders. Keep his original blue-and-gold helmet; reveal enough side-profile nose, cheek and jaw beneath its brim to read as male. His actual brown hair under the helmet is distinct from the helmet decoration. Preserve the original LONG helmet plume and its flowing swept-back footprint: render a dark chestnut-brown coarse HORSEHAIR HELMET PLUME, visibly mounted in a metal crest socket at the top of the helmet, not loose orange human hair or a woman's ponytail. Keep the plume long down to the shoulder blades in the same silhouette as the first reference; do NOT shorten it to a Roman crest. Preserve the original pose exactly: raise. Preserve the chestnut horse, blue-black mane and tail, blue cape, original dark steel and blue armor with gold trim, reins, sword, hand and leg positions, camera, canvas framing and every horse hoof. Only refine the knight's face/gender reading, neck and crest interpretation/color. Do not replace him with a woman, do not add breasts, eyelashes, makeup, beard or new equipment. Smooth handpainted fantasy game sprite finish matching the original base. One complete rider-and-horse cutout, fully transparent background, no text or frame. Preserve alpha and full object without clipping.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/figure-007-raise-battle-hd6-master-v1.png",
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_007_m0.png",
+              "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/party-007-portrait-style-a-v1-480.png"
+            ],
+            "transparent_background": true
+          },
+          {
+            "pose": "thrust",
+            "prompt": "EDIT reference 1 only into a corrected production HD battle sprite of Lancelot from Flame Dragon Knights 2. IMPORTANT: Lancelot is a MAN. The previous rider reads as a woman, which must be corrected. Reference 2 is HIS OWN original male DATO portrait, and reference 3 is HIS OWN male HD portrait: preserve this man's angular jaw, straight strong eyebrows, straight nose, masculine cheekbones and serious expression. Draw the visible portion of his face beneath the helmet as unmistakably a young adult male knight, with a firm square lower jaw, thicker male neck and masculine armored shoulders. Keep his original blue-and-gold helmet; reveal enough side-profile nose, cheek and jaw beneath its brim to read as male. His actual brown hair under the helmet is distinct from the helmet decoration. Preserve the original LONG helmet plume and its flowing swept-back footprint: render a dark chestnut-brown coarse HORSEHAIR HELMET PLUME, visibly mounted in a metal crest socket at the top of the helmet, not loose orange human hair or a woman's ponytail. Keep the plume long down to the shoulder blades in the same silhouette as the first reference; do NOT shorten it to a Roman crest. Preserve the original pose exactly: thrust. Preserve the chestnut horse, blue-black mane and tail, blue cape, original dark steel and blue armor with gold trim, reins, sword, hand and leg positions, camera, canvas framing and every horse hoof. Only refine the knight's face/gender reading, neck and crest interpretation/color. Do not replace him with a woman, do not add breasts, eyelashes, makeup, beard or new equipment. Smooth handpainted fantasy game sprite finish matching the original base. One complete rider-and-horse cutout, fully transparent background, no text or frame. Preserve alpha and full object without clipping.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/figure-007-thrust-battle-hd6-master-v1.png",
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_007_m0.png",
+              "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/party-007-portrait-style-a-v1-480.png"
+            ],
+            "transparent_background": true
+          },
+          {
+            "pose": "high",
+            "prompt": "EDIT reference 1 only into a corrected production HD battle sprite of Lancelot from Flame Dragon Knights 2. IMPORTANT: Lancelot is a MAN. The previous rider reads as a woman, which must be corrected. Reference 2 is HIS OWN original male DATO portrait, and reference 3 is HIS OWN male HD portrait: preserve this man's angular jaw, straight strong eyebrows, straight nose, masculine cheekbones and serious expression. Draw the visible portion of his face beneath the helmet as unmistakably a young adult male knight, with a firm square lower jaw, thicker male neck and masculine armored shoulders. Keep his original blue-and-gold helmet; reveal enough side-profile nose, cheek and jaw beneath its brim to read as male. His actual brown hair under the helmet is distinct from the helmet decoration. Preserve the original LONG helmet plume and its flowing swept-back footprint: render a dark chestnut-brown coarse HORSEHAIR HELMET PLUME, visibly mounted in a metal crest socket at the top of the helmet, not loose orange human hair or a woman's ponytail. Keep the plume long down to the shoulder blades in the same silhouette as the first reference; do NOT shorten it to a Roman crest. Preserve the original pose exactly: high. Preserve the chestnut horse, blue-black mane and tail, blue cape, original dark steel and blue armor with gold trim, reins, sword, hand and leg positions, camera, canvas framing and every horse hoof. Only refine the knight's face/gender reading, neck and crest interpretation/color. Do not replace him with a woman, do not add breasts, eyelashes, makeup, beard or new equipment. Smooth handpainted fantasy game sprite finish matching the original base. One complete rider-and-horse cutout, fully transparent background, no text or frame. Preserve alpha and full object without clipping.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/figure-007-high-battle-hd6-master-v1.png",
+              "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_007_m0.png",
+              "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/party-007-portrait-style-a-v1-480.png"
+            ],
+            "transparent_background": true
+          }
+        ]
+      }
+    },
+    "voice_full_plan": {
+      "kind": "original-yuni-character-performance",
+      "original_actor_imitation": false,
+      "user_decision": "使用者2026-11-05選定溫柔可愛版，採相同Serena與角色演繹提示",
+      "duration_seconds": 313.0,
+      "segments": [
+        {
+          "id": "invitation",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "嗨，我是悠妮。還記得，那些並肩作戰的日子嗎？",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 0.25,
+          "window_seconds": 6.55,
+          "scene_id": "invitation"
+        },
+        {
+          "id": "opening",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "很久以前，我們在同一段旋律裡，踏上冒險。如今，熟悉的序幕，換上了新的筆觸。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 8.0,
+          "window_seconds": 25.8,
+          "scene_id": "opening"
+        },
+        {
+          "id": "start-menu",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "準備好了嗎？按下開始，我們再走一次。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 34.25,
+          "window_seconds": 5.55,
+          "scene_id": "start-menu"
+        },
+        {
+          "id": "game-introduction",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "走位、劍技、魔法。在炎龍騎士團二，每一步，都由你決定。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 40.25,
+          "window_seconds": 7.55,
+          "scene_id": "game-introduction"
+        },
+        {
+          "id": "royal-switch",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "還記得皇城裡的這段話嗎？原版畫風，或是全新高畫質，隨時切換。熟悉的故事，等你再次走進來。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 48.25,
+          "window_seconds": 19.55,
+          "scene_id": "royal-switch"
+        },
+        {
+          "id": "first-deployment",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "第一場戰役，伙伴們又站回了熟悉的位置。這一次，一起出發吧。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 68.25,
+          "window_seconds": 9.55,
+          "scene_id": "first-deployment"
+        },
+        {
+          "id": "map-switch",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "一個按鍵，喚回熟悉的模樣。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 78.25,
+          "window_seconds": 3.55,
+          "scene_id": "map-switch"
+        },
+        {
+          "id": "gaia-original",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "蓋亞，重拳出擊！",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 82.25,
+          "window_seconds": 3.55,
+          "scene_id": "gaia-original"
+        },
+        {
+          "id": "ares",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "亞雷斯，讓我們一起守住騎士的誓言。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 93.25,
+          "window_seconds": 6.55,
+          "scene_id": "ares"
+        },
+        {
+          "id": "yuni",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "輪到我囉。讓魔法，點亮戰場！",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 100.25,
+          "window_seconds": 6.55,
+          "scene_id": "yuni"
+        },
+        {
+          "id": "middy",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "蜜蒂，音速刃！",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 107.25,
+          "window_seconds": 5.05,
+          "scene_id": "middy"
+        },
+        {
+          "id": "tino",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "鐵諾，熾炎刀！",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 112.75,
+          "window_seconds": 6.05,
+          "scene_id": "tino"
+        },
+        {
+          "id": "rodman",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "羅德曼，淒煌斬！",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 119.25,
+          "window_seconds": 5.55,
+          "scene_id": "rodman"
+        },
+        {
+          "id": "sky-key",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "散落的線索，終將化作開啟傳說的鑰匙。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 125.25,
+          "window_seconds": 7.55,
+          "scene_id": "sky-key"
+        },
+        {
+          "id": "balance-warning-zero",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "調整之前，先想一想。三次確認，保留冒險的樂趣。能力、成長、特技命中與敵軍強度，都能照你的步調調整。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 133.25,
+          "window_seconds": 16.55,
+          "scene_id": "balance-warning-zero"
+        },
+        {
+          "id": "companions-intro",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "這些名字，你還記得嗎？再一次，並肩作戰。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 151.25,
+          "window_seconds": 4.55,
+          "scene_id": "companions-intro"
+        },
+        {
+          "id": "companions-01",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "索爾，王子的遠行。哈諾，戰士的證明。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 156.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-01"
+        },
+        {
+          "id": "companions-02",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "鐵諾，浪跡天涯。哈瓦特，老而彌堅。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 164.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-02"
+        },
+        {
+          "id": "companions-03",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "亞雷斯，騎士的誓言。洛娜，追隨心意。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 172.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-03"
+        },
+        {
+          "id": "companions-04",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "萊汀，禁衛軍之盾。蘭斯洛特，沉默的同行者。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 180.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-04"
+        },
+        {
+          "id": "companions-05",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "希莉亞，堅定的心意。悠妮，黃金城之謎。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 188.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-05"
+        },
+        {
+          "id": "companions-06",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "瑪琳，神術的修行。索菲亞，光之祈禱。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 196.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-06"
+        },
+        {
+          "id": "companions-07",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "凱麗，武神門下。貝克威，森林之外。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 204.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-07"
+        },
+        {
+          "id": "companions-08",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "珊，大法師之約。塞可邦勒，豹人的傳承。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 212.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-08"
+        },
+        {
+          "id": "companions-09",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "凱拉斯，不忘舊部。米亞斯多德，龍人的歷練。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 220.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-09"
+        },
+        {
+          "id": "companions-10",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "蜜蒂，劍與心。羅德曼，領主的冒險。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 228.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-10"
+        },
+        {
+          "id": "companions-11",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "莎拉，飛龍的遠方。約拿，無名的去向。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 236.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-11"
+        },
+        {
+          "id": "companions-12",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "卡里斯，武神歸途。羅蘭，精靈的求知。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 244.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-12"
+        },
+        {
+          "id": "companions-13",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "希爾法，時空的追尋。謝多，黑森林隱者。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 252.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-13"
+        },
+        {
+          "id": "companions-14",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "聖寇拉斯，龍人之王。巴拿羅西亞，武術與人品。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 260.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-14"
+        },
+        {
+          "id": "companions-15",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "達克塞，跨越邊界。亞齊梅吉，和平的橋梁。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 268.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-15"
+        },
+        {
+          "id": "companions-16",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "蓋亞，沉默的伙伴。渥德，留待重逢。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 276.25,
+          "window_seconds": 7.55,
+          "scene_id": "companions-16"
+        },
+        {
+          "id": "legacy",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "一九九五，那段冒險，成了傳說。二零二六，我們再次出發。讓經典，再現。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 284.25,
+          "window_seconds": 9.55,
+          "scene_id": "legacy"
+        },
+        {
+          "id": "hd2",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "下一段旅程，全新的高畫質世界，正等著你。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 294.25,
+          "window_seconds": 6.55,
+          "scene_id": "hd2"
+        },
+        {
+          "id": "android",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "還有手機版本，讓冒險，隨身同行。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 301.25,
+          "window_seconds": 4.55,
+          "scene_id": "android"
+        },
+        {
+          "id": "editors",
+          "speaker": "Serena",
+          "seed": 1995,
+          "text": "下一個故事，下一片戰場，交給你來創造。讓經典，再現。",
+          "instruct": "用清亮、溫柔、可愛的年輕女性聲線說中文，像善良的日式奇幻遊戲女主角。帶微笑、自然親切，輕柔但咬字清楚，不要故意裝幼兒，不要哭腔，不要廣告播報腔。用輕柔的台灣國語語氣，語速平穩，句末柔和。",
+          "start_seconds": 306.25,
+          "window_seconds": 6.55,
+          "scene_id": "editors"
+        }
+      ]
+    },
+    "rodman_normal_recording": {
+      "controller_receipt": "work/hd1-battle-review-20261105-r84/rodman-special-r1/promo-action.json",
+      "recording": "work/hd1-battle-review-20261105-r84/rodman-special-r1-record/recording.json",
+      "sha256": "a9358bfb7fbd4ad506ffb93511d796eb5624d1094d0d77cd113b812b472fcba4",
+      "clip_start": 453,
+      "source_duration": 18,
+      "duration": 6,
+      "source_scope": "已揭露的正式JOIN／升級建構槽，普通LOAD與鍵鼠演出；非自然招募"
+    },
+    "new_delivery_version": "v.1.1.2-20261105",
+    "private_sync": {
+      "status": "PASS-PRIVATE-SYNC",
+      "unchanged_old_files": 11253,
+      "registered_files": 11256,
+      "catalog_sha256": "99d68d41fc70588106847d84f95825314411a496587aa86ddf366e3d8d81327a",
+      "private_manifest_sha256": "af61a3461881071ff3b70207f99e31d326ba562c75ac052ee318198471beb7df",
+      "owner_uid": 1000,
+      "commit": "0ba8d8dd"
+    },
+    "gpu": {
+      "rodman_source": "work/hd1-battle-review-20261105-r84/armored-source-gpu-r1/receipt.json",
+      "rodman_physical": "work/hd1-battle-review-20261105-r84/rodman-physical-gpu-r1/receipt.json",
+      "rodman_special": "work/hd1-battle-review-20261105-r84/rodman-command28-gpu-r1/receipt.json",
+      "lancelot_source": "work/hd1-battle-review-20261105-r84/lancelot-source-gpu-r1/receipt.json",
+      "lancelot_physical": "work/hd1-battle-review-20261105-r84/lancelot-runtime-gpu-r1/receipt.json"
+    },
+    "prior_rodman_readme_capture": {
+      "path": "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png",
+      "sha256": "de33750c2f30027710d1d447053b2b512917ec692e88ff9dfc7e1eb98ffd72d5",
+      "label": "羅德曼｜淒煌斬",
+      "extraction": {
+        "source": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+        "source_sha256": "03e6395c534ae7c435be1617c18dca2f1a52cc8f18d69e479871df65ee2e5f89",
+        "seconds": 548.4,
+        "command": [
+          "ffmpeg",
+          "-nostdin",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-threads",
+          "2",
+          "-ss",
+          "548.4",
+          "-i",
+          "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
+          "-frames:v",
+          "1",
+          "-threads",
+          "1",
+          "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png"
+        ]
+      }
+    }
   }
 }

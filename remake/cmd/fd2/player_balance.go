@@ -52,6 +52,8 @@ func (g *Game) openBalanceEditor() {
 		}
 	}
 	g.loadBalanceValues()
+	// The toolbar consumes this click before ordinary Game.Update runs.
+	g.recordInputAuditState()
 }
 
 func (g *Game) balanceIDs() []int {
@@ -97,6 +99,24 @@ func (g *Game) balanceSelected() (int, *battle.Unit) {
 	g.balanceUI.person = (g.balanceUI.person%len(ids) + len(ids)) % len(ids)
 	id := ids[g.balanceUI.person]
 	return id, g.balanceUnit(id)
+}
+
+// A paused editor still reports received input. Inspect wrapped indices without
+// changing selection, values, gameplay state or RNG.
+func (g *Game) balanceAuditState() map[string]any {
+	b := &g.balanceUI
+	ids := g.balanceIDs()
+	id, command := -1, -1
+	if len(ids) != 0 {
+		id = ids[(b.person%len(ids)+len(ids))%len(ids)]
+		commands := g.balanceCommands(g.balanceUnit(id))
+		if len(commands) != 0 {
+			command = commands[(b.command%len(commands)+len(commands))%len(commands)]
+		}
+	}
+	return map[string]any{"open": b.open, "ack": b.ack, "tab": b.tab,
+		"person_index": b.person, "ids": ids, "identity": id, "command_id": command,
+		"field": b.field, "values": b.values, "message": b.message}
 }
 
 func balanceRateValues(r battle.GrowthRates) [5]int { return [5]int{r.HP, r.MP, r.AP, r.DP, r.DX} }
@@ -395,6 +415,7 @@ func (p *modernHDPresentation) updateBalanceEditor() bool {
 	if !b.open {
 		return false
 	}
+	defer g.recordInputAuditState()
 	// Keep wall time from advancing the paused game clock.
 	g.playerClock.wall = time.Now()
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
@@ -451,9 +472,22 @@ func (p *modernHDPresentation) drawBalanceEditor(screen ebiten.FinalScreen, geom
 	rect := func(r image.Rectangle, c color.RGBA) {
 		vector.DrawFilledRect(s, float32(r.Min.X*3), float32(r.Min.Y*3), float32(r.Dx()*3), float32(r.Dy()*3), c, false)
 	}
-	gold := color.RGBA{211, 174, 99, 255}
-	rect(image.Rect(44, 34, 596, 384), gold)
-	rect(image.Rect(46, 36, 594, 382), color.RGBA{11, 31, 50, 255})
+	panel := image.Rect(44, 34, 596, 384)
+	for inset, chrome := range []color.RGBA{
+		{13, 18, 29, 255}, {115, 142, 153, 255},
+		{247, 228, 176, 255}, {183, 141, 70, 255},
+		{69, 49, 25, 255}, {122, 151, 168, 255},
+	} {
+		rect(panel.Inset(inset), chrome)
+	}
+	rect(panel.Inset(6), color.RGBA{42, 70, 128, 255})
+	headingBottom := 72
+	if b.ack < 3 {
+		headingBottom = 97
+	}
+	rect(image.Rect(56, 43, 584, headingBottom), color.RGBA{50, 82, 151, 255})
+	rect(image.Rect(62, headingBottom, 578, headingBottom+1), color.RGBA{169, 190, 202, 255})
+	rect(image.Rect(62, headingBottom+1, 578, headingBottom+2), color.RGBA{23, 43, 82, 255})
 	label := func(caption string, x, y, size int) {
 		f := p.Game.font
 		if f == nil {
@@ -467,7 +501,17 @@ func (p *modernHDPresentation) drawBalanceEditor(screen ebiten.FinalScreen, geom
 			text.Draw(s, caption, face, x*3, y*3, color.RGBA{245, 237, 216, 255})
 		}
 	}
-	button := func(r image.Rectangle, label string, active bool) { p.drawCompactToolbarButton(s, r, label, active) }
+	button := func(r image.Rectangle, label string, active bool) {
+		p.drawCompactToolbarButton(s, r, label, active)
+		light, shade := color.RGBA{156, 182, 198, 255}, color.RGBA{13, 25, 43, 255}
+		if active {
+			light, shade = color.RGBA{249, 230, 176, 255}, color.RGBA{78, 52, 23, 255}
+		}
+		rect(image.Rect(r.Min.X+1, r.Min.Y+1, r.Max.X-1, r.Min.Y+2), light)
+		rect(image.Rect(r.Min.X+1, r.Min.Y+1, r.Min.X+2, r.Max.Y-1), light)
+		rect(image.Rect(r.Min.X+1, r.Max.Y-2, r.Max.X-1, r.Max.Y-1), shade)
+		rect(image.Rect(r.Max.X-2, r.Min.Y+1, r.Max.X-1, r.Max.Y-1), shade)
+	}
 	if b.ack < 3 {
 		label("修改前，請先想一想", 78, 82, 57)
 		label("調整能力與成長會改變原版平衡，", 78, 126, 42)

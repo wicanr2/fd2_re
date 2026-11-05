@@ -3,14 +3,34 @@ package main
 import (
 	"bytes"
 	"image"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
+
+func TestBalanceAuditSelectionDoesNotNormalizeOrChangeState(t *testing.T) {
+	u := battle.Unit{}
+	u.NativeCommandMask[0] = 1
+	g := &Game{partyRoster: map[int]battle.Unit{0: {}, 9: u}, rng: rand.New(rand.NewSource(1995))}
+	g.balanceUI = balanceEditor{open: true, ack: 3, tab: 2, person: -1, command: 99, field: -1}
+	before := g.balanceUI
+	state := g.balanceAuditState()
+	if state["identity"] != 9 || state["command_id"] != 0 {
+		t.Fatal("audit did not describe the wrapped selection", state)
+	}
+	if !reflect.DeepEqual(before, g.balanceUI) || g.balance != nil || g.partyRoster[9].NativeCommandMask[0] != 1 {
+		t.Fatal("read-only audit changed editor or party state")
+	}
+	if g.rng.Int63() != rand.New(rand.NewSource(1995)).Int63() {
+		t.Fatal("read-only audit consumed gameplay RNG")
+	}
+}
 
 func TestBalanceWarningRequiresThreeSeparateClicksEveryOpening(t *testing.T) {
 	g := &Game{camp: &campaign.Runner{}}

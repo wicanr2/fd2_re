@@ -46,14 +46,27 @@ def key(k,delay=.35):
     command('xdotool','windowfocus',window);command('xdotool','keydown',k);time.sleep(.13);command('xdotool','keyup',k);time.sleep(delay);event('key',k)
 def click(x,y):
     command('xdotool','windowfocus',window);command('xdotool','mousemove','--window',window,str(x*3),str(y*3));time.sleep(.15)
-    command('xdotool','mousedown','1');time.sleep(.35);command('xdotool','mouseup','1');time.sleep(.7);event('click',[x,y])
+    command('xdotool','mousedown','1')
+    try:wait(lambda s:s.get('mouse_left_pressed') is True,20)
+    finally:command('xdotool','mouseup','1')
+    wait(lambda s:s.get('mouse_left_released') is True,20)
+    time.sleep(.7)
+    event('click',[x,y])
 def shot(name):
     p=out/(name+'.png');command('import','-window',window,str(p));event('shot',{'file':p.name,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
     print('SHOT',out.name,name,flush=True)
 def open_editor():
     command('xdotool','mousemove','--window',window,'1794','3');time.sleep(.5);click(598,12)
 def ack():
-    for _ in range(3):click(400,264)
+    for count in range(1,4):
+        click(400,264);wait(lambda s:s.get('balance_editor',{}).get('ack')==count)
+def choose_person(identity):
+    state=latest().get('balance_editor',{})
+    assert identity in state.get('ids',[]),identity
+    for _ in range(len(state['ids'])):
+        if latest().get('balance_editor',{}).get('identity')==identity:return
+        click(416,120)
+    raise AssertionError('editor did not select identity '+str(identity))
 def number(x,y,n):
     click(x,y);command('xdotool','type','--clearmodifiers','--delay','100',str(n));time.sleep(.6);event('number',n)
 def run_capture(name):
@@ -99,7 +112,7 @@ try:
         party_ids=sorted(int(k) for k in source['party_roster'])
         assert 9 in party_ids and 18 in party_ids
         open_editor();shot('warning-zero');ack();click(384,88)
-        for _ in range(party_ids.index(9)):click(416,120)
+        choose_person(9)
         shot('yuni-learned-skill')
         # Command zero is already learned in the controlled source, so the
         # first displayed command needs no skill grant or command injection.
@@ -108,12 +121,12 @@ try:
         wait(lambda s:json.loads(save_path().read_text()).get('balance',{}).get('skill_hit',{}).get('9',{}).get('0')==100)
         shutil.copy2(save_path(),base/'saved-yuni-hit100.json');result['yuni_skill_0_hit100_saved']=True
         open_editor();ack();click(384,88)
-        for _ in range(party_ids.index(9)):click(416,120)
+        choose_person(9)
         click(138,334);shot('yuni-reset-original');click(548,55);key('F5')
         wait(lambda s:not json.loads(save_path().read_text()).get('balance',{}).get('skill_hit',{}).get('9'))
         result['yuni_override_removed']=True
         open_editor();ack();click(384,88)
-        for _ in range(party_ids.index(18)):click(416,120)
+        choose_person(18)
         shot('middy-sonic-no-hit-roll');click(505,334);shot('middy-apply-preserves-rules');click(548,55);key('F5')
         wait(lambda s:not json.loads(save_path().read_text()).get('balance',{}).get('skill_hit',{}).get('18'))
         shutil.copy2(save_path(),base/'saved-middy-unchanged.json');result['middy_no_hit_override']=True

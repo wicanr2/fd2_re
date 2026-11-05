@@ -1006,3 +1006,13 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [圓頂綠色物件配方](../../remake/assets/themes/modern/terrain-rounded-green-map0.recipe.json)與[褐色雙塊物件配方](../../remake/assets/themes/modern/terrain-brown-pair-map0.recipe.json)：沿61契約追加四槽；正常GPU／保存冷讀、完整提示及明示範圍拒收沿主收據的`rounded_green_and_pair_followup_20261019`。
 - [HD 清晰黑體、旅館／教會／角色狀態／物品／整備／標題讀檔、整備問句／角色物品轉場／金幣滾動、首章戰場覆蓋修正與四語 GUI 主收據](../data/fd2-modern-hd-fonts-20261018.json)、[正常驗證工具](../../tools/verify_fd2_hd_fonts_gui.py)、[已確認字型原型](../figures/hd-font-style-comparison.png)，契約見[61](61-modern-theme-runtime-spec.md)。
 \n- HD1完整地表圖集第一批：見[規格61](61-modern-theme-runtime-spec.md)「HD1完整地表圖集第一批」、[離線配方](../../remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json)與[編製器](../../tools/build_fd2_hd_terrain_atlas.py)與[已登錄母稿重編](../../tools/rebuild_fd2_hd_terrain_atlas.py)。\n
+
+## 2026-11-05 戰鬥動畫逐人審閱
+
+[本機逐人Markdown](../../work/hd1-battle-review-20261105-r84/overview-r3/README.md)列出32名伙伴、原始轉職表明示的形態及其餘圖組，共136組原版／HD全幀來源對照，已採羅德曼補頭後的正式圖源。完整圖源對照限本機，並非原版執行對拍或全部正式caller驗收。
+
+[編製器](../../tools/build_fd2_battle_animation_overview.py)與[現況收據](../data/fd2-hd1-feedback-20261104.json)的battle_animation_review_20261105是重跑入口。原創悠妮配音試聽沿[語音編製器](../../tools/synthesize_fd2_promo_voice.py)，音色與模仿邊界記於同份收據。
+
+[32人平滑HD頭像總覽](../figures/hd1-party-portrait-review.png)由[既有頭像總覽工具](../../tools/build_modern_portrait_overview.py)以`--party-only --font`讀正式480像素圖源重生；[配對候選編製器](../../tools/complete_fd2_party_portraits.py)以逐人明示範圍補齊80／480圖源。[能力視窗總覽](../figures/hd1-balance-editor-overview.png)由[正常GUI收據編製器](../../tools/build_fd2_balance_overview.py)重生。蘭斯洛特已選定男性面容與原版長棕盔纓，配音已選溫柔可愛版；後續影片及封包驗收依[#295](https://github.com/wicanr2/fd2_re/issues/295)。
+
+[旁白混音器](../../tools/mix_fd2_promo_narration.py)核對逐段文字、聲線、音訊SHA、分鏡時間窗與不重疊，再正規化、混音及壓低旁白期間的遊戲底音；保留原影片畫面，產出獨立旁白來源清冊及可開啟的影片。
