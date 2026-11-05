@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "recorded_date": "2026-11-05",
-  "status": "DRAFT-PRESENTATION-VERIFIED-SIZE-CHOICE-PENDING",
+  "status": "DRAFT-PRESENTATION-VERIFIED-SIZE-CONFIRMED",
   "source_branch": "feature/hd2-first-slice-20261105",
   "issue": "https://github.com/wicanr2/fd2_re/issues/204",
   "canonical_spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd2首章站姿原型draft呈現驗證",
@@ -88,8 +88,8 @@
       192
     ],
     "temporary_default": 168,
-    "user_size_choice": null,
-    "choice_status": "pending",
+    "user_size_choice": 168,
+    "choice_status": "confirmed-for-followup-drafts-20261105",
     "foot": [
       232,
       1090
@@ -360,8 +360,8 @@
   "next_stages": [
     {
       "stage": "人物比例",
-      "status": "DRAFT",
-      "gate": "使用者選定三種高度之一後，才將其作為後續人物試稿基準。"
+      "status": "CONFIRMED-FOR-DRAFTS",
+      "gate": "使用者2026-11-05以ok go確認168像素作為後續人物試稿基準；正式載入與投影仍另走READY規格。"
     },
     {
       "stage": "首關素材切片",
