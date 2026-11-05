@@ -1016,3 +1016,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [32人平滑HD頭像總覽](../figures/hd1-party-portrait-review.png)由[既有頭像總覽工具](../../tools/build_modern_portrait_overview.py)以`--party-only --font`讀正式480像素圖源重生；[配對候選編製器](../../tools/complete_fd2_party_portraits.py)以逐人明示範圍補齊80／480圖源。[能力視窗總覽](../figures/hd1-balance-editor-overview.png)由[正常GUI收據編製器](../../tools/build_fd2_balance_overview.py)重生。蘭斯洛特已選定男性面容與原版長棕盔纓，配音已選溫柔可愛版；後續影片及封包驗收依[#295](https://github.com/wicanr2/fd2_re/issues/295)。
 
 [旁白混音器](../../tools/mix_fd2_promo_narration.py)核對逐段文字、聲線、音訊SHA、分鏡時間窗與不重疊，再正規化、混音及壓低旁白期間的遊戲底音；保留原影片畫面，產出獨立旁白來源清冊及可開啟的影片。
+
+[HD1影片逐幕檢視工具](../../tools/review_fd2_hd1_promo.py)的extract在既有推廣片容器擷取43幕與三招九張動作，核對混音前後視訊封包一致；contact在Pillow容器重生接觸表。搭配[HD1音畫驗證器](../../tools/validate_fd2_hd1_promo.py)核對36段旁白時間、音量、黑幀、凍結與字幕安全區。視覺與人耳確認仍分開記錄。

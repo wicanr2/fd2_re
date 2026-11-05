@@ -356,50 +356,49 @@
   },
   "target_release": "v.1.1.1-20261104; built and validated locally; not tagged or published",
   "release_build": {
-    "version": "v.1.1.1-20261104",
-    "source_commit": "38eff878dcffbcddb9b288bf31e948d75e81474d",
-    "run_id": 41836110195,
-    "url": "https://github.com/wicanr2/fd2_re/actions/runs/41836110195",
+    "version": "v.1.1.2-20261105",
+    "source_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27",
+    "run_id": 41983439562,
+    "url": "https://github.com/wicanr2/fd2_re/actions/runs/41983439562",
     "platform_native_jobs": "linux/windows/macos success; collect success; publish skipped",
-    "artifact_id": 13325802174,
-    "artifact_sha256": "1277d014741436c11b3c9580dbd0dad58f8b321b415d304ed925662db9242c62",
-    "staging": "work/full-local-v.1.1.1-20261104",
-    "asset_rows": 54543,
-    "asset_bytes": 3781640441,
+    "artifact_id": 13395370733,
+    "artifact_sha256": "4594c01740fc8c3faa4ea81ed3710812e9026b822e41e411e9f8d484863eaf10",
+    "staging": "work/full-local-v.1.1.2-20261105",
+    "asset_rows": 54559,
+    "asset_bytes": 3803240528,
     "packages": [
       {
-        "path": "full-local/FD2-v.1.1.1-20261104-windows-x86_64-full-local.zip",
-        "bytes": 3667703687,
-        "sha256": "3915a5fd75792ae2ff07f59a193156e88e9b0713612e5cb14285de3cb1a86fcf"
+        "path": "full-local/FD2-v.1.1.2-20261105-windows-x86_64-full-local.zip",
+        "bytes": 3688267407,
+        "sha256": "1e3e173fdb470a8f97b235c097433b88a5e17111bfcd8b871eb49fe51577c747"
       },
       {
-        "path": "full-local/FD2-v.1.1.1-20261104-macos-universal-full-local.zip",
-        "bytes": 3676260315,
-        "sha256": "ef9894f85ce99cc8f5f1b1f1d98850bed2458e8dfd518011bbcc3f7286b12ab0"
+        "path": "full-local/FD2-v.1.1.2-20261105-macos-universal-full-local.zip",
+        "bytes": 3696830157,
+        "sha256": "0a349d5fec44fdee02bd5d38188f4bc210ad9758a54ecc20d794889e96cae958"
       },
       {
-        "path": "full-local/FD2-v.1.1.1-20261104-linux-x86_64-full-local.AppImage",
-        "bytes": 3160545784,
-        "sha256": "4cace785ec4edb5daf0cc5f287204c9efdc4d4c72b52fc856fe48261054e70e9"
+        "path": "full-local/FD2-v.1.1.2-20261105-linux-x86_64-full-local.AppImage",
+        "bytes": 3177761272,
+        "sha256": "326b76883a3c0f36dc83cc819a1c9cfd88e27a9b5641afc8aa31943a5839c834"
       }
     ],
     "packaging_status": "PASS-SCOPED-LOCAL-ONLY",
-    "content_validation": "dist-all/v.1.1.1-20261104/smoke/full-local-content.json",
-    "linux_selfcheck": "dist-all/v.1.1.1-20261104/smoke/linux-full-local-selfcheck.json",
-    "unified_manifest": "dist-all/v.1.1.1-20261104/SHA256SUMS.json",
-    "unified_manifest_sha256": "50879f7592312e957b32f122c917056f167e1f85ddd47081b8088f24722ec1fe",
+    "content_validation": "dist-all/v.1.1.2-20261105/smoke/full-local-content.json",
+    "linux_selfcheck": "dist-all/v.1.1.2-20261105/smoke/linux-full-local-selfcheck.json",
+    "unified_manifest": "dist-all/v.1.1.2-20261105/SHA256SUMS.json",
+    "unified_manifest_sha256": "11c8a79dfeeddb69502207d85bfc70d12ec70d8659828c1f1065cc2d54f844a3",
     "limits": [
       "Windows／macOS完整包尚未實機驗收，同來源引擎已通過原生CI自檢。",
       "Windows／macOS未簽署，macOS未公證。",
       "30章為受控流程抽樣，並非所有分支或自然難度驗收。"
     ],
-    "modern_private_commit": "9d7cba017c460a15df0541eac8f45d7ef76443d7",
+    "modern_private_commit": "0ba8d8ddcdf52cebf94ec4f43a09ae8c3dc955bf",
     "modern": {
-      "catalog_sha256": "d8a78a641aa472f3d9eeb9b1dd99a3d6497fdc61a675db69e5591fc31def5b89",
-      "source_manifest_sha256": "e72dac726730f51748e25878d89813a9921213017d7165f8450ba24ea17f3473",
-      "pack_manifest_sha256": "e72dac726730f51748e25878d89813a9921213017d7165f8450ba24ea17f3473"
-    },
-    "rejected_previous_inputs": "work/unaccepted-bf8a-v.1.1.1-20261104/"
+      "catalog_sha256": "99d68d41fc70588106847d84f95825314411a496587aa86ddf366e3d8d81327a",
+      "source_manifest_sha256": "af61a3461881071ff3b70207f99e31d326ba562c75ac052ee318198471beb7df",
+      "pack_manifest_sha256": "af61a3461881071ff3b70207f99e31d326ba562c75ac052ee318198471beb7df"
+    }
   },
   "promo_recordings": {
     "ares": {
@@ -3126,30 +3125,30 @@
   },
   "promo_final": {
     "status": "PASS-TECHNICAL-AND-SAMPLED-VISUAL",
-    "output": "dist-all/v.1.1.1-20261104/promo/FD2-v.1.1.1-20261104-hd1-promo.mp4",
+    "output": "dist-all/v.1.1.2-20261105/promo/FD2-v.1.1.2-20261105-hd1-promo.mp4",
     "movie": {
-      "file": "FD2-v.1.1.1-20261104-hd1-promo.mp4",
-      "bytes": 58288601,
-      "sha256": "94982fe1f992252cd9dbe514043bfdf15188d8570f8962a1fb02b356c1672ac7"
+      "file": "FD2-v.1.1.2-20261105-hd1-promo.mp4",
+      "bytes": 57056725,
+      "sha256": "04ce29f4246fde18c4713ad0a996db5c1629064c38ed5583fbf2a3135c768ff1"
     },
     "duration_seconds": 313.022,
     "frames": 9390,
     "scenes": 43,
     "character_count": 32,
-    "technical_validation": "dist-all/v.1.1.1-20261104/promo/VALIDATION.json",
-    "technical_validation_sha256": "9a9ee1278debf8ca4ab71d78089b41ce94158e6b12db57ffba800f4708052236",
-    "visual_review": "dist-all/v.1.1.1-20261104/promo/VISUAL-REVIEW.json",
-    "visual_review_sha256": "d93f1491258396a6db82f17fdc58a867a8a75361a6d6c8a28bc23da52a2b9215",
-    "edit_manifest": "dist-all/v.1.1.1-20261104/promo/EDIT-MANIFEST.json",
-    "edit_manifest_sha256": "fe48e29beef01df9d54fb4424bd3e09e907932b14f3ff3ed44ca32a4c086b205",
-    "caption_bounds": "dist-all/v.1.1.1-20261104/promo/CAPTION-BOUNDS.json",
-    "rights": "dist-all/v.1.1.1-20261104/promo/RIGHTS.json",
+    "technical_validation": "dist-all/v.1.1.2-20261105/promo/VALIDATION.json",
+    "technical_validation_sha256": "238ca1839cfa1ccf5d39a4e71145455892cabd76928d68bfc91aebe74d13d75e",
+    "visual_review": "dist-all/v.1.1.2-20261105/promo/VISUAL-REVIEW.json",
+    "visual_review_sha256": "044a7fd846cb505c08702ce53cef04259538d10c2be778ed7a8eea80a1b7d0d2",
+    "edit_manifest": "dist-all/v.1.1.2-20261105/promo/EDIT-MANIFEST.json",
+    "edit_manifest_sha256": "03d567db1608cc3c46025baa3cb204adad42d149f6e7cc00a6c5eb1e4a06f90e",
+    "caption_bounds": "dist-all/v.1.1.2-20261105/promo/CAPTION-BOUNDS.json",
+    "rights": "dist-all/v.1.1.2-20261105/promo/RIGHTS.json",
     "audio": {
       "codec": "AAC",
       "sample_rate": 48000,
       "channels": 2,
-      "mean_db": -19.6,
-      "peak_db": -1.5,
+      "mean_db": -18.0,
+      "peak_db": -1.4,
       "silent_intervals": []
     },
     "black_intervals": [],
@@ -3158,9 +3157,17 @@
       "實際畫面為重製引擎；原版指原版美術與介面。",
       "特技使用已揭露建構進度；天空之鑰為202張實際GPU受控影格。",
       "剪輯加速不代表平台效能；音效為原版sample的剪輯對位，不宣稱硬體時序。",
-      "技術音訊檢查已通過，未另記錄人耳試聽。"
+      "36段旁白與混音已通過技術檢查，未另記錄全片人耳複核。"
     ],
-    "render_plan_key": "render_plan"
+    "render_plan_key": "render_plan",
+    "narration": {
+      "segments": 36,
+      "speaker": "Serena",
+      "kind": "original-yuni-character-performance",
+      "timing": "PASS",
+      "human_listening_confirmed": false
+    },
+    "narration_manifest": "dist-all/v.1.1.2-20261105/promo/NARRATION-MANIFEST.json"
   },
   "delivery_tools_sha256": {
     "tools/build_fd2_full_local.py": "369d85b4e6494463a1dda0f75e9fb8bcc283dc6d6696c249dd771f456f447cfb",
@@ -3175,10 +3182,10 @@
   ],
   "render_plan": {
     "schema_version": 1,
-    "version": "v.1.1.1-20261104",
+    "version": "v.1.1.2-20261105",
     "title": "炎龍騎士團2：讓經典再現",
     "theme": "讓經典再現",
-    "target_release_engine_commit": "38eff878dcffbcddb9b288bf31e948d75e81474d",
+    "target_release_engine_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27",
     "duration_seconds": 313.0,
     "card_music": "/repo/remake/assets/music_fm/FDMUS_018.ogg",
     "scenes": [
@@ -3403,13 +3410,13 @@
       {
         "id": "rodman",
         "kind": "game",
-        "source": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
-        "start": 536,
-        "source_duration": 17,
+        "source": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1-record/video.mkv",
+        "start": 453,
+        "source_duration": 18,
         "duration": 6,
         "caption": "羅德曼｜淒煌斬",
-        "audio": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/audio.wav",
-        "capture_receipt": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3/promo-action.json"
+        "audio": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1-record/audio.wav",
+        "capture_receipt": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1/promo-action.json"
       },
       {
         "id": "sky-key",
@@ -3424,49 +3431,49 @@
       {
         "id": "balance-warning-zero",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-zero.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-0.png",
         "duration": 2,
         "caption": "三次確認，再開啟能力調整。"
       },
       {
         "id": "balance-warning-one",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-one.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-1.png",
         "duration": 2,
         "caption": "留一點猶豫，保留冒險的樂趣。"
       },
       {
         "id": "balance-warning-two",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-two.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-2.png",
         "duration": 2,
         "caption": "由你決定，怎樣重溫這段旅程。"
       },
       {
         "id": "balance-abilities-hd",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/abilities-hd.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/cold/hd-current.png",
         "duration": 3,
         "caption": "當前能力，逐人調整。"
       },
       {
         "id": "balance-growth-hd",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/growth-hd.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/cold/hd-growth.png",
         "duration": 3,
         "caption": "升級成長，全體預設與逐人覆寫。"
       },
       {
         "id": "balance-yuni-hit-100",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/probe/skill-gui-r1/skill/yuni-hit-100.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/skill-gui-r3/skill/yuni-hit-100.png",
         "duration": 3,
         "caption": "有命中判定的特技，可逐人調整。"
       },
       {
         "id": "balance-enemy-120",
         "kind": "capture",
-        "source": "/repo/work/hd1-promo-release-20261103-r82/probe/balance-gui-r1/start/enemy-120.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/enemy-120.png",
         "duration": 3,
         "caption": "敵軍強度，照自己的步調調整。"
       },
@@ -3505,112 +3512,112 @@
       {
         "id": "companions-01",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-01.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-01.png",
         "duration": 8,
         "music_start": 0
       },
       {
         "id": "companions-02",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-02.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-02.png",
         "duration": 8,
         "music_start": 8
       },
       {
         "id": "companions-03",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-03.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-03.png",
         "duration": 8,
         "music_start": 16
       },
       {
         "id": "companions-04",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-04.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-04.png",
         "duration": 8,
         "music_start": 24
       },
       {
         "id": "companions-05",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-05.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-05.png",
         "duration": 8,
         "music_start": 32
       },
       {
         "id": "companions-06",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-06.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-06.png",
         "duration": 8,
         "music_start": 40
       },
       {
         "id": "companions-07",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-07.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-07.png",
         "duration": 8,
         "music_start": 48
       },
       {
         "id": "companions-08",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-08.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-08.png",
         "duration": 8,
         "music_start": 56
       },
       {
         "id": "companions-09",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-09.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-09.png",
         "duration": 8,
         "music_start": 64
       },
       {
         "id": "companions-10",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-10.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-10.png",
         "duration": 8,
         "music_start": 72
       },
       {
         "id": "companions-11",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-11.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-11.png",
         "duration": 8,
         "music_start": 80
       },
       {
         "id": "companions-12",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-12.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-12.png",
         "duration": 8,
         "music_start": 88
       },
       {
         "id": "companions-13",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-13.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-13.png",
         "duration": 8,
         "music_start": 96
       },
       {
         "id": "companions-14",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-14.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-14.png",
         "duration": 8,
         "music_start": 104
       },
       {
         "id": "companions-15",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-15.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-15.png",
         "duration": 8,
         "music_start": 112
       },
       {
         "id": "companions-16",
         "kind": "still",
-        "source": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-16.png",
+        "source": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-16.png",
         "duration": 8,
         "music_start": 120
       },
@@ -3721,6 +3728,14 @@
     ],
     "inputs": [
       {
+        "path": "/font-license/copyright",
+        "sha256": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b"
+      },
+      {
+        "path": "/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+      },
+      {
         "path": "/original/sfx/FDOTHER_049/sample_002.ogg",
         "sha256": "bf9d230d95227335999b1f2947649d2061a8a06afdc577987b6322153d0106b5"
       },
@@ -3745,6 +3760,126 @@
         "sha256": "3bb0e09bc45e67f1fcaa142495cc730bf3d0115e5313c4fd7ed21436b6a8c67e"
       },
       {
+        "path": "/repo/remake/assets/themes/modern/catalog.json",
+        "sha256": "99d68d41fc70588106847d84f95825314411a496587aa86ddf366e3d8d81327a"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/cold/hd-current.png",
+        "sha256": "d2a62a5d7f6e22990295e04ab185dbf134b66f8a71dca02cbdfca2f1eff4cbfa"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/cold/hd-growth.png",
+        "sha256": "e926de4dbcf19ec5681fd83c0f6ea6f3122eeec2ad25d08287423c6d4860547e"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/result.json",
+        "sha256": "4e8a33cb6b0a9ef761b50ee3cf87c62c879a88352c99bbd1f3999194e966efa4"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/enemy-120.png",
+        "sha256": "a5a760ae323f2f213b9f73208886a35eb373fd3b5f397627c6056b6608586698"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-0.png",
+        "sha256": "a16fc81a9b656a967586f8e76820533c847aec307755853a744deba7961a9cbc"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-1.png",
+        "sha256": "f37ecaca9abeaea04a88cd832b15d7f7bd4d26cebf00c326a1d1c896393917d3"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/balance-gui-r1/start/warning-2.png",
+        "sha256": "51741574686d41bd1e11a1aacad59db31e5a75336b1b8e275677aaa2d8a2e46d"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/character-cards.json",
+        "sha256": "bfb0fd5ca35f05857ff00c92c07ec3c964f8e3af4ba3ac14b19c793c7587284b"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-01.png",
+        "sha256": "98091d6323cf678e43084effc74b7688eb29c20882a89199154326dd2c8105d7"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-02.png",
+        "sha256": "9213266cad3e060924fb6e05bc9ba04707c1e6e77141cf3fa6d8fca6548d3915"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-03.png",
+        "sha256": "6e632e7b5ef98270e3108da5ab0b89f17fab9f74e5c2abce5cc39978c8909721"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-04.png",
+        "sha256": "0730eb51e548d4807dc1b02e82ecceadc8b783c8bb763870fd74f58d1f8b550c"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-05.png",
+        "sha256": "bd38a4f24979c75d211ae19d4d41470e47f209efb64dac276daf5e95899c9bfd"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-06.png",
+        "sha256": "caf80856c0f66a65edd456c6608f7e03d542dcf861b92d44adf394416f396e4f"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-07.png",
+        "sha256": "012684e98b11d0b14ce3a517e367f2dabd2f54717cb5e3156df779356ac80051"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-08.png",
+        "sha256": "ffbf6d4bca37c2995e2c4f71add10d0621aca77bc034fd9982c5dcd21338de47"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-09.png",
+        "sha256": "6088f5ca77810b3cd7c3c520e6918ff5885c2fb3cc97c9e1e74727f87a691db1"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-10.png",
+        "sha256": "f855279cff1153b1734041139499a8736b0f2f57853c39285bb0b36f373afde5"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-11.png",
+        "sha256": "4f0695ce46016891972815fb9c15cc148021a72da1883e724de30b530c89f9da"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-12.png",
+        "sha256": "7df21383076821a24bb6cd1ba827618f21dcf122b20f1907e0936643486987ef"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-13.png",
+        "sha256": "196ac31992e02ffc0eb68bb32adf6fdb00854e24cfca609348c590fa889586bd"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-14.png",
+        "sha256": "967c87d2f60daffbedf67a82fd632e6e9cd352c01fdb8bf040785584cdbb436f"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-15.png",
+        "sha256": "e71628f91007df621372f6e9e641de9a2cc8c185e3f7de8a76fe8da6438c0815"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/character-cards-r3/companions-16.png",
+        "sha256": "28eea4d19e7233dd0da80d3978f952684ea3f7fafa63023a3b17de541826f7d4"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1-record/audio.wav",
+        "sha256": "fef764dc6f5a95d0198fe8c537f8efe72ecb7207b38478937564784aee003811"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1-record/video.mkv",
+        "sha256": "ef52479d3590936ec965fdf9330c60b6500f5a08c548abb9cc04f69a1142c00a"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/rodman-special-r1/promo-action.json",
+        "sha256": "2f98917937ac24850d51ac5854165122165eec5861a4c5af98149c633a6a4c1a"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/skill-gui-r3/result.json",
+        "sha256": "3d1904697cd8b70f0f3929c9ff5e3c37dc53701c942a05d9fc0307217c6e25c2"
+      },
+      {
+        "path": "/repo/work/hd1-battle-review-20261105-r84/skill-gui-r3/skill/yuni-hit-100.png",
+        "sha256": "3bed1828b9e24ee7180d44842f6c0d8a384f60fccee1001cb78a85a91dfb870a"
+      },
+      {
         "path": "/repo/work/hd1-feedback-20261104-r83/ares-attack-r1-record/audio.wav",
         "sha256": "83c058f74e17449cadeddbf6ff67334160984eb4a40fb60cf63cdcfcbeacbabd"
       },
@@ -3757,70 +3892,6 @@
         "sha256": "cd647911450d7b91d000bbeb7ea71f96517bb083b20808972d07c5d446684cb9"
       },
       {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-01.png",
-        "sha256": "778acf299c07b7ded8a865bfb9d97936b510b375389e9565e7b6bf21a5d36e09"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-02.png",
-        "sha256": "d32e230be3806c29920db3fad9232d5b4e3a8b91241fcdf9f2eb5da7e2ecb4c7"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-03.png",
-        "sha256": "61c9c20c01a224385eac73e810f19b9e27ef685b06c5df927daf188645f4cc9f"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-04.png",
-        "sha256": "e56ee0374e1e716c6802cbdd4e9670e2099919f812f5a545f70f126bcea38aa4"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-05.png",
-        "sha256": "bd38a4f24979c75d211ae19d4d41470e47f209efb64dac276daf5e95899c9bfd"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-06.png",
-        "sha256": "caf80856c0f66a65edd456c6608f7e03d542dcf861b92d44adf394416f396e4f"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-07.png",
-        "sha256": "012684e98b11d0b14ce3a517e367f2dabd2f54717cb5e3156df779356ac80051"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-08.png",
-        "sha256": "d4aceae70ebef2a435afbf138864e1db0dc8dd0e1e7a86ccb0a3be9c10e9c7f9"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-09.png",
-        "sha256": "6088f5ca77810b3cd7c3c520e6918ff5885c2fb3cc97c9e1e74727f87a691db1"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-10.png",
-        "sha256": "994ef51cc6448a0431c2e0636995cb3172592ce3fb19162b7b7ce302e98b5066"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-11.png",
-        "sha256": "4f0695ce46016891972815fb9c15cc148021a72da1883e724de30b530c89f9da"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-12.png",
-        "sha256": "7df21383076821a24bb6cd1ba827618f21dcf122b20f1907e0936643486987ef"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-13.png",
-        "sha256": "196ac31992e02ffc0eb68bb32adf6fdb00854e24cfca609348c590fa889586bd"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-14.png",
-        "sha256": "967c87d2f60daffbedf67a82fd632e6e9cd352c01fdb8bf040785584cdbb436f"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-15.png",
-        "sha256": "66af70321e6f4dcdf352623350d0915ca072cc16cb3450f9040438ad529e33fa"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/character-cards-r3/companions-16.png",
-        "sha256": "28eea4d19e7233dd0da80d3978f952684ea3f7fafa63023a3b17de541826f7d4"
-      },
-      {
         "path": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2-record/audio.wav",
         "sha256": "e338823f4e5f058923256f06fc1a240f413e991d85acef0025a4d90b6e557737"
       },
@@ -3831,10 +3902,6 @@
       {
         "path": "/repo/work/hd1-feedback-20261104-r83/gaia-attack-r2/promo-action.json",
         "sha256": "ccde7319151bef1cc18a74b3d85fed54cc0704ff1f644f08736005b2430c8b4f"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/frame-times.jsonl",
-        "sha256": "02c3fecb9808a37f8c76a5efc2c0ce46cf34b71fde4b5ce454bd74a8d78eb0a9"
       },
       {
         "path": "/repo/work/hd1-feedback-20261104-r83/middy-special-r3-record/video.mkv",
@@ -3873,18 +3940,6 @@
         "sha256": "595c99adaf5d782bb60f250ca678100a837ae5bf3c26164c6ad1d67dc4755baa"
       },
       {
-        "path": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/audio.wav",
-        "sha256": "67b0b82a4d59874409a5cc5d2ed17299c95a576fcbe7e971cda1d81bca015a9e"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3-record/video.mkv",
-        "sha256": "03e6395c534ae7c435be1617c18dca2f1a52cc8f18d69e479871df65ee2e5f89"
-      },
-      {
-        "path": "/repo/work/hd1-feedback-20261104-r83/rodman-special-r3/promo-action.json",
-        "sha256": "6677e5478dc4941498fd494c2e64fb2a2db8486b69a33f58d304957f9c42ee01"
-      },
-      {
         "path": "/repo/work/hd1-feedback-20261104-r83/skykey-frames-r1/receipt.json",
         "sha256": "58fbaeb83e75e24f992f022389341efc86b06ba6ee748a10ab7c1b3314c6003a"
       },
@@ -3915,42 +3970,6 @@
       {
         "path": "/repo/work/hd1-feedback-20261104-r83/yuni-magic-r2/promo-action.json",
         "sha256": "4f779392d84317d7453044401323c3de7e185c805e5b6c0df9876fb1434fce01"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/abilities-hd.png",
-        "sha256": "578b81a9f60c45829ea37b6fdfb670967a87d84632aa47e0db20495ec3afdae7"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/growth-hd.png",
-        "sha256": "b22f97b9980b34f3bd0253532b5b8b2cf9b953566d7679b13747647118c16197"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-one.png",
-        "sha256": "c304a7a6efc827678e22f80cdab4fde57c6269ba413f487bf223974794ba897a"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-two.png",
-        "sha256": "c3a0af3cc606dbb73b3175a4998cdfd5d98eaa78fd496bd19e4cc6d5c6f18759"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/package-smoke/linux-gui-r2/warning-zero.png",
-        "sha256": "08252a36687cff21b4abacdbff43004b38489428c8c5c4801a43cd4f05abc3da"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/probe/balance-gui-r1/start/enemy-120.png",
-        "sha256": "2bf0174ba14ad6c91575db0c9e6a389c36e5588e430cf1414bc9aca2bdbd3fba"
-      },
-      {
-        "path": "/repo/work/hd1-promo-release-20261103-r82/probe/skill-gui-r1/skill/yuni-hit-100.png",
-        "sha256": "c88861f020eca973abdfbc577828daa09912b7ef4519398d8ab803b0c8faadc1"
-      },
-      {
-        "path": "/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
-        "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
-      },
-      {
-        "path": "/font-license/copyright",
-        "sha256": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b"
       }
     ],
     "rights": "LOCAL-ONLY. Contains original game art and music; not approved for public redistribution.",
@@ -3966,7 +3985,7 @@
     "verification": "work/hd1-feedback-20261104-r83/worklist-final-verify.log"
   },
   "battle_animation_review_20261105": {
-    "status": "IN-PROGRESS",
+    "status": "CONFORMED-SCOPED-LOCAL-DELIVERY",
     "base_commit": "f9f8bee633935fcd2276b495536e7853fc2b28b4",
     "reported_defect": "羅德曼HD戰鬥人物缺頭",
     "request": "逐人戰鬥動畫總覽圖與Markdown",
@@ -4000,7 +4019,20 @@
       "full_plan": "work/hd1-battle-review-20261105-r84/voice-full-plan.json",
       "partial_receipt": "work/hd1-battle-review-20261105-r84/voice-full-r2/voice-receipt.json",
       "batch_out": "work/hd1-battle-review-20261105-r84/voice-full-batch-r1",
-      "mix_smoke": "work/hd1-battle-review-20261105-r84/narration-mix-smoke.json"
+      "mix_smoke": "work/hd1-battle-review-20261105-r84/narration-mix-smoke.json",
+      "generation_receipts": [
+        "work/hd1-battle-review-20261105-r84/voice-full-r2/voice-receipt.json",
+        "work/hd1-battle-review-20261105-r84/voice-full-batch-r1/voice-receipt.json",
+        "work/hd1-battle-review-20261105-r84/voice-full-batch-r2/voice-receipt.json",
+        "work/hd1-battle-review-20261105-r84/voice-full-batch-r3/voice-receipt.json"
+      ],
+      "official_model_sources": "work/hd1-battle-review-20261105-r84/voice-model-source.json",
+      "voice_model_documentation_url": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+      "completed_preserved_segments": 36,
+      "status": "PASS-36-SEGMENTS-MIXED-TECHNICAL",
+      "final_manifest": "dist-all/v.1.1.2-20261105/promo/NARRATION-MANIFEST.json",
+      "human_listening_confirmed": false,
+      "provenance_limit": "最初4段在完成模型雜湊收據前有意停止，保留WAV、文字、聲線及原編製器SHA；後32段另有同一模型／設定雜湊，不將32段的直接收據擴稱全部36段。"
     },
     "lancelot_design": "USER-CONFIRMED-ORIGINAL-LONG-CHESTNUT-PLUME-MALE-FACE",
     "rodman_candidate": "work/hd1-battle-review-20261105-r84/rodman-candidate-r4",
@@ -7192,6 +7224,36 @@
           "/repo/work/hd1-feedback-20261104-r83/readme-rodman.png"
         ]
       }
-    }
+    },
+    "engine_source_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27",
+    "render_plan": {
+      "path": "work/hd1-battle-review-20261105-r84/promo-plan-r1.json",
+      "sha256": "e7eb0568112a246d655856a420da5a6d3f2e0ed08c406fee1a7e20729b18cac3",
+      "duration_seconds": 313,
+      "scenes": 43
+    },
+    "native_ci": {
+      "run_id": 41983439562,
+      "status": "PASS-THREE-NATIVE-AND-COLLECT",
+      "publish": "skipped",
+      "source_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27",
+      "jobs": "work/hd1-battle-review-20261105-r84/ci-jobs.json",
+      "artifact": "work/hd1-battle-review-20261105-r84/ci-artifact.json",
+      "artifact_sha256": "4594c01740fc8c3faa4ea81ed3710812e9026b822e41e411e9f8d484863eaf10"
+    },
+    "base_film_review": {
+      "path": "work/hd1-battle-review-20261105-r84/promo-base-r1/VISUAL-REVIEW.json",
+      "movie_sha256": "9b39388b153e7e49e09c58d4cc0eff163d1a9a4ff80652d5443553197a386333",
+      "samples": 52
+    },
+    "delivery": {
+      "version": "v.1.1.2-20261105",
+      "unified_manifest": "dist-all/v.1.1.2-20261105/SHA256SUMS.json",
+      "unified_manifest_sha256": "11c8a79dfeeddb69502207d85bfc70d12ec70d8659828c1f1065cc2d54f844a3",
+      "engine_source_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27",
+      "final_audit": "work/hd1-battle-review-20261105-r84/final-handoff-audit.json"
+    },
+    "issue_state": "CLOSED",
+    "issue_verified_engine_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27"
   }
 }
