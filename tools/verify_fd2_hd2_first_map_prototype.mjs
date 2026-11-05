@@ -12,6 +12,8 @@ check(directory && fs.statSync(directory).isDirectory(), 'Compiled prototype req
 check(output && !fs.existsSync(output) && fs.statSync(path.dirname(output)).uid === process.getuid(), 'New owned output required');
 const sha = file => createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const input = JSON.parse(fs.readFileSync(path.join(directory, 'PROTOTYPE.json')));
+const expectedActors = input.data.actors || [{identity:0, name:input.data.name, ...input.data.actor,
+  sprite:input.data.sprite, original:input.data.original, portrait_hd:'portrait-hd.png', portrait_original:'portrait-original.png'}];
 for (const row of input.files) check(sha(path.join(directory, row.file)) === row.sha256, 'Compiled file changed: ' + row.file);
 fs.mkdirSync(output);
 const binary = ['/ms-playwright/chromium-1194/chrome-linux/chrome', '/ms-playwright/chromium-1194/chrome-linux64/chrome'].find(fs.existsSync);
@@ -62,11 +64,18 @@ try {
     await call('Input.dispatchKeyEvent', {type: 'keyDown', key, code, windowsVirtualKeyCode: virtual});
     await call('Input.dispatchKeyEvent', {type: 'keyUp', key, code, windowsVirtualKeyCode: virtual}); await settle();
   };
-  const choose = async index => { await click('#height'); await key('Home', 'Home', 36); for (let i = 0; i < index; i++) await key('ArrowDown', 'ArrowDown', 40); await key('Enter', 'Enter', 13); };
+  const chooseControl = async (selector, index) => { await click(selector); await key('Home', 'Home', 36); for (let i = 0; i < index; i++) await key('ArrowDown', 'ArrowDown', 40); await key('Enter', 'Enter', 13); };
+  const choose = index => chooseControl('#height', index);
   const invariant = async () => {
     const s = await state();
-    check(s.actor.identity === 0 && s.actor.x === 7 && s.actor.y === 20, 'Standing prototype moved or changed actor');
+    const expected = expectedActors.find(a => a.identity === s.actor.identity);
+    check(expected && s.actor.x === expected.x && s.actor.y === expected.y, 'Standing prototype moved or changed actor');
     check(s.mapIdentity === s.hudIdentity && s.mapImage === s.hudImage, 'Map/HUD identity or image differs');
+    check(s.mapImage === (s.mode === 'hd2' ? expected.sprite.file : expected.original.file), 'Selected actor uses another image');
+    if (s.actors) for (const actor of s.actors) {
+      const row = expectedActors.find(a => a.identity === actor.identity);
+      check(row && actor.x === row.x && actor.y === row.y && actor.image === (s.mode === 'hd2' ? row.sprite.file : row.original.file), 'Party moved or mixed source families');
+    }
     check(!s.rulesExecuted && s.saveWrites === 0, 'Unexpected gameplay or save mutation');
     check(await evaluate('document.querySelector("#portrait").complete && document.querySelector("#portrait").naturalWidth>0 && document.querySelector("#icon").naturalWidth>0'), 'HUD image missing');
     return s;
@@ -139,9 +148,37 @@ try {
     cases.push({kind: 'scaled-pointer-and-layout', width, layout});
     await capture('layout-' + width);
   }
+  if (expectedActors.length > 1) for (const width of [1800, 720]) {
+    await call('Emulation.setDeviceMetricsOverride', {width, height:1200, deviceScaleFactor:1, mobile:false});
+    await click('#reset');
+    const selections = [];
+    for (const mode of ['hd2', 'original']) {
+      if ((await state()).mode !== mode) await click('#mode');
+      for (const actor of expectedActors) {
+        const s = await state(), r = await rect('#world');
+        const x = r.x+(24+(actor.x-s.camera.x+.5)*144)/1920*r.width;
+        const y = r.y+(24+(actor.y-s.camera.y+.5)*144)/1200*r.height;
+        check(await evaluate(`document.elementFromPoint(${x},${y})?.id==='world'`), 'HUD or toolbar covers deployed actor '+actor.identity);
+        await move(x,y); await settle();
+        const selected = await invariant();
+        check(selected.actor.identity===actor.identity, 'Pointer selected wrong identity');
+        check(await evaluate('document.querySelector(".name").textContent')===actor.name, 'HUD name differs');
+        check(selected.portraitImage===(mode==='hd2'?actor.portrait_hd:actor.portrait_original), 'HUD face belongs to another actor');
+        selections.push({mode,identity:actor.identity,image:selected.mapImage,portrait:selected.portraitImage});
+      }
+    }
+    await click('#mode');
+    await chooseControl('#actor',3); check((await invariant()).actor.identity===30, 'Real roster select failed');
+    const anchors = (await state()).actors.map(a=>a.foot);
+    await choose(0); check((await state()).height===144, 'Party size select failed');
+    check(JSON.stringify((await state()).actors.map(a=>a.foot))===JSON.stringify(anchors), 'Party size changed anchors');
+    await choose(1);
+    cases.push({kind:'four-actor-map-hud-selection',width,selections,roster_select_identity:30,all_anchors_preserved:true,actors_unoccluded:true});
+    await capture('party-'+width);
+  }
   check(errors.length === 0, 'Browser runtime exception');
   const report = {status: 'PASS-HD2-STANDING-PRESENTATION-PROTOTYPE', production_game_connected: false, original_parity_claimed: false,
-    normal_player_path_claimed: false, rules_executed: false, save_writes: 0, identity: 0,
+    normal_player_path_claimed: false, rules_executed: false, save_writes: 0, identity: 0, identities:expectedActors.map(a=>a.identity),
     input: {file: path.join(directory, 'PROTOTYPE.json'), sha256: sha(path.join(directory, 'PROTOTYPE.json'))},
     verifier_sha256: sha(new URL(import.meta.url)), chromium: binary, cases, captures, runtime_errors: errors,
     scope: 'Real browser pointer, keyboard, size, original-actor comparison, camera bounds and matching map/HUD identity; single standing draft over provisional HD1 terrain.'};

@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -505,6 +505,26 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
+
+### P1 推廣片主音樂隨畫面加速，需分軌正常速度重混
+
+`promo-bgm-editorial-speed` · 缺陷 · [#296](https://github.com/wicanr2/fd2_re/issues/296) · 仍未完成 · 要人判
+
+使用者回報悠妮第一段說話後主音樂加快。原剪輯opening為242秒壓至27秒，build_fd2_hd1_promo.py將完整擷取音軌一起套atempo，含BGM約8.96倍速。其他已調速片段也受影響。本輪改用既有原遊戲FDMUS_018正常速度及明示PCM cue，保留36段原旁白與視訊封包。技術波形驗證與人耳試聽分開記錄。
+
+怎樣算做完：正式本機影片配樂1倍速且與鏡頭速度獨立；正常原波形與錯誤2倍速反例、原旁白及視訊封包一致性、完整影片技術品質通過；清冊與文件更新。集中人耳驗收仍沿既有音訊工單。
+
+證據：`['docs/data/fd2-hd1-feedback-20261104.json#promo_audio_repair_20261105', 'tools/remix_fd2_promo_music.py', 'tools/verify_fd2_promo_audio_repair.py']`
+
+### P1 推廣片82至86秒原版圖說錯置，亞雷斯被標成蓋亞
+
+`promo-gaia-original-caption-identity` · 缺陷 · [#297](https://github.com/wicanr2/fd2_re/issues/297) · 仍未完成 · 要人判
+
+音訊修正時複核原片82.7及84.0秒，右方姓名為亞雷斯、持長兵器與盜賊交戰；gaia-original圖說卻寫蓋亞重拳出擊。86秒後的HD蓋亞演出正確。本次音軌修正按實際人物取原音效，保留視訊封包；圖說／鏡頭另外修正，不冒稱已處理。原片SHA04ce29f4，音訊修正版SHAffd0828f，兩者視訊封包SHA3580eae1相同。圖格與人名來源：work/promo-audio-repair-20261105-r88/cue-contact.png、cue-review.json及保留的previous-promo。
+
+怎樣算做完：使用與角色相符的原版演出鏡頭，或使圖說及旁白一致指向實際角色；重新檢視82至93秒並驗影片、字幕與SHA清冊，修正目前對外說明。
+
+證據：`['docs/data/fd2-hd1-feedback-20261104.json#promo_audio_repair_20261105', 'work/promo-audio-repair-20261105-r88/cue-review.json']`
 
 ## tooling — 工具、編輯器與工作流程
 

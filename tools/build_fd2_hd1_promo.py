@@ -17,6 +17,15 @@ def digest(path):
     return h.hexdigest()
 
 
+def validate_audio_clock(scene):
+    """混有配樂的擷取音軌不能隨影片一起調速。"""
+    if scene['kind'] != 'game':
+        return
+    rate = scene.get('source_duration', scene['duration']) / scene['duration']
+    if rate != 1 and not scene.get('audio_cues') and scene.get('source_audio_kind') != 'sfx_only':
+        raise ValueError('retimed mixed audio prohibited: use normal-speed music and separate native SFX')
+
+
 def prepare(plan, work, font_path):
     from PIL import Image, ImageDraw, ImageFont
     work.mkdir(parents=True, exist_ok=True)
@@ -77,9 +86,9 @@ def cue_audio(plan, scene, work, index):
     target=work/f'cue-audio-{index:02}.wav'
     assert not target.exists()
     command=['ffmpeg','-nostdin','-hide_banner','-loglevel','warning','-threads','2',
-             '-filter_complex_threads','1','-stream_loop','-1','-i',plan['card_music']]
-    filters=[f'[0:a]atrim=duration={duration},aresample=48000,asetpts=N/SR/TB,volume=0.35[music]']
-    labels=['[music]']
+             '-filter_complex_threads','1','-f','lavfi','-i','anullsrc=r=48000:cl=stereo']
+    filters=[f'[0:a]atrim=duration={duration},asetpts=N/SR/TB[quiet]']
+    labels=['[quiet]']
     for number,cue in enumerate(scene['audio_cues'],1):
         assert 0<=cue['seconds']<duration
         command+=['-i',cue['path']]
@@ -94,6 +103,8 @@ def cue_audio(plan, scene, work, index):
 
 
 def encode(plan, work, out, reuse_manifest=None, reuse_work=None):
+    for scene in plan['scenes']:
+        validate_audio_clock(scene)
     assert not out.exists(), '禁止覆寫已交付推廣片目錄'
     out.mkdir(parents=True)
     segments=[]
@@ -131,7 +142,8 @@ def encode(plan, work, out, reuse_manifest=None, reuse_work=None):
                 audio_index,overlay_index=0,1
             command+=['-loop','1','-framerate','30','-i',str(overlay)]
             bed_index = overlay_index + 1
-            if scene.get('audio_bed'):
+            bed_gain = scene.get('audio_bed', 0.35 if scene.get('audio_cues') else None)
+            if bed_gain:
                 command+=['-stream_loop','-1','-i',plan['card_music']]
             tempos=[]
             remainder=rate
@@ -142,8 +154,8 @@ def encode(plan, work, out, reuse_manifest=None, reuse_work=None):
             tempos.append(f'atempo={remainder:.12g}')
             tempo=','.join(tempos)
             filters=f'[0:v]trim=duration={source_duration},setpts=(PTS-STARTPTS)/{rate:.12g},fps=30,scale=1536:960:flags=lanczos,pad=1920:1080:192:20:color=0x08121e,setsar=1[game];[game][{overlay_index}:v]overlay=shortest=1,format=yuv420p[v];[{audio_index}:a]atrim=duration={source_duration},asetpts=PTS-STARTPTS,{tempo},afade=t=in:d=0.08,afade=t=out:st={duration-.08}:d=0.08[a]'
-            if scene.get('audio_bed'):
-                filters=filters[:-3]+'[native];'+f'[{bed_index}:a]atrim=duration={duration},aresample=48000,asetpts=N/SR/TB,volume={scene["audio_bed"]}[bed];[native][bed]amix=inputs=2:normalize=0,alimiter=limit=0.95,atrim=duration={duration},asetpts=N/SR/TB[a]'
+            if bed_gain:
+                filters=filters[:-3]+'[native];'+f'[{bed_index}:a]atrim=duration={duration},aresample=48000,asetpts=N/SR/TB,volume={bed_gain}[bed];[native][bed]amix=inputs=2:normalize=0,alimiter=limit=0.95,atrim=duration={duration},asetpts=N/SR/TB[a]'
         command+=['-filter_complex',filters,'-map','[v]','-map','[a]','-t',str(duration),
                   '-c:v','libx264','-preset','veryfast','-crf','18','-threads','2',
                   '-c:a','aac','-b:a','192k','-ar','48000','-ac','2','-movflags','+faststart',str(segment)]

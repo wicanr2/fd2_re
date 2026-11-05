@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "recorded_date": "2026-11-05",
-  "status": "DRAFT-PRESENTATION-VERIFIED-SIZE-CONFIRMED",
-  "source_branch": "feature/hd2-first-slice-20261105",
+  "status": "DRAFT-FOUR-ACTOR-PRESENTATION-VERIFIED",
+  "source_branch": "main",
   "issue": "https://github.com/wicanr2/fd2_re/issues/204",
   "canonical_spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd2首章站姿原型draft呈現驗證",
   "approved_direction": {
@@ -95,35 +95,54 @@
       1090
     ],
     "geometry": "既有方格及固定落腳點；未選新投影，未改正式座標、射程、碰撞或存檔。",
-    "local_page": "work/hd2-first-map-20261105-r85/prototype-r2/index.html",
+    "local_page": "work/hd2-first-map-party-20261105-r87/prototype-r1/index.html",
     "size_comparison": {
       "file": "work/hd2-first-map-20261105-r85/standing-height-comparison.png",
       "sha256": "cc26d2fce4c7b5097fafbc03bc17fc31ab08c8aaec0c12858c0783b05f393301"
+    },
+    "party_preview": {
+      "file": "work/hd2-first-map-party-20261105-r87/browser-r1/party-1800.png",
+      "sha256": "f110dc5145908b890d7c2e8c2415a56f87ec8970c6cd1a995a1848f12c11d628"
+    },
+    "party_narrow_preview": {
+      "file": "work/hd2-first-map-party-20261105-r87/browser-r1/party-720.png",
+      "sha256": "78ef4bbfc65849c8f1caf25cd2d7e716af1e8c763c14dfd6fbd16ee8bb283a39"
+    },
+    "party_identities": [
+      0,
+      4,
+      9,
+      30
+    ],
+    "hud_trial_location": "左下，只供四人可視區試驗，非正式layout定版",
+    "ares_height_calibration": {
+      "body_top": 213,
+      "meaning": "帽頂至腳底168像素，槍尖可超出；僅試稿校準"
     }
   },
   "implementation": [
     {
       "file": "tools/build_fd2_hd2_first_map_prototype.py",
-      "sha256": "b27f1b9096810fa0777bdb9c367245ee8482113ec37318538a2ff057bda933e6"
+      "sha256": "bf4d9ace203211f42beb39d0bdc0b3798923287a9899d5cae172ed8c770f7b37"
     },
     {
       "file": "tools/fd2_hd2_first_map_prototype.html",
-      "sha256": "59817b03111ee36c649fce3a8fdbc668c455674a3e3fd14be74e5bfb0a724149"
+      "sha256": "9454f130f5737581d6127f8aed3080779a9925eef504dc31ac964cc13364313a"
     },
     {
       "file": "tools/verify_fd2_hd2_first_map_prototype.mjs",
-      "sha256": "59ffbbae3de1a2a2f189910e8c5ad15f9ef884883e385a075c0309325ec7ed45"
+      "sha256": "161129aa22c02e8d5167ded088a8c054b308819942afbeaa47c69126271d4c2c"
     }
   ],
   "verification": {
     "status": "PASS-HD2-STANDING-PRESENTATION-PROTOTYPE",
     "compiled": {
-      "file": "work/hd2-first-map-20261105-r85/prototype-r2/PROTOTYPE.json",
-      "sha256": "cc7a88291ec112ff83c46fa7265cd05a6d0a0dd5748b0a5469f0e86c899ce5f4"
+      "file": "work/hd2-first-map-party-20261105-r87/prototype-r1/PROTOTYPE.json",
+      "sha256": "b1fd76ce8e1bf61543099d2128cc5f1d0b46dee8faf9ecf477cb1fb31c2f4773"
     },
     "browser_receipt": {
-      "file": "work/hd2-first-map-20261105-r85/browser-r3/receipt.json",
-      "sha256": "7a6b6f22df2267a1f54e087bc209f3e2e169e4f9b96b30a2a351134acd852581"
+      "file": "work/hd2-first-map-party-20261105-r87/browser-r1/receipt.json",
+      "sha256": "c1a52fd504dd72c4d19ee95c65e37c75c0b7e3f24be1723f6352420bcdf33ba8"
     },
     "cases": [
       {
@@ -191,43 +210,53 @@
             {
               "x": 260.578125,
               "y": 56.5,
-              "width": 148.390625,
+              "width": 120,
               "height": 35,
               "top": 56.5,
-              "right": 408.96875,
+              "right": 380.578125,
               "bottom": 91.5,
               "left": 260.578125
             },
             {
-              "x": 420.96875,
+              "x": 392.578125,
+              "y": 56.5,
+              "width": 148.390625,
+              "height": 35,
+              "top": 56.5,
+              "right": 540.96875,
+              "bottom": 91.5,
+              "left": 392.578125
+            },
+            {
+              "x": 552.96875,
               "y": 64,
               "width": 54,
               "height": 20,
               "top": 64,
-              "right": 474.96875,
+              "right": 606.96875,
               "bottom": 84,
-              "left": 420.96875
+              "left": 552.96875
             },
             {
-              "x": 486.96875,
+              "x": 618.96875,
               "y": 57.5,
               "width": 95.015625,
               "height": 33,
               "top": 57.5,
-              "right": 581.984375,
+              "right": 713.984375,
               "bottom": 90.5,
-              "left": 486.96875
+              "left": 618.96875
             }
           ],
           "info": {
-            "x": 1097.015625,
+            "x": 151.390625,
             "y": 758.21875,
             "width": 551.59375,
             "height": 236.390625,
             "top": 758.21875,
-            "right": 1648.609375,
+            "right": 702.984375,
             "bottom": 994.609375,
-            "left": 1097.015625
+            "left": 151.390625
           },
           "copy": {
             "height": 210,
@@ -257,43 +286,53 @@
             {
               "x": 160.578125,
               "y": 49,
-              "width": 148.390625,
+              "width": 120,
               "height": 35,
               "top": 49,
-              "right": 308.96875,
+              "right": 280.578125,
               "bottom": 84,
               "left": 160.578125
             },
             {
-              "x": 320.96875,
+              "x": 292.578125,
+              "y": 49,
+              "width": 148.390625,
+              "height": 35,
+              "top": 49,
+              "right": 440.96875,
+              "bottom": 84,
+              "left": 292.578125
+            },
+            {
+              "x": 452.96875,
               "y": 56.5,
               "width": 54,
               "height": 20,
               "top": 56.5,
-              "right": 374.96875,
+              "right": 506.96875,
               "bottom": 76.5,
-              "left": 320.96875
+              "left": 452.96875
             },
             {
-              "x": 386.96875,
+              "x": 518.96875,
               "y": 50,
               "width": 95.015625,
               "height": 33,
               "top": 50,
-              "right": 481.984375,
+              "right": 613.984375,
               "bottom": 83,
-              "left": 386.96875
+              "left": 518.96875
             }
           ],
           "info": {
-            "x": 447.015625,
+            "x": 29.390625,
             "y": 362.21875,
             "width": 243.59375,
             "height": 104.390625,
             "top": 362.21875,
-            "right": 690.609375,
+            "right": 272.984375,
             "bottom": 466.609375,
-            "left": 447.015625
+            "left": 29.390625
           },
           "copy": {
             "height": 78,
@@ -302,52 +341,173 @@
           "bodyWidth": 720,
           "viewport": 720,
           "toolbarWidth": 696,
-          "toolbarScroll": 736
+          "toolbarScroll": 868
         }
+      },
+      {
+        "kind": "four-actor-map-hud-selection",
+        "width": 1800,
+        "selections": [
+          {
+            "mode": "hd2",
+            "identity": 0,
+            "image": "sol-standing.png",
+            "portrait": "portrait-hd.png"
+          },
+          {
+            "mode": "hd2",
+            "identity": 4,
+            "image": "actor-004-hd2.png",
+            "portrait": "actor-004-portrait-hd.png"
+          },
+          {
+            "mode": "hd2",
+            "identity": 9,
+            "image": "actor-009-hd2.png",
+            "portrait": "actor-009-portrait-hd.png"
+          },
+          {
+            "mode": "hd2",
+            "identity": 30,
+            "image": "actor-030-hd2.png",
+            "portrait": "actor-030-portrait-hd.png"
+          },
+          {
+            "mode": "original",
+            "identity": 0,
+            "image": "sol-original.png",
+            "portrait": "portrait-original.png"
+          },
+          {
+            "mode": "original",
+            "identity": 4,
+            "image": "actor-004-original.png",
+            "portrait": "actor-004-portrait-original.png"
+          },
+          {
+            "mode": "original",
+            "identity": 9,
+            "image": "actor-009-original.png",
+            "portrait": "actor-009-portrait-original.png"
+          },
+          {
+            "mode": "original",
+            "identity": 30,
+            "image": "actor-030-original.png",
+            "portrait": "actor-030-portrait-original.png"
+          }
+        ],
+        "roster_select_identity": 30,
+        "all_anchors_preserved": true,
+        "actors_unoccluded": true
+      },
+      {
+        "kind": "four-actor-map-hud-selection",
+        "width": 720,
+        "selections": [
+          {
+            "mode": "hd2",
+            "identity": 0,
+            "image": "sol-standing.png",
+            "portrait": "portrait-hd.png"
+          },
+          {
+            "mode": "hd2",
+            "identity": 4,
+            "image": "actor-004-hd2.png",
+            "portrait": "actor-004-portrait-hd.png"
+          },
+          {
+            "mode": "hd2",
+            "identity": 9,
+            "image": "actor-009-hd2.png",
+            "portrait": "actor-009-portrait-hd.png"
+          },
+          {
+            "mode": "hd2",
+            "identity": 30,
+            "image": "actor-030-hd2.png",
+            "portrait": "actor-030-portrait-hd.png"
+          },
+          {
+            "mode": "original",
+            "identity": 0,
+            "image": "sol-original.png",
+            "portrait": "portrait-original.png"
+          },
+          {
+            "mode": "original",
+            "identity": 4,
+            "image": "actor-004-original.png",
+            "portrait": "actor-004-portrait-original.png"
+          },
+          {
+            "mode": "original",
+            "identity": 9,
+            "image": "actor-009-original.png",
+            "portrait": "actor-009-portrait-original.png"
+          },
+          {
+            "mode": "original",
+            "identity": 30,
+            "image": "actor-030-original.png",
+            "portrait": "actor-030-portrait-original.png"
+          }
+        ],
+        "roster_select_identity": 30,
+        "all_anchors_preserved": true,
+        "actors_unoccluded": true
       }
     ],
     "captures": [
       {
-        "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-144.png",
-        "sha256": "48cad15800c28f3a128810f26b96af262cd7c10b5018b9b79c6e21bb06bbe61e"
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/standing-144.png",
+        "sha256": "02eeac8e4a24a8433305415c5d8443316b488e5dd443d954e6f7d6039ce989b4"
       },
       {
-        "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-168.png",
-        "sha256": "946ddf6a9d19a8cd6a9687c8b3923743a753b0cd54e6fd405853c9cc3482a01d"
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/standing-168.png",
+        "sha256": "a9a1eceff32bea0955bafb89b129641c6e5b7c185de4c4e2fa60a1ca9dbcf716"
       },
       {
-        "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-192.png",
-        "sha256": "ae5566a0676726e78b4555239b59eaa070604923359ef09ce524ec54a1575446"
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/standing-192.png",
+        "sha256": "6b730bc6ee4c7eef7924e20b76dd132bb994f4a2e301a11bf0d7432347fa9142"
       },
       {
-        "file": "work/hd2-first-map-20261105-r85/browser-r3/original-actor.png",
-        "sha256": "cf123a0034e368a01331c2fbb9ee618737d0d2a22a7562c973663a954b04f64b"
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/original-actor.png",
+        "sha256": "d7d25161c43794111c833bcf774302ceedae5178da274cb1b4a8b5bbd0621179"
       },
       {
-        "file": "work/hd2-first-map-20261105-r85/browser-r3/layout-1800.png",
-        "sha256": "d5355e7175705c297e3991fed34a3849525587a1754da51a6a725a0f9aada939"
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/layout-1800.png",
+        "sha256": "0eee32a66a008304beecdfc01713f7d6ba6ab923d3009f80500b8e3a27bfc136"
       },
       {
-        "file": "work/hd2-first-map-20261105-r85/browser-r3/layout-720.png",
-        "sha256": "690292bb1c93b64145de9f0438a2ad23804647e4bb8dd111096573ea07be2707"
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/layout-720.png",
+        "sha256": "5dfc8c1b5b1d073fb4a867d43710f58abef877d8ad52430433ea7593ed9b8628"
+      },
+      {
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/party-1800.png",
+        "sha256": "f110dc5145908b890d7c2e8c2415a56f87ec8970c6cd1a995a1848f12c11d628"
+      },
+      {
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/party-720.png",
+        "sha256": "78ef4bbfc65849c8f1caf25cd2d7e716af1e8c763c14dfd6fbd16ee8bb283a39"
       }
     ],
+    "legacy_single_actor_receipt": {
+      "file": "work/hd2-first-map-party-20261105-r87/legacy-browser-r1/receipt.json",
+      "sha256": "f0a618ee0cf0011e9a3e7abe95c203d989b8d8a2355c7da2c2e6a11fdb393135"
+    },
+    "legacy_cases": 7,
     "inspected_captures": [
-      "work/hd2-first-map-20261105-r85/browser-r3/standing-168.png",
-      "work/hd2-first-map-20261105-r85/browser-r3/layout-720.png",
-      "work/hd2-first-map-20261105-r85/standing-height-comparison.png"
+      "work/hd2-first-map-party-20261105-r87/identity-reference.png",
+      "work/hd2-first-map-party-20261105-r87/browser-r1/party-1800.png"
     ],
     "evidence_level": "standalone presentation prototype only",
     "normal_player_path_claimed": false,
     "original_parity_claimed": false,
     "final_audit": {
-      "hashed_files": 14,
-      "local_markdown_targets": 6276,
-      "new_broken_links": 0,
-      "historical_broken_links": 9,
-      "worklist_open": 25,
-      "worklist_suspected_completed": 0,
-      "docker_cleanup": "No fd2-hd2 containers remained after the batch."
+      "file": "work/promo-audio-repair-20261105-r88/final-handoff-audit.json",
+      "sha256": "7956b975c761ffe1b15e1f50e6accc4c8fc33e0c01eeac118340118a7ac06c8b"
     }
   },
   "runtime": {
@@ -365,8 +525,8 @@
     },
     {
       "stage": "首關素材切片",
-      "status": "PLANNED",
-      "scope": "沿原圖核對首關人物身份、方向與走行圖源；製作HD2人物與地形試稿，不猜補裝備。"
+      "status": "DRAFT-FOUR-STANDING-VERIFIED-WALKING-TERRAIN-PENDING",
+      "scope": "四名首關人物單張站姿已進獨立原型；走行圖源與HD2地形仍待。"
     },
     {
       "stage": "正式呈現與載入",
@@ -389,9 +549,379 @@
     "draft_image_and_compiled_page": "local only; no unregistered source added to the public or private asset pack"
   },
   "limitations": [
-    "單張站姿，沒有走行／攻擊／受傷／死亡影格。",
-    "資訊窗與相同人物圖源只驗索爾一人，不代表敵人及所有角色覆蓋。",
+    "每人只有單張站姿，沒有走行／攻擊／受傷／死亡影格。",
+    "資訊窗與人物來源只驗四名首關夥伴，不代表敵人及全部角色覆蓋。",
     "地形暫沿HD1；原版對照按鈕只切人物，不能稱完整原版／HD2切換。",
     "未執行正式Game.Draw、戰役、亂數、存檔或三平台程式；現有HD1交付保持。"
-  ]
+  ],
+  "first_single_actor_baseline": {
+    "status": "DRAFT-PRESENTATION-VERIFIED-SIZE-CONFIRMED",
+    "source_branch": "feature/hd2-first-slice-20261105",
+    "presentation": {
+      "cell_pixels": 144,
+      "height_candidates": [
+        144,
+        168,
+        192
+      ],
+      "temporary_default": 168,
+      "user_size_choice": 168,
+      "choice_status": "confirmed-for-followup-drafts-20261105",
+      "foot": [
+        232,
+        1090
+      ],
+      "geometry": "既有方格及固定落腳點；未選新投影，未改正式座標、射程、碰撞或存檔。",
+      "local_page": "work/hd2-first-map-party-20261105-r87/prototype-r1/index.html",
+      "size_comparison": {
+        "file": "work/hd2-first-map-20261105-r85/standing-height-comparison.png",
+        "sha256": "cc26d2fce4c7b5097fafbc03bc17fc31ab08c8aaec0c12858c0783b05f393301"
+      },
+      "party_preview": {
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/party-1800.png",
+        "sha256": "f110dc5145908b890d7c2e8c2415a56f87ec8970c6cd1a995a1848f12c11d628"
+      },
+      "party_narrow_preview": {
+        "file": "work/hd2-first-map-party-20261105-r87/browser-r1/party-720.png",
+        "sha256": "78ef4bbfc65849c8f1caf25cd2d7e716af1e8c763c14dfd6fbd16ee8bb283a39"
+      },
+      "party_identities": [
+        0,
+        4,
+        9,
+        30
+      ],
+      "hud_trial_location": "左下，只供四人可視區試驗，非正式layout定版",
+      "ares_height_calibration": {
+        "body_top": 213,
+        "meaning": "帽頂至腳底168像素，槍尖可超出；僅試稿校準"
+      }
+    },
+    "implementation": [
+      {
+        "file": "tools/build_fd2_hd2_first_map_prototype.py",
+        "sha256": "b27f1b9096810fa0777bdb9c367245ee8482113ec37318538a2ff057bda933e6"
+      },
+      {
+        "file": "tools/fd2_hd2_first_map_prototype.html",
+        "sha256": "59817b03111ee36c649fce3a8fdbc668c455674a3e3fd14be74e5bfb0a724149"
+      },
+      {
+        "file": "tools/verify_fd2_hd2_first_map_prototype.mjs",
+        "sha256": "59ffbbae3de1a2a2f189910e8c5ad15f9ef884883e385a075c0309325ec7ed45"
+      }
+    ],
+    "verification": {
+      "status": "PASS-HD2-STANDING-PRESENTATION-PROTOTYPE",
+      "compiled": {
+        "file": "work/hd2-first-map-20261105-r85/prototype-r2/PROTOTYPE.json",
+        "sha256": "cc7a88291ec112ff83c46fa7265cd05a6d0a0dd5748b0a5469f0e86c899ce5f4"
+      },
+      "browser_receipt": {
+        "file": "work/hd2-first-map-20261105-r85/browser-r3/receipt.json",
+        "sha256": "7a6b6f22df2267a1f54e087bc209f3e2e169e4f9b96b30a2a351134acd852581"
+      },
+      "cases": [
+        {
+          "kind": "height",
+          "height": 144,
+          "foot": {
+            "x": 1104,
+            "y": 744
+          },
+          "pixel_hash": 2599159356
+        },
+        {
+          "kind": "height",
+          "height": 168,
+          "foot": {
+            "x": 1104,
+            "y": 744
+          },
+          "pixel_hash": 1284720877
+        },
+        {
+          "kind": "height",
+          "height": 192,
+          "foot": {
+            "x": 1104,
+            "y": 744
+          },
+          "pixel_hash": 3959822920
+        },
+        {
+          "kind": "original-toggle",
+          "same_identity": true,
+          "same_anchor": true
+        },
+        {
+          "kind": "bounded-camera-and-cursor",
+          "minimum": [
+            0,
+            0
+          ],
+          "maximum": [
+            23,
+            23
+          ],
+          "maximum_camera": [
+            11,
+            16
+          ]
+        },
+        {
+          "kind": "scaled-pointer-and-layout",
+          "width": 1800,
+          "layout": {
+            "controls": [
+              {
+                "x": 124,
+                "y": 57.5,
+                "width": 124.578125,
+                "height": 33,
+                "top": 57.5,
+                "right": 248.578125,
+                "bottom": 90.5,
+                "left": 124
+              },
+              {
+                "x": 260.578125,
+                "y": 56.5,
+                "width": 148.390625,
+                "height": 35,
+                "top": 56.5,
+                "right": 408.96875,
+                "bottom": 91.5,
+                "left": 260.578125
+              },
+              {
+                "x": 420.96875,
+                "y": 64,
+                "width": 54,
+                "height": 20,
+                "top": 64,
+                "right": 474.96875,
+                "bottom": 84,
+                "left": 420.96875
+              },
+              {
+                "x": 486.96875,
+                "y": 57.5,
+                "width": 95.015625,
+                "height": 33,
+                "top": 57.5,
+                "right": 581.984375,
+                "bottom": 90.5,
+                "left": 486.96875
+              }
+            ],
+            "info": {
+              "x": 1097.015625,
+              "y": 758.21875,
+              "width": 551.59375,
+              "height": 236.390625,
+              "top": 758.21875,
+              "right": 1648.609375,
+              "bottom": 994.609375,
+              "left": 1097.015625
+            },
+            "copy": {
+              "height": 210,
+              "scroll": 210
+            },
+            "bodyWidth": 1800,
+            "viewport": 1800,
+            "toolbarWidth": 1576,
+            "toolbarScroll": 1576
+          }
+        },
+        {
+          "kind": "scaled-pointer-and-layout",
+          "width": 720,
+          "layout": {
+            "controls": [
+              {
+                "x": 24,
+                "y": 50,
+                "width": 124.578125,
+                "height": 33,
+                "top": 50,
+                "right": 148.578125,
+                "bottom": 83,
+                "left": 24
+              },
+              {
+                "x": 160.578125,
+                "y": 49,
+                "width": 148.390625,
+                "height": 35,
+                "top": 49,
+                "right": 308.96875,
+                "bottom": 84,
+                "left": 160.578125
+              },
+              {
+                "x": 320.96875,
+                "y": 56.5,
+                "width": 54,
+                "height": 20,
+                "top": 56.5,
+                "right": 374.96875,
+                "bottom": 76.5,
+                "left": 320.96875
+              },
+              {
+                "x": 386.96875,
+                "y": 50,
+                "width": 95.015625,
+                "height": 33,
+                "top": 50,
+                "right": 481.984375,
+                "bottom": 83,
+                "left": 386.96875
+              }
+            ],
+            "info": {
+              "x": 447.015625,
+              "y": 362.21875,
+              "width": 243.59375,
+              "height": 104.390625,
+              "top": 362.21875,
+              "right": 690.609375,
+              "bottom": 466.609375,
+              "left": 447.015625
+            },
+            "copy": {
+              "height": 78,
+              "scroll": 78
+            },
+            "bodyWidth": 720,
+            "viewport": 720,
+            "toolbarWidth": 696,
+            "toolbarScroll": 736
+          }
+        }
+      ],
+      "captures": [
+        {
+          "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-144.png",
+          "sha256": "48cad15800c28f3a128810f26b96af262cd7c10b5018b9b79c6e21bb06bbe61e"
+        },
+        {
+          "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-168.png",
+          "sha256": "946ddf6a9d19a8cd6a9687c8b3923743a753b0cd54e6fd405853c9cc3482a01d"
+        },
+        {
+          "file": "work/hd2-first-map-20261105-r85/browser-r3/standing-192.png",
+          "sha256": "ae5566a0676726e78b4555239b59eaa070604923359ef09ce524ec54a1575446"
+        },
+        {
+          "file": "work/hd2-first-map-20261105-r85/browser-r3/original-actor.png",
+          "sha256": "cf123a0034e368a01331c2fbb9ee618737d0d2a22a7562c973663a954b04f64b"
+        },
+        {
+          "file": "work/hd2-first-map-20261105-r85/browser-r3/layout-1800.png",
+          "sha256": "d5355e7175705c297e3991fed34a3849525587a1754da51a6a725a0f9aada939"
+        },
+        {
+          "file": "work/hd2-first-map-20261105-r85/browser-r3/layout-720.png",
+          "sha256": "690292bb1c93b64145de9f0438a2ad23804647e4bb8dd111096573ea07be2707"
+        }
+      ],
+      "inspected_captures": [
+        "work/hd2-first-map-20261105-r85/browser-r3/standing-168.png",
+        "work/hd2-first-map-20261105-r85/browser-r3/layout-720.png",
+        "work/hd2-first-map-20261105-r85/standing-height-comparison.png"
+      ],
+      "evidence_level": "standalone presentation prototype only",
+      "normal_player_path_claimed": false,
+      "original_parity_claimed": false,
+      "final_audit": {
+        "hashed_files": 14,
+        "local_markdown_targets": 6276,
+        "new_broken_links": 0,
+        "historical_broken_links": 9,
+        "worklist_open": 25,
+        "worklist_suspected_completed": 0,
+        "docker_cleanup": "No fd2-hd2 containers remained after the batch."
+      }
+    },
+    "source_commit": "4f616797542e5b3cc6f34ccefd70736bd58c9748"
+  },
+  "party_generation": {
+    "tool": "built-in image_gen",
+    "request": {
+      "file": "work/hd2-first-map-party-20261105-r87/generation-requests.json",
+      "sha256": "ee527827289fe6047e5fafcef87c30ba6a1fa87eef3a127b6ed0c742d3006c84"
+    },
+    "parameters": [
+      {
+        "identity": 4,
+        "name": "亞雷斯",
+        "slug": "ares",
+        "transparent_background": true,
+        "referenced_image_paths": [
+          "/home/anr2/cht/fd2/work/hd2-first-map-20261105-r85/sol-hd2-standing-v1-master.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_004_m0.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/party-004-portrait-style-a-v2-480.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-004-hd1-base-face-q-v1-hd6-f09.png"
+        ],
+        "prompt": "Use case: stylized-concept. Generate ONE new transparent full-body HD2 tactical-map standing sprite of 亞雷斯 (Ares), identity 4, Flame Dragon Knights 2. Image 1 is ONLY the established HD2 rendering, elevated three-quarter camera and head-to-body proportion reference of his companion Sol; do not copy Sol's identity, blue hair, forehead scarf, sword or costume. Images 2 and 3 are Ares's OWN original face and HD face. Image 4 is Ares's OWN original-faithful HD1 map costume and weapon reference. Preserve Ares as a serious ADULT MAN with broad angular face, square jaw, thick slanting eyebrows, narrow eyes and strong straight nose, short brown hair. Blue flat military cap with muted green horizontal hatband, blue high-collared clothing and small blue cloak, grey gloves and grey boots, exactly the costume in image 4. Carry the SAME single upright straight brown-shafted spear with a plain silver leaf-shaped spearhead as image 4, with its entire point and shaft visible. No horse, no shield, no sword, no metal helmet and no extra armor. Keep all equipment faithful to image 4. Stand calm and alert, viewed from above at an elevated three-quarter angle matching image 1, torso and feet facing diagonally lower right with his own masculine face visible. Head about 40 percent of total standing body height, short legs, same smooth hand-painted finish as image 1, readable when solid body is displayed 168 pixels high on a 144-pixel tactical tile. Soft daylight, clear separations and silhouette. Full cap, spear tip and both boots inside frame, generous transparent margins. ONE character only. True transparent RGBA, no scenery, ground, pedestal, shadow tile, text, UI or watermark. This is a single idle DRAFT, no walking or attack action."
+      },
+      {
+        "identity": 9,
+        "name": "悠妮",
+        "slug": "yuni",
+        "transparent_background": true,
+        "referenced_image_paths": [
+          "/home/anr2/cht/fd2/work/hd2-first-map-20261105-r85/sol-hd2-standing-v1-master.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_009_m0.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/yuni-portrait-style-a-v1-480.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-009-style-a-hd6-f09.png"
+        ],
+        "prompt": "Use case: stylized-concept. Generate ONE new transparent full-body HD2 tactical-map standing sprite of 悠妮 (Yuni), identity 9, Flame Dragon Knights 2. Image 1 is ONLY the established HD2 smooth hand-painted rendering, elevated three-quarter camera and head/body proportion reference of Sol. Do not copy Sol's face, hair, sword, masculine body or costume. Images 2 and 3 are Yuni's OWN original and HD portraits; preserve her individual gentle almond eyes, arched brows, delicate straight nose, small closed lips and warm composed young woman face. Image 4 is Yuni's OWN current original-faithful HD1 map sprite and is the clothing, hairstyle and empty-hand reference. Long deep red hair tied high into the same large ponytail as image 4, blue tie and blue/gold forehead circlet with central blue jewel as in her own portrait. Preserve the short navy/royal-blue cape and blue/purple mage outfit, narrow gold belt details and brown boots shown in image 4. Both hands remain EMPTY in a quiet alert standing pose. No invented staff, wand, book, magic orb, hat, armor or weapon. Elevated three-quarter view from above matching image 1, body and feet facing diagonally lower right, face visible. Head about 40 percent of total body height, short legs, cute but recognizably her own young woman face, no baby face or generic shared face. Smooth painted daylight, readable silhouette and clothing shapes when solid body displays at 168 pixels high on a 144-pixel map cell. Full ponytail and both boots visible, balanced calm stance, generous transparent margin. One complete character only. Truly transparent RGBA background; no scene, ground, pedestal, effects, UI, lettering or watermark. Single idle DRAFT, no casting or walking."
+      },
+      {
+        "identity": 30,
+        "name": "蓋亞",
+        "slug": "gaia",
+        "transparent_background": true,
+        "referenced_image_paths": [
+          "/home/anr2/cht/fd2/work/hd2-first-map-20261105-r85/sol-hd2-standing-v1-master.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/portraits/DATO_030_m0.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/gaia-portrait-style-a-v2-480.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-030-hd1-q-v1-hd6-f09.png"
+        ],
+        "prompt": "Use case: stylized-concept. Generate ONE new transparent full-body HD2 tactical-map idle sprite of 蓋亞 (Gaia), identity 30, the mechanical soldier in Flame Dragon Knights 2. Image 1 establishes ONLY the elevated three-quarter camera, smooth hand-painted finish and chibi standing scale of HD2; do NOT copy Sol's human face, hair, clothes or sword. Images 2 and 3 are Gaia's OWN original mechanical faceplate and HD portrait; image 4 is his USER-SELECTED original-faithful HD1 body silhouette. Preserve the exact recognizable OFF-WHITE/ivory slightly green-grey mechanical shell, dark cobalt-blue inner mechanisms, blue horizontal visor slit recessed under the long angular brow/face plates, smooth rounded shoulder armor, segmented upper and lower limbs, heavy short boots and TWO broad closed mechanical fists. Match the slimness and body proportions of image 4; do not invent oversized shoulder masses, giant boxing gloves or extra bulky chest. No human face, visible skin, hair, mouth, cape, horns, wings, sword, gun or shield. Preserve image 4's own mechanical shapes, blue joints and panel separations. Elevated three-quarter standing view from above matching image 1, head, body and boots facing diagonally lower right, quiet ready stance with two empty mechanical fists slightly forward. Short compact body, head about 40 percent of full standing height, hand-painted surfaces with subtle wear as in his own HD portrait, no glossy plastic 3D render. Clear silhouette readable at solid body height 168 pixels on a 144-pixel tactical cell. Entire robot, both boots and fists inside frame, comfortable transparent margins. True transparent RGBA only, no ground, stage, environmental shadow, text, UI or watermark. Single idle DRAFT, not an attack or walk."
+      }
+    ],
+    "receipt": {
+      "file": "work/hd2-first-map-party-20261105-r87/generation-receipt.json",
+      "sha256": "60e03445a0242d29179230631c31c9284dafbe1c7b491a595f36eebd7f7519f2"
+    },
+    "sources": {
+      "file": "work/hd2-first-map-party-20261105-r87/source-reference.json",
+      "sha256": "2eb8da288652eb36f63b44a17dea4bdb9d0ff90e3cd46e572f46f7359add19e6"
+    },
+    "fixture": {
+      "file": "work/hd2-first-map-party-20261105-r87/party-draft.json",
+      "sha256": "48d680d243c3306e1b16ee8be568e08aaf11102c9de23c2ff8999fb4c96745fb"
+    },
+    "masters": [
+      {
+        "file": "work/hd2-first-map-party-20261105-r87/ares-hd2-standing-v1-master.png",
+        "sha256": "cbc4897fe09402a8c785a3eed23bfd05d9538e07cdaeb7d202ea05d7bace84e8"
+      },
+      {
+        "file": "work/hd2-first-map-party-20261105-r87/yuni-hd2-standing-v1-master.png",
+        "sha256": "7a827d00419155b1224c1c3eacb79f5689e6d49fabd5b68ad85f6cbf901a27ae"
+      },
+      {
+        "file": "work/hd2-first-map-party-20261105-r87/gaia-hd2-standing-v1-master.png",
+        "sha256": "185c0deccd3f8bbc760ca2a2dc3267f58a2b7d774b204094130312c69b9d7ee2"
+      }
+    ],
+    "public_asset_upload": false,
+    "registered_asset_pack": false
+  }
 }

@@ -4029,10 +4029,12 @@
       "official_model_sources": "work/hd1-battle-review-20261105-r84/voice-model-source.json",
       "voice_model_documentation_url": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
       "completed_preserved_segments": 36,
-      "status": "PASS-36-SEGMENTS-MIXED-TECHNICAL",
+      "status": "PASS-36-SEGMENTS-NORMAL-MUSIC-TECHNICAL",
       "final_manifest": "dist-all/v.1.1.2-20261105/promo/NARRATION-MANIFEST.json",
       "human_listening_confirmed": false,
-      "provenance_limit": "最初4段在完成模型雜湊收據前有意停止，保留WAV、文字、聲線及原編製器SHA；後32段另有同一模型／設定雜湊，不將32段的直接收據擴稱全部36段。"
+      "provenance_limit": "最初4段在完成模型雜湊收據前有意停止，保留WAV、文字、聲線及原編製器SHA；後32段另有同一模型／設定雜湊，不將32段的直接收據擴稱全部36段。",
+      "audio_repair": "promo_audio_repair_20261105",
+      "movie_sha256": "ffd0828fd8c30fd8f1ae8ccc25f246796a8c1f82fcff008f2d73193d023c8bcb"
     },
     "lancelot_design": "USER-CONFIRMED-ORIGINAL-LONG-CHESTNUT-PLUME-MALE-FACE",
     "rodman_candidate": "work/hd1-battle-review-20261105-r84/rodman-candidate-r4",
@@ -7249,9 +7251,12 @@
     "delivery": {
       "version": "v.1.1.2-20261105",
       "unified_manifest": "dist-all/v.1.1.2-20261105/SHA256SUMS.json",
-      "unified_manifest_sha256": "11c8a79dfeeddb69502207d85bfc70d12ec70d8659828c1f1065cc2d54f844a3",
+      "unified_manifest_sha256": "b9a22e541d68fabe260fb4446f0571d1100bc6cec32749a15c7c2c085c997987",
       "engine_source_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27",
-      "final_audit": "work/hd1-battle-review-20261105-r84/final-handoff-audit.json"
+      "final_audit": "work/promo-audio-repair-20261105-r88/final-handoff-audit.json",
+      "previous_unified_manifest_sha256": "11c8a79dfeeddb69502207d85bfc70d12ec70d8659828c1f1065cc2d54f844a3",
+      "audio_revision": "promo_audio_repair_20261105",
+      "previous_final_audit": "work/hd1-battle-review-20261105-r84/final-handoff-audit.json"
     },
     "issue_state": "CLOSED",
     "issue_verified_engine_commit": "69f7d336b49f3d11900473cd2702637f8ce89d27"
@@ -7262,5 +7267,87 @@
     "status": "PASS-SCOPED",
     "staging": "平台展開副本與Go快取已清除；staging／asset-files清冊保留",
     "reproduction": "61份影片輸入、36份原始旁白、136張動畫總覽及16張人物卡實檔SHA通過"
+  },
+  "promo_audio_repair_20261105": {
+    "status": "PASS-TECHNICAL-NORMAL-SPEED-MUSIC",
+    "issue": "https://github.com/wicanr2/fd2_re/issues/296",
+    "user_report": "悠妮第一段說完後主音樂加快；使用者指出似乎跟影片調速有關。",
+    "cause": "opening把242秒剪至27秒時，完整錄影音軌也經atempo，BGM約8.96倍速；其餘調速場景同類。",
+    "work": "work/promo-audio-repair-20261105-r88",
+    "plan": {
+      "file": "work/promo-audio-repair-20261105-r88/AUDIO-REPAIR-PLAN.json",
+      "sha256": "9d08d4a1c16bdc4199fd9d3592150dd76e661fbc338eafe5d10d0d88518d49e4"
+    },
+    "producer": {
+      "file": "tools/remix_fd2_promo_music.py",
+      "sha256": "5057700719f22168a62c9939139fcc413925481847df86cde5e0b07b48e1a4a8"
+    },
+    "verifier": {
+      "file": "tools/verify_fd2_promo_audio_repair.py",
+      "sha256": "e7cb42697fd3b3adef278599afa8d0c9135c9f15326f3f02e220f7a926f7164b"
+    },
+    "legacy_encoder_guard": {
+      "file": "tools/build_fd2_hd1_promo.py",
+      "sha256": "99d641c79cc9346ca8b9940757da0929a75910bdd3507043e9badb9b10d1b8ac"
+    },
+    "proof": {
+      "file": "work/promo-audio-repair-20261105-r88/audio-proof-delivered.json",
+      "sha256": "9869f814421a9bead8f0a731871efc28a9fd01342adcedccacbbd0ecf583ac74"
+    },
+    "quality": {
+      "file": "dist-all/v.1.1.2-20261105/promo/VALIDATION.json",
+      "sha256": "c38b356ba0f93b4c52f0f3ffb9a8dfc21352935e7b73e8e3d7546a32b47a7a4f"
+    },
+    "movie": {
+      "file": "FD2-v.1.1.2-20261105-hd1-promo.mp4",
+      "bytes": 57054227,
+      "sha256": "ffd0828fd8c30fd8f1ae8ccc25f246796a8c1f82fcff008f2d73193d023c8bcb"
+    },
+    "duration_seconds": 313.022,
+    "frames": 9390,
+    "music_playback_rate": 1,
+    "native_sfx_playback_rate": 1,
+    "native_sfx_cues": 29,
+    "voice_segments_unchanged": 36,
+    "narration_wav_sha256": "28562fa35d381d3c96f7875501992b83fb0143bdf1bcdd58f0bc2d793de7352a",
+    "video_packet_hash": "SHA256=3580eae1f4200b8305f7b9e228225e064443c188ae377c019b0bae547a811662",
+    "video_packets_unchanged": true,
+    "human_listening_confirmed": false,
+    "current_promo": "dist-all/v.1.1.2-20261105/promo",
+    "previous_promo": "work/promo-audio-repair-20261105-r88/previous-promo",
+    "preview": {
+      "file": "dist-all/v.1.1.2-20261105/promo/normal-music-preview.mp4",
+      "sha256": "e1a1f59c309cfa3d6a96242168decca405f6e0883f179dbc517cefe18ef6eb09"
+    },
+    "known_caption_defect": {
+      "issue": "https://github.com/wicanr2/fd2_re/issues/297",
+      "scene": "gaia-original",
+      "movie_seconds": [
+        82,
+        86
+      ],
+      "actual_name": "亞雷斯",
+      "caption_name": "蓋亞",
+      "status": "OPEN-NOT-CHANGED-BY-AUDIO-REPAIR",
+      "evidence": {
+        "file": "work/promo-audio-repair-20261105-r88/cue-review.json",
+        "sha256": "309ebc250e7f6b3c3c972e8b6a71b6d040f93f54a56e24a2aec43767864d2a96"
+      }
+    },
+    "waveform_probe_note": "分段OGG取樣在50秒少64個立體聲影格，完整解碼後依樣本索引比較通過；原OGG時間戳警告未提升為遊戲硬體或取樣率問題。",
+    "limits": [
+      "原始錄音已混合配樂與音效，不保留其中被加速的音軌；改用既有原遊戲FM主題及已證實的主要PCM演出音效。",
+      "音效位置沿現有錄影觀測及可見動作作剪輯近似；不是原版硬體wall-clock。未猜補未知開場環境音或未標記的選單細音。",
+      "gaia-original既有片段實際顯示亞雷斯，保留影片畫面並另記現有圖說缺陷；此音軌按實際人物取聲。",
+      "原FM渲染來源紀錄有限，不宣稱硬體逐波形一致；技術檢查與人耳試聽分開記錄。"
+    ],
+    "final_audit": {
+      "file": "work/promo-audio-repair-20261105-r88/final-handoff-audit.json",
+      "sha256": "7956b975c761ffe1b15e1f50e6accc4c8fc33e0c01eeac118340118a7ac06c8b"
+    },
+    "platform_packages_preserved": {
+      "file": "work/promo-audio-repair-20261105-r88/platform-packages-preserved.json",
+      "sha256": "4c372a36452febe5d073253d7f118fa00eadab8968732d4b936c67f4c4aeda6a"
+    }
   }
 }
