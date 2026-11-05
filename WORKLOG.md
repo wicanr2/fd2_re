@@ -5231,3 +5231,7 @@ R87／R88結案：471267d8已推送main，#296附該提交及正常速度波形�
 最後補驗：切畫質時的戰鬥畫布保留到新計畫驗證成功，錯誤計畫不丟棄已發布畫布；三品質幾何與往返GPU重跑通過，最終版本Linux封裝自檢通過。正常GUI二進位f0c1d6d8與最終Windows二進位5c3cf308分列，沒有冒稱相同二進位或Windows實機驗收。Windows啟動器固定工作目錄，僅逐次程序設定後端。官方工單pull／render／verify為27開項、20人工、零疑似完成。
 
 編製器首輪誤要求trimpath版的go version -m包含ldflags而拒收，尚未建立輸出。核對Go1.22.12的cmd/go/internal/load/pkg.go 2389至2398行，確認trimpath明確省略該欄，修正為驗實際PE內嵌版號、架構、GUI子系統與CGO，並保留原建置資訊SHA；引擎未改。此為封包驗證器問題。
+
+HD1測試補丁已從e13cd454固定來源建立於dist-all/v.1.1.3-20261105/patch/FD2-v.1.1.3-20261105-windows-x86_64-performance-patch.zip，6109511 bytes，SHA-256 ab737dc9c3133cac2cb12e82ae3986baa370d67d7bdaf125c87038702700328b。PE amd64／GUI子系統、內嵌版號、ZIP CRC與七檔內容SHA通過；不含原版／HD素材。統一清冊及來源樹SHA寫回唯一現況表，Windows實機、兩份bat及60fps仍待測試，#298不關閉。
+
+只清除本輪work/hd1-performance-60fps-20261105-r89/go-cache的4898檔、1663728958 bytes，保留1000:1000空掛載點、全部回歸收據、正常GUI二進位及正式交付。433條教訓／275守衛通過；本輪FD2容器以--rm完成，交付與工作根無root-owned新產物或誤建Markdown目錄。

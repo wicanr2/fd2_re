@@ -227,6 +227,28 @@
       "status": "PASS",
       "path": "work/hd1-performance-60fps-20261105-r89/versioned-linux-selfcheck-final.log",
       "sha256": "b97735c6eee075fb2076a822e90680cabddcc520f2f7d652799da4582407fe53"
-    }
+    },
+    "status": "BUILT-CONTENT-VERIFIED; WINDOWS-RUNTIME-PENDING",
+    "source_commit": "e13cd4540c3c6475f631f4cede884ad5006e780a",
+    "archive": "dist-all/v.1.1.3-20261105/patch/FD2-v.1.1.3-20261105-windows-x86_64-performance-patch.zip",
+    "archive_sha256": "ab737dc9c3133cac2cb12e82ae3986baa370d67d7bdaf125c87038702700328b",
+    "archive_size_bytes": 6109511,
+    "manifest": "dist-all/v.1.1.3-20261105/SHA256SUMS.json",
+    "manifest_sha256": "48512e4d68cb92d5c36b1ffb80cc7fe6dbdc930675ede1b9662a379269809088",
+    "source_tree_sha256": "523180d29aa450a26faed62cc5553139dc2d76a7a978e837a636c7a07dff57a1",
+    "zip_crc_and_contents_sha256": "PASS",
+    "contains_game_assets": false,
+    "windows_batch_launchers": "PENDING-NATIVE-WINDOWS"
+  },
+  "build_tool_validation": {
+    "initial_attempt": "trimpath建置資訊沒有ldflags，編製器先拒收，沒有建立輸出。",
+    "correction": "核對Go1.22.12 cmd/go/internal/load/pkg.go 2389至2398行後，驗PE內嵌版號及實際架構／CGO；同一引擎重新打包通過。",
+    "packager": "tools/build_fd2_hd1_performance_patch.py",
+    "packager_sha256": "b19961a65ea17c86baf54355afcb8cf9f5efb4b47dc40b8e68aa78bd94a22428"
+  },
+  "cleanup": {
+    "receipt": "work/hd1-performance-60fps-20261105-r89/build-cache-cleanup.json",
+    "sha256": "6c473d7662bc5df688ad992291a382802386d6ad63b91c9162359c746bcd1a5e",
+    "bytes_removed": 1663728958
   }
 }
