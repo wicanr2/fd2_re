@@ -28,17 +28,14 @@ void sub_16559(int index)
 #ifdef RESTORE_72
 void sub_17643(void)
 {
-    int column = dword_53AB9 - 1;
-    unsigned address = column * 24;
     unsigned char *destination;
     int row;
-    address += (unsigned)dword_53A49 + 0x8088;
-    address += (dword_53ABD - 1) * 10944;
-    destination = (unsigned char *)address;
+    destination = dword_53A49 + 0x8088 + (dword_53AB9 - 1) * 24
+                + (dword_53ABD - 1) * 10944;
     row = 0;
     goto condition;
 next:
-    memmove(destination, dword_53A71 + row * 72, 72);
+    memmove(destination, dword_53A71 + (row * 9) * 8, 72);
     destination += 456;
     ++row;
 condition:
