@@ -7357,5 +7357,136 @@
       "caption_issue": 297,
       "caption_issue_state": "OPEN"
     }
+  },
+  "battle_audiovisual_review_20261106": {
+    "date": "2026-11-06",
+    "status": "CONFORMED-SCOPED-RUNTIME",
+    "base_head": "00d7fdad1cfd98cfd25e5ce0cfebda3af6c3bb91",
+    "work": "work/hd1-audiovisual-20261106-r90",
+    "requests": [
+      "攻擊音效更有力度的HD音效",
+      "亞雷斯戰鬥本體偏小",
+      "蓋亞頭盔與肩甲辨識",
+      "羅德曼改後腦視角",
+      "HD分鏡流暢與細節提升"
+    ],
+    "art": {
+      "status": "REGISTERED-FULL-POSES",
+      "initial_prototype": {
+        "status": "SUPERSEDED; ARES-V3-REJECTED-AS-STILL-SMALL",
+        "generated": "work/hd1-audiovisual-20261106-r90/generated-art.json",
+        "generated_sha256": "9022a59979d5178d6555cadc2562c6d715acd8a4f201a8e456342e8de4b36a7c",
+        "prompts": [
+          "work/hd1-audiovisual-20261106-r90/generation-requests.json",
+          "work/hd1-audiovisual-20261106-r90/generation-fixes.json"
+        ],
+        "review_manifest": "work/hd1-audiovisual-20261106-r90/battle-review-r2/review-manifest.json",
+        "review_manifest_sha256": "dfb375ee0bed539033d168e93226ad78693eb772ecc6af34bbe7fe4f596f5f65",
+        "comparison": "work/hd1-audiovisual-20261106-r90/battle-review-r2/three-character-comparison.png",
+        "comparison_sha256": "91fd1f5795588d3df2cca521f45ae22aec8c7c30cebf2817d53318553384fb3f",
+        "all_attack_poses_revised": false,
+        "runtime_registered": false
+      },
+      "generation": "work/hd1-audiovisual-20261106-r90/full-pose-generation.json",
+      "all_attack_poses_revised": true,
+      "runtime_registered": true,
+      "resources": [
+        "12",
+        "13",
+        "57",
+        "58",
+        "59",
+        "90",
+        "91"
+      ],
+      "runtime_screenshot": "docs/figures/hd1-ares-battle-revision.png",
+      "local_overview": "work/hd1-audiovisual-20261106-r90/three-person-overview/README.md"
+    },
+    "audio": {
+      "status": "USER-CONFIRMED-A-CRISP; RUNTIME-INTEGRATED",
+      "preview_manifest": "work/hd1-audiovisual-20261106-r90/impact-preview-r1/preview-manifest.json",
+      "preview_manifest_sha256": "b50b2260ae0d16eb525d261f70829fe4c3bc0c66d4ca54e99c2f8b86e2a6ceee",
+      "comparison_mp3": "work/hd1-audiovisual-20261106-r90/impact-preview-r1/impact-comparison.mp3",
+      "comparison_mp3_sha256": "e9c222968ab3e3561f5e6028e0433cf28c24b969791f0ae879952ced9e7cc1b7",
+      "scope": "普通物理49/cue1,3,4,5與53/cue2已接A，沿F2切換；其他cue與特技playRaw保留既有音源。",
+      "human_full_mix_review_confirmed": false
+    },
+    "camera": {
+      "status": "USER-CONFIRMED-B; RUNTIME-INTEGRATED-SCOPED",
+      "max_zoom": 1.07,
+      "impact_hold_frames_60hz": 4,
+      "prototype_comparison": {
+        "status": "SUPERSEDED-PROTOTYPES; B-SELECTED",
+        "review_manifest": "work/hd1-audiovisual-20261106-r90/battle-review-r2/review-movies.json",
+        "review_manifest_sha256": "fde2d88a1a4ec6455d364de063e82e29e67b35669061451f2d7de0c28f670988",
+        "A": "work/hd1-audiovisual-20261106-r90/battle-review-r2/camera-A-with-sfx.mp4",
+        "B": "work/hd1-audiovisual-20261106-r90/battle-review-r2/camera-B-with-sfx.mp4",
+        "movies_sha256": [
+          "15187ec3569a67af0f32ade8e57b1f3253b09b3969e9e6fe4bbfd78f266ebc9e",
+          "e182f86f571a34317cbb5d22f70422ca296c2440334ab2a462e4ba1bcc580158"
+        ],
+        "clean_rebuild_equal_to_shown_movies": [
+          true,
+          true
+        ],
+        "fps": 60,
+        "frames_each": 240,
+        "duration_each_seconds": 4,
+        "runtime_recording": false,
+        "new_inbetween_poses": false
+      },
+      "scope": "三品質固定狀態框、快取、非法矩陣拒收及owner／F2時鐘已驗；普通GUI收據保留23筆啟用觀測。",
+      "impact_scope": "僅普通物理caller的命中呈現，四個60Hz影格約66.67ms；不猜測特技raw欄位。"
+    },
+    "tools_sha256": {
+      "tools/build_fd2_hd1_impact_preview.py": "8f6cdb5136a3914a61ef62d30917f4884308bee1e0792eca0f1a24c7d5a56a70",
+      "tools/build_fd2_hd1_battle_review.py": "95d02781fc9551d8d1422774200e07a5a64dcda095738bae55de90d7ece8feb1"
+    },
+    "cleanup": "兩批影格各核SHA後刪除468張可重建PNG，各保留十二張代表影格；圖源、OGG、試片與逐檔SHA保持。",
+    "latest_evidence": "docs/data/fd2-hd1-battle-audiovisual-20261106.json",
+    "registered_catalog_sha256": "3eb139c8655cbde2ba9bfaad7c8befb30543c3218c88ca021a7e5b7740f0031f",
+    "boundaries": {
+      "previous_catalog_sha256": "99d68d41fc70588106847d84f95825314411a496587aa86ddf366e3d8d81327a",
+      "production_go_modified": true,
+      "versioned_packages_rebuilt": false,
+      "original_rules_rng_and_saves": true,
+      "windows_60fps_acceptance": "PENDING-ISSUE-298"
+    },
+    "runtime_scope": {
+      "runtime": "三人圖源、A音效及B分鏡已正式登錄；原始描述子、規則與存檔格式不變。",
+      "normal_gui": "首章來源JSON經普通標題LOAD、選取、走行取消、一次攻擊、F2、自然返回、F5與新程序冷讀；來源祖先沿既有建槽收據，不新增原版對拍。",
+      "controlled_gpu": "三人普通攻防全部present、F2、64階戰鬥淡出與65階地圖返回；羅德曼指令28另驗八次命中。",
+      "camera": "三品質固定狀態框、快取、非法矩陣拒收及owner／F2時鐘已驗；普通GUI收據保留23筆啟用觀測。",
+      "impact_hold": "僅普通物理caller的命中呈現，四個60Hz影格約66.67ms；不猜測特技raw欄位。",
+      "art_manual": "已檢視新母稿、編製總覽與亞雷斯實際畫面；集中人工觀感仍交使用者。",
+      "windows_60fps": "PENDING-USER-HARDWARE；本輪不宣稱Windows達60fps。",
+      "release": "既有v.1.1.2完整版與v.1.1.3效能補丁未覆寫，本輪更新開發主線。"
+    },
+    "private_head": "a48282faea9baaf5c2ba8d718ebe4be831b8f7af",
+    "latest_evidence_sha256": "01c614e0ee275388272aefd28bc6edc12c3eb85db05468c7e12ed514560e7c0c",
+    "final_validation": {
+      "cpu_top_level_pass": 24,
+      "catalog_tests": 17,
+      "lessons": 436,
+      "guards": 276,
+      "source_tree_sha256": "73c8fa3d52038674618209ea0303a0b28898a772d13ae5ad18fd4ebe2eee1cc7",
+      "normal_gui_binary_sha256": "f58b9ad8a1c88cca65c15e4546c09f3e1d20b07ad571e410aba9f58f5bd8b3c5",
+      "final_linux_binary_sha256": "4ab96513c462f9906bad4e4c0e8fbfdec987146d35a4863770b28e53c8c2c825",
+      "post_gui_delta": "最後只清除鏡頭保留的已完成owner參照；另驗釋放單元案例、三品質鏡頭GPU與完整物理Draw生命週期。",
+      "windows_development_crossbuild": {
+        "sha256": "ce5697457c4e7a35f7091492955267e3188d5e0077e761146e378fa6f7ae980b",
+        "bytes": 22754816,
+        "machine": "PE amd64 GUI",
+        "runtime": "未在Windows實機啟動，不是正式封包或60fps驗收。"
+      },
+      "local_overview": "work/hd1-audiovisual-20261106-r90/three-person-overview/README.md",
+      "cleanup": {
+        "status": "PASS-CACHE-CLEANUP",
+        "directory": "work/hd1-audiovisual-20261106-r90/go-cache",
+        "files_removed": 2894,
+        "bytes_freed": 623879532,
+        "retained": "全部母稿、圖源、編製與回歸收據、測試二進位、正式私人素材及全幀總覽"
+      }
+    }
   }
 }

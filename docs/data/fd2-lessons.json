@@ -5432,6 +5432,37 @@
         ],
         "pattern": "CGO_ENABLED=0"
       }
+    },
+    {
+      "id": "ffmpeg-container-encoder-thread-budget",
+      "area": "音畫工具",
+      "date": "2026-11-06",
+      "rule": "在有限CPU及pids的容器編碼FFmpeg短片時，明確限制編碼器與濾鏡執行緒，並以同一影格重跑驗證；入口tools/build_fd2_hd1_battle_review.py的encode_review。",
+      "why": "首輪自動編碼器設定在pids64容器無法初始化；限定2條編碼執行緒、1條濾鏡執行緒及pids128後，同一480張影格通過。這只能證明有界設定可行，不把唯一根因或遊戲效能當成已證實。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json#battle_audiovisual_review_20261106",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd1_battle_review.py"
+        ],
+        "pattern": "'-threads', '2'"
+      }
+    },
+    {
+      "id": "compiled-go-tests-use-package-working-directory",
+      "area": "測試工具",
+      "date": "2026-11-06",
+      "rule": "直接執行go test -c的測試二進位時，將容器工作目錄設為該Go套件目錄，並核對所需案例實際PASS；不能以exit0或SKIP替代。FD2入口為remake/cmd/fd2與TestModernHDSplitStrikeRuntimeGPU。",
+      "why": "淒煌斬fixture在remake根目錄因../../../org_game錯位而略過；改用cmd/fd2與唯讀org_game後，完整八次命中及三階段F2通過。",
+      "evidence": "docs/data/fd2-hd1-battle-audiovisual-20261106.json"
+    },
+    {
+      "id": "battle-body-proportions-follow-compiled-anchor",
+      "area": "HD美術",
+      "date": "2026-11-06",
+      "rule": "角色大小與姿勢一致性以實際編製影格及遊戲畫面核對；母稿比例改動後，同時檢查錨點適配與收招群組是否再次縮身。FD2入口為tools/build_fd2_ares_battle_hd.py的fit與完整4／15幀收據。",
+      "why": "亞雷斯只改母稿仍被原藍衣錨點壓回648像素，收招群組又共用0.625倍縮放；先修正式編製，再核對全姿勢，避免預覽看似變大但遊戲仍小。",
+      "evidence": "docs/data/fd2-hd1-battle-audiovisual-20261106.json"
     }
   ]
 }

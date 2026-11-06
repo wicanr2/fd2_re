@@ -124,6 +124,7 @@ func (g *Game) syncModernHDBattleOwner() {
 	r := g.modernHDBattleGPU
 	if r.owner != owner || r.theme != g.modernStoryPortraits {
 		r.resetSources()
+		r.cameraOwner, r.cameraTheme, r.cameraActive, r.cameraStartFrame = nil, nil, false, 0
 		r.owner, r.theme = owner, g.modernStoryPortraits
 	}
 }
@@ -133,6 +134,11 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: sources unavailable")
 	}
 	plan := modernHDBattlePlan{Base: sources.Base, Palette: palette, HDSubtract: subtract}
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.battlePresentation != nil {
+		if clean, ready := modernBattleCameraBase(sources); ready {
+			plan.Base, plan.CameraReady = clean, true
+		}
+	}
 	ordered := make([]modernHDBattleSource, 0, len(sources.BaseScenery)+len(sources.Layers))
 	ordered = append(ordered, sources.BaseScenery...)
 	ordered = append(ordered, sources.Layers...)
@@ -203,7 +209,7 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 			clip = &value
 		}
 		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill, Clip: clip,
-			PackedShader: source.PackedShader, PackedColours: source.PackedColours, PreservePalette: source.PanelText != nil})
+			PackedShader: source.PackedShader, PackedColours: source.PackedColours, PreservePalette: source.PanelText != nil, ScreenFixed: source.PanelText != nil})
 	}
 	return plan, nil
 }
@@ -221,6 +227,11 @@ func (g *Game) publishModernHDBattlePlan(screen *ebiten.Image, plan modernHDBatt
 		g.modernHDBattleGPU = &modernHDBattleGPU{}
 	}
 	g.syncModernHDBattleOwner()
+	if plan.CameraReady && g.modernStoryPortraits != nil && g.modernStoryPortraits.battlePresentation != nil {
+		plan.CameraZoom = g.modernHDBattleGPU.presentationZoom(g.frame, g.modernStoryPortraits.battlePresentation.MaxZoom)
+	} else {
+		g.modernHDBattleGPU.cameraActive = false
+	}
 	g.modernHDBattleGPU.setQuality(g.playerHDQuality)
 	if err := g.modernHDBattleGPU.draw(plan); err != nil {
 		return err

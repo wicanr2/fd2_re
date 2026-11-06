@@ -17,6 +17,8 @@ SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
 ROLES = PROTOTYPE_ROLES | {
+    "battle_physical_sfx_hd",
+    "battle_presentation_profile",
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
@@ -92,7 +94,12 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "facility_success_portrait_hd_set":
+        if entry.get("role") == "battle_presentation_profile":
+            expected = {"asset_id", "role", "status", "file", "sha256", "source_refs", "consumer_contract"}
+        elif entry.get("role") == "battle_physical_sfx_hd":
+            expected = {"asset_id", "role", "status", "file", "sha256", "source_refs", "consumer_contract",
+                        "source_archive", "source_resource", "source_metadata_sha256", "cue_ids", "sample_rate", "channels"}
+        elif entry.get("role") == "facility_success_portrait_hd_set":
             expected = sprite_set - {"source_group"} | {"master_file", "source_archive", "source_resource", "source_metadata_sha256", "native_lmi_frames", "native_source_rect", "layout_policy", "source_files", "source_sha256"}
         elif entry.get("role") == "presentation_poster_pair":
             expected = required | {"consumer_contract", "frame", "layout_policy", "alpha_contract"}
@@ -145,6 +152,56 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             raise ValueError(f"invalid status: {entry['status']!r}")
         if entry["status"] == "prototype" and entry["role"] != "map_sprite_set":
             raise ValueError(f"prototype status is restricted to sprite sets: {asset_id}")
+        if entry["role"] == "battle_presentation_profile":
+            if (entry["consumer_contract"] != "hd1_battle_presentation_v1" or not isinstance(entry["file"], str)
+                    or Path(entry["file"]).name != entry["file"] or Path(entry["file"]).suffix != ".json"
+                    or not SHA_RE.fullmatch(entry["sha256"]) or not isinstance(entry["source_refs"], list)
+                    or not entry["source_refs"]):
+                raise ValueError(f"invalid battle presentation profile: {asset_id}")
+            for ref in entry["source_refs"]:
+                if not isinstance(ref, str):
+                    raise ValueError("invalid battle presentation reference")
+                if not SOURCE_ASSET_RE.fullmatch(ref):
+                    path = Path(ref)
+                    if path.is_absolute() or ".." in path.parts or not (ROOT/path).is_file():
+                        raise ValueError("unsafe battle presentation reference")
+            if verify_private:
+                raw = (ROOT/private_root/entry["file"]).read_bytes()
+                if len(raw) > 4096 or hashlib.sha256(raw).hexdigest() != entry["sha256"]:
+                    raise ValueError("battle presentation profile digest mismatch")
+                profile = json.loads(raw)
+                if profile != {"schema_version": 1, "max_zoom": 1.07, "impact_hold_frames": 4}:
+                    raise ValueError("unsupported battle presentation profile")
+            continue
+        if entry["role"] == "battle_physical_sfx_hd":
+            resource, cues = entry["source_resource"], entry["cue_ids"]
+            allowed = {49: {1, 3, 4, 5}, 53: {2}}.get(resource)
+            if (type(resource) is not int or allowed is None or not isinstance(cues, list) or not cues
+                    or any(type(cue) is not int or cue not in allowed for cue in cues) or len(set(cues)) != len(cues)
+                    or entry["consumer_contract"] != "physical_impact_ogg_v1" or entry["source_archive"] != "FDOTHER.DAT"
+                    or entry["sample_rate"] != 48000 or entry["channels"] != 1
+                    or not isinstance(entry["file"], str) or Path(entry["file"]).name != entry["file"]
+                    or Path(entry["file"]).suffix != ".ogg" or not SHA_RE.fullmatch(entry["sha256"])
+                    or not SHA_RE.fullmatch(entry["source_metadata_sha256"])):
+                raise ValueError(f"invalid physical sound contract: {asset_id}")
+            refs = entry["source_refs"]
+            if not isinstance(refs, list) or not refs:
+                raise ValueError(f"missing physical sound references: {asset_id}")
+            for ref in refs:
+                if not isinstance(ref, str):
+                    raise ValueError("invalid physical sound reference")
+                if not SOURCE_ASSET_RE.fullmatch(ref):
+                    path = Path(ref)
+                    if path.is_absolute() or ".." in path.parts or not (ROOT/path).is_file():
+                        raise ValueError("unsafe physical sound reference")
+            if verify_private:
+                raw = (ROOT/private_root/entry["file"]).read_bytes()
+                offset = raw.find(b"\x01vorbis")
+                if (len(raw) < 64 or len(raw) > 1 << 20 or raw[:4] != b"OggS"
+                        or hashlib.sha256(raw).hexdigest() != entry["sha256"] or offset < 0
+                        or offset+30 > len(raw) or struct.unpack_from("<IBI", raw, offset+7) != (0, 1, 48000)):
+                    raise ValueError(f"invalid physical sound Vorbis data: {asset_id}")
+            continue
         if entry['role'] == 'facility_success_portrait_hd_set':
             resource=entry['source_resource']
             shape={12:(5,25,17,123,13),29:(1,16,19,99,12),63:(7,65,31,124,11),14:(9,3,6,118,4)}.get(resource)
@@ -663,6 +720,11 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    sound_keys = [(a['source_resource'], cue) for a in assets if a['role'] == 'battle_physical_sfx_hd' for cue in a['cue_ids']]
+    if sum(a['role'] == 'battle_presentation_profile' for a in assets) > 1:
+        raise ValueError('duplicate battle presentation profile')
+    if sound_keys and (len(sound_keys) != 5 or set(sound_keys) != {(49, 1), (49, 3), (49, 4), (49, 5), (53, 2)}):
+        raise ValueError('physical sound pair incomplete or duplicated')
     success=[a for a in assets if a['role']=='facility_success_portrait_hd_set']
     if success and (len(success)!=4 or {a['source_resource'] for a in success}!={12,29,63,14}):
         raise ValueError('facility success four-resource group incomplete')

@@ -244,6 +244,9 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		g.modernThemeCache = set
 	}
 	g.modernStoryPortraits = set
+	if g.modernHDBattleGPU != nil {
+		g.modernHDBattleGPU.cameraActive = false
+	}
 	publishItemPanels()
 	publishSystemInfo()
 	publishSystemConfirmation()

@@ -3932,3 +3932,7 @@ BattleFig15／17手繪來源已正式接入，限定CONFORMED-SCOPED／RUNTIME-E
 ## 進度獨立的能力設定擴充
 
 自訂規則擴充已達CONFORMED-SCOPED／RUNTIME-E1，普通START、三次警告、四分頁、能力調整、成長／敵軍倍率、逐人命中與JSON保存冷讀已抽樣。100%預設不改既有原版公式，音速刃無新增命中骰或傷害下限。原生SAV格式保持，附檔以個別進度雜湊配對；不同槽隔離與原版bytes不變由決定性測試驗證。這是使用者確認的重製端擴充，不新增原版parity聲明。契約依[61](61-modern-theme-runtime-spec.md#進度獨立的能力成長命中與敵軍設定)，唯一收據為[能力設定驗證](../data/fd2-balance-editor-20261103.json)。
+
+## HD1三人戰鬥音畫修訂
+
+亞雷斯、蓋亞、羅德曼61幀修訂、普通物理HD音效A及B分鏡已達CONFORMED-SCOPED／RUNTIME-E1。三人普通攻防全present與F2、羅德曼淒煌斬八次命中、首章普通標題LOAD至攻擊返回及保存冷讀已抽樣。原始描述子、遊戲規則與存檔格式保持；本輪不新增原版parity、完整戰役或Windows60fps聲明。契約見[61](61-modern-theme-runtime-spec.md#2026-11-06-hd1戰鬥音畫修訂)，來源配方與驗證界線見[本輪收據](../data/fd2-hd1-battle-audiovisual-20261106.json)。

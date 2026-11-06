@@ -15,6 +15,7 @@ import (
 
 // 目的矩形由已驗證的呈現計畫提供；GPU不替美術決定占寬或重新取錨點。
 type modernHDBattleLayer struct {
+	ScreenFixed     bool
 	PreservePalette bool
 	Native          figani.Frame
 	HD              image.Image
@@ -27,25 +28,31 @@ type modernHDBattleLayer struct {
 }
 
 type modernHDBattlePlan struct {
-	Base       []byte
-	Palette    color.Palette
-	Layers     []modernHDBattleLayer
-	HDSubtract float32
-	HDMix      float32
-	HDTarget   [3]float32
+	CameraReady bool
+	CameraZoom  float64
+	Base        []byte
+	Palette     color.Palette
+	Layers      []modernHDBattleLayer
+	HDSubtract  float32
+	HDMix       float32
+	HDTarget    [3]float32
 }
 
 type modernHDBattleGPU struct {
-	World, base *ebiten.Image
-	shader      *ebiten.Shader
-	sources     map[string]*ebiten.Image
-	owner       any
-	theme       *modernStoryPortraitSet
-	frameKey    [32]byte
-	frameValid  bool
-	rendered    uint64
-	reused      uint64
-	quality     hdTextureQuality
+	World, base      *ebiten.Image
+	shader           *ebiten.Shader
+	sources          map[string]*ebiten.Image
+	owner            any
+	theme            *modernStoryPortraitSet
+	frameKey         [32]byte
+	frameValid       bool
+	rendered         uint64
+	reused           uint64
+	quality          hdTextureQuality
+	cameraOwner      any
+	cameraTheme      *modernStoryPortraitSet
+	cameraStartFrame int
+	cameraActive     bool
 }
 
 func (r *modernHDBattleGPU) setQuality(q hdTextureQuality) {
@@ -83,6 +90,9 @@ func (r *modernHDBattleGPU) resetSources() {
 // Copy all consumed mutable values into a digest, never retain caller slices.
 func modernHDBattleFrameKey(plan modernHDBattlePlan, palette []byte) [32]byte {
 	h := sha256.New()
+	var camera [8]byte
+	binary.LittleEndian.PutUint64(camera[:], math.Float64bits(plan.CameraZoom))
+	h.Write(camera[:])
 	var encoded [8]byte
 	integer := func(value int64) {
 		binary.LittleEndian.PutUint64(encoded[:], uint64(value))
@@ -99,6 +109,11 @@ func modernHDBattleFrameKey(plan modernHDBattlePlan, palette []byte) [32]byte {
 	}
 	integer(int64(len(plan.Layers)))
 	for _, layer := range plan.Layers {
+		if layer.ScreenFixed {
+			h.Write([]byte{1})
+		} else {
+			h.Write([]byte{0})
+		}
 		f := layer.Native
 		integer(int64(f.Width))
 		integer(int64(f.Height))
@@ -150,6 +165,7 @@ func (r *modernHDBattleGPU) close() {
 		r.shader = nil
 	}
 	r.owner, r.theme = nil, nil
+	r.cameraOwner, r.cameraTheme, r.cameraActive, r.cameraStartFrame = nil, nil, false, 0
 }
 
 func modernHDBattlePalette(palette color.Palette) ([]byte, error) {
@@ -188,6 +204,10 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	if len(plan.Base) != 64000 || plan.HDSubtract < 0 || plan.HDSubtract > 1 || math.IsNaN(float64(plan.HDSubtract)) ||
 		plan.HDMix < 0 || plan.HDMix > 1 || math.IsNaN(float64(plan.HDMix)) {
 		return errors.New("modern HD battle: invalid base or shade")
+	}
+	if math.IsNaN(plan.CameraZoom) || math.IsInf(plan.CameraZoom, 0) ||
+		plan.CameraZoom != 0 && (plan.CameraZoom < 1 || plan.CameraZoom > 1.07) {
+		return errors.New("modern HD battle: invalid camera zoom")
 	}
 	for _, value := range plan.HDTarget {
 		if value < 0 || value > 1 || math.IsNaN(float64(value)) {
@@ -252,11 +272,16 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	r.base.WritePixels(base)
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(6*r.quality.density(), 6*r.quality.density())
+	modernBattleCameraGeometry(&op.GeoM, plan.CameraZoom, r.World.Bounds())
 	r.World.DrawImage(r.base, op)
 	for _, layer := range plan.Layers {
 		destination := r.World
 		if layer.Clip != nil {
-			clip := r.World.Bounds().Intersect(r.quality.rasterRect(*layer.Clip))
+			region := *layer.Clip
+			if !layer.ScreenFixed {
+				region = modernBattleCameraClip(region, plan.CameraZoom)
+			}
+			clip := r.World.Bounds().Intersect(r.quality.rasterRect(region))
 			if clip.Empty() {
 				continue
 			}
@@ -302,6 +327,9 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		draw.Images[0] = texture
 		draw.GeoM.Scale(float64(layer.Rect.Dx())*r.quality.density()/float64(texture.Bounds().Dx()), float64(layer.Rect.Dy())*r.quality.density()/float64(texture.Bounds().Dy()))
 		draw.GeoM.Translate(float64(layer.Rect.Min.X)*r.quality.density(), float64(layer.Rect.Min.Y)*r.quality.density())
+		if !layer.ScreenFixed {
+			modernBattleCameraGeometry(&draw.GeoM, plan.CameraZoom, r.World.Bounds())
+		}
 		fill := []float32{0, 0, 0, 0}
 		if layer.Fill == 33 {
 			fill = []float32{float32(palette[132]) / 255, float32(palette[133]) / 255, float32(palette[134]) / 255, 1}

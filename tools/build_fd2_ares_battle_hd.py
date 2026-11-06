@@ -68,11 +68,30 @@ def native_frames(pack, inventory, resource):
     return row, result
 
 
-def fit(picture, anchor, target, size, phase_scale=1):
+def fit(picture, anchor, target, size, phase_scale=1, core_floor=False, contain_body=False):
     scale = (target[3]-target[1])*6/(anchor[3]-anchor[1])*phase_scale
     resized = picture.resize((max(1, round(picture.width*scale)), max(1, round(picture.height*scale))), Image.Resampling.LANCZOS)
     sx, sy = resized.width/picture.width, resized.height/picture.height
     origin = [round((target[0]+target[2])*3-(anchor[0]+anchor[2])*sx/2), round(target[3]*6-anchor[3]*sy)]
+    unclamped_origin = list(origin)
+    if contain_body:
+        if (anchor[2]-anchor[0])*sx > size[0]-4 or (anchor[3]-anchor[1])*sy > size[1]-4:
+            raise ValueError('本體無法以指定倍率放入原圖框，須重畫姿勢')
+        origin[0] = max(round(2-anchor[0]*sx), min(origin[0], round(size[0]-2-anchor[2]*sx)))
+        origin[1] = max(round(2-anchor[1]*sy), min(origin[1], round(size[1]-2-anchor[3]*sy)))
+        # The blue anchor excludes the gray scarf, skin, sole and rear handle.
+        # Keep their right edge too; the descriptor may intentionally crop only
+        # the distant leading poleaxe/effect on its left edge.
+        core = resized.getchannel('A').point(lambda v: 255 if v >= 192 else 0).getbbox()
+        origin[0] = min(origin[0], size[0]-2-core[2])
+        if origin[0]+anchor[0]*sx < 1:
+            raise ValueError('右側全身邊界與本體無法同時容納，須重畫收招構圖')
+    if core_floor:
+        core = resized.getchannel('A').point(lambda v: 255 if v >= 192 else 0).getbbox()
+        if not core or core[2]-core[0] > size[0]-4 or core[3]-core[1] > size[1]-4:
+            raise ValueError('放大本體與武器無法完整放進原圖框，須重畫構圖')
+        origin[0] = max(2-core[0], min(origin[0], size[0]-2-core[2]))
+        origin[1] = size[1]-2-core[3]
     actual = [origin[0]+anchor[0]*sx, origin[1]+anchor[1]*sy,
               origin[0]+anchor[2]*sx, origin[1]+anchor[3]*sy]
     if actual[0] < -1 or actual[1] < -1 or actual[2] > size[0]+1 or actual[3] > size[1]+1:
@@ -84,7 +103,8 @@ def fit(picture, anchor, target, size, phase_scale=1):
     visible = resized.getchannel('A').crop((-origin[0], -origin[1], size[0]-origin[0], size[1]-origin[1]))
     clipped = sum(v >= 192 for v in resized.getchannel('A').getdata())-sum(v >= 192 for v in visible.getdata())
     return canvas, {'fit_size': list(resized.size), 'origin': origin, 'scale_xy': [sx, sy], 'phase_scale': phase_scale,
-                    'fitted_blue_anchor': actual, 'clipped_high_coverage_pixels': clipped}
+                    'fitted_blue_anchor': actual, 'clipped_high_coverage_pixels': clipped,
+                    'body_clamp_delta': [origin[i]-unclamped_origin[i] for i in range(2)]}
 
 
 def main():
@@ -92,7 +112,13 @@ def main():
     for name in ['pack', 'inventory', 'sources', 'out']:
         p.add_argument('--'+name, required=True, type=Path)
     p.add_argument('--base-catalog', type=Path, default=ROOT/'remake/assets/themes/modern/catalog.json')
+    p.add_argument('--revision', type=int, default=1)
+    p.add_argument('--body-scale', type=float, default=1)
+    p.add_argument('--core-floor-idle', action='store_true', help='放大待機本體時保留全身／武器且腳底對齊原圖框')
+    p.add_argument('--keep-follow-body', action='store_true', help='收招保留本體倍率，只在原框內校正定位，不再按左右空間縮小整組')
     args = p.parse_args(); out = args.out.resolve()
+    if args.revision < 1 or not 1 <= args.body_scale <= 1.2:
+        raise SystemExit('不支援的素材版本或本體倍率')
     if out.exists() or not out.is_relative_to(ROOT) or out.parent.stat().st_uid != os.getuid():
         raise SystemExit('使用本人擁有的儲存庫新候選目錄')
     inventory = json.loads(args.inventory.read_text())
@@ -131,7 +157,7 @@ def main():
         if index < 11:
             continue
         _, anchor = art[f'f{index:02d}']
-        height_scale = (target[3]-target[1])*6/(anchor[3]-anchor[1])
+        height_scale = (target[3]-target[1])*6/(anchor[3]-anchor[1])*args.body_scale
         center = (target[0]+target[2])*3
         available_width = min(center, frame['width']*6-center)*2-2
         follow_scale = min(follow_scale, available_width/((anchor[2]-anchor[0])*height_scale))
@@ -139,18 +165,21 @@ def main():
     for resource, keys in assignments.items():
         for index, (key, (frame, target, original)) in enumerate(zip(keys, native[resource][1])):
             picture, anchor = art[key]
-            canvas, recipe = fit(picture, anchor, target, (frame['width']*6, frame['height']*6), follow_scale if resource == 13 and index >= 11 else 1)
+            follow = resource == 13 and index >= 11
+            phase = args.body_scale*(follow_scale if follow and not args.keep_follow_body else 1)
+            canvas, recipe = fit(picture, anchor, target, (frame['width']*6, frame['height']*6), phase,
+                                 args.core_floor_idle and key == 'idle', args.keep_follow_body and follow)
             prepared.append((resource, index, key, frame, target, canvas, original, recipe))
     out.mkdir(); pack = out/'pack'; pack.mkdir()
     shutil.copyfile(base_path, out/'base-catalog.json')
     for name in sorted(old_names): (pack/name).symlink_to(os.path.relpath(private/name, pack))
     source_names = {}
     for key, value in sources.items():
-        name = f'ares-battle-{key}-hd6-master-v1.png'; shutil.copyfile(value, pack/name); source_names[key] = name
+        name = f'ares-battle-{key}-hd6-master-v{args.revision}.png'; shutil.copyfile(value, pack/name); source_names[key] = name
     candidate = copy.deepcopy(base); candidate['private_root'] = str(pack.relative_to(ROOT))
     records = []; sheet = Image.new('RGB', (1920, 2000), (35, 40, 48)); draw = ImageDraw.Draw(sheet)
     for i, (resource, index, key, frame, target, canvas, original, recipe) in enumerate(prepared):
-        name = f'figani-{resource:03d}-hd6-v1-f{index:02d}.png'; canvas.save(pack/name)
+        name = f'figani-{resource:03d}-hd6-v{args.revision}-f{index:02d}.png'; canvas.save(pack/name)
         records.append({'resource': resource, 'frame': index, 'pose': key, 'file': name, 'sha256': digest(pack/name),
                         'native_blue_anchor': target, 'native_descriptor': {k: frame[k] for k in DESCRIPTOR}, **recipe})
         x, y = i % 4*480, i//4*400
@@ -161,7 +190,7 @@ def main():
     for resource, keys in assignments.items():
         row = native[resource][0]; selected = [r for r in records if r['resource'] == resource]
         used = sorted(set(keys))
-        candidate['assets'].append({'asset_id': f'modern.figani.{resource:03d}.hd6.v1', 'role': 'battle_animation_hd_set',
+        candidate['assets'].append({'asset_id': f'modern.figani.{resource:03d}.hd6.v{args.revision}', 'role': 'battle_animation_hd_set',
             'status': 'runtime_candidate', 'files': [r['file'] for r in selected], 'width': 1920, 'height': 1200,
             'frame_count': len(selected), 'frame_sha256': [r['sha256'] for r in selected],
             'consumer_contract': 'native_figani_rgba_hd6_v1', 'alpha_contract': 'coverage',
@@ -184,6 +213,8 @@ def main():
         'blue_anchor_predicate': 'alpha>=192; B>=70; B*100>=R*175; B*100>=G*145; four-connected components>=1000 source pixels',
         'sampling': 'LANCZOS; uniform height fit; blue anchor center and bottom; shared contain scale for follow frames11..14; native descriptor clip',
         'follow_phase_scale': follow_scale,
+        'body_scale': args.body_scale, 'core_floor_idle': args.core_floor_idle, 'revision': args.revision,
+        'keep_follow_body': args.keep_follow_body,
         'sources': fingerprints, 'frames': records, 'review_sha256': digest(out/'review.png')}
     (out/'compiled.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'frames': len(records), 'catalog_assets': len(candidate['assets'])}))

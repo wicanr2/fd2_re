@@ -41,6 +41,8 @@ type nativePhysicalBodyJob struct {
 	waitMillis   float64
 	cue          int
 	sounds       map[int][]byte
+	soundBank    int
+	hdImpact     bool
 }
 
 type nativePhysicalBodyPlayback struct {
@@ -48,6 +50,7 @@ type nativePhysicalBodyPlayback struct {
 	index             int
 	drawn, cued       bool
 	elapsedMillis     float64
+	hdExtraMillis     float64
 	image             *ebiten.Image
 	lastPresent       int
 	returnWaitMillis  float64 // 正常2909D／2909F的17AA9(6)，與descriptor等待分開。
@@ -283,7 +286,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 					if err := bindBase(sourceLayers); err != nil {
 						return err
 					}
-					p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: source, hdSources: sourceLayers, hdPhase: "departure", waitMillis: float64(f.Delay) * indexedmap.PhaseBannerStepMillis, cue: cue, sounds: sounds})
+					p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: source, hdSources: sourceLayers, hdPhase: "departure", waitMillis: float64(f.Delay) * indexedmap.PhaseBannerStepMillis, cue: cue, sounds: sounds, soundBank: 48 + int(attack.HeaderByte4) - 1})
 				}
 				if err := appendScroll(source, sourceLayers, r.targetBG, modernPhysicalTargetBGIndex(scene), currentTarget, targetIndex, idle.Frames[0], idleResource, side == 0); err != nil {
 					return err
@@ -300,17 +303,18 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 					}
 				}
 				if len(f.Presents) == 0 && f.Cue >= 0 {
-					p.jobs = append(p.jobs, nativePhysicalBodyJob{cue: f.Cue, sounds: sounds})
+					p.jobs = append(p.jobs, nativePhysicalBodyJob{cue: f.Cue, sounds: sounds, soundBank: 48 + int(attack.HeaderByte4) - 1})
 				}
 				for inner, present := range f.Presents {
 					present := present
-					job := nativePhysicalBodyJob{base: base, attack: attack.Frames[f.Frame], idle: idle.Frames[present.IdleFrame], rawSide: side, present: &present, cue: -1, sounds: sounds, hdPhase: bodyPhase}
+					job := nativePhysicalBodyJob{base: base, attack: attack.Frames[f.Frame], idle: idle.Frames[present.IdleFrame], rawSide: side, present: &present, cue: -1, sounds: sounds, hdPhase: bodyPhase, soundBank: 48 + int(attack.HeaderByte4) - 1}
 					job.hdSources = modernHDBattleBodySources(base, job.attack, job.idle, side, present, attackResource, f.Frame, idleResource, present.IdleFrame)
 					if err := bindBase(job.hdSources); err != nil {
 						return err
 					}
 					if inner == 0 {
 						job.cue = f.Cue
+						job.hdImpact = f.Cue > 0 && attack.Frames[f.Frame].RawByte4 != 0
 					}
 					if !present.StatusPulse && !present.CritPulse {
 						job.waitMillis = indexedmap.PhaseBannerStepMillis
@@ -320,6 +324,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 					p.jobs = append(p.jobs, job)
 					pulse := job
 					pulse.cue = -1
+					pulse.hdImpact = false
 					black := color.NRGBA{A: 255}
 					if present.StatusPulse {
 						green := color.NRGBA{R: 4, G: 130, A: 255} // DAC(1,32,0)
@@ -461,8 +466,9 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 	for p.index < len(p.jobs) {
 		job := &p.jobs[p.index]
 		if !p.cued {
+			p.hdExtraMillis = g.modernPhysicalImpactHoldMillis(job.hdImpact && job.cue > 0 && job.present != nil)
 			if job.cue >= 0 {
-				g.playNativePhysicalSound(job.sounds[job.cue])
+				g.playNativePhysicalSound(g.modernPhysicalSound(job.soundBank, job.cue, job.sounds[job.cue]))
 			}
 			p.cued = true
 		}
@@ -471,7 +477,7 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 				return nil
 			}
 			p.elapsedMillis += elapsed
-			if p.elapsedMillis < job.waitMillis {
+			if p.elapsedMillis < job.waitMillis+p.hdExtraMillis {
 				return nil
 			}
 		}
@@ -480,11 +486,11 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 			p.image = nil
 		}
 		p.index++
-		remaining := p.elapsedMillis - job.waitMillis
+		remaining := p.elapsedMillis - job.waitMillis - p.hdExtraMillis
 		if remaining < 0 || job.waitMillis == 0 {
 			remaining = 0
 		}
-		p.drawn, p.cued, p.elapsedMillis = false, false, remaining
+		p.drawn, p.cued, p.elapsedMillis, p.hdExtraMillis = false, false, remaining, 0
 		if p.index < len(p.jobs) && (len(job.pixels) != 0 || job.present != nil) {
 			next := &p.jobs[p.index]
 			if len(next.pixels) != 0 || next.present != nil {

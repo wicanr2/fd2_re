@@ -14,6 +14,44 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_hd_physical_sound_group_and_camera_profile_are_optional_and_atomic(self):
+        base = validator.validate(False)
+        base['assets'] = [a for a in base['assets'] if a['role'] not in
+                          ('battle_physical_sfx_hd', 'battle_presentation_profile')]
+        audio = [dict(asset_id=f'modern.test.physical.{bank}', role='battle_physical_sfx_hd',
+                      status='runtime_candidate', file=f'impact-{bank}.ogg', sha256='0'*64,
+                      source_refs=['tools/build_fd2_hd1_impact_preview.py'],
+                      consumer_contract='physical_impact_ogg_v1', source_archive='FDOTHER.DAT',
+                      source_resource=bank, source_metadata_sha256='0'*64, cue_ids=cues,
+                      sample_rate=48000, channels=1)
+                 for bank, cues in [(49, [1, 3, 4, 5]), (53, [2])]]
+        profile = dict(asset_id='modern.test.presentation.b', role='battle_presentation_profile',
+                       status='runtime_candidate', file='camera.json', sha256='0'*64,
+                       source_refs=['docs/knowledge-base/61-modern-theme-runtime-spec.md'],
+                       consumer_contract='hd1_battle_presentation_v1')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'catalog.json'
+            good = copy.deepcopy(base); good['assets'] += audio + [profile]
+            path.write_text(json.dumps(good)); validator.validate(False, path)
+            for case in ['partial', 'miss', 'spin', 'other-bank', 'duplicate-cue',
+                         'rate', 'channels', 'path', 'duplicate-profile', 'profile-contract']:
+                with self.subTest(case=case):
+                    bad = copy.deepcopy(good); a = bad['assets'][-3]
+                    if case == 'partial': bad['assets'].pop(-2)
+                    elif case == 'miss': a['cue_ids'][0] = 0
+                    elif case == 'spin': a['cue_ids'][0] = 2
+                    elif case == 'other-bank': a['source_resource'] = 50
+                    elif case == 'duplicate-cue': a['cue_ids'].append(1)
+                    elif case == 'rate': a['sample_rate'] = 22050
+                    elif case == 'channels': a['channels'] = 2
+                    elif case == 'path': a['file'] = '../impact.ogg'
+                    elif case == 'duplicate-profile':
+                        duplicate = copy.deepcopy(profile); duplicate['asset_id'] += '.second'
+                        bad['assets'].append(duplicate)
+                    elif case == 'profile-contract': bad['assets'][-1]['consumer_contract'] = 'unknown'
+                    path.write_text(json.dumps(bad))
+                    with self.assertRaises(ValueError): validator.validate(False, path)
+
     def test_native_terrain_shared_png_keeps_unique_frames_and_consistent_hash(self):
         catalog = validator.validate(False)
         entry = next(a for a in catalog['assets'] if a['asset_id']=='modern.terrain.ground_bases.map00.native_hd')
@@ -130,10 +168,13 @@ class ModernThemeCatalogTests(unittest.TestCase):
         catalog = validator.validate(verify_private=True)
         self.assertEqual(catalog["theme_id"], "modern-handpainted-a")
         self.assertEqual({asset["status"] for asset in catalog["assets"]}, {"concept", "runtime_candidate"})
-        candidate = next(asset for asset in catalog["assets"] if asset["role"] == "story_portrait_frame")
+        # Sol has moved to the HD portrait role. Check an explicit remaining
+        # 80px asset rather than treating catalog order as character identity.
+        candidate = next(asset for asset in catalog["assets"]
+                         if asset['asset_id'] == 'modern.celia.portrait.style_a.frame0')
         self.assertEqual(
             (candidate["width"], candidate["height"], candidate["speaker_id"], candidate["frame"]),
-            (80, 80, 0, 0),
+            (80, 80, 8, 0),
         )
         hano = next(
             asset

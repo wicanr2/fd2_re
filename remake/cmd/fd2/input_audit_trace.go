@@ -229,8 +229,14 @@ func (g *Game) recordInputAuditState() {
 		r["move_reachable"] = cells
 	}
 	r["hd_battle"] = g.modernHDBattleVisible && g.modernHDBattleGPU != nil && g.modernHDBattleGPU.theme == g.modernStoryPortraits
+	if r["hd_battle"] == true {
+		r["battle_hd_camera_active"] = g.modernHDBattleGPU.cameraActive
+	}
 	if g.atk != nil && g.atk.nativeScene != nil && g.nativePaletteRamp == nil {
 		scene := g.atk.nativeScene
+		if scene.body != nil {
+			r["battle_hd_impact_extra_ms"] = scene.body.hdExtraMillis
+		}
 		r["battle_owner"] = fmt.Sprintf("%p", scene)
 		job, phase, layers := physicalBattleAuditSources(scene)
 		r["battle_actor_fig"], r["battle_target_fig"] = scene.actorBattleFig, scene.targetBattleFig

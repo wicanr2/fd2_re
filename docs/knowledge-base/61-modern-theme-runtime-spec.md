@@ -6688,3 +6688,43 @@ Windows補測入口為[效能記錄啟動器](../../tools/run_fd2_windows_perfor
 [Windows替換測試包編製器](../../tools/build_fd2_hd1_performance_patch.py)要求完整`--version`、`--source-commit`、Windows`--binary`與`--build-info`，以及已通過的`--gui-receipt`、對應`--tested-linux`與最後的`--quality-gpu-log`。`--out`只能是專案`dist-all/<版本>`的全新目錄；編製器核對PE的amd64／GUI子系統、注入版號、既有正常流程五項閘門及ZIP逐檔SHA，產物置於patch並保存根SHA256SUMS。輸出明示為本機Windows替換測試包，不含來源素材、不宣稱Windows實機通過；原正式版與三平台完整版保持。版本、路徑與驗證仍以本輪唯一現況表為準。
 
 正常GUI驗證後，最後調整僅為戰鬥品質切換時，須等新計畫驗證成功才替換已發布畫布。錯誤計畫、三品質幾何與品質往返另以GPU測試通過；最終版本Linux封裝自檢通過。兩份二進位與收據SHA分列，不將先前正常GUI二進位當作最終Windows實機證據。
+
+## 2026-11-06 HD1戰鬥音畫修訂
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。使用者已選A「俐落扎實」音效與B「小幅推鏡、短命中停頓」，並要求亞雷斯實際修正偏小的身形。三人圖源與兩項可選清冊類別已接入正式主題。唯一工作現況仍沿[HD1主收據](../data/fd2-hd1-feedback-20261104.json)的`battle_audiovisual_review_20261106`；配方、來源SHA及具體驗證範圍見[本輪收據](../data/fd2-hd1-battle-audiovisual-20261106.json)。
+
+亞雷斯除了母稿比例，也修正原編製器將藍衣本體固定為原高度、收招又額外縮身的定位方式。新版待機與全部攻擊姿勢已編成19幀。蓋亞五份母稿分清頭盔、頸部與肩甲；羅德曼三份人物母稿全部轉為後腦視角，包含普通攻擊及正式淒煌斬。兩人共42幀接線完整；保留各自身份、原版裝備及已登錄特效來源。
+
+早期三張待機及A／B四秒60fps短片是離線方向試作，不代表遊戲錄影或Windows實機60fps。早期亞雷斯v3因身形仍小而被使用者退回；原始試作與退回原因留在WORKLOG及主收據的歷史欄位。分鏡不再待選，Windows實機效能仍依[#298](https://github.com/wicanr2/fd2_re/issues/298)。
+
+### 普通物理HD音效A（CONFORMED-SCOPED）
+
+首切片沿已證實的`nativePhysicalSoundBank`及`nativePhysicalBodyJob`，只替換FDOTHER49的命中cue1／3／4／5及FDOTHER53的拳擊cue2；cue0未命中、cue2旋轉風聲及其他音庫保持。新資產類別`battle_physical_sfx_hd`使用`physical_impact_ogg_v1`契約，來源仍在私人主題白名單；欄位保存來源庫、cue清單、原音庫metadata SHA、OGG SHA、取樣率與聲道，不加入戰役save。兩份音色沿已選A的原創合成OGG，正式庫的原版樣本不混入新音色。
+
+載入時驗安全單檔名、來源庫與cue白名單、metadata／OGG SHA、Vorbis識別、聲道及取樣率，解碼為既有44100Hz立體聲PCM並限制兩秒。任一新資產不符則原子拒收主題；未帶此可選資產類別的舊清冊沿原音效。音色隨既有美術F2：原版或未登錄cue逐byte沿原PCM，HD才選新PCM。同一物理音效通道的替換、靜音、觸發順序、一次播放、Draw確認、HP／MP／RNG及保存保持。特技`playRaw`不由相同聲音位元組猜映射，未接範圍須分列。驗收包含有效／破損OGG、錯metadata或SHA、重複／越界cue、原版／HD切換、原通道與一次觸發回歸。
+
+### B分鏡首切片（CONFORMED-SCOPED）
+
+使用者已確認B。以可選私人清冊資產類別`battle_presentation_profile`載入`hd1_battle_presentation_v1`的JSON，固定schema_version=1、max_zoom=1.07、impact_hold_frames=4；檢查單檔名、大小、SHA、欄位與值，舊清冊未帶設定時維持既有HD呈現。這是HD美術的演出設定，不寫入戰役save，不改原版模式或全域TPS。
+
+推鏡首段只在同次來源具有HD場景層及完整、已比對原生bytes的兩個戰鬥狀態框時啟用。先複製Base並清除框內舊像素，已綁定的獨立狀態框層仍用原位置／尺寸；其他場景與人物層按同一鏡頭矩陣投影，裁切矩形同步投影。鏡頭依同一演出owner的遊戲frame在0.9秒內平滑至最多7%，只改繪製，不改人物資料、HP／MP、RNG或音訊速度；缺完整來源沿既有畫面，不用畫面取樣補背景。owner或美術切換重建起點，畫質切換保留演出owner。
+
+四幀命中停頓先接普通物理owner中實際命中cue大於零且原Frame.RawByte4非零的首個present；只在該工作項目第一次進入時取HD設定，延長顯示等待4×1000／60ms，仍須Draw確認。未命中、cue-only與重複pulse不新增停頓，不重播音效或結算；中途F2不重新觸發或重算該次停頓。其他特技的命中停頓須沿各自已證實的命中consumer另接，不能把RawByte4跨caller當成通用語意。驗收分開鏡頭GPU、狀態框固定／無殘影、三畫質、owner／F2、四幀一次等待及普通攻擊自然返回。
+
+### 三人戰鬥圖源修訂（CONFORMED-SCOPED）
+
+本輪沿使用者已確認的修正方向：亞雷斯增加身體份量，蓋亞分清頭盔、頸部與肩甲，羅德曼轉向戰場而以後腦呈現。仍採各自原版圖組與既有武器、服裝；不增加原版零header銀行或改動描述子、判定、傷害與存檔。圖源可公開的總覽與私人原始母稿分開保存。
+
+亞雷斯12／13共19幀採15份新版母稿，`build_fd2_ares_battle_hd.py --revision 2 --body-scale 1.14 --core-floor-idle --keep-follow-body`。增幅針對藍衣身體錨點，待機四幀完整容納高覆蓋核心，收招四幀保留身體比例並限制右側披布越界。原始描述子仍會裁掉部分前緣武器或特效，須逐幀檢視，不能將全圖裁切量冒稱為身體裁切量。蓋亞90／91共15幀以五母稿重編，羅德曼57／58／59共27幀沿既有分層配方，只更新三份人物母稿，特效來源不變。
+
+原始資源以當前分離包盤點工具重生指紋，不以修改舊盤點雜湊通過檢查。驗收需核對描述子、幀數、透明度、來源SHA、完整主題載入與實際Draw；普通標題LOAD、選人、攻擊、F2、自然返回、保存冷讀另留收據。這是HD美術修訂，不能宣稱原版逐像素或Windows已達60fps。
+
+隔離組合工具為[build_fd2_hd1_audiovisual_candidate.py](../../tools/build_fd2_hd1_audiovisual_candidate.py)，輸入角色候選清冊、合法原版分離包與已選A音效試聽目錄，再產生新候選主題、B設定及SHA收據。舊清冊沒有兩項新資產類別時維持原有音畫路徑。
+
+### 驗證結果與本機總覽
+
+三人普通攻防均以實際Game.Draw驗全部present、F2、64階戰鬥淡出、65階地圖返回與一次交接。羅德曼指令28另驗完整淒煌斬、八次命中、三階段F2及MP一次扣除。這些是受控RUNTIME-E1收據，不提升原版對拍或自然招募。普通首章來源JSON另經標題LOAD、選人、走行取消、亞雷斯攻擊、F2、自然返回、F5與新程序冷讀。
+
+鏡頭GPU另驗三段畫質的狀態框固定、無舊框殘影、快取及非法矩陣拒收；停格驗一次取值、Draw閘門與中途F2不重觸發。音效驗有效及破損OGG、來源綁定、原PCM回退與cue白名單。全主題載入、來源缺件及我方／AI原子拒收通過，人工完整混音與Windows60fps仍待實機。
+
+[三人最新全幀總覽](/home/anr2/cht/fd2/work/hd1-audiovisual-20261106-r90/three-person-overview/README.md)僅供本機審閱；它取代較早完整總覽中4／19／30三組的圖片，其他圖組仍見既有入口。重跑使用`tools/build_fd2_battle_animation_overview.py --figures 4,19,30`，原始資料使用[本輪盤點](../data/fd2-battle-hd-source-inventory-20261106.json)。原始母稿與可重組全幀圖留在私人庫或本機，公開只保存縮小的實際遊玩畫面及雜湊。

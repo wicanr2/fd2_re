@@ -20,7 +20,13 @@ def main():
     for name in ['original', 'modern', 'catalog', 'inventory', 'font', 'out']:
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--reuse-overview', type=Path, help='逐人來源與文字相同且圖SHA正確時沿用既有總覽')
+    parser.add_argument('--figures', help='只重生明示圖組，例如4,19,30；省略時維持完整136組')
     args = parser.parse_args()
+    selected = list(range(136))
+    if args.figures is not None:
+        selected = sorted({int(value) for value in args.figures.split(',')})
+        if not selected or any(value < 0 or value > 135 for value in selected):
+            parser.error('圖組須介於0與135')
     assert Path('/.dockerenv').is_file() and os.getuid() != 0
     assert not args.out.exists() and args.out.parent.stat().st_uid == os.getuid()
     root = Path(__file__).resolve().parents[1]
@@ -61,7 +67,10 @@ def main():
         manifest['reuse_manifest_sha256'] = sha(prior_file)
         manifest['reused_figures'] = []
     fields = ['x', 'y', 'width', 'height', 'delay_native', 'raw_byte_4', 'raw_byte_5', 'raw_byte_7']
-    for figure in range(136):
+    if args.figures is not None:
+        manifest['figure_selection'] = selected
+        manifest['scope'] += '本次只重生明示圖組，不代表完整136組。'
+    for figure in selected:
         banks = []
         for resource in range(figure * 3, figure * 3 + 3):
             proof = natives[resource]
@@ -148,8 +157,12 @@ def main():
              '完整全幀來源對照僅供本機審閱。原始素材及可重組圖源不加入公開庫。', '', '## 伙伴索引', '',
              '| 角色 | 基底圖組 | 轉職／其他已證實形態 |', '|---|---|---|']
     for identity in range(32):
-        variants = [f'[{identities[f]}](#figure-{f:03})' for f in sorted(owners) if f != identity and owners[f] == identity]
-        lines.append(f'| {identities[identity]} | [圖組 {identity:03}](#figure-{identity:03}) | {"、".join(variants) or "原始轉職表未列"} |')
+        if args.figures is not None and identity not in selected:
+            continue
+        variants = [f'[{identities[f]}](#figure-{f:03})' for f in sorted(owners) if f in selected and f != identity and owners[f] == identity]
+        other_forms = any(f != identity and owners[f] == identity for f in owners)
+        empty = '本次未列轉職形態' if args.figures is not None and other_forms else '原始轉職表未列'
+        lines.append(f'| {identities[identity]} | [圖組 {identity:03}](#figure-{identity:03}) | {"、".join(variants) or empty} |')
     for row in manifest['figures']:
         figure = row['figure']
         lines += ['', f'<a id="figure-{figure:03}"></a>', f'## {row["name"]}', '',

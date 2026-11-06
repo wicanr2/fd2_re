@@ -1,0 +1,1644 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "status": "CONFORMED-SCOPED-RUNTIME",
+  "base_commit": "00d7fdad1cfd98cfd25e5ce0cfebda3af6c3bb91",
+  "catalog_sha256": "3eb139c8655cbde2ba9bfaad7c8befb30543c3218c88ca021a7e5b7740f0031f",
+  "inventory": {
+    "file": "docs/data/fd2-battle-hd-source-inventory-20261106.json",
+    "sha256": "9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1",
+    "original_pack_manifest_sha256": "1da52e497f09486216c57eb7f630b9df4974bef0702fe15fe2aa26f1212e405e"
+  },
+  "decisions": {
+    "audio": "A：俐落扎實",
+    "camera": "B：最大7%推近，普通物理命中額外停留4個60Hz影格",
+    "ares": "修正式編製比例與全部攻擊姿勢，收招不再額外縮身",
+    "gaia": "完整五母稿分清頭盔、頸部與肩甲",
+    "rodman": "三份本體母稿都呈現後腦，特效保持原圖源"
+  },
+  "recipes": {
+    "30": {
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "revision": 3,
+      "with_cast": false,
+      "recipe": {
+        "schema_version": 1,
+        "figure": 30,
+        "inventory_sha256": "9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1",
+        "sources": {
+          "charge": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-030-charge-battle-hd6-master-v3.png",
+            "sha256": "6b6c985fdc646c1edd83e97bbebd2cc494e536f5ae40850b746dd3b397537093",
+            "anchor": [
+              92,
+              94,
+              1054,
+              1442
+            ]
+          },
+          "impact": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-030-impact-battle-hd6-master-v3.png",
+            "sha256": "34755822a2644c0de83efdf73b56298957792d24c8116921f4027db910975466",
+            "anchor": [
+              24,
+              59,
+              1374,
+              1113
+            ]
+          },
+          "flare": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-030-flare-battle-hd6-master-v3.png",
+            "sha256": "ac20817b811cf2a10bd8299116ddb3c0ef89b5a748f79cdfb281c6493eda0630",
+            "anchor": [
+              12,
+              40,
+              1243,
+              1226
+            ]
+          },
+          "follow": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-030-follow-battle-hd6-master-v3.png",
+            "sha256": "80bb44ff67aa00c4f5b06d336968867b97fc55a915814018362bcf6051b3a02d",
+            "anchor": [
+              32,
+              47,
+              1243,
+              1224
+            ]
+          },
+          "idle": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-030-idle-battle-hd6-master-v3.png",
+            "sha256": "3673f5fed300d2fafd0a9da7e3ccc16575285a5d0f73114da7d444abd303d133",
+            "anchor": [
+              48,
+              101,
+              980,
+              1437
+            ]
+          }
+        },
+        "resources": {
+          "90": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                143
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                142
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                141
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                142
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          "91": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                143
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "charge",
+              "anchor": [
+                0,
+                0,
+                110,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge",
+              "anchor": [
+                0,
+                0,
+                111,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge",
+              "anchor": [
+                0,
+                0,
+                111,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge",
+              "anchor": [
+                0,
+                0,
+                111,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge",
+              "anchor": [
+                0,
+                0,
+                104,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "impact",
+              "anchor": [
+                0,
+                0,
+                194,
+                155
+              ],
+              "scale_group": "impact"
+            },
+            {
+              "pose": "flare",
+              "anchor": [
+                0,
+                0,
+                151,
+                146
+              ],
+              "scale_group": "flare"
+            },
+            {
+              "pose": "flare",
+              "anchor": [
+                0,
+                0,
+                150,
+                147
+              ],
+              "scale_group": "flare"
+            },
+            {
+              "pose": "follow",
+              "anchor": [
+                0,
+                0,
+                149,
+                147
+              ],
+              "scale_group": "follow"
+            },
+            {
+              "pose": "follow",
+              "anchor": [
+                0,
+                0,
+                149,
+                147
+              ],
+              "scale_group": "follow"
+            }
+          ]
+        }
+      }
+    },
+    "19": {
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "revision": 3,
+      "with_cast": true,
+      "recipe": {
+        "schema_version": 1,
+        "figure": 19,
+        "inventory_sha256": "9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1",
+        "sources": {
+          "idle": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-idle-battle-hd6-master-v3.png",
+            "sha256": "58009943519c6856bbd4eecef8feb591ec947f8377d0ad4dd08216f1555daafa",
+            "anchor": [
+              234,
+              12,
+              1110,
+              1251
+            ]
+          },
+          "raise": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-raise-battle-hd6-master-v3.png",
+            "sha256": "3748019c07c8c467f7fcc655ba6f87e409ce8f92e0c7bcbeb7f3b05c352a1072",
+            "anchor": [
+              253,
+              14,
+              1048,
+              1243
+            ]
+          },
+          "swing": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-swing-battle-hd6-master-v3.png",
+            "sha256": "3046dba4d5a7a22bcf260395ca81dc7abd1c109fbdbae968ceb28690c5d90113",
+            "anchor": [
+              11,
+              15,
+              1243,
+              1184
+            ]
+          },
+          "gold_c": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-gold_c-battle-hd6-master-v3.png",
+            "sha256": "b5d1cf9e236adbd21cf59913e7a21611bc8b66aa1ef7a7615902faacf6f20a4d",
+            "anchor": [
+              71,
+              48,
+              976,
+              757
+            ]
+          },
+          "gold_beam": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-gold_beam-battle-hd6-master-v3.png",
+            "sha256": "2cc7f75b8e50767d7269555b5ec13b66d9729cc0f9f8b4b072a9e2a2c6d7d5c4",
+            "anchor": [
+              0,
+              17,
+              1443,
+              613
+            ]
+          },
+          "blue_beam": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-blue_beam-battle-hd6-master-v3.png",
+            "sha256": "20d6e229b815b2d5e6775f64360d1616de475a4a1568c6eadb39ff1082a00f8f",
+            "anchor": [
+              0,
+              15,
+              1454,
+              628
+            ]
+          },
+          "spark": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-019-spark-battle-hd6-master-v3.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "anchor": [
+              333,
+              255,
+              996,
+              939
+            ]
+          }
+        },
+        "resources": {
+          "57": [
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  125,
+                  185
+                ],
+                "scale_group": "b57_0"
+              }
+            ]
+          ],
+          "58": [
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b58_0"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  95,
+                  192
+                ],
+                "scale_group": "b58_1"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b58_2"
+              }
+            ],
+            [
+              {
+                "pose": "gold_c",
+                "anchor": [
+                  0,
+                  0,
+                  147,
+                  146
+                ],
+                "scale_group": "f58_3_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  49,
+                  60,
+                  195,
+                  191
+                ],
+                "scale_group": "b58_3"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  36,
+                  1,
+                  37
+                ],
+                "scale_group": "f58_4_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  3,
+                  40,
+                  7,
+                  45
+                ],
+                "scale_group": "f58_4_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  7,
+                  46,
+                  8,
+                  47
+                ],
+                "scale_group": "f58_4_2"
+              },
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  9,
+                  48,
+                  67,
+                  84
+                ],
+                "scale_group": "f58_4_3"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  34,
+                  0,
+                  180,
+                  131
+                ],
+                "scale_group": "b58_4"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  56,
+                  2,
+                  58
+                ],
+                "scale_group": "f58_5_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  4,
+                  61,
+                  9,
+                  67
+                ],
+                "scale_group": "f58_5_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  52,
+                  64,
+                  55,
+                  66
+                ],
+                "scale_group": "f58_5_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  50,
+                  66,
+                  51,
+                  67
+                ],
+                "scale_group": "f58_5_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  48,
+                  67,
+                  49,
+                  68
+                ],
+                "scale_group": "f58_5_4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  46,
+                  68,
+                  47,
+                  69
+                ],
+                "scale_group": "f58_5_5"
+              },
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  10,
+                  69,
+                  41,
+                  85
+                ],
+                "scale_group": "f58_5_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  44,
+                  69,
+                  45,
+                  70
+                ],
+                "scale_group": "f58_5_7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  42,
+                  70,
+                  43,
+                  71
+                ],
+                "scale_group": "f58_5_8"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  21,
+                  0,
+                  167,
+                  131
+                ],
+                "scale_group": "b58_5"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  146,
+                  131
+                ],
+                "scale_group": "b58_6"
+              }
+            ]
+          ],
+          "59": [
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  95,
+                  192
+                ],
+                "scale_group": "b59_0"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  53,
+                  19,
+                  70,
+                  27
+                ],
+                "scale_group": "f59_1_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_1"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  53,
+                  17,
+                  71,
+                  27
+                ],
+                "scale_group": "f59_2_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_2"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  57,
+                  0,
+                  86,
+                  24
+                ],
+                "scale_group": "f59_3_0"
+              },
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  71,
+                  0,
+                  104,
+                  25
+                ],
+                "scale_group": "f59_3_1"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_3"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  56,
+                  0,
+                  107,
+                  25
+                ],
+                "scale_group": "f59_4_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  76,
+                  9,
+                  77,
+                  10
+                ],
+                "scale_group": "f59_4_1"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_4"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  56,
+                  0,
+                  107,
+                  25
+                ],
+                "scale_group": "f59_5_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_5"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  56,
+                  0,
+                  107,
+                  25
+                ],
+                "scale_group": "f59_6_0"
+              },
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  94,
+                  192
+                ],
+                "scale_group": "b59_6"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  108
+                ],
+                "scale_group": "f59_7_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_7"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_8_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_8"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  106
+                ],
+                "scale_group": "f59_9_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_9"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_10_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_10"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  106
+                ],
+                "scale_group": "f59_11_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_11"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_12_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_12"
+              }
+            ],
+            [
+              {
+                "pose": "gold_beam",
+                "anchor": [
+                  0,
+                  0,
+                  182,
+                  106
+                ],
+                "scale_group": "f59_13_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  60,
+                  147,
+                  191
+                ],
+                "scale_group": "b59_13"
+              }
+            ],
+            [
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  105
+                ],
+                "scale_group": "f59_14_0"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  60,
+                  146,
+                  191
+                ],
+                "scale_group": "b59_14"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  90,
+                  0,
+                  91,
+                  1
+                ],
+                "scale_group": "f59_15_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  85,
+                  4,
+                  87,
+                  6
+                ],
+                "scale_group": "f59_15_1"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  48,
+                  8,
+                  83,
+                  40
+                ],
+                "scale_group": "f59_15_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  69,
+                  8,
+                  70,
+                  9
+                ],
+                "scale_group": "f59_15_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  64,
+                  12,
+                  66,
+                  14
+                ],
+                "scale_group": "f59_15_4"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  29,
+                  16,
+                  62,
+                  46
+                ],
+                "scale_group": "f59_15_5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  39,
+                  21,
+                  40,
+                  22
+                ],
+                "scale_group": "f59_15_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  34,
+                  26,
+                  35,
+                  27
+                ],
+                "scale_group": "f59_15_7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  29,
+                  30,
+                  31,
+                  32
+                ],
+                "scale_group": "f59_15_8"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  35,
+                  32,
+                  74
+                ],
+                "scale_group": "f59_15_9"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  1,
+                  46,
+                  147,
+                  177
+                ],
+                "scale_group": "b59_15"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  60,
+                  0,
+                  61,
+                  1
+                ],
+                "scale_group": "f59_16_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  44,
+                  2,
+                  45,
+                  3
+                ],
+                "scale_group": "f59_16_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  56,
+                  4,
+                  58,
+                  6
+                ],
+                "scale_group": "f59_16_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  40,
+                  6,
+                  42,
+                  8
+                ],
+                "scale_group": "f59_16_3"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  41,
+                  7,
+                  55,
+                  21
+                ],
+                "scale_group": "f59_16_4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  26,
+                  10,
+                  39,
+                  24
+                ],
+                "scale_group": "f59_16_5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  20,
+                  16,
+                  21,
+                  17
+                ],
+                "scale_group": "f59_16_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  16,
+                  20,
+                  17,
+                  21
+                ],
+                "scale_group": "f59_16_7"
+              },
+              {
+                "pose": "blue_beam",
+                "anchor": [
+                  0,
+                  29,
+                  8,
+                  44
+                ],
+                "scale_group": "f59_16_8"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  9,
+                  36,
+                  11,
+                  37
+                ],
+                "scale_group": "f59_16_9"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  12,
+                  37,
+                  13,
+                  38
+                ],
+                "scale_group": "f59_16_10"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  21,
+                  146,
+                  152
+                ],
+                "scale_group": "b59_16"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  144,
+                  133
+                ],
+                "scale_group": "b59_17"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  144,
+                  131
+                ],
+                "scale_group": "b59_18"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "4": {
+      "compiler": "tools/build_fd2_ares_battle_hd.py",
+      "revision": 2,
+      "body_scale": 1.14,
+      "core_floor_idle": true,
+      "keep_follow_body": true,
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-idle-hd6-master-v2.png",
+          "sha256": "22283c9036660e028222c49feddbe740ebc4404fd692b4ef4164fd6f76fb6d31",
+          "blue_anchor": [
+            343,
+            71,
+            1170,
+            1083
+          ]
+        },
+        "f01": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f01-hd6-master-v2.png",
+          "sha256": "89a00fa4a1447df32ed90a4af026f3f0d443ffd49e43a4e495767c0ee764f60e",
+          "blue_anchor": [
+            433,
+            359,
+            1025,
+            1211
+          ]
+        },
+        "f02": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f02-hd6-master-v2.png",
+          "sha256": "6660c2b4a44b7b16d774bd89a46fe1461dbc76391915605bb1bf36f4a50ead22",
+          "blue_anchor": [
+            371,
+            363,
+            978,
+            1339
+          ]
+        },
+        "f03": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f03-hd6-master-v2.png",
+          "sha256": "138bde4bde79886debc94113db5f7d845d7e01ff385552d4b6cb0b0bf1355446",
+          "blue_anchor": [
+            528,
+            382,
+            1097,
+            1205
+          ]
+        },
+        "f04": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f04-hd6-master-v2.png",
+          "sha256": "b00f6f004bc409ef9b072ede7e93da46b6ad39a6e20e5b9650adf368d4f1a2a5",
+          "blue_anchor": [
+            241,
+            421,
+            900,
+            1407
+          ]
+        },
+        "f05": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f05-hd6-master-v2.png",
+          "sha256": "d543bf54e12aacd7dc0b8eec5f529318ed5029dde1dbe063924eed7b6a049dc6",
+          "blue_anchor": [
+            433,
+            356,
+            1031,
+            1197
+          ]
+        },
+        "f06": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f06-hd6-master-v2.png",
+          "sha256": "90697d400c94ce2b226dddec7bb298935d0f8fa0d93965b4f5e89a39f6f7d868",
+          "blue_anchor": [
+            530,
+            296,
+            1151,
+            1167
+          ]
+        },
+        "f07": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f07-hd6-master-v2.png",
+          "sha256": "35da4f54c29eaf11e1e4deb8805f771e5ab579adc5ac0886c34984a20116999d",
+          "blue_anchor": [
+            484,
+            372,
+            1040,
+            1196
+          ]
+        },
+        "f08": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f08-hd6-master-v2.png",
+          "sha256": "895467ca398e985ffdd6f534727da424f85d179e2f5a93c55d130a76a0d3bbcb",
+          "blue_anchor": [
+            572,
+            374,
+            1160,
+            1174
+          ]
+        },
+        "f09": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f09-hd6-master-v2.png",
+          "sha256": "bbdbea17eb8f699b9b591eaa842762b15e10672148a78bf8824dd7b0707bb8e0",
+          "blue_anchor": [
+            270,
+            409,
+            894,
+            1412
+          ]
+        },
+        "f10": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f10-hd6-master-v2.png",
+          "sha256": "e1ad298a016c3201420c88f1ab9b2ff3c66be1676be052e53e0cb20ffa3e3cd7",
+          "blue_anchor": [
+            291,
+            420,
+            894,
+            1417
+          ]
+        },
+        "f11": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f11-hd6-master-v2.png",
+          "sha256": "38ddfb0b8ceee7e3841da193a93307588c46f4a414eb76f993f130f95f17b8fa",
+          "blue_anchor": [
+            661,
+            565,
+            1028,
+            1120
+          ]
+        },
+        "f12": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f12-hd6-master-v2.png",
+          "sha256": "791b76a4cb8422b5acd69429e0677c6e12be5b8d4af71b16acfc8dff5c3c25f5",
+          "blue_anchor": [
+            748,
+            400,
+            1274,
+            1155
+          ]
+        },
+        "f13": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f13-hd6-master-v2.png",
+          "sha256": "c109ab210701ee72d4e651dad6ffd4b149e1527592c8c8787d12bca9dcd2ff98",
+          "blue_anchor": [
+            749,
+            370,
+            1283,
+            1137
+          ]
+        },
+        "f14": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ares-battle-f14-hd6-master-v2.png",
+          "sha256": "8ecc791eab70c080c91e522e4ebcac56184b7c11542d7a5da1b0d0ea12f2e40b",
+          "blue_anchor": [
+            921,
+            353,
+            1278,
+            1130
+          ]
+        }
+      },
+      "source_map_for_compiler": {
+        "idle": "remake/generated-assets/modern-theme-prototypes/ares-battle-idle-hd6-master-v2.png",
+        "f01": "remake/generated-assets/modern-theme-prototypes/ares-battle-f01-hd6-master-v2.png",
+        "f02": "remake/generated-assets/modern-theme-prototypes/ares-battle-f02-hd6-master-v2.png",
+        "f03": "remake/generated-assets/modern-theme-prototypes/ares-battle-f03-hd6-master-v2.png",
+        "f04": "remake/generated-assets/modern-theme-prototypes/ares-battle-f04-hd6-master-v2.png",
+        "f05": "remake/generated-assets/modern-theme-prototypes/ares-battle-f05-hd6-master-v2.png",
+        "f06": "remake/generated-assets/modern-theme-prototypes/ares-battle-f06-hd6-master-v2.png",
+        "f07": "remake/generated-assets/modern-theme-prototypes/ares-battle-f07-hd6-master-v2.png",
+        "f08": "remake/generated-assets/modern-theme-prototypes/ares-battle-f08-hd6-master-v2.png",
+        "f09": "remake/generated-assets/modern-theme-prototypes/ares-battle-f09-hd6-master-v2.png",
+        "f10": "remake/generated-assets/modern-theme-prototypes/ares-battle-f10-hd6-master-v2.png",
+        "f11": "remake/generated-assets/modern-theme-prototypes/ares-battle-f11-hd6-master-v2.png",
+        "f12": "remake/generated-assets/modern-theme-prototypes/ares-battle-f12-hd6-master-v2.png",
+        "f13": "remake/generated-assets/modern-theme-prototypes/ares-battle-f13-hd6-master-v2.png",
+        "f14": "remake/generated-assets/modern-theme-prototypes/ares-battle-f14-hd6-master-v2.png"
+      }
+    }
+  },
+  "registered_resources": {
+    "12": {
+      "asset_id": "modern.figani.012.hd6.v2",
+      "frames": 4,
+      "files": [
+        "figani-012-hd6-v2-f00.png",
+        "figani-012-hd6-v2-f01.png",
+        "figani-012-hd6-v2-f02.png",
+        "figani-012-hd6-v2-f03.png"
+      ],
+      "sha256": [
+        "1e53f4ca72c954dd943c7494d9a754a627c1b0c516e0128fcdd1c6e8fec6c98b",
+        "5c5d897045a8498de11e0a39860e6d017a3f7f1d9919389526ae69c0bb306800",
+        "1068240e532c696f3aa47ca0f13bd1aa13809f450601e10a97fcbc938659974d",
+        "5c5d897045a8498de11e0a39860e6d017a3f7f1d9919389526ae69c0bb306800"
+      ]
+    },
+    "13": {
+      "asset_id": "modern.figani.013.hd6.v2",
+      "frames": 15,
+      "files": [
+        "figani-013-hd6-v2-f00.png",
+        "figani-013-hd6-v2-f01.png",
+        "figani-013-hd6-v2-f02.png",
+        "figani-013-hd6-v2-f03.png",
+        "figani-013-hd6-v2-f04.png",
+        "figani-013-hd6-v2-f05.png",
+        "figani-013-hd6-v2-f06.png",
+        "figani-013-hd6-v2-f07.png",
+        "figani-013-hd6-v2-f08.png",
+        "figani-013-hd6-v2-f09.png",
+        "figani-013-hd6-v2-f10.png",
+        "figani-013-hd6-v2-f11.png",
+        "figani-013-hd6-v2-f12.png",
+        "figani-013-hd6-v2-f13.png",
+        "figani-013-hd6-v2-f14.png"
+      ],
+      "sha256": [
+        "1e53f4ca72c954dd943c7494d9a754a627c1b0c516e0128fcdd1c6e8fec6c98b",
+        "d68954a7702f17dbf8c327b776e8c5dec638efd3431fea849aa7987ba0d94f95",
+        "73dc6e41bd7fd0e159c4878d0d68c793fca3506ba3a261c9553f4c113e7b702e",
+        "20b9de56f5b7682f38c20b89f2914f33f5c13ffb1c4eda519beee485459de072",
+        "a0f1448cc26eafc3bbaa3104027ebb61d0888adf4597eff4051d594d8bfa0499",
+        "ad35a65627728148d0310bed6e0ecd5259e15ea558d77527f2323052fd2b726b",
+        "65b347e018ea2998e120a09c9483481a34c07b4d5237563ca584d8948a84fd12",
+        "b339ffc408393aad24e92b9e61583af114a174e50b65b4a1b926323d0e4b26d1",
+        "b3234451ef048e07b3a84e470b1ceaf85636c7c8a0c84cc8c1c8046d3d3692ad",
+        "3a401024ce469bbd49543e5e8a4e79bfe3f0d5c8a08db5be2938bd5007233a2b",
+        "a7f5a8cc70f6e734949249a4c016b21e0c10a9f3a18c3aecb0e58835b36265ba",
+        "d0ef86f2f525d30f9c1e46dfc3136c7639d97f42f962655eb30853d7d4ef5a31",
+        "e28e2dde91857701ed274c7cb7f4c9530cf0872650fc5ff501dfb47e8504d699",
+        "9a669799d73eefa1a5c548a7b7aa075944ed065a22b4b5d5823ad93f04cee840",
+        "254a9b67650135d5f1bd7f5546fb0800d12698fb1dd2caffdc2c907ccc374801"
+      ]
+    },
+    "57": {
+      "asset_id": "modern.figani.057.hd6.v3",
+      "frames": 1,
+      "files": [
+        "figani-057-hd6-v3-f00.png"
+      ],
+      "sha256": [
+        "1b1ba7645e1cfdfe404cafa19a38041c97cea16453d5befdb2967e1c745cb0db"
+      ]
+    },
+    "58": {
+      "asset_id": "modern.figani.058.hd6.v3",
+      "frames": 7,
+      "files": [
+        "figani-058-hd6-v3-f00.png",
+        "figani-058-hd6-v3-f01.png",
+        "figani-058-hd6-v3-f02.png",
+        "figani-058-hd6-v3-f03.png",
+        "figani-058-hd6-v3-f04.png",
+        "figani-058-hd6-v3-f05.png",
+        "figani-058-hd6-v3-f06.png"
+      ],
+      "sha256": [
+        "84ac7905bdc748daaca9e3829285158d5ed0fe72da186cadf4848aafd31477ad",
+        "413bd168aa6095810198488b3414f5a2c84e2705c5fd562f63b77da52f8bc343",
+        "84ac7905bdc748daaca9e3829285158d5ed0fe72da186cadf4848aafd31477ad",
+        "439ffd52050de565cef41c0f917262b9754f7fb5015c851b3833e6e071d61708",
+        "0826934f5e98133242bbd56ddb614f3d7a531ce0700ebf7e3e13326464e5be98",
+        "0d869f76c5a6d24be727f5fd1a2bb1a1a0cd35abbdf0e7bd5bcc7eff0c6e79c1",
+        "79b9fe7031152fbd571810a85ca0ce4412d175f8c8ee03d67887281d14ae62dc"
+      ]
+    },
+    "59": {
+      "asset_id": "modern.figani.059.hd6.v3",
+      "frames": 19,
+      "files": [
+        "figani-059-hd6-v3-f00.png",
+        "figani-059-hd6-v3-f01.png",
+        "figani-059-hd6-v3-f02.png",
+        "figani-059-hd6-v3-f03.png",
+        "figani-059-hd6-v3-f04.png",
+        "figani-059-hd6-v3-f05.png",
+        "figani-059-hd6-v3-f06.png",
+        "figani-059-hd6-v3-f07.png",
+        "figani-059-hd6-v3-f08.png",
+        "figani-059-hd6-v3-f09.png",
+        "figani-059-hd6-v3-f10.png",
+        "figani-059-hd6-v3-f11.png",
+        "figani-059-hd6-v3-f12.png",
+        "figani-059-hd6-v3-f13.png",
+        "figani-059-hd6-v3-f14.png",
+        "figani-059-hd6-v3-f15.png",
+        "figani-059-hd6-v3-f16.png",
+        "figani-059-hd6-v3-f17.png",
+        "figani-059-hd6-v3-f18.png"
+      ],
+      "sha256": [
+        "413bd168aa6095810198488b3414f5a2c84e2705c5fd562f63b77da52f8bc343",
+        "e0c3fab32b99ca3a91a286813027bd05251f59dedd39469adafedc4bec44d851",
+        "b6798fd083e02f3ab9f2d5c19e1028e2739bd5b795c9fa10102838f121f75945",
+        "2feb9c877400fdfbf4d5d44dbc7a53898e2ae299c6fbd89086f12f4fe3cd0aba",
+        "c448b71d651c9a3aed71da55be7d972219a8f093686c86718e32502350636e97",
+        "a0e6770ada19579de22907297f1a764cd02a517e289573ec93de77272811469a",
+        "a0e6770ada19579de22907297f1a764cd02a517e289573ec93de77272811469a",
+        "5cf660f3296c95a14f82618940c3ba6e7bc2788191fa303567e3fa6c622de3e9",
+        "b8e47a4b212eb983d2d49b2f57188858c2c0ed29dd2a6c957e80734922407c00",
+        "fdcb0f9e0160f33d1984fe5ae7de1a9a15a3f36db3f443b9cffa149038b5479e",
+        "b8e47a4b212eb983d2d49b2f57188858c2c0ed29dd2a6c957e80734922407c00",
+        "fdcb0f9e0160f33d1984fe5ae7de1a9a15a3f36db3f443b9cffa149038b5479e",
+        "b8e47a4b212eb983d2d49b2f57188858c2c0ed29dd2a6c957e80734922407c00",
+        "fdcb0f9e0160f33d1984fe5ae7de1a9a15a3f36db3f443b9cffa149038b5479e",
+        "b8e47a4b212eb983d2d49b2f57188858c2c0ed29dd2a6c957e80734922407c00",
+        "19b057b4ac26136b5b04e16da5808f3b1f44b864ab994a1aaa15f7f420fff26a",
+        "aacaba67f0b1158bcc51d53652cc5ccde73d3b60c99756a5ff81750fbf910084",
+        "4d4c83cfc7c6749c356b9a09fa820bcbe701d985fbe5d952771fbb20b0aa69c6",
+        "b28e7ef4c36d24ad7d05f6f5d41cdab63b386b178096681b748e3753167c9705"
+      ]
+    },
+    "90": {
+      "asset_id": "modern.figani.090.hd6.v3",
+      "frames": 4,
+      "files": [
+        "figani-090-hd6-v3-f00.png",
+        "figani-090-hd6-v3-f01.png",
+        "figani-090-hd6-v3-f02.png",
+        "figani-090-hd6-v3-f03.png"
+      ],
+      "sha256": [
+        "19e66805f8842e583544f6034177b188a66805d47f1622c47635b71d17efdc73",
+        "a5ec6da2d48d452dfe72cb3a90e77e50ddab2c195bb048836eba5008b5a1b0c3",
+        "28d05ed89e2476f5f80e7e282459056a20af3fb9c9818b5a8298d888cf55e41d",
+        "a5ec6da2d48d452dfe72cb3a90e77e50ddab2c195bb048836eba5008b5a1b0c3"
+      ]
+    },
+    "91": {
+      "asset_id": "modern.figani.091.hd6.v3",
+      "frames": 11,
+      "files": [
+        "figani-091-hd6-v3-f00.png",
+        "figani-091-hd6-v3-f01.png",
+        "figani-091-hd6-v3-f02.png",
+        "figani-091-hd6-v3-f03.png",
+        "figani-091-hd6-v3-f04.png",
+        "figani-091-hd6-v3-f05.png",
+        "figani-091-hd6-v3-f06.png",
+        "figani-091-hd6-v3-f07.png",
+        "figani-091-hd6-v3-f08.png",
+        "figani-091-hd6-v3-f09.png",
+        "figani-091-hd6-v3-f10.png"
+      ],
+      "sha256": [
+        "19e66805f8842e583544f6034177b188a66805d47f1622c47635b71d17efdc73",
+        "6cb9f064bdc35723bc3462f60a76eb952f15e90796d460a06046b6ad226afd05",
+        "79eadea8b4ca5bf62c56c9d08e759690b9c649143f8c9f73f979cfa9223941dd",
+        "79eadea8b4ca5bf62c56c9d08e759690b9c649143f8c9f73f979cfa9223941dd",
+        "79eadea8b4ca5bf62c56c9d08e759690b9c649143f8c9f73f979cfa9223941dd",
+        "d07d987d59595209415bbbc96e2fa2eed6cc4a9e1c4f227a66db9bfd196f51da",
+        "30a85a98ebda773bcbf1ab24b2a834508875473da13d0d971ab411752b862c3b",
+        "4498ad52b68e910f8b00333e09e8b78a3f1f5b276c190aa605aff13c795cfacc",
+        "a09dd631bbfd11d32601efb221ec97616af85075d17b2116647ccd4b9ae719c3",
+        "eb4a231c5007251e88adf61108c61a04322cb51df3a4040abc5e2e1eccc6a05c",
+        "eb4a231c5007251e88adf61108c61a04322cb51df3a4040abc5e2e1eccc6a05c"
+      ]
+    }
+  },
+  "artifacts": {
+    "ares-normal-gui-r1/receipt.json": {
+      "sha256": "f369f753d716d68e65088e49923c2efba7f6ed7d0e9d1f3100fedc68d5fddd0d",
+      "bytes": 4469114
+    },
+    "figure-4-gpu/receipt.json": {
+      "sha256": "921c800f8a7a5295427a4f76b4e01eace10ea96cf22485347ef8c1e6c1c2aa8a",
+      "bytes": 28403
+    },
+    "figure-30-gpu/receipt.json": {
+      "sha256": "d190b6386b919df30824cb9f6431f275ab904dbe28665ab68c15a4e90a447be1",
+      "bytes": 22635
+    },
+    "figure-19-gpu/receipt.json": {
+      "sha256": "64339ed9e4c259c191edc6ff60a7e504630aa423e89da4208bc04c18d6ac6c68",
+      "bytes": 12479
+    },
+    "rodman-command28-gpu-r1/receipt.json": {
+      "sha256": "a09cf602352357e13dab2a82484c6c83e8973a461334474bb56fe19480e8f37a",
+      "bytes": 73222
+    },
+    "camera-gpu-regression.log": {
+      "sha256": "0ca6bdf7389f2d5e8bdafe55cbf97281fc8062a995372b64907ffd4007be5885",
+      "bytes": 431
+    },
+    "player-audiovisual-regression.log": {
+      "sha256": "50997f38f9ed272cf1f4bf7ea9934581cb450b64d954f6b7ef98a46fae665b32",
+      "bytes": 7855
+    },
+    "batch-assets-regression.log": {
+      "sha256": "b41a405b7faccca91439ad172738d6b6e84ea8d8fb9dec374172514254439883",
+      "bytes": 1477
+    },
+    "impact-go-regression.log": {
+      "sha256": "c942bb86842b1f3144e8fe7aa133eca52d4ce24675ef206e8175c8508ae585da",
+      "bytes": 8065
+    },
+    "registration.json": {
+      "sha256": "2b633ca9bbfb524f6736998f35d8034bf6d16c95d691b7767a817adf5cb7b5c6",
+      "bytes": 16268
+    },
+    "final-go-regression.log": {
+      "sha256": "e47cb0ecac5cf7cdcad120b5fa435b5a25fc725d05d4c422a0bd4e74d46d4e10",
+      "bytes": 5652
+    },
+    "final-camera-gpu.log": {
+      "sha256": "17681efaabf716f4edd2a48757a1457849c301a0e8071e89dd8e74f803f0e31e",
+      "bytes": 431
+    },
+    "final-ares-gpu.log": {
+      "sha256": "48320438353ec5ab12a74b672bfe0b474c0d94ca2df10b9158ac0d167e304048",
+      "bytes": 646
+    },
+    "final-catalog-regression.log": {
+      "sha256": "79c853b80f1fe3708081f98792ca5ed4db18f80b1601e796561d272ad03cdc02",
+      "bytes": 99
+    },
+    "final-lessons-check.log": {
+      "sha256": "cc2aee2506c14a81f2917d1685647283d08eac91cbb545f3d84457235b468a49",
+      "bytes": 30916
+    },
+    "windows-build-info.txt": {
+      "sha256": "626acab68ae71e2fb075372ac3011e997116098ce0a52437ba419f49af8ce8b1",
+      "bytes": 1277
+    },
+    "cache-cleanup.json": {
+      "sha256": "42b5631f0a8fc8072fc9c80a3cdd01d1e37222a9804df5a6333fa084e6279c2a",
+      "bytes": 268
+    },
+    "overview-rerun.json": {
+      "sha256": "ec000c49a302e37bdbad7fccf02bfa0be48d354c9cbe025158d712463da99f47",
+      "bytes": 416
+    },
+    "three-person-overview/overview-manifest.json": {
+      "sha256": "3810c2bef42b98d64d697cedc883dac0cfc5e1469f55ac5dfd23500844cce651",
+      "bytes": 63853
+    },
+    "three-person-overview/README.md": {
+      "sha256": "87abe54b58b81a45498a4024e6cd77fcd14e80dbe9929438cd76297931b31eec",
+      "bytes": 1846
+    }
+  },
+  "public_screenshot": {
+    "file": "docs/figures/hd1-ares-battle-revision.png",
+    "sha256": "a4a48473c1ad3b550c59cf55e78bbd11a088e76e530fe933c87a82e7f6a21e3d",
+    "source": "work/hd1-audiovisual-20261106-r90/ares-normal-gui-r1/world-hd-physical-scene.png",
+    "source_sha256": "4f7218fc71239ffae2dcb47f096559b15c2119c1de121a93c2089467562ab543",
+    "transform": "移除72像素工具列，再以LANCZOS縮至960×600。"
+  },
+  "scope": {
+    "runtime": "三人圖源、A音效及B分鏡已正式登錄；原始描述子、規則與存檔格式不變。",
+    "normal_gui": "首章來源JSON經普通標題LOAD、選取、走行取消、一次攻擊、F2、自然返回、F5與新程序冷讀；來源祖先沿既有建槽收據，不新增原版對拍。",
+    "controlled_gpu": "三人普通攻防全部present、F2、64階戰鬥淡出與65階地圖返回；羅德曼指令28另驗八次命中。",
+    "camera": "三品質固定狀態框、快取、非法矩陣拒收及owner／F2時鐘已驗；普通GUI收據保留23筆啟用觀測。",
+    "impact_hold": "僅普通物理caller的命中呈現，四個60Hz影格約66.67ms；不猜測特技raw欄位。",
+    "art_manual": "已檢視新母稿、編製總覽與亞雷斯實際畫面；集中人工觀感仍交使用者。",
+    "windows_60fps": "PENDING-USER-HARDWARE；本輪不宣稱Windows達60fps。",
+    "release": "既有v.1.1.2完整版與v.1.1.3效能補丁未覆寫，本輪更新開發主線。"
+  },
+  "private_repository": "wicanr2/fd2-assets-private",
+  "private_head": "a48282faea9baaf5c2ba8d718ebe4be831b8f7af",
+  "final_validation": {
+    "cpu_top_level_pass": 24,
+    "catalog_tests": 17,
+    "lessons": 436,
+    "guards": 276,
+    "source_tree_sha256": "73c8fa3d52038674618209ea0303a0b28898a772d13ae5ad18fd4ebe2eee1cc7",
+    "normal_gui_binary_sha256": "f58b9ad8a1c88cca65c15e4546c09f3e1d20b07ad571e410aba9f58f5bd8b3c5",
+    "final_linux_binary_sha256": "4ab96513c462f9906bad4e4c0e8fbfdec987146d35a4863770b28e53c8c2c825",
+    "post_gui_delta": "最後只清除鏡頭保留的已完成owner參照；另驗釋放單元案例、三品質鏡頭GPU與完整物理Draw生命週期。",
+    "windows_development_crossbuild": {
+      "sha256": "ce5697457c4e7a35f7091492955267e3188d5e0077e761146e378fa6f7ae980b",
+      "bytes": 22754816,
+      "machine": "PE amd64 GUI",
+      "runtime": "未在Windows實機啟動，不是正式封包或60fps驗收。"
+    },
+    "local_overview": "work/hd1-audiovisual-20261106-r90/three-person-overview/README.md",
+    "cleanup": {
+      "status": "PASS-CACHE-CLEANUP",
+      "directory": "work/hd1-audiovisual-20261106-r90/go-cache",
+      "files_removed": 2894,
+      "bytes_freed": 623879532,
+      "retained": "全部母稿、圖源、編製與回歸收據、測試二進位、正式私人素材及全幀總覽"
+    }
+  }
+}

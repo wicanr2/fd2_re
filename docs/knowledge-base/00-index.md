@@ -1028,3 +1028,15 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [推廣片正常速度配樂修正](61-modern-theme-runtime-spec.md#推廣片正常速度配樂修正)沿[HD1主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_audio_repair_20261105`。[分軌重混器](../../tools/remix_fd2_promo_music.py)保持主音樂與PCM原速，[獨立波形核對器](../../tools/verify_fd2_promo_audio_repair.py)驗原旁白／視訊相同、正常原波形及錯誤變速拒收；舊[剪輯器](../../tools/build_fd2_hd1_promo.py)已拒絕加速混合配樂的擷取音軌。角色圖說另依[#297](https://github.com/wicanr2/fd2_re/issues/297)，不由音訊通過推論修正。
 
 [HD1繪製效能與60fps量測](61-modern-theme-runtime-spec.md#hd1繪製效能與60fps量測)及[本輪唯一現況表](../data/fd2-hd1-performance-20261105.json)區分30fps推廣片、遊戲實際頻率與普通地圖重繪重構；HD2依使用者指示延後。
+
+[HD1戰鬥音畫修訂](61-modern-theme-runtime-spec.md#2026-11-06-hd1戰鬥音畫修訂)保存三人的完整姿勢修正、已選A音色及B分鏡接線。入口沿HD1主收據的`battle_audiovisual_review_20261106`，不由離線60fps短片推論遊戲效能。
+
+## HD1戰鬥音畫候選工具
+
+`tools/build_fd2_hd1_audiovisual_candidate.py` 將已選A音效與B分鏡接入隔離清冊，來源、驗收與限制見[61](61-modern-theme-runtime-spec.md)「2026-11-06 HD1戰鬥音畫修訂」。
+
+## 2026-11-06 HD1三人戰鬥音畫修訂
+
+亞雷斯、蓋亞、羅德曼的完整配方、圖源SHA及驗證界線見[音畫修訂收據](../data/fd2-hd1-battle-audiovisual-20261106.json)，固定原始資料見[本輪圖源盤點](../data/fd2-battle-hd-source-inventory-20261106.json)。唯一工作現況仍在HD1主收據的`battle_audiovisual_review_20261106`；本機全幀總覽另由`tools/build_fd2_battle_animation_overview.py --figures 4,19,30`重生，不公開可重組圖源。
+
+三人最新全幀圖與Markdown入口為[本機總覽](/home/anr2/cht/fd2/work/hd1-audiovisual-20261106-r90/three-person-overview/README.md)。
