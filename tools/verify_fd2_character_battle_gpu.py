@@ -10,6 +10,16 @@ from validate_modern_theme_catalog import validate
 from verify_fd2_ares_battle_gpu import matches
 
 
+def stable_nearest_texel_core(x, y, source_size, target_size):
+    # 圖集浮點座標可跨過極近的texel邊緣。核心只取來源像素中央一半，色彩容差保持。
+    for position, source, target in zip((x, y), source_size, target_size):
+        denominator = 2*target
+        remainder = ((2*position+1)*source) % denominator
+        if not denominator <= 4*remainder <= 3*denominator:
+            return False
+    return True
+
+
 def verify_normal_counter(found, samples, rows, figure, scenes):
     """PNG proves the pose; the same owner's two audit boundaries prove the role."""
     by_file = {sample['file']: sample for sample in samples}
@@ -201,6 +211,7 @@ def main():
             if asset is None or not 0 <= first <= last < len(asset['files']): raise SystemExit('本體幀越界')
             body_frames.update((resource, i) for i in range(first, last+1))
     candidates = []
+    sampling_boundaries = {}
     for asset in entries:
         if target_group and asset['source_resource'] != args.figure*3:
             continue
@@ -209,12 +220,19 @@ def main():
             hd = asset.get('hd_frames', [])[index] if asset.get('consumer_contract') == 'native_figani_rgba_hd6_v2' else None
             geometry = (hd['width'], hd['height']) if hd else (frame['width']*6, frame['height']*6)
             frame['_hd_x'], frame['_hd_y'] = (hd['x'], hd['y']) if hd else (frame['x']*6, frame['y']*6)
+            scale = asset.get('visual_scale_percent', 100)
+            scaled_geometry = tuple(round(v*scale/100) for v in geometry)
+            if scale != 100:
+                frame['_hd_x'] = round(frame['_hd_x']+(geometry[0]-scaled_geometry[0])/2)
+                frame['_hd_y'] += geometry[1]-scaled_geometry[1]
             path = args.source/name
             if digest(path) != sha: raise SystemExit('圖源雜湊不同')
             if body_frames is not None and (asset['source_resource'], index) not in body_frames:
                 continue
             with Image.open(path) as im:
                 if im.mode != 'RGBA' or im.size != geometry: raise SystemExit('圖源形狀不同')
+                if scale != 100:
+                    im = im.resize(scaled_geometry, Image.Resampling.NEAREST)
                 def selected(r, g, b, a):
                     if a < 250: return False
                     if args.core_profile == 'opaque': return True
@@ -231,6 +249,10 @@ def main():
                     return r >= 100 and g >= 70 and r >= g and g*100 >= b*150 and r*100 >= b*180
                 points = [(i % im.width, i // im.width, r, g, b, a)
                           for i, (r, g, b, a) in enumerate(im.getdata()) if selected(r, g, b, a)]
+                if scale != 100:
+                    before_count = len(points)
+                    points = [point for point in points if stable_nearest_texel_core(point[0], point[1], geometry, scaled_geometry)]
+                    sampling_boundaries[f'{asset["source_resource"]}/{index}'] = before_count-len(points)
             if len(points) < 1000: raise SystemExit('高覆蓋服裝核心像素不足')
             total = len(points)
             if not args.proven_occlusion and args.core_profile!='opaque':points = points[::max(1, total//2500)]
@@ -282,9 +304,9 @@ def main():
                             position=(frame['_hd_x']+dx*6,frame['_hd_y']+dy*6,layer['clip'],source_layers[layer_index+1:])
                             if position not in positions:positions.append(position)
                 for x,y,clip,foreground in positions:
-                    visible=points
+                    visible=[p for p in points if 0 <= p[0]+x < 1920 and 0 <= p[1]+y < 1200]
                     if clip:
-                        visible=[p for p in points if clip['Min']['X']*6<=p[0]+x<clip['Max']['X']*6
+                        visible=[p for p in visible if clip['Min']['X']*6<=p[0]+x<clip['Max']['X']*6
                                  and clip['Min']['Y']*6<=p[1]+y<clip['Max']['Y']*6]
                     if occluded is not None:
                         visible=[p for p in visible if not occluded(p[0]+x,p[1]+y,foreground)]
@@ -337,6 +359,7 @@ def main():
         'core_profile': args.core_profile,
         'body_frames': sorted(body_frames) if body_frames is not None else None,
         'sample_group':args.sample_group,
+        'sampling_border_pixels_excluded': sampling_boundaries,
         'node_boundary_save_checked': boundary_save,
         'receipt_sha256': digest(args.receipt), 'catalog_sha256': digest(args.catalog),
         'verifier_sha256': digest(Path(__file__)), 'pixel_matcher_sha256': digest(Path(__file__).with_name('verify_fd2_ares_battle_gpu.py')),
@@ -345,7 +368,7 @@ def main():
         'scope': '普通攻防、明示END或修改fixture分組的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；fixture只屬RUNTIME-E1。'
                  'trace另重驗原始按鍵與保存資料，只核對已落地的演出樣本，不補造原GUI或指定END通過。'
                  'attack沿原描述子；end只從同圖庫的預期job取caller位移及裁切，再由實際PNG找姿勢，避免把觀測索引當呈現相位；fixture仍在同次Draw逐幀核對。'
-                 'alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；'
+                 'alpha255一量化值，250..254依未知背景混合界限。縮放時只驗來源texel中央一半，避開圖集浮點取樣邊緣，色彩容差保持；不宣稱全像素相同。多候選保留相容集合，不判定唯一相位；'
                  '未比較服裝核心以外的武器／FX，不宣稱全部幀GPU或原版對拍。'}
     if idle_only:
         report['idle_only_inventory']=idle_proof

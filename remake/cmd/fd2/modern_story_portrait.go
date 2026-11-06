@@ -25,32 +25,34 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
-	openingHD          *modernOpeningHD
-	facilitySuccess    map[int]*modernFacilitySuccessBank
-	uiPanelIcons       map[int]*modernUIPanelIcon
-	uiServiceIcons     map[[2]int]*modernHDServiceIcon
-	uiEmbeddedIcons    map[int]*modernUIEmbeddedIcon
-	skyKeyFD34         *modernSkyKeyHDBank
-	skyKeyANI          *modernSkyKeyHDBank
-	mapStages          map[int]*modernMapStageHD
-	hasHD              bool
-	portraits          map[int]*modernStoryPortraitFrame
-	mapSprites         map[int][]image.Image
-	mapSpritesHD       map[int][]image.Image
-	townCursorGPU      map[[2]int]*ebiten.Image
-	mapTilesets        map[int]image.Image
-	terrainHD          map[int]map[int]*modernTerrainHDAsset
-	terrainHDBanks     map[int]*fdicon.Bank
-	battleHUDPanel     image.Image
-	battleActionIcons  []image.Image
-	battleAnimations   map[int]*modernBattleHDResource
-	battleEffects      map[int]*modernBattleHDResource
-	battleSurfaces     map[string]map[int]*modernBattleSurfaceHD
-	mapOverlays        *modernMapOverlayHDResource
-	mapEffects         *modernMapOverlayHDResource
-	facilityScenes     map[int]*modernFacilityScene
-	physicalSFX        map[[2]int][]byte
-	battlePresentation *modernBattlePresentationProfile
+	openingHD            *modernOpeningHD
+	facilitySuccess      map[int]*modernFacilitySuccessBank
+	uiPanelIcons         map[int]*modernUIPanelIcon
+	uiServiceIcons       map[[2]int]*modernHDServiceIcon
+	uiEmbeddedIcons      map[int]*modernUIEmbeddedIcon
+	skyKeyFD34           *modernSkyKeyHDBank
+	skyKeyANI            *modernSkyKeyHDBank
+	mapStages            map[int]*modernMapStageHD
+	hasHD                bool
+	portraits            map[int]*modernStoryPortraitFrame
+	mapSprites           map[int][]image.Image
+	mapSpritesHD         map[int][]image.Image
+	mapSpriteVisualScale map[int]modernHDVisualScale
+	mapSpriteFeet        map[int][]int
+	townCursorGPU        map[[2]int]*ebiten.Image
+	mapTilesets          map[int]image.Image
+	terrainHD            map[int]map[int]*modernTerrainHDAsset
+	terrainHDBanks       map[int]*fdicon.Bank
+	battleHUDPanel       image.Image
+	battleActionIcons    []image.Image
+	battleAnimations     map[int]*modernBattleHDResource
+	battleEffects        map[int]*modernBattleHDResource
+	battleSurfaces       map[string]map[int]*modernBattleSurfaceHD
+	mapOverlays          *modernMapOverlayHDResource
+	mapEffects           *modernMapOverlayHDResource
+	facilityScenes       map[int]*modernFacilityScene
+	physicalSFX          map[[2]int][]byte
+	battlePresentation   *modernBattlePresentationProfile
 }
 
 type modernThemeAsset struct {
@@ -93,6 +95,7 @@ type modernThemeAsset struct {
 	CueIDs               []int                      `json:"cue_ids"`
 	SampleRate           int                        `json:"sample_rate"`
 	Channels             int                        `json:"channels"`
+	VisualScalePercent   modernHDVisualScale        `json:"visual_scale_percent,omitempty"`
 }
 
 type modernThemeCatalog struct {
@@ -123,6 +126,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if !asset.VisualScalePercent.valid() || (asset.VisualScalePercent != 0 && asset.Role != "map_sprite_hd_set" && asset.Role != "battle_animation_hd_set") {
+			return nil, errors.New("modern theme catalog: visual scale requires an HD character asset")
+		}
 		if asset.Role == modernBattlePresentationRole {
 			if err := loadModernBattlePresentation(set, asset, packRoot); err != nil {
 				return nil, err

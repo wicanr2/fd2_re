@@ -152,6 +152,7 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		var picture image.Image
 		var key string
 		var hdRect *image.Rectangle
+		var visualScale modernHDVisualScale
 		if source.PanelText != nil && g.interfaceMode != playerInterfaceOriginal {
 			var err error
 			picture, key, err = source.PanelText.raster(palette)
@@ -192,6 +193,7 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 				}
 				if picture != nil {
 					key = entries[source.Resource].hashes[source.Index]
+					visualScale = entries[source.Resource].visualScale
 					if rectangles := entries[source.Resource].hdRects; len(rectangles) != 0 {
 						value := rectangles[source.Index].Add(image.Pt(source.DX*6, source.DY*6))
 						hdRect = &value
@@ -206,6 +208,9 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		rect := image.Rect((f.X+source.DX)*6, (f.Y+source.DY)*6, (f.X+source.DX+f.Width)*6, (f.Y+source.DY+f.Height)*6)
 		if hdRect != nil {
 			rect = *hdRect
+		}
+		if picture != nil {
+			rect = visualScale.rect(rect, rect.Dy())
 		}
 		var clip *image.Rectangle
 		if source.Clip != nil {

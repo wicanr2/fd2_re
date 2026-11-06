@@ -139,6 +139,10 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 "native_lmi_frames", "layout_policy", "source_files", "source_sha256"}
         else:
             expected = required
+        if "visual_scale_percent" in entry and entry.get("role") in {"map_sprite_hd_set", "battle_animation_hd_set"}:
+            expected |= {"visual_scale_percent"}
+            if type(entry["visual_scale_percent"]) is not int or entry["visual_scale_percent"] not in {100, 115}:
+                raise ValueError("invalid HD character visual scale")
         if set(entry) != expected:
             raise ValueError("asset fields mismatch")
         asset_id = entry["asset_id"]

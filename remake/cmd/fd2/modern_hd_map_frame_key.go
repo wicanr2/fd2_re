@@ -77,6 +77,7 @@ func modernHDMapFrameKey(frame *modernHDMapFrame) [32]byte {
 	for _, o := range frame.Overlays {
 		picture(o.Image)
 		rect(o.Rect)
+		flag(o.ScaleToRect)
 	}
 	flag(frame.HUDUnit != nil)
 	if u := frame.HUDUnit; u != nil {

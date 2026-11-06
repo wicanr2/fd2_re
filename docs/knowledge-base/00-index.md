@@ -1048,3 +1048,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [字型與血條比較工具](../../tools/build_fd2_hd1_font_review.py)保留原尺寸外框，比較古典明體與明體／厚黑英數；使用者已選A古典明體，原型數值只供排版。完整HD矩形、明體／立體血條、B音效與蓋亞原版像素手繪的正式範圍見[61](61-modern-theme-runtime-spec.md#hd1完整輪廓與第二輪觀感回饋)。蓋亞使用`tools/build_fd2_character_battle_hd.py --pixel-art`，現況及可重跑配方沿[HD1主收據](../data/fd2-hd1-feedback-20261104.json)。
 
 [龍人比例比較工具](../../tools/build_fd2_hd1_dragon_scale_review.py)依正式角色表的種族4選四名龍人，並列地圖及戰鬥本體首幀的100%／115%／125%來源縮放。以`--modern <私人素材包> --font <Noto TTC> --out <本人工作區新目錄>`重生；只供DRAFT比例取捨，不改清冊、方向、站位或規則，也不證明全動作與正式GUI通過。
+
+使用者已選115%。[龍人清冊編製器](../../tools/build_fd2_hd1_dragon_scale.py)以`--catalog <已保存的基底清冊> --out <本人工作區新目錄>`建立可驗證候選，保留既有48張地圖與67張戰鬥PNG，只新增HD顯示比例；已選原型原圖另列私人來源。規格及驗收入口見[61](61-modern-theme-runtime-spec.md#龍人115顯示比例)，GPU共用矩形實作為[modern_hd_visual_scale.go](../../remake/cmd/fd2/modern_hd_visual_scale.go)。[四名龍人67幀Markdown總覽](/home/anr2/cht/fd2/work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/dragon-overview/README.md)按115%比例合成，完整圖源留在本機。
+
+[龍人圖源與GPU拒收檢查](../../tools/test_fd2_hd1_dragon_scale.py)使用`--base-catalog <原清冊> --catalog <候選> --modern <候選包> --original-pack <原包> --lifecycle-root <本輪工作根> --out <新目錄>`，核48張落腳點、63張可見來源與四個原版透明節拍；錯比例及錯caller位移必須由實際PNG拒收。

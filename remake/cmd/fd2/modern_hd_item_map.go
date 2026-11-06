@@ -108,7 +108,8 @@ func (g *Game) prepareModernHDItemDamage(s *modernHDCompoundMapSource, picture *
 			return err
 		}
 		x, y := (target.X-in.CameraX)*24, (target.Y-in.CameraY)*24-6
-		picture.Overlays = append(picture.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: im, Rect: im.Bounds().Add(image.Pt(x*6, y*6))})
+		rect := set.mapSpriteVisualRect(group, cycle, im.Bounds().Add(image.Pt(x*6, y*6)))
+		picture.Overlays = append(picture.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: im, Rect: rect, ScaleToRect: true})
 	}
 	return nil
 }

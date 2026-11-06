@@ -239,7 +239,7 @@ def main():
     parser.add_argument('--battle-own-index', type=int, default=2,
                         help='普通攻擊時以Z選取的在場我方序號，預設2為既有亞雷斯；需--world')
     parser.add_argument('--battle-own-identity', type=int, choices=range(32),
-                        help='以原生身分選取既有在場角色，優先於序號；只改鍵盤選人')
+                        help='以原生身分選取既有在場角色；第23章原生轉存時也先選此人，只改鍵盤選人')
     parser.add_argument('--battle-approach-rounds', type=int, choices=[0,1,2,3,4,5,6], default=0,
                         help='沒有可達攻擊位置時，明示有界普通END次數；需--world')
     parser.add_argument('--gaia', action='store_true', help='首章普通選取蓋亞、北移／取消、F2與新程序LOAD；需--battle-status')

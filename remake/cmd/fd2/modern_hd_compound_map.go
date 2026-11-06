@@ -241,7 +241,8 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 				}
 				x := (target.X - in.CameraX) * 24
 				y := (target.Y-in.CameraY)*24 - 6
-				picture.Overlays = append(picture.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: mask, Rect: mask.Bounds().Add(image.Pt(x*6, y*6))})
+				rect := set.mapSpriteVisualRect(group, cycle, mask.Bounds().Add(image.Pt(x*6, y*6)))
+				picture.Overlays = append(picture.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: mask, Rect: rect, ScaleToRect: true})
 			}
 		} else if s.damage {
 			if err := g.prepareModernHDItemDamage(s, &picture, work, vga, set); err != nil {

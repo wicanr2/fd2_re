@@ -5478,6 +5478,21 @@
         ],
         "pattern": "--uncropped-hd"
       }
+    },
+    {
+      "id": "gpu-scaled-source-core-interior",
+      "area": "HD美術",
+      "date": "2026-11-06",
+      "rule": "非整數GPU縮放的圖源核對採texel內部核心，保持色彩容差並用錯比例與錯caller位移驗拒收。FD2入口是tools/verify_fd2_character_battle_gpu.py的stable_nearest_texel_core與tools/test_fd2_hd1_dragon_scale.py；只證明已取樣核心，不宣稱全像素相同。",
+      "why": "115%縮放時，圖集浮點座標在距來源texel邊緣約0.000759像素處可選到相鄰像素；CPU最近鄰全圖重組不能直接當GPU逐像素契約。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json#battle_audiovisual_followup_20261106",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_character_battle_gpu.py"
+        ],
+        "pattern": "stable_nearest_texel_core"
+      }
     }
   ]
 }

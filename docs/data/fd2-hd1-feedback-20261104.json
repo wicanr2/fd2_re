@@ -7491,7 +7491,7 @@
   },
   "active_battle_review": "battle_audiovisual_followup_20261106",
   "battle_audiovisual_followup_20261106": {
-    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-SERIF-A-AUDIO-B; OTHER-VISUALS-DRAFT",
+    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B; MAP-FIRE-DRAFT",
     "work": "work/hd1-feedback-20261106-r91",
     "scope": {
       "dragons": "地圖與戰鬥",
@@ -7921,7 +7921,6 @@
       }
     ],
     "remaining_scope": [
-      "龍人地圖與戰鬥比例",
       "地圖材質",
       "熾炎刀火焰邊緣與粒子"
     ],
@@ -7935,7 +7934,7 @@
         26,
         27
       ],
-      "note": "種族與原圖組對應已查；比例方案尚未選定，不延伸到其他同號DATO或未知身份組。"
+      "note": "種族4與圖組16／17／26／27已查證，使用者選115%；未知身份或只有同號頭像的圖組不延伸。"
     },
     "private_commit": "a0e23d04fc09e23c913bb1cf2f99b5d83bb915de",
     "private_remote_head_verified": true,
@@ -7966,17 +7965,173 @@
       ]
     ],
     "dragon_scale_draft": {
-      "status": "DRAFT-AWAITING-USER-SCALE",
+      "status": "USER-SELECTED-115-PROTOTYPE",
       "file": "work/hd1-feedback-20261106-r91/dragon-scale-review-r2/review.json",
       "sha256": "ceaee1ed29c096f7451d634a21dc53b176bc06e77d29be5b66c30c67ed20c500",
       "tool": "tools/build_fd2_hd1_dragon_scale_review.py",
-      "runtime_registered": false
+      "runtime_registered": true
     },
     "cleanup": {
       "file": "work/hd1-feedback-20261106-r91/cleanup.json",
       "sha256": "d56ac6d1b553123907beb0234db732c6afa3296c759710e2196ba9e004ca0dff",
       "bytes": 783764332,
       "files": 2908
+    },
+    "dragon_scale_runtime_20261106": {
+      "status": "CONFORMED-SCOPED-RUNTIME-E1",
+      "scale_percent": 115,
+      "groups": [
+        16,
+        17,
+        26,
+        27
+      ],
+      "map_frames": 48,
+      "battle_frames": 67,
+      "source_pixels_changed": false,
+      "save_format_changed": false,
+      "work_root": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1",
+      "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#龍人115顯示比例",
+      "normal_player_status": "第23章正常原生LOAD、整備選17、出發與F5；普通攻擊自然返回、F2及保存冷讀通過。來源有章前強化祖先，不外推其他三人的正常玩家路徑。",
+      "evidence": [
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/scale-regression.log",
+          "sha256": "bb997551dde7d50775e039c3d32f25143d8260ec1103e6c6b505b4df79e2d328"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/scale-gpu.log",
+          "sha256": "e4f5186d20c61d41f292423bdbf59eea21f330fa6e778aa1aff91c8ca41c577e"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/batch-preflight.log",
+          "sha256": "6ea7b0bdedb1c10e787d5c920813e851db90724a7d17d1819e3abe55f982ae24"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/catalog-regression.log",
+          "sha256": "303529f77c738b537e7de7bb1462750fb21f49999a3d69bd2867c9d772c189d1"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/candidate-r4/compiled.json",
+          "sha256": "b7c0db2546590fad7935e3de68fd58b382d0f7f833b84be4d3a9e9f9c7903398"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/candidate-equivalence.json",
+          "sha256": "0d167946a5dbb641754277891d51152da33c1b825360da7ca828e11028f21439"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/formal-registration.json",
+          "sha256": "a036bfac73be754ee3243bbecab5bd32f67b511150f061e1bcb9bcb7e6718992"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/source-guards-r1/proof.json",
+          "sha256": "99532015416d2ef3cd2ce7ea9ad7ef945f621c14173b776b694fd394d1ab37eb"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/native23-dragon-source-r2/receipt.json",
+          "sha256": "87224996b59eb94bee4408b5b93cf05cac2d558ed6d3ac5477326bb680839dfe"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/normal-gui-r1/receipt.json",
+          "sha256": "6ac3b235d51fd7a35b7b69949c0646d096ab6c7f9f92fa2ee6f247c2d78427b4"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/public-screenshot.json",
+          "sha256": "0aeacad92b01079f8f3c3fe62dcded6de3d8befa164100181adb5fe410fe29e4"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/dragon-overview/overview-manifest.json",
+          "sha256": "a2619dbf4d5d5c75eb66f27d55ad13f2236eb3c01001aab81c17e1a3588a6ae2"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/figure-16-source-gpu-r4.json",
+          "sha256": "8268cea7e826a7d17399e65eebf1de4411ec47918cb07ec027cf487ca41d5544"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/figure-17-source-gpu-r4.json",
+          "sha256": "732fa267062cf93724f296ff3749cf1fff270dd4621f410ea61da7887829eafe"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/figure-26-source-gpu-r4.json",
+          "sha256": "79bf719a96f17b3077f2fa5f604de4d7555207e415b0e7ada8d64ba233548f7a"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/figure-27-source-gpu-r4.json",
+          "sha256": "29a34848011453cd314c65fe974166fdc63af6cef3344cfd29abb1a76f1deaec"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/lifecycle-16-r2/receipt.json",
+          "sha256": "b0a2a8f0de0b5c14795cefa95a14adf77f8d450ce803db4dcb51196e961fee46"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/lifecycle-17-r2/receipt.json",
+          "sha256": "8ab85492410be94c415c73f83617bf05f9928ef7cf3f4fdd940658dcd52fe5bf"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/lifecycle-26-r2/receipt.json",
+          "sha256": "a766bc86f4ec233c8243740d3a95ebb87427a448991a8269746e9ee82d38726e"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/lifecycle-27-r2/receipt.json",
+          "sha256": "ba20e09e43118279ca020a1c8e6c119a2e32b37f99952f3b39c2b90ea94c3a82"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/final-regression.log",
+          "sha256": "9c7dbdeb2fecb216c9985293a3a76145f981ad5327a52e7485245163d209d6b5"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/string-review-rebind.json",
+          "sha256": "cad0b306d2b49bb3483e9ed6999e40f3c977d092d0f514d16b10e6b96e109ae1"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/string-review-test-final.log",
+          "sha256": "3af8bc6daf6aa92d8c6311a8b0c9d8388e18030b33cf890b399357f123bbfc75"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/doc-check.json",
+          "sha256": "8f9e9ea7c8e69b602979051fc12c30d5688f9686ca02470cf7082d029b6dcefe"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/lessons-check.log",
+          "sha256": "0e0f6dbaa2e222e42ba5bcbc3beb85a26568018865f8ca7a601fa18c4ad30071"
+        }
+      ],
+      "source_gpu_scope": "63個可見幀的高覆蓋texel內部核心；四個原版透明節拍另驗，不宣稱全像素或原版parity。",
+      "formal_catalog_sha256": "1907978925cd7f8e7392d0ed5b1a30454711b83d316a51c4741cde841f40488b",
+      "registered_assets": 12,
+      "new_runtime_pngs": 0,
+      "binary": {
+        "linux": {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/fd2",
+          "sha256": "d759ac210d23af2a77dee5c6b562fc167a31ad95004312647cc4bbf03b884ee8",
+          "validation": "正常GUI與保存冷讀"
+        },
+        "windows_x86_64": {
+          "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/fd2-windows-x86_64.exe",
+          "sha256": "9168db40cf559869230bc48ee57f8846942aef8c17844c6f318fc593b3486946",
+          "validation": "交叉編譯，未經Windows實機"
+        }
+      },
+      "normal_gui": {
+        "status": "PASS",
+        "elapsed_seconds": 484.7970308721997,
+        "source_save_sha256": "9089e48e31bf1e951ec49b413bad3d1428fabe211a76e02099b7897f2b73b4ba",
+        "source_save_bytes_equal": true,
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "natural_attack_return_checked": true,
+        "post_battle_save_checked": true,
+        "cold_loaded_units_equal": true,
+        "approach_rounds": 1
+      },
+      "remaining_release_scope": "既有完整版與效能補丁未重打；Windows60fps仍待實機；HD2暫緩。",
+      "cleanup": {
+        "file": "work/hd1-feedback-20261106-r91/dragon-scale-runtime-r1/cleanup.json",
+        "sha256": "f2eb136f80bf0f2c2a47ffc52c762fb356d6a38f3ebd1d300fb57080400ab772",
+        "entries": 30608,
+        "bytes": 2115122128
+      },
+      "private_commit": "d4aa34b176fa2c76c7fcfc4b1dc33c42a755409e",
+      "private_remote_head_verified": true
     }
   }
 }

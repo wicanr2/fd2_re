@@ -278,7 +278,7 @@ func (g *Game) prepareModernHDRadialMap(spec modernHDRadialMapSpec, set *modernS
 		f.Terrain = append(f.Terrain, modernHDTerrainDraw{Image: picture, Rect: layer.Rect})
 	}
 	for _, u := range normal.Units {
-		rect := u.Rect.Add(image.Pt(-24, -24))
+		rect := set.mapSpriteVisualRect(u.Group, u.Frame, u.Rect).Add(image.Pt(-24, -24))
 		f.Foreground = append(f.Foreground, modernHDMapForegroundDraw{HDImage: shade(set.mapSpritesHD[u.Group][u.Frame], rect, u.PaletteBand, oc), Rect: rect})
 	}
 	for _, fg := range normal.Foreground {
@@ -421,7 +421,8 @@ func (g *Game) prepareModernHDHeal(j *nativeCommandHealPresentationJob, set *mod
 		}
 		x := (target.X - j.hdInput.Frame.CameraX) * 24
 		y := (target.Y-j.hdInput.Frame.CameraY)*24 - 6
-		mask.Overlays = append(mask.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: pic, Rect: pic.Bounds().Add(image.Pt(x*6, y*6))})
+		rect := set.mapSpriteVisualRect(group, cycle, pic.Bounds().Add(image.Pt(x*6, y*6)))
+		mask.Overlays = append(mask.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: pic, Rect: rect, ScaleToRect: true})
 	}
 	frames.Mask = &mask
 	j.hdCached, j.hdCachedTheme = frames, set

@@ -14,6 +14,31 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_scaled_gpu_core_keeps_texel_centres_and_native_samples(self):
+        from verify_fd2_character_battle_gpu import stable_nearest_texel_core
+        self.assertFalse(stable_nearest_texel_core(122, 10, (852, 1086), (980, 1249)))
+        self.assertFalse(stable_nearest_texel_core(709, 624, (852, 1086), (980, 1249)))
+        self.assertFalse(stable_nearest_texel_core(670, 600, (1146, 1062), (1318, 1221)))
+        self.assertTrue(stable_nearest_texel_core(0, 0, (852, 1086), (980, 1249)))
+        self.assertTrue(all(stable_nearest_texel_core(x, y, (144, 144), (144, 144))
+                            for y in range(144) for x in range(144)))
+
+    def test_visual_scale_is_optional_hd_only_and_integer(self):
+        base = validator.validate(False)
+        for role in ('map_sprite_hd_set', 'battle_animation_hd_set', 'map_sprite_set'):
+            for value in (None, False, 0, 100, 115, 115.0, 125, '115'):
+                with self.subTest(role=role, value=value), tempfile.TemporaryDirectory() as tmp:
+                    doc = copy.deepcopy(base)
+                    asset = next(a for a in doc['assets'] if a['role'] == role)
+                    asset['visual_scale_percent'] = value
+                    path = Path(tmp)/'catalog.json'
+                    path.write_text(json.dumps(doc))
+                    if role != 'map_sprite_set' and type(value) is int and value in (100, 115):
+                        validator.validate(False, path)
+                    else:
+                        with self.assertRaises(ValueError):
+                            validator.validate(False, path)
+
     def test_battle_png_audit_checks_explicit_geometry_and_v1_rejection(self):
         from PIL import Image
         from audit_fd2_battle_hd_coverage import check_pngs

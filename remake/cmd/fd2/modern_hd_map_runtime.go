@@ -38,9 +38,10 @@ type modernHDMapFrame struct {
 }
 
 type modernHDMapOverlayDraw struct {
-	Entry int
-	Image *image.RGBA
-	Rect  image.Rectangle
+	Entry       int
+	Image       *image.RGBA
+	Rect        image.Rectangle
+	ScaleToRect bool
 }
 
 func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {

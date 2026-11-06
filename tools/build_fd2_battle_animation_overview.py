@@ -94,7 +94,8 @@ def main():
                         original_sha256=evidence['pixels_sha256'], mask_sha256=evidence['mask_sha256'],
                         hd=str(args.modern / hd['files'][index]) if hd else None,
                         hd_sha256=hd['frame_sha256'][index] if hd else None,
-                        hd_rect=hd['hd_frames'][index] if hd and hd.get('consumer_contract') == 'native_figani_rgba_hd6_v2' else None))
+                        hd_rect=hd['hd_frames'][index] if hd and hd.get('consumer_contract') == 'native_figani_rgba_hd6_v2' else None,
+                        hd_scale_percent=hd.get('visual_scale_percent',100) if hd else 100))
             banks.append(bank)
         title = identities.get(figure, f'圖組 {figure:03}／身份未綁定')
         old = previous.get(figure)
@@ -138,7 +139,14 @@ def main():
                 if row['hd']:
                     assert sha(row['hd']) == row['hd_sha256']
                     picture = Image.open(row['hd']).convert('RGBA')
-                    if row.get('hd_rect'):
+                    if row.get('hd_scale_percent',100) != 100:
+                        rect = row.get('hd_rect') or dict(x=frame['x']*6,y=frame['y']*6,width=frame['width']*6,height=frame['height']*6)
+                        assert picture.size == (rect['width'],rect['height'])
+                        size = tuple(round(v*row['hd_scale_percent']/100) for v in picture.size)
+                        at = (round(rect['x']+(rect['width']-size[0])/2),rect['y']+rect['height']-size[1])
+                        full = Image.new('RGBA',(1920,1200))
+                        full.alpha_composite(picture.resize(size,Image.Resampling.NEAREST),at)
+                    elif row.get('hd_rect'):
                         rect = row['hd_rect']
                         assert picture.size == (rect['width'], rect['height'])
                         full = Image.new('RGBA', (1920, 1200))

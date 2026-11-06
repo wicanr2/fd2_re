@@ -418,6 +418,16 @@ func (g *Game) recordInputAuditState() {
 	r["preparation_slots"] = g.prepRecordSlots
 	r["preparation_slot"] = g.prepRecordSlotSel
 	r["preparation_selection"] = g.prepSel
+	if g.prepSelecting {
+		identities := make([]int, len(g.prepIDs))
+		for i, id := range g.prepIDs {
+			identities[i] = -1
+			if unit, ok := g.partyRoster[id]; ok && unit.HasNativeIdentity {
+				identities[i] = unit.NativeIdentity
+			}
+		}
+		r["preparation_identities"] = identities
+	}
 	r["preparation_selected"] = g.preparationSelected()
 	r["preparation_limit"] = g.prepLimit
 	r["preparation_ui_busy"] = g.nativeClassUIJob != nil

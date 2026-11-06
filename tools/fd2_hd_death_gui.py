@@ -392,9 +392,26 @@ def capture_standalone_ch23_source(args,audit,key,wait,shot,saved,native_saved,s
     initial=latest(audit)
     limit=initial['preparation_limit']
     assert 1<=limit<=26 and initial['preparation_selected']==0
-    for _ in range(limit):
-        key('Return')
-        wait(lambda s:not s.get('preparation_ui_busy'))
+    preferred = args.battle_own_identity
+    if preferred is None:
+        for _ in range(limit):
+            key('Return')
+            wait(lambda s:not s.get('preparation_ui_busy'))
+    else:
+        identities = initial['preparation_identities']
+        assert identities[0] == 24 and preferred in identities
+        assert len(set(identities)) == len(identities) and -1 not in identities
+        order = list(dict.fromkeys([24, preferred, *identities]))[:limit]
+        assert preferred in order
+        for identity in order:
+            target = identities.index(identity)
+            current = latest(audit)['preparation_selection']
+            for _ in range(abs(target-current)):
+                key('Right' if target > current else 'Left')
+            ready(preparation_selecting=True, preparation_selection=target)
+            selected = latest(audit)['preparation_selected']
+            key('Return')
+            wait(lambda s:not s.get('preparation_ui_busy') and s.get('preparation_selected')==selected+1)
     ready(preparation_selecting=False,preparation_confirm=True)
     assert not latest(audit).get('preparation_required')
     shot('native23-selected-confirm');key('Return')
@@ -409,14 +426,23 @@ def capture_standalone_ch23_source(args,audit,key,wait,shot,saved,native_saved,s
         else:time.sleep(.05)
     else:raise TimeoutError('第23章獨立整備正常出發未完成')
     before=latest(audit);key('F5');wait(lambda s:s.get('frame',0)>before['frame'])
+    if preferred is not None:
+        assert any(u.get('native_identity') == preferred and u.get('on_field') and u.get('hp',0)>0
+                   for u in latest(audit)['units'])
     assert saved.is_file() and json.loads(saved.read_text())['node']=='battle_ch23'
-    assert digest(args.native_save)==source_hash and digest(native_saved)==source_hash
+    assert digest(args.native_save)==source_hash
+    native_copy_hash = digest(native_saved)
+    if preferred is None:
+        assert native_copy_hash == source_hash
     shot('native23-battle-f5')
     report=dict(schema='fd2-native-battle-source-gui-v1',status='PASS',binary_sha256=digest(args.binary),
                 gui_tool_sha256=tool_hash,helper_sha256=digest(Path(__file__)),native_source_sha256=source_hash,
                 saved_sha256=digest(saved),saved_file=str(saved),node='battle_ch23',entry_theme='faithful',
                 state_injection=False,units=latest(audit)['units'],screenshots=shots,operations=operations,
                 recording_created=False,preparation_limit=limit,
+                preferred_identity=preferred,
+                native_copy_sha256=native_copy_hash,
+                native_copy_updated_by_normal_save=native_copy_hash!=source_hash,
                 scope='正常原生標題LOAD、獨立整備必選24、確認出發、章首與F5。章前強化與既有傷亡依manifest揭露；非自然難度或整章E2。')
     (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 

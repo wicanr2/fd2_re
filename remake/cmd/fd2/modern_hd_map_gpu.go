@@ -251,8 +251,9 @@ func (r *modernHDMapGPU) drawUnitClipped(unit modernHDMapUnitDraw, clip image.Re
 	} else {
 		picture = r.unit(unit.Group, unit.Frame)
 	}
-	r.scaleUnitTexture(op, picture)
-	op.GeoM.Translate(float64(unit.Rect.Min.X)*r.quality.density(), float64(unit.Rect.Min.Y)*r.quality.density())
+	rect := r.Theme.mapSpriteVisualRect(unit.Group, unit.Frame, unit.Rect)
+	op.GeoM.Scale(float64(rect.Dx())*r.quality.density()/float64(picture.Bounds().Dx()), float64(rect.Dy())*r.quality.density()/float64(picture.Bounds().Dy()))
+	op.GeoM.Translate(float64(rect.Min.X)*r.quality.density(), float64(rect.Min.Y)*r.quality.density())
 	r.World.SubImage(r.quality.rasterRect(clip)).(*ebiten.Image).DrawImage(picture, op)
 }
 
@@ -391,7 +392,7 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	}
 	if !frame.OverlaysAboveUI {
 		for _, overlay := range frame.Overlays {
-			r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
+			r.drawTerrainRegion(overlay.Image, overlay.Rect, clip, overlay.ScaleToRect)
 		}
 	}
 	if banner && g.bannerT > 0 && g.banner != "" {
@@ -433,7 +434,7 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		r.World.DrawImage(r.UI, op)
 		r.drawHUD(frame, clip)
 		for _, overlay := range frame.Overlays {
-			r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
+			r.drawTerrainRegion(overlay.Image, overlay.Rect, clip, overlay.ScaleToRect)
 		}
 	} else {
 		r.drawHUD(frame, clip)

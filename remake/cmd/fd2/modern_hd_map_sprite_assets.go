@@ -20,7 +20,7 @@ func loadModernHDMapSpriteAsset(set *modernStoryPortraitSet, asset modernThemeAs
 		(asset.CyclePolicy == "three_distinct_cycles" || asset.CyclePolicy == "source_exact_repeats")
 	static := asset.ConsumerContract == "fdicon_hd_static_sprite_3x144_v1" && asset.FrameCount == 3 &&
 		asset.CyclePolicy == "static_three_phase"
-	if (asset.Status != "runtime_candidate" && asset.Status != "runtime_ready") ||
+	if !asset.VisualScalePercent.valid() || (asset.Status != "runtime_candidate" && asset.Status != "runtime_ready") ||
 		(!walk && !static) || asset.Width != 144 || asset.Height != 144 ||
 		len(asset.Files) != asset.FrameCount || len(asset.FrameSHA256) != asset.FrameCount ||
 		asset.AlphaContract != "coverage" || asset.LayoutPolicy != "contain_22px_cell_feet_v1" ||
@@ -58,6 +58,12 @@ func loadModernHDMapSpriteAsset(set *modernStoryPortraitSet, asset modernThemeAs
 		frames = append(frames, decoded)
 	}
 	set.mapSpritesHD[asset.SourceGroup] = frames
+	if asset.VisualScalePercent != 0 {
+		if set.mapSpriteVisualScale == nil {
+			set.mapSpriteVisualScale = make(map[int]modernHDVisualScale)
+		}
+		set.mapSpriteVisualScale[asset.SourceGroup] = asset.VisualScalePercent
+	}
 	return nil
 }
 
@@ -103,6 +109,16 @@ func validateModernHDMapSpriteParents(set *modernStoryPortraitSet, assets []mode
 					return fmt.Errorf("modern HD map sprite %d has a different phase repetition at %d/%d", group, i, j)
 				}
 			}
+		}
+		if set.mapSpriteVisualScale[group] == 115 {
+			if set.mapSpriteFeet == nil {
+				set.mapSpriteFeet = make(map[int][]int)
+			}
+			feet := make([]int, child.FrameCount)
+			for i := range feet {
+				feet[i] = modernMapSpriteInk(set.mapSprites[group][i]).Max.Y * 6
+			}
+			set.mapSpriteFeet[group] = feet
 		}
 	}
 	return nil

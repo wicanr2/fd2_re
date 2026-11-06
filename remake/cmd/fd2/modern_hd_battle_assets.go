@@ -26,11 +26,12 @@ type modernBattleHDDescriptor struct {
 }
 
 type modernBattleHDResource struct {
-	Frames  []image.Image
-	paths   []string
-	hashes  []string
-	sizes   []image.Rectangle
-	hdRects []image.Rectangle
+	Frames      []image.Image
+	paths       []string
+	hashes      []string
+	sizes       []image.Rectangle
+	hdRects     []image.Rectangle
+	visualScale modernHDVisualScale
 }
 
 // HD coordinates are independent of the immutable native FIGANI descriptor.
@@ -119,7 +120,7 @@ func modernHDOrdinaryEffectResource(resource int) bool {
 // 所有候選圖片先在區域變數完整驗證；失敗不修改已載入的主題集合。
 func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modernThemeAsset, root string, native *figani.Animation) error {
 	_, consumer, cycle, layout, valid := modernBattleHDContract(asset)
-	if !valid || set == nil || native == nil || len(native.Frames) == 0 ||
+	if !valid || !asset.VisualScalePercent.valid() || (asset.VisualScalePercent != 0 && asset.Role != "battle_animation_hd_set") || set == nil || native == nil || len(native.Frames) == 0 ||
 		asset.ConsumerContract != consumer || asset.AlphaContract != "coverage" ||
 		asset.Width != modernHDWidth || asset.Height != modernHDHeight ||
 		asset.CyclePolicy != cycle || asset.LayoutPolicy != layout ||
@@ -224,7 +225,7 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		entries = make(map[int]*modernBattleHDResource)
 	}
 	entries[asset.SourceResource] = &modernBattleHDResource{Frames: make([]image.Image, asset.FrameCount),
-		paths: paths, sizes: sizes, hdRects: hdRects, hashes: append([]string(nil), asset.FrameSHA256...)}
+		paths: paths, sizes: sizes, hdRects: hdRects, visualScale: asset.VisualScalePercent, hashes: append([]string(nil), asset.FrameSHA256...)}
 	if asset.SourceArchive == "FDOTHER.DAT" {
 		set.battleEffects = entries
 	} else {
