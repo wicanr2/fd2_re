@@ -26,6 +26,7 @@ type modernHDBattleSources struct {
 	Base        []byte
 	Layers      []modernHDBattleSource
 	BaseScenery []modernHDBattleSource
+	FlameEmbers *modernHDFlameEmberState
 }
 
 func modernHDBattleBodySources(base []byte, attack, idle figani.Frame, side byte,
@@ -223,6 +224,11 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		}
 		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill, Clip: clip,
 			PackedShader: source.PackedShader, PackedColours: source.PackedColours, PreservePalette: source.PanelText != nil, ScreenFixed: source.PanelText != nil})
+	}
+	var err error
+	plan.Particles, err = modernHDFlameEmberLayers(g.modernStoryPortraits, sources.FlameEmbers)
+	if err != nil {
+		return modernHDBattlePlan{}, err
 	}
 	return plan, nil
 }

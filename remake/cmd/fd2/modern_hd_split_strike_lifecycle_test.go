@@ -41,6 +41,8 @@ type modernHDSplitStrikeProbe struct {
 	beforeHP, afterHP, hpChanges []int
 	mpChanges, callbacks         int
 	phases, switches             map[string]int
+	emberSwitches                map[int]int
+	emberPending                 bool
 	pending                      string
 	faithful, hd, finals, ticks  int
 	finished                     bool
@@ -100,7 +102,12 @@ func (p *modernHDSplitStrikeProbe) Update() error {
 			p.err = fmt.Errorf("F2 restore changed controller/state/RNG")
 			return ebiten.Termination
 		}
-		p.switches[p.pending]++
+		if p.emberPending {
+			p.emberSwitches[p.cursor().Target]++
+			p.emberPending = false
+		} else {
+			p.switches[p.pending]++
+		}
 		p.pending, p.faithful = "", 0
 		return nil
 	}
@@ -112,6 +119,16 @@ func (p *modernHDSplitStrikeProbe) Update() error {
 			return ebiten.Termination
 		}
 		p.pending = f.hdPhase
+		return nil
+	}
+	if c := p.cursor(); p.command == 29 && c.Effect == 14 && c.Repeat == 3 && f.hdSources.FlameEmbers != nil && p.emberSwitches[c.Target] == 0 {
+		before := p.stable()
+		p.g.cycleTheme()
+		if p.g.modernStoryPortraits != nil || !reflect.DeepEqual(before, p.stable()) {
+			p.err = fmt.Errorf("active ember F2 changed controller/state/RNG")
+			return ebiten.Termination
+		}
+		p.pending, p.emberPending = f.hdPhase, true
 		return nil
 	}
 	c := p.cursor()
@@ -221,7 +238,7 @@ func (p *modernHDSplitStrikeProbe) Draw(screen *ebiten.Image) {
 	} else if c.Transition >= 0 {
 		index = c.Transition
 	}
-	label := fmt.Sprintf("%s-%03d-idle%d-shake%d", f.hdPhase, index, c.Idle, c.Shake)
+	label := fmt.Sprintf("%s-%03d-idle%d-shake%d-repeat%d", f.hdPhase, index, c.Idle, c.Shake, c.Repeat)
 	if p.shots[label] != nil {
 		return
 	}
@@ -256,7 +273,8 @@ func (p *modernHDSplitStrikeProbe) Draw(screen *ebiten.Image) {
 	for i, layer := range plan.Layers {
 		source := ordered[i]
 		v := map[string]any{"archive": source.Archive, "resource": source.Resource, "frame": source.Index, "hd_sha256": layer.HDKey,
-			"x": source.Frame.X, "y": source.Frame.Y, "width": source.Frame.Width, "height": source.Frame.Height,
+			"screen_fixed": layer.ScreenFixed,
+			"x":            source.Frame.X, "y": source.Frame.Y, "width": source.Frame.Width, "height": source.Frame.Height,
 			"dx": source.DX, "dy": source.DY, "fill": source.Fill,
 			"rect": []int{layer.Rect.Min.X, layer.Rect.Min.Y, layer.Rect.Max.X, layer.Rect.Max.Y}}
 		if layer.Clip != nil {
@@ -290,8 +308,15 @@ func (p *modernHDSplitStrikeProbe) Draw(screen *ebiten.Image) {
 		}
 		layers = append(layers, v)
 	}
+	particles := make([]map[string]any, 0, len(plan.Particles))
+	for _, layer := range plan.Particles {
+		particles = append(particles, map[string]any{"hd_key": layer.HDKey,
+			"source_resource": 104, "source_frame": 14, "source_sha256": modernHDFlameEmberSourceSHA,
+			"source_crop": []int{212, 30, 226, 46}, "opacity": layer.opacity(),
+			"rect": []int{layer.Rect.Min.X, layer.Rect.Min.Y, layer.Rect.Max.X, layer.Rect.Max.Y}})
+	}
 	p.shots[label] = map[string]any{"phase": f.hdPhase, "cursor": c, "file": name, "sha256": sha,
-		"base_file": baseFile, "base_sha256": baseSHA, "subtract": f.hdSubtract, "layers": layers}
+		"base_file": baseFile, "base_sha256": baseSHA, "subtract": f.hdSubtract, "layers": layers, "particles": particles}
 }
 
 func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
@@ -326,7 +351,7 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 	p := &modernHDSplitStrikeProbe{g: g, command: command, actor: actor, targets: targets, rng: rng, seed: seed,
 		beforeMP: actor.MP, beforeHP: make([]int, len(targets)), hpChanges: make([]int, len(targets)),
 		out: os.Getenv("FD2_TEST_MODERN_EFFECT_OUT"), hashesOnly: os.Getenv("FD2_SPLIT_HASHES_ONLY") == "1",
-		phases: make(map[string]int), switches: make(map[string]int), shots: make(map[string]map[string]any)}
+		phases: make(map[string]int), switches: make(map[string]int), emberSwitches: make(map[int]int), shots: make(map[string]map[string]any)}
 	if p.out == "" {
 		t.Fatal("fresh output directory required")
 	}
@@ -421,6 +446,15 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 		"continuations": p.callbacks, "owner_released": true, "gpu_sources_cleared": true,
 		"phase_draws": p.phases, "phase_f2": p.switches, "hd_draws": p.hd, "final_draws": p.finals,
 		"source_shots": p.shots, "scope": "Controlled command24/29/30 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim."}
+	if entry := set.battleAnimations[104]; command == 29 && entry != nil && len(entry.hashes) > 14 && entry.hashes[14] == modernHDFlameEmberSourceSHA {
+		report["flame_embers"] = "native-repeat-v1"
+		for target := range targets {
+			if p.emberSwitches[target] != 1 {
+				t.Fatal("missing F2 while flame particles were visible", target)
+			}
+		}
+		report["flame_embers_f2"] = p.emberSwitches
+	}
 	if scenery := os.Getenv("FD2_HD_SPLIT_SCENERY"); scenery != "" {
 		report["scenery_triple"], report["scenery_side"] = scenery, os.Getenv("FD2_HD_SPLIT_SCENERY_SIDE")
 		used := map[string]int{}

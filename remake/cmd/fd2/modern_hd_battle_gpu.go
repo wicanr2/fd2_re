@@ -25,6 +25,7 @@ type modernHDBattleLayer struct {
 	Clip            *image.Rectangle
 	PackedShader    int
 	PackedColours   []byte
+	Opacity         *float32
 }
 
 type modernHDBattlePlan struct {
@@ -33,6 +34,7 @@ type modernHDBattlePlan struct {
 	Base        []byte
 	Palette     color.Palette
 	Layers      []modernHDBattleLayer
+	Particles   []modernHDBattleLayer
 	HDSubtract  float32
 	HDMix       float32
 	HDTarget    [3]float32
@@ -78,6 +80,33 @@ func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
     return vec4(rgb*src.a,src.a)*color
 }`
 
+func (p modernHDBattlePlan) allLayers() []modernHDBattleLayer {
+	if len(p.Particles) == 0 {
+		return p.Layers
+	}
+	layers := make([]modernHDBattleLayer, 0, len(p.Layers)+len(p.Particles))
+	for _, layer := range p.Layers {
+		if !layer.ScreenFixed {
+			layers = append(layers, layer)
+		}
+	}
+	layers = append(layers, p.Particles...)
+	// 動態世界效果不能蓋住固定HUD；沒有粒子的舊計畫維持原層序。
+	for _, layer := range p.Layers {
+		if layer.ScreenFixed {
+			layers = append(layers, layer)
+		}
+	}
+	return layers
+}
+
+func (layer modernHDBattleLayer) opacity() float32 {
+	if layer.Opacity == nil {
+		return 1
+	}
+	return *layer.Opacity
+}
+
 func (r *modernHDBattleGPU) resetSources() {
 	r.frameValid = false
 	for _, texture := range r.sources {
@@ -107,8 +136,10 @@ func modernHDBattleFrameKey(plan modernHDBattlePlan, palette []byte) [32]byte {
 	for _, value := range []float32{plan.HDSubtract, plan.HDMix, plan.HDTarget[0], plan.HDTarget[1], plan.HDTarget[2]} {
 		integer(int64(math.Float32bits(value)))
 	}
-	integer(int64(len(plan.Layers)))
-	for _, layer := range plan.Layers {
+	layers := plan.allLayers()
+	integer(int64(len(layers)))
+	for _, layer := range layers {
+		integer(int64(math.Float32bits(layer.opacity())))
 		if layer.ScreenFixed {
 			h.Write([]byte{1})
 		} else {
@@ -215,7 +246,11 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		}
 	}
 	// 先驗完整計畫；錯誤不清除上一張世界。
-	for _, layer := range plan.Layers {
+	layers := plan.allLayers()
+	for _, layer := range layers {
+		if alpha := layer.opacity(); alpha < 0 || alpha > 1 || math.IsNaN(float64(alpha)) {
+			return errors.New("modern HD battle: invalid layer opacity")
+		}
 		f := layer.Native
 		if err := validateModernHDPackedGuide(f, layer.PackedShader, layer.PackedColours); err != nil {
 			return err
@@ -274,7 +309,7 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	op.GeoM.Scale(6*r.quality.density(), 6*r.quality.density())
 	modernBattleCameraGeometry(&op.GeoM, plan.CameraZoom, r.World.Bounds())
 	r.World.DrawImage(r.base, op)
-	for _, layer := range plan.Layers {
+	for _, layer := range layers {
 		destination := r.World
 		if layer.Clip != nil {
 			region := *layer.Clip
@@ -325,6 +360,7 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		}
 		draw := &ebiten.DrawRectShaderOptions{}
 		draw.Images[0] = texture
+		draw.ColorScale.ScaleAlpha(layer.opacity())
 		draw.GeoM.Scale(float64(layer.Rect.Dx())*r.quality.density()/float64(texture.Bounds().Dx()), float64(layer.Rect.Dy())*r.quality.density()/float64(texture.Bounds().Dy()))
 		draw.GeoM.Translate(float64(layer.Rect.Min.X)*r.quality.density(), float64(layer.Rect.Min.Y)*r.quality.density())
 		if !layer.ScreenFixed {

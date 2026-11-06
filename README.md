@@ -41,7 +41,7 @@ HD介面採古典明體、加重英數與立體血條，保留原版多層框線
 
 ![蓋亞原版強化像素手繪的正常首章攻擊畫面](docs/figures/hd1-gaia-original-pixel-battle.png)
 
-熾炎刀補上外擴火焰、收束尖焰與逐拍火星，保留既有出招節奏。下圖是受控雙目標測試的實際遊戲繪製局部；另由已揭露的第23章建構進度正常LOAD、施放並返回戰場。[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#熾炎刀b火焰與逐拍火星)另列，連續漂浮火星尚未接入，既有下載包未重打。
+熾炎刀加入外擴火焰、收束尖焰，以及連續上飄、淡出的火星，保留既有出招節奏。下圖是受控雙目標測試的實際遊戲繪製局部；另由已揭露的第23章建構進度正常LOAD、施放並返回戰場。[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#熾炎刀b連續漂浮火星)另列，既有下載包未重打。
 
 ![熾炎刀B火焰的實際繪製局部，受控測試](docs/figures/hd1-tino-fire-battle.png)
 

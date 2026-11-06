@@ -6823,3 +6823,22 @@ Windows補測入口為[效能記錄啟動器](../../tools/run_fd2_windows_perfor
 正式清冊仍3385項，只替換104為v2，SHA為`07e78f70c4288a1743adac755d7c06da6969aca1fc95cbe151ccbf0a9d3953ed`。私人庫新增十個已登錄檔，14928個舊圖源逐SHA保持，現行白名單仍11269檔。來源、正常施放、完整畫布與私人同步證據集中[唯一現況](../data/fd2-hd1-feedback-20261104.json)的battle_audiovisual_followup_20261106.fire_edge_refresh_20261107；新原稿與提示詞依配方保存。編製與GPU核對在Docker執行，舊盤點的manifest已變時須先重生並逐欄核原始證據，再把同次盤點傳給空拍及背景守衛，不更換雜湊冒充重驗。
 
 [鐵諾／劍聖全幀Markdown總覽](/home/anr2/cht/fd2/work/hd1-feedback-20261106-r91/fire-edge-review-r1/tino-overview/README.md)依正式清冊重生，完整原版／HD圖源限本機審閱。使用既有build_fd2_battle_animation_overview.py的--figures 2,34、固定原包與同次盤點；兩個形態的原生座標、第三銀行及透明末拍均明示。
+
+### 熾炎刀B連續漂浮火星
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1／正常施放抽樣。使用者在B火焰六拍完成後指示go，延伸已選B試演的22顆火星上飄與淡出。只補HD呈現，不重新選畫風或延長出招。原版規則與位址沿上一節閉合證據；這項動態是美化近似，不是原版新增語意或硬體時序研究。
+
+- 圖源是正式FIGANI104／14，PNG SHA-256 `8a7d7237c90f3564ec277142c4e65a1639bde1336bea70172fedef2de67054f8`，830×857，HD矩形(0,89,830,857)。選取已存在的橘金色火星矩形[212,30,226,46]，原RGBA技術裁切成14×16，來源與透明核心已檢視。只在載入該已核SHA的B圖源時啟用；其他圖源保持既有美術，不猜裁切。無新PNG、清冊、JSON schema或保存欄位。
+- 原生29 owner的CommandID須29、effectID須104、前導已結束、transition為負且frame為14～16才附加暫態火星狀態。讀取原有11拍起的FrameDelays前綴加repeat，不增加或寫入owner時鐘、MP／HP、shake、idle、RNG、名單或續行。相同owner狀態重繪相同，換目標重置到同一相位；17透明末拍及返回戰場均無火星。
+- 每拍22顆；age=((tick+i×13) mod 54)/54，alpha=1-age。HD中心x=32+(i×73 mod 760)+sin(age×4+i)×14，頂部y=886-age×(660+(i mod 3)×60)，取最近整數，尺寸20×24。沿既有60Hz更新中的repeat逐步移動；4倍慢看原型只是展示速度，不改正式延遲。火星與火焰使用相同相機及三畫質世界座標，位置避開HUD。
+- 正式繪製計畫分列既有Layers與暫態Particles，來源HDKey含已核圖SHA與裁切矩形；14×16裁切一次，以明示整數最近鄰預取樣至20×24並重用小貼圖，避免GPU放大邊界歧義。GPU共用來源圖層新增可省略的opacity，預設1，以已鎖Ebiten2.6.6的ColorScale.ScaleAlpha傳入既有shader；共用shader本身不變。帶粒子的計畫先畫世界，再畫粒子及固定HUD，避免推近時覆蓋面板；無粒子的計畫保持原層序。快取key包含實際alpha、矩形及粒子列表。整份計畫先驗證，再清除舊世界；非有限或越界alpha、缺圖與錯矩形須拒收。這些欄位僅存在內部呈現，不進遊戲資料與存檔。
+- 沿既有stage／F2交易預檢完整104銀行，來源檔錯件仍在消耗規劃RNG前拒收。F2到原版不畫火星，恢復HD不推進owner；新目標、owner釋放、取消與換畫質沿既有GPU生命週期清除貼圖，不保留粒子任務或背景程序。
+- 驗收涵蓋真實Command29雙目標Game.Draw、原生delay／MP一次／HP逐人一次／RNG／八階段F2與17空拍；記錄repeat與各顆來源、位置和alpha，獨立CPU Over保留容差1。拒收錯source、錯tick／粒子數／位置／alpha及漏空拍，另驗舊無粒子畫面、快取改alpha與錯計畫保持舊世界。三畫質小貼圖與相機抽樣、正常標題LOAD／鍵盤施放／返回及相關原生回歸通過後才升CONFORMED；不由離線影片推論Windows實機60fps，不修改原版規則或重打Release。
+
+三畫質、兩相機比例及三透明度共18個GPU案例通過，含72次錯alpha拒收、相同影格重用、小貼圖重用與固定HUD保護。正式雙目標的125張完整Game.Draw、24個火星節拍及每拍22顆來源／位置／alpha通過獨立CPU Over，容差1不變；42個來源、節拍、UI旗標、缺件／缺拍及結算錯件均拒收。除八階段F2外，另在兩個目標的火星可見時各做一次F2往返，狀態與RNG保持；17空拍及owner釋放後無粒子。8項原生29／自身範圍／HD預檢與回復回歸通過。
+
+最終Linux引擎由原49260e21來源正常LOAD、三次END接近、鐵諾29鍵盤施放並自然返回，歷時296秒，MP39到13，來源進度未改寫。來源的轉職／成長及AP／DP建構政策沿上一節；本批不重驗保存冷讀，不新增PLAYER-E2。173個文字候選的處置與8項盤點測試保持。正式清冊SHA仍為07e78f70c4288a1743adac755d7c06da6969aca1fc95cbe151ccbf0a9d3953ed，沒有新圖稿、資產或私人庫變更。
+
+曾因Pillow NEAREST的邊界取樣與明示整數中心公式不同，讓14×16到20×24的70個像素出現差異；修正獨立參考模型後全部125張在原門檻內通過，沒有改正式取樣或放寬誤差。含固定HUD的最終取樣另驗，新增可見火星F2後125張HD圖片SHA保持。[六秒動態試看](/home/anr2/cht/fd2/work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/flame-embers-review.mp4)是實際Game.Draw影格的離線重播，左側每步1格、右側每步4格，不作即時效能或正常錄影證據。
+
+來源、程式、取樣與正常操作收據集中[唯一現況](../data/fd2-hd1-feedback-20261104.json)的fire_embers_runtime_20261107。[GPU入口](../../tools/verify_fd2_battle_surface_hd.py)在既有Go Docker使用--kind flame-embers-gpu、flame-embers-regression或split-game --command 29 --with-panel-text；完整畫布與反例工具均加--require-flame-embers，其他必要參數依--help。各次使用新out前綴，任一失敗、SKIP或OOM整包拒收。HD2仍暫緩，Windows i7-9700K實機60fps、推廣片與三平台封包更新另列。

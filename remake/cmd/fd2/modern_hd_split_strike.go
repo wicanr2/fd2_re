@@ -325,5 +325,9 @@ func (j *nativeCommand29PresentationJob) modernFrame() *nativeCompoundPresentedF
 	} else if t.damagePublished && j.shakeCounter >= 0 && j.shakeCounter < len(j.schedule.ShakeOffsets) {
 		shake = j.schedule.ShakeOffsets[j.shakeCounter]
 	}
-	return j.hd.frame(j.preludeFrame, j.transitionFrame, j.targetIndex, j.frame, j.idleFrame, t.damagePublished, shake)
+	f := j.hd.frame(j.preludeFrame, j.transitionFrame, j.targetIndex, j.frame, j.idleFrame, t.damagePublished, shake)
+	if tick, ok := modernHDFlameEmberTick(j); ok && f != nil {
+		f.hdSources.FlameEmbers = &modernHDFlameEmberState{Tick: tick}
+	}
+	return f
 }

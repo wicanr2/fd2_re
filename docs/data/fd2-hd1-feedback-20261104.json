@@ -7491,7 +7491,7 @@
   },
   "active_battle_review": "battle_audiovisual_followup_20261106",
   "battle_audiovisual_followup_20261106": {
-    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B-PIXEL-TERRAIN; FIRE-B-SCOPED; FLOATING-EMBERS-PENDING",
+    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B-PIXEL-TERRAIN; FIRE-B-CONTINUOUS",
     "work": "work/hd1-feedback-20261106-r91",
     "scope": {
       "dragons": "地圖與戰鬥",
@@ -7917,8 +7917,7 @@
       }
     ],
     "remaining_scope": [
-      "獨立地形／物件圖集依A方向分批複核",
-      "熾炎刀連續漂浮火星"
+      "獨立地形／物件圖集依A方向分批複核"
     ],
     "dragon_scope_evidence": {
       "file": "docs/data/exe_tables/characters.json",
@@ -8239,7 +8238,7 @@
       "private_commit": "a9a20bfa7327836a29abbcf4cc0a4888928673c9",
       "private_remote_head_verified": true
     },
-    "active_slice": "fire_edge_refresh_20261107",
+    "active_slice": "fire_embers_runtime_20261107",
     "fire_edge_refresh_20261107": {
       "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-KEYBOARD-ACTION",
       "choice": "B：外擴火焰＋更多火星",
@@ -8259,14 +8258,13 @@
       "unchanged_assets": 3384,
       "blank_frame": 17,
       "runtime_registered": true,
-      "continuous_particle_motion_registered": false,
+      "continuous_particle_motion_registered": true,
       "gpu_screens": 88,
       "negative_cases": 23,
       "clean_rebuild_equal": true,
       "normal_source_sha256": "49260e21b1d0385f7b3ee392f63a7c17dc4135c6b62c98b794ad66a65155946e",
       "scope": "只刷新六拍火焰與嵌入火星；不新增獨立計時器、規則、保存、DOS對拍、平台效能或發行包。",
       "remaining": [
-        "連續漂浮火星尚未接入",
         "獨立地形／物件圖集風格分批複核",
         "Windows i7-9700K實機60fps",
         "既有下載包與推廣片未重打；HD2暫緩"
@@ -8382,7 +8380,171 @@
         "scope": "只移除本輪重複候選與原先空的Go快取；最終圖源、Linux及測試二進位、收據與總覽保持。",
         "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/cleanup.json"
       },
-      "battle_animation_overview": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/tino-overview/README.md"
+      "battle_animation_overview": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/tino-overview/README.md",
+      "continuous_particle_motion_followup": "fire_embers_runtime_20261107"
+    },
+    "fire_embers_runtime_20261107": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-KEYBOARD-ACTION",
+      "work": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1",
+      "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#熾炎刀b連續漂浮火星",
+      "choice": "沿已選B，22顆上飄淡出；不新增出招時間",
+      "source_sha256": "8a7d7237c90f3564ec277142c4e65a1639bde1336bea70172fedef2de67054f8",
+      "crop": [
+        212,
+        30,
+        226,
+        46
+      ],
+      "no_catalog_or_save_schema_change": true,
+      "runtime_verified": true,
+      "particles_per_tick": 22,
+      "per_target_ticks": 12,
+      "verified_target_ticks": 24,
+      "gpu_screens": 125,
+      "phase_f2": 8,
+      "visible_flame_f2": {
+        "0": 1,
+        "1": 1
+      },
+      "gpu_quality_cases": 18,
+      "invalid_opacity_cases": 72,
+      "negative_cases": 42,
+      "native_regressions": 8,
+      "reviewed_string_candidates": 173,
+      "string_inventory_tests": 8,
+      "fixed_hud_protected": true,
+      "formal_catalog_sha256": "07e78f70c4288a1743adac755d7c06da6969aca1fc95cbe151ccbf0a9d3953ed",
+      "catalog_changed": false,
+      "private_assets_changed": false,
+      "private_commit": "9ff0f6c27412ec16097bdabe44f2a2ca410f4873",
+      "normal_gui": {
+        "status": "PASS-NORMAL-KEYBOARD-PROMO-ACTION",
+        "binary_sha256": "28837cf73a311ac6c4d242d639df64471b2f8dcbf1c0ff1f8f52f3b42131971d",
+        "source_save_sha256": "49260e21b1d0385f7b3ee392f63a7c17dc4135c6b62c98b794ad66a65155946e",
+        "elapsed_seconds": 296.01605377998203,
+        "runtime_state_injection": false,
+        "cold_load_verified": false,
+        "scope": "既有明示來源槽，普通標題LOAD、選人、合法移動／回合與一次攻擊自然返回；來源建構程度依上游manifest，未重驗完整介面或保存冷讀。"
+      },
+      "preview": {
+        "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/flame-embers-review.mp4",
+        "sha256": "88f8bbdc849fe02a61debb87b8b2670448aa578019d8d62d17f79d5668153b6e",
+        "fps": 60,
+        "frames": 360,
+        "duration_seconds": 6,
+        "scope": "受控Game.Draw影格離線重播，非正常錄影或實機fps證據。"
+      },
+      "remaining": [
+        "獨立地形／物件圖集風格分批複核",
+        "Windows i7-9700K實機60fps",
+        "推廣片與三平台封包尚未更新；HD2暫緩"
+      ],
+      "evidence": [
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/source-crops.json",
+          "sha256": "4ae109253c88e6266ca0982ebc8eb267e41a519f7005346a45a2f1113c347c3e"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/particle-gpu-r2.gate.json",
+          "sha256": "d7d2b4c06424d8693a90c352125a106e72a336b5e2821ba37b046f3a78f32276"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/particle-gpu-r2.particles.json",
+          "sha256": "2428ece8c37762dcb700ef02823ccade377de584a81100a0067375653ce95930"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/split-game-hud-r3.gate.json",
+          "sha256": "e5f18c1208ac0de4f88b35219b806ae0b089e5f721a6ef492244bc1779ddca65"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/split-game-hud-r3-capture/receipt.json",
+          "sha256": "52b8d3ff8a8cef76c5e732f1db2d8bdb126663f668738c4210a455bdcd721d75"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/gpu-guards-final-r3/positive.json",
+          "sha256": "93eb851985ffdb099e760a2f2ad87d36bb857ea79688a0f71f5461e1345a1067"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/gpu-guards-final-r3/guards.json",
+          "sha256": "4be487fa1e554c37c6d80de10a7b666381782d55961d4473b81c76ada99982c5"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/native-regression-r1.gate.json",
+          "sha256": "7e0dd94598aaa3571d619c60a1e8c9a9f752d62aed638ceb564dcd7297326cc8"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/normal-gui-r2/promo-action.json",
+          "sha256": "039a6dd031f6be359a2316efedf52a94525747dce96634dc2085baf324f6e332"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/string-review-clean-proof.json",
+          "sha256": "67547646e8d8968679436e2f1f0b7cadec6ff4b0587ff19094ca27a97bb6236c"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/string-review-tests-complete.memory.json",
+          "sha256": "d67aff64eadbceb49b83943d25cd22b515aaa68a6a5d8613eb4f76950deb4fb1"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/sampling-investigation.json",
+          "sha256": "31ddd34d70fbd43fee512b6b1c1ff174e5a122e07d006cbbb25544a58c56e242"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/movie-source-proof.json",
+          "sha256": "2dad278a5d70c4a73fa449de1a9c9c2b015d9f222b3558c913512104927b2902"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/review-equivalence.json",
+          "sha256": "e32d2fce641f3177acb0f2a1005f2984128405be7c99be57852ff549043d1044"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/public-screenshot.json",
+          "sha256": "3fe955fff06ae83e03c066af27c5320c9c3ac60a398a1dea1decb88aa369a281"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/cleanup.json",
+          "sha256": "17ba04a7cf4dfa4f5c71ee809c4831e532bf4a28ed1ffdfd5079beadacc249d3"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/documentation-check.json",
+          "sha256": "c136512a90c7ef665ee8f2298285659061e0fa4e36377679f923838b0ac58994"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/lessons-check.log",
+          "sha256": "a9eb8dc58d1a436bb1c38f976a395b059bc0e0908a06775ee3c787202a1d7d53"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/string-review-tests-complete.log",
+          "sha256": "18af9b45f43261c09dd1cf3a328b76d0cc2ab53f14a6771aff72cc01ea581390"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/worklist-final.log",
+          "sha256": "f2f6bf75e5addff99362f4c678dc351161fce647ef84b283d2e423c09d0a3bf5"
+        }
+      ],
+      "production_sources": {
+        "remake/cmd/fd2/modern_hd_battle_assets.go": "69b2e58e51fe113a6a6e4ba42764c19a19cf210aa8724decc213217928a118ef",
+        "remake/cmd/fd2/modern_hd_battle_gpu.go": "565b01d29abc174dc76752ed677e9b91523a45e1c9468c7cdbac3dea116b8b67",
+        "remake/cmd/fd2/modern_hd_battle_runtime.go": "178c272f5152d0662630138f5f3ef46ac4a8df75f9b99a06ab0e7250c313d4d9",
+        "remake/cmd/fd2/modern_hd_flame_embers.go": "eb5ec958e1fa5ecd2fcd4b0490947b2978ed3c8ea1e7e648db643470f606e382",
+        "remake/cmd/fd2/modern_hd_split_strike.go": "bc5a240653382741cda2d46cb2d31eacd3916b420f2d05d764706e7653b1f87d"
+      },
+      "cleanup": {
+        "removed_entries": 21578,
+        "reclaimed_bytes": 2136153973,
+        "deduplicated_pngs": 212,
+        "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/cleanup.json"
+      },
+      "lessons": 441,
+      "lesson_guards": 281,
+      "source_inventory": {
+        "file": "work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/strings-complete.json",
+        "sha256": "b19afbd8b479ced8513cc8f4983c084c0aafffa52b2c10dc6120a7f42c9b9ea6"
+      },
+      "worklist": {
+        "open": 27,
+        "possible_complete": 0,
+        "issue_writes": false
+      }
     }
   }
 }

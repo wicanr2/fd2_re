@@ -60,6 +60,16 @@ REQUIRED = {
     'split-game': {'TestModernHDSplitStrikeRuntimeGPU'},
     'split-native-gpu': {'TestModernHDSplitStrikeNativeSourceGPU'},
     'split-source': {'TestModernHDSplitStrikeSceneryOnlyGPU'},
+    'flame-embers-gpu': {'TestModernHDFlameEmberGPU'},
+    'flame-embers-regression': {
+        'TestNativeCommand29FormalSelfCenterThroughConfirm',
+        'TestNativeCommand29MissingNativeSourcesRejectsBeforeDamageRNG',
+        'TestNativeCommand29PresentationPublishesMultipleTargetsInOrder',
+        'TestNativeCommand29PresentationRollsBackAllTargetsOnLateFailure',
+        'TestNativeCommand29PresentationRejectsUnprovenSelectorWithoutMutation',
+        'TestModernHDSplitStrikePreflightAndF2Atomic',
+        'TestModernHDSplitStrikeLateFailureRestoresTransaction',
+        'TestModernBattleCameraReleasesCompletedOwner'},
     'scroll-unit': {'TestModernScrollSceneryNativeAndAtomic'},
     'scroll-source': {'TestModernScrollSceneryGPU'},
     'scroll-game': {'TestModernHDScrollRuntimeGPU'},
@@ -131,6 +141,8 @@ def main():
     catalog = json.loads(a.catalog.read_text())
     independent = check_real_runtime(a.pack, catalog) if a.require_real_runtime else None
     env = os.environ.copy()
+    if a.kind == 'flame-embers-gpu':
+        env.update(FD2_HD_FLAME_GPU='1', FD2_HD_FLAME_GPU_REPORT=str(a.out)+'.particles.json')
     env.pop('FD2_HD_HUD_GPU',None)
     env.pop('FD2_HD_HUD_OUT',None)
     env.pop('FD2_HD_HUD_CLIP_GPU',None)
@@ -229,7 +241,7 @@ def main():
     elif a.kind in ['scroll-game','panel-scroll']:
         env.update(FD2_HD_SCROLL_SIDE='2' if a.enemy else '0',FD2_HD_SCROLL_REAL='1',FD2_HD_SCROLL_SCENERY=a.pair,
                    FD2_TEST_HD_SCROLL_OUT=str(a.out)+'-capture')
-    if a.kind in ['split-unit','split-game','split-native-gpu','split-source']:
+    if a.kind in ['split-unit','split-game','split-native-gpu','split-source','flame-embers-regression']:
         env.update(FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
     if a.kind in ['split-game','split-native-gpu','split-source']:
         env.update(FD2_HD_SPLIT_STRIKE_GPU='1',FD2_TEST_MODERN_EFFECT_OUT=str(a.out)+'-capture')
@@ -423,6 +435,10 @@ export DISPLAY=:99
                 or d.get('faithful_palette_pixels',0)<64000 or not d.get('phase_f2_switches')
                 or not all(d['phase_f2_switches'].values()) or not d.get('source_shots')):
                 raise SystemExit('狀態法術缺少實際GPU、原生對照、F2或返回')
+    if a.kind == 'flame-embers-gpu':
+        particles = json.loads(Path(str(a.out)+'.particles.json').read_text())
+        if particles.get('status') != 'PASS-FLAME-PARTICLE-GPU' or particles.get('cases') != 18:
+            raise SystemExit('三畫質、相機與alpha GPU抽樣不完整')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,

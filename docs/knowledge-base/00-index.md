@@ -1060,3 +1060,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 精簡工作區的隔離驗證素材：[覆蓋編製工具](../../tools/stage_fd2_runtime_overlay.py)，以唯讀原包、專案assets與指定清冊組合，輸出APPDIR可用的assets根目錄。
 
 - 熾炎刀B火焰：[逐拍美術契約與驗收](61-modern-theme-runtime-spec.md#熾炎刀b火焰與逐拍火星)、[四母稿配方](../../remake/assets/themes/modern/hd1-fire-edge-refresh.recipe.json)與[候選編製器](../../tools/refresh_fd2_hd1_fire_effect.py)。沿既有v2明示HD矩形保留火舌，不新增獨立粒子時鐘；[完整GPU核對器](../../tools/verify_fd2_split_strike_gpu.py)與[錯件拒收](../../tools/test_fd2_split_strike_gpu.py)同驗原生描述子、來源、目的矩形及透明空拍。
+
+- 熾炎刀B連續火星：[暫態呈現契約](61-modern-theme-runtime-spec.md#熾炎刀b連續漂浮火星)、[owner節拍與圖源裁切](../../remake/cmd/fd2/modern_hd_flame_embers.go)及[三畫質GPU抽樣](../../remake/cmd/fd2/modern_hd_flame_embers_test.go)。在既有Go Docker以verify_fd2_battle_surface_hd.py的--kind flame-embers-gpu重跑小貼圖／相機／透明度快取，完整split-game與獨立核對器加--require-flame-embers驗逐目標12拍及22顆火星；不新增原版或平台60fps聲明。

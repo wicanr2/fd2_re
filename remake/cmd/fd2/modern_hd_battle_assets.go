@@ -26,12 +26,13 @@ type modernBattleHDDescriptor struct {
 }
 
 type modernBattleHDResource struct {
-	Frames      []image.Image
-	paths       []string
-	hashes      []string
-	sizes       []image.Rectangle
-	hdRects     []image.Rectangle
-	visualScale modernHDVisualScale
+	Frames           []image.Image
+	paths            []string
+	hashes           []string
+	sizes            []image.Rectangle
+	hdRects          []image.Rectangle
+	visualScale      modernHDVisualScale
+	flameEmberSprite image.Image
 }
 
 // HD coordinates are independent of the immutable native FIGANI descriptor.

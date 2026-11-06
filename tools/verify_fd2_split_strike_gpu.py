@@ -3,6 +3,8 @@
 import argparse
 import hashlib
 import json
+import math
+import struct
 from functools import lru_cache
 from pathlib import Path
 
@@ -16,6 +18,9 @@ from audit_fd2_battle_animation_hd import audit as audit_animations
 
 INVENTORY_SHA = 'd019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51'
 CURRENT_INVENTORY_SHA = '9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1'
+EMBER_SHA = '8a7d7237c90f3564ec277142c4e65a1639bde1336bea70172fedef2de67054f8'
+EMBER_CROP = [212, 30, 226, 46]
+EMBER_KEY = 'flame-ember/' + EMBER_SHA + '/212,30,226,46/20x24-nearest'
 
 
 @lru_cache(maxsize=2)
@@ -87,7 +92,59 @@ def native_transition_channels(receipt,sample,layer,original_pack,row):
     return shader_channels(actual.resize((row['width']*6,row['height']*6),Image.Resampling.NEAREST),0)
 
 
-def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=None):
+def flame_particles(expected, sample, enabled, source, entries, sprite_cache):
+    particles = sample.get('particles', [])
+    if not isinstance(particles, list):
+        raise ValueError('火星數量或列表形狀不同')
+    cursor = sample['cursor']
+    active = enabled and sample['phase'].startswith('target-') and 14 <= cursor['Effect'] <= 16
+    if not active:
+        if particles:
+            raise ValueError('非火星相位出現額外粒子')
+        return None
+    if len(particles) != 22:
+        raise ValueError('火星數量不是已選22顆')
+    frame, repeat = cursor['Effect'], cursor['Repeat']
+    asset = entries[104]
+    raw = asset['native_frames']
+    if type(repeat) is not int or not 0 <= repeat < raw[frame]['delay_native']:
+        raise ValueError('連續火星節拍不是原生repeat')
+    tick = sum(row['delay_native'] for row in raw[11:frame]) + repeat
+    if 'channels' not in sprite_cache:
+        if asset['frame_sha256'][14] != EMBER_SHA:
+            raise ValueError('火星來源不是已選B圖源')
+        image = checked_image(source, asset['files'][14], EMBER_SHA, (830, 857))
+        # 與顯示尺寸相同的預取樣；保留原RGBA，不依runtime自報的圖片重組。
+        crop = image.crop(EMBER_CROP)
+        sprite = Image.new('RGBA', (20, 24))
+        # Pillow NEAREST在半格邊界的浮點映射不同；契約固定整數中心取樣。
+        sprite.putdata([crop.getpixel(((2*x+1)*crop.width//40, (2*y+1)*crop.height//48))
+                        for y in range(24) for x in range(20)])
+        sprite_cache['channels'] = shader_channels(sprite, 0)
+    for i, particle in enumerate(particles):
+        if (particle.get('hd_key') != EMBER_KEY or particle.get('source_resource') != 104
+                or particle.get('source_frame') != 14 or particle.get('source_sha256') != EMBER_SHA
+                or particle.get('source_crop') != EMBER_CROP):
+            raise ValueError('火星來源、裁切或GPU鍵不同')
+        age = ((tick+i*13) % 54) / 54
+        x = math.floor(32 + (i*73) % 760 + math.sin(age*4+i)*14 + 0.5)
+        y = math.floor(886-age*(660+(i % 3)*60) + 0.5)
+        rect = [x, y, x+20, y+24]
+        if particle.get('rect') != rect or any(type(v) is not int for v in particle['rect']):
+            raise ValueError('火星位置不是原生節拍的已選軌跡')
+        alpha = particle.get('opacity')
+        want = struct.unpack('f', struct.pack('f', 1-age))[0]
+        if type(alpha) not in (int, float) or not math.isfinite(alpha) or abs(alpha-want) > 0.0000001:
+            raise ValueError('火星透明度不是已選淡出曲線')
+        # ColorScale以float32儲存 scale-1，再在送GPU時加1。
+        effective = struct.unpack('f', struct.pack('f', struct.unpack('f', struct.pack('f', want-1))[0]+1))[0]
+        channels = tuple(ImageMath.lambda_eval(lambda v: v['float'](v['c'])*effective, c=c)
+                         for c in sprite_cache['channels'])
+        over_shader(expected, channels, rect, rect)
+    return cursor['Target'], tick
+
+
+def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=None, require_flame_embers=False):
     if digest(inventory) not in {INVENTORY_SHA, CURRENT_INVENTORY_SHA}:
         raise ValueError('固定來源盤點不同')
     proof = json.loads(inventory.read_text())
@@ -124,6 +181,13 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
                 30: (18, 14, 9, 2, 30, 24)}
     if command not in profiles:
         raise ValueError('需要24／28／29／30收據')
+    embers = d.get('flame_embers') == 'native-repeat-v1'
+    if require_flame_embers and not embers:
+        raise ValueError('連續火星契約缺少')
+    if embers and command != 29:
+        raise ValueError('連續火星不可綁定其他指令')
+    if embers and d.get('flame_embers_f2') != {'0': 1, '1': 1}:
+        raise ValueError('缺少火星F2的逐目標原版／HD切換')
     figure, count, start, target_count, seed, mp_cost = profiles[command]
     resource = figure*3+2
     # Mode0 layers a moving translucent actor over the idle target. The GPU
@@ -149,6 +213,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         or d.get('hd_draws', 0) <= 0 or d.get('final_draws', 0) <= 0):
         raise ValueError('生命週期／F2／標記／亂數／返回收據不完整')
     rows, pictures, native_proofs = {}, {}, {}
+    ember_ticks, ember_sprite = set(), {}
 
     def bank(rid):
         if rid not in rows:
@@ -184,12 +249,21 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         want_subtract = (8-index)*6/63 if phase == 'prelude' else 0
         if abs(subtract-want_subtract) > 0.000001:
             raise ValueError('原生DAC減色不同')
+        fixed_hud = []
         for layer in sample['layers']:
             x, y, w, h = (layer[k] for k in ('x', 'y', 'width', 'height'))
             rect = [(x+layer['dx'])*6, (y+layer['dy'])*6,
                     (x+layer['dx']+w)*6, (y+layer['dy']+h)*6]
             rid, frame = layer['resource'], layer['frame']
             archive = layer.get('archive', '')
+            if 'screen_fixed' in layer and type(layer['screen_fixed']) is not bool:
+                raise ValueError('固定HUD來源旗標不是布林值')
+            if layer.get('screen_fixed'):
+                if (archive != '' or rid != -1 or [w, h] != [149, 42]
+                        or [x, y] not in ([0, 154], [171, 4])):
+                    raise ValueError('固定HUD面板來源或位置不同')
+            if embers and 'panel_file' in layer and layer.get('screen_fixed') is not True:
+                raise ValueError('固定HUD來源旗標不同')
             if archive in ('', 'FIGANI.DAT') and rid >= 0:
                 _, registered = bank(rid)
                 if not 0 <= frame < len(registered['files']):
@@ -273,7 +347,15 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             visible = [max(0, rect[0], clip[0]), max(0, rect[1], clip[1]),
                        min(1920, rect[2], clip[2]), min(1200, rect[3], clip[3])]
             if visible[0] < visible[2] and visible[1] < visible[3]:
-                over_shader(expected, picture, rect, visible)
+                if embers and sample.get('particles') and layer.get('screen_fixed'):
+                    fixed_hud.append((picture, rect, visible))
+                else:
+                    over_shader(expected, picture, rect, visible)
+        ember_tick = flame_particles(expected, sample, embers, source, entries, ember_sprite)
+        if ember_tick is not None:
+            ember_ticks.add(ember_tick)
+        for picture, rect, visible in fixed_hud:
+            over_shader(expected, picture, rect, visible)
         actual = checked_image(receipt.parent, sample['file'], sample['sha256'], (1920, 1200))
         error = max(v[1] for v in ImageChops.difference(expected, actual).getextrema())
         worst = max(worst, error)
@@ -301,12 +383,14 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         if used_surfaces!=wanted:
             raise ValueError('缺少全部實際BG／TAI來源Draw')
     runtime_sha = None
+    if embers and ember_ticks != {(target, tick) for target in range(target_count) for tick in range(6, 18)}:
+        raise ValueError('缺少連續火星節拍或逐目標重置')
     if runtime_receipt is not None:
         runtime = json.loads(runtime_receipt.read_text())
         for key in ('status', 'command_id', 'actor_figure', 'catalog_sha256', 'go_seed', 'go_rng_planning_calls',
                     'go_rng_next_matches_native_plan', 'native_rng', 'mp_before', 'mp_after', 'mp_changes',
                     'hp_before', 'hp_after', 'hp_changes', 'continuations', 'owner_released', 'gpu_sources_cleared',
-                    'scenery_triple','scenery_side','scenery_actual_sources'):
+                    'scenery_triple','scenery_side','scenery_actual_sources', 'flame_embers'):
             if runtime.get(key) != d.get(key):
                 raise ValueError('執行包生命週期不同：'+key)
         if runtime.get('hashes_only') is not True or runtime.get('phase_f2') != d['phase_f2'] or runtime.get('source_shots') != shots:
@@ -320,6 +404,8 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             'native_metadata': native_proofs, 'surface_metadata':surface_proofs,'blank': blank, 'special_frames': sorted(found),
             'phase_indices': {p: sorted(v) for p, v in coverage.items()}, 'screens': outputs, 'worst_channel_error': worst,
             'rgba_tolerance': tolerance,
+            'flame_embers_verified': embers, 'flame_particle_ticks': len(ember_ticks),
+            'flame_particles_per_tick': 22 if embers else 0,
             'scope': '實際Game.Draw最終1920全畫布對獨立Pillow Over及固定FIGANI描述子／成品；'
                      '原生背景與viewport幾何另由雙側來源矩陣驗證。非原版RGB parity、正常玩家或人工美術驗收。'}
 
@@ -329,10 +415,12 @@ def main():
     for key in ('receipt', 'catalog', 'source', 'original-pack', 'inventory', 'report'):
         parser.add_argument('--'+key, type=Path, required=True)
     parser.add_argument('--runtime-receipt', type=Path)
+    parser.add_argument('--require-flame-embers', action='store_true', help='要求29的22顆連續火星與全部原生repeat取樣')
     args = parser.parse_args()
     if args.report.exists():
         raise SystemExit('不覆寫既有收據')
-    result = verify(args.receipt, args.catalog, args.source, args.original_pack, args.inventory, args.runtime_receipt)
+    result = verify(args.receipt, args.catalog, args.source, args.original_pack, args.inventory, args.runtime_receipt,
+                    require_flame_embers=args.require_flame_embers)
     args.report.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': result['status'], 'command': result['command_id'], 'screens': len(result['screens'])}))
 

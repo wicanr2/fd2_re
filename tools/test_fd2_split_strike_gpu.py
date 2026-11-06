@@ -15,13 +15,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('receipt', 'catalog', 'source', 'original-pack', 'inventory', 'out'):
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--require-flame-embers', action='store_true')
     a = parser.parse_args()
     if not Path('/.dockerenv').exists() or a.out.exists() or a.out.parent.stat().st_uid != os.getuid():
         raise SystemExit('在Docker使用本人擁有的新輸出目錄')
     a.out.mkdir()
     call = [a.catalog, a.source, a.original_pack, a.inventory]
-    positive = verify(a.receipt, *call)
     base = json.loads(a.receipt.read_text())
+    require_embers = a.require_flame_embers or base.get('flame_embers') == 'native-repeat-v1'
+    positive = verify(a.receipt, *call, require_flame_embers=require_embers)
     (a.out/'positive.json').write_text(json.dumps(positive, ensure_ascii=False, indent=2)+'\n')
     results = []
 
@@ -42,7 +44,7 @@ def main():
         path = folder/'receipt.json'
         path.write_text(json.dumps(doc))
         try:
-            verify(path, *call)
+            verify(path, *call, require_flame_embers=require_embers)
         except ValueError as error:
             if expected not in str(error):
                 raise AssertionError((name, str(error))) from error
@@ -69,6 +71,27 @@ def main():
     reject('changed-descriptor', lambda d: figure(d).update(x=0, rect=[0, 0, 6, 6]), '目的矩形')
     reject('changed-hd-source', lambda d: figure(d).update(hd_sha256='bad'), 'HD來源SHA')
     reject('hidden-hd', lambda d: figure(d).update(clip=[0, 0, 0, 0]), '完整GPU')
+    if require_embers:
+        particle_shot = next(name for name, shot in base['source_shots'].items() if shot.get('particles'))
+        def particle(doc):
+            return doc['source_shots'][particle_shot]['particles'][0]
+        reject('missing-flame-contract', lambda d: d.pop('flame_embers'), '連續火星契約')
+        reject('missing-active-ember-f2', lambda d: d['flame_embers_f2'].update({'0': 0}), '火星F2')
+        reject('missing-particle', lambda d: d['source_shots'][particle_shot]['particles'].pop(), '火星數量')
+        reject('wrong-particle-sha', lambda d: particle(d).update(source_sha256='bad'), '火星來源')
+        reject('wrong-particle-crop', lambda d: particle(d).update(source_crop=[213, 30, 226, 46]), '火星來源')
+        reject('wrong-particle-position', lambda d: particle(d)['rect'].__setitem__(0, particle(d)['rect'][0]+1), '火星位置')
+        reject('wrong-particle-opacity', lambda d: particle(d).update(opacity=0), '火星透明度')
+        reject('nan-particle-opacity', lambda d: particle(d).update(opacity=float('nan')), '火星透明度')
+        blank = next(name for name, shot in base['source_shots'].items()
+                     if shot['phase'] == 'target-0' and shot['cursor']['Effect'] == 17)
+        reject('particle-on-native-blank', lambda d: d['source_shots'][blank].update(
+            particles=copy.deepcopy(d['source_shots'][particle_shot]['particles'])), '非火星相位')
+        def missing_repeat(doc):
+            doc['source_shots'] = {name: shot for name, shot in doc['source_shots'].items()
+                                   if not (shot['phase'] == 'target-0' and shot['cursor']['Effect'] == 14
+                                           and shot['cursor']['Repeat'] == 1)}
+        reject('missing-particle-repeat', missing_repeat, '連續火星節拍')
     catalog = json.loads(a.catalog.read_text())
     extended = {asset['source_resource']: asset for asset in catalog['assets']
                 if asset.get('role') == 'battle_animation_hd_set'
@@ -92,6 +115,8 @@ def main():
         panel_shot, panel_index = panel_layers[0]
         def panel(doc):
             return doc['source_shots'][panel_shot]['layers'][panel_index]
+        if require_embers:
+            reject('panel-not-screen-fixed', lambda d: panel(d).update(screen_fixed=False), '固定HUD')
         reject('panel-sprite-palette', lambda d: panel(d).update(preserve_palette=False), '面板來源')
         def changed_panel_origin(doc):
             layer=panel(doc);layer['x']+=1;layer['rect'][0]+=6;layer['rect'][2]+=6

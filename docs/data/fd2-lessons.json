@@ -5523,6 +5523,21 @@
         ],
         "pattern": "live_proof = current"
       }
+    },
+    {
+      "id": "integer-nearest-sampling-has-explicit-centres",
+      "area": "GPU驗證",
+      "date": "2026-11-07",
+      "rule": "逐像素核對CPU預取樣時，先明示整數中心公式，並用實際RGBA驗證參考工具的邊界選點。FD2由tools/verify_fd2_split_strike_gpu.py的flame_particles依14×16來源重生20×24小圖；以--require-flame-embers核完整畫布，不直接假定Pillow NEAREST等於執行期整數取樣。",
+      "why": "Pillow NEAREST與明示整數中心公式在70個像素不同，alpha差達155，讓獨立畫布模型誤報126；改按規格重生參考後125張在原容差1內通過。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#熾炎刀b連續漂浮火星",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_split_strike_gpu.py"
+        ],
+        "pattern": "契約固定整數中心取樣"
+      }
     }
   ]
 }
