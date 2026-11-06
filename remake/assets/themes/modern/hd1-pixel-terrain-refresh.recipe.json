@@ -1,0 +1,975 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_pixel_terrain_refresh_v1",
+  "base_catalog_sha256": "1907978925cd7f8e7392d0ed5b1a30454711b83d316a51c4741cde841f40488b",
+  "source_manifest_sha256": "e7f9be9422db1d58ca9747581182de32f6dae6e1177ff7f254011264b03d441d",
+  "style": {
+    "file": "hd1-terrain-pixel-a-approved-v1.png",
+    "sha256": "f04dec44ac5ea2fd739c34df66707f28c16297778359cb9e333052368d5132db",
+    "decision": "使用者 go 採已展示推薦 A：原版像素手繪加強；只核定材質方向，原型地圖構圖不入執行期。",
+    "asset_id": "modern.terrain.pixelhand.style_a.master",
+    "size": [
+      1553,
+      1013
+    ]
+  },
+  "materials": {
+    "grass": {
+      "asset_id": "modern.terrain.grass_olive.master",
+      "old_file": "grass-olive-hd1-painted-v2-master.png",
+      "old_sha256": "9a6f61a628f93ff50ef7626cccc0c812b0a4075204a4df2d693a6f4fc019e053",
+      "file": "grass-hd1-pixelhand-v3-master.png",
+      "sha256": "8d4238cc3de0810a026b6ec188963c783c79df2f02c0dc407ee3677ed8dafce2",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-543a59aa-0a5e-4de6-b79d-f8716ef38060.png",
+        "prompt": "Use case: style-transfer. Project asset: ONE fully opaque seamless repeating GRASS ground material for the faithful HD1 remake of a 1995 Taiwanese tactical RPG.\nReference 1 is the USER-APPROVED A style prototype, authoritative ONLY for pixel-handpaint visual language and material palette. Reference 2 is the ORIGINAL gameplay screenshot, authoritative for the corresponding natural material and value balance. Do not copy either scene layout, interface or characters. Output only one square edge-to-edge material swatch.\nMaterial: Dense low mossy OLIVE-GREEN grass carpet with a handful of short readable angular blade clusters. Restrained ochre-green sunlight, moss-green middles and deep forest-green shadows. More grounded muted olive than bright lime. Small broken clusters, not large round leaf bushes or flowers.\nArt direction: enhanced hand-painted PIXEL ART, intentional crisp rectangular pixel clusters and stepped contours, a coherent restrained palette, sculpted readable small shapes; preserve the 1995 painted-pixel feel while adding controlled detail. This entire image will be reduced into one 144x144 game tile. Make the artwork look as though painted at roughly 144px logical resolution, with crisp coherent pixel shapes and restrained finer detail. No smooth airbrush, 3D lighting, soft noisy photographic texture or generic bright RPG Maker ground. No blurry brushes or micro-noise. Modest contrast so small chibi characters remain readable.\nTechnical: square flat orthographic material viewed straight down, uniformly distributed texture, seamless all four edges, no central feature, vignette, edge shadow or empty margin. Upper-left local lighting consistent across whole tile. Fully opaque. No path outline, grass border, cliffs, trees, plants from other material types, objects, horizon, perspective, grid, text, UI, labels, frame, characters or transparency. Just the grass material, without other materials."
+      }
+    },
+    "earth": {
+      "asset_id": "modern.terrain.grass_earth.earth.master",
+      "old_file": "earth-loam-hd1-painted-v2-master.png",
+      "old_sha256": "99e6748ce3828ab1ffd5c359471aa61a735c261b155b1c06fb50308b2f036009",
+      "file": "earth-hd1-pixelhand-v3-master.png",
+      "sha256": "3e16d623a8a96b6c8cc0b00ba3f78b0afa68ee263b13992c2a99595844b396b2",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-100f17d3-88ec-4b9a-9731-10530ff1c934.png",
+        "prompt": "Use case: style-transfer. Project asset: ONE fully opaque seamless repeating EARTH ground material for the faithful HD1 remake of a 1995 Taiwanese tactical RPG.\nReference 1 is the USER-APPROVED A style prototype, authoritative ONLY for pixel-handpaint visual language and material palette. Reference 2 is the ORIGINAL gameplay screenshot, authoritative for the corresponding natural material and value balance. Do not copy either scene layout, interface or characters. Output only one square edge-to-edge material swatch.\nMaterial: Warm medium-BROWN weathered RUBBLE/STONE ROAD surface. Irregular closely packed small worn brown stones of different sizes embedded in brown earth, with darker restrained gaps and small upper-left edge highlights. Follow the original road's rounded irregular rock shapes and earthy palette. Natural rough walking surface, not orange smooth dirt, regular bricks or castle paving.\nArt direction: enhanced hand-painted PIXEL ART, intentional crisp rectangular pixel clusters and stepped contours, a coherent restrained palette, sculpted readable small shapes; preserve the 1995 painted-pixel feel while adding controlled detail. This entire image will be reduced into one 144x144 game tile. Make the artwork look as though painted at roughly 144px logical resolution, with crisp coherent pixel shapes and restrained finer detail. No smooth airbrush, 3D lighting, soft noisy photographic texture or generic bright RPG Maker ground. No blurry brushes or micro-noise. Modest contrast so small chibi characters remain readable.\nTechnical: square flat orthographic material viewed straight down, uniformly distributed texture, seamless all four edges, no central feature, vignette, edge shadow or empty margin. Upper-left local lighting consistent across whole tile. Fully opaque. No path outline, grass border, cliffs, trees, plants from other material types, objects, horizon, perspective, grid, text, UI, labels, frame, characters or transparency. Just the earth material, without other materials."
+      }
+    },
+    "sand": {
+      "asset_id": "modern.terrain.shore.sand.master",
+      "old_file": "sand-warm-hd1-painted-v2-master.png",
+      "old_sha256": "8e702d651d18aeab890a790564ba7abbcb1d322072f9a900b34d2af7721260b7",
+      "file": "sand-hd1-pixelhand-v3-master.png",
+      "sha256": "d8c40ef5c7a2451709ee35622cc3eee38f242c0236d75d6cb6441c2e3fe48847",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-f2a3e48a-b4fd-4bf0-824c-11a551b984aa.png",
+        "prompt": "Use case: style-transfer. Project asset: ONE fully opaque seamless repeating SAND ground material for the faithful HD1 remake of a 1995 Taiwanese tactical RPG.\nReference 1 is the USER-APPROVED A style prototype, authoritative ONLY for pixel-handpaint visual language and material palette. Reference 2 is the ORIGINAL gameplay screenshot, authoritative for the corresponding natural material and value balance. Do not copy either scene layout, interface or characters. Output only one square edge-to-edge material swatch.\nMaterial: Pale warm ochre-beige BEACH SAND material. Quiet light ground with small sparse pixel clusters and restrained subtle ripples. Softer/lower contrast than the stone road. No stones, shells or shoreline.\nArt direction: enhanced hand-painted PIXEL ART, intentional crisp rectangular pixel clusters and stepped contours, a coherent restrained palette, sculpted readable small shapes; preserve the 1995 painted-pixel feel while adding controlled detail. This entire image will be reduced into one 144x144 game tile. Make the artwork look as though painted at roughly 144px logical resolution, with crisp coherent pixel shapes and restrained finer detail. No smooth airbrush, 3D lighting, soft noisy photographic texture or generic bright RPG Maker ground. No blurry brushes or micro-noise. Modest contrast so small chibi characters remain readable.\nTechnical: square flat orthographic material viewed straight down, uniformly distributed texture, seamless all four edges, no central feature, vignette, edge shadow or empty margin. Upper-left local lighting consistent across whole tile. Fully opaque. No path outline, grass border, cliffs, trees, plants from other material types, objects, horizon, perspective, grid, text, UI, labels, frame, characters or transparency. Just the sand material, without other materials."
+      }
+    },
+    "water": {
+      "asset_id": "modern.terrain.shore.water.master",
+      "old_file": "water-cobalt-hd1-painted-v2-master.png",
+      "old_sha256": "36094f6021cfbdd3c7b72f2cc8a809f89084db34eb34ad5a0cc566ce678dfb0b",
+      "file": "water-hd1-pixelhand-v3-master.png",
+      "sha256": "b0a8a823db7f3524333408841e975f62382678fc1579db6f15069ff9e7d8267e",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-15fe5d4f-3e17-4993-9d10-89339f26a54b.png",
+        "prompt": "Use case: style-transfer. Project asset: ONE fully opaque seamless repeating WATER ground material for the faithful HD1 remake of a 1995 Taiwanese tactical RPG.\nReference 1 is the USER-APPROVED A style prototype, authoritative ONLY for pixel-handpaint visual language and material palette. Reference 2 is the ORIGINAL gameplay screenshot, authoritative for the corresponding natural material and value balance. Do not copy either scene layout, interface or characters. Output only one square edge-to-edge material swatch.\nMaterial: Clear deep medium BLUE WATER material, blue body with restrained cyan/light-blue broken pixel highlights. Broad gentle horizontal ripple fragments, a little navy shade. No white foam banks or shore. Keep more quiet blue than highlights.\nArt direction: enhanced hand-painted PIXEL ART, intentional crisp rectangular pixel clusters and stepped contours, a coherent restrained palette, sculpted readable small shapes; preserve the 1995 painted-pixel feel while adding controlled detail. This entire image will be reduced into one 144x144 game tile. Make the artwork look as though painted at roughly 144px logical resolution, with crisp coherent pixel shapes and restrained finer detail. No smooth airbrush, 3D lighting, soft noisy photographic texture or generic bright RPG Maker ground. No blurry brushes or micro-noise. Modest contrast so small chibi characters remain readable.\nTechnical: square flat orthographic material viewed straight down, uniformly distributed texture, seamless all four edges, no central feature, vignette, edge shadow or empty margin. Upper-left local lighting consistent across whole tile. Fully opaque. No path outline, grass border, cliffs, trees, plants from other material types, objects, horizon, perspective, grid, text, UI, labels, frame, characters or transparency. Just the water material, without other materials."
+      }
+    },
+    "stone": {
+      "asset_id": "modern.terrain.relief.stone.master",
+      "old_file": "stone-slate-hd1-painted-v2-master.png",
+      "old_sha256": "c1c136a0f03dcb828752460c09910a71276a3d0c2b60bbbacf408751082c38af",
+      "file": "stone-hd1-pixelhand-v3-master.png",
+      "sha256": "88f35c0a1fce2e7dc7de651a2d7f0b869d5fea1129ab1166e54f1bf0ed8f71ea",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-2bf10b42-3425-4669-827d-49ce2fec44ba.png",
+        "prompt": "Use case: style-transfer. Project asset: ONE fully opaque seamless repeating STONE ground material for the faithful HD1 remake of a 1995 Taiwanese tactical RPG.\nReference 1 is the USER-APPROVED A style prototype, authoritative ONLY for pixel-handpaint visual language and material palette. Reference 2 is the ORIGINAL gameplay screenshot, authoritative for the corresponding natural material and value balance. Do not copy either scene layout, interface or characters. Output only one square edge-to-edge material swatch.\nMaterial: Neutral warm gray-BROWN ROCK face / natural stone material, the gray and brown rubble at upper-right of the original reference. Angular interlocking irregular stone forms with readable planes, moderate dark crevices and controlled upper-left highlights. Distinct from the warmer brown rubble road. Material only, no wall silhouette.\nArt direction: enhanced hand-painted PIXEL ART, intentional crisp rectangular pixel clusters and stepped contours, a coherent restrained palette, sculpted readable small shapes; preserve the 1995 painted-pixel feel while adding controlled detail. This entire image will be reduced into one 144x144 game tile. Make the artwork look as though painted at roughly 144px logical resolution, with crisp coherent pixel shapes and restrained finer detail. No smooth airbrush, 3D lighting, soft noisy photographic texture or generic bright RPG Maker ground. No blurry brushes or micro-noise. Modest contrast so small chibi characters remain readable.\nTechnical: square flat orthographic material viewed straight down, uniformly distributed texture, seamless all four edges, no central feature, vignette, edge shadow or empty margin. Upper-left local lighting consistent across whole tile. Fully opaque. No path outline, grass border, cliffs, trees, plants from other material types, objects, horizon, perspective, grid, text, UI, labels, frame, characters or transparency. Just the stone material, without other materials."
+      }
+    }
+  },
+  "profiles": [
+    {
+      "file": "ground-olive-hd.recipe.json",
+      "sha256": "9d7641f01e5910363feeec65f8c629f5391f1678ff155d2dcc9d53d1a0ca271f"
+    },
+    {
+      "file": "ground-grass-earth-hd.recipe.json",
+      "sha256": "e4ee82f17f7e731e08c3ec782a785c5dd2e4be4ba62bb543761e1f308d122080"
+    },
+    {
+      "file": "ground-bases-hd.recipe.json",
+      "sha256": "b3bb281a96a75329ce2e72c9da1a0116155db789875a0009c8ee8b37fe7297d4"
+    },
+    {
+      "file": "shore-hd.recipe.json",
+      "sha256": "1c2d864b6e60e038eb3ad0be54469610058a68a93ea6d89038ba3b241a3c7be4"
+    },
+    {
+      "file": "relief-hd.recipe.json",
+      "sha256": "20b2b8ed3045cd7c758e60a345807573ee0198fac0e30d141cd13f7c1f59cbc1"
+    }
+  ],
+  "dependent_profiles": [
+    {
+      "file": "hd1-colored-objects-r71.recipe.json",
+      "sha256": "8d3dcb703f170d42939ae16c16ccad59f29bd9f4dca8a4278e1e2957817ace5c",
+      "groups": 23
+    },
+    {
+      "file": "hd1-rgba-objects-r72.recipe.json",
+      "sha256": "b900042d6dc400a222029250be55e163ad65b65f2d7befeb6a9ba1029a1d56b8",
+      "groups": 24
+    },
+    {
+      "file": "hd1-terrain-atlas-pilot16.recipe.json",
+      "sha256": "af68675c83b8a51dda86c9586d67548078763a6280d9e44b16d7e9e4bfe355f2",
+      "groups": 15
+    },
+    {
+      "file": "hd1-terrain-grass-shadow-r70.recipe.json",
+      "sha256": "e7019cad62cc4c8479b59465ce270fbac10d819db9ef9701e4b708d2436c52d5",
+      "groups": 10
+    }
+  ],
+  "props_profile": {
+    "file": "props-hd.recipe.json",
+    "sha256": "69663cd1d858562dda4b98c203d9ae0fcf245badea6ac6092d3a156055ff59d7"
+  },
+  "old_frame_suffix": "-hd1-painted-v2.png",
+  "base_assets": 3378,
+  "embedded_grass_groups": [
+    {
+      "anchor": [
+        0,
+        8
+      ],
+      "file": "map00-frame0008-hd.png",
+      "native_content_sha256": "d05b6c2eef54343cdec6b583f1c415a81ee61da609e16e03bc679438fe316456",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 8
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        13
+      ],
+      "file": "map00-frame0013-hd.png",
+      "native_content_sha256": "ccb3760b40dc365546185d2ed90f5007d8bf14965b630eef50aafee63992a922",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 13
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        15
+      ],
+      "file": "map00-frame0015-hd.png",
+      "native_content_sha256": "eec39aa5f3c6f304fff9e49eed2a15a235252c694494f9a1c3efc4311b928a24",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 15
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        20
+      ],
+      "file": "map00-frame0020-hd.png",
+      "native_content_sha256": "e8b923c739ff5359be34486d1b445077931c10b28643995dd64116b91509821f",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 20
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        22
+      ],
+      "file": "map00-frame0022-hd.png",
+      "native_content_sha256": "38923c2aaa17751d452ab3fbfc11f081dc31cc1ed12c4a06d7980a2491548599",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 22
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        23
+      ],
+      "file": "map00-frame0023-hd.png",
+      "native_content_sha256": "30366b5ea48ed42f2e612be97fddd9ce18ad62dd5363d6802436380e25caf680",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 23
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        24
+      ],
+      "file": "map00-frame0024-hd.png",
+      "native_content_sha256": "3b24efd3f38d641c35fbed09b5c3371a05c229320e860e78666022038a457ba3",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 24
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        25
+      ],
+      "file": "map00-frame0025-hd.png",
+      "native_content_sha256": "9ccca3c8725c7f8e9bbbd4625f4c2b5cf4cda67b53dc54affbb3c115a0038273",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 25
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        26
+      ],
+      "file": "map00-frame0026-hd.png",
+      "native_content_sha256": "4746a7f03e0bdc0f34b8ff8a642ad115e0e2e94fdef6afeee6eb579439e0543b",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 26
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        27
+      ],
+      "file": "map00-frame0027-hd.png",
+      "native_content_sha256": "adbf82efd33396c7b92f7e21a28858bbb9585771e43e81dfb6ee230aa0ca84a0",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 27
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        276
+      ],
+      "file": "map00-frame0276-hd.png",
+      "native_content_sha256": "b6e904050499770d2e062e12da9797994c023966ca3ff94944716f4f8dcb96d9",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 276
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        278
+      ],
+      "file": "map00-frame0278-hd.png",
+      "native_content_sha256": "0721203af0a568e5e6d2704c9863f664224ef548d59facc254e242b986fc027b",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 278
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        280
+      ],
+      "file": "map00-frame0280-hd.png",
+      "native_content_sha256": "0721203af0a568e5e6d2704c9863f664224ef548d59facc254e242b986fc027b",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 280
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        282
+      ],
+      "file": "map00-frame0282-hd.png",
+      "native_content_sha256": "2ccb13f7d62ca8676a16c2d158886f9f7eb688d9b649eee9ba8ed925cc0fd64c",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 282
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        284
+      ],
+      "file": "map00-frame0284-hd.png",
+      "native_content_sha256": "1ed89afc9ba7ca96c935653f5fe8c0a10f1dc5dd0e391677d94b984990e57bfd",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 284
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        286
+      ],
+      "file": "map00-frame0286-hd.png",
+      "native_content_sha256": "e13b8ae8fbbd12e0ad43c33b0beeacb5c652167c1b16322ae5f77833a4006170",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 286
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        28
+      ],
+      "file": "map00-frame0028-hd.png",
+      "native_content_sha256": "dcf62230ba04c391958db000829c37a62f455a0dc279b2e5dcb903e5f51be1dd",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 28
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        30
+      ],
+      "file": "map00-frame0030-hd.png",
+      "native_content_sha256": "a47cf217907726ff3561cb74036507e3950605ee05b40df19924fce2880ce2b6",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 30
+        },
+        {
+          "map": 1,
+          "frame": 178
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        32
+      ],
+      "file": "map00-frame0032-hd.png",
+      "native_content_sha256": "a61fb8a0501311c69002e3741ec3c3aae3ac106936c26faa74b1c1042acddd61",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 32
+        },
+        {
+          "map": 1,
+          "frame": 182
+        },
+        {
+          "map": 4,
+          "frame": 214
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        33
+      ],
+      "file": "map00-frame0033-hd.png",
+      "native_content_sha256": "a3fcd9befddd552f1646134656e6cc971805988aa6469da22986ae4945d5979b",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 33
+        },
+        {
+          "map": 1,
+          "frame": 183
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        34
+      ],
+      "file": "map00-frame0034-hd.png",
+      "native_content_sha256": "5507ddf1eca823b8c859e5e537c2f9deb1a5e1ef84b8f6f5c6183eb451f710fd",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 34
+        },
+        {
+          "map": 1,
+          "frame": 184
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        35
+      ],
+      "file": "map00-frame0035-hd.png",
+      "native_content_sha256": "feda7af6d895be10d12c8fee55032cdea4c9c32bb5c22baf15676f172aacdfdc",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 35
+        },
+        {
+          "map": 1,
+          "frame": 185
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        272
+      ],
+      "file": "map00-frame0272-hd.png",
+      "native_content_sha256": "b5448d9bedc9acf8b5a8da79618ec46afe38d98c0f816886ceb67f147f107635",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 272
+        },
+        {
+          "map": 1,
+          "frame": 180
+        },
+        {
+          "map": 4,
+          "frame": 212
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        273
+      ],
+      "file": "map00-frame0273-hd.png",
+      "native_content_sha256": "d14135d238e2874440404bef2c351a83ce85d958e2620a13e9c06760f8fdecb7",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 273
+        },
+        {
+          "map": 1,
+          "frame": 181
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        40
+      ],
+      "file": "map00-frame0040-hd.png",
+      "native_content_sha256": "24278ec85441ff954119ca59788f1ed6e7e5724e4c53540da08400751fa1e037",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 40
+        },
+        {
+          "map": 1,
+          "frame": 135
+        },
+        {
+          "map": 2,
+          "frame": 73
+        },
+        {
+          "map": 3,
+          "frame": 133
+        },
+        {
+          "map": 14,
+          "frame": 73
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        42
+      ],
+      "file": "map00-frame0042-hd.png",
+      "native_content_sha256": "96c660f7c54c6d33229f8134dcc2fcdb0caa02dd94c7f134f649762f1db8a6d0",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 42
+        },
+        {
+          "map": 1,
+          "frame": 136
+        },
+        {
+          "map": 2,
+          "frame": 77
+        },
+        {
+          "map": 3,
+          "frame": 134
+        },
+        {
+          "map": 14,
+          "frame": 77
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        43
+      ],
+      "file": "map00-frame0043-hd.png",
+      "native_content_sha256": "bae90d29554a1a4ffd1f3c14a755f574fc9bc0c8ce9ac044c345169a139690a9",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 43
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        203
+      ],
+      "file": "map00-frame0203-hd.png",
+      "native_content_sha256": "17c463d41ceb0a817ae49ed578325feaac44edf1af52d16d738c7d97d56385a8",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 203
+        },
+        {
+          "map": 1,
+          "frame": 85
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        204
+      ],
+      "file": "map00-frame0204-hd.png",
+      "native_content_sha256": "34e2bc64949b0eb6acc1e9e95c2522ffc2da66104c0aab82981b127d9a1ee476",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 204
+        },
+        {
+          "map": 1,
+          "frame": 87
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        205
+      ],
+      "file": "map00-frame0205-hd.png",
+      "native_content_sha256": "d360aba12c1fb6372206f13e870c0715c207a90bbbc9dbe0cee6714acb6e02a8",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 205
+        },
+        {
+          "map": 1,
+          "frame": 89
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        206
+      ],
+      "file": "map00-frame0206-hd.png",
+      "native_content_sha256": "213a9effae1132fa3f92610bc991b0b2fe33cff5108dccab335b5beab9c9b3f8",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 206
+        },
+        {
+          "map": 1,
+          "frame": 91
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        207
+      ],
+      "file": "map00-frame0207-hd.png",
+      "native_content_sha256": "a974e7a4daed5389814de33878de5ccbb54efe25027bf5d9458e1af0a9703e08",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 207
+        },
+        {
+          "map": 1,
+          "frame": 92
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        208
+      ],
+      "file": "map00-frame0208-hd.png",
+      "native_content_sha256": "3c2a9e4ec885990d29c93105bcbac495825fa7f94add998111838cebab06a7d6",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 208
+        },
+        {
+          "map": 1,
+          "frame": 93
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        44
+      ],
+      "file": "map00-frame0044-hd.png",
+      "native_content_sha256": "17cca0fdf1f9335ad8db6122ee68c4ac72537d98097055a22efc7b0f5206fa1c",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 44
+        },
+        {
+          "map": 1,
+          "frame": 138
+        },
+        {
+          "map": 2,
+          "frame": 72
+        },
+        {
+          "map": 3,
+          "frame": 128
+        },
+        {
+          "map": 6,
+          "frame": 124
+        },
+        {
+          "map": 10,
+          "frame": 124
+        },
+        {
+          "map": 11,
+          "frame": 128
+        },
+        {
+          "map": 14,
+          "frame": 72
+        },
+        {
+          "map": 17,
+          "frame": 128
+        },
+        {
+          "map": 30,
+          "frame": 124
+        },
+        {
+          "map": 31,
+          "frame": 128
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        46
+      ],
+      "file": "map00-frame0046-hd.png",
+      "native_content_sha256": "90bd9c94c6236c91fdf0c77dee21f919b6ead22bd5cc877b8ae86a8e100690bd",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 46
+        },
+        {
+          "map": 1,
+          "frame": 139
+        },
+        {
+          "map": 3,
+          "frame": 129
+        },
+        {
+          "map": 6,
+          "frame": 125
+        },
+        {
+          "map": 10,
+          "frame": 125
+        },
+        {
+          "map": 11,
+          "frame": 129
+        },
+        {
+          "map": 14,
+          "frame": 76
+        },
+        {
+          "map": 17,
+          "frame": 129
+        },
+        {
+          "map": 30,
+          "frame": 125
+        },
+        {
+          "map": 31,
+          "frame": 129
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        47
+      ],
+      "file": "map00-frame0047-hd.png",
+      "native_content_sha256": "74856446bfb511902e43800fbf3458b62e72650fdfa19a4bcbcad6e85ad9f4ec",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 47
+        }
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        48
+      ],
+      "file": "map00-frame0048-hd.png",
+      "native_content_sha256": "bde0c17512e4d70c299b1eae554bef62d5869f87e889d260689a32505e9cc204",
+      "targets": [
+        {
+          "map": 0,
+          "frame": 48
+        }
+      ]
+    }
+  ],
+  "alpha_sources": [
+    {
+      "asset_id": "modern.map0.house.grass_alpha.master",
+      "file": "map00-house-grass-cutout-v1-master.png",
+      "sha256": "676dfd99ad72b9725018cdd2729a1c9ea02eb0e20acbad74a36dcc21327be264",
+      "size": [
+        1536,
+        1024
+      ],
+      "source_master": "map00-house-hd-v2-master.png",
+      "object_recipe": {
+        "file": "terrain-house-map0.recipe.json",
+        "sha256": "5c87bc1d68be37cc8ce20ea695836f51539860094f8fd238bd345b10b5cba879"
+      },
+      "alpha_threshold": 128,
+      "outer_padding_hd_pixels": 2,
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-250bc6cf-2819-47eb-a3fc-b263f9b96742.png",
+        "prompt": "Use case: background-extraction. Exact-preservation edit of an existing game terrain object master, NOT a redesign.\nRemove ONLY the flat carpet of small short ground grass surrounding the object(s) and replace that background with genuine transparency. Preserve ALL of the large illustrated object itself: the ENTIRE blue-tiled timber house, roof ends, walls, open door/window, stone foundation. The dark door and window interiors remain opaque.\nKeep the source image's EXACT composition, object positions, sizes, proportions, colours, light and paint texture, and original canvas aspect ratio. Do not center, crop, zoom, rotate, redraw, add padding or shift anything. Preserve objects cut by the canvas edge. Preserve even very dark interior pixels as opaque. Remove the ground grass BETWEEN objects and outside silhouettes; omit external cast shadow and grass tufts attached to the lawn. No holes in the tree or object interior. No checkerboard drawn into the pixels, text, border or new objects. Output the same image with a clean, conservative complete-object alpha cutout and transparent background."
+      }
+    },
+    {
+      "asset_id": "modern.map0.roof_object.grass_alpha.master",
+      "file": "map00-roof-object-grass-cutout-v1-master.png",
+      "sha256": "e0a2457129898f26f7e3006e0cbe72a7ed79ee1dbd2151bea580928f152bab90",
+      "size": [
+        887,
+        1774
+      ],
+      "source_master": "map00-roof-object-hd-v1-master.png",
+      "object_recipe": {
+        "file": "terrain-roof-object-map0.recipe.json",
+        "sha256": "1ee8d7dbc070ae7c15e5528d7c624e4e0c16a88a3f404597fed5f8690825dae6"
+      },
+      "alpha_threshold": 128,
+      "outer_padding_hd_pixels": 2,
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-485ab98f-1a09-4baf-a0b3-1ed220b2caa2.png",
+        "prompt": "Use case: background-extraction. Exact-preservation edit of an existing game terrain object master, NOT a redesign.\nRemove ONLY the flat carpet of small short ground grass surrounding the object(s) and replace that background with genuine transparency. Preserve ALL of the large illustrated object itself: the ENTIRE long thatched-roof timber building including every roof fringe, wooden walls and stone foundation.\nKeep the source image's EXACT composition, object positions, sizes, proportions, colours, light and paint texture, and original canvas aspect ratio. Do not center, crop, zoom, rotate, redraw, add padding or shift anything. Preserve objects cut by the canvas edge. Preserve even very dark interior pixels as opaque. Remove the ground grass BETWEEN objects and outside silhouettes; omit external cast shadow and grass tufts attached to the lawn. No holes in the tree or object interior. No checkerboard drawn into the pixels, text, border or new objects. Output the same image with a clean, conservative complete-object alpha cutout and transparent background."
+      }
+    },
+    {
+      "asset_id": "modern.map0.tall_green.grass_alpha.master",
+      "file": "map00-tall-green-grass-cutout-v1-master.png",
+      "sha256": "4c4117cb81b521ae42c58950a5d9483d18d8218b0f9051fff49eb04d4561c150",
+      "size": [
+        725,
+        2169
+      ],
+      "source_master": "map00-tall-green-hd-v2-master.png",
+      "object_recipe": {
+        "file": "terrain-tall-green-map0.recipe.json",
+        "sha256": "22ef77572f7d088bbc0f9532ca97bcf52559b6fb40e6a07409d174380e6c31cf"
+      },
+      "alpha_threshold": 128,
+      "outer_padding_hd_pixels": 2,
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-33cef639-343f-41a3-9c5d-2ae42250b7a7.png",
+        "prompt": "Use case: background-extraction. Exact-preservation edit of an existing game terrain object master, NOT a redesign.\nRemove ONLY the flat carpet of small short ground grass surrounding the object(s) and replace that background with genuine transparency. Preserve ALL of the large illustrated object itself: the ENTIRE tall tree canopy including every dark interior leaf mass, all bright and shaded foliage, its branches, trunk, roots and base. Do not mistake the green tree interior or dark green leaves for background; the tree must remain a single solid opaque complete form.\nKeep the source image's EXACT composition, object positions, sizes, proportions, colours, light and paint texture, and original canvas aspect ratio. Do not center, crop, zoom, rotate, redraw, add padding or shift anything. Preserve objects cut by the canvas edge. Preserve even very dark interior pixels as opaque. Remove the ground grass BETWEEN objects and outside silhouettes; omit external cast shadow and grass tufts attached to the lawn. No holes in the tree or object interior. No checkerboard drawn into the pixels, text, border or new objects. Output the same image with a clean, conservative complete-object alpha cutout and transparent background."
+      }
+    },
+    {
+      "asset_id": "modern.map0.rounded_green.grass_alpha.master",
+      "file": "map00-rounded-green-grass-cutout-v1-master.png",
+      "sha256": "5726c30434c7e6530d61f2698411eb5801b944ba380025b9a59daf1efcb9b883",
+      "size": [
+        725,
+        2170
+      ],
+      "source_master": "map00-rounded-green-hd-v1-master.png",
+      "object_recipe": {
+        "file": "terrain-rounded-green-map0.recipe.json",
+        "sha256": "eecb3634415f686dc1073159c972213c85b2e36c3f9cd5d233bcf9704ce607e9"
+      },
+      "alpha_threshold": 128,
+      "outer_padding_hd_pixels": 2,
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-9c2184b9-4dc7-468a-a410-31a1ad17b4ff.png",
+        "prompt": "Use case: background-extraction. Exact-preservation edit of an existing game terrain object master, NOT a redesign.\nRemove ONLY the flat carpet of small short ground grass surrounding the object(s) and replace that background with genuine transparency. Preserve ALL of the large illustrated object itself: the ENTIRE tall tree canopy including every dark interior leaf mass, all bright and shaded foliage, its branches, trunk, roots and base. Do not mistake the green tree interior or dark green leaves for background; the tree must remain a single solid opaque complete form.\nKeep the source image's EXACT composition, object positions, sizes, proportions, colours, light and paint texture, and original canvas aspect ratio. Do not center, crop, zoom, rotate, redraw, add padding or shift anything. Preserve objects cut by the canvas edge. Preserve even very dark interior pixels as opaque. Remove the ground grass BETWEEN objects and outside silhouettes; omit external cast shadow and grass tufts attached to the lawn. No holes in the tree or object interior. No checkerboard drawn into the pixels, text, border or new objects. Output the same image with a clean, conservative complete-object alpha cutout and transparent background."
+      }
+    },
+    {
+      "asset_id": "modern.map0.brown_group.grass_alpha.master",
+      "file": "map00-brown-group-grass-cutout-v1-master.png",
+      "sha256": "ccf05b474388c025aaeb01d0be0ba879f39a66b2638323e60eb3dbd3860f93ff",
+      "size": [
+        1536,
+        1024
+      ],
+      "source_master": "map00-brown-group-hd-v1-master.png",
+      "object_recipe": {
+        "file": "terrain-brown-group-map0.recipe.json",
+        "sha256": "4af3e3975eac2896a724dda52349f73b17590a20827885cbdcee77125732d854"
+      },
+      "alpha_threshold": 128,
+      "outer_padding_hd_pixels": 2,
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-c93b77b2-dbd3-44aa-8fb3-cd6486e64077.png",
+        "prompt": "Use case: background-extraction. Exact-preservation edit of an existing game terrain object master, NOT a redesign.\nRemove ONLY the flat carpet of small short ground grass surrounding the object(s) and replace that background with genuine transparency. Preserve ALL of the large illustrated object itself: ALL FIVE bound wooden log forms including complete silhouettes, metal bands, dark gaps and undersides.\nKeep the source image's EXACT composition, object positions, sizes, proportions, colours, light and paint texture, and original canvas aspect ratio. Do not center, crop, zoom, rotate, redraw, add padding or shift anything. Preserve objects cut by the canvas edge. Preserve even very dark interior pixels as opaque. Remove the ground grass BETWEEN objects and outside silhouettes; omit external cast shadow and grass tufts attached to the lawn. No holes in the tree or object interior. No checkerboard drawn into the pixels, text, border or new objects. Output the same image with a clean, conservative complete-object alpha cutout and transparent background."
+      }
+    },
+    {
+      "asset_id": "modern.map0.brown_pair.grass_alpha.master",
+      "file": "map00-brown-pair-grass-cutout-v1-master.png",
+      "sha256": "ae17ad8fe54b42f444abf77f871ef242b5044f76a27777e83521e4805a0c9b7b",
+      "size": [
+        1254,
+        1254
+      ],
+      "source_master": "map00-brown-pair-hd-v2-master.png",
+      "object_recipe": {
+        "file": "terrain-brown-pair-map0.recipe.json",
+        "sha256": "d1083167331ca8502e3668ee4484f11a7877474d8db70afb9dad55e3a90fcc82"
+      },
+      "alpha_threshold": 128,
+      "outer_padding_hd_pixels": 2,
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-c04690e3-fa28-4ae6-a610-d883b482c5f6.png",
+        "prompt": "Use case: background-extraction. Exact-preservation edit of an existing game terrain object master, NOT a redesign.\nRemove ONLY the flat carpet of small short ground grass surrounding the object(s) and replace that background with genuine transparency. Preserve ALL of the large illustrated object itself: BOTH separate brown tree stumps including their whole bark silhouettes, roots, cut faces and dark sides.\nKeep the source image's EXACT composition, object positions, sizes, proportions, colours, light and paint texture, and original canvas aspect ratio. Do not center, crop, zoom, rotate, redraw, add padding or shift anything. Preserve objects cut by the canvas edge. Preserve even very dark interior pixels as opaque. Remove the ground grass BETWEEN objects and outside silhouettes; omit external cast shadow and grass tufts attached to the lawn. No holes in the tree or object interior. No checkerboard drawn into the pixels, text, border or new objects. Output the same image with a clean, conservative complete-object alpha cutout and transparent background."
+      }
+    }
+  ]
+}

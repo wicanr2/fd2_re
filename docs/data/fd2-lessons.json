@@ -5493,6 +5493,21 @@
         ],
         "pattern": "stable_nearest_texel_core"
       }
+    },
+    {
+      "id": "hd-painted-object-alpha-keeps-silhouette",
+      "area": "HD美術",
+      "date": "2026-11-06",
+      "rule": "刷新HD物件的烘入背景時，以已登錄手繪輪廓保留整個物件；原版索引只作底材與明暗分區。FD2由tools/refresh_fd2_hd1_pixel_terrain.py使用alpha_sources編製，並在正常Game.Draw檢查完整樹冠及交界；原生分區與像素核心通過不能取代這項視覺核對。",
+      "why": "像素索引遮罩套在構圖已不同的HD母稿時，會把樹冠內部替換成草地；來源、接縫、GPU和部分核心檢查仍可能通過。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/refresh_fd2_hd1_pixel_terrain.py"
+        ],
+        "pattern": "alpha_sources"
+      }
     }
   ]
 }

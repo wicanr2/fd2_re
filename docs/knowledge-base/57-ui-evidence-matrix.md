@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+原版像素手繪地表與相依背景刷新已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，保留完整HD物件輪廓。範圍、來源與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)，唯一收據見[玩家回饋現況](../data/fd2-hd1-feedback-20261104.json)的map_pixel_material_refresh_20261106；不外推全部獨立圖集、原版parity或Windows60fps。
+
 地形、地圖人物、介面、事件61、控制與工具列依各自已結案收據保持已驗範圍。地形覆蓋依hd1_final_terrain_followup_20261103與[61](61-modern-theme-runtime-spec.md#hd1最後地形與前景)。本批已知玩家戰鬥入口及淒煌斬正式動畫已補接，範圍與來源指紋依[58](58-fd2-exe-re-coverage.md#2026-11-04-玩家回饋與推廣片修訂)及[61「戰鬥指令入口稽核」](61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)，不外推全部角色組合或原版對拍。人工觀感、逐章與平台由使用者接手。下列較早切片保留當批證據範圍，舊缺圖數不作現行停止線。
 
 HD1地圖人物125組1455來源的已定Q版圖源與接線完成。66／74／75採使用者確認的三拍原圖例外，連同67保持未知身份，75橫向保持。本批18完整Game.Draw、九PNG、三次F2、59167核心點及39反例，普通十PNG、26頂層Go與21消費來源／416幀／19反例通過。只換六項、877保持；21新檔及10130舊美術保持。HD1素材與接線現況依58首列完成收據，人工觀感／逐章／平台由使用者接手。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據hd1_final_static_followup_20261101。

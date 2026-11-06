@@ -7491,7 +7491,7 @@
   },
   "active_battle_review": "battle_audiovisual_followup_20261106",
   "battle_audiovisual_followup_20261106": {
-    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B; MAP-FIRE-DRAFT",
+    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B-PIXEL-TERRAIN; FIRE-DRAFT",
     "work": "work/hd1-feedback-20261106-r91",
     "scope": {
       "dragons": "地圖與戰鬥",
@@ -7500,8 +7500,6 @@
     "ares_choice": "保留完整HD輪廓；原版描述子、時序、傷害與存檔保持",
     "diagnosis": "work/hd1-feedback-20261106-r91/ares-clipping-r1/clipping-diagnosis.json",
     "style_decisions_pending": [
-      "龍族比例",
-      "地圖材質",
       "熾炎刀火焰邊緣與粒子"
     ],
     "preserved_user_deletion": "docs/figures/hd1-ares-battle-revision.png",
@@ -7921,7 +7919,7 @@
       }
     ],
     "remaining_scope": [
-      "地圖材質",
+      "獨立地形／物件圖集依A方向分批複核",
       "熾炎刀火焰邊緣與粒子"
     ],
     "dragon_scope_evidence": {
@@ -7936,7 +7934,7 @@
       ],
       "note": "種族4與圖組16／17／26／27已查證，使用者選115%；未知身份或只有同號頭像的圖組不延伸。"
     },
-    "private_commit": "a0e23d04fc09e23c913bb1cf2f99b5d83bb915de",
+    "private_commit": "a9a20bfa7327836a29abbcf4cc0a4888928673c9",
     "private_remote_head_verified": true,
     "semantic_catalog_delta": [
       [
@@ -8132,6 +8130,117 @@
       },
       "private_commit": "d4aa34b176fa2c76c7fcfc4b1dc33c42a755409e",
       "private_remote_head_verified": true
-    }
+    },
+    "map_pixel_material_refresh_20261106": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-GUI",
+      "choice": "A 原版像素手繪加強",
+      "work": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1",
+      "recipe": "remake/assets/themes/modern/hd1-pixel-terrain-refresh.recipe.json",
+      "maps": 25,
+      "slots": 911,
+      "runtime_pngs": 202,
+      "changed_assets": 147,
+      "untouched_assets": 3231,
+      "remaining": [
+        "獨立地形／物件圖集依A方向分批複核",
+        "熾炎刀火焰邊緣與粒子",
+        "Windows i7-9700K實機60fps",
+        "既有下載包尚未重打"
+      ],
+      "scope": "五地表與全部相依背景刷新，25圖911槽；不宣稱全部獨立圖集重繪。HD2暫緩。",
+      "rejected_candidate": {
+        "path": "candidate-r4",
+        "reason": "原版索引誤當HD輪廓造成樹冠缺損；機械測試通過仍因視覺拒收。",
+        "deleted_after_review": true,
+        "retained_screenshot": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/normal-gui-r4/terrain-hd-house.png"
+      },
+      "active_candidate": "candidate-r7",
+      "recipe_sha256": "b37c37228010d28b57dbfa776e96f7c85ef5d55b8ebb8fe5ae771d3090f534c2",
+      "formal_catalog_sha256": "abbe24f5bf18b59ee23f00c2032d54240e0c61a54d3b5d5f8232512a54505917",
+      "catalog_assets": 3385,
+      "new_private_files": 214,
+      "active_private_files": 11269,
+      "preserved_old_private_files": 11262,
+      "source_manifest_sha256": "e7f9be9422db1d58ca9747581182de32f6dae6e1177ff7f254011264b03d441d",
+      "gpu": {
+        "bindings": 214,
+        "source_cases": 856,
+        "complete_game_cases": 2,
+        "save_boundary_bytes_unchanged": 169
+      },
+      "normal_gui": {
+        "status": "PASS",
+        "elapsed_seconds": 391.2544850241393,
+        "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+        "source_save_bytes_equal": true,
+        "theme_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "cold_loaded_units_equal": true,
+        "world_walk_gpu_rechecked": true,
+        "save_contract": "F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。",
+        "scope": "具章前建構祖先的首章來源；正常LOAD、三畫質、原版／HD切換、走行取消、F5與新程序LOAD。無新增DOS對拍、全戰役E2或平台60fps聲明。"
+      },
+      "painted_alpha": {
+        "sources": 6,
+        "embedded_tiles": 37,
+        "preserved_object_core_pixels": 531617,
+        "rgb_source": "只取原已登錄HD PNG；去背景參考只提供alpha"
+      },
+      "evidence": [
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/formal-registration.json",
+          "sha256": "6f2ebc81dc1c894f8b5fa0085482340f0ce8c28af3d12226f3843d8e70b61801"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/painted-alpha-audit.json",
+          "sha256": "a5dc84e932c02d82d27373f8e852e4ed2da7bce5266c9876216b8508865c2240"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/clean-rebuild-proof.json",
+          "sha256": "67ab9afc9f6b105e266a87f5681ec00d8a82977b26d3d27f7a45835e2ad19270"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/gpu-r6/receipt.json",
+          "sha256": "8971a71353f9989708332cf63aa07966152682cb3335f43ef4758fb0829eff5e"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/normal-gui-r6/receipt.json",
+          "sha256": "e23b14c1b11e480dac58f2abaa84eb99b75dcb3e7acda1ee1b8d285131bd7f88"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/normal-gui-r6/texture-quality-ui.json",
+          "sha256": "f67adf6abcce53edfb00d303d5b65b5c9b5438b4ed67cfc21f845482319049a9"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/public-comparison.json",
+          "sha256": "024a7967e82de8590cd9b72528dc37216e7195830b8181ed4100ed6094fc99a7"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/catalog-tests-complete.log",
+          "sha256": "1bab64449c387603372ef0bb78cdfacab72c0581487458a9bb5ff626dea91a19"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/source-link-completion.json",
+          "sha256": "d651f05e4246d2e05710e40433a07ad1f2d0bd42d913058701f889b7278c4695"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/lessons-check-final.log",
+          "sha256": "6ba995deb1abf47a58c4214796747ea442873cdc2c15c9fcc480f1c94c8dec85"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/documentation-check.json",
+          "sha256": "d60fe8aa68206abd68072216b5a2b747f53aed9de9b92732f6dbbb57575ef14c"
+        }
+      ],
+      "cleanup": {
+        "file": "work/hd1-feedback-20261106-r91/map-pixel-runtime-r1/cleanup.json",
+        "sha256": "12ecb9bacd1b9fac1143c20b2930f1fc377d7e2186dcbfecf1e05429e1f8a822",
+        "removed_entries": 86055,
+        "reclaimed_bytes": 403390042
+      },
+      "private_commit": "a9a20bfa7327836a29abbcf4cc0a4888928673c9",
+      "private_remote_head_verified": true
+    },
+    "active_slice": "map_pixel_material_refresh_20261106"
   }
 }

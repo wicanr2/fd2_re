@@ -31,6 +31,10 @@
 
 開發主線已接入33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。這些範圍的必要來源、載入、缺件拒收、切換及保存冷讀已驗證；細部觀感、逐章操作與平台實機交由使用者確認。本批確認的玩家法術入口與羅德曼淒煌斬正式動畫已補齊，完整戰鬥HD仍依[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[戰鬥指令入口稽核](docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)分列，不外推全部角色組合或原版對拍。既有下載版未重發，HD2與HD-2D另期。
 
+首關與共用圖源的地表改採像素手繪加強：橄欖綠草地、褐色碎石路與灰褐岩面，保留原有道路、坡地與海岸配置。樹木及建築周圍的草地同步更新，保留完整HD物件輪廓。下圖由同一重製引擎正常LOAD後切換原版／HD美術取得，僅裁切拼排；[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)另列。
+
+![首關相同鏡頭的原版美術與HD1像素手繪地表對照](docs/figures/hd1-pixel-terrain-normal-comparison.png)
+
 ![亞雷斯完整輪廓與古典明體的實際普通攻擊畫面](docs/figures/hd1-ares-full-outline-serif.png)
 
 HD介面採古典明體、加重英數與立體血條，保留原版多層框線。亞雷斯保留完整武器與特效輪廓，羅德曼維持朝向戰場的後腦視角；蓋亞依原版姿勢完成15幀強化像素手繪。HD普通物理攻擊改採B厚重音效，B分鏡保留最多7%推近與短命中停頓。上圖由首章來源進度經標題LOAD及普通攻擊取得；[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1完整輪廓與第二輪觀感回饋)分列記錄。

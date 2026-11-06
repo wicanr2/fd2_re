@@ -1,5 +1,7 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
+原版像素手繪地表與相依背景刷新已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，保留完整HD物件輪廓。範圍、來源與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)，唯一收據見[玩家回饋現況](../data/fd2-hd1-feedback-20261104.json)的map_pixel_material_refresh_20261106；不外推全部獨立圖集、原版parity或Windows60fps。
+
 ## HD1畫質與繪製效能
 
 完整／均衡／輕量、預設均衡的地圖與戰鬥GPU貼圖／畫布已接入，文字與獨立介面保持；相同地圖畫面及海報乾淨地形依內容重用。三品質GPU、工具列實際點選、普通攻擊返回、F2、保存與新程序LOAD達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。來源槽具有建構祖先，不新增完整章節PLAYER-E2或原版parity。Windows／i7-9700K的顯卡及60fps仍待實機核對，依[#298](https://github.com/wicanr2/fd2_re/issues/298)保持開啟。唯一現況為[效能收據](../data/fd2-hd1-performance-20261105.json)，範圍與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1繪製效能與60fps量測)。HD2依使用者指示延後。
