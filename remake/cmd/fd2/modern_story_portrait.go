@@ -88,6 +88,7 @@ type modernThemeAsset struct {
 	SourceMetadataSHA256 string                     `json:"source_metadata_sha256"`
 	NativeHeader         []int                      `json:"native_header"`
 	NativeFrames         []modernBattleHDDescriptor `json:"native_frames"`
+	HDFrames             []modernBattleHDRectangle  `json:"hd_frames"`
 	NativeLMIFrames      []modernLMIHDDescriptor    `json:"native_lmi_frames"`
 	CueIDs               []int                      `json:"cue_ids"`
 	SampleRate           int                        `json:"sample_rate"`

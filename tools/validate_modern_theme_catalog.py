@@ -132,6 +132,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         elif entry.get("role") in {"battle_animation_hd_set", "battle_effect_hd_set"}:
             expected = sprite_set - {"source_group"} | {"source_archive", "source_resource", "source_metadata_sha256",
                 "native_header", "native_frames", "layout_policy", "source_files", "source_sha256"}
+            if entry.get('role') == 'battle_animation_hd_set' and entry.get('consumer_contract') == 'native_figani_rgba_hd6_v2':
+                expected |= {'hd_frames'}
         elif entry.get("role") == "map_overlay_hd_set":
             expected = sprite_set - {"source_group"} | {"source_archive", "source_resource", "source_metadata_sha256",
                 "native_lmi_frames", "layout_policy", "source_files", "source_sha256"}
@@ -529,6 +531,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if effect and resource == 44:
                 consumer, cycle = 'native_fdother_command9_ai_rgba_hd6_v1', 'native_command9_ai_frames'
             layout = 'native_descriptor_hd6' if effect else 'contain_native_descriptor_hd6_candidate'
+            explicit_hd = not effect and entry['consumer_contract'] == 'native_figani_rgba_hd6_v2'
+            if explicit_hd:
+                consumer, layout = 'native_figani_rgba_hd6_v2', 'explicit_hd_frame_rects_v2'
             if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
                     entry['consumer_contract'] != consumer or
                     entry['source_archive'] != source or type(resource) is not int or resource not in (ORDINARY_EFFECT_RESOURCES | {44} | set(range(65,69)) if effect else range(409)) or
@@ -553,6 +558,16 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         any(frame[k] not in range(256) for k in ['delay_native','raw_byte_4','raw_byte_5','raw_byte_7'])):
                     raise ValueError(f'invalid HD battle frame: {asset_id}')
             files, hashes = entry['files'], entry['frame_sha256']
+            if explicit_hd:
+                rectangles = entry['hd_frames']
+                if not isinstance(rectangles, list) or len(rectangles) != count:
+                    raise ValueError(f'incomplete HD rectangles: {asset_id}')
+                for r in rectangles:
+                    if (not isinstance(r, dict) or set(r) != {'x','y','width','height'} or
+                            any(type(v) is not int for v in r.values()) or
+                            not 0 < r['width'] <= 1920 or not 0 < r['height'] <= 1200 or
+                            not 0 <= r['x'] <= 1920-r['width'] or not 0 <= r['y'] <= 1200-r['height']):
+                        raise ValueError(f'invalid HD rectangle: {asset_id}')
             if (not isinstance(files,list) or len(files)!=count or len(set(files))!=count or
                     not isinstance(hashes,list) or len(hashes)!=count or
                     any(not isinstance(h,str) or not SHA_RE.fullmatch(h) for h in hashes)):
@@ -677,6 +692,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     raise ValueError(f"private asset missing: {private_path}")
                 expected_size = ((entry['native_frames'][frame_index]['width']*6, entry['native_frames'][frame_index]['height']*6)
                                  if entry['role'] in {'battle_animation_hd_set','battle_effect_hd_set','story_animation_hd_set'} else (entry["width"],entry["height"]))
+                if entry.get('consumer_contract') == 'native_figani_rgba_hd6_v2':
+                    frame = entry['hd_frames'][frame_index]
+                    expected_size = (frame['width'], frame['height'])
                 if entry['role']=='map_overlay_hd_set':
                     frame=entry['native_lmi_frames'][frame_index]
                     expected_size=(frame['width']*6,frame['height']*6)

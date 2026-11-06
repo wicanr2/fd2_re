@@ -116,6 +116,7 @@ def main():
     p.add_argument('--body-scale', type=float, default=1)
     p.add_argument('--core-floor-idle', action='store_true', help='放大待機本體時保留全身／武器且腳底對齊原圖框')
     p.add_argument('--keep-follow-body', action='store_true', help='收招保留本體倍率，只在原框內校正定位，不再按左右空間縮小整組')
+    p.add_argument('--uncropped-hd', action='store_true', help='保留世界內完整輪廓，輸出v2明示HD矩形及去透明空白PNG')
     args = p.parse_args(); out = args.out.resolve()
     if args.revision < 1 or not 1 <= args.body_scale <= 1.2:
         raise SystemExit('不支援的素材版本或本體倍率')
@@ -169,6 +170,18 @@ def main():
             phase = args.body_scale*(follow_scale if follow and not args.keep_follow_body else 1)
             canvas, recipe = fit(picture, anchor, target, (frame['width']*6, frame['height']*6), phase,
                                  args.core_floor_idle and key == 'idle', args.keep_follow_body and follow)
+            if args.uncropped_hd:
+                fitted = picture.resize(tuple(recipe['fit_size']), Image.Resampling.LANCZOS)
+                full = Image.new('RGBA', (1920, 1200))
+                at = (frame['x']*6+recipe['origin'][0], frame['y']*6+recipe['origin'][1])
+                full.alpha_composite(fitted, at)
+                box = full.getchannel('A').getbbox()
+                if box is None:
+                    raise SystemExit('亞雷斯非空影格缺少可見HD圖源')
+                box = (max(0,box[0]-1), max(0,box[1]-1), min(1920,box[2]+1), min(1200,box[3]+1))
+                recipe['hd_rect'] = dict(x=box[0], y=box[1], width=box[2]-box[0], height=box[3]-box[1])
+                recipe['viewport_clipped_high_coverage_pixels'] = sum(a>=192 for a in fitted.getchannel('A').getdata())-sum(a>=192 for a in full.getchannel('A').getdata())
+                canvas = full.crop(box)
             prepared.append((resource, index, key, frame, target, canvas, original, recipe))
     out.mkdir(); pack = out/'pack'; pack.mkdir()
     shutil.copyfile(base_path, out/'base-catalog.json')
@@ -184,7 +197,9 @@ def main():
                         'native_blue_anchor': target, 'native_descriptor': {k: frame[k] for k in DESCRIPTOR}, **recipe})
         x, y = i % 4*480, i//4*400
         for dy, picture, scale, label in [(0, original, 1, 'native source'), (200, canvas, 6, 'HD candidate')]:
-            stage = Image.new('RGBA', (320*scale, 200*scale)); stage.alpha_composite(picture, (frame['x']*scale, frame['y']*scale))
+            stage = Image.new('RGBA', (320*scale, 200*scale))
+            at = (recipe['hd_rect']['x'], recipe['hd_rect']['y']) if scale == 6 and args.uncropped_hd else (frame['x']*scale, frame['y']*scale)
+            stage.alpha_composite(picture, at)
             thumb = stage.resize((320, 200), Image.Resampling.LANCZOS)
             sheet.paste(thumb, (x, y+dy), thumb); draw.text((x+4, y+dy+4), f'{resource:03d}/{index:02d} {label}', fill='white')
     for resource, keys in assignments.items():
@@ -200,6 +215,9 @@ def main():
             'native_frames': [r['native_descriptor'] for r in selected], 'cycle_policy': 'native_descriptor_key_poses',
             'layout_policy': 'contain_native_descriptor_hd6_candidate', 'source_files': [source_names[k] for k in used],
             'source_sha256': [digest(pack/source_names[k]) for k in used]})
+        if args.uncropped_hd:
+            candidate['assets'][-1].update(consumer_contract='native_figani_rgba_hd6_v2', layout_policy='explicit_hd_frame_rects_v2',
+                                           hd_frames=[r['hd_rect'] for r in selected])
     path = out/'catalog.json'; path.write_text(json.dumps(candidate, ensure_ascii=False, indent=2)+'\n'); validate(True, path)
     sheet.save(out/'review.png')
     runtime = out/'runtime'; (runtime/'assets/themes/modern').mkdir(parents=True)
@@ -211,10 +229,12 @@ def main():
         'base_catalog_sha256': digest(base_path), 'catalog_sha256': digest(path), 'inventory_sha256': digest(args.inventory),
         'pack_manifest_sha256': inventory['pack_manifest_sha256'], 'compiler_sha256': digest(Path(__file__)),
         'blue_anchor_predicate': 'alpha>=192; B>=70; B*100>=R*175; B*100>=G*145; four-connected components>=1000 source pixels',
-        'sampling': 'LANCZOS; uniform height fit; blue anchor center and bottom; shared contain scale for follow frames11..14; native descriptor clip',
+        'sampling': ('LANCZOS; same body fit and blue anchor; transparent bbox trim with one-pixel margin; world viewport clip only'
+                     if args.uncropped_hd else 'LANCZOS; uniform height fit; blue anchor center and bottom; native descriptor clip'),
         'follow_phase_scale': follow_scale,
         'body_scale': args.body_scale, 'core_floor_idle': args.core_floor_idle, 'revision': args.revision,
         'keep_follow_body': args.keep_follow_body,
+        'uncropped_hd': args.uncropped_hd,
         'sources': fingerprints, 'frames': records, 'review_sha256': digest(out/'review.png')}
     (out/'compiled.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'frames': len(records), 'catalog_assets': len(candidate['assets'])}))

@@ -207,7 +207,11 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 	}
 	for _, field := range fields {
 		r := image.Rectangle{Min: field.rect.Min.Mul(6), Max: field.rect.Max.Mul(6)}
-		if err := drawModernBattlePanelInk(canvas, p.font, field.value, r, field.size, nativePaletteColor(palette, field.colour, color.RGBA{240, 244, 255, 255})); err != nil {
+		face := p.font
+		if field.value != p.name && face.hdHeavy != nil {
+			face = face.hdHeavy
+		}
+		if err := drawModernBattlePanelInk(canvas, face, field.value, r, field.size, nativePaletteColor(palette, field.colour, color.RGBA{240, 244, 255, 255})); err != nil {
 			return nil, "", err
 		}
 	}
@@ -226,11 +230,15 @@ func drawModernBattlePanelInk(dst *image.RGBA, f *Font, value string, rect image
 		}
 		bounds, _ := font.BoundString(face, value)
 		box := image.Rect(bounds.Min.X.Floor(), bounds.Min.Y.Floor(), bounds.Max.X.Ceil(), bounds.Max.Y.Ceil())
-		if box.Dx() > rect.Dx() || box.Dy() > rect.Dy() {
+		if box.Dx()+2 > rect.Dx() || box.Dy()+2 > rect.Dy() {
 			continue
 		}
 		pen := fixed.P(rect.Min.X-box.Min.X, rect.Min.Y-box.Min.Y)
 		d := font.Drawer{Dst: dst.SubImage(rect).(*image.RGBA), Src: image.NewUniform(ink), Face: face, Dot: pen}
+		d.Src = image.NewUniform(color.RGBA{12, 22, 38, ink.A})
+		d.Dot = pen.Add(fixed.P(2, 2))
+		d.DrawString(value)
+		d.Src, d.Dot = image.NewUniform(ink), pen
 		d.DrawString(value)
 		return nil
 	}

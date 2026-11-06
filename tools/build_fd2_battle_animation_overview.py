@@ -93,7 +93,8 @@ def main():
                         original=str(directory / frame['path']), mask=str(directory / frame['mask_path']),
                         original_sha256=evidence['pixels_sha256'], mask_sha256=evidence['mask_sha256'],
                         hd=str(args.modern / hd['files'][index]) if hd else None,
-                        hd_sha256=hd['frame_sha256'][index] if hd else None))
+                        hd_sha256=hd['frame_sha256'][index] if hd else None,
+                        hd_rect=hd['hd_frames'][index] if hd and hd.get('consumer_contract') == 'native_figani_rgba_hd6_v2' else None))
             banks.append(bank)
         title = identities.get(figure, f'圖組 {figure:03}／身份未綁定')
         old = previous.get(figure)
@@ -137,7 +138,12 @@ def main():
                 if row['hd']:
                     assert sha(row['hd']) == row['hd_sha256']
                     picture = Image.open(row['hd']).convert('RGBA')
-                    if picture.size == (frame['width'] * 6, frame['height'] * 6):
+                    if row.get('hd_rect'):
+                        rect = row['hd_rect']
+                        assert picture.size == (rect['width'], rect['height'])
+                        full = Image.new('RGBA', (1920, 1200))
+                        full.alpha_composite(picture, (rect['x'], rect['y']))
+                    elif picture.size == (frame['width'] * 6, frame['height'] * 6):
                         full = Image.new('RGBA', (1920, 1200))
                         full.alpha_composite(picture, (frame['x'] * 6, frame['y'] * 6))
                     else:

@@ -81,9 +81,24 @@ func (c modernBattlePanelChrome) paint(canvas *image.RGBA, palette color.Palette
 		r := image.Rect(21*6, y*6, 124*6, (y+6)*6)
 		fill(r, c.track)
 		if c.width[i] > 0 {
-			fill(image.Rect(r.Min.X, r.Min.Y, r.Min.X+c.width[i], r.Max.Y), c.ink[i])
+			body := image.Rect(r.Min.X, r.Min.Y, r.Min.X+c.width[i], r.Max.Y)
+			fill(body, c.ink[i])
+			base := color.RGBAModel.Convert(palette[c.ink[i]]).(color.RGBA)
+			for row := 0; row < 6; row++ {
+				light := func(v uint8) uint8 { return uint8(int(v) + (255-int(v))*(6-row)/15) }
+				dark := func(v uint8) uint8 { return uint8(int(v) * (12 + row) / 18) }
+				for _, edge := range []struct {
+					y      int
+					colour color.RGBA
+				}{
+					{r.Min.Y + row, color.RGBA{light(base.R), light(base.G), light(base.B), base.A}},
+					{r.Max.Y - 1 - row, color.RGBA{dark(base.R), dark(base.G), dark(base.B), base.A}},
+				} {
+					draw.Draw(canvas, image.Rect(body.Min.X, edge.y, body.Max.X, edge.y+1), image.NewUniform(edge.colour), image.Point{}, draw.Src)
+				}
+			}
 		}
-		stroke(r, 1, c.border)
+		stroke(r, 2, c.border)
 	}
 	return nil
 }

@@ -113,6 +113,55 @@ def encode_review(review, audio):
                       'fps': 60, 'temporary_png_bytes_removed': removed}))
 
 
+def diagnose_ares(compiled, out, font_path):
+    """只放寬離線繪圖範圍，逐像素核對原框內保持同一圖源與定位。"""
+    assert Image and not out.exists() and out.parent.stat().st_uid == os.getuid()
+    proof = json.loads(compiled.read_text())
+    assert proof['status'] == 'PASS-COMPILED-ARES-CANDIDATE'
+    out.mkdir()
+    face = lambda px: ImageFont.truetype(str(font_path), px, index=3)
+    sheet = Image.new('RGB', (1600, 1680), '#091522')
+    text = ImageDraw.Draw(sheet)
+    text.text((28, 16), '亞雷斯切片診斷｜相同母稿、比例、位置', font=face(32), fill='#e9c879')
+    text.text((28, 64), '左：現行原圖框裁切　右：保留完整HD輪廓，僅由螢幕邊界裁切', font=face(24), fill='#e8edf4')
+    text.text((28, 102), '離線來源比較；尚未接入遊戲，不代表新增中間姿勢或60fps驗收。', font=face(20), fill='#bdcbd9')
+    rows = []
+    for ordinal, index in enumerate([1, 8, 11]):
+        row = next(r for r in proof['frames'] if r['resource'] == 13 and r['frame'] == index)
+        source = proof['sources'][row['pose']]
+        master = rgba(ROOT/source['file'], source['sha256'])
+        fitted = master.resize(tuple(row['fit_size']), Image.Resampling.LANCZOS)
+        frame = row['native_descriptor']
+        old = Image.new('RGBA', (1920, 1200))
+        old.alpha_composite(rgba(compiled.parent/'pack'/row['file'], row['sha256']), (frame['x']*6, frame['y']*6))
+        new = Image.new('RGBA', (1920, 1200))
+        origin = (frame['x']*6+row['origin'][0], frame['y']*6+row['origin'][1])
+        new.alpha_composite(fitted, origin)
+        rect = (frame['x']*6, frame['y']*6, (frame['x']+frame['width'])*6, (frame['y']+frame['height'])*6)
+        assert old.crop(rect).tobytes() == new.crop(rect).tobytes(), '原框內的圖源、比例或定位改變'
+        restored = sum(a2 >= 192 and a1 == 0 for a1, a2 in zip(old.getchannel('A').getdata(), new.getchannel('A').getdata()))
+        assert restored > 1000
+        target = out/f'ares-unclipped-f{index:02d}.png'
+        new.save(target)
+        top = 146+ordinal*510
+        for col, picture in enumerate([old, new]):
+            bg = Image.new('RGBA', (1920, 1200), '#152b3d')
+            bg.alpha_composite(picture)
+            sheet.paste(bg.convert('RGB').resize((760, 475), Image.Resampling.LANCZOS), (24+792*col, top+28))
+        text.text((28, top), f'f{index:02d}｜補回原框外 {restored:,} 個高覆蓋像素', font=face(21), fill='#e8c780')
+        rows.append({'frame': index, 'source': source, 'native_rect': list(rect), 'world_origin': list(origin),
+                     'inside_native_rect_equal': True, 'restored_high_coverage_pixels': restored,
+                     'file': target.name, 'sha256': sha(target)})
+    contact = out/'ares-clipping-comparison.png'
+    sheet.save(contact)
+    report = {'status': 'DRAFT-UNCLIPPED-HD-BOUNDS', 'compiled_sha256': sha(compiled),
+              'producer_sha256': sha(Path(__file__)), 'rows': rows,
+              'comparison_sha256': sha(contact), 'runtime_registered': False,
+              'scope': '相同母稿與定位的離線裁切診斷；正式HD清冊仍只接受原描述子尺寸。'}
+    (out/'clipping-diagnosis.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
+    print(json.dumps({'status': report['status'], 'restored_pixels': [r['restored_high_coverage_pixels'] for r in rows]}))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--modern', type=Path)
@@ -121,7 +170,11 @@ def main():
     p.add_argument('--out', type=Path)
     p.add_argument('--encode', type=Path, help='於既有FFmpeg容器編碼並驗證兩案，無需Pillow')
     p.add_argument('--audio', type=Path, help='已選A音色的斧擊OGG試稿')
+    p.add_argument('--ares-unclipped', type=Path, help='核對完整母稿超出原圖框的裁切，不改正式清冊')
     args = p.parse_args()
+    if args.ares_unclipped:
+        assert args.out and args.font
+        return diagnose_ares(args.ares_unclipped.resolve(), args.out.resolve(), args.font.resolve())
     if args.encode:
         assert args.audio
         return encode_review(args.encode.resolve(), args.audio.resolve())

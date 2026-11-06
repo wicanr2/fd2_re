@@ -37,6 +37,7 @@ type Font struct {
 	hd        *modernHDTextFrame
 	indexedHD *modernHDIndexedText
 	hdFonts   map[string]*Font
+	hdHeavy   *Font // 僅供HD戰鬥框英數；原版字型與斷行尺度保持。
 }
 
 // SetUserScale 設定字級倍率。超出合理範圍的值會被夾住——字太小讀不到、太大反而
@@ -112,7 +113,44 @@ func loadFontSized(size float64) *Font {
 	if sf == nil {
 		return nil
 	}
+	if serif := loadHDRegionalFonts(size, "SemiBold", []string{"assets/fonts/hd-serif.ttc", "/usr/share/fonts/opentype/noto/NotoSerifCJK-SemiBold.ttc"}); len(serif) == 4 {
+		heavy := loadHDRegionalFonts(size, "Black", []string{"assets/fonts/hd-serif-heavy.ttc", "/usr/share/fonts/opentype/noto/NotoSerifCJK-Black.ttc"})
+		for locale, face := range serif {
+			face.hdHeavy = heavy[locale]
+		}
+		regional = serif
+	}
 	return &Font{sf: sf, base: size, faces: map[int]font.Face{}, ascs: map[int]float64{}, hdFonts: regional}
+}
+
+// 可攜TTC優先，逐一核對區域家族，缺件沿用既有可讀字型。
+func loadHDRegionalFonts(size float64, weight string, paths []string) map[string]*Font {
+	for _, path := range paths {
+		data, err := os.ReadFile(assetPath(path))
+		if err != nil {
+			continue
+		}
+		collection, err := sfnt.ParseCollection(data)
+		if err != nil {
+			continue
+		}
+		result := map[string]*Font{}
+		for locale, index := range map[string]int{"zh-Hant": 3, "zh-Hans": 2, "ja": 0, "en": 0} {
+			face, err := collection.Font(index)
+			if err != nil {
+				continue
+			}
+			name, err := face.Name(nil, sfnt.NameIDFamily)
+			expected := map[string]string{"zh-Hant": "Noto Serif CJK TC", "zh-Hans": "Noto Serif CJK SC", "ja": "Noto Serif CJK JP", "en": "Noto Serif CJK JP"}[locale]
+			if err == nil && name == expected+" "+weight {
+				result[locale] = &Font{sf: face, base: size, faces: map[int]font.Face{}, ascs: map[int]float64{}}
+			}
+		}
+		if len(result) == 4 {
+			return result
+		}
+	}
+	return nil
 }
 
 // faceFor 取(或建)目標像素尺寸的 face。

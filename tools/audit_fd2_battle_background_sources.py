@@ -16,8 +16,12 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def audit(pack):
-    pinned = json.loads((ROOT / 'docs/data/fd2-battle-hd-source-inventory-20261019.json').read_text())
+def audit(pack, inventory=None):
+    inventory_path = inventory or ROOT / 'docs/data/fd2-battle-hd-source-inventory-20261019.json'
+    pinned = json.loads(inventory_path.read_text())
+    if inventory is not None and (pinned.get('status') != 'PASS-SOURCE-INVENTORY'
+            or pinned.get('archive_reconstruction', {}).get('matches_pinned_original') is not True):
+        raise ValueError('需要已核對原版重組的固定盤點')
     if sha(pack / 'manifest.json') != pinned['pack_manifest_sha256']:
         raise ValueError('固定原包 manifest 不符')
     manifest = json.loads((pack / 'manifest.json').read_text())
@@ -43,7 +47,7 @@ def audit(pack):
     palette = [(n << 2) | (n >> 4) for n in dac]
     resource_rows = {(r['source_file'], r['source_resource']): r for r in manifest['source_resources']}
     report = {'schema_version': 1, 'status': 'PASS-PINNED-BACKGROUND-INVENTORY',
-              'pack_manifest_sha256': sha(pack / 'manifest.json'),
+              'pack_manifest_sha256': sha(pack / 'manifest.json'), 'inventory_sha256': sha(inventory_path),
               'palette': {'resource': 0, 'sha256': sha(palette_path)},
               'source_files': {n: sources[n] for n in ['BG.DAT', 'TAI.DAT', 'FDOTHER.DAT', 'FDSHAP.DAT']},
               'banks': {}, 'terrain_control_tables': [],
@@ -113,12 +117,13 @@ def audit(pack):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--original-pack', type=Path, required=True)
+    parser.add_argument('--inventory', type=Path, help='明示同次固定盤點；省略沿歷史20261019基準')
     parser.add_argument('--out', type=Path, required=True, help='已存在目錄中的全新輸出前綴')
     args = parser.parse_args()
     targets = [Path(str(args.out) + s) for s in ['.json', '-BG.png', '-TAI.png']]
     if not Path('/.dockerenv').exists() or any(p.exists() for p in targets) or args.out.parent.stat().st_uid != os.getuid():
         raise SystemExit('請在 Docker 使用本人擁有的全新輸出前綴')
-    report, pictures = audit(args.original_pack)
+    report, pictures = audit(args.original_pack, args.inventory)
     report['sheets'] = []
     for bank, target in zip(['BG', 'TAI'], targets[1:]):
         canvas = Image.new('RGB', (1344, 2400), '#171d29'); draw = ImageDraw.Draw(canvas)

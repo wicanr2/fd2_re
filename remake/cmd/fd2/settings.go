@@ -187,6 +187,9 @@ func (g *Game) applyFontScale(scale float64) {
 		if primary != nil {
 			for _, regional := range primary.hdFonts {
 				regional.SetUserScale(g.fontScale)
+				if regional.hdHeavy != nil {
+					regional.hdHeavy.SetUserScale(g.fontScale)
+				}
 			}
 		}
 	}

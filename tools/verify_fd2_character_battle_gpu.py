@@ -205,12 +205,16 @@ def main():
         if target_group and asset['source_resource'] != args.figure*3:
             continue
         for index, (name, sha, frame) in enumerate(zip(asset['files'], asset['frame_sha256'], asset['native_frames'])):
+            frame = dict(frame)
+            hd = asset.get('hd_frames', [])[index] if asset.get('consumer_contract') == 'native_figani_rgba_hd6_v2' else None
+            geometry = (hd['width'], hd['height']) if hd else (frame['width']*6, frame['height']*6)
+            frame['_hd_x'], frame['_hd_y'] = (hd['x'], hd['y']) if hd else (frame['x']*6, frame['y']*6)
             path = args.source/name
             if digest(path) != sha: raise SystemExit('圖源雜湊不同')
             if body_frames is not None and (asset['source_resource'], index) not in body_frames:
                 continue
             with Image.open(path) as im:
-                if im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6): raise SystemExit('圖源形狀不同')
+                if im.mode != 'RGBA' or im.size != geometry: raise SystemExit('圖源形狀不同')
                 def selected(r, g, b, a):
                     if a < 250: return False
                     if args.core_profile == 'opaque': return True
@@ -256,7 +260,7 @@ def main():
             if im.size != (1920, 1200): raise SystemExit('需要1920×1200視窗PNG')
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
-                positions=[(frame['x']*6,frame['y']*6,None,[])]
+                positions=[(frame['_hd_x'],frame['_hd_y'],None,[])]
                 if end_group or fixture_group or target_group or action_group:
                     positions=[]
                     for state in (sample['before'],sample['after']):
@@ -275,7 +279,7 @@ def main():
                             # X11擷取可落在前一個已呈現幀；job只提供同圖庫的caller位移。
                             # fixture在同一次Draw回讀，仍要求精確索引。實際姿勢都由PNG核對。
                             dx,dy=layer['x']-current_frame['x'],layer['y']-current_frame['y']
-                            position=((frame['x']+dx)*6,(frame['y']+dy)*6,layer['clip'],source_layers[layer_index+1:])
+                            position=(frame['_hd_x']+dx*6,frame['_hd_y']+dy*6,layer['clip'],source_layers[layer_index+1:])
                             if position not in positions:positions.append(position)
                 for x,y,clip,foreground in positions:
                     visible=points

@@ -7488,5 +7488,495 @@
         "retained": "全部母稿、圖源、編製與回歸收據、測試二進位、正式私人素材及全幀總覽"
       }
     }
+  },
+  "active_battle_review": "battle_audiovisual_followup_20261106",
+  "battle_audiovisual_followup_20261106": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-SERIF-A-AUDIO-B; OTHER-VISUALS-DRAFT",
+    "work": "work/hd1-feedback-20261106-r91",
+    "scope": {
+      "dragons": "地圖與戰鬥",
+      "gaia_head": "戰鬥畫面"
+    },
+    "ares_choice": "保留完整HD輪廓；原版描述子、時序、傷害與存檔保持",
+    "diagnosis": "work/hd1-feedback-20261106-r91/ares-clipping-r1/clipping-diagnosis.json",
+    "style_decisions_pending": [
+      "龍族比例",
+      "地圖材質",
+      "熾炎刀火焰邊緣與粒子"
+    ],
+    "preserved_user_deletion": "docs/figures/hd1-ares-battle-revision.png",
+    "font_choice": "A古典明體；HD明體名稱／文字與Black明體英數、立體血條",
+    "gaia_choice": "已採用原版強化像素手繪，七母稿／15幀正式登錄，包含掌心蓄光及收手姿勢；取消的頭肩分離稿未登錄",
+    "gaia_rejected_draft": "work/hd1-feedback-20261106-r91/gaia-head-separated-v4-draft.png",
+    "audio_choice": "B厚重音色，依使用者後續明示取代R90的A紀錄",
+    "registration": {
+      "status": "PASS-FORMAL-GAIA-PIXEL-ARES-SERIF-A-AUDIO-B",
+      "catalog_sha256": "aa6082368171a45986dd108dc0cb8dd74d6ab35b3c7ff5927f1563bfae3ff8b5",
+      "private_manifest_sha256": "fe321143fb577e92df36e3cb71d4fb55c95c9370b9d0b488e2636559935fc720",
+      "asset_count": 3378,
+      "private_file_count": 11261,
+      "new_files_since_r90": [
+        "figani-012-hd6-v3-f00.png",
+        "figani-012-hd6-v3-f01.png",
+        "figani-012-hd6-v3-f02.png",
+        "figani-012-hd6-v3-f03.png",
+        "figani-013-hd6-v3-f00.png",
+        "figani-013-hd6-v3-f01.png",
+        "figani-013-hd6-v3-f02.png",
+        "figani-013-hd6-v3-f03.png",
+        "figani-013-hd6-v3-f04.png",
+        "figani-013-hd6-v3-f05.png",
+        "figani-013-hd6-v3-f06.png",
+        "figani-013-hd6-v3-f07.png",
+        "figani-013-hd6-v3-f08.png",
+        "figani-013-hd6-v3-f09.png",
+        "figani-013-hd6-v3-f10.png",
+        "figani-013-hd6-v3-f11.png",
+        "figani-013-hd6-v3-f12.png",
+        "figani-013-hd6-v3-f13.png",
+        "figani-013-hd6-v3-f14.png",
+        "figani-090-hd6-v4-f00.png",
+        "figani-090-hd6-v4-f01.png",
+        "figani-090-hd6-v4-f02.png",
+        "figani-090-hd6-v4-f03.png",
+        "figani-091-hd6-v4-f00.png",
+        "figani-091-hd6-v4-f01.png",
+        "figani-091-hd6-v4-f02.png",
+        "figani-091-hd6-v4-f03.png",
+        "figani-091-hd6-v4-f04.png",
+        "figani-091-hd6-v4-f05.png",
+        "figani-091-hd6-v4-f06.png",
+        "figani-091-hd6-v4-f07.png",
+        "figani-091-hd6-v4-f08.png",
+        "figani-091-hd6-v4-f09.png",
+        "figani-091-hd6-v4-f10.png",
+        "figure-030-charge-battle-hd6-master-v4.png",
+        "figure-030-charge_spark-battle-hd6-master-v4.png",
+        "figure-030-flare-battle-hd6-master-v4.png",
+        "figure-030-follow-battle-hd6-master-v4.png",
+        "figure-030-idle-battle-hd6-master-v4.png",
+        "figure-030-idle_spark-battle-hd6-master-v4.png",
+        "figure-030-impact-battle-hd6-master-v4.png",
+        "hd1-physical-blade-impact-b-v1.ogg",
+        "hd1-physical-gaia-impact-b-v1.ogg"
+      ],
+      "unchanged_existing_files": 11218,
+      "normal_gaia_receipt_sha256": "7fc7e7da3546ff3a9514977f9b2d871ce214ef89e6b078b78603bce11c17e42f",
+      "scope": "43新檔：亞雷斯19PNG、B音效2OGG、蓋亞15PNG與7像素母稿；地圖人物及其餘圖源保持。"
+    },
+    "font_prototype": {
+      "file": "docs/figures/hd1-font-hud-design-comparison.png",
+      "sha256": "d6283c7bd675926e342ee6a51723b1a8e9aa6741d9a024eed96558846e2256ee"
+    },
+    "portable_fonts": {
+      "file": "assets/fonts/cjk.ttc",
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "hd_fonts": [
+        {
+          "file": "assets/fonts/hd-serif.ttc",
+          "sha256": "b313b12c4ca6bffd67fced7ace2050bc70c9d6768327157636f8cef7d5aa2c8d"
+        },
+        {
+          "file": "assets/fonts/hd-serif-heavy.ttc",
+          "sha256": "f9ea56d72ca0f7fb6cbb550eb40b1002686f10fb9173bbca80210caa12e7b861"
+        }
+      ],
+      "license": "third-party/noto-cjk/copyright",
+      "license_sha256": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b",
+      "status": "PASS-PORTABLE-FONT-FILES-AND-LICENSE",
+      "scope": "安裝函式與SHA驗證，非三平台完整包或Windows實機驗收"
+    },
+    "evidence": {
+      "native_interiors": {
+        "file": "work/hd1-feedback-20261106-r91/ares-full-outline-proof.json",
+        "sha256": "ce669e1bdc9eacb0d73f643926a7c0d69840a59776d0949082e79e4b83e71ce9"
+      },
+      "gpu_source_match": {
+        "file": "work/hd1-feedback-20261106-r91/ares-source-gpu-proof.json",
+        "sha256": "e8f4c2e1097f537e5f32195de0decf85b5656b74d7944c614958b760c3558231"
+      },
+      "normal_gui": {
+        "file": "work/hd1-feedback-20261106-r91/ares-serif-normal-gui-r2/receipt.json",
+        "sha256": "0d64e4a83ff240a64e3fbf97dd298d5a76e999dd71fc62e24af0bf41f024d34d"
+      },
+      "short_regression": {
+        "file": "work/hd1-feedback-20261106-r91/short-regression.log",
+        "sha256": "30441a1d2dd7950a3b0f5d9f7d1abeb50678016399d7e3bb30b83d6964bdf12e"
+      },
+      "catalog_regression": {
+        "file": "work/hd1-feedback-20261106-r91/catalog-regression.log",
+        "sha256": "1175e994b97cb4b876d6820bb056c9a718608b0b8347516e761894bb8529b2ab"
+      },
+      "bounds_gpu": {
+        "file": "work/hd1-feedback-20261106-r91/explicit-bounds-gpu.log",
+        "sha256": "c7b48dfdc37e9a91da83151f218fe7654c9f5663ad466e92cdf20c2354b4c488"
+      },
+      "preflight": {
+        "file": "work/hd1-feedback-20261106-r91/batch-preflight.log",
+        "sha256": "433e260e96cec68fadf7329bce3ca2005ccdbbc5d44f911aa68fed050208437e"
+      },
+      "lifecycle": {
+        "file": "work/hd1-feedback-20261106-r91/ares-lifecycle.log",
+        "sha256": "ce0a8e3efbd64a2683104e69775af85a196efbab368c77ae268a7b7552ce8697"
+      },
+      "audio": {
+        "file": "work/hd1-feedback-20261106-r91/heavy-audio-regression.log",
+        "sha256": "2297118570ee55982ba5f840791133639c5f88903bcbadafd2c90eec1b1211c3"
+      },
+      "gaia_normal_gui": {
+        "file": "work/hd1-feedback-20261106-r91/gaia-pixel-normal-gui-r2/receipt.json",
+        "sha256": "7fc7e7da3546ff3a9514977f9b2d871ce214ef89e6b078b78603bce11c17e42f"
+      },
+      "gaia_gpu": {
+        "file": "work/hd1-feedback-20261106-r91/gaia-pixel-source-gpu-proof.json",
+        "sha256": "887d5adbc17c8449c411b9f7942975340f26d7ff0f7bcc0b049c933f26731c3d"
+      },
+      "gaia_lifecycle": {
+        "file": "work/hd1-feedback-20261106-r91/gaia-pixel-lifecycle.log",
+        "sha256": "211b7f8943dccd7ccd236d1c23d2965c3a11bceb8017feb1f5d1b0bfcb99974b"
+      },
+      "gaia_compiler_guards": {
+        "file": "work/hd1-feedback-20261106-r91/gaia-pixel-guards-r1/guards.json",
+        "sha256": "7decf2fee69e14dcc8702188409ad85d139049a212a2c00ab5d3741cd6b4863a"
+      },
+      "default_compat": {
+        "file": "work/hd1-feedback-20261106-r91/gaia-default-compat-proof.json",
+        "sha256": "3abe1b3cdab6af767ba7abdd40b881f71634c31f8c1ab2e1298676493f84edc3"
+      },
+      "mixed_preflight": {
+        "file": "work/hd1-feedback-20261106-r91/combined-batch-preflight.log",
+        "sha256": "1a7aac17daa5d17cfb66718d1c6500a7c83468d5680856e5cbb4e08107a46060"
+      },
+      "all_sources": {
+        "file": "work/hd1-feedback-20261106-r91/combined-source-coverage.json",
+        "sha256": "d3c77d1d2a8e6d91de994578e48fbf6b82666c926a5a01b82dea1afcc7651fda"
+      },
+      "final_catalog_regression": {
+        "file": "work/hd1-feedback-20261106-r91/final-catalog-regression.log",
+        "sha256": "9653faa0a504865457f395f7d1a19e323e2d2d7bfc401b16da3cb37d9fba206f"
+      }
+    },
+    "normal_gui_scope": "首章來源089b077b有建構祖先；標題LOAD、正常走行、亞雷斯普通攻擊、F2、自然返回、F5及新程序冷讀。不是新原版oracle或Windows60fps。",
+    "gaia_pixel_style": {
+      "approved_idle_sha256": "9ca84a0e2ea66e7bafc554fba8372e6bc7b54dfba1e815fce1b02b042e189032",
+      "master_audit": "work/hd1-feedback-20261106-r91/gaia-pixel-master-audit.json",
+      "recipe": {
+        "schema_version": 1,
+        "figure": 30,
+        "inventory_sha256": "9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1",
+        "sources": {
+          "idle": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-idle-master-v4.png",
+            "sha256": "9ca84a0e2ea66e7bafc554fba8372e6bc7b54dfba1e815fce1b02b042e189032",
+            "anchor": [
+              0,
+              0,
+              1069,
+              1471
+            ]
+          },
+          "charge": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-charge-master-v4.png",
+            "sha256": "1b21d24aba070e736488592353ccbe102cccb3b4acaadb2e62a1c6bab89b8fc7",
+            "anchor": [
+              0,
+              0,
+              1100,
+              1430
+            ]
+          },
+          "charge_spark": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-charge_spark-master-v4.png",
+            "sha256": "5e6f2828c57ee8363a7b14122e1900d3604e71fd9325cb5e5a31d304882395f7",
+            "anchor": [
+              0,
+              0,
+              1105,
+              1424
+            ]
+          },
+          "idle_spark": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-idle_spark-master-v4.png",
+            "sha256": "6802913e834118a840856ab0b83a08fc47a9694e11edbd87322d106768415139",
+            "anchor": [
+              0,
+              0,
+              1069,
+              1472
+            ]
+          },
+          "impact": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-impact-master-v4.png",
+            "sha256": "1cecd54ee9ba4ee9dc73d24844496a59a03ee72ddc952cbd3ba6475f3b44a813",
+            "anchor": [
+              0,
+              0,
+              1402,
+              1122
+            ]
+          },
+          "flare": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-flare-master-v4.png",
+            "sha256": "ae727c4d2f136504db329f6ac6e45d6d783a29a9edc1eebd69b6134d58159452",
+            "anchor": [
+              0,
+              0,
+              1275,
+              1233
+            ]
+          },
+          "follow": {
+            "file": "work/hd1-feedback-20261106-r91/gaia-pixel-masters/gaia-pixel-follow-master-v4.png",
+            "sha256": "11f36ffc97adbfa63539191c9e708978c9aef6200cf8551213ee4c1da3bd54f6",
+            "anchor": [
+              0,
+              0,
+              1263,
+              1246
+            ]
+          }
+        },
+        "resources": {
+          "90": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                143
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                142
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                141
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                142
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          "91": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                104,
+                143
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "charge",
+              "anchor": [
+                0,
+                0,
+                110,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge_spark",
+              "anchor": [
+                0,
+                0,
+                111,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge_spark",
+              "anchor": [
+                0,
+                0,
+                111,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "charge_spark",
+              "anchor": [
+                0,
+                0,
+                111,
+                143
+              ],
+              "scale_group": "charge"
+            },
+            {
+              "pose": "idle_spark",
+              "anchor": [
+                0,
+                0,
+                104,
+                143
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "impact",
+              "anchor": [
+                0,
+                0,
+                194,
+                155
+              ],
+              "scale_group": "impact"
+            },
+            {
+              "pose": "flare",
+              "anchor": [
+                0,
+                0,
+                151,
+                146
+              ],
+              "scale_group": "flare"
+            },
+            {
+              "pose": "flare",
+              "anchor": [
+                0,
+                0,
+                150,
+                147
+              ],
+              "scale_group": "flare"
+            },
+            {
+              "pose": "follow",
+              "anchor": [
+                0,
+                0,
+                149,
+                147
+              ],
+              "scale_group": "follow"
+            },
+            {
+              "pose": "follow",
+              "anchor": [
+                0,
+                0,
+                149,
+                147
+              ],
+              "scale_group": "follow"
+            }
+          ]
+        }
+      },
+      "runtime_registered": true,
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "compiler_flags": [
+        "--revision",
+        "4",
+        "--pixel-art"
+      ]
+    },
+    "gaia_normal_scope": "同一089b077b首章來源，正常前進一回合後由30號蓋亞出招，F2、自然返回、F5及新程序冷讀；來源具建構祖先，不新增原版E2。",
+    "binary": {
+      "linux_file": "work/hd1-feedback-20261106-r91/fd2-final",
+      "linux_sha256": "1148a866cbad0cd267f7ffda34f17106cd47671359c7fbbed8f42b78c759fabf",
+      "identical_to_tested_ares_binary": true,
+      "windows_file": "work/hd1-feedback-20261106-r91/fd2-windows-x86_64.exe",
+      "windows_sha256": "ff193169dfe2453b5c0af934a7174e3b6be88f8d18c93de3797ef16b872678be",
+      "windows_scope": "交叉編譯，非Windows實機或60fps驗收"
+    },
+    "screenshots": [
+      {
+        "file": "docs/figures/hd1-ares-full-outline-serif.png",
+        "sha256": "08e1f61da1647df3c8d0962ceddfef4194094da0184eddae9bdc758ab09f0795"
+      },
+      {
+        "file": "docs/figures/hd1-gaia-original-pixel-battle.png",
+        "sha256": "769bc315d69c76583391f99feb884a50f4b2e723fca8322a9fb88eaace6d9a43"
+      }
+    ],
+    "remaining_scope": [
+      "龍人地圖與戰鬥比例",
+      "地圖材質",
+      "熾炎刀火焰邊緣與粒子"
+    ],
+    "dragon_scope_evidence": {
+      "file": "docs/data/exe_tables/characters.json",
+      "race": 4,
+      "race_name": "龍人",
+      "indices": [
+        16,
+        17,
+        26,
+        27
+      ],
+      "note": "種族與原圖組對應已查；比例方案尚未選定，不延伸到其他同號DATO或未知身份組。"
+    },
+    "private_commit": "a0e23d04fc09e23c913bb1cf2f99b5d83bb915de",
+    "private_remote_head_verified": true,
+    "semantic_catalog_delta": [
+      [
+        "modern.figani.012.hd6.v2",
+        "modern.figani.012.hd6.v3"
+      ],
+      [
+        "modern.figani.013.hd6.v2",
+        "modern.figani.013.hd6.v3"
+      ],
+      [
+        "modern.figani.090.hd6.v3",
+        "modern.figani.090.hd6.v4"
+      ],
+      [
+        "modern.figani.091.hd6.v3",
+        "modern.figani.091.hd6.v4"
+      ],
+      [
+        "modern.physical.sfx.049.a.v1",
+        "modern.physical.sfx.049.b.v1"
+      ],
+      [
+        "modern.physical.sfx.053.a.v1",
+        "modern.physical.sfx.053.b.v1"
+      ]
+    ],
+    "dragon_scale_draft": {
+      "status": "DRAFT-AWAITING-USER-SCALE",
+      "file": "work/hd1-feedback-20261106-r91/dragon-scale-review-r2/review.json",
+      "sha256": "ceaee1ed29c096f7451d634a21dc53b176bc06e77d29be5b66c30c67ed20c500",
+      "tool": "tools/build_fd2_hd1_dragon_scale_review.py",
+      "runtime_registered": false
+    },
+    "cleanup": {
+      "file": "work/hd1-feedback-20261106-r91/cleanup.json",
+      "sha256": "d56ac6d1b553123907beb0234db732c6afa3296c759710e2196ba9e004ca0dff",
+      "bytes": 783764332,
+      "files": 2908
+    }
   }
 }

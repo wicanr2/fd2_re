@@ -51,6 +51,7 @@ def main():
     p.add_argument('--with-cast', action='store_true', help='明示編製完整待機、攻擊及已解碼施術三組，不猜零header回退')
     p.add_argument('--layered', action='store_true', help='明示接受既有schema1有序圖層，不增加或補造施術銀行')
     p.add_argument('--revision', type=int, default=1, help='母稿及成品檔名版本；既有預設保持v1')
+    p.add_argument('--pixel-art', action='store_true', help='保留已定像素母稿的色階，以最近鄰編製；既有預設保持LANCZOS')
     args = p.parse_args(); out = args.out.resolve()
     if not 1 <= args.revision <= 999:
         raise SystemExit('圖源版本須介於1與999')
@@ -141,7 +142,8 @@ def main():
     composed = {}
     for resource, index, key, frame, original, picture, anchor, target, scale, group, _ in pending:
         scale *= groups[group]
-        fitted = picture.resize((max(1, round(picture.width*scale)), max(1, round(picture.height*scale))), Image.Resampling.LANCZOS)
+        fitted = picture.resize((max(1, round(picture.width*scale)), max(1, round(picture.height*scale))),
+                                Image.Resampling.NEAREST if args.pixel_art else Image.Resampling.LANCZOS)
         sx, sy = fitted.width/picture.width, fitted.height/picture.height
         origin = [round((target[0]+target[2])*3-(anchor[0]+anchor[2])*sx/2), round(target[3]*6-anchor[3]*sy)]
         actual = [origin[0]+anchor[0]*sx, origin[1]+anchor[1]*sy, origin[0]+anchor[2]*sx, origin[1]+anchor[3]*sy]
@@ -233,6 +235,7 @@ def main():
         'base_catalog_sha256': digest(args.base_catalog), 'catalog_sha256': digest(path), 'compiler_sha256': digest(Path(__file__)),
         'inventory_sha256': digest(args.inventory), 'recipe_sha256': digest(args.recipe), 'sources': source_records,
         'frames': records, 'scale_groups': groups, 'review_sha256': digest(out/'review.png'),
+        'pixel_art': args.pixel_art, 'sampling': 'NEAREST' if args.pixel_art else 'LANCZOS',
         'scope': '明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。'}
     if empty_headers:
         report['idle_only_empty_headers'] = empty_headers

@@ -15,11 +15,26 @@ FIELDS = ['x', 'y', 'width', 'height', 'delay_native', 'raw_byte_4', 'raw_byte_5
 
 
 def check_pngs(asset, source, full_masks=None, empty_masks=None):
+    explicit = asset.get('consumer_contract') == 'native_figani_rgba_hd6_v2'
+    rectangles = asset.get('hd_frames')
+    if explicit and (not isinstance(rectangles, list) or len(rectangles) != len(asset['files'])):
+        raise ValueError('已登錄HD矩形不完整')
+    if not explicit and rectangles is not None:
+        raise ValueError('舊契約不得帶HD矩形')
     for index, (name, sha, frame) in enumerate(zip(asset['files'], asset['frame_sha256'], asset['native_frames'])):
         path = source/name
         if digest(path) != sha: raise ValueError('已登錄成品SHA不同')
+        size = (frame['width']*6, frame['height']*6)
+        if explicit:
+            r = rectangles[index]
+            if (not isinstance(r, dict) or set(r) != {'x', 'y', 'width', 'height'}
+                or any(type(v) is not int for v in r.values())
+                or not 0 < r['width'] <= 1920 or not 0 < r['height'] <= 1200
+                or not 0 <= r['x'] <= 1920-r['width'] or not 0 <= r['y'] <= 1200-r['height']):
+                raise ValueError('已登錄HD矩形越界')
+            size = (r['width'], r['height'])
         with Image.open(path) as im:
-            if im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6):
+            if im.mode != 'RGBA' or im.size != size:
                 raise ValueError('已登錄成品形狀或alpha不同')
             low, high = im.getchannel('A').getextrema()
             full_mask = asset['source_archive'] == 'FDOTHER.DAT' and full_masks is not None and full_masks[index]
@@ -144,7 +159,7 @@ def main():
     surfaces = []
     surface_assets = [a for a in catalog['assets'] if a['role'] == 'battle_surface_hd']
     if surface_assets:
-        native_surfaces, _ = audit_background_sources(args.original_pack)
+        native_surfaces, _ = audit_background_sources(args.original_pack, args.inventory)
         for asset in surface_assets:
             archive, resource = asset['source_archive'], asset['source_resource']
             frame = native_surfaces['banks'][archive[:-4]]['entries'][resource]

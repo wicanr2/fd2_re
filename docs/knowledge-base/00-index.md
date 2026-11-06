@@ -1037,6 +1037,14 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 ## 2026-11-06 HD1三人戰鬥音畫修訂
 
-亞雷斯、蓋亞、羅德曼的完整配方、圖源SHA及驗證界線見[音畫修訂收據](../data/fd2-hd1-battle-audiovisual-20261106.json)，固定原始資料見[本輪圖源盤點](../data/fd2-battle-hd-source-inventory-20261106.json)。唯一工作現況仍在HD1主收據的`battle_audiovisual_review_20261106`；本機全幀總覽另由`tools/build_fd2_battle_animation_overview.py --figures 4,19,30`重生，不公開可重組圖源。
+亞雷斯、蓋亞、羅德曼較早配方及驗證界線見[音畫修訂收據](../data/fd2-hd1-battle-audiovisual-20261106.json)，固定原始資料見[本輪圖源盤點](../data/fd2-battle-hd-source-inventory-20261106.json)。唯一工作現況由HD1主收據的`active_battle_review`指向最新欄位；本機全幀總覽另由`tools/build_fd2_battle_animation_overview.py --figures 4,19,30`重生，不公開可重組圖源。
 
-三人最新全幀圖與Markdown入口為[本機總覽](/home/anr2/cht/fd2/work/hd1-audiovisual-20261106-r90/three-person-overview/README.md)。
+三人最新全幀圖與Markdown入口為[本機總覽](/home/anr2/cht/fd2/work/hd1-feedback-20261106-r91/three-person-overview/README.md)。
+
+## HD1完整輪廓、字型與像素戰鬥
+
+[戰鬥比較工具](../../tools/build_fd2_hd1_battle_review.py)的`--ares-unclipped <compiled.json> --font <字型> --out <新目錄>`可重生相同母稿、比例與定位的原框內／完整輪廓比較；只做DRAFT診斷，不登錄正式圖源。現況與回覆範圍沿HD1主收據。
+
+[字型與血條比較工具](../../tools/build_fd2_hd1_font_review.py)保留原尺寸外框，比較古典明體與明體／厚黑英數；使用者已選A古典明體，原型數值只供排版。完整HD矩形、明體／立體血條、B音效與蓋亞原版像素手繪的正式範圍見[61](61-modern-theme-runtime-spec.md#hd1完整輪廓與第二輪觀感回饋)。蓋亞使用`tools/build_fd2_character_battle_hd.py --pixel-art`，現況及可重跑配方沿[HD1主收據](../data/fd2-hd1-feedback-20261104.json)。
+
+[龍人比例比較工具](../../tools/build_fd2_hd1_dragon_scale_review.py)依正式角色表的種族4選四名龍人，並列地圖及戰鬥本體首幀的100%／115%／125%來源縮放。以`--modern <私人素材包> --font <Noto TTC> --out <本人工作區新目錄>`重生；只供DRAFT比例取捨，不改清冊、方向、站位或規則，也不證明全動作與正式GUI通過。

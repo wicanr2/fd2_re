@@ -84,16 +84,20 @@ def install_modern_runtime(repo, source, target):
             'pack_manifest_sha256': sha(destination / 'private-manifest.json')}
 
 
-def install_cjk_font(target, source, license_path):
-    if not source.is_file() or not license_path.is_file():
+def install_cjk_font(target, source, license_path, serif_source, heavy_source):
+    if not all(p.is_file() for p in (source, license_path, serif_source, heavy_source)):
         raise ValueError('HD1需要可攜Noto中文字型與授權全文')
     fonts = target / 'assets/fonts'
     fonts.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(source, fonts / 'cjk.ttc')
+    hd_fonts = []
+    for origin, name in [(serif_source, 'hd-serif.ttc'), (heavy_source, 'hd-serif-heavy.ttc')]:
+        shutil.copyfile(origin, fonts / name)
+        hd_fonts.append({'file': 'assets/fonts/' + name, 'sha256': sha(origin)})
     notices = target / 'third-party/noto-cjk'
     notices.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(license_path, notices / 'copyright')
-    return {'file': 'assets/fonts/cjk.ttc', 'sha256': sha(source),
+    return {'file': 'assets/fonts/cjk.ttc', 'sha256': sha(source), 'hd_fonts': hd_fonts,
             'license': 'third-party/noto-cjk/copyright', 'license_sha256': sha(license_path)}
 
 
@@ -166,6 +170,8 @@ def main():
     parser.add_argument('--original-pack', type=Path)
     parser.add_argument('--modern-pack', type=Path)
     parser.add_argument('--cjk-font', type=Path, default=Path('/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'))
+    parser.add_argument('--hd-serif-font', type=Path, default=Path('/usr/share/fonts/opentype/noto/NotoSerifCJK-SemiBold.ttc'))
+    parser.add_argument('--hd-heavy-font', type=Path, default=Path('/usr/share/fonts/opentype/noto/NotoSerifCJK-Black.ttc'))
     parser.add_argument('--cjk-license', type=Path, default=Path('/usr/share/doc/fonts-noto-cjk/copyright'))
     args = parser.parse_args()
     assert Path('/.dockerenv').exists(), '只在 Docker 內執行'
@@ -221,7 +227,7 @@ def main():
         if modern is not None:
             for target in [linux, engine, mac_resources]:
                 info = install_modern_runtime(repo, modern, target)
-                font = install_cjk_font(target, args.cjk_font, args.cjk_license)
+                font = install_cjk_font(target, args.cjk_font, args.cjk_license, args.hd_serif_font, args.hd_heavy_font)
                 if modern_info is not None and (info != modern_info or font != font_info):
                     raise ValueError('三平台HD1清冊或字型不同')
                 modern_info, font_info = info, font
@@ -294,6 +300,8 @@ def main():
         if metadata.get('hd'):
             font = metadata['portable_cjk_font']
             assert sha(root / 'assets/fonts/cjk.ttc') == font['sha256']
+            for hd_font in font.get('hd_fonts', []):
+                assert sha(root / hd_font['file']) == hd_font['sha256']
             assert sha(root / 'third-party/noto-cjk/copyright') == font['license_sha256']
         overrides = {row['path']: row for row in asset_document['platform_overrides'].get(platform, [])}
         for common in rows:

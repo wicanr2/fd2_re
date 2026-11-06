@@ -3935,4 +3935,4 @@ BattleFig15／17手繪來源已正式接入，限定CONFORMED-SCOPED／RUNTIME-E
 
 ## HD1三人戰鬥音畫修訂
 
-亞雷斯、蓋亞、羅德曼61幀修訂、普通物理HD音效A及B分鏡已達CONFORMED-SCOPED／RUNTIME-E1。三人普通攻防全present與F2、羅德曼淒煌斬八次命中、首章普通標題LOAD至攻擊返回及保存冷讀已抽樣。原始描述子、遊戲規則與存檔格式保持；本輪不新增原版parity、完整戰役或Windows60fps聲明。契約見[61](61-modern-theme-runtime-spec.md#2026-11-06-hd1戰鬥音畫修訂)，來源配方與驗證界線見[本輪收據](../data/fd2-hd1-battle-audiovisual-20261106.json)。
+三人音畫修訂的後續已達CONFORMED-SCOPED／RUNTIME-E1：亞雷斯19幀改用獨立HD矩形，保留完整武器與特效；蓋亞依使用者新定案改成原版強化像素手繪15幀；HD介面採A古典明體及立體血條，普通物理音效改B厚重版。羅德曼與B分鏡保持先前已驗範圍。兩人完整攻防、F2、來源GPU比對、首章正常出招返回及保存冷讀已抽樣；不新增原版parity、完整戰役或Windows60fps聲明。最新契約見[61](61-modern-theme-runtime-spec.md#hd1完整輪廓與第二輪觀感回饋)，唯一現況沿[HD1主收據](../data/fd2-hd1-feedback-20261104.json)的`active_battle_review`；較早[三人來源配方](../data/fd2-hd1-battle-audiovisual-20261106.json)保留為歷史。

@@ -44,6 +44,8 @@ def main():
             command.append('--with-cast')
         if (layered if layer_flag is None else layer_flag):
             command.append('--layered')
+        if baseline.get('pixel_art') is True:
+            command.append('--pixel-art')
         result = subprocess.run(command, capture_output=True, text=True, timeout=60)
         output = result.stdout+result.stderr
         if result.returncode == 0 or target.exists() or expected not in output:
@@ -167,8 +169,24 @@ def main():
         if (error is None) != accepted: raise AssertionError((name, error))
         checks.append({'case':'empty-audit-'+name, 'status':'PASS-ACCEPTED' if accepted else 'PASS-REJECTED',
                        'reason':error or '已證實空白來源只接受全透明成品', 'output_published':False})
+    pixel_palette_frames = []
+    if baseline.get('pixel_art') is True:
+        palettes = {}
+        for row in baseline['frames']:
+            if row.get('layers'):
+                continue  # 分層合成可產生混色，這項性質只驗單一像素母稿。
+            key = row['pose']
+            if key not in palettes:
+                source = ROOT / recipe['sources'][key]['file']
+                with Image.open(source) as image:
+                    palettes[key] = set(image.convert('RGBA').getdata()) | {(0, 0, 0, 0)}
+            with Image.open(args.baseline.parent/'pack'/row['file']) as image:
+                if not set(image.convert('RGBA').getdata()).issubset(palettes[key]):
+                    raise AssertionError(('最近鄰產生母稿以外的色階', row['resource'], row['frame']))
+            pixel_palette_frames.append([row['resource'], row['frame']])
     report = {'status': 'PASS-CHARACTER-COMPILER-GUARDS', 'compiler_sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
         'baseline_sha256': hashlib.sha256(args.baseline.read_bytes()).hexdigest(), 'checks': checks,
+        'pixel_palette_frames': pixel_palette_frames,
         'scope': '實檔錯配方／來源、適用的idle-only零header證據與五種空白幀稽核條件；不代表遊戲玩家驗證。'}
     (out/'guards.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'guards': len(checks)}))

@@ -5463,6 +5463,21 @@
       "rule": "角色大小與姿勢一致性以實際編製影格及遊戲畫面核對；母稿比例改動後，同時檢查錨點適配與收招群組是否再次縮身。FD2入口為tools/build_fd2_ares_battle_hd.py的fit與完整4／15幀收據。",
       "why": "亞雷斯只改母稿仍被原藍衣錨點壓回648像素，收招群組又共用0.625倍縮放；先修正式編製，再核對全姿勢，避免預覽看似變大但遊戲仍小。",
       "evidence": "docs/data/fd2-hd1-battle-audiovisual-20261106.json"
+    },
+    {
+      "id": "hd-battle-bounds-preserve-weapon-silhouette",
+      "area": "HD美術",
+      "date": "2026-11-06",
+      "rule": "HD武器及特效輪廓以獨立繪圖矩形承載，不用原版描述子硬裁；核對舊框內位置及框外實際GPU像素。FD2入口為tools/build_fd2_ares_battle_hd.py的--uncropped-hd與規格61的v2契約。",
+      "why": "R90將亞雷斯的部分裁切列可保留，玩家仍看到切片。相同母稿與定位重編後19幀舊框內完全相同，實際GPU補回框外輪廓。",
+      "evidence": "docs/data/fd2-hd1-feedback-20261104.json#battle_audiovisual_followup_20261106",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_ares_battle_hd.py"
+        ],
+        "pattern": "--uncropped-hd"
+      }
     }
   ]
 }

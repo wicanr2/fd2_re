@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"image"
@@ -25,10 +26,46 @@ type modernBattleHDDescriptor struct {
 }
 
 type modernBattleHDResource struct {
-	Frames []image.Image
-	paths  []string
-	hashes []string
-	sizes  []image.Rectangle
+	Frames  []image.Image
+	paths   []string
+	hashes  []string
+	sizes   []image.Rectangle
+	hdRects []image.Rectangle
+}
+
+// HD coordinates are independent of the immutable native FIGANI descriptor.
+type modernBattleHDRectangle struct {
+	X      int `json:"x"`
+	Y      int `json:"y"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
+}
+
+func (r *modernBattleHDRectangle) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		return err
+	}
+	if len(fields) != 4 {
+		return errors.New("modern HD battle: HD rectangle requires four integer fields")
+	}
+	var value modernBattleHDRectangle
+	for key, target := range map[string]*int{"x": &value.X, "y": &value.Y, "width": &value.Width, "height": &value.Height} {
+		data, ok := fields[key]
+		if !ok || bytes.Equal(bytes.TrimSpace(data), []byte("null")) {
+			return errors.New("modern HD battle: incomplete HD rectangle")
+		}
+		if err := json.Unmarshal(data, target); err != nil {
+			return err
+		}
+	}
+	*r = value
+	return nil
+}
+
+func (r modernBattleHDRectangle) valid() bool {
+	return r.Width > 0 && r.Width <= modernHDWidth && r.Height > 0 && r.Height <= modernHDHeight &&
+		r.X >= 0 && r.Y >= 0 && r.X <= modernHDWidth-r.Width && r.Y <= modernHDHeight-r.Height
 }
 
 func loadModernBattleHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
@@ -57,6 +94,9 @@ func modernBattleHDContract(asset modernThemeAsset) (prefix, consumer, cycle, la
 		return "FDOTHER", "native_fdother_command9_ai_rgba_hd6_v1", "native_command9_ai_frames", "native_descriptor_hd6", true
 	}
 	if asset.Role == "battle_animation_hd_set" && asset.SourceArchive == "FIGANI.DAT" && asset.SourceResource >= 0 && asset.SourceResource < 409 {
+		if asset.ConsumerContract == "native_figani_rgba_hd6_v2" {
+			return "FIGANI", "native_figani_rgba_hd6_v2", "native_descriptor_key_poses", "explicit_hd_frame_rects_v2", true
+		}
 		return "FIGANI", "native_figani_rgba_hd6_v1", "native_descriptor_key_poses", "contain_native_descriptor_hd6_candidate", true
 	}
 	if asset.Role == "battle_effect_hd_set" && asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource >= 65 && asset.SourceResource <= 68 {
@@ -105,6 +145,15 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 	}
 	paths := make([]string, asset.FrameCount)
 	sizes := make([]image.Rectangle, asset.FrameCount)
+	var hdRects []image.Rectangle
+	if consumer == "native_figani_rgba_hd6_v2" {
+		if len(asset.HDFrames) != asset.FrameCount {
+			return errors.New("modern HD battle: incomplete HD rectangles")
+		}
+		hdRects = make([]image.Rectangle, asset.FrameCount)
+	} else if len(asset.HDFrames) != 0 {
+		return errors.New("modern HD battle: unexpected HD rectangles for v1")
+	}
 	for index, frame := range native.Frames {
 		want := modernBattleHDDescriptor{X: frame.X, Y: frame.Y, Width: frame.Width, Height: frame.Height, Delay: frame.Delay,
 			RawByte4: frame.RawByte4, RawByte5: frame.RawByte5, RawByte7: frame.RawByte7}
@@ -123,8 +172,17 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		if hex.EncodeToString(digest[:]) != asset.FrameSHA256[index] {
 			return fmt.Errorf("modern HD battle: frame %d sha256 mismatch", index)
 		}
+		width, height := frame.Width*6, frame.Height*6
+		if hdRects != nil {
+			r := asset.HDFrames[index]
+			if !r.valid() {
+				return fmt.Errorf("modern HD battle: frame %d has invalid HD rectangle", index)
+			}
+			width, height = r.Width, r.Height
+			hdRects[index] = image.Rect(r.X, r.Y, r.X+r.Width, r.Y+r.Height)
+		}
 		config, _, err := image.DecodeConfig(bytes.NewReader(raw))
-		if err != nil || config.Width != frame.Width*6 || config.Height != frame.Height*6 {
+		if err != nil || config.Width != width || config.Height != height {
 			return fmt.Errorf("modern HD battle: frame %d has invalid geometry", index)
 		}
 		picture, _, err := image.Decode(bytes.NewReader(raw))
@@ -166,7 +224,7 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		entries = make(map[int]*modernBattleHDResource)
 	}
 	entries[asset.SourceResource] = &modernBattleHDResource{Frames: make([]image.Image, asset.FrameCount),
-		paths: paths, sizes: sizes, hashes: append([]string(nil), asset.FrameSHA256...)}
+		paths: paths, sizes: sizes, hdRects: hdRects, hashes: append([]string(nil), asset.FrameSHA256...)}
 	if asset.SourceArchive == "FDOTHER.DAT" {
 		set.battleEffects = entries
 	} else {

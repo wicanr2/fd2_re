@@ -4,10 +4,46 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"testing"
 )
+
+func TestModernPhysicalSFXRealCatalog(t *testing.T) {
+	catalog, pack := os.Getenv("FD2_TEST_HD_AUDIO_CATALOG"), os.Getenv("FD2_TEST_HD_AUDIO_PACK")
+	if catalog == "" || pack == "" {
+		t.Skip("requires explicit complete HD sound catalog and legal source pack")
+	}
+	raw, err := os.ReadFile(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc modernThemeCatalog
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		t.Fatal(err)
+	}
+	set := &modernStoryPortraitSet{}
+	count := 0
+	for _, asset := range doc.Assets {
+		if asset.Role != modernPhysicalSFXRole {
+			continue
+		}
+		if err := loadModernPhysicalSFX(set, asset, pack); err != nil {
+			t.Fatal(err)
+		}
+		count++
+		t.Logf("resource%d cues%v sha%s", asset.SourceResource, asset.CueIDs, asset.SHA256)
+	}
+	if count != 2 || validateModernPhysicalSFXGroup(set) != nil {
+		t.Fatal("incomplete registered sound pair")
+	}
+	for key, pcm := range set.physicalSFX {
+		if len(pcm) == 0 || len(pcm)%4 != 0 || bytes.Equal(pcm, make([]byte, len(pcm))) {
+			t.Fatal("silent or invalid PCM", key)
+		}
+	}
+}
 
 func TestModernPhysicalSoundThemeSelection(t *testing.T) {
 	original, modern := []byte{1, 2, 3, 4}, []byte{5, 6, 7, 8}

@@ -14,6 +14,60 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_battle_png_audit_checks_explicit_geometry_and_v1_rejection(self):
+        from PIL import Image
+        from audit_fd2_battle_hd_coverage import check_pngs
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            image = Image.new('RGBA', (12, 18))
+            image.putpixel((2, 2), (255, 0, 0, 255))
+            image.save(root/'frame.png')
+            asset = dict(files=['frame.png'], frame_sha256=[hashlib.sha256((root/'frame.png').read_bytes()).hexdigest()],
+                         native_frames=[dict(width=2, height=2)], source_archive='FIGANI.DAT',
+                         consumer_contract='native_figani_rgba_hd6_v2',
+                         hd_frames=[dict(x=100, y=100, width=12, height=18)])
+            check_pngs(asset, root)
+            for case in ['missing', 'negative', 'overflow', 'size', 'v1']:
+                bad = copy.deepcopy(asset)
+                if case == 'missing': bad.pop('hd_frames')
+                elif case == 'negative': bad['hd_frames'][0]['x'] = -1
+                elif case == 'overflow': bad['hd_frames'][0]['x'] = 1920
+                elif case == 'size': bad['hd_frames'][0]['height'] = 12
+                elif case == 'v1': bad['consumer_contract'] = 'native_figani_rgba_hd6_v1'
+                with self.subTest(case=case), self.assertRaises(ValueError): check_pngs(bad, root)
+
+    def test_explicit_hd_bounds_keep_native_descriptors_and_reject_partial_rectangles(self):
+        base = validator.validate(False)
+        asset = next(a for a in base['assets'] if a['role'] == 'battle_animation_hd_set')
+        original_native = copy.deepcopy(asset['native_frames'])
+        asset['consumer_contract'] = 'native_figani_rgba_hd6_v2'
+        asset['layout_policy'] = 'explicit_hd_frame_rects_v2'
+        asset['hd_frames'] = [dict(x=0, y=0, width=12, height=18) for _ in asset['files']]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'catalog.json'
+            path.write_text(json.dumps(base))
+            validator.validate(False, path)
+            self.assertEqual(asset['native_frames'], original_native)
+            for case in ['missing', 'short', 'key', 'extra', 'bool', 'fraction', 'negative', 'empty', 'right', 'bottom', 'v1']:
+                with self.subTest(case=case):
+                    bad = copy.deepcopy(base)
+                    a = next(a for a in bad['assets'] if a['asset_id'] == asset['asset_id'])
+                    if case == 'missing': a.pop('hd_frames')
+                    elif case == 'short': a['hd_frames'].pop()
+                    elif case == 'key': a['hd_frames'][0].pop('x')
+                    elif case == 'extra': a['hd_frames'][0]['extra'] = 0
+                    elif case == 'bool': a['hd_frames'][0]['x'] = False
+                    elif case == 'fraction': a['hd_frames'][0]['width'] = 12.5
+                    elif case == 'negative': a['hd_frames'][0]['x'] = -1
+                    elif case == 'empty': a['hd_frames'][0]['width'] = 0
+                    elif case == 'right': a['hd_frames'][0]['x'] = 1910
+                    elif case == 'bottom': a['hd_frames'][0]['y'] = 1190
+                    elif case == 'v1':
+                        a['consumer_contract'] = 'native_figani_rgba_hd6_v1'
+                        a['layout_policy'] = 'contain_native_descriptor_hd6_candidate'
+                    path.write_text(json.dumps(bad))
+                    with self.assertRaises(ValueError): validator.validate(False, path)
+
     def test_hd_physical_sound_group_and_camera_profile_are_optional_and_atomic(self):
         base = validator.validate(False)
         base['assets'] = [a for a in base['assets'] if a['role'] not in

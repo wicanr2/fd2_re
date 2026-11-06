@@ -6,7 +6,7 @@ ENV PATH=/usr/local/go/bin:${PATH}
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        pkg-config libasound2-dev xorg-dev libgl1-mesa-dev xvfb xauth fonts-noto-cjk \
+        pkg-config libasound2-dev xorg-dev libgl1-mesa-dev xvfb xauth fonts-noto-cjk fonts-noto-cjk-extra \
     && rm -rf /var/lib/apt/lists/*
 
 # Ebiten 在 main 之前就初始化 X11，測試一定要有 DISPLAY。用受版控的 with-xvfb
