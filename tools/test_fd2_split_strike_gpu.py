@@ -69,6 +69,23 @@ def main():
     reject('changed-descriptor', lambda d: figure(d).update(x=0, rect=[0, 0, 6, 6]), '目的矩形')
     reject('changed-hd-source', lambda d: figure(d).update(hd_sha256='bad'), 'HD來源SHA')
     reject('hidden-hd', lambda d: figure(d).update(clip=[0, 0, 0, 0]), '完整GPU')
+    catalog = json.loads(a.catalog.read_text())
+    extended = {asset['source_resource']: asset for asset in catalog['assets']
+                if asset.get('role') == 'battle_animation_hd_set'
+                and asset.get('consumer_contract') == 'native_figani_rgba_hd6_v2'}
+    for shot_name, shot in base['source_shots'].items():
+        selected = next((i for i, layer in enumerate(shot['layers'])
+                         if layer.get('archive', '') in ('', 'FIGANI.DAT') and layer['resource'] in extended
+                         and layer['rect'] != [(layer['x']+layer['dx'])*6, (layer['y']+layer['dy'])*6,
+                                               (layer['x']+layer['dx']+layer['width'])*6,
+                                               (layer['y']+layer['dy']+layer['height'])*6]), None)
+        if selected is not None:
+            def native_box(doc):
+                layer = doc['source_shots'][shot_name]['layers'][selected]
+                layer['rect'] = [(layer['x']+layer['dx'])*6, (layer['y']+layer['dy'])*6,
+                                 (layer['x']+layer['dx']+layer['width'])*6, (layer['y']+layer['dy']+layer['height'])*6]
+            reject('native-box-for-extended-hd', native_box, '目的矩形')
+            break
     panel_layers = [(name, i) for name, shot in base['source_shots'].items()
                     for i, layer in enumerate(shot['layers']) if 'panel_file' in layer]
     if panel_layers:

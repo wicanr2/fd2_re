@@ -5508,6 +5508,21 @@
         ],
         "pattern": "alpha_sources"
       }
+    },
+    {
+      "id": "source-manifest-guards-share-revalidated-inventory",
+      "area": "驗證工具",
+      "date": "2026-11-07",
+      "rule": "素材包manifest改變時，原圖、背景及空拍守衛須使用同次固定盤點。沿舊盤點時先重生並逐欄核對完整原始證據，不能只替換manifest雜湊。FD2入口為tools/verify_fd2_split_strike_gpu.py的live_proof與background_pin，固定盤點保存於docs/data/fd2-battle-hd-source-inventory-20261106.json。",
+      "why": "熾炎刀畫布驗證先重驗了全部FIGANI來源，後續空拍及BG守衛仍誤收舊manifest，造成同批原圖被拒收。補上同次盤點傳遞並保持固定SHA與原始描述子門檻。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#熾炎刀b火焰與逐拍火星",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_split_strike_gpu.py"
+        ],
+        "pattern": "live_proof = current"
+      }
     }
   ]
 }

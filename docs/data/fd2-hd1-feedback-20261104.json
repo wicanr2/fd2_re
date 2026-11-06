@@ -7491,7 +7491,7 @@
   },
   "active_battle_review": "battle_audiovisual_followup_20261106",
   "battle_audiovisual_followup_20261106": {
-    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B-PIXEL-TERRAIN; FIRE-DRAFT",
+    "status": "CONFORMED-SCOPED-RUNTIME-E1: ARES-GAIA-DRAGONS115-SERIF-A-AUDIO-B-PIXEL-TERRAIN; FIRE-B-SCOPED; FLOATING-EMBERS-PENDING",
     "work": "work/hd1-feedback-20261106-r91",
     "scope": {
       "dragons": "地圖與戰鬥",
@@ -7499,9 +7499,7 @@
     },
     "ares_choice": "保留完整HD輪廓；原版描述子、時序、傷害與存檔保持",
     "diagnosis": "work/hd1-feedback-20261106-r91/ares-clipping-r1/clipping-diagnosis.json",
-    "style_decisions_pending": [
-      "熾炎刀火焰邊緣與粒子"
-    ],
+    "style_decisions_pending": [],
     "preserved_user_deletion": "docs/figures/hd1-ares-battle-revision.png",
     "font_choice": "A古典明體；HD明體名稱／文字與Black明體英數、立體血條",
     "gaia_choice": "已採用原版強化像素手繪，七母稿／15幀正式登錄，包含掌心蓄光及收手姿勢；取消的頭肩分離稿未登錄",
@@ -7920,7 +7918,7 @@
     ],
     "remaining_scope": [
       "獨立地形／物件圖集依A方向分批複核",
-      "熾炎刀火焰邊緣與粒子"
+      "熾炎刀連續漂浮火星"
     ],
     "dragon_scope_evidence": {
       "file": "docs/data/exe_tables/characters.json",
@@ -7934,7 +7932,7 @@
       ],
       "note": "種族4與圖組16／17／26／27已查證，使用者選115%；未知身份或只有同號頭像的圖組不延伸。"
     },
-    "private_commit": "a9a20bfa7327836a29abbcf4cc0a4888928673c9",
+    "private_commit": "9ff0f6c27412ec16097bdabe44f2a2ca410f4873",
     "private_remote_head_verified": true,
     "semantic_catalog_delta": [
       [
@@ -8241,6 +8239,150 @@
       "private_commit": "a9a20bfa7327836a29abbcf4cc0a4888928673c9",
       "private_remote_head_verified": true
     },
-    "active_slice": "map_pixel_material_refresh_20261106"
+    "active_slice": "fire_edge_refresh_20261107",
+    "fire_edge_refresh_20261107": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-KEYBOARD-ACTION",
+      "choice": "B：外擴火焰＋更多火星",
+      "work": "work/hd1-feedback-20261106-r91/fire-edge-review-r1",
+      "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#熾炎刀b火焰與逐拍火星",
+      "recipe": "remake/assets/themes/modern/hd1-fire-edge-refresh.recipe.json",
+      "compiler": "tools/refresh_fd2_hd1_fire_effect.py",
+      "changed_resource": 104,
+      "changed_frames": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "unchanged_assets": 3384,
+      "blank_frame": 17,
+      "runtime_registered": true,
+      "continuous_particle_motion_registered": false,
+      "gpu_screens": 88,
+      "negative_cases": 23,
+      "clean_rebuild_equal": true,
+      "normal_source_sha256": "49260e21b1d0385f7b3ee392f63a7c17dc4135c6b62c98b794ad66a65155946e",
+      "scope": "只刷新六拍火焰與嵌入火星；不新增獨立計時器、規則、保存、DOS對拍、平台效能或發行包。",
+      "remaining": [
+        "連續漂浮火星尚未接入",
+        "獨立地形／物件圖集風格分批複核",
+        "Windows i7-9700K實機60fps",
+        "既有下載包與推廣片未重打；HD2暫緩"
+      ],
+      "formal_catalog_sha256": "07e78f70c4288a1743adac755d7c06da6969aca1fc95cbe151ccbf0a9d3953ed",
+      "new_private_files": 10,
+      "old_private_files_preserved": 14928,
+      "active_private_files": 11269,
+      "normal_gui": {
+        "status": "PASS-NORMAL-KEYBOARD-PROMO-ACTION",
+        "elapsed_seconds": 232.0145437149331,
+        "source_ancestor": "既有公開來源建構政策：鐵諾轉職成長及AP+5000／DP+300；無執行中狀態注入",
+        "source_save_bytes_equal": true,
+        "mp_sequence": [
+          39,
+          13
+        ],
+        "target_count": 1,
+        "continuous_hd_checked": true,
+        "cold_load_verified": false
+      },
+      "evidence": [
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/generation.json",
+          "sha256": "17f0fbadecfdf1641a8801e06ef9e9ddd58f601df204f4829576e9a5819bfb19"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/final-generation.json",
+          "sha256": "4608cc94e4b012b8f6774b6d19c3bcd800d9cce52c00638b9d45ab2324ffc954"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/render-proof.json",
+          "sha256": "78d73dd5c61765cdf0b8bf90e48f6877a1243adc71084f82f68c2ce7297694c9"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/candidate-r2/compiled.json",
+          "sha256": "0950fd8f19d93805127b128c2db5cdb377836b95de4037c646b6ac7957f934f3"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/clean-rebuild-proof.json",
+          "sha256": "4d5ed16ff73612701da9ccfde4cde3fc3f4b435fb9f80010622e3a2eae954bfc"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/split-game-r1.gate.json",
+          "sha256": "5447f46462f9a3f843ff77888e6adeff530e91e98c15dccfbdce80781129c96e"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/split-game-r1-capture/receipt.json",
+          "sha256": "85ee55d0f71f5f627ed5011e798131b68aeb332efc8d6d1c5c295656eec94e3a"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/split-gpu-proof-r4.json",
+          "sha256": "42d4e90bbc90d2019a2cd4ffb83ad0a66ae6906c9aae4ab55b51c82a205e4184"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/gpu-guards-r1/guards.json",
+          "sha256": "1fe149aaa2e2f7f77f07e56b86a931d7c06cafe899603f019f371482776928cf"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/normal-gui-r3/promo-action.json",
+          "sha256": "ff7fa6dfacf16a22bbe4a38b303159ceda48e338c6493f9fc563beb79f657b51"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/formal-registration.json",
+          "sha256": "c8835a35ea57af5123f345fd1367dbb78371f710636ed2dd39ed7218168f10ec"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/public-screenshot.json",
+          "sha256": "746438ee8fdcb634f9a538ccaa9c94d5599c7766c2af27b2dcd1130c510d726e"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/catalog-tests-r2.log",
+          "sha256": "d87fbb929fbcb42537387ea3c566e6e27da0702031031b5208e628ae822cbbfe"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/catalog-tests-formal.log",
+          "sha256": "1f1adad7d46cfc68dadb306445e185f3fd571f3b493208e622eb349c9e89b386"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/split-gpu-old-inventory.json",
+          "sha256": "0d46dd6f5db5ef164877087a099ddc331c6ab07cecc11491686460429e35e4ab"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/documentation-check.json",
+          "sha256": "df749e4ef22f7be52ddbbb701fb1baa128f121bc7cd2bbd694b446b047575264"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/lessons-check.log",
+          "sha256": "440a0cc277b9a04ed3747e03ba3e09b85d18baef25f2aaa844fc68d7c03d2207"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/worklist-final.log",
+          "sha256": "f2f6bf75e5addff99362f4c678dc351161fce647ef84b283d2e423c09d0a3bf5"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/cleanup.json",
+          "sha256": "3509088569c4f2b9511455d03a75592754abff3b58759a0dc0bb9fa8f296cd78"
+        },
+        {
+          "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/tino-overview/overview-manifest.json",
+          "sha256": "ceca903f58272c2e4c2ce9ad72c493245c7c1a4624ba01ffd2be515289aba20e"
+        }
+      ],
+      "private_commit": "9ff0f6c27412ec16097bdabe44f2a2ca410f4873",
+      "private_remote_head_verified": true,
+      "source_manifest_old_new_screens_equal": true,
+      "catalog_tests": 21,
+      "lessons": 440,
+      "lesson_guards": 280,
+      "cleanup": {
+        "removed_entries": 24466,
+        "reclaimed_bytes": 268955575,
+        "scope": "只移除本輪重複候選與原先空的Go快取；最終圖源、Linux及測試二進位、收據與總覽保持。",
+        "file": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/cleanup.json"
+      },
+      "battle_animation_overview": "work/hd1-feedback-20261106-r91/fire-edge-review-r1/tino-overview/README.md"
+    }
   }
 }

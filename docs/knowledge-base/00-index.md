@@ -1058,3 +1058,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - HD1像素地表範圍與負向檢查：[獨立稽核工具](../../tools/audit_fd2_hd1_pixel_terrain.py)。
 
 - 精簡工作區的隔離驗證素材：[覆蓋編製工具](../../tools/stage_fd2_runtime_overlay.py)，以唯讀原包、專案assets與指定清冊組合，輸出APPDIR可用的assets根目錄。
+
+- 熾炎刀B火焰：[逐拍美術契約與驗收](61-modern-theme-runtime-spec.md#熾炎刀b火焰與逐拍火星)、[四母稿配方](../../remake/assets/themes/modern/hd1-fire-edge-refresh.recipe.json)與[候選編製器](../../tools/refresh_fd2_hd1_fire_effect.py)。沿既有v2明示HD矩形保留火舌，不新增獨立粒子時鐘；[完整GPU核對器](../../tools/verify_fd2_split_strike_gpu.py)與[錯件拒收](../../tools/test_fd2_split_strike_gpu.py)同驗原生描述子、來源、目的矩形及透明空拍。

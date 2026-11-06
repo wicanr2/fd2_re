@@ -6807,3 +6807,19 @@ Windows補測入口為[效能記錄啟動器](../../tools/run_fd2_windows_perfor
 最終去背景參考只取alpha；原版索引裁切的候選雖通過機械檢查，因實際樹冠缺損已拒收。新版保留531617個全覆蓋手繪物件像素的原RGB。乾淨重建的202張圖與37份遮罩完全相同。正式清冊、輸入與收據SHA及私人同步狀態以[唯一現況](../data/fd2-hd1-feedback-20261104.json)的battle_audiovisual_followup_20261106.map_pixel_material_refresh_20261106為準；此批不新增原版parity或Windows60fps聲明，既有封包未重打，HD2保持暫緩。
 
 重跑依[刷新器](../../tools/refresh_fd2_hd1_pixel_terrain.py)的--help指定固定原包、Go地形來源匯出、maps、基底清冊、已保存母稿與新out；[稽核器](../../tools/audit_fd2_hd1_pixel_terrain.py)獨立核對全部引用與保留像素。[隔離素材覆蓋工具](../../tools/stage_fd2_runtime_overlay.py)以唯讀原包、專案assets與指定清冊建立APPDIR，供現有正常GUI工具使用；所有工作維持Docker-only。舊清冊可由基底8c9a8c61的Git版本取回，新母稿／alpha參考由私人包按配方檔名及SHA取用；不需拒收試稿。
+
+### 熾炎刀B火焰與逐拍火星
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1／正常施放抽樣。使用者檢視三欄比較與六秒慢看試演後，明示採B「外擴火焰＋更多火星」。只刷新FIGANI104第11～16拍的火焰與嵌入火星，四份透明母稿由內建圖像工具沿已選B與既有光柱、光環、收束尖焰生成。試演中的連續漂浮火星屬離線合成，本批不宣稱已接入該移動效果或達成平台60fps。
+
+- 原版規則沿「指令24／29的HD場景來源」已閉合證據。固定FD2.EXE 357074 bytes，SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`，IDA9.4 LE線性位址sub_29C90及27B33..27D9A；不重開硬體時序或傷害研究。FIGANI104 metadata SHA為`b80ca41881448b5548eaa958067e7464efa15ef2c645bd2686f610f42c006914`，原始archive、各拍PNG及Mask依[來源盤點](../data/fd2-battle-hd-source-inventory-20261106.json)核對。原生描述子與消費端為已證實，本批美術為使用者指定的呈現近似。
+- 輸入為基底公開提交6bf63fdd的清冊、固定原包、盤點及[四母稿配方](../../remake/assets/themes/modern/hd1-fire-edge-refresh.recipe.json)。[編製器](../../tools/refresh_fd2_hd1_fire_effect.py)先核基底SHA、四母稿SHA與RGBA透明端點，再載入全部18拍原始資料；錯件不得產生部分候選。來源提示詞與生成輸出SHA記在配方，圖源只進私人保存庫。
+- 11～13拍依原生寬度與中心逐步展開火環；14拍沿舊光柱核心的尺寸、中心及底線換B，保留周圍火舌；15拍使用完整收束尖焰母稿，16拍按原版透明欄分組的範圍配置末端尖焰。只做等比取樣、定位與透明裁邊，不用原版Mask裁HD輪廓。沿既有v2明示HD矩形，越出原圖框的火舌可見；只有320×200視窗邊界可裁切並記錄像素數。
+- 0～10拍與17透明空拍的檔名／SHA、18個原生描述子、header及其餘清冊項逐欄不變。102／103、人物、背景、介面、原版美術模式、MP第6拍、HP第14拍、自身作用名單、RNG、續行、保存格式與owner生命週期不變。火星只隨原有各拍切換，不新增獨立計時器。
+- 驗收需核六個新圖、零高覆蓋火焰裁切或明示的視窗限制、全部未選來源不變、乾淨重生一致；執行command29實際Game.Draw／F2／雙目標／透明空拍／一次MP與逐目標HP／RNG／釋放，沿既有GPU核對器比較完整畫布。再以既有已揭露建構來源正常LOAD、鍵盤施放與自然返回抽樣。存檔由原有章界契約負責，不宣稱保存戰中狀態。通過後才改正式清冊與同步私人庫；不新增DOS原版對拍、全戰役E2、平台效能或新封包聲明。
+
+六張成品、四份母稿與乾淨重生一致，高覆蓋視窗裁切為零，其他3384項清冊及人物／透明末拍不變。雙目標八階段F2、88張完整Game.Draw的獨立CPU Over容差1、23個錯件／缺拍拒收通過。既有49260e21來源經正常標題LOAD、三次END接近與鐵諾29施放返回，歷時232秒；連續HD、MP39到13及單一目標HP發布通過，來源槽未改寫。此來源具明示轉職／成長及AP／DP政策，不是自然養成或新增PLAYER-E2，本次不重驗保存冷讀。
+
+正式清冊仍3385項，只替換104為v2，SHA為`07e78f70c4288a1743adac755d7c06da6969aca1fc95cbe151ccbf0a9d3953ed`。私人庫新增十個已登錄檔，14928個舊圖源逐SHA保持，現行白名單仍11269檔。來源、正常施放、完整畫布與私人同步證據集中[唯一現況](../data/fd2-hd1-feedback-20261104.json)的battle_audiovisual_followup_20261106.fire_edge_refresh_20261107；新原稿與提示詞依配方保存。編製與GPU核對在Docker執行，舊盤點的manifest已變時須先重生並逐欄核原始證據，再把同次盤點傳給空拍及背景守衛，不更換雜湊冒充重驗。
+
+[鐵諾／劍聖全幀Markdown總覽](/home/anr2/cht/fd2/work/hd1-feedback-20261106-r91/fire-edge-review-r1/tino-overview/README.md)依正式清冊重生，完整原版／HD圖源限本機審閱。使用既有build_fd2_battle_animation_overview.py的--figures 2,34、固定原包與同次盤點；兩個形態的原生座標、第三銀行及透明末拍均明示。

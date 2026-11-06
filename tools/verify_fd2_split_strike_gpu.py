@@ -15,11 +15,12 @@ from audit_fd2_battle_background_sources import audit as audit_backgrounds
 from audit_fd2_battle_animation_hd import audit as audit_animations
 
 INVENTORY_SHA = 'd019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51'
+CURRENT_INVENTORY_SHA = '9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1'
 
 
 @lru_cache(maxsize=2)
-def background_inventory(pack):
-    return audit_backgrounds(pack)[0]
+def background_inventory(pack, inventory):
+    return audit_backgrounds(pack, inventory)[0]
 
 
 def shader_channels(picture, subtract):
@@ -87,18 +88,26 @@ def native_transition_channels(receipt,sample,layer,original_pack,row):
 
 
 def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=None):
-    if digest(inventory) != INVENTORY_SHA:
+    if digest(inventory) not in {INVENTORY_SHA, CURRENT_INVENTORY_SHA}:
         raise ValueError('固定來源盤點不同')
     proof = json.loads(inventory.read_text())
     if (proof.get('status') != 'PASS-SOURCE-INVENTORY'
         or proof.get('archive_reconstruction', {}).get('matches_pinned_original') is not True):
         raise ValueError('原始包或重建證據不同')
     revalidation = None
+    live_proof = proof
+    background_pin = inventory
     if digest(original_pack/'manifest.json') != proof['pack_manifest_sha256']:
         current = audit_animations(original_pack, catalog, 19)
         for field in ('source_inputs', 'archive_reconstruction', 'resources'):
             if current[field] != proof[field]:
                 raise ValueError('目前素材包與固定盤點的完整原圖證據不同：'+field)
+        # 空拍守衛仍核目前manifest。只有完整原圖證據逐欄相同時，
+        # 才傳遞剛重生的盤點；不把舊manifest雜湊改成目前值冒充重驗。
+        live_proof = current
+        background_pin = Path(__file__).resolve().parents[1]/'docs/data/fd2-battle-hd-source-inventory-20261106.json'
+        if digest(background_pin) != CURRENT_INVENTORY_SHA:
+            raise ValueError('目前背景盤點版本未固定')
         revalidation = {'status': 'PASS-FULL-SOURCE-REVALIDATION',
                         'previous_manifest_sha256': proof['pack_manifest_sha256'],
                         'current_manifest_sha256': current['pack_manifest_sha256'],
@@ -158,7 +167,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
     row, asset = bank(resource)
     if len(row['frames']) != count:
         raise ValueError('分段打擊幀數不同')
-    blank = None if command == 28 else pinned_native_blank(original_pack, proof, resource, count-1, source/asset['files'][-1])
+    blank = None if command == 28 else pinned_native_blank(original_pack, live_proof, resource, count-1, source/asset['files'][-1])
     found, coverage, outputs, worst = set(), {p: set() for p in phases}, {}, 0
     used_surfaces=set(); surface_proofs={}
     shots = d.get('source_shots', {})
@@ -179,10 +188,27 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             x, y, w, h = (layer[k] for k in ('x', 'y', 'width', 'height'))
             rect = [(x+layer['dx'])*6, (y+layer['dy'])*6,
                     (x+layer['dx']+w)*6, (y+layer['dy']+h)*6]
+            rid, frame = layer['resource'], layer['frame']
+            archive = layer.get('archive', '')
+            if archive in ('', 'FIGANI.DAT') and rid >= 0:
+                _, registered = bank(rid)
+                if not 0 <= frame < len(registered['files']):
+                    raise ValueError('圖源索引越界')
+                if registered['consumer_contract'] == 'native_figani_rgba_hd6_v2':
+                    rectangles = registered.get('hd_frames', [])
+                    if registered['layout_policy'] != 'explicit_hd_frame_rects_v2' or len(rectangles) != len(registered['files']):
+                        raise ValueError('HD目的矩形清冊不完整')
+                    hd = rectangles[frame]
+                    if (set(hd) != {'x', 'y', 'width', 'height'} or any(type(v) is not int for v in hd.values())
+                            or not 0 <= hd['x'] < hd['x']+hd['width'] <= 1920
+                            or not 0 <= hd['y'] < hd['y']+hd['height'] <= 1200):
+                        raise ValueError('HD目的矩形清冊越界')
+                    rect = [(hd['x']+layer['dx']*6), (hd['y']+layer['dy']*6),
+                            (hd['x']+hd['width']+layer['dx']*6), (hd['y']+hd['height']+layer['dy']*6)]
+                elif registered['consumer_contract'] != 'native_figani_rgba_hd6_v1':
+                    raise ValueError('未知HD目的矩形契約')
             if rect != layer['rect'] or layer['fill'] != -1:
                 raise ValueError('圖層目的矩形或填色不同')
-            rid, frame = layer['resource'], layer['frame']
-            archive=layer.get('archive','')
             if archive not in ('','FIGANI.DAT','BG.DAT','TAI.DAT'):
                 raise ValueError('不支援的分段打擊archive')
             if archive in ('BG.DAT','TAI.DAT'):
@@ -199,7 +225,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
                     if (archive, rid) not in surfaces or row['metadata_sha256'] != surfaces[archive, rid]['source_metadata_sha256']:
                         raise ValueError('淒煌斬場景描述子不是已登錄原圖')
                 else:
-                    row=background_inventory(original_pack)['banks'][archive[:-4]]['entries'][rid]
+                    row=background_inventory(original_pack, background_pin)['banks'][archive[:-4]]['entries'][rid]
                 origin=(0,50) if archive=='BG.DAT' else (164,157)
                 if [x,y,w,h]!=[origin[0],origin[1],row['width'],row['height']]:
                     raise ValueError('場景原描述子／metadata／HD身分不同')
@@ -232,7 +258,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
                     raise ValueError('HD來源SHA或來源類別不同')
                 key = rid, frame, subtract
                 if key not in pictures:
-                    im = checked_image(source, registered['files'][frame], sha, (w*6, h*6))
+                    im = checked_image(source, registered['files'][frame], sha, (rect[2]-rect[0], rect[3]-rect[1]))
                     pictures[key] = shader_channels(im, subtract)
                 picture = pictures[key]
                 if rid == resource and phase in ('actor', 'target-0', 'target-1'):

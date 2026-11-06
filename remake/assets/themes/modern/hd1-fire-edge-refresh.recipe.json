@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "choice": "B",
+  "resource": 104,
+  "base_commit": "6bf63fddb351dc4bc5b2d6c834c412bbde26a72e",
+  "base_catalog_sha256": "abbe24f5bf18b59ee23f00c2032d54240e0c61a54d3b5d5f8232512a54505917",
+  "inventory_sha256": "9c04333e1495e17a7dfaf3dc0bbc88e2a820c768622adffce1ccf688d92c20f1",
+  "masters": {
+    "column": {
+      "file": "figure-034-fire-column-battle-hd6-master-v2.png",
+      "sha256": "f849a3a08b0a0be3b348343f2be38404bd621e6a41c77fccc94835f87e0241a9"
+    },
+    "ring": {
+      "file": "figure-034-fire-ring-battle-hd6-master-v2.png",
+      "sha256": "68c90138fb5c22ec4d1c787348fa2c9511da581ef87012cdd1ccfce7d49f1295"
+    },
+    "spikes": {
+      "file": "figure-034-fire-spikes-battle-hd6-master-v2.png",
+      "sha256": "dc9bbe0befb854ba6716a7d8a072241640f23191dfaf02bb312e0b08872534b7"
+    },
+    "tip": {
+      "file": "figure-034-fire-tip-battle-hd6-master-v2.png",
+      "sha256": "2a4d5b2b0bc58067b32cefe97b17821d6254ca7bef5cf268d421a600a7b6d3e2"
+    }
+  },
+  "column_anchor": [
+    93,
+    126,
+    1159,
+    1168
+  ],
+  "column_target": [
+    38,
+    175,
+    766,
+    886
+  ],
+  "ring_anchor": [
+    220,
+    390,
+    1950,
+    535
+  ],
+  "generation": {
+    "mode": "builtin",
+    "initial": {
+      "status": "USER-SELECTED-B",
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "base_public_commit": "6bf63fddb351dc4bc5b2d6c834c412bbde26a72e",
+      "base_catalog_sha256": "abbe24f5bf18b59ee23f00c2032d54240e0c61a54d3b5d5f8232512a54505917",
+      "entries": [
+        {
+          "key": "B-column",
+          "file": "B-column.png",
+          "shape": "column",
+          "strength": "B stronger rim: more energetic curled red-orange and amber flame tongues wrapping the side silhouettes and erupting from the lower ellipse rim, extending about 12–16% of the body's width beyond its outline. Keep the broad original white-gold core clearly recognizable and visible. About 24–30 isolated small rising embers near the outline. Stronger fiery motion, no full-screen explosion.",
+          "prompt": "Use case: precise-object-edit. Asset: disposable hand-painted flame VFX style prototype for HD1 of a faithful 1995 Taiwanese tactical RPG remake.\nInput image is the EXISTING golden light cylinder VFX and is the edit target. Improve only its fire-edge appearance. This is magic light/fire, not a physical cylinder, building or tree.\nB stronger rim: more energetic curled red-orange and amber flame tongues wrapping the side silhouettes and erupting from the lower ellipse rim, extending about 12–16% of the body's width beyond its outline. Keep the broad original white-gold core clearly recognizable and visible. About 24–30 isolated small rising embers near the outline. Stronger fiery motion, no full-screen explosion.\nPreserve the existing gold-white center, ellipse orientation, viewpoint, overall direction and proportions. The objective is to add fire edges and a few embers, not replace the recognisable original effect. A clean, confident 2D painted game-effect look with tapered flame curls and tongues, strong orange/red outer edge and golden inner edge, restrained soft glow; readable at reduced game size. No grey smoke, no black soot, no extra rings, symbols, characters, weapons, scenery, labels or UI.\nComposition: isolated full effect on genuinely transparent background. Include all flame tips and embers with clear transparent safety margin. Keep the body a broad near-square glowing vertical column with top and bottom ellipses. Do not clip flames or embers. Do not paint a black/checkerboard background, vignette, frame, floor or reflection. No text.",
+          "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-24f7cc5e-b2aa-420d-8463-f2c77c823faa.png",
+          "sha256": "f849a3a08b0a0be3b348343f2be38404bd621e6a41c77fccc94835f87e0241a9",
+          "size": [
+            1254,
+            1254
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "border_alpha_max": 1,
+          "border_strong_pixels": 0
+        },
+        {
+          "key": "B-ring",
+          "file": "B-ring.png",
+          "shape": "ring",
+          "strength": "B stronger rim: clearly readable orange-red flame tongues rising and curling from the horizontal ellipse rim, a taller fire halo but still a wide low ellipse, with about 18–22 embers above the perimeter. Keep the gold central light ring recognizable, avoid turning it into a ball or bonfire.",
+          "prompt": "Use case: precise-object-edit. Asset: disposable hand-painted flame VFX style prototype for HD1 of a faithful 1995 Taiwanese tactical RPG remake.\nInput image is the EXISTING wide shallow golden light ellipse VFX and is the edit target. Improve only its fire-edge appearance. This is magic light/fire, not a physical cylinder, building or tree.\nB stronger rim: clearly readable orange-red flame tongues rising and curling from the horizontal ellipse rim, a taller fire halo but still a wide low ellipse, with about 18–22 embers above the perimeter. Keep the gold central light ring recognizable, avoid turning it into a ball or bonfire.\nPreserve the existing gold-white center, ellipse orientation, viewpoint, overall direction and proportions. The objective is to add fire edges and a few embers, not replace the recognisable original effect. A clean, confident 2D painted game-effect look with tapered flame curls and tongues, strong orange/red outer edge and golden inner edge, restrained soft glow; readable at reduced game size. No grey smoke, no black soot, no extra rings, symbols, characters, weapons, scenery, labels or UI.\nComposition: isolated full effect on genuinely transparent background. Include all flame tips and embers with clear transparent safety margin. Keep the body very wide and shallow, matching the reference ellipse. Do not clip flames or embers. Do not paint a black/checkerboard background, vignette, frame, floor or reflection. No text.",
+          "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c78eb0ff-1bed-4e01-8e85-a4b8f71454f5.png",
+          "sha256": "68c90138fb5c22ec4d1c787348fa2c9511da581ef87012cdd1ccfce7d49f1295",
+          "size": [
+            2172,
+            724
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "border_alpha_max": 1,
+          "border_strong_pixels": 0
+        }
+      ],
+      "scope": "火焰邊緣／粒子美術原型；未接入正式執行期，不改招式排程、規則或保存。"
+    },
+    "retracting": {
+      "status": "USER-SELECTED-B",
+      "mode": "builtin",
+      "prompts": {
+        "spikes": "Edit image 1, the existing golden retracting curtain of sword-fire with many pointed streaks. Image 2 is the approved fire style reference. Preserve image 1's exact long horizontal composition, unequal descending pointed streaks, overall width to height ratio and golden-white cores. Add the bold curling red-orange fire tongues of image 2 along the outer margins and lower streak edges, with a restrained scatter of glowing tiny embers close to the silhouette. It should read as the receding phase of the SAME flame column, not a new attack, no ring or ground or characters. Preserve negative spaces between streaks. Detailed hand-painted 2D RPG effect, legible at small size. Extend transparent padding enough for every flame tip; no opaque background, no floor shadow, no text. This is a transparent cutout game sprite.",
+        "tip": "Edit image 1, the existing narrow descending golden spear-like tip of the retracting sword-fire effect. Image 2 is the approved fire style reference. Keep image 1's exact narrow vertical composition, upper bright core and elongated tapering downward streaks and transparent gaps; add the bold curling red-orange flame tongues of image 2 along both sides and around tapering tips, with only a few tiny nearby glowing embers. It must read as the final retracting fragment of the SAME column, no full column, no ring, no new attack. Detailed hand-painted 2D RPG effect, legible small. Include transparent padding around every flame tip, no opaque background, no floor shadow, no text. Transparent cutout game sprite."
+      },
+      "outputs": {
+        "spikes": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-b2f24de6-a112-4e36-a42e-d66b953c769e.png",
+        "tip": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-0b09352c-9171-4a6d-8536-8fd75b1bb858.png"
+      }
+    }
+  },
+  "scope": "已選B；只刷新104/11..16，保留18個原生描述子、人物與末拍。火星嵌入美術，沒有獨立粒子計時器。"
+}
