@@ -253,7 +253,7 @@
   },
   "active_followup": "followup_20261111",
   "followup_20261111": {
-    "status": "CONFORMED-SCOPED-NORMAL-GUI; WINDOWS-PATCH-PREPARING",
+    "status": "CONFORMED-SCOPED; WINDOWS-TEST-PATCH-READY-PENDING-HARDWARE",
     "work": "work/hd1-performance-20261111-r95",
     "source_head": "74d1b316d585bd5283473dec1c40938af1c1ca8d",
     "baseline_binary": {
@@ -314,7 +314,6 @@
       "sha256": "5f51f8e54dc2f97957791bb276870fc682136348870f7729da8debc8aed0b761"
     },
     "windows_runtime": "PENDING-USER-HARDWARE",
-    "planned_version": "v.1.1.6-20261111",
     "source_tree_sha256": "8943d84cee5f21cb93a4912575772a010457105ebbdc1842f7ead4b38725511d",
     "reference_font_baseline_failure": {
       "file": "work/hd1-performance-20261111-r95/font-baseline-check.log",
@@ -322,6 +321,39 @@
     },
     "rules_rng_save_format_changed": false,
     "assets_changed": false,
-    "promo_changed": false
+    "promo_changed": false,
+    "source_commit": "b5be6975d69c10b9bef0b703f21c0b0be803c105",
+    "version": "v.1.1.6-20261111",
+    "archive": {
+      "file": "dist-all/v.1.1.6-20261111/patch/FD2-v.1.1.6-20261111-windows-x86_64-performance-patch.zip",
+      "sha256": "096f3a468700fbaf2f91bb0ccd5f9b4b9b03f23c86beb95c773c3b81417ec1b7"
+    },
+    "archive_bytes": 11525229,
+    "delivery_manifest": {
+      "file": "dist-all/v.1.1.6-20261111/SHA256SUMS.json",
+      "sha256": "9da943c3525d9d5bc38517ef7eab0f8f801a99f147263018afbf27d9238f65b0"
+    },
+    "package_validation": {
+      "file": "work/hd1-performance-20261111-r95/package-validation.json",
+      "sha256": "ec1867094be418b8ad4e228bf20b03028210cff859d1cd1eebf19f970208ed0c"
+    },
+    "contains_assets": false,
+    "base_install": "v.1.1.2-20261105完整版；保留既有pack、modern及字型。",
+    "cleanup": {
+      "file": "work/hd1-performance-20261111-r95/cleanup.json",
+      "sha256": "27d5ba80dcc6730504482dd961dc74c585d21d6c6531b6f9ce2832626cbbd27c"
+    },
+    "visual_review": {
+      "file": "work/hd1-performance-20261111-r95/visual-review.json",
+      "sha256": "1beeb470f21388d8789c68183ed89a80e5a668756c11fb5409a8dfb7f4f6acc0"
+    },
+    "document_check": {
+      "file": "work/hd1-performance-20261111-r95/document-check.json",
+      "sha256": "a54f914ecd42d03d2d580ae45f4385be59298f7a45b1b454a7c56a6886caec5a"
+    },
+    "windows_test_launcher": "解壓至既有完整版，備份fd2.exe後替換；以start-fd2-performance.bat正常遊玩並退出，觀測保存在LOCALAPPDATA/fd2_re/performance。",
+    "windows_60fps_confirmed": false,
+    "public_release_created": false,
+    "three_platform_full_packages_rebuilt": false
   }
 }

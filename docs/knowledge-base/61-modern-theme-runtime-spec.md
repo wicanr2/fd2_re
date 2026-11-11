@@ -6671,6 +6671,8 @@ HUD文字快取在`view := *g`的準備交易中更新，成功後與畫面一�
 
 最終正常GUI以同一修正版程式，完成工具列三品質、移動與取消、兩次普通攻擊、F2往返、保存與新程序LOAD；來源槽SHA保持，狀態與遊戲時鐘未由工具注入。正常路徑使用8CPU／8GiB與八個軟體繪圖執行緒，與上述效能比較分列，不混用其數字。兩程序效能收據及九個錯誤觀測反例通過；不新增原版對拍或自然難度全戰役驗收。Windows包與後端實機觀測繼續依#298，HD2暫緩。
 
+Windows替換測試包為`dist-all/v.1.1.6-20261111/patch/FD2-v.1.1.6-20261111-windows-x86_64-performance-patch.zip`，來源提交b5be6975；Go來源指紋8943d84c與正常GUI相同。PE amd64／GUI、內嵌版號、建置資訊、ZIP CRC及七檔SHA通過，包不含素材。備份現有v.1.1.2完整版的fd2.exe後替換，保留pack／modern；`start-fd2-performance.bat`會在正常遊玩退出後保存觀測。Windows實機啟動與60fps仍待確認，沒有重打三平台完整版或發布新tag／Release；來源、完整SHA及已知範圍沿唯一現況表。
+
 狀態：CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；Windows60fps仍待實機驗證。[唯一現況表](../data/fd2-hd1-performance-20261105.json)記錄本輪輸入與驗證。使用者要求先處理HD1，再繼續HD2；最初由推廣片感覺慢，後續確認Windows／i7-9700K實際切換HD1變慢，顯卡型號與實測fps未知。使用者建議縮減圖片並加入GPU支援。既有影片為30fps，遊戲設定60次Update不等於實際60fps。不得以加快遊戲時鐘或影片補幀宣稱達標；原始母稿保持。
 
 本切片為不改變行為的繪製重構，不新增FD2.EXE語意。已證實的程式基準為`e5224800`：`modern_hd_map_gpu.go`每次Draw重建1920×1200地圖，已有地形／人物貼圖快取；`modern_hd_battle_gpu.go`已重用內容相同的完整戰鬥畫面。正式AppRun沒有強制軟體繪圖，錄影工具則明示使用Xvfb與llvmpipe。2026-10-27的撤回shader實驗保持撤回，不沿用失準的舊效能數字。
