@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -517,16 +517,6 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
-
-### P1 更新已停用的macOS 14建置執行環境
-
-`macos-ci-retired-runner` · 缺陷 · [#301](https://github.com/wicanr2/fd2_re/issues/301) · 仍未完成 · 自承還在 docs/data/fd2-hd1-feedback-20261104.json
-
-2026-11-11三平台原生建置43032789196的macOS工作啟動前取消，註記為macos-14-arm64-us-default不受支援。GitHub runner-images公告macOS 14於2026-11-02退出Actions。
-
-怎樣算做完：改用官方列出的固定macos-15映像，完成Intel／Apple Silicon雙架構建置、原生自檢、同來源三平台彙整；不以Linux交叉編譯取代macOS原生收據。
-
-證據：`['.github/workflows/build-macos.yml', 'https://github.com/wicanr2/fd2_re/actions/runs/43032789196', 'https://github.com/actions/runner-images#available-images']`
 
 ## tooling — 工具、編輯器與工作流程
 

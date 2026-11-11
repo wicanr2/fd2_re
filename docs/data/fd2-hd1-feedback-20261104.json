@@ -8762,7 +8762,7 @@
       "suspected_completed": 0
     }
   },
-  "active_promo": "promo_refresh_20261111",
+  "active_promo": "local_delivery_20261111",
   "yuni_tts_provider_followup_20261111": {
     "status": "SUPERSEDED-BY-MICROSOFT-TTS",
     "user_request": "改試主機agy／Gemini CLI產生悠妮旁白，並試其他可用模型",
@@ -9101,7 +9101,37 @@
       "sha256": "8144816c1d05475eea0a48baed95e923eb4f601a89764c2753716429b75f001a"
     },
     "preview_seconds": 19.9,
-    "frames": 8817
+    "frames": 8817,
+    "terrain_followup": {
+      "status": "PASS-TECHNICAL-AND-SAMPLED",
+      "previous": {
+        "version": "v.1.1.8-20261111",
+        "current_movie": {
+          "file": "dist-all/v.1.1.8-20261111/promo/FD2-v.1.1.8-20261111-hd1-promo.mp4",
+          "sha256": "6d4961af5b8332ad7b584e771c24e46f2a1e8ada602e21c3a7a1383839a0b741"
+        },
+        "delivery": "dist-all/v.1.1.8-20261111",
+        "validation": {
+          "file": "dist-all/v.1.1.8-20261111/promo/VALIDATION.json",
+          "sha256": "f7702e569f5fe7cf686fb19d341c3b1f3015d661ecd82b90c46ab083ffeb4d67"
+        },
+        "duration_seconds": 293.9,
+        "frames": 8817
+      },
+      "movie": {
+        "file": "FD2-v.1.1.9-20261111-hd1-promo.mp4",
+        "bytes": 49736663,
+        "sha256": "20ccf9f3cdb59149a87a0e967c2f8e34f43f2dd96f01903d7fa719518b5e9740"
+      },
+      "receipt": "dist-all/v.1.1.9-20261111/promo/TERRAIN-REFRESH.json",
+      "audio_reuse": "dist-all/v.1.1.9-20261111/promo/AUDIO-REUSE.json",
+      "new_gpu_frames": 202,
+      "f2_round_trips": 12,
+      "unchanged_scenes": 42,
+      "audio_packets_unchanged": true,
+      "human_full_listening_confirmed": false,
+      "remaining": "其他地形重複紋理／拼接觀感仍待改善。"
+    }
   },
   "toolbar_speed_gold_20261111": {
     "date": "2026-11-11",
@@ -9395,7 +9425,7 @@
       "status": "PASS-30-BATTLEFIELD-GALLERY",
       "document": "docs/hd1-battlefield-terrain.md",
       "receipt": "docs/data/fd2-hd1-battlefield-gallery-20261111.json",
-      "receipt_sha256": "50d67b4a2bd4c8669177e3a22f1b6c6780f2d55284dfb71321e5dd1b1c96adb2",
+      "receipt_sha256": "5859bb4f90a03bf731067bd1e1ab87092b024921e025f6209361c11b81a96779",
       "images": 30,
       "published_size": [
         1280,
@@ -9439,7 +9469,7 @@
       }
     },
     "remaining": [
-      "重生受影響影片及三平台完整版"
+      "其他地形重複紋理與拼接觀感待改善；不影響本輪限定修正與圖冊交付。"
     ],
     "issue": 300,
     "source_transactions": 307,
@@ -9526,13 +9556,88 @@
     }
   },
   "local_delivery_20261111": {
-    "status": "BUILDING",
+    "status": "PASS-SCOPED-LOCAL-DELIVERY",
     "version": "v.1.1.9-20261111",
-    "native_three_platform_collected": false,
+    "native_three_platform_collected": true,
     "initial_ci_run": 43032789196,
     "macos_initial_failure": "macos-14-arm64-us-default not supported before job start",
     "macos_runner": "macos-15",
     "official_runner_source": "https://github.com/actions/runner-images#available-images",
-    "scope": "三平台同來源原生建置，後續只在本機加入素材及更新天空之鑰影片；尚未交付，不發布tag或Release。"
+    "scope": "三平台同來源原生建置，後續只在本機加入素材及更新天空之鑰影片；尚未交付，不發布tag或Release。",
+    "successful_ci_run": 43033430219,
+    "engine_source_commit": "d05acdbbb9aecbcfffb81136a4db82450e84f0d5",
+    "artifact_sha256": "d7e4dbfcdbe09885bb050d9c8f9fcc89d3cc26f160c100e628a5ae02e295e966",
+    "promo": {
+      "status": "PASS-TECHNICAL-AND-SAMPLED",
+      "previous": {
+        "version": "v.1.1.8-20261111",
+        "current_movie": {
+          "file": "dist-all/v.1.1.8-20261111/promo/FD2-v.1.1.8-20261111-hd1-promo.mp4",
+          "sha256": "6d4961af5b8332ad7b584e771c24e46f2a1e8ada602e21c3a7a1383839a0b741"
+        },
+        "delivery": "dist-all/v.1.1.8-20261111",
+        "validation": {
+          "file": "dist-all/v.1.1.8-20261111/promo/VALIDATION.json",
+          "sha256": "f7702e569f5fe7cf686fb19d341c3b1f3015d661ecd82b90c46ab083ffeb4d67"
+        },
+        "duration_seconds": 293.9,
+        "frames": 8817
+      },
+      "movie": {
+        "file": "FD2-v.1.1.9-20261111-hd1-promo.mp4",
+        "bytes": 49736663,
+        "sha256": "20ccf9f3cdb59149a87a0e967c2f8e34f43f2dd96f01903d7fa719518b5e9740"
+      },
+      "receipt": "dist-all/v.1.1.9-20261111/promo/TERRAIN-REFRESH.json",
+      "audio_reuse": "dist-all/v.1.1.9-20261111/promo/AUDIO-REUSE.json",
+      "new_gpu_frames": 202,
+      "f2_round_trips": 12,
+      "unchanged_scenes": 42,
+      "audio_packets_unchanged": true,
+      "human_full_listening_confirmed": false,
+      "remaining": "其他地形重複紋理／拼接觀感仍待改善。"
+    },
+    "current_movie": "dist-all/v.1.1.9-20261111/promo/FD2-v.1.1.9-20261111-hd1-promo.mp4",
+    "delivery": "dist-all/v.1.1.9-20261111",
+    "delivery_manifest": "dist-all/v.1.1.9-20261111/SHA256SUMS.json",
+    "delivery_manifest_sha256": "312e4838c4cdb05f11f4c48bb21ea4955fdf3f81668d711e60149c662ee9e658",
+    "validation": "dist-all/v.1.1.9-20261111/promo/VALIDATION.json",
+    "full_local": [
+      {
+        "path": "full-local/FD2-v.1.1.9-20261111-windows-x86_64-full-local.zip",
+        "bytes": 3748267284,
+        "sha256": "6d2421c017058577a845e27df9fb3c0956c63480c0f908c5ff15a62d7c69b94e"
+      },
+      {
+        "path": "full-local/FD2-v.1.1.9-20261111-macos-universal-full-local.zip",
+        "bytes": 3756902872,
+        "sha256": "48af9401b708ede6f4183ad118604556abf8250c1e62fd952fea7fada9e7c35e"
+      },
+      {
+        "path": "full-local/FD2-v.1.1.9-20261111-linux-x86_64-full-local.AppImage",
+        "bytes": 3236506104,
+        "sha256": "bef61d5a8aac6cf45c343e0a84732a50f84b5820125a7e5edaddcc9c441758e5"
+      }
+    ],
+    "asset_files_per_platform": 54577,
+    "asset_bytes_per_platform": 3874822672,
+    "linux_smoke": "dist-all/v.1.1.9-20261111/smoke/linux-full-local-selfcheck.json",
+    "content_validation": "dist-all/v.1.1.9-20261111/smoke/full-local-content.json",
+    "native_full_runtime": {
+      "linux": "selfcheck and controlled frame120",
+      "windows": "not_run",
+      "macos": "not_run"
+    },
+    "public_release_published": false,
+    "public_full_assets": false,
+    "windows_60fps_verified": false,
+    "ci_issue_301": "CLOSED",
+    "native_ci_manifest_sha256": "15453a3f78568ee4dd2ace0b392ff4bac0ca876ef32590797404cd85d255d2ae",
+    "native_ci_manifest_source": "release-bundle.zip內原始SHA256SUMS.json，正式交付清單在其上附加本機包與影片。",
+    "cleanup": {
+      "receipt": "work/hd1-terrain-seams-20261111-r98/cleanup-r1.json",
+      "removed_files": 165971,
+      "reclaimed_bytes": 12409343516
+    }
   }
 }
