@@ -50,6 +50,7 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		}
 	}
 	var rendered, reused, mapRendered, mapReused uint64
+	var terrainUploaded, terrainRetained uint64
 	var mapRaster, battleRaster [2]int
 	var posterRendered, posterReused uint64
 	quality := "unknown"
@@ -67,6 +68,7 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 	}
 	if p.modernHDPresentation != nil && p.Game != nil && p.modernHDMapGPU != nil {
 		mapRendered, mapReused = p.modernHDMapGPU.rendered, p.modernHDMapGPU.reused
+		terrainUploaded, terrainRetained = p.modernHDMapGPU.terrainUploaded, p.modernHDMapGPU.terrainRetained
 		if world := p.modernHDMapGPU.World; world != nil {
 			mapRaster = [2]int{world.Bounds().Dx(), world.Bounds().Dy()}
 		}
@@ -92,8 +94,10 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		BattleRaster    [2]int         `json:"battle_raster_size"`
 		PosterRendered  uint64         `json:"poster_background_rendered_total"`
 		PosterReused    uint64         `json:"poster_background_reused_total"`
+		TerrainUploaded uint64         `json:"map_terrain_texture_uploads_total"`
+		TerrainRetained uint64         `json:"map_terrain_texture_retained_total"`
 	}{now.Sub(p.started).Seconds(), interval, ebiten.ActualFPS(), ebiten.ActualTPS(),
-		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished, rendered, reused, mapRendered, mapReused, graphics.GraphicsLibrary.String(), quality, mapRaster, battleRaster, posterRendered, posterReused})
+		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished, rendered, reused, mapRendered, mapReused, graphics.GraphicsLibrary.String(), quality, mapRaster, battleRaster, posterRendered, posterReused, terrainUploaded, terrainRetained})
 	p.previous = now
 	p.updates, p.draws, p.finals = 0, 0, 0
 	p.scenes = make(map[string]int)

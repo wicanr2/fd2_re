@@ -5568,6 +5568,21 @@
         ],
         "pattern": "timeline.readframes.*== samples"
       }
+    },
+    {
+      "id": "palette-cycle-retains-verified-textures",
+      "area": "HD繪製效能",
+      "date": "2026-11-11",
+      "rule": "調色盤改變時，以當幀已核對的範圍、stride與像素SHA判斷貼圖是否仍相同；只保留仍引用且內容相同的圖。入口remake/cmd/fd2/modern_hd_map_gpu.go的retainTerrainImages沿modernHDMapFrameImages快照，變更與離場釋放，品質及暫態仍完整失效；用TestModernHDMapTextureRetentionGPU在三品質核對真實像素及上傳次數。",
+      "why": "普通地圖每次TerrainColourKey更新清空所有貼圖，讓未變圖反覆縮圖上傳；同配額30秒Go縮圖CPU樣本由8320ms降至850ms。單看快取指標相同不能證明RGBA未被原址修改。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1繪製效能與60fps量測",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_map_gpu.go"
+        ],
+        "pattern": "retainTerrainImages\\(imageKeys\\)"
+      }
     }
   ]
 }

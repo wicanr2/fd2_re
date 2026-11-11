@@ -44,11 +44,17 @@ func hudPanelExpectedText(t *testing.T, f *Font, text string, ink color.RGBA, si
 		for size := 48; size >= 24; size-- {
 			face, _ := f.faceFor(size)
 			bound, _ := font.BoundString(face, string(ch))
-			if bound.Max.X.Ceil()-bound.Min.X.Floor() > 36 || bound.Max.Y.Ceil()-bound.Min.Y.Floor() > h {
+			if bound.Max.X.Ceil()-bound.Min.X.Floor()+2 > 36 || bound.Max.Y.Ceil()-bound.Min.Y.Floor()+2 > h {
 				continue
 			}
 			d := font.Drawer{Dst: out, Src: image.NewUniform(ink), Face: face,
 				Dot: fixed.P(i*36-bound.Min.X.Floor(), -bound.Min.Y.Floor())}
+			// The accepted HD panel has a two-pixel dark shadow. Compose it
+			// into the independent transparent reference before the main ink.
+			pen := d.Dot
+			d.Src, d.Dot = image.NewUniform(color.RGBA{12, 22, 38, ink.A}), pen.Add(fixed.P(2, 2))
+			d.DrawString(string(ch))
+			d.Src, d.Dot = image.NewUniform(ink), pen
 			d.DrawString(string(ch))
 			break
 		}
@@ -305,5 +311,39 @@ func TestModernHDHUDPanelNativeTransactionAndTerrain(t *testing.T) {
 	}
 	if hd.modernHDMapFrame.HUDPanel != nil || hd.modernHDMapFrame.HUDUnit != nil {
 		t.Fatal("step owner retained HUD")
+	}
+}
+
+func TestModernHDHUDPanelCacheSurvivesNativeTransaction(t *testing.T) {
+	g, in := hudPanelTestSource(t)
+	g.st.Units[0].OnField = true
+	g.nativeMapAssets.Frames = in.Frames
+	now := time.Unix(500, 0)
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	first := g.modernHDMapFrame.HUDPanel
+	cache := g.modernHDMapHUDArt
+	if first == nil || cache == nil || cache.Base != first.Base || cache.Above != first.Above {
+		t.Fatal("published HUD discarded its reusable text artwork")
+	}
+	base, above := append([]byte(nil), first.Base.Pix...), append([]byte(nil), first.Above.Pix...)
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	second := g.modernHDMapFrame.HUDPanel
+	if g.modernHDMapHUDArt != cache || second.Base != first.Base || second.Above != first.Above ||
+		!bytes.Equal(second.Base.Pix, base) || !bytes.Equal(second.Above.Pix, above) {
+		t.Fatal("unchanged transaction repainted or changed frozen HUD artwork")
+	}
+	frame := g.modernHDMapFrame
+	work, vga := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
+	g.font = &Font{}
+	if err := g.composeNativeMapFrameAt(now); err == nil {
+		t.Fatal("invalid replacement font was accepted")
+	}
+	if g.modernHDMapHUDArt != cache || g.modernHDMapFrame != frame ||
+		!bytes.Equal(g.nativeMapWork, work) || !bytes.Equal(g.nativeMapVGA, vga) {
+		t.Fatal("rejected HUD transaction replaced published pixels or cache")
 	}
 }

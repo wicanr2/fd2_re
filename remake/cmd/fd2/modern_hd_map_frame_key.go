@@ -10,6 +10,17 @@ import (
 // this call; native work planes may be mutated and republished at the same address.
 // HD textures retain the renderer's existing immutable-theme source contract.
 func modernHDMapFrameKey(frame *modernHDMapFrame) [32]byte {
+	key, _ := modernHDMapFrameImages(frame)
+	return key
+}
+
+type modernHDMapImageKey struct {
+	Rect   image.Rectangle
+	Stride int
+	Pixels [32]byte
+}
+
+func modernHDMapFrameImages(frame *modernHDMapFrame) ([32]byte, map[*image.RGBA]modernHDMapImageKey) {
 	h := sha256.New()
 	var encoded [8]byte
 	integer := func(v int) {
@@ -29,7 +40,7 @@ func modernHDMapFrameKey(frame *modernHDMapFrame) [32]byte {
 		integer(r.Max.X)
 		integer(r.Max.Y)
 	}
-	images := make(map[*image.RGBA][32]byte)
+	images := make(map[*image.RGBA]modernHDMapImageKey)
 	picture := func(p *image.RGBA) {
 		flag(p != nil)
 		if p == nil {
@@ -40,10 +51,10 @@ func modernHDMapFrameKey(frame *modernHDMapFrame) [32]byte {
 		integer(len(p.Pix))
 		key, ok := images[p]
 		if !ok {
-			key = sha256.Sum256(p.Pix)
+			key = modernHDMapImageKey{Rect: p.Rect, Stride: p.Stride, Pixels: sha256.Sum256(p.Pix)}
 			images[p] = key
 		}
-		h.Write(key[:])
+		h.Write(key.Pixels[:])
 	}
 	unit := func(u modernHDMapUnitDraw) {
 		integer(u.Group)
@@ -95,7 +106,7 @@ func modernHDMapFrameKey(frame *modernHDMapFrame) [32]byte {
 	}
 	var key [32]byte
 	copy(key[:], h.Sum(nil))
-	return key
+	return key, images
 }
 
 func modernHDSceneryFrameKey(frame *modernHDMapFrame) [32]byte {

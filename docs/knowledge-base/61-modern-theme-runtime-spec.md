@@ -6659,6 +6659,18 @@ HD1地形素材與接線完成。最後281份完整裁切母稿與281份144成�
 
 ## HD1繪製效能與60fps量測
 
+2026-11-11接續狀態：CONFORMED-SCOPED／NORMAL-GUI，Windows實機60fps仍待驗證。沿使用者要求優先降低HD1顯示停頓，以[正常LOAD地圖量測器](../../tools/profile_fd2_hd1_display.py)在同一來源、1920×1200視窗、CPU配額及繪圖執行緒比較原版與均衡HD。工具使用既有唯讀效能與CPU觀測，不注入執行中狀態，不改遊戲速度；原始結果及目前階段集中[唯一效能現況](../data/fd2-hd1-performance-20261105.json)的`followup_20261111`。
+
+本次等價快取修正已驗證。初次正常LOAD的30秒CPU樣本顯示，`terrainImage`與`textureSource`耗用約53%／51%的Go CPU樣本；普通Draw在`TerrainColourKey`改變時丟棄全部`TerrainImages`，包括內容未變的圖。沿既有逐幀內容雜湊，同時取得各RGBA的範圍、stride與像素SHA，供目前繪製使用；快取只保留本次仍引用且描述完全相同的貼圖。變更或離開目前來源集合的圖釋放後重建。品質切換、暫態地形、複合owner改變與沒有內容快照的路徑維持既有完整失效。不得跨幀只憑RGBA指標認定未變，也不改縮圖公式、透明度、繪圖順序與原生時序。
+
+HUD文字快取在`view := *g`的準備交易中更新，成功後與畫面一起發佈；失敗不得替換前一份快取或原生工作平面。驗收包含同指標像素／形狀變更、同圖換色盤重用、來源離場、品質往返、三品質GPU像素與幾何、交易失敗回復，以及正常LOAD、F2、移動／攻擊返回及保存冷讀。修正前後以相同配額量測，軟體GPU觀測不外推Windows60fps。
+
+[量測核對器](../../tools/verify_fd2_hd1_display_profile.py)以`--baseline`、`--candidate`兩份普通LOAD目錄、兩份`--baseline-binary`／`--candidate-binary`、`--tool`原操作器、Go pprof以`-cum -unit=ms -nodecount=0 -nodefraction=0`輸出的`--baseline-cpu`／`--candidate-cpu`及全新`--out`核對來源。Windows替換包沿既有編製器，另須明示`--change-summary`與`--post-gui-delta`，避免沿用舊版「最後修正畫布」的歷史敘述；README以UTF-8 BOM及CRLF保存。新工具與包不改原版資料或公開發行範圍。
+
+同配額的兩份30秒Go觀測中，縮圖累計CPU時間8320ms降至850ms，Game.Draw由12000ms降至6120ms。排除每窗前五秒後，軟體GPU的HD Draw呼叫頻率約3.24Hz至6.56Hz，仍有波動，沒有達到或外推Windows60fps。三品質各11個新貼圖案例與40個既有GPU案例通過，另驗四步地圖／戰鬥畫布幾何與品質往返；21項CPU回歸通過。獨立文字參考圖原先漏算已存在的2像素陰影，原始主線也重現相同失敗，補參考後通過，正式文字未改。
+
+最終正常GUI以同一修正版程式，完成工具列三品質、移動與取消、兩次普通攻擊、F2往返、保存與新程序LOAD；來源槽SHA保持，狀態與遊戲時鐘未由工具注入。正常路徑使用8CPU／8GiB與八個軟體繪圖執行緒，與上述效能比較分列，不混用其數字。兩程序效能收據及九個錯誤觀測反例通過；不新增原版對拍或自然難度全戰役驗收。Windows包與後端實機觀測繼續依#298，HD2暫緩。
+
 狀態：CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI；Windows60fps仍待實機驗證。[唯一現況表](../data/fd2-hd1-performance-20261105.json)記錄本輪輸入與驗證。使用者要求先處理HD1，再繼續HD2；最初由推廣片感覺慢，後續確認Windows／i7-9700K實際切換HD1變慢，顯卡型號與實測fps未知。使用者建議縮減圖片並加入GPU支援。既有影片為30fps，遊戲設定60次Update不等於實際60fps。不得以加快遊戲時鐘或影片補幀宣稱達標；原始母稿保持。
 
 本切片為不改變行為的繪製重構，不新增FD2.EXE語意。已證實的程式基準為`e5224800`：`modern_hd_map_gpu.go`每次Draw重建1920×1200地圖，已有地形／人物貼圖快取；`modern_hd_battle_gpu.go`已重用內容相同的完整戰鬥畫面。正式AppRun沒有強制軟體繪圖，錄影工具則明示使用Xvfb與llvmpipe。2026-10-27的撤回shader實驗保持撤回，不沿用失準的舊效能數字。

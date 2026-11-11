@@ -250,5 +250,78 @@
     "receipt": "work/hd1-performance-60fps-20261105-r89/build-cache-cleanup.json",
     "sha256": "6c473d7662bc5df688ad992291a382802386d6ad63b91c9162359c746bcd1a5e",
     "bytes_removed": 1663728958
+  },
+  "active_followup": "followup_20261111",
+  "followup_20261111": {
+    "status": "CONFORMED-SCOPED-NORMAL-GUI; WINDOWS-PATCH-PREPARING",
+    "work": "work/hd1-performance-20261111-r95",
+    "source_head": "74d1b316d585bd5283473dec1c40938af1c1ca8d",
+    "baseline_binary": {
+      "file": "work/hd1-performance-20261111-r95/fd2-baseline",
+      "sha256": "27c4abb8367b2dac6aa83999baf3624091efe5756be653ccd2470e35c7c6f38b"
+    },
+    "baseline_binary_sha256": "28837cf73a311ac6c4d242d639df64471b2f8dcbf1c0ff1f8f52f3b42131971d",
+    "tool": "tools/profile_fd2_hd1_display.py",
+    "issue": 298,
+    "policy": "同狀態、同視窗及同資源量測；保留目前畫質、遊戲時鐘、規則、音訊與存檔。Windows實機60fps仍未知。",
+    "evidence": {
+      "baseline_profile": "work/hd1-performance-20261111-r95/baseline-clean/world.pprof",
+      "diagnostic_profile": "work/hd1-performance-20261111-r95/baseline-r2/world.pprof",
+      "diagnostic_texture_source_cpu_share": 0.5128,
+      "hud_failure": "work/hd1-performance-20261111-r95/cache-before-r2.log"
+    },
+    "implementation": "逐幀內容快照保留相同地形貼圖，變更／離場圖釋放；HUD快取與成功交易一起發佈；不改三品質或縮圖公式。",
+    "gpu_verification": {
+      "file": "work/hd1-performance-20261111-r95/gpu-summary.json",
+      "sha256": "316c7a44d24f1699fa90d3dc415f629124af5bdee00ffe192682f2acd8f61ead"
+    },
+    "known_harness_fixes": [
+      "等待放鍵受領後才送下一鍵",
+      "測試設定FD2_ASSET_PACK，避免誤讀缺少的內建素材路徑",
+      "舊HUD格式參考圖漏計原有2像素陰影，原始HEAD同樣失敗；只修正參考圖"
+    ],
+    "candidate_binary": {
+      "file": "work/hd1-performance-20261111-r95/fd2-candidate",
+      "sha256": "00f500e8a3dfe561febc961edefb06103f8193d50132b603724563fb200abe4b"
+    },
+    "profile_comparison": {
+      "file": "work/hd1-performance-20261111-r95/profile-comparison.json",
+      "sha256": "80e82a0ef47828e81192b4a72dc6892c9a18dfecea89479ab53d147bb39b813e"
+    },
+    "quality_geometry": {
+      "file": "work/hd1-performance-20261111-r95/quality-geometry-r2.log",
+      "sha256": "fa38c12522604a2919b40d24149fd591f02e0b257c78aa2c809830238151e354"
+    },
+    "cpu_regression": {
+      "file": "work/hd1-performance-20261111-r95/cpu-regression-r2.log",
+      "sha256": "df0211a822f644b369d0ac952839b697f3d3c8073075803afeeda74ec079dd64"
+    },
+    "cpu_top_level_passes": 21,
+    "normal_gui": {
+      "file": "work/hd1-performance-20261111-r95/normal-gui/receipt.json",
+      "sha256": "1e9d5cc01dc4f8540d5dd4177a480da6bf6e5a2f3818d98bef99ac0e6ae608f0"
+    },
+    "normal_gui_performance": {
+      "file": "work/hd1-performance-20261111-r95/normal-gui-performance.json",
+      "sha256": "7934d9b87a1b252e3fc65f4e29a4bf1e3ae71ee0eaf4d48335376ce088c64480"
+    },
+    "windows_binary": {
+      "file": "work/hd1-performance-20261111-r95/fd2-v.1.1.6-20261111-windows.exe",
+      "sha256": "d8ce0445817445b4caa066d2f60a90a28ea1b67683eeec329ebd86c4992aa202"
+    },
+    "windows_build_info": {
+      "file": "work/hd1-performance-20261111-r95/windows-build-info.txt",
+      "sha256": "5f51f8e54dc2f97957791bb276870fc682136348870f7729da8debc8aed0b761"
+    },
+    "windows_runtime": "PENDING-USER-HARDWARE",
+    "planned_version": "v.1.1.6-20261111",
+    "source_tree_sha256": "8943d84cee5f21cb93a4912575772a010457105ebbdc1842f7ead4b38725511d",
+    "reference_font_baseline_failure": {
+      "file": "work/hd1-performance-20261111-r95/font-baseline-check.log",
+      "sha256": "8de69a5a1687cc24e1b9964f3f8e0be77af0e35c50523370d0567d715ab5c160"
+    },
+    "rules_rng_save_format_changed": false,
+    "assets_changed": false,
+    "promo_changed": false
   }
 }

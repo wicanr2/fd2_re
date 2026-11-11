@@ -12661,6 +12661,7 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 		return err
 	}
 	var modernFrame *modernHDMapFrame
+	var modernHUDArt *modernHDMapHUDArt
 	if g.modernHDMapComposing {
 		seed := g.modernHDMapTerrain
 		if g.modernHDMapTerrainAssets != a || g.modernHDMapTerrainState != g.st || len(seed) != indexedmap.NativeUnitPresentWorkSize {
@@ -12686,6 +12687,7 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 		if err != nil {
 			return err
 		}
+		modernHUDArt = view.modernHDMapHUDArt
 	}
 	var interfaceHUD *modernHDMapHUDPanel
 	if g.modernStoryPortraits == nil && g.modernHDInterfaceEnabled() && g.font != nil && g.walk == nil && g.bannerT <= 0 {
@@ -12715,6 +12717,7 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 	g.nativeFDOTHERPaletteTick = candidatePaletteTick
 	if modernFrame != nil {
 		g.modernHDMapFrame = modernFrame
+		g.modernHDMapHUDArt = modernHUDArt
 		g.modernHDMapTerrain = modernFrame.TerrainSeed
 		g.modernHDMapTerrainAssets = a
 		g.modernHDMapTerrainState = g.st

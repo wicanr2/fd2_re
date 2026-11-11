@@ -22,6 +22,7 @@ type modernHDMapGPU struct {
 	Pixel                               *ebiten.Image
 	Dialogue                            *ebiten.Image
 	TerrainImages                       map[*image.RGBA]*ebiten.Image
+	terrainImageKeys, frameImageKeys    map[*image.RGBA]modernHDMapImageKey
 	TerrainKey                          [32]byte
 	Range                               *ebiten.Image
 	CompoundMix                         *ebiten.Image
@@ -35,6 +36,7 @@ type modernHDMapGPU struct {
 	frameKey                            [32]byte
 	frameValid                          bool
 	rendered, reused                    uint64
+	terrainUploaded, terrainRetained    uint64
 	quality                             hdTextureQuality
 }
 
@@ -51,6 +53,7 @@ func (r *modernHDMapGPU) setQuality(q hdTextureQuality) {
 		}
 	}
 	r.TerrainImages = nil
+	r.terrainImageKeys, r.frameImageKeys = nil, nil
 	r.Units = make(map[int]map[int]*ebiten.Image)
 	r.quality, r.frameValid = q, false
 	for _, texture := range []*ebiten.Image{r.World, r.Banner, r.PaletteSource, r.CompoundMix} {
@@ -183,10 +186,42 @@ func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
 	if r.TerrainImages == nil {
 		r.TerrainImages = make(map[*image.RGBA]*ebiten.Image)
 	}
+	key, checked := r.frameImageKeys[picture]
+	if texture := r.TerrainImages[picture]; texture != nil && checked {
+		previous, known := r.terrainImageKeys[picture]
+		if !known || previous != key {
+			texture.Dispose()
+			delete(r.TerrainImages, picture)
+			delete(r.terrainImageKeys, picture)
+		}
+	}
 	if r.TerrainImages[picture] == nil {
 		r.TerrainImages[picture] = ebiten.NewImageFromImage(r.quality.textureSource(picture))
+		r.terrainUploaded++
+		if checked {
+			if r.terrainImageKeys == nil {
+				r.terrainImageKeys = make(map[*image.RGBA]modernHDMapImageKey)
+			}
+			r.terrainImageKeys[picture] = key
+		}
 	}
 	return r.TerrainImages[picture]
+}
+
+// Palette cycles may change only a few tiles. Keep a texture only when the
+// current frame still consumes its exact shape and bytes, never its address alone.
+func (r *modernHDMapGPU) retainTerrainImages(images map[*image.RGBA]modernHDMapImageKey) {
+	for picture, texture := range r.TerrainImages {
+		wanted, used := images[picture]
+		previous, known := r.terrainImageKeys[picture]
+		if !used || !known || wanted != previous {
+			texture.Dispose()
+			delete(r.TerrainImages, picture)
+			delete(r.terrainImageKeys, picture)
+		} else {
+			r.terrainRetained++
+		}
+	}
 }
 
 func (r *modernHDMapGPU) drawTerrain(picture *image.RGBA, rect image.Rectangle) {
@@ -333,8 +368,9 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	cacheable := !frame.TransientTerrain && frame.CompoundOwner == nil &&
 		!frame.OverlaysAboveUI && frame.PaletteAdd6 == 0 && !(banner && g.bannerT > 0 && g.banner != "")
 	var key [32]byte
+	var imageKeys map[*image.RGBA]modernHDMapImageKey
 	if cacheable {
-		key = modernHDMapFrameKey(frame)
+		key, imageKeys = modernHDMapFrameImages(frame)
 		if r.frameValid && r.frameKey == key {
 			r.reused++
 			screen.Clear()
@@ -349,13 +385,19 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		}
 	}
 	r.frameValid = false
+	r.frameImageKeys = imageKeys
+	defer func() { r.frameImageKeys = nil }()
 	r.rendered++
 	r.World.Clear()
 	if frame.TransientTerrain || r.TerrainKey != frame.TerrainColourKey || r.CompoundOwner != frame.CompoundOwner {
-		for _, texture := range r.TerrainImages {
-			texture.Dispose()
+		if cacheable && r.CompoundOwner == frame.CompoundOwner {
+			r.retainTerrainImages(imageKeys)
+		} else {
+			for _, texture := range r.TerrainImages {
+				texture.Dispose()
+			}
+			r.TerrainImages, r.terrainImageKeys = nil, nil
 		}
-		r.TerrainImages = nil
 		r.TerrainKey = frame.TerrainColourKey
 		r.CompoundOwner = frame.CompoundOwner
 	}

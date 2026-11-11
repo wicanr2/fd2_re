@@ -24,6 +24,8 @@ def main():
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--version', required=True)
     p.add_argument('--source-commit', required=True)
+    p.add_argument('--change-summary', required=True, help='本版已驗證的變更摘要')
+    p.add_argument('--post-gui-delta', required=True, help='正常GUI驗證後的實際程式差異，沒有差異也須明示')
     args = p.parse_args()
     assert re.fullmatch(r'v\.[0-9]+\.[0-9]+\.[0-9]+-[0-9]{8}', args.version)
     assert re.fullmatch(r'[0-9a-f]{40}', args.source_commit)
@@ -66,7 +68,8 @@ def main():
         'version_verification': 'PE內含指定完整版號；Go trimpath建置資訊省略ldflags，另核對架構與CGO。',
         'linux_normal_gui_receipt_sha256': digest(args.gui_receipt.read_bytes()),
         'linux_normal_gui_binary_sha256': gui['binary_sha256'],
-        'post_gui_delta': '最後僅調整錯誤計畫的畫布保留時機；正常GUI二進位與最終封包分列。',
+        'post_gui_delta': args.post_gui_delta,
+        'change_summary': args.change_summary,
         'final_quality_gpu_log_sha256': digest(args.quality_gpu_log.read_bytes()),
         'windows_runtime_validation': 'PENDING-USER-HARDWARE',
         'base_install': 'v.1.1.2-20261105完整版；保留既有pack、modern及字型。',
@@ -85,20 +88,23 @@ def main():
 均衡與輕量將地圖／戰鬥GPU畫布降為1280×800、960×600，原計畫座標及顯示尺寸保持。
 文字、獨立介面與原始母稿保持。開場、黃金之鑰等專用場景目前維持原品質。
 
+本版變更：{args.change_summary}
+
 需要回報效能時，使用start-fd2-performance.bat，正常遊玩後關閉遊戲。
 它把逐秒fps、GPU後端、實體畫布尺寸、程序日誌與Windows配接器清單存到
 %LOCALAPPDATA%\\fd2_re\\performance。配接器清單不代表遊戲選中的硬體。
 也可用start-fd2-directx11.bat比較既有DirectX 11路徑，設定只作用於該次程序。
 
 Linux軟體GPU已驗證正常選人、攻擊返回、F2、保存與新程序LOAD。
-其後錯誤計畫的畫布保留修正另經三品質GPU回歸；收據與二進位雜湊分列。
+正常GUI之後的差異：{args.post_gui_delta}
+收據與各平台二進位雜湊分列。
 Windows實機啟動、批次檔與60fps仍待測試。不含原版或HD素材。
 
 來源提交：{args.source_commit}
 引擎SHA-256：{digest(raw)}
 Microsoft配接器欄位：https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-videocontroller
 '''
-    files = {'fd2.exe': raw, 'README.md': readme.encode(), 'LICENSE': (ROOT/'LICENSE').read_bytes(),
+    files = {'fd2.exe': raw, 'README.md': readme.replace('\n', '\r\n').encode('utf-8-sig'), 'LICENSE': (ROOT/'LICENSE').read_bytes(),
              'SOURCE-PROVENANCE.json': (json.dumps(metadata, ensure_ascii=False, indent=2)+'\n').encode(),
              'BUILD-INFO.txt': args.build_info.read_bytes()}
     for source, name in [('run_fd2_windows_performance.bat', 'start-fd2-performance.bat'),
