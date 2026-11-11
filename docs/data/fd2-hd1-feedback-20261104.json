@@ -9524,5 +9524,15 @@
       "issue_300": "CLOSED",
       "gallery_url": "https://github.com/wicanr2/fd2_re/blob/main/docs/hd1-battlefield-terrain.md"
     }
+  },
+  "local_delivery_20261111": {
+    "status": "BUILDING",
+    "version": "v.1.1.9-20261111",
+    "native_three_platform_collected": false,
+    "initial_ci_run": 43032789196,
+    "macos_initial_failure": "macos-14-arm64-us-default not supported before job start",
+    "macos_runner": "macos-15",
+    "official_runner_source": "https://github.com/actions/runner-images#available-images",
+    "scope": "三平台同來源原生建置，後續只在本機加入素材及更新天空之鑰影片；尚未交付，不發布tag或Release。"
   }
 }

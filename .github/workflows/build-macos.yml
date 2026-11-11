@@ -6,7 +6,9 @@ permissions:
   contents: read
 jobs:
   build:
-    runs-on: macos-14
+    # macOS 14 已於2026-11-02退出GitHub Actions；使用固定的現行映像。
+    # https://github.com/actions/runner-images#available-images
+    runs-on: macos-15
     timeout-minutes: 30
     defaults:
       run:

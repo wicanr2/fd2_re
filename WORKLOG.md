@@ -5530,3 +5530,5 @@ v.1.1.8-20261111本機交片293.9秒、8817幀、1080p／30fps，mean -18.6／pe
 提交前核對：30張PNG共32239603位元組，2727個本地連結目標、章名／錨點／圖片SHA、三份Python語法與215份私人圖源SHA及UID/GID通過。448條教訓、287個守衛通過。遠端27個開項、19項人工，唯一疑似完成為本輪#300，將在來源提交後關閉並重新同步；沒有以手改快照結案。工作根無root檔或誤建Markdown目錄，本輪FD2容器已退出。最終連結檢查改用已有Pillow映像完成，未安裝主機套件。
 
 來源與圖冊提交dffe6814899652308116e4bc7039c4cda4ca3531已推送origin/main並回讀相同HEAD。工單#300附提交與限定驗收範圍後關閉，私人庫main為e6e9bff69704e5fbe010765c9929b949beb0f033。圖冊與README入口已公開；新推廣片與三平台完整版仍待接續。
+
+三平台v.1.1.9建置由release分支觸發，沒有建立tag或公開Release。43032789196的Windows原生程序自檢已通過，macOS工作尚未啟動即取消，公開註記為macos-14-arm64-us-default不受支援。GitHub runner-images的Available Images公告macOS 14於2026-11-02退出Actions，改為固定macos-15；此為CI環境更新，非遊戲缺陷。原始取消註記保存於工作根native-ci-macos-annotations.json。三平台來源必須一致，後續乾淨重跑，不混用舊提交封包。

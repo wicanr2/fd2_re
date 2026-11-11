@@ -406,6 +406,27 @@
         "note": "需Windows實際GPU與幀率觀測；本機軟體繪圖僅供定位。"
       },
       "issue": 298
+    },
+    {
+      "id": "macos-ci-retired-runner",
+      "layer": "release",
+      "category": "缺陷",
+      "title": "P1 更新已停用的macOS 14建置執行環境",
+      "body": "2026-11-11三平台原生建置43032789196的macOS工作啟動前取消，註記為macos-14-arm64-us-default不受支援。GitHub runner-images公告macOS 14於2026-11-02退出Actions。",
+      "acceptance": "改用官方列出的固定macos-15映像，完成Intel／Apple Silicon雙架構建置、原生自檢、同來源三平台彙整；不以Linux交叉編譯取代macOS原生收據。",
+      "evidence": [
+        ".github/workflows/build-macos.yml",
+        "https://github.com/wicanr2/fd2_re/actions/runs/43032789196",
+        "https://github.com/actions/runner-images#available-images"
+      ],
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-hd1-feedback-20261104.json"
+        ],
+        "pattern": "\"native_three_platform_collected\": false"
+      },
+      "issue": 301
     }
   ]
 }
