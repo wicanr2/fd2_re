@@ -176,6 +176,82 @@ def encode(plan, work, out, reuse_manifest=None, reuse_work=None):
     print(movie)
 
 
+def encode_video_only(plan, work, out, reuse_manifest=None, reuse_work=None):
+    """只剪畫面；另由已登錄的原速配樂與旁白工具混音。"""
+    assert not out.exists(), '禁止覆寫已交付推廣片目錄'
+    out.mkdir(parents=True)
+    segments=[]
+    previous=json.loads(reuse_manifest.read_text()) if reuse_manifest else None
+    assert (reuse_manifest is None)==(reuse_work is None)
+    if previous:
+        assert previous['status']=='VIDEO-ONLY-AWAITING-SEPARATE-AUDIO'
+    for index,scene in enumerate(plan['scenes']):
+        segment=work/f'segment-{index:02}.mp4'
+        overlay=work/f'overlay-{index:02}.png'
+        assert not segment.exists() and overlay.is_file()
+        duration=scene['duration']
+        frames=round(duration*30)
+        assert frames>0 and abs(frames/30-duration)<1e-8
+        if previous and index<len(previous['scenes']) and scene==previous['scenes'][index]:
+            old=reuse_work/previous['segments'][index]['file']
+            assert digest(old)==previous['segments'][index]['sha256']
+            streams=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries',
+                'stream=codec_type','-of','json',str(old)],text=True,timeout=30))['streams']
+            assert [s['codec_type'] for s in streams]==['video'], '純畫面沿用不可帶入舊音軌'
+            shutil.copyfile(old,segment);segments.append(segment.resolve())
+            print(f'純畫面片段 {index+1}/{len(plan["scenes"])} SHA核對後沿用',flush=True)
+            continue
+        command=['ffmpeg','-nostdin','-hide_banner','-loglevel','warning','-threads','2',
+                 '-filter_threads','1','-filter_complex_threads','1']
+        if scene['kind'] in ('card','still','concept','capture'):
+            command+=['-loop','1','-framerate','30','-i',str(overlay)]
+            filters='[0:v]fps=30,format=yuv420p,fade=t=in:st=0:d=0.3[v]'
+        else:
+            source_duration=scene.get('source_duration',duration)
+            rate=max(scene.get('minimum_playback_rate',0),source_duration/duration)
+            assert .25<=rate<=32, ('unsupported editorial playback rate',rate)
+            command+=['-ss',str(scene['start']),'-i',scene['source'],
+                      '-loop','1','-framerate','30','-i',str(overlay)]
+            crop=''
+            if 'window_rect' in scene:
+                x,y,width,height=scene['window_rect']
+                assert all(isinstance(v,int) for v in (x,y,width,height))
+                assert x>=0 and y>=0 and width>0 and height>0
+                # A native-art window may occupy only part of the X11 capture.
+                probe=json.loads(subprocess.check_output(['ffprobe','-v','error',
+                    '-select_streams','v:0','-show_entries','stream=width,height',
+                    '-of','json',scene['source']],text=True,timeout=30))['streams'][0]
+                assert x+width<=probe['width'] and y+height<=probe['height']
+                assert width*5==height*8, '遊戲視窗比例必須與原始8:5一致'
+                crop=f'crop={width}:{height}:{x}:{y},'
+            hold=max(0,duration-source_duration/rate)
+            pad=f'tpad=stop_mode=clone:stop_duration={hold:.12g},' if hold else ''
+            filters=(f'[0:v]trim=duration={source_duration},setpts=(PTS-STARTPTS)/{rate:.12g},'
+                     f'fps=30,{pad}{crop}scale=1536:960:flags=lanczos,'
+                     'pad=1920:1080:192:20:color=0x08121e,setsar=1[game];'
+                     '[game][1:v]overlay=shortest=1,format=yuv420p[v]')
+        command+=['-filter_complex',filters,'-map','[v]','-an','-frames:v',str(frames),
+                  '-c:v','libx264','-preset','veryfast','-crf','18','-threads','2',str(segment)]
+        subprocess.run(command,check=True,timeout=max(90,int(duration*8)))
+        segments.append(segment.resolve())
+        print(f'純畫面片段 {index+1}/{len(plan["scenes"])} 完成',flush=True)
+    listing=work/'concat.txt'
+    listing.write_text(''.join("file '"+str(p)+"'\n" for p in segments))
+    movie=out/f'FD2-{plan["version"]}-hd1-promo.mp4'
+    subprocess.run(['ffmpeg','-nostdin','-hide_banner','-loglevel','warning','-threads','2',
+                    '-f','concat','-safe','0','-i',str(listing),'-an','-c:v','copy',
+                    '-t',str(plan['duration_seconds']),'-movflags','+faststart',str(movie)],
+                   check=True,timeout=180)
+    manifest=dict(plan)
+    manifest.update(status='VIDEO-ONLY-AWAITING-SEPARATE-AUDIO',
+        audio_policy='No captured mixed audio is consumed or retimed; rebuild normal-speed music, source SFX and selected narration separately.',
+        movie={'file':movie.name,'bytes':movie.stat().st_size,'sha256':digest(movie)},
+        encoder_script_sha256=digest(__file__),
+        segments=[{'file':p.name,'sha256':digest(p)} for p in segments])
+    (out/'EDIT-MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+    print(movie)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--plan',type=Path,required=True)
@@ -184,6 +260,7 @@ def main():
     parser.add_argument('--font',type=Path)
     parser.add_argument('--reuse-manifest',type=Path)
     parser.add_argument('--reuse-work',type=Path)
+    parser.add_argument('--video-only',action='store_true',help='只剪視訊，背景音樂、音效與旁白另混；不讀取遊戲錄影的混合音軌。')
     group=parser.add_mutually_exclusive_group()
     group.add_argument('--prepare-only',action='store_true')
     group.add_argument('--encode-only',action='store_true')
@@ -198,7 +275,10 @@ def main():
         assert args.font and args.font.is_file()
         prepare(plan,args.work,args.font)
     if not args.prepare_only:
-        encode(plan,args.work,args.out,args.reuse_manifest,args.reuse_work)
+        if args.video_only:
+            encode_video_only(plan,args.work,args.out,args.reuse_manifest,args.reuse_work)
+        else:
+            encode(plan,args.work,args.out,args.reuse_manifest,args.reuse_work)
 
 
 if __name__=='__main__':

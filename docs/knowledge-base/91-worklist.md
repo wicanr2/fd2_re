@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -339,18 +339,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
-
-### P1 修正完整HD START首關出場後的繪圖名冊失配
-
-`hd1-story-spawn-map-roster-sync` · 缺陷 · [#299](https://github.com/wicanr2/fd2_re/issues/299) · **可能已完成，回去確認** · 找不到 "story_spawn_runtime_verified": false
-
-重新錄製HD1推廣片時，以普通START及全程HD重現：首關兩批spawn_intro之後，HD移動投影拒收 visual roster provenance mismatch。原生出場程式已發布新storyActors，但storyNativeMapState.Units及selector cache仍是出場前名冊。
-
-目前修正先在私有載體綁定新角色，十二拍出場預檢成功後一併發布角色與繪圖載體。針對性回歸已重現舊發布方式的拒收，並通過新名冊的原生封存／HD移動消費與拒收原子性。完整GPU與修正版普通START仍在驗證，不能先結案。素材、原版規則及存檔格式不變。
-
-怎樣算做完：私有候選與live來源隔離、失敗保持舊名冊／cache／job；原生／HD移動與GPU／F2通過。正常START以HD經兩批敵人出場到第一關、F5保存，再用新程序LOAD核對名冊；取得收據及提交後關閉。
-
-證據：`['remake/cmd/fd2/native_spawn_intro.go', 'remake/cmd/fd2/native_story_map.go', 'remake/cmd/fd2/native_story_map_spawn_test.go', 'docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-hd1-feedback-20261104.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

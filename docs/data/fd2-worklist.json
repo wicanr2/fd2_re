@@ -406,30 +406,6 @@
         "note": "需Windows實際GPU與幀率觀測；本機軟體繪圖僅供定位。"
       },
       "issue": 298
-    },
-    {
-      "id": "hd1-story-spawn-map-roster-sync",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P1 修正完整HD START首關出場後的繪圖名冊失配",
-      "body": "重新錄製HD1推廣片時，以普通START及全程HD重現：首關兩批spawn_intro之後，HD移動投影拒收 visual roster provenance mismatch。原生出場程式已發布新storyActors，但storyNativeMapState.Units及selector cache仍是出場前名冊。\n\n目前修正先在私有載體綁定新角色，十二拍出場預檢成功後一併發布角色與繪圖載體。針對性回歸已重現舊發布方式的拒收，並通過新名冊的原生封存／HD移動消費與拒收原子性。完整GPU與修正版普通START仍在驗證，不能先結案。素材、原版規則及存檔格式不變。",
-      "acceptance": "私有候選與live來源隔離、失敗保持舊名冊／cache／job；原生／HD移動與GPU／F2通過。正常START以HD經兩批敵人出場到第一關、F5保存，再用新程序LOAD核對名冊；取得收據及提交後關閉。",
-      "evidence": [
-        "remake/cmd/fd2/native_spawn_intro.go",
-        "remake/cmd/fd2/native_story_map.go",
-        "remake/cmd/fd2/native_story_map_spawn_test.go",
-        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
-        "docs/data/fd2-hd1-feedback-20261104.json"
-      ],
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "docs/data/fd2-hd1-feedback-20261104.json"
-        ],
-        "pattern": "\"story_spawn_runtime_verified\": false",
-        "note": "正常START與冷讀收據尚未齊備；完成後由目前主收據切為true，再依提交結案。"
-      },
-      "issue": 299
     }
   ]
 }

@@ -1098,9 +1098,23 @@ A+沿既有80／90／100／110／125%字級，套用所有官方語系字型。�
 
 本節實作前為READY。回歸已重現舊發布方式的長度拒收，並通過新名冊的原生封存／HD移動、新增角色可見、原載體不變、指標綁定、cache隔離及錯誤原子性。[修正入口](../../remake/cmd/fd2/native_spawn_intro.go)、[候選載體](../../remake/cmd/fd2/native_story_map.go)與[回歸](../../remake/cmd/fd2/native_story_map_spawn_test.go)保留同一交易。
 
-[完整GPU測試](../../remake/cmd/fd2/modern_hd_story_motion_gpu_test.go)9案例126拍與27次F2往返通過，包含受控複製角色的出場後渲染案例，不代表原版SPAWN對拍。正式程式v.1.1.7-20261111以普通Escape略過另錄妥的開場，再由START、皇城四組切換、後續全HD、首關兩批出場至F5；新程序正常LOAD與攻擊返回通過。12個身份及能力欄位保持，章界讀檔會重建位置與出場旗標，不宣稱完整戰場續存。來源、SHA與限制依[同一回饋主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`及[局部收據](../../work/hd1-promo-refresh-20261111-r96/story-spawn-conformance.json)。[工單299](https://github.com/wicanr2/fd2_re/issues/299)待來源提交後結案，無新DOS原版parity或整章通關聲明。
+[完整GPU測試](../../remake/cmd/fd2/modern_hd_story_motion_gpu_test.go)9案例126拍與27次F2往返通過，包含受控複製角色的出場後渲染案例，不代表原版SPAWN對拍。正式程式v.1.1.7-20261111以普通Escape略過另錄妥的開場，再由START、皇城四組切換、後續全HD、首關兩批出場至F5；新程序正常LOAD與攻擊返回通過。12個身份及能力欄位保持，章界讀檔會重建位置與出場旗標，不宣稱完整戰場續存。來源、SHA與限制依[同一回饋主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`及[局部收據](../../work/hd1-promo-refresh-20261111-r96/story-spawn-conformance.json)。[工單299](https://github.com/wicanr2/fd2_re/issues/299)已由來源提交417cba1f修正並結案，無新DOS原版parity或整章通關聲明。
 
-[新實錄總覽](../figures/hd1-promo-rerecord-overview.png)使用新版皇城、選單與首關畫面，以及六段目前素材的正常操作錄影。[拼排器](../../tools/build_fd2_promo_refresh_overview.py)保留完整來源畫幅，從出場淡入完成後取首關圖，不改圖像配色。天空之鑰與人物卡依既有來源另列；影片重剪仍在進行。
+[新實錄總覽](../figures/hd1-promo-rerecord-overview.png)使用新版皇城、選單與首關畫面，以及六段目前素材的正常操作錄影。[拼排器](../../tools/build_fd2_promo_refresh_overview.py)保留完整來源畫幅，從出場淡入完成後取首關圖，不改圖像配色。天空之鑰與人物卡依既有來源另列；影片重剪交付沿下節。
+
+## HD1最新實錄重剪
+
+狀態：CONFORMED-SCOPED，重剪與技術驗收通過。
+
+以目前正式清冊重錄開場、選單、皇城切換、首關站位及亞雷斯、蓋亞、悠妮、音速刃、熾炎刀與淒煌斬。共43幕、313秒，其中11幕遊戲錄影及16頁人物介紹更新，其他16幕明示沿用。32人頭像均為HD；角色卡仍保留本人原版造型作身份依據。原版蓋亞對照與天空之鑰動畫沿既有已驗來源。這是影片重剪，不是三平台完整包更新。
+
+[計畫器](../../tools/plan_fd2_hd1_promo_refresh.py)要求普通操作收據、清冊／程式SHA、來源影片及逐拍觀測一致，明示開場與戰鬥使用的程式版本。[影片編製器](../../tools/build_fd2_hd1_promo.py)的`--video-only`只剪畫面，不讀來源混合音軌；來源不足時保留正常速度並停留尾幀。純畫面沿用須逐幕參數相同、片段SHA相同且沒有音軌。開場尾端已刪除重複選單等待；皇城同句對話切換四種設定的停留另標為閱讀時間。
+
+配樂沿原速FDMUS_018，音效依可見姿勢／命令拍點重新定位，亞雷斯與蓋亞普通攻擊使用已選B音色。旁白沿已核准曉雨快8%的36段，不另調速。[核對器](../../tools/verify_fd2_promo_refresh.py)比較新剪輯視訊封包、每段旁白與完整旁白PCM、原速配樂PCM及全部來源SHA；[整片驗證器](../../tools/validate_fd2_hd1_promo.py)另查規格、音量、黑幀、凍結與字幕。[逐幕工具](../../tools/review_fd2_hd1_promo.py)抽43幕及三招九張動作，視覺與人耳結果分開記錄。
+
+本機交付為`dist-all/v.1.1.7-20261111/promo/`。全片313秒、9390幀、1080p／30fps，音量mean -18.6／peak -1.3dB，黑幀、非靜音、凍結分類及字幕安全區通過。43幕與三招九張動作已檢視；95份輸入SHA、新剪輯視訊封包、36段及完整旁白PCM、正常配樂PCM全部核對通過。另附48秒720p試看，沿成片AAC音軌，mean -18.5／peak -1.5dB。技術音訊檢查不等於全片人耳驗收。
+
+本次計畫、來源命令、輸入／輸出SHA及本機交付依[回饋主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`。重跑順序為計畫器、Pillow字幕準備、FFmpeg純畫面編碼、原速分軌重混、既有旁白混音、整片驗證、逐幕檢視及PCM核對；各工具以`--help`列出必填輸入。計畫與收據保留於既有`work/hd1-promo-refresh-20261111-r96/`，正式交片使用`dist-all/<版本>/promo/`。所有工具在既有有界、非root、唯讀掛素材的Docker流程執行。剪輯調速與影片30fps不代表Windows60fps或硬體時序。沒有重打三平台完整包，也未公開上傳影片或發布新Release。
 
 ## 操作介面與人物主題獨立控制（CONFORMED-SCOPED／RUNTIME-E1，HD1）
 
