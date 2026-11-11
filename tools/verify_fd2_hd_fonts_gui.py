@@ -201,6 +201,8 @@ def main():
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
     parser.add_argument('--promo-action-only', action='store_true', help='只錄普通LOAD、選人、移動與一次攻擊返回；略過重複走行比較及冷讀驗證，不宣稱那些項目通過。')
+    parser.add_argument('--promo-original-art', action='store_true',
+                        help='搭配--promo-action-only，以F2／F11切到原版美術及介面完成普通攻擊；返回後恢復HD，不修改遊戲狀態')
     parser.add_argument('--heal-normal', action='store_true', help='正常第23章既有希爾法依次施放13～16，滿HP上限、HD效果、F2與保存冷讀；需--battle-status --world')
     parser.add_argument('--status-death-normal', action='store_true', help='明示章前狀態來源，正常END觸發狀態致死HD、F2及章界保存冷讀')
     parser.add_argument('--system-info', action='store_true', help='正常第23章空地系統環開關資訊，HD／原版、F2、返回與保存冷讀；需--battle-status --world')
@@ -269,6 +271,7 @@ def main():
     parser.add_argument('--facility-success', action='store_true', help='搭配--gold-roll要求實際HD成功畫格及金額接續')
     args = parser.parse_args()
     assert not args.promo_action_only or (args.battle_only and args.battle_hd and args.world and args.battle_repetitions==1)
+    assert not args.promo_original_art or (args.promo_action_only and args.battle_command is None and not args.battle_art)
     if args.title_json_fallback and not args.title_interface:
         parser.error('--title-json-fallback需要--title-interface')
     if args.facility_success and not args.gold_roll:
@@ -409,6 +412,7 @@ def main():
     performance_paths=[]
     cpu_profile_paths=[]
     battle_hd_scenes=[]
+    battle_original_scenes=[]
     battle_art_samples=[]
     battle_end_art_samples=[]
     battle_end_command_samples=[]
@@ -1395,6 +1399,16 @@ def main():
                     else:
                         key('Return');wait(lambda s:not s.get('ring'))
                     move_cursor(command_destination if args.battle_command is not None else [target['x'],target['y']]);shot(prefix+'-attack-target')
+                    original_interface = None
+                    if args.promo_original_art:
+                        unchanged=latest(audit)
+                        original_interface=unchanged.get('hd_interface')
+                        key('F2');wait(lambda s:s.get('hd_theme') is False)
+                        if original_interface:
+                            key('F11');wait(lambda s:s.get('hd_interface') is False)
+                        switched=latest(audit)
+                        for field in ('units','cursor','view'):
+                            assert switched[field]==unchanged[field], ('原版切換改變戰場',field)
                     scene_started=time.monotonic()
                     scene_key='command_scene' if args.battle_command is not None else 'battle_scene'
                     command30_probe=None
@@ -1404,6 +1418,10 @@ def main():
                                                        actor_identity=args.battle_own_identity)
                         command30_probe.thread.start()
                     key('Return');wait(lambda s:s.get(scene_key) is True)
+                    if args.promo_original_art:
+                        entered=wait(lambda s:s.get('battle_actor_fig')==attacker['battle_fig'])
+                        assert entered.get('hd_theme') is False and entered.get('hd_interface') is False
+                        assert entered.get('battle_target_fig')==target['battle_fig']
                     if args.battle_command==30 and not args.continuous_hd_action:
                         entered=latest(audit)
                         assert entered.get('command_id')==30 and entered.get('command_actor_fig')==18
@@ -1415,10 +1433,10 @@ def main():
                         assert restored.get('command_owner')==entered['command_owner'] and restored.get('command_id')==30
                         command30_theme_checks.append(dict(entered=entered,native=native,restored=restored,
                                                             file=native_path.name,sha256=digest(native_path)))
-                    if args.battle_hd:
+                    if args.battle_hd and not args.promo_original_art:
                         wait(lambda s:s.get(scene_key) and s.get('hd_battle'))
                     shot(prefix+'-'+action_label+'-scene')
-                    if args.battle_hd:
+                    if args.battle_hd and not args.promo_original_art:
                         assert shots[prefix+'-'+action_label+'-scene.png']['state'].get('hd_battle'), '未擷取到HD戰鬥繪製層'
                     if args.battle_art:
                         # 只讀實際視窗，不暫停、改寫或推進遊戲狀態。
@@ -1451,15 +1469,20 @@ def main():
                                 path=args.out/sample['file']
                                 command('convert',str(raw_path),'-crop','1920x1200+0+72','+repage',str(path))
                                 sample['sha256']=digest(path)
-                    returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('unit_death_scene') and not s.get('walking') and s.get('hd_world'),
+                    returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('unit_death_scene') and not s.get('walking') and (s.get('hd_world') or args.promo_original_art),
                                         timeout=180 if args.battle_hd else 60)
                     if command30_probe:
                         command30_observations.append(command30_probe.finish())
                     if args.battle_hd:
-                        battle_hd_scenes.append({'name':prefix,'elapsed_seconds':time.monotonic()-scene_started,
+                        scene_records=battle_original_scenes if args.promo_original_art else battle_hd_scenes
+                        scene_records.append({'name':prefix,'elapsed_seconds':time.monotonic()-scene_started,
                                                  'presented':shots[prefix+'-'+action_label+'-scene.png']['state'],
                                                  'returned':returned_scene,
                                                  'scope':'軟體GPU與視窗擷取的牆鐘時間，不是正式平台效能驗收'})
+                    if args.promo_original_art:
+                        key('F2');wait(lambda s:s.get('hd_theme') and s.get('hd_world'))
+                        if original_interface:
+                            key('F11');wait(lambda s:s.get('hd_interface') is True)
                 if args.timed_dialogue:
                     timed_probe=TimedDialogueProbe(args.out,audit,lambda p:command('import','-window',window,str(p)),env)
                     timed_probe.thread.start()
@@ -1500,6 +1523,8 @@ def main():
                         binary_sha256=digest(args.binary),source_save_sha256=digest(args.town_save),
                         actor_identity=args.battle_own_identity,command_id=args.battle_command,
                         action_kind=action_label,battle_hd_scenes=battle_hd_scenes,
+                        action_art_theme='faithful' if args.promo_original_art else 'hd',
+                        battle_original_scenes=battle_original_scenes,
                         command_observations=command30_observations,screenshots=shots,
                         operations=operations,elapsed_seconds=time.monotonic()-started,
                         runtime_state_injection=False,cold_load_verified=False,

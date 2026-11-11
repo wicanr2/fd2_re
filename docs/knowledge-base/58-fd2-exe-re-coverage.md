@@ -16,6 +16,8 @@
 
 全36筆指令的Go語法樹盤點確認：玩家選單阻擋的指令、其中正式學習表列出的招式，以及僅數值結算的指令，統一由[本批現況表](../data/fd2-hd1-feedback-20261104.json)的battle_animation_audit.command_routes產生。本批學習表入口、珊的原有電擊／落雷及熾炎刀自身中心已修正，相關正式確認與動畫回歸通過；指令31的名稱與角色、FIGANI408來源仍保留未知。重跑入口與逐項說明見[61「戰鬥指令入口稽核」](61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)。
 
+蓋亞原版鏡頭錯置已以同一首章來源的兩次正常LOAD、FIG30普通攻擊及自然返回修正，達CONFORMED-SCOPED／NORMAL-CAPTURE／LOCAL-PROMO。原版與HD按各自實際視窗範圍合成，替換330格，其餘9060格與前片逐格相同；36段旁白及正常速度配樂保持。修正版為本機影片v.1.1.4-20261111，沒有重打三平台完整版或更新其他全部鏡頭。規格與驗證依[61](61-modern-theme-runtime-spec.md#推廣片蓋亞原版鏡頭修正)及[同一現況](../data/fd2-hd1-feedback-20261104.json)的promo_gaia_repair_20261111；不新增原版E2或Windows實機60fps聲明。
+
 ## 2026-11-02 HD戰場目前狀態
 
 使用者定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期停止線直接刪除，不以逐幀一致重開。傷害公式後續可調整，原版預設保留，另列[#278](https://github.com/wicanr2/fd2_re/issues/278)；不增加本輪HD閘門。

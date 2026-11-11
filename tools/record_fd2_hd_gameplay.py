@@ -85,8 +85,9 @@ def main():
                 if state and signature != previous:
                     timing.write(json.dumps(dict(seconds=time.monotonic()-recording_started,
                         state={k:state.get(k) for k in ['frame','node','title_phase','battle_scene',
+                            'battle_actor_fig','battle_target_fig','battle_owner','battle_phase',
                             'command_scene','command_id','command_phase','command_frame','command_target_index',
-                            'hd_theme','hd_battle','walking','dialogues','cursor']}))+'\n')
+                            'hd_theme','hd_interface','hd_battle','walking','dialogues','cursor']}))+'\n')
                     timing.flush()
                     timing_rows += 1
                     previous = signature

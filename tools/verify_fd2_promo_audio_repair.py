@@ -52,12 +52,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['source-promo', 'candidate', 'stems', 'plan', 'out']:
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--voice-reference', type=Path,
+                        help='鏡頭修正時獨立指定原旁白清冊；預設沿來源影片目錄')
     a = parser.parse_args()
     assert Path('/.dockerenv').exists() and os.getuid() != 0
     assert not a.out.exists() and a.out.parent.stat().st_uid == os.getuid()
     before = json.loads((a.source_promo/'EDIT-MANIFEST.json').read_text())
     after = json.loads((a.candidate/'EDIT-MANIFEST.json').read_text())
-    old_voice = json.loads((a.source_promo/'NARRATION-MANIFEST.json').read_text())
+    voice_reference = a.voice_reference or a.source_promo/'NARRATION-MANIFEST.json'
+    old_voice = json.loads(voice_reference.read_text())
     new_voice = json.loads((a.candidate/'NARRATION-MANIFEST.json').read_text())
     plan = json.loads(a.plan.read_text())
     assert len(old_voice['segments']) == len(new_voice['segments']) == 36
@@ -87,14 +90,18 @@ def main():
     assert rejected
     validate_audio_clock(dict(kind='game', duration=27, source_duration=242, source_audio_kind='sfx_only'))
     effect_checks = []
-    for scene in ['gaia-hd', 'yuni']:
-        cue = next(x for x in plan['cues'] if x['scene']==scene)
+    selected = [next(x for x in plan['cues'] if x['scene']==scene)
+                for scene in ['gaia-original', 'gaia-hd', 'yuni']]
+    selected += [x for x in plan['cues'] if x.get('source_kind') == 'hd-original-b']
+    for cue in selected:
+        scene = cue['scene']
         value = similarity(pcm(cue['file'], .02, .03), pcm(a.stems/'native-effects.wav', round(cue['at_seconds'],3)+.02, .03))
         assert value['correlation'] > .99 and abs(value['gain']-cue['gain']) < .02, (scene, value)
-        effect_checks.append(dict(scene=scene, **value))
+        effect_checks.append(dict(scene=scene, file=cue['file'], **value))
     report = dict(status='PASS-NORMAL-MUSIC-SAME-VOICE-VIDEO', source_movie=before['movie'], movie=after['movie'],
         video_packet_hash=original_video, video_packets_unchanged=True, voice_segments_unchanged=36,
         narration_wav_sha256=new_voice['narration_wav_sha256'], music_playback_rate=1,
+        voice_reference_sha256=sha(voice_reference),
         music_waveform_checks=music_checks, accelerated_audio_negative=wrong,
         mixed_capture_retiming_rejected=True,
         sfx_sample_waveform_checks=effect_checks, sfx_playback_rate=1,

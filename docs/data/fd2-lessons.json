@@ -5538,6 +5538,21 @@
         ],
         "pattern": "契約固定整數中心取樣"
       }
+    },
+    {
+      "id": "promo-scene-identity-from-captured-actor",
+      "area": "推廣影片",
+      "date": "2026-11-11",
+      "rule": "選用戰鬥片段時，以實際攻守角色、美術狀態及正常操作收據核對剪輯區間，不以檔名或圖說判定人物。入口tools/repair_fd2_promo_gaia.py的check_capture沿錄影索引驗角色、來源SHA與自然返回；tools/record_fd2_hd_gameplay.py在frame-times.jsonl同列FIG、owner及phase。剪接另核視訊起始PTS並逐格檢查範圍外畫面。",
+      "why": "原gaia-original來源檔包含盜賊對亞雷斯的原版攻防，只有後段才是真正HD蓋亞。原片視訊起始PTS為0.021029秒，下幕關鍵影格在93.021029秒；剪接須納入偏移。原版切換另使實際視窗變1280×800，固定1920錄影須裁除視窗外黑邊。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片蓋亞原版鏡頭修正",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/repair_fd2_promo_gaia.py"
+        ],
+        "pattern": "presented.*battle_actor_fig.*30"
+      }
     }
   ]
 }

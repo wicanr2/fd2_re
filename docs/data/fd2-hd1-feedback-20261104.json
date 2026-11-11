@@ -3167,7 +3167,8 @@
       "timing": "PASS",
       "human_listening_confirmed": false
     },
-    "narration_manifest": "dist-all/v.1.1.2-20261105/promo/NARRATION-MANIFEST.json"
+    "narration_manifest": "dist-all/v.1.1.2-20261105/promo/NARRATION-MANIFEST.json",
+    "superseded_promo": "promo_gaia_repair_20261111"
   },
   "delivery_tools_sha256": {
     "tools/build_fd2_full_local.py": "369d85b4e6494463a1dda0f75e9fb8bcc283dc6d6696c249dd771f456f447cfb",
@@ -7332,6 +7333,11 @@
       "evidence": {
         "file": "work/promo-audio-repair-20261105-r88/cue-review.json",
         "sha256": "309ebc250e7f6b3c3c972e8b6a71b6d040f93f54a56e24a2aec43767864d2a96"
+      },
+      "resolution": {
+        "status": "RESOLVED-IN-NEW-PROMO-OLD-MOVIE-PRESERVED",
+        "date": "2026-11-11",
+        "current": "promo_gaia_repair_20261111"
       }
     },
     "waveform_probe_note": "分段OGG取樣在50秒少64個立體聲影格，完整解碼後依樣本索引比較通過；原OGG時間戳警告未提升為遊戲硬體或取樣率問題。",
@@ -8546,5 +8552,208 @@
         "issue_writes": false
       }
     }
-  }
+  },
+  "promo_gaia_repair_20261111": {
+    "status": "PASS-TECHNICAL-AND-CHANGED-SCENES-VISUAL",
+    "issue": 297,
+    "work": "work/promo-caption-repair-20261111-r92",
+    "version": "v.1.1.4-20261111",
+    "plan": {
+      "schema": "fd2-promo-gaia-repair-v1",
+      "version": "v.1.1.4-20261111",
+      "previous_movie": "/src/dist-all/v.1.1.2-20261105/promo/FD2-v.1.1.2-20261105-hd1-promo.mp4",
+      "previous_movie_sha256": "ffd0828fd8c30fd8f1ae8ccc25f246796a8c1f82fcff008f2d73193d023c8bcb",
+      "previous_manifest": "/src/dist-all/v.1.1.2-20261105/promo/EDIT-MANIFEST.json",
+      "replace_start": 82,
+      "replace_end": 93,
+      "duration_seconds": 313,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "clips": [
+        {
+          "id": "gaia-original",
+          "kind": "game",
+          "duration": 4,
+          "start": 431.65,
+          "source_duration": 4,
+          "source": "/src/work/promo-caption-repair-20261111-r92/gaia-original-record/video.mkv",
+          "source_sha256": "253852f6bd5e5c21b222b2a968ba292d20d75bf1dcaadab8b364ce292c0e0d22",
+          "capture_receipt": "/src/work/promo-caption-repair-20261111-r92/gaia-original-gui/promo-action.json",
+          "action_receipt": "/src/work/promo-caption-repair-20261111-r92/gaia-original-gui/promo-action.json",
+          "recording_receipt": "/src/work/promo-caption-repair-20261111-r92/gaia-original-record/recording.json",
+          "timing": "/src/work/promo-caption-repair-20261111-r92/gaia-original-record/frame-times.jsonl",
+          "binary": "/src/work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/fd2-final",
+          "binary_sha256": "28837cf73a311ac6c4d242d639df64471b2f8dcbf1c0ff1f8f52f3b42131971d",
+          "save": "/src/work/hd1-feedback-20261106-r91/gaia-pixel-normal-gui-r2/user-data/fd2_re/fd2_save.json",
+          "caption": "蓋亞，重拳出擊。原版畫風。",
+          "capture_scope": "正常標題LOAD與普通攻擊返回；來源具已揭露建構祖先，非原版執行或全戰役驗收。",
+          "selection_evidence": "410至444秒接觸表人工核對；原始操作索引只用來定位，不以其末端時間拉伸視訊。",
+          "window_rect": [
+            0,
+            0,
+            1280,
+            800
+          ],
+          "window_capture": "/src/work/promo-caption-repair-20261111-r92/gaia-original-gui/world-hd-physical-scene.png",
+          "window_capture_sha256": "707f49a7eead62f5dca65526549797eca90a0bef9b3815aced2d26c3ad22e995"
+        },
+        {
+          "id": "gaia-hd",
+          "kind": "game",
+          "duration": 7,
+          "start": 435.6,
+          "source_duration": 7,
+          "source": "/src/work/promo-caption-repair-20261111-r92/gaia-hd-record/video.mkv",
+          "source_sha256": "3d577f64fc94f1dfb8d17256427c73e1ead76124299f052e6d8635bfaba4b2cb",
+          "capture_receipt": "/src/work/promo-caption-repair-20261111-r92/gaia-hd-gui/promo-action.json",
+          "action_receipt": "/src/work/promo-caption-repair-20261111-r92/gaia-hd-gui/promo-action.json",
+          "recording_receipt": "/src/work/promo-caption-repair-20261111-r92/gaia-hd-record/recording.json",
+          "timing": "/src/work/promo-caption-repair-20261111-r92/gaia-hd-record/frame-times.jsonl",
+          "binary": "/src/work/hd1-feedback-20261106-r91/fire-embers-runtime-r1/fd2-final",
+          "binary_sha256": "28837cf73a311ac6c4d242d639df64471b2f8dcbf1c0ff1f8f52f3b42131971d",
+          "save": "/src/work/hd1-feedback-20261106-r91/gaia-pixel-normal-gui-r2/user-data/fd2_re/fd2_save.json",
+          "caption": "相同的戰場，全新的筆觸。",
+          "capture_scope": "正常標題LOAD與普通攻擊返回；來源具已揭露建構祖先，非原版執行或全戰役驗收。",
+          "selection_evidence": "410至444秒接觸表人工核對；原始操作索引只用來定位，不以其末端時間拉伸視訊。",
+          "window_rect": [
+            0,
+            0,
+            1920,
+            1200
+          ],
+          "window_capture": "/src/work/promo-caption-repair-20261111-r92/gaia-hd-gui/world-hd-physical-scene.png",
+          "window_capture_sha256": "eaa2a83d20ea3939079c20d3e88a6e798da6b5b6e726403266fc32e8e5cafe8e"
+        }
+      ],
+      "font_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "sfx_cues": [
+        {
+          "scene": "gaia-original",
+          "at_seconds": 82.7876897569746,
+          "source_pose": 1,
+          "observed_game_frame": 1544,
+          "observed_recording_seconds": 432.4376897569746,
+          "bank": 53,
+          "sample": 3,
+          "gain": 0.8,
+          "playback_rate": 1,
+          "synchronization": "沿本人FIGANI091可見蓄力／出拳姿勢作剪輯對位；非硬體wall-clock",
+          "file": "/original/sfx/FDOTHER_053/sample_003.ogg"
+        },
+        {
+          "scene": "gaia-original",
+          "at_seconds": 83.40630252696576,
+          "source_pose": 6,
+          "observed_game_frame": 1582,
+          "observed_recording_seconds": 433.05630252696574,
+          "bank": 53,
+          "sample": 2,
+          "gain": 0.8,
+          "playback_rate": 1,
+          "synchronization": "沿本人FIGANI091可見蓄力／出拳姿勢作剪輯對位；非硬體wall-clock",
+          "file": "/original/sfx/FDOTHER_053/sample_002.ogg"
+        },
+        {
+          "scene": "gaia-hd",
+          "at_seconds": 87.39752508709205,
+          "source_pose": 1,
+          "observed_game_frame": 1586,
+          "observed_recording_seconds": 436.9975250870921,
+          "bank": 53,
+          "sample": 3,
+          "gain": 0.8,
+          "playback_rate": 1,
+          "synchronization": "沿本人FIGANI091可見蓄力／出拳姿勢作剪輯對位；非硬體wall-clock",
+          "file": "/original/sfx/FDOTHER_053/sample_003.ogg"
+        },
+        {
+          "scene": "gaia-hd",
+          "at_seconds": 89.72867299672214,
+          "source_pose": 6,
+          "observed_game_frame": 1626,
+          "observed_recording_seconds": 439.32867299672216,
+          "bank": 53,
+          "sample": 2,
+          "gain": 0.8,
+          "playback_rate": 1,
+          "synchronization": "沿本人FIGANI091可見蓄力／出拳姿勢作剪輯對位；非硬體wall-clock",
+          "file": "/original/sfx/FDOTHER_053/sample_002.ogg"
+        }
+      ],
+      "decoded_baseline": {
+        "file": "/src/work/promo-caption-repair-20261111-r92/video-edit-r1/previous.framemd5",
+        "sha256": "aecace87dff56ebddcd3b3ff2f8c3d4dc7b09daf6b3b27a7c43215b28be89435",
+        "movie_sha256": "ffd0828fd8c30fd8f1ae8ccc25f246796a8c1f82fcff008f2d73193d023c8bcb"
+      }
+    },
+    "normal_capture_scope": "同一089b077b首章來源，原版與HD各正常LOAD、身份30普通攻擊及自然返回；不重驗保存冷讀，不新增原版E2。",
+    "source_guards": 7,
+    "all_latest_scene_art_refreshed": false,
+    "platform_packages_rebuilt": false,
+    "rejected_draft": {
+      "path": "work/promo-caption-repair-20261111-r92/rejected-uncropped-r1/promo",
+      "reason": "固定錄影畫布包含原版視窗外的桌面黑邊；實際視窗1280×800，HD為1920×1200",
+      "game_changed": false
+    },
+    "current_promo": "dist-all/v.1.1.4-20261111/promo",
+    "movie": {
+      "file": "FD2-v.1.1.4-20261111-hd1-promo.mp4",
+      "bytes": 54096599,
+      "sha256": "2b832466b7ed9ad8e0f27122422284e13b9cb93eaeaa32ec5d9fa18bb0e38b28"
+    },
+    "duration_seconds": 313.0,
+    "frames": 9390,
+    "audio": {
+      "codec": "AAC",
+      "sample_rate": 48000,
+      "channels": 2,
+      "mean_db": -18.3,
+      "peak_db": -1.3,
+      "silent_intervals": []
+    },
+    "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "binary_sha256": "28837cf73a311ac6c4d242d639df64471b2f8dcbf1c0ff1f8f52f3b42131971d",
+    "video_proof": {
+      "file": "dist-all/v.1.1.4-20261111/promo/GAIA-VIDEO-PROOF.json",
+      "sha256": "951e986a63f7de7db813eba6ead5a7113775f95d093d63522c6fc47b342e55b1"
+    },
+    "audio_proof": {
+      "file": "dist-all/v.1.1.4-20261111/promo/AUDIO-WAVEFORM-PROOF.json",
+      "sha256": "8ce00b1d19ccec1e17a2811cf16816be70f8b1b6a79ab57f053321b817fce447"
+    },
+    "audio_stream_reuse": {
+      "file": "dist-all/v.1.1.4-20261111/promo/AUDIO-REUSE.json",
+      "sha256": "2ab3b6691552606c8d70ad698878fadf775a3dccaa1d9ba26b98bbd88471aaa0"
+    },
+    "visual_review": {
+      "file": "dist-all/v.1.1.4-20261111/promo/VISUAL-REVIEW.json",
+      "sha256": "c4534de52bc207ca3654085c2535fc678ed78966893df8d3b0ba4159b23b6baa"
+    },
+    "narration_segments_unchanged": 36,
+    "narration_wav_sha256": "28562fa35d381d3c96f7875501992b83fb0143bdf1bcdd58f0bc2d793de7352a",
+    "music_playback_rate": 1,
+    "sfx_playback_rate": 1,
+    "unchanged_frames": 9060,
+    "replaced_frames": 330,
+    "real_time_60fps_claim": false,
+    "human_listening_confirmed": false,
+    "preview": {
+      "file": "dist-all/v.1.1.4-20261111/promo/gaia-comparison-preview.mp4",
+      "sha256": "1e1f2946f5ec1c433ae7d2aa9fba26a1128fd261c391a92571efad7468c13c21"
+    },
+    "screenshot": {
+      "file": "docs/figures/hd1-promo-gaia-original-hd.png",
+      "sha256": "0501c3dda87cf788ae3f438bee88c1909437f3ce9564f612acfc4ebc34e90f3a"
+    },
+    "issue_state": "OPEN-AWAITING-COMMIT-CLOSURE",
+    "delivery_manifest": {
+      "file": "dist-all/v.1.1.4-20261111/SHA256SUMS.json",
+      "sha256": "0040b24401cf6e05f8313971996722f898c844a8e0aa21b7558a71d91d83660e"
+    },
+    "cleanup": {
+      "file": "work/promo-caption-repair-20261111-r92/cleanup.json",
+      "sha256": "a2ff2aeeb5e85887da14f0c5b37fc9eb8f2d2ca7bf5e43b59ac45d8615dd2a09",
+      "bytes_reclaimed": 287502574
+    }
+  },
+  "active_promo": "promo_gaia_repair_20261111"
 }
