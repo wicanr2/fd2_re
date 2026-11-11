@@ -117,16 +117,16 @@ def stage(destination, platform):
 Wang Chun-Yu / wicanr2
 https://github.com/wicanr2/fd2_re
 
-這是第一版正式引擎發行。30章受控流程已通過逐章驗收。
+這是《炎龍騎士團2》重製的三平台引擎包。30章受控流程已通過逐章驗收。
 各章使用的建構槽、清敵及保存差異見儲存庫 docs/REMAKE-STATUS.md。
-HD1素材與技術接線已完成；人工造型、逐章、平台及人耳音訊驗收另行確認。
+HD1已接範圍依儲存庫現況矩陣；人工造型、逐章、平台及人耳音訊驗收另行確認。
 
 本包不含原版遊戲、美術、音樂、字型或私人現代素材。
 首次遊玩前，請從自己合法持有的來源建立完整分離素材包。
 現有 extract_all.py 與 fd2-asset-import 各自只涵蓋部分輸出，
 不能把單一工具的輸出當作完整可玩素材包。
 完整素材與來源契約：
-https://github.com/wicanr2/fd2_re/blob/{version()}/docs/knowledge-base/60-editor-separated-assets-spec.md
+https://github.com/wicanr2/fd2_re/blob/{commit()}/docs/knowledge-base/60-editor-separated-assets-spec.md
 
 將完整分離素材放到使用者資料目錄的 assets 子目錄，
 或以 FD2_ASSET_PACK 指定完整包目錄。保留本包的正式劇本與 canonical 資料。

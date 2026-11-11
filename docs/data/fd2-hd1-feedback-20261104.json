@@ -9349,5 +9349,175 @@
       "reclaimed_bytes": 437680163,
       "preserved": "遊戲、原始截圖、程式來源清冊、所有必要GUI與驗證收據"
     }
+  },
+  "terrain_seams_gallery_20261111": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "date": "2026-11-11",
+    "work_root": "work/hd1-terrain-seams-20261111-r98",
+    "embedded_ground_runtime_verified": true,
+    "user_report": {
+      "file": "work/hd1-terrain-seams-20261111-r98/reported-seams.png",
+      "sha256": "0c85db7bcb63b976a55ea1f1fe344e620678e37e82b734c7d629932ca162d47a",
+      "context": "使用者指推廣片合成天空之鑰附近；原片該幕沿用r83受控GPU來源。"
+    },
+    "active_candidate": "candidate-r3",
+    "scope": {
+      "images": 215,
+      "bindings": 307,
+      "maps": [
+        7,
+        8,
+        10,
+        11,
+        13,
+        14,
+        17,
+        18,
+        20,
+        21,
+        22,
+        30,
+        31,
+        32
+      ],
+      "retained_pixels": 2096041,
+      "catalog_assets_changed": 21,
+      "catalog_assets_unchanged": 3364
+    },
+    "rejected_candidates": {
+      "candidate-r1": "歷史盤點SHA不同，改逐一重驗381個原生三層來源，保留舊盤點SHA。",
+      "candidate-r2": "色彩分類誤傷綠樹冠；拒收270格版本。"
+    },
+    "recipe": "remake/assets/themes/modern/hd1-terrain-ground-consistency.recipe.json",
+    "gallery": {
+      "chapters": 30,
+      "scope": "獨立代表畫面，受控相機Game.Draw；非全圖或正常通關證據。",
+      "status": "PASS-30-BATTLEFIELD-GALLERY",
+      "document": "docs/hd1-battlefield-terrain.md",
+      "receipt": "docs/data/fd2-hd1-battlefield-gallery-20261111.json",
+      "receipt_sha256": "50d67b4a2bd4c8669177e3a22f1b6c6780f2d55284dfb71321e5dd1b1c96adb2",
+      "images": 30,
+      "published_size": [
+        1280,
+        800
+      ],
+      "source_size": [
+        1920,
+        1200
+      ],
+      "visual_review": "30場逐張檢視，無缺圖；代表區域取景，不聲稱全地圖無接縫。",
+      "batches": [
+        {
+          "file": "work/hd1-terrain-seams-20261111-r98/gallery-batch-0-r1/receipt.json",
+          "sha256": "913607eaf79b6b471ef08c6f87353e4ad03e308d870a5cd4683564acb235604f"
+        },
+        {
+          "file": "work/hd1-terrain-seams-20261111-r98/gallery-batch-1-r1/receipt.json",
+          "sha256": "045af3e2f080aa7bf30ee331feb07a267bf3a71b5ff33968cbf9a337596d0a8e"
+        },
+        {
+          "file": "work/hd1-terrain-seams-20261111-r98/gallery-batch-2-r1/receipt.json",
+          "sha256": "85750fdff3123224d8d0e1c9bae87c3530befa0f6acef044871bc9fbd8e54aa1"
+        },
+        {
+          "file": "work/hd1-terrain-seams-20261111-r98/gallery-batch-3-r1/receipt.json",
+          "sha256": "76cce430c05c0a4b594d2cb0d0b3a7dbfbe22bbcd34749f9d3104f5356f13adc"
+        }
+      ],
+      "unstable_pixels_by_map": {
+        "12": 20500,
+        "13": 20500,
+        "18": 19094,
+        "21": 60094,
+        "22": 61500,
+        "23": 58508,
+        "24": 60804,
+        "26": 82000,
+        "27": 80594,
+        "28": 82000,
+        "29": 53068
+      }
+    },
+    "remaining": [
+      "圖冊／來源提交與GitHub同步",
+      "重生受影響影片及三平台完整版"
+    ],
+    "issue": 300,
+    "source_transactions": 307,
+    "wrong_mask_admissions_rejected": 14,
+    "gpu": {
+      "status": "PASS-PAINTED-TERRAIN-ATLAS-GPU",
+      "source_cases": 1228,
+      "complete_game_cases": 2,
+      "save_bytes_unchanged": 169,
+      "receipt": "work/hd1-terrain-seams-20261111-r98/terrain-source-gpu-r3/receipt.json",
+      "receipt_sha256": "0e2ebb74b86ade628574fff681a0072ab0bfd9607dd5037cd017a263ab3f2782"
+    },
+    "formal_catalog_sha256": "ea41e4b9a9d656f707a4f05c7eb64ddf36f0bbbeaee55ea1ff085b2f067988f1",
+    "private_manifest_sha256": "e7ca03392400c5d1f4ce2026df106ca4385665f6d09b2b1b232ccbe2dba1a372",
+    "reference_diagnostic": {
+      "case": "map12 / 第13章",
+      "pixel": [
+        993,
+        838
+      ],
+      "gpu": 202,
+      "old_cpu": 208,
+      "group": 17,
+      "base_rect": [
+        888,
+        852,
+        1032,
+        996
+      ],
+      "visual_rect": [
+        877,
+        831,
+        1043,
+        997
+      ],
+      "cause": "舊CPU參照漏用115%世界人物矩形；原遊戲顯示不改。",
+      "fix": "世界人物參照套用原有visual rect，最近鄰以像素中心取樣；原兩階門檻保持。",
+      "regression": "TestHealCPUReferenceIncludesEnlargedWorldUnitHead",
+      "rerun": "four gallery-batch-*-r1 receipts PASS, all 30 maps"
+    },
+    "private_assets": {
+      "source_commit": "e6e9bff69704e5fbe010765c9929b949beb0f033",
+      "remote_head_verified": true,
+      "new_images_verified": 215,
+      "allowlist_active_files": 11269,
+      "receipt": "work/hd1-terrain-seams-20261111-r98/private-new-assets-check.json"
+    },
+    "reference_boundary_diagnostic": {
+      "case": "map21 / 第22章",
+      "pixel": [
+        1577,
+        990
+      ],
+      "gpu": 25,
+      "old_cpu": 11,
+      "group": 16,
+      "source_point": [
+        108,
+        13
+      ],
+      "source_left_rgba": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "source_right_rgba": [
+        3,
+        1,
+        1,
+        152
+      ],
+      "cause": "115%非整數縮放的像素中心正好落在來源texel邊界；GPU圖集浮點插值可選相鄰texel。",
+      "fix": "沿既有stable_nearest_texel_core契約，僅放大世界人物矩形排除不穩定邊界，逐圖記數；其他像素仍為2階門檻。",
+      "scale_gpu_cases": 24,
+      "production_renderer_changed": false,
+      "failed_receipt": "work/hd1-terrain-seams-20261111-r98/gallery-gpu-fixed-r1.log"
+    }
   }
 }

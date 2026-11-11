@@ -8,6 +8,8 @@ import (
 	"image/color"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -114,7 +116,34 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 	var saves, units [][]byte
 	var rngs []uint16
 	var states []map[string]any
-	for _, mapID := range []int{0, 1, 9, 24, 25, 26} {
+	mapIDs := []int{0, 1, 9, 24, 25, 26}
+	if os.Getenv("FD2_HD_MAP_OVERVIEW_ALL_CHAPTERS") == "1" {
+		mapIDs = make([]int, 30)
+		for i := range mapIDs {
+			mapIDs[i] = i
+		}
+	}
+	if value := os.Getenv("FD2_HD_MAP_OVERVIEW_SINGLE"); value != "" {
+		id, err := strconv.Atoi(value)
+		if err != nil || id < 0 || id >= 30 || os.Getenv("FD2_HD_MAP_OVERVIEW_ALL_CHAPTERS") == "1" {
+			t.Fatal("invalid single chapter diagnostic", value)
+		}
+		mapIDs = []int{id}
+	}
+	if value := os.Getenv("FD2_HD_MAP_OVERVIEW_MAPS"); value != "" {
+		if os.Getenv("FD2_HD_MAP_OVERVIEW_ALL_CHAPTERS") == "1" || os.Getenv("FD2_HD_MAP_OVERVIEW_SINGLE") != "" {
+			t.Fatal("overview selectors are exclusive")
+		}
+		mapIDs = nil
+		for _, part := range strings.Split(value, ",") {
+			id, err := strconv.Atoi(part)
+			if err != nil || id < 0 || id >= 30 || len(mapIDs) > 0 && id <= mapIDs[len(mapIDs)-1] {
+				t.Fatal("invalid ordered overview map list", value)
+			}
+			mapIDs = append(mapIDs, id)
+		}
+	}
+	for _, mapID := range mapIDs {
 		g, _, _ := ordinaryCommand0HDTestGame(t, func() time.Time { return time.Unix(1000, 0) })
 		mapPath := fmt.Sprintf("assets/maps/map%d", mapID)
 		scenario := fmt.Sprintf("assets/scenarios/ch%02d.json", mapID+1)
@@ -232,7 +261,7 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 	if err = ebiten.RunGame(probe); err != nil {
 		t.Fatal(err)
 	}
-	if probe.err != nil || probe.index != detailCases+6 {
+	if probe.err != nil || probe.index != detailCases+len(mapIDs) {
 		t.Fatal(probe.index, probe.err)
 	}
 	for i, g := range games {
@@ -252,7 +281,7 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 	report := map[string]any{"status": "PASS-HD-MAP-OVERVIEW-GPU", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)),
 		"coverage_sha256": fmt.Sprintf("%x", sha256.Sum256(coverage)), "source_tree_sha256": code, "source_file_count": count,
 		"detail_manifest_sha256": detailHash, "detail_source_cases": detailCases,
-		"maps": states, "cases": probe.rows, "scope": "six current Game.Draw captures; controlled cameras, authored units unchanged; programmatic F2 and boundary saves; not normal player or original parity"}
+		"maps": states, "cases": probe.rows, "scope": fmt.Sprintf("%d current Game.Draw captures; controlled cameras, authored units unchanged; programmatic F2 and boundary saves; not normal player or original parity", len(mapIDs))}
 	encoded, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(encoded, '\n'), 0644); err != nil {
 		t.Fatal(err)

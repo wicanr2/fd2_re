@@ -406,6 +406,29 @@
         "note": "需Windows實際GPU與幀率觀測；本機軟體繪圖僅供定位。"
       },
       "issue": 298
+    },
+    {
+      "id": "hd1-embedded-ground-consistency",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "P1 修正城牆與岩壁烘入舊草地造成的HD方格拼貼",
+      "body": "使用者從推廣片回報草地與城牆周圍出現方形色差。已定位r78獨立圖集中保留較早的烘入草地，與目前pixelhand-v3共用草地不同。保守候選沿既有材質統一215張地表／建物背景、307槽，保留樹木與苔蘚；過廣的270格候選會誤傷綠樹冠，已拒收，未進正式清冊。原生圖層、selector與遊戲規則不改。",
+      "acceptance": "候選原生來源、307交易及錯遮罩拒收通過；實際GPU四控制、完整Game.Draw／F2／保存通過；視覺確認物件輪廓，正式清冊與私人包同步並驗SHA及來源提交。推廣片重生與各平台封包另記交付，不能把本項外推為所有地圖美術或Windows60fps完成。",
+      "evidence": [
+        "tools/refresh_fd2_terrain_embedded_ground.py",
+        "remake/assets/themes/modern/hd1-terrain-ground-consistency.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-hd1-feedback-20261104.json"
+      ],
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-hd1-feedback-20261104.json"
+        ],
+        "pattern": "\"embedded_ground_runtime_verified\": false",
+        "note": "GPU與私人包未齊前保持false；完成並取得提交後結案。"
+      },
+      "issue": 300
     }
   ]
 }

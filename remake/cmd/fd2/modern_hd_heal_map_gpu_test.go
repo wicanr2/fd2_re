@@ -34,6 +34,52 @@ type healHDGPUCase struct {
 // Scalar RGBA8 source-over: upload quantization and rounding after each draw
 // are explicit. image/draw's 16-bit integer Over accumulates a different
 // rounding error when translucent rings cover already translucent sprites.
+// Match the existing stable_nearest_texel_core contract for enlarged units.
+// Atlas interpolation can choose either texel at a source-pixel boundary.
+func healHDWorldStableCore(frame *modernHDMapFrame, set *modernStoryPortraitSet) (*image.Alpha, int) {
+	var core *image.Alpha
+	excluded := 0
+	clip := frame.Viewport
+	if clip.Empty() {
+		clip = modernHDMapViewport()
+	}
+	stable := func(position, source, target int) bool {
+		denominator := 2 * target
+		remainder := ((2*position + 1) * source) % denominator
+		return denominator <= 4*remainder && 4*remainder <= 3*denominator
+	}
+	for _, unit := range frame.Units {
+		rect := set.mapSpriteVisualRect(unit.Group, unit.Frame, unit.Rect)
+		if rect == unit.Rect {
+			continue
+		}
+		picture := set.mapSpritesHD[unit.Group][unit.Frame]
+		if unit.ColourImage != nil {
+			picture = unit.ColourImage
+		}
+		if core == nil {
+			core = image.NewAlpha(image.Rect(0, 0, 1920, 1200))
+			for i := range core.Pix {
+				core.Pix[i] = 255
+			}
+		}
+		at := rect.Intersect(clip).Intersect(core.Bounds())
+		for y := at.Min.Y; y < at.Max.Y; y++ {
+			for x := at.Min.X; x < at.Max.X; x++ {
+				if stable(x-rect.Min.X, picture.Bounds().Dx(), rect.Dx()) && stable(y-rect.Min.Y, picture.Bounds().Dy(), rect.Dy()) {
+					continue
+				}
+				index := core.PixOffset(x, y)
+				if core.Pix[index] != 0 {
+					core.Pix[index] = 0
+					excluded++
+				}
+			}
+		}
+	}
+	return core, excluded
+}
+
 func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image.RGBA {
 	out := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
 	clip := frame.Viewport
@@ -46,7 +92,7 @@ func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image
 		at := rect.Intersect(region).Intersect(out.Bounds())
 		for y := at.Min.Y; y < at.Max.Y; y++ {
 			for x := at.Min.X; x < at.Max.X; x++ {
-				v := upload.RGBAAt((x-rect.Min.X)*upload.Rect.Dx()/rect.Dx(), (y-rect.Min.Y)*upload.Rect.Dy()/rect.Dy())
+				v := upload.RGBAAt((2*(x-rect.Min.X)+1)*upload.Rect.Dx()/(2*rect.Dx()), (2*(y-rect.Min.Y)+1)*upload.Rect.Dy()/(2*rect.Dy()))
 				if v.A == 0 {
 					continue
 				}
@@ -74,7 +120,7 @@ func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image
 		if u.ColourImage != nil {
 			picture = u.ColourImage
 		}
-		paint(picture, u.Rect, clip, scale)
+		paint(picture, set.mapSpriteVisualRect(u.Group, u.Frame, u.Rect), clip, scale)
 	}
 	for _, fg := range frame.Foreground {
 		var src image.Image = fg.Image

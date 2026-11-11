@@ -1031,6 +1031,12 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 [戰鬥速度與金框收據核對器](../../tools/verify_fd2_battle_speed_ui.py)接受正常GUI的`--run`與`--binary`，核對出招倍率、返回、冷讀及四組實機畫面，以`--out`寫入新收據；選填`--overview`產生裁切拼排PNG。
 
+[草地烘入底色一致化候選器](../../tools/refresh_fd2_terrain_embedded_ground.py)逐一核對既有圖集的原生三層內容，只在接近原生草地、與圖邊連通的綠色背景換用已登錄草地；保留非背景RGB，候選須經畫面複核後才可登錄。
+
+[逐戰場圖冊編製器](../../tools/build_fd2_battlefield_gallery.py)讀取30章完整Game.Draw收據，以正式章名輸出獨立PNG、Markdown及來源紀錄；取景規格依[逐戰場HD地形圖冊](61-modern-theme-runtime-spec.md#逐戰場hd地形圖冊與草地拼接回饋)。
+
+[HD1戰場地形圖冊](../hd1-battlefield-terrain.md)逐場列圖，來源與驗證集中[圖冊收據](../data/fd2-hd1-battlefield-gallery-20261111.json)；圖冊是受控取景，不作全戰役通關聲明。
+
 [工作區清理紀錄](../data/fd2-workspace-cleanup-20261105.json)保存明示清單、移除原因、封包／錄影雜湊與清理前後用量。[清理工具](../../tools/cleanup_fd2_workspace.py)僅在Docker使用，傳入`--plan`清單、`--tracked-list`受版控檔案清單及`--report`紀錄；預設只檢查，`--apply`才移除。它保護最新成品、受版控來源與兩份未提交工作樹，拒絕指紋已變動或經符號連結轉向的候選。歷次驗收保留原有雜湊，已清理的中間產物依本紀錄辨識。
 
 ## HD2首章站姿原型

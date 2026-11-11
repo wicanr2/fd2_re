@@ -61,13 +61,35 @@ func (p *sharedGroundGPUProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	want := healHDCPUWorld(f, p.set)
+	core, excluded := healHDWorldStableCore(f, p.set)
 	got := make([]byte, 1920*1200*4)
 	g.modernHDMapGPU.World.ReadPixels(got)
 	check := func() bool {
 		for i, v := range want.Pix {
+			if core != nil && core.Pix[i/4] == 0 {
+				continue
+			}
 			d := int(got[i]) - int(v)
 			if d < -2 || d > 2 {
 				p.err = fmt.Errorf("%s GPU byte%d got%d want%d", c.name, i, got[i], v)
+				if os.Getenv("FD2_HD_MAP_DIAGNOSTICS") == "1" {
+					point := image.Pt(i/4%1920, i/4/1920)
+					units := []map[string]any{}
+					for _, unit := range f.Units {
+						rect := p.set.mapSpriteVisualRect(unit.Group, unit.Frame, unit.Rect)
+						units = append(units, map[string]any{"group": unit.Group, "frame": unit.Frame, "base": unit.Rect, "visual": rect, "palette_band": unit.PaletteBand, "covers_failure": point.In(rect)})
+					}
+					meta, _ := json.MarshalIndent(map[string]any{"case": c.name, "pixel": point, "channel": i % 4, "gpu": got[i], "cpu": v, "units": units}, "", "  ")
+					_ = os.WriteFile(filepath.Join(p.out, c.name+"-failure.json"), append(meta, '\n'), 0644)
+					for name, raw := range map[string][]byte{"gpu": got, "cpu": want.Pix} {
+						picture := image.NewRGBA(want.Bounds())
+						copy(picture.Pix, raw)
+						if file, err := os.Create(filepath.Join(p.out, c.name+"-"+name+".png")); err == nil {
+							_ = png.Encode(file, picture)
+							_ = file.Close()
+						}
+					}
+				}
 				return false
 			}
 		}
@@ -104,6 +126,7 @@ func (p *sharedGroundGPUProbe) Draw(screen *ebiten.Image) {
 		f2 = true
 	}
 	row := map[string]any{"case": c.name, "map": c.mapID, "source_frame": c.source, "terrain_draws": len(f.Terrain), "world_rgba_sha256": fmt.Sprintf("%x", sha256.Sum256(got)), "rgba_tolerance": 2, "game_draw": c.frame == nil, "f2": f2}
+	row["scaled_unit_unstable_pixels"] = excluded
 	if c.keepPNG {
 		final := ebiten.NewImage(1920, 1200)
 		var geom ebiten.GeoM

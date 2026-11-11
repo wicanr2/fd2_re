@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -339,6 +339,16 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
+
+### P1 修正城牆與岩壁烘入舊草地造成的HD方格拼貼
+
+`hd1-embedded-ground-consistency` · 缺陷 · [#300](https://github.com/wicanr2/fd2_re/issues/300) · **可能已完成，回去確認** · 找不到 "embedded_ground_runtime_verified": false
+
+使用者從推廣片回報草地與城牆周圍出現方形色差。已定位r78獨立圖集中保留較早的烘入草地，與目前pixelhand-v3共用草地不同。保守候選沿既有材質統一215張地表／建物背景、307槽，保留樹木與苔蘚；過廣的270格候選會誤傷綠樹冠，已拒收，未進正式清冊。原生圖層、selector與遊戲規則不改。
+
+怎樣算做完：候選原生來源、307交易及錯遮罩拒收通過；實際GPU四控制、完整Game.Draw／F2／保存通過；視覺確認物件輪廓，正式清冊與私人包同步並驗SHA及來源提交。推廣片重生與各平台封包另記交付，不能把本項外推為所有地圖美術或Windows60fps完成。
+
+證據：`['tools/refresh_fd2_terrain_embedded_ground.py', 'remake/assets/themes/modern/hd1-terrain-ground-consistency.recipe.json', 'docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-hd1-feedback-20261104.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

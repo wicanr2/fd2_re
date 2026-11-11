@@ -257,6 +257,7 @@ def main():
             text = text.replace('採原版像素風格，尚未 HD。', '包含原版像素與HD1素材、介面及完整工具列。')
             text = text.replace('使用全新設定時是原版忠實主題；沿用舊設定請確認沒有選擇現代主題。',
                                 'F2切換原版／HD美術，F11獨立切換介面。滑鼠移至頂端可開啟工具列。\n兩套音源、四語與中文字型已隨包附上，不需開發機系統字型。\n能力設定每次須三次確認，可逐人調整能力、升級成長與有命中骰的特技，並調整敵軍五項強度。\n自訂規則隨進度保存；移動原生FD2.SAV時請一併保留相鄰的.fd2-options.json附檔。\n全新設定維持原版預設；既有美術與介面偏好繼續保存。')
+            text += '\nHD貼圖預設均衡，可在完整／均衡／輕量之間切換。\n點工具列速度格，分別設定遊戲速度與戰鬥動畫速度。戰鬥可跟隨或獨立指定1～4倍，音樂與音效維持原速。\n遊戲結束後再開啟，畫質與速度偏好會保留。\nWindows實機60fps與各平台人工試玩依實際驗收紀錄，不以設定倍率代替幀率。\n'
         for target in [linux, engine, mac_resources]:
             dump(target / 'FD2-LOCAL-FULL.json', metadata)
             (target / '完整包說明.txt').write_bytes(('\ufeff' + text.replace('\n', '\r\n')).encode('utf-8'))

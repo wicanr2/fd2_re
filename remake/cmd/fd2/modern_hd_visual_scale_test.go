@@ -50,6 +50,36 @@ func TestModernHDVisualScaleFootAndLegacy(t *testing.T) {
 	}
 }
 
+func TestHealCPUReferenceIncludesEnlargedWorldUnitHead(t *testing.T) {
+	picture := image.NewRGBA(image.Rect(0, 0, 144, 144))
+	for y := 0; y < 144; y++ {
+		for x := 0; x < 144; x++ {
+			picture.SetRGBA(x, y, color.RGBA{byte(x), 100, 50, 255})
+		}
+	}
+	set := &modernStoryPortraitSet{mapSpritesHD: map[int][]image.Image{17: {picture}},
+		mapSpriteVisualScale: map[int]modernHDVisualScale{17: 115}, mapSpriteFeet: map[int][]int{17: {138}}}
+	frame := &modernHDMapFrame{Background: image.NewRGBA(image.Rect(0, 0, 320, 200)),
+		Units: []modernHDMapUnitDraw{{Group: 17, Rect: image.Rect(888, 852, 1032, 996)}}}
+	out := healHDCPUWorld(frame, set)
+	// Chapter 13 first exposed this point above the original 144px rectangle.
+	if got := out.RGBAAt(993, 838); got.A != 255 || got.G != 100 {
+		t.Fatal("enlarged head omitted from CPU reference", got)
+	}
+	// A stable non-integral sample uses the output pixel centre: floor(38.5*144/166)=33.
+	if got := out.RGBAAt(915, 850); got.R != 33 {
+		t.Fatal("CPU reference sampled a pixel edge", got)
+	}
+	core, excluded := healHDWorldStableCore(frame, set)
+	if core == nil || excluded == 0 || core.AlphaAt(918, 846).A != 0 || core.AlphaAt(915, 846).A != 255 || core.AlphaAt(8, 8).A != 255 {
+		t.Fatal("non-integral texel core contract changed", excluded)
+	}
+	set.mapSpriteVisualScale[17] = 100
+	if core, excluded = healHDWorldStableCore(frame, set); core != nil || excluded != 0 {
+		t.Fatal("ordinary world pixels excluded")
+	}
+}
+
 func TestModernHDVisualScaleMapAdmissionAndRole(t *testing.T) {
 	path, root, document := writeModernHDMapFixture(t)
 	for _, row := range document["assets"].([]any) {
