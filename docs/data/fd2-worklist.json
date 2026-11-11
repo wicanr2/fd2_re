@@ -395,23 +395,6 @@
       "issue": 278
     },
     {
-      "id": "promo-gaia-original-caption-identity",
-      "layer": "release",
-      "category": "缺陷",
-      "title": "P1 推廣片82至86秒原版圖說錯置，亞雷斯被標成蓋亞",
-      "body": "音訊修正時複核原片82.7及84.0秒，右方姓名為亞雷斯、持長兵器與盜賊交戰；gaia-original圖說卻寫蓋亞重拳出擊。86秒後的HD蓋亞演出正確。本次音軌修正按實際人物取原音效，保留視訊封包；圖說／鏡頭另外修正，不冒稱已處理。原片SHA04ce29f4，音訊修正版SHAffd0828f，兩者視訊封包SHA3580eae1相同。圖格與人名來源：work/promo-audio-repair-20261105-r88/cue-contact.png、cue-review.json及保留的previous-promo。",
-      "acceptance": "使用與角色相符的原版演出鏡頭，或使圖說及旁白一致指向實際角色；重新檢視82至93秒並驗影片、字幕與SHA清冊，修正目前對外說明。",
-      "evidence": [
-        "docs/data/fd2-hd1-feedback-20261104.json#promo_audio_repair_20261105",
-        "work/promo-audio-repair-20261105-r88/cue-review.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "實際觀看82至93秒的人名、人物、圖說與旁白；目前已確認未修。"
-      },
-      "issue": 297
-    },
-    {
       "id": "hd1-windows-performance-60fps",
       "layer": "player",
       "category": "缺陷",
