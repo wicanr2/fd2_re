@@ -8989,5 +8989,50 @@
       "file": "work/yuni-tw-tts-20261111-r94/document-check.json",
       "sha256": "aeb37a232d4f0161911bbb9b0515e56873232c55755ce7d3cf70970c599e31de"
     }
+  },
+  "promo_refresh_20261111": {
+    "status": "STORY-FIX-CONFORMED-SCOPED-PROMO-EDIT-IN-PROGRESS",
+    "work": "work/hd1-promo-refresh-20261111-r96",
+    "source_head": "b87011a091fb12001b4bc4f0d4c143dadd084d16",
+    "captures_pass": [
+      "ares",
+      "gaia",
+      "yuni",
+      "middy",
+      "tino",
+      "rodman"
+    ],
+    "cards": "32HD portraits rebuilt from current catalog; five-character visual review viewed",
+    "story_failure": {
+      "error": "modern HD story: visual roster provenance mismatch",
+      "capture": "work/hd1-promo-refresh-20261111-r96/opening-gui-r4",
+      "last_script_source": "0x328ec",
+      "cause": "startNativeSpawnIntro publishes storyActors but omits storyNativeMapState Units/cache synchronization",
+      "classification": "remake runtime bookkeeping defect; no new original RE semantics"
+    },
+    "plan_status": "READY-PRIVATE-CANDIDATE-ATOMIC-ROSTER-PUBLICATION",
+    "movie_delivered": false,
+    "windows_60fps_verified": false,
+    "story_spawn_runtime_verified": true,
+    "story_fix_cpu": "PASS targeted story roster/map/motion regression",
+    "fixed_binary_sha256": "eb1c058bc552ec061fb2f47bd13fffd8896eb5e1f2681c5c3bda4614309ec34d",
+    "issue": "https://github.com/wicanr2/fd2_re/issues/299",
+    "story_fix_gpu": {
+      "cases": 9,
+      "frames": 126,
+      "f2_round_trips": 27,
+      "scope": "controlled RUNTIME-E1 including duplicate-actor spawn fixture"
+    },
+    "normal_start": {
+      "status": "PASS-NORMAL-START-ROYAL-DEPLOYMENT",
+      "source": "opening-gui-r5",
+      "first_chapter_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "post_start_new_process_load": "PASS",
+      "save_contract": "章界保存重新建構位置與出場旗標；只核身份、能力及正常載入／攻擊，不宣稱完整戰場續存。"
+    },
+    "conformance": {
+      "file": "work/hd1-promo-refresh-20261111-r96/story-spawn-conformance.json",
+      "sha256": "58919a89c70db6425efd9ae91dff9ee73e89b0f3a354465e4c8df47c9f345571"
+    }
   }
 }

@@ -114,6 +114,27 @@ func (g *Game) appendNativeStoryMapActors(start int) error {
 	return nil
 }
 
+// 出場預檢只改候選角色與私有載體。成功後須把兩者一起發布，否則
+// 原生底圖及HD移動會讀到出場前的角色名冊。
+func (g *Game) prepareNativeStoryMapSpawnState(actors []battle.Unit, oldCount int) (*battle.State, error) {
+	if g.storyNativeMapState == nil {
+		return nil, nil
+	}
+	if oldCount != len(g.storyActors) || oldCount > len(actors) ||
+		len(g.storyNativeMapState.Units) != oldCount || g.storyNativeMapState.NativeMapSelectorCache == nil {
+		return nil, errors.New("native story spawn: map roster boundary unavailable")
+	}
+	view := *g
+	state := *g.storyNativeMapState
+	state.NativeMapSelectorCache = state.NativeMapSelectorCache.Clone()
+	state.Units = append([]*battle.Unit(nil), state.Units...)
+	view.storyActors, view.storyNativeMapState = actors, &state
+	if err := view.appendNativeStoryMapActors(oldCount); err != nil {
+		return nil, err
+	}
+	return view.storyNativeMapState, nil
+}
+
 func (g *Game) composeNativeStoryMapFrame() error {
 	if g == nil || g.st != nil || g.storyNativeMapState == nil || !g.hasStoryNativeMapView {
 		return errors.New("native story map: caller-owned scene state is unavailable")

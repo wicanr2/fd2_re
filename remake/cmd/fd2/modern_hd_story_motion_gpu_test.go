@@ -157,6 +157,16 @@ func storyMotionActualGame(t *testing.T, set *modernStoryPortraitSet, name strin
 	if err := g.materializeNativeStoryMapState(source); err != nil {
 		t.Fatal(err)
 	}
+	if name == "spawn" {
+		// Controlled duplicate actor exercises publication and GPU rendering;
+		// actual FDFIELD groups are verified separately through normal START.
+		actors := storySpawnCandidate(t, g)
+		state, err := g.prepareNativeStoryMapSpawnState(actors, len(g.storyActors))
+		if err != nil {
+			t.Fatal(err)
+		}
+		g.storyActors, g.storyNativeMapState = actors, state
+	}
 	if name == "pan" {
 		// This controlled fixture adds the real FDOTHER 16/17 surface to the
 		// map-zero carrier. It tests the renderer, not chapter-18 reachability.
@@ -176,7 +186,7 @@ func storyMotionActualGame(t *testing.T, set *modernStoryPortraitSet, name strin
 		return g
 	}
 	dest := map[string]image.Point{"east": {9, 5}, "west": {3, 5}, "north": {6, 3}, "south": {6, 8},
-		"turn-x": {9, 6}, "turn-y": {7, 8}, "follow": {6, 2}}[name]
+		"turn-x": {9, 6}, "turn-y": {7, 8}, "follow": {6, 2}, "spawn": {9, 5}}[name]
 	free := 0
 	if name == "follow" {
 		free = 1 // unitY-cameraY starts at 2: the first up-step stays in the safe band.
@@ -203,7 +213,7 @@ func TestModernHDStoryMotionGameGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := &storyMotionGPUProbe{out: out, checker: unitPresentGPUProbe{set: set}}
-	for _, name := range []string{"east", "west", "north", "south", "turn-x", "turn-y", "pan", "follow"} {
+	for _, name := range []string{"east", "west", "north", "south", "turn-x", "turn-y", "pan", "follow", "spawn"} {
 		a, b := new(int), new(int)
 		p.cases = append(p.cases, storyMotionGPUCase{name: name, continued: a, controlContinued: b,
 			g: storyMotionActualGame(t, set, name, a), control: storyMotionActualGame(t, nil, name, b)})
@@ -222,7 +232,8 @@ func TestModernHDStoryMotionGameGPU(t *testing.T) {
 	}
 	raw, err := json.MarshalIndent(map[string]any{"status": "PASS-STORY-MOTION-HD-GAME", "fixed_clock_unix": 1000,
 		"native_seed": 7, "rgba_tolerance": 2, "cases": cases, "rows": p.rows,
-		"parallax_fixture": "pan: original FDOTHER 16/17 on map-zero carrier; controlled RUNTIME-E1"}, "", "  ")
+		"parallax_fixture": "pan: original FDOTHER 16/17 on map-zero carrier; controlled RUNTIME-E1",
+		"spawn_fixture":    "duplicate actor after private map-roster preparation; controlled RUNTIME-E1, not FDFIELD recruitment"}, "", "  ")
 	if err != nil {
 		t.Fatal(err)
 	}

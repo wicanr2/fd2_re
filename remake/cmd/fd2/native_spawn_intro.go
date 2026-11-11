@@ -166,6 +166,10 @@ func (g *Game) startNativeSpawnIntro(group int, rawGate byte, then func()) error
 	if err != nil {
 		return err
 	}
+	candidateMapState, err := g.prepareNativeStoryMapSpawnState(candidateActors, oldCount)
+	if err != nil {
+		return fmt.Errorf("native spawn-intro candidate map state: %w", err)
+	}
 	oldInput, err := g.buildNativeIndexedTransitionInputForActors(g.storyActors)
 	if err != nil {
 		return fmt.Errorf("native spawn-intro baseline input: %w", err)
@@ -183,6 +187,7 @@ func (g *Game) startNativeSpawnIntro(group int, rawGate byte, then func()) error
 	// succeeded. Native mutates the unit array before pass 0, so the blocked
 	// presentation owns this already-constructed roster until completion.
 	g.storyActors = candidateActors
+	g.storyNativeMapState = candidateMapState
 	g.storyRoster = candidateRoster
 	g.storySpawned[group] = true
 	g.spawnIntroTransition = job

@@ -1,5 +1,7 @@
 # 炎龍騎士團2 逆向工程知識庫 — 索引(問題導向路由)
 
+HD2／HD-2D人物製作採使用者已選定的3D骨架離線渲染路線，先做索爾樣本；階段、動畫及驗收入口見[人物與動畫計畫](../hd2-character-animation-plan.md)。目前只有無身份的技術示意，正式模型與遊戲接線尚未完成。
+
 第67組靜態人物的原圖、身份限制與已確認來源例外見[來源盤點](../data/ida/fd2_static67_source_audit_20261101.json)，重跑入口為[IDA數值引用工具](../../tools/ida_probe_fd2_static67.py)；美術接線契約見[61](61-modern-theme-runtime-spec.md)「第67組無名靜態圖源Q版接線」。
 
 > 《炎龍騎士團2》(Flame Dragon Knight 2),漢堂國際 1995,DOS / DOS4GW 保護模式。

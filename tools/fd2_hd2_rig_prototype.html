@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HD-2D 骨架動畫流程試驗</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0b1522;color:#e9e3ce}*{box-sizing:border-box}body{margin:0 auto;padding:24px;max-width:1280px}h1{font-size:25px;font-weight:600;margin:0 0 12px}p{line-height:1.7;margin:8px 0 16px;color:#bdc8d5}button,select,input{font:inherit}button,select{background:#1a2b40;border:1px solid #bd9b50;color:inherit;border-radius:5px;padding:8px 12px}label{display:flex;align-items:center;gap:9px}nav{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:16px 0}.views{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}article{min-width:0;border:1px solid #4e5f71;background:#122135;border-radius:6px;padding:14px}h2{font-size:17px;margin:0 0 8px;color:#e1be6e}canvas{display:block;width:100%;height:auto;background:repeating-conic-gradient(#172638 0% 25%,#1c2d40 0% 50%) 0/24px 24px;border-radius:3px}article p{font-size:14px;min-height:48px;margin:12px 0 0}.timeline{display:flex;gap:16px;align-items:center;margin:18px 0}.timeline input{flex:1;min-width:80px}output{min-width:145px;font-variant-numeric:tabular-nums}.notice{padding:14px;border-left:3px solid #d9b964;background:#1c2b3f}.flow{font-size:16px;line-height:2;color:#e6d8b8}#export{margin-top:8px}@media(max-width:850px){.views{grid-template-columns:1fr}article p{min-height:0}canvas{max-height:380px;object-fit:contain}body{padding:16px}}
+</style>
+<h1>先固定角色，再讓骨架帶動動畫</h1>
+<p>HD-2D 製作流程的可丟棄技術原型。三個視窗共用同一套關節、動作與時間，不逐張生成圖片。</p>
+<nav>
+<label>動作<select id="action"><option value="idle">待機</option><option value="walk">走行</option><option value="attack">揮擊</option><option value="cast">施法</option></select></label>
+<label>方向<select id="direction"><option value="0">正面</option><option value="45" selected>右前</option><option value="90">右側</option><option value="135">右後</option><option value="180">背面</option><option value="225">左後</option><option value="270">左側</option><option value="315">左前</option></select></label>
+<label>取樣<select id="fps"><option value="12">12 張／秒</option><option value="24" selected>24 張／秒</option><option value="60">60 張／秒</option></select></label>
+<label><input type="checkbox" id="bounds" checked>顯示落腳點與圖框</label>
+<button id="play" type="button">暫停</button>
+</nav>
+<div class="views">
+<article><h2>1. 骨架與關節</h2><canvas id="bones" width="360" height="400"></canvas><p>骨長固定；腳部用兩段反向運動學。切方向只轉動同一套空間座標。</p></article>
+<article><h2>2. 固定造型跟隨骨架</h2><canvas id="model" width="360" height="400"></canvas><p>以幾何替身表示身體與武器。這是程式投影示意，尚未使用 Blender 網格、蒙皮或正式美術。</p></article>
+<article><h2>3. 小尺寸圖格預覽</h2><canvas id="sprite" width="360" height="400"></canvas><p>採既有 168 像素站姿基準，武器可超出。視框與落腳點固定，避免每張重新縮放造成抖動。</p></article>
+</div>
+<div class="timeline"><label for="time">動作時間</label><input id="time" type="range" min="0" max="1000" value="0"><output id="readout"></output></div>
+<button id="export" type="button">下載這一拍的透明圖格</button>
+<p class="flow">角色造型定稿 → 建模與綁骨 → 製作動作 → 固定鏡頭批次渲染 → 圖集與事件索引 → 遊戲載入</p>
+<p class="notice">替身沒有角色身份。畫風、相機角度、八方向與取樣率均為試驗值，沒有接入遊戲或變更存檔。60 張／秒是動畫取樣選項，不代表遊戲已達 60 FPS。骨架只能保持結構一致；正式角色仍須先完成面容、裝備、材質與輪廓審查。</p>
+<script>
+'use strict';
+const $=s=>document.querySelector(s), TAU=2*Math.PI;
+const add=(a,b)=>a.map((v,i)=>v+b[i]), sub=(a,b)=>a.map((v,i)=>v-b[i]), mul=(a,n)=>a.map(v=>v*n);
+const len=a=>Math.hypot(...a), norm=a=>mul(a,1/Math.max(len(a),1e-9));
+const dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0), cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const smooth=x=>x*x*(3-2*x), mix=(a,b,t)=>a+(b-a)*t;
+const durations={idle:2,walk:1,attack:1.2,cast:1.6};
+const state={action:'idle',direction:45,fps:24,time:0,playing:true,bounds:true};
+let last=0;
+function ik(a,b,L1,L2,pole){
+ const delta=sub(b,a), distance=len(delta), d=Math.min(Math.max(distance,1e-6),L1+L2-1e-6), axis=norm(delta);
+ const along=(L1*L1-L2*L2+d*d)/(2*d), height=Math.sqrt(Math.max(0,L1*L1-along*along));
+ let side=sub(pole,mul(axis,dot(pole,axis))); side=norm(side);
+ const endpoint=distance>d?add(a,mul(axis,d)):b;
+ return {mid:add(add(a,mul(axis,along)),mul(side,height)),end:endpoint};
+}
+function pose(action,time){
+ const phase=(time%durations[action])/durations[action], wave=Math.sin(TAU*phase);
+ const bob=action==='walk'?.013*Math.cos(TAU*phase*2):.008*wave;
+ const joints={root:[0,0,0],pelvis:[0,.77+bob,0],neck:[0,1.43+bob,0],head:[0,1.73+bob,0]};
+ const bones=[],objects=[];
+ const bone=(a,b,r,color)=>{bones.push([a,b]);objects.push({kind:'limb',a:joints[a],b:joints[b],r,color});};
+ for(const [side,sign] of [['L',-1],['R',1]]){
+  joints['hip'+side]=[sign*.16,.77+bob,0];
+  let foot=[sign*.17,.035,.02];
+  if(action==='walk'){
+   const t=(phase+(side==='L'?0:.5))%1, contact=.6, stride=.48;
+   foot[2]=t<contact?mix(stride/2,-stride/2,t/contact):mix(-stride/2,stride/2,smooth((t-contact)/(1-contact)));
+   foot[1]+=t<contact?0:.15*Math.sin(Math.PI*(t-contact)/(1-contact));
+  }
+  const leg=ik(joints['hip'+side],foot,.39,.38,[0,0,1]);
+  joints['knee'+side]=leg.mid;joints['ankle'+side]=leg.end;
+  bone('hip'+side,'knee'+side,.105,'#88999f');bone('knee'+side,'ankle'+side,.095,'#a8b4b6');
+  objects.push({kind:'foot',a:joints['ankle'+side],b:add(joints['ankle'+side],[0,-.005,.14]),r:.085,color:'#626f7a'});
+  joints['shoulder'+side]=[sign*.30,1.34+bob,0];
+  let hand=[sign*.36,.85+bob,.13];
+  if(action==='walk') hand=[sign*.36,.87+bob,-.24*Math.sin(TAU*(phase+(side==='L'?0:.5)))];
+  if(action==='attack'&&side==='R'){
+   // Staged anticipation, strike and recovery; not original game timing.
+   let angle=phase<.3?mix(.4,-2.3,smooth(phase/.3)):phase<.5?mix(-2.3,1.35,smooth((phase-.3)/.2)):mix(1.35,.4,smooth((phase-.5)/.5));
+   hand=add(joints['shoulder'+side],[.06,-.48*Math.cos(angle),.48*Math.sin(angle)]);
+  }
+  if(action==='cast'){
+   const raised=phase<.3?smooth(phase/.3):phase>.75?1-smooth((phase-.75)/.25):1;
+   hand=[sign*mix(.36,.43,raised),mix(.85,1.42,raised)+bob,mix(.13,.35,raised)];
+  }
+  const arm=ik(joints['shoulder'+side],hand,.31,.30,[sign*.7,-.2,-.3]);
+  joints['elbow'+side]=arm.mid;joints['hand'+side]=arm.end;
+  bone('shoulder'+side,'elbow'+side,.085,'#b1bec2');bone('elbow'+side,'hand'+side,.07,'#85959f');
+ }
+ objects.push({kind:'limb',a:joints.pelvis,b:[0,1.31+bob,0],r:.255,color:'#536778'});
+ bones.push(['pelvis','neck'],['neck','head'],['neck','shoulderL'],['neck','shoulderR'],['pelvis','hipL'],['pelvis','hipR']);
+ objects.push({kind:'head',a:joints.head,r:.42,color:'#aab5b8'});
+ const grip=joints.handR, fore=norm(sub(grip,joints.elbowR));
+ const blade=add(grip,mul(fore,.61));
+ objects.push({kind:'weapon',a:grip,b:blade,r:.024,color:'#e3e6dc'});
+ return {joints,bones,objects,phase};
+}
+function projection(p,scale,cx,cy){
+ const yaw=state.direction*Math.PI/180, elevation=34*Math.PI/180;
+ const x=p[0]*Math.cos(yaw)+p[2]*Math.sin(yaw), z=-p[0]*Math.sin(yaw)+p[2]*Math.cos(yaw);
+ return [cx+x*scale,cy-(p[1]*Math.cos(elevation)-z*Math.sin(elevation))*scale,p[1]*Math.sin(elevation)+z*Math.cos(elevation)];
+}
+function limb(ctx,a,b,r,color,scale){
+ ctx.lineCap='round';ctx.lineWidth=r*scale*2+2;ctx.strokeStyle='#172532';ctx.beginPath();ctx.moveTo(...a.slice(0,2));ctx.lineTo(...b.slice(0,2));ctx.stroke();
+ const gradient=ctx.createLinearGradient(a[0]-r*scale,a[1],a[0]+r*scale,a[1]+1);gradient.addColorStop(0,color);gradient.addColorStop(.35,'#d3dcd9');gradient.addColorStop(1,color);
+ ctx.lineWidth=r*scale*2;ctx.strokeStyle=gradient;ctx.stroke();
+}
+function draw(canvas,mode,transparent=false){
+ const ctx=canvas.getContext('2d'), W=canvas.width,H=canvas.height;ctx.clearRect(0,0,W,H);
+ const scale=mode==='sprite'?168/(2.15*Math.cos(34*Math.PI/180)):152,cx=W/2,cy=mode==='sprite'?300:350;
+ const p=pose(state.action,state.time),project=v=>projection(v,scale,cx,cy);
+ if(!transparent){ctx.strokeStyle='#53616c';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(14,cy);ctx.lineTo(W-14,cy);ctx.stroke();}
+ if(mode==='bones'){
+  for(const [a,b] of p.bones){const x=project(p.joints[a]),y=project(p.joints[b]);ctx.strokeStyle='#e0b865';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x[0],x[1]);ctx.lineTo(y[0],y[1]);ctx.stroke();}
+  for(const v of Object.values(p.joints)){const x=project(v);ctx.fillStyle='#e5f3f4';ctx.beginPath();ctx.arc(x[0],x[1],4,0,TAU);ctx.fill();}
+ }else{
+  const objects=p.objects.map(o=>({...o,A:project(o.a),B:o.b?project(o.b):null}));
+  objects.sort((a,b)=>((a.A[2]+(a.B?.[2]??a.A[2]))/2)-((b.A[2]+(b.B?.[2]??b.A[2]))/2));
+  for(const o of objects){
+   if(o.kind==='head'){
+    const r=o.r*scale,gradient=ctx.createRadialGradient(o.A[0]-r*.3,o.A[1]-r*.4,r*.08,o.A[0],o.A[1],r);
+    gradient.addColorStop(0,'#e3e6df');gradient.addColorStop(.7,o.color);gradient.addColorStop(1,'#52606d');ctx.fillStyle=gradient;ctx.strokeStyle='#172532';ctx.lineWidth=2;ctx.beginPath();ctx.arc(o.A[0],o.A[1],r,0,TAU);ctx.fill();ctx.stroke();
+    const nose=project(add(o.a,[0,-.03,.41]));if(Math.cos(state.direction*Math.PI/180)>-.2){ctx.fillStyle='#35444f';ctx.beginPath();ctx.arc(nose[0],nose[1],r*.07,0,TAU);ctx.fill();}
+   }else limb(ctx,o.A,o.B,o.r,o.color,scale);
+  }
+ }
+ if(state.bounds&&!transparent){
+  ctx.strokeStyle='#cfac57';ctx.lineWidth=1;ctx.setLineDash([5,5]);const frame=mode==='sprite'?[cx-102,cy-230,204,250]:[cx-150,20,300,350];ctx.strokeRect(...frame);ctx.setLineDash([]);
+  ctx.strokeStyle='#76d8c3';ctx.beginPath();ctx.moveTo(cx-8,cy);ctx.lineTo(cx+8,cy);ctx.moveTo(cx,cy-8);ctx.lineTo(cx,cy+8);ctx.stroke();
+ }
+ return p;
+}
+function render(){draw($('#bones'),'bones');draw($('#model'),'model');draw($('#sprite'),'sprite');$('#time').value=1000*state.time/durations[state.action];$('#readout').value=`${state.time.toFixed(3)} 秒 · 第 ${Math.floor(state.time*state.fps)} 拍`;}
+function update(patch){Object.assign(state,patch);state.time=Math.min(state.time,durations[state.action]-1e-6);for(const id of ['action','direction','fps'])$('#'+id).value=String(state[id]);$('#bounds').checked=state.bounds;$('#play').textContent=state.playing?'暫停':'播放';render();return snapshot();}
+function snapshot(){const p=pose(state.action,state.time),lengths=p.bones.map(([a,b])=>({bone:a+':'+b,length:len(sub(p.joints[a],p.joints[b]))}));return {...state,duration:durations[state.action],joints:p.joints,lengths,footAnchor:[180,300],sourceKind:'procedural-3d-joints-canvas-projection',identity:null,gameWrites:0,blenderRendered:false};}
+window.hd2RigPrototype={update,snapshot,pose};
+for(const id of ['action','direction','fps'])$('#'+id).addEventListener('change',e=>update({[id]:id==='action'?e.target.value:Number(e.target.value),time:0}));
+$('#bounds').addEventListener('change',e=>update({bounds:e.target.checked}));
+$('#play').addEventListener('click',()=>update({playing:!state.playing}));
+$('#time').addEventListener('input',e=>update({playing:false,time:Number(e.target.value)/1000*(durations[state.action]-1e-6)}));
+$('#export').addEventListener('click',()=>{const canvas=document.createElement('canvas');canvas.width=360;canvas.height=400;draw(canvas,'sprite',true);const a=document.createElement('a');a.download=`rig-draft-${state.action}-${state.direction}-${Math.floor(state.time*state.fps)}.png`;a.href=canvas.toDataURL();a.click();});
+function tick(now){if(state.playing&&last){state.time=(state.time+Math.min((now-last)/1000,.1))%durations[state.action];const t=Math.floor(state.time*state.fps)/state.fps;const exact=state.time;state.time=t;render();state.time=exact;}last=now;requestAnimationFrame(tick);}
+render();requestAnimationFrame(tick);
+</script>
+</html>

@@ -4,6 +4,10 @@
 
 熾炎刀B的連續漂浮火星已達CONFORMED-SCOPED／RUNTIME-E1／正常施放抽樣。讀取既有owner節拍，以共用小貼圖上飄淡出，保護固定HUD；原生排程、結算、亂數及保存格式不變。規格與重跑入口見[61](61-modern-theme-runtime-spec.md#熾炎刀b連續漂浮火星)，現況依同一玩家回饋收據的fire_embers_runtime_20261107；不新增原版對拍或Windows實機效能聲明。
 
+## HD1普通START的首關出場名冊
+
+首關兩批出場已修正角色名冊與繪圖載體不同步的重製端缺陷。私有候選、原生／HD移動、完整GPU及F2通過；普通START經皇城切換、後續全HD到第一關、F5與新程序LOAD／普通攻擊通過。章界保存重新建構位置與出場旗標，僅核身份／能力及正常讀取，不宣稱完整戰場續存。此項為CONFORMED-SCOPED／RUNTIME-E1及正常GUI，沒有新原版對拍或整章PLAYER-E2。主收據沿[HD1回饋](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`；交易與重跑入口見[61](61-modern-theme-runtime-spec.md)「HD1首關出場名冊同步修正」。
+
 ## HD1畫質與繪製效能
 
 完整／均衡／輕量、預設均衡的地圖與戰鬥GPU貼圖／畫布已接入，文字與獨立介面保持；相同地圖畫面及海報乾淨地形依內容重用。三品質GPU、工具列實際點選、普通攻擊返回、F2、保存與新程序LOAD達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。來源槽具有建構祖先，不新增完整章節PLAYER-E2或原版parity。Windows／i7-9700K的顯卡及60fps仍待實機核對，依[#298](https://github.com/wicanr2/fd2_re/issues/298)保持開啟。唯一現況為[效能收據](../data/fd2-hd1-performance-20261105.json)，範圍與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1繪製效能與60fps量測)。HD2依使用者指示延後。

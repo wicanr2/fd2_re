@@ -5583,6 +5583,21 @@
         ],
         "pattern": "retainTerrainImages\\(imageKeys\\)"
       }
+    },
+    {
+      "id": "spawn-publishes-native-map-carrier",
+      "area": "原生演出與HD繪圖",
+      "date": "2026-11-11",
+      "rule": "SPAWN發布新角色時，把依角色索引的繪圖載體與selector cache放進同一預檢交易；不只替換角色陣列。入口為remake/cmd/fd2/native_story_map.go的prepareNativeStoryMapSpawnState，以及native_spawn_intro.go的startNativeSpawnIntro；先複製cache與Units容器，完成十二拍預檢後一起發布，失敗保持舊狀態。",
+      "why": "普通HD START在首關兩批出場後，storyActors已增加但storyNativeMapState仍讀舊名冊，HD鏡頭移動觸發visual roster provenance mismatch。新的原生／HD消費回歸與正常START、保存及新程序LOAD確認修正。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1首關出場名冊同步修正conformed-scopedruntime-e1",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_spawn_intro.go"
+        ],
+        "pattern": "g\\.storyNativeMapState = candidateMapState"
+      }
     }
   ]
 }

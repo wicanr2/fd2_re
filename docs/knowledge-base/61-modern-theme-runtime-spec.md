@@ -1080,6 +1080,28 @@ A+沿既有80／90／100／110／125%字級，套用所有官方語系字型。�
 
 下一階段補首關走行與HD2地形試稿。載入邊界、原方格定位、遮擋順序、介面／主題獨立切換及缺件拒收須先形成READY規格，再接正式程式。既有主題列、清冊、規則與存檔未改；走行、戰鬥、劇情及三平台HD2封包尚未製作。HD-2D維持另期。
 
+### HD2／HD-2D 骨架製作路線（已選定，樣本待製作，2026-11-11）
+
+使用者要求先朝固定角色模型、骨架動畫與批次渲染規劃，並在看過提案與技術示意後選定「3D骨架離線渲染，先做一人樣本」。首人採提案索爾，保留已選168像素站姿及中央戰場手繪方向；共用製作方法不代表合併HD2與HD-2D主題。HD1修正與推廣片重錄繼續優先。Blender工具鏈、正式角色模型與載入格式尚未製作或驗證。
+
+[完整計畫](../hd2-character-animation-plan.md)列出造型基準、建模／蒙皮、四類骨架、動畫與原事件時點、透明圖格與品質派生、記憶體估算及分階段驗收。[可操作示意](../../tools/fd2_hd2_rig_prototype.html)共用空間關節顯示四動作／八方向、小尺寸圖格、逐拍與12／24／60張取樣；替身無身份、鏡頭與秒數為試驗值。它是Canvas投影，沒有使用Blender網格或正式角色圖，不能當作角色動畫或遊戲60fps完成證據。
+
+[瀏覽器檢查器](../../tools/verify_fd2_hd2_rig_prototype.mjs)在既有Playwright1.56.1非root、無外網容器重跑，160組姿勢的骨長與固定落腳索引、重播像素、1280／720／390寬度通過，另抽24張揮擊圖格確認不碰圖框。來源、SHA與限定驗證入口沿[首章原型收據](../data/fd2-hd2-first-slice-20261105.json)的`rig_production_proposal_20261111`。下一閘門是正式索爾轉面與短動畫的視覺確認，載入邊界另走READY後才接執行期。
+
+## HD1首關出場名冊同步修正（CONFORMED-SCOPED／RUNTIME-E1）
+
+本次完整HD普通START在首關`spawn_intro`後拒收`modern HD story: visual roster provenance mismatch`。[新錄影](../../work/hd1-promo-refresh-20261111-r96/opening-gui-r4/controller-result.json)停於首關對話，不能作完整到達首關的通過收據；逐幕HD開場與皇城切換另有已取得的局部證據。唯一現況沿[回饋主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`。
+
+重製端生產／消費鏈已定位：`startNativeSpawnIntro`以既有typed建構器產生並發布`storyActors`，但未同步`storyNativeMapState.Units`及其selector cache。原生故事底圖繼續讀舊名冊，HD移動投影比對新舊長度時拒收。實錄腳本已通過0x3289b與0x328bb的既有出場caller，並於0x328ec對話後遇錯；這些是既有編譯腳本的定位，不新增原版反組譯語意或parity聲明。
+
+修正限定為同一交易發布：在私有候選載體複製selector cache與Units容器，沿既有append函式綁定候選角色。保留first-seen鍵序、地形、相機、時鐘及原建構／擺位資料。十二拍出場預檢完成後，候選角色、繪圖載體、已出場群組與演出job一起發布；任何步驟失敗都保留舊名冊、cache與job。既有不使用故事地圖載體的來源保持原邊界，不補猜角色或重設畫面時鐘。
+
+本節實作前為READY。回歸已重現舊發布方式的長度拒收，並通過新名冊的原生封存／HD移動、新增角色可見、原載體不變、指標綁定、cache隔離及錯誤原子性。[修正入口](../../remake/cmd/fd2/native_spawn_intro.go)、[候選載體](../../remake/cmd/fd2/native_story_map.go)與[回歸](../../remake/cmd/fd2/native_story_map_spawn_test.go)保留同一交易。
+
+[完整GPU測試](../../remake/cmd/fd2/modern_hd_story_motion_gpu_test.go)9案例126拍與27次F2往返通過，包含受控複製角色的出場後渲染案例，不代表原版SPAWN對拍。正式程式v.1.1.7-20261111以普通Escape略過另錄妥的開場，再由START、皇城四組切換、後續全HD、首關兩批出場至F5；新程序正常LOAD與攻擊返回通過。12個身份及能力欄位保持，章界讀檔會重建位置與出場旗標，不宣稱完整戰場續存。來源、SHA與限制依[同一回饋主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`及[局部收據](../../work/hd1-promo-refresh-20261111-r96/story-spawn-conformance.json)。[工單299](https://github.com/wicanr2/fd2_re/issues/299)待來源提交後結案，無新DOS原版parity或整章通關聲明。
+
+[新實錄總覽](../figures/hd1-promo-rerecord-overview.png)使用新版皇城、選單與首關畫面，以及六段目前素材的正常操作錄影。[拼排器](../../tools/build_fd2_promo_refresh_overview.py)保留完整來源畫幅，從出場淡入完成後取首關圖，不改圖像配色。天空之鑰與人物卡依既有來源另列；影片重剪仍在進行。
+
 ## 操作介面與人物主題獨立控制（CONFORMED-SCOPED／RUNTIME-E1，HD1）
 
 目前接線已完成。四組美術／介面、來源缺件原子拒收、原版介面保留HD頭像、語系／音源切換不抹設定、舊設定相容與戰役保存分離已核對；本輪8項控制／設定及普通四組切換／保存冷讀通過，主收據為hd1_shadow_faces_followup_20261101。未HD的模態內容依#283補接，人工由使用者接手，不重新列為#284接線待辦。

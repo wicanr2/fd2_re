@@ -923,5 +923,47 @@
     ],
     "public_asset_upload": false,
     "registered_asset_pack": false
+  },
+  "rig_production_proposal_20261111": {
+    "status": "ROUTE-CONFIRMED-3D-OFFLINE-FIRST-ACTOR-SAMPLE-PENDING",
+    "request": "朝角色固定建模、骨架動畫、批次渲染規劃；避免逐拍LLM重繪。",
+    "user_choice": "3D骨架離線渲染，先做一人樣本；採提案索爾。",
+    "accepted_baseline": "既有中央戰場手繪風格、168像素站姿；未合併HD2／HD-2D主題。",
+    "plan": {
+      "file": "docs/hd2-character-animation-plan.md",
+      "sha256": "50e4d740b3992b4d8faf6d8e74d3df7db4236fc4b5b19bc2d19aec4bd4f56a61"
+    },
+    "prototype": {
+      "file": "tools/fd2_hd2_rig_prototype.html",
+      "sha256": "12368a9764a3da30e929274d70ccbc4f6c7614167c5dcc6386f9874a29b35af2"
+    },
+    "verifier": {
+      "file": "tools/verify_fd2_hd2_rig_prototype.mjs",
+      "sha256": "5128a3390738fb5526a132453b240b7cbf3fc241da3bf065d9c53e3adad80f65"
+    },
+    "verification": {
+      "file": "work/hd2-rig-plan-20261111-r96/browser-r2/receipt.json",
+      "sha256": "9855f6fda086755b32cd8405a9d049b6137d721f8f432d100686cc20f4ac68ea",
+      "status": "PASS-160-POSES-8-DIRECTIONS",
+      "repeat_pixels_equal": true
+    },
+    "visual_review": {
+      "file": "work/hd2-rig-plan-20261111-r96/visual-check.json",
+      "sha256": "830c5e0ae121631f7624f399d284ba8b60cba7990d2b48f81ff48f81ec419e02",
+      "frames": 24,
+      "sprite_edge_clipping": false,
+      "human_contact_review": "6 phases viewed; technical mannequin only"
+    },
+    "preview": {
+      "file": "work/hd2-rig-plan-20261111-r96/attack-preview.gif",
+      "sha256": "a1df2d04f3626364a6543c9c5d95d4f1209f0a055bd37be8a115369ff7e121b5"
+    },
+    "scope": "程式化3D關節與Canvas投影示意，並非Blender渲染、正式蒙皮、角色定稿或Game.Draw驗收。",
+    "formal_runtime_changed": false,
+    "save_format_changed": false,
+    "blender_toolchain_available": "not-built-or-verified",
+    "hd1_priority": "仍先完成已定HD1回饋與最新推廣片；HD2正式樣本排其後。",
+    "next_gate": "索爾轉面、168像素實際尺寸及待機／走行／揮擊短動畫的視覺確認；施法後續以悠妮驗證。正式載入規格另走READY。",
+    "prior_preview_link": "work/hd2-rig-plan-20261111-r96/PLAN.md"
   }
 }

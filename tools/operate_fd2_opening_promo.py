@@ -32,6 +32,12 @@ def main():
     audit = args.out / 'input-audit.jsonl'
     started = time.monotonic()
     driver_source_sha256 = digest(Path(__file__))
+    (args.out / 'controller-inputs.json').write_text(json.dumps(dict(
+        binary=str(args.binary), binary_sha256=digest(args.binary),
+        driver=str(Path(__file__)), driver_sha256=driver_source_sha256,
+        skip_opening=args.skip_opening, faithful_transit=args.faithful_transit,
+        capture_appdir=str(args.capture_appdir) if args.capture_appdir else None,
+        state_injection=False), ensure_ascii=False, indent=2)+'\n')
     deadline = started + args.duration - 50
     events = []
     owner, owner_stream, received_signal = None, None, None
@@ -99,7 +105,8 @@ def main():
             owner = subprocess.Popen(['bash', str(Path(__file__).with_name('capture_fd2_release_promo.sh')),
                                       str(args.capture_appdir), str(args.out), str(args.duration), args.capture_size, '30'],
                                      env=env, stdout=owner_stream, stderr=owner_stream, start_new_session=True)
-        wait(lambda s: bool(s.get('title_phase')), args.startup_timeout)
+        first = wait(lambda s: bool(s.get('title_phase')), args.startup_timeout)
+        record('opening-first-observation', first)
         window = command('xdotool', 'search', '--name', '炎龍騎士團').splitlines()[0]
         command('xdotool', 'windowfocus', window)
         if args.skip_opening:

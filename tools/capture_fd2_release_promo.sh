@@ -17,10 +17,12 @@ duration=${3:-900}
 size=${4:-640x400}
 fps=${5:-60}
 startup_timeout=${FD2_CAPTURE_STARTUP_TIMEOUT:-90}
+render_threads=${FD2_CAPTURE_RENDER_THREADS:-2}
 [[ "$duration" =~ ^[1-9][0-9]*$ ]] && (( duration <= 3600 ))
 [[ "$size" == 640x400 || "$size" == 1280x800 || "$size" == 1920x1200 ]]
 [[ "$fps" == 30 || "$fps" == 60 ]]
 [[ "$startup_timeout" == 90 || "$startup_timeout" == 180 || "$startup_timeout" == 360 || "$startup_timeout" == 900 ]]
+[[ "$render_threads" == 2 || "$render_threads" == 4 || "$render_threads" == 8 ]]
 test -x "$game/AppRun"
 test -f "$game/pack/manifest.json"
 test ! -e "$out/live.mkv"
@@ -30,7 +32,7 @@ mkdir -p "$out"
 export HOME=/tmp/fd2-promo-home XDG_DATA_HOME="$out/user-data"
 export XDG_RUNTIME_DIR=/tmp/fd2-pulse DISPLAY=:95
 export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
-export GOMAXPROCS=2 GOMEMLIMIT="${FD2_CAPTURE_GO_MEMORY:-6GiB}" LP_NUM_THREADS=2
+export GOMAXPROCS=2 GOMEMLIMIT="${FD2_CAPTURE_GO_MEMORY:-6GiB}" LP_NUM_THREADS="$render_threads"
 mkdir -p "$HOME" "$XDG_RUNTIME_DIR" "$XDG_DATA_HOME"
 chmod 700 "$XDG_RUNTIME_DIR"
 python3 - "$game" "$out" <<'PY'
@@ -119,7 +121,7 @@ ffmpeg -hide_banner -loglevel warning -y -thread_queue_size 32 \
   -f pulse -fragment_size 4096 -i fd2_capture.monitor -t "$duration" \
   -threads 1 -c:a flac "$out/audio.mka" >"$out/ffmpeg-audio.log" 2>&1 & audio_pid=$!
 cd /tmp
-FD2_INPUT_AUDIT_LOG="$out/input-audit.jsonl" FD2_CUTSCENE_LOG=1 \
+FD2_INPUT_AUDIT_LOG="$out/input-audit.jsonl" FD2_INPUT_AUDIT_INTERVAL=1 FD2_CUTSCENE_LOG=1 \
   "$game/AppRun" >"$out/game.log" 2>&1 & game_pid=$!
 window=""
 for attempt in $(seq 1 "$((startup_timeout * 10))"); do
