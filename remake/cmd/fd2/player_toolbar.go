@@ -56,15 +56,19 @@ func (p *modernHDPresentation) stepToolbarVisibility(pointer image.Point, touche
 	if p.poster.menuOpen {
 		active = active || pointer.In(playerPosterMenu) || p.poster.sliderMouse || p.poster.sliderTouch
 	}
+	if p.speedMenuOpen {
+		active = active || pointer.In(playerSpeedMenu)
+	}
 	for _, touch := range touches {
-		active = active || touch.In(zone) || p.poster.menuOpen && touch.In(playerPosterMenu)
+		active = active || touch.In(zone) || p.poster.menuOpen && touch.In(playerPosterMenu) || p.speedMenuOpen && touch.In(playerSpeedMenu)
 	}
 	if active {
-		p.toolbarTicks = playerToolbarHideTicks * normalizePlayerSpeed(p.Game.playerSpeed)
+		p.toolbarTicks = playerToolbarHideTicks * p.Game.effectivePlayerSpeed()
 	} else if p.toolbarTicks > 0 {
 		p.toolbarTicks--
 		if p.toolbarTicks == 0 {
 			p.poster.menuOpen = false
+			p.speedMenuOpen = false
 		}
 	}
 }
@@ -122,6 +126,9 @@ func (p *modernHDPresentation) queueToolbarInput() {
 }
 
 func (p *modernHDPresentation) queueToolbarPoint(point image.Point) {
+	if p.queueSpeedPoint(point) {
+		return
+	}
 	if p.queuePosterPoint(point) {
 		return
 	}
@@ -139,8 +146,6 @@ func (p *modernHDPresentation) queueToolbarPoint(point image.Point) {
 		p.Game.playerInterfaceRequested = true
 	case point.In(playerFontButton):
 		p.Game.playerFontRequested = true
-	case point.In(playerSpeedButton):
-		p.Game.playerSpeedRequested = true
 	case point.In(playerFullscreenButton):
 		p.Game.playerFullscreenRequested = true
 	}
@@ -223,7 +228,10 @@ func (p *modernHDPresentation) drawThemeToolbar(screen ebiten.FinalScreen, geome
 	p.drawCompactToolbarButton(surface, playerInterfaceButton, label, p.Game.modernHDInterfaceEnabled())
 	p.drawCompactToolbarButton(surface, playerLocaleButton, playerLocaleLabel(p.Game.localeID), false)
 	p.drawCompactToolbarButton(surface, playerFontButton, fmt.Sprintf("A+ %.0f%%", normalizeFontScale(p.Game.fontScale)*100), false)
-	p.drawCompactToolbarButton(surface, playerSpeedButton, fmt.Sprintf("%d× F8", normalizePlayerSpeed(p.Game.playerSpeed)), p.Game.playerSpeed > 1)
+	p.drawCompactToolbarButton(surface, playerSpeedButton, fmt.Sprintf("%d×", p.Game.effectivePlayerSpeed()), p.Game.playerSpeed > 1 || p.Game.playerBattleSpeed > 0 || p.speedMenuOpen)
+	for row := 0; row < 3; row++ {
+		vector.DrawFilledRect(surface, float32(playerSpeedButton.Max.X*3-18+row*2), float32(playerSpeedButton.Min.Y*3+24+row*2), float32(11-row*4), 2, color.RGBA{231, 216, 174, 255}, false)
+	}
 	p.drawCompactToolbarButton(surface, playerPosterButton, p.posterLabels().button, p.posterOffset() > 0 || p.poster.menuOpen)
 	full := "全螢幕"
 	switch p.Game.localeID {

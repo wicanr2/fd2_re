@@ -42,7 +42,7 @@ func TestHD1ToolbarQueuesOnlyTheSelectedControl(t *testing.T) {
 		rect  image.Rectangle
 		field string
 	}{
-		{playerInterfaceButton, "ui"}, {playerLocaleButton, "locale"}, {playerFontButton, "font"}, {playerSpeedButton, "speed"}, {playerFullscreenButton, "fullscreen"},
+		{playerInterfaceButton, "ui"}, {playerLocaleButton, "locale"}, {playerFontButton, "font"}, {playerFullscreenButton, "fullscreen"},
 	} {
 		g := &Game{}
 		p := &modernHDPresentation{Game: g}

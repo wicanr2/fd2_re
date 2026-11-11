@@ -20,6 +20,7 @@ from fd2_hd_system_info_gui import run_normal_system_info
 from fd2_hd_system_confirmation_gui import run_normal_system_confirmation
 from fd2_hd1_chibi_gui import run_normal_chibi
 from fd2_hd_command30_gui import Command30Probe
+from fd2_battle_speed_gui import configure_battle_speed, capture_gold_ring_styles
 
 
 def terrain_frame_ids(value):
@@ -165,6 +166,7 @@ def main():
     parser.add_argument('--performance', action='store_true', help='各遊戲程序另輸出唯讀頻率觀測，關閉後封存清冊')
     parser.add_argument('--cpu-profile', action='store_true', help='搭配--performance，首個物理Draw開始30秒CPU效能觀測')
     parser.add_argument('--texture-quality-check', action='store_true', help='正常工具列切完整／輕量／均衡，核對保存及遊戲狀態；需--world --player-toolbar')
+    parser.add_argument('--battle-speed-check', action='store_true', help='從正常工具列設定獨立戰鬥2倍，核對一般速度及戰役保持；需--world --player-toolbar --battle-status')
     parser.add_argument('--render-threads', type=int, choices=[2,4,8], default=2,
                         help='只控制本次軟體GPU測試執行緒，須與Docker CPU配額一同記錄')
     parser.add_argument('--performance-skip-walk-gpu', action='store_true',
@@ -298,6 +300,7 @@ def main():
                                     1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660)
     window_height = '1272' if args.player_toolbar else '1200'
     assert not args.texture_quality_check or (args.world and args.player_toolbar and args.battle_status)
+    assert not args.battle_speed_check or (args.world and args.player_toolbar and args.battle_status)
     assert not args.heal_normal or (args.battle_status and args.world and args.battle_node=='battle_ch23'
                                   and not any([args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only]))
     assert not args.status_death_normal or (args.battle_status and args.world and args.battle_node=='battle_ch01'
@@ -981,6 +984,8 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
+            if args.battle_speed_check:
+                configure_battle_speed(args, audit, window, command, wait, shot, saved)
             if args.texture_quality_check:
                 initial=latest(audit)
                 assert initial['hd_texture_quality']=='balanced', '新設定預設品質未採均衡'
@@ -1384,6 +1389,8 @@ def main():
                     move_cursor(cell);key('Return')
                     wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
                     shot(prefix+'-attack-ring')
+                    if args.battle_speed_check:
+                        capture_gold_ring_styles(args, audit, key, wait, shot, prefix)
                     if args.battle_command is not None:
                         key('Left');key('Return')
                         wait(lambda s:s.get('command_grid') and s.get('command_selection')==0)

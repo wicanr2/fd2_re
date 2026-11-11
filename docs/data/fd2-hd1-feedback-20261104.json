@@ -9102,5 +9102,252 @@
     },
     "preview_seconds": 19.9,
     "frames": 8817
+  },
+  "toolbar_speed_gold_20261111": {
+    "date": "2026-11-11",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "source_parent": "5950a48e8505cdb70a83e70dabef64123c4412ef",
+    "work_root": "work/hd1-speed-gold-ui-20261111-r97",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#工具列戰鬥速度與原版金字命令框",
+    "accepted": {
+      "command": "A：原版金字浮雕",
+      "reference": "docs/figures/hd1-gold-command-approved.png",
+      "reference_sha256": "959976920e1a4513ac0e4fdf681626fe543aa92adfc67798be5213d84f6ab870"
+    },
+    "settings": {
+      "field": "battle_animation_speed",
+      "default": 0,
+      "follow": 0,
+      "independent": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "scope": "全域呈現設定；不寫戰役存檔",
+      "combination": "獨立值取代戰鬥倍率，不相乘；F8保留一般速度循環"
+    },
+    "source_go_sha256": "2c1fc550d6e9f9be1430b27ea176c0e9419d9674861ff94c0dc063cd3d2b09b8",
+    "source_go_files": 1311,
+    "normal_gui": {
+      "status": "PASS-NORMAL-BATTLE-SPEED-AND-GOLD-UI",
+      "binary_sha256": "40ec8d3e3e15d414de4656a52857446015563abaff3f6ba44fe372ce938ea14f",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "producer_receipt_sha256": "f08084c63abdf8a30e93d2103f42c405e22bfa8a5dd38d95354c21d40c326993",
+      "verifier_sha256": "e376088fe41891976e785bccc53f5413c298ccb884360947fe5334a7bfc9f45a",
+      "audits": [
+        {
+          "file": "input-audit-first-process.jsonl",
+          "sha256": "9a280871e4fc764cecb450c5641f3c90755fb3d2c419dd4f7767942fb772b93d",
+          "rows": 1799,
+          "active_battle_rows": 295,
+          "clock_transition_frames": [
+            2316,
+            2904
+          ]
+        },
+        {
+          "file": "input-audit.jsonl",
+          "sha256": "5e2f5bab3c23d0bf3596e3e0cbb6a9421d47dea4c6125b7a2881ee8756c39b1e",
+          "rows": 218,
+          "active_battle_rows": 0,
+          "clock_transition_frames": []
+        }
+      ],
+      "screenshots": [
+        {
+          "file": "world-hd-gold-ring-art1-ui1.png",
+          "sha256": "05609864e102c68cebaecb74115cd42a29d45d1bbb8fe6fe938f97339d71e5cb"
+        },
+        {
+          "file": "world-hd-gold-ring-art1-ui0.png",
+          "sha256": "e49b831f2bf774e6e0dabd927f45b7acbb94079cb65aabed21f9a16805252e86"
+        },
+        {
+          "file": "world-hd-gold-ring-art0-ui0.png",
+          "sha256": "4c749cf0e361725ead2417aa817a6075cef61084d0d44821ed56a7bee346a5e0"
+        },
+        {
+          "file": "world-hd-gold-ring-art0-ui1.png",
+          "sha256": "ee1c1ab59b9329d6501d41acb070db8fcdfafb243eef2765b53c296ac890b16a"
+        },
+        {
+          "file": "world-hd-gold-ring-art1-ui1.png",
+          "sha256": "05609864e102c68cebaecb74115cd42a29d45d1bbb8fe6fe938f97339d71e5cb"
+        }
+      ],
+      "settings_sha256": "8e437e77538ceaa0f5e82c066a80891224cd85fbd4dda76f4a8aeecf7bd2fdad",
+      "configuration": {
+        "general": 1,
+        "battle": 2
+      },
+      "cold_load_checked": true,
+      "runtime_state_injection": false,
+      "limits": [
+        "一般走行輸入有執行，本次未重驗走行GPU截圖。",
+        "不宣稱Windows實機60fps、全戰役或DOS原版對拍。"
+      ],
+      "overview": {
+        "file": "docs/figures/hd1-speed-gold-runtime.png",
+        "sha256": "6dafcb3b2c11ad63026c6658b978ae98c5e1675b45e435e2e870b25d8358ddf6",
+        "size": [
+          1680,
+          1080
+        ],
+        "inputs": [
+          {
+            "file": "world-hd-gold-ring-art0-ui0.png",
+            "sha256": "4c749cf0e361725ead2417aa817a6075cef61084d0d44821ed56a7bee346a5e0",
+            "source_size": [
+              1280,
+              848
+            ],
+            "normalize_size": [
+              1920,
+              1272
+            ],
+            "crop": [
+              580,
+              800,
+              1080,
+              1260
+            ],
+            "size": [
+              400,
+              368
+            ]
+          },
+          {
+            "file": "world-hd-gold-ring-art0-ui1.png",
+            "sha256": "ee1c1ab59b9329d6501d41acb070db8fcdfafb243eef2765b53c296ac890b16a",
+            "source_size": [
+              1920,
+              1272
+            ],
+            "normalize_size": [
+              1920,
+              1272
+            ],
+            "crop": [
+              580,
+              800,
+              1080,
+              1260
+            ],
+            "size": [
+              400,
+              368
+            ]
+          },
+          {
+            "file": "world-hd-gold-ring-art1-ui0.png",
+            "sha256": "e49b831f2bf774e6e0dabd927f45b7acbb94079cb65aabed21f9a16805252e86",
+            "source_size": [
+              1920,
+              1272
+            ],
+            "normalize_size": [
+              1920,
+              1272
+            ],
+            "crop": [
+              580,
+              800,
+              1080,
+              1260
+            ],
+            "size": [
+              400,
+              368
+            ]
+          },
+          {
+            "file": "world-hd-gold-ring-art1-ui1.png",
+            "sha256": "05609864e102c68cebaecb74115cd42a29d45d1bbb8fe6fe938f97339d71e5cb",
+            "source_size": [
+              1920,
+              1272
+            ],
+            "normalize_size": [
+              1920,
+              1272
+            ],
+            "crop": [
+              580,
+              800,
+              1080,
+              1260
+            ],
+            "size": [
+              400,
+              368
+            ]
+          },
+          {
+            "file": "battle-speed-menu-independent-2x.png",
+            "sha256": "534b990c1509d914b43d9fcfc0d1b4fb77892b5e237059440ad1a31d76d1e2cf",
+            "crop": [
+              890,
+              72,
+              1910,
+              502
+            ],
+            "size": [
+              1020,
+              430
+            ]
+          }
+        ]
+      }
+    },
+    "tests": {
+      "main": "work/hd1-speed-gold-ui-20261111-r97/final-build-r2.log",
+      "main_sha256": "6d081a94c56eca2528239f32049214b2bdca1eee4d47657df5fa77e62248f57e",
+      "presentation_owners": 24,
+      "speed_combinations": 480,
+      "native_command_cells": 78,
+      "existing_actions": "work/hd1-speed-gold-ui-20261111-r97/action-regression.log",
+      "existing_actions_sha256": "80aa748b4494b96eb085559e671c3f2d654bf22fb6910c013502450a7ba8d9b5",
+      "scope": "時計邊界、舊設定、阻擋輸入、全部原生格、快取、物理結算與法術預檢。"
+    },
+    "commands": {
+      "build": "fd2-go-test-local：with-xvfb go test ./cmd/fd2 -run Test(BattleSpeed|GoldAction|PlayerGameClock|PlayerSpeed|HD1Toolbar|FloatingToolbarGeometry) -count=1；通過後go build ./cmd/fd2",
+      "gui": "fd2-promo-local：python3 tools/verify_fd2_hd_fonts_gui.py --binary <work_root>/fd2-candidate --assets remake --original-pack <private>/packs/fd2-original-b97caf22 --modern-pack <private>/packs/fd2-modern-handpainted-a --town-save work/hd1-promo-refresh-20261111-r96/opening-gui-r5/user-data/fd2_re/fd2_save.json --out <work_root>/normal-gui-r3 --battle-status --world --battle-hd --battle-only --battle-own-identity 4 --battle-repetitions 1 --battle-node battle_ch01 --startup-timeout 360 --run-timeout 900 --render-threads 8 --player-toolbar --battle-speed-check --performance --performance-skip-walk-gpu",
+      "verify": "sc-cht-hdtools:pillow11.3.0-r2：python3 tools/verify_fd2_battle_speed_ui.py --run <work_root>/normal-gui-r3 --binary <work_root>/fd2-candidate --out <新收據JSON> --overview <新總覽PNG>；字型/usr/share/fonts唯讀掛入",
+      "isolation": "非root1000:1000、無外網、唯讀私人素材；Go4CPU/4GiB，GUI8CPU/8GiB/8繪圖執行緒，有界timeout及--rm"
+    },
+    "development_failures": [
+      "r1的continuous-hd-action只適用28／29／30，命令列預檢拒收；改用普通物理驗證參數。",
+      "r2額外走行GPU採樣未趕上短暫走行；r3使用既有performance-skip-walk-gpu，正常移動／取消仍執行，不列走行PNG通過。",
+      "開發金框以未預乘RGBA混合產生偏色，改NRGBA並加入暖色高光回歸；速度下箭頭缺字改直接繪製。",
+      "總覽初次使用的promo容器沒有Pillow，改既有鎖版圖片容器；四組全原版視窗為1280x848，其餘1920x1272，依現有倍率正規化裁切，未放寬遊戲驗證。"
+    ],
+    "visual_review": "已檢視原始金框、速度選單與最終總覽；只確認本次畫面，非全角色造型驗收。",
+    "limits": [
+      "沒有新增DOS原版對拍或整章通關聲明。",
+      "Windows i7-9700K實機60fps仍未知。",
+      "本輪未重錄影片、未重打三平台包、未發布tag或Release。",
+      "素材清冊及私人包未改，原有使用者圖片刪除不納入提交。"
+    ],
+    "final_checks": {
+      "documents": "work/hd1-speed-gold-ui-20261111-r97/final-document-check.json",
+      "local_targets": 2685,
+      "python_syntax_files": 4,
+      "go_sources_unchanged": 1311,
+      "worklist_open": 26,
+      "manual": 19,
+      "possibly_complete": 0,
+      "lessons": 447,
+      "guards": 287,
+      "outputs_user_owned": true,
+      "private_repo_clean": true,
+      "fd2_containers_remaining": 0
+    },
+    "cleanup": {
+      "ledger": "work/hd1-speed-gold-ui-20261111-r97/cache-cleanup.json",
+      "cache_files": 1929,
+      "reclaimed_bytes": 437680163,
+      "preserved": "遊戲、原始截圖、程式來源清冊、所有必要GUI與驗證收據"
+    }
   }
 }

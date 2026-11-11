@@ -35,7 +35,7 @@ func (g *Game) gameNow() time.Time {
 func (g *Game) setPlayerSpeedAt(speed int, now time.Time) {
 	g.playerClock.sample(now)
 	g.playerSpeed = normalizePlayerSpeed(speed)
-	g.playerClock.speed = g.playerSpeed
+	g.playerClock.speed = g.effectivePlayerSpeed()
 }
 
 func (g *Game) cyclePlayerSpeed() {

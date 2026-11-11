@@ -38,6 +38,9 @@ func (g *Game) recordInputAuditState() {
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["hd_texture_quality"] = g.playerHDQuality.name()
+	r["battle_animation_speed"] = g.playerBattleSpeed
+	r["effective_game_speed"] = g.effectivePlayerSpeed()
+	r["presentation_clock_speed"] = g.playerClock.speed
 	if g.modernHDMapGPU != nil {
 		r["hd_map_texture_quality"] = g.modernHDMapGPU.quality.name()
 	}

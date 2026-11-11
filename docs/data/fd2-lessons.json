@@ -5613,6 +5613,21 @@
         ],
         "pattern": "片段缺格"
       }
+    },
+    {
+      "id": "go-draw-straight-alpha-uniform",
+      "date": "2026-11-11",
+      "area": "HD介面色彩",
+      "rule": "Go的image/draw混合半透明直通道色時，用color.NRGBA提供來源；只有已預乘通道才用color.RGBA。入口remake/cmd/fd2/modern_gold_action.go的fill支援金框高光與停用罩色，暖色通道回歸在modern_gold_action_test.go。",
+      "why": "金框高光直接將RGB大於Alpha的RGBA送入Over，產生青綠偏色；改NRGBA後實機及通道回歸通過。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#工具列戰鬥速度與原版金字命令框",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_gold_action.go"
+        ],
+        "pattern": "image.Uniform\\{color.NRGBA"
+      }
     }
   ]
 }

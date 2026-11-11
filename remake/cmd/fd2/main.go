@@ -611,6 +611,8 @@ type Game struct {
 	playerInterfaceRequested            bool
 	interfaceMode                       string
 	playerSpeed                         int
+	playerBattleSpeed                   int
+	goldActionFrames                    map[goldActionKey]*ebiten.Image
 	playerHDQuality                     hdTextureQuality
 	playerClock                         playerGameClock
 	playerSpeedRequested                bool
@@ -11591,6 +11593,7 @@ func loadGame() *Game {
 	}
 	configured := loadSettings()
 	g.playerSpeed = normalizePlayerSpeed(configured.GameSpeed)
+	g.playerBattleSpeed = normalizeBattleAnimationSpeed(configured.BattleAnimationSpeed)
 	g.playerHDQuality = parseHDTextureQuality(configured.HDTextureQuality)
 	if quality := os.Getenv("FD2_HD_TEXTURE_QUALITY"); quality != "" {
 		if quality != "full" && quality != "balanced" && quality != "light" {

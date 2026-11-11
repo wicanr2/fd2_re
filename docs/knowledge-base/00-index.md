@@ -1025,6 +1025,12 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 [戰鬥節奏計畫器](../../tools/plan_fd2_promo_battle_pace.py)將軟體繪圖拖長的錄影時間映射至既有60拍觀測，保留原速配樂與36段原速旁白；使用者「影片戰鬥偏慢」回饋的試看與驗證沿同一主收據，不修改遊戲速度。
 
+[金色命令框與速度選單試稿器](../../tools/build_fd2_command_gold_prototype.py)從本機原版字形與現有戰場產生本機可操作對照；屬設計試稿，正式命令框與戰鬥速度另依下方契約及實機收據。
+
+[速度選單GUI操作](../../tools/fd2_battle_speed_gui.py)由既有正常LOAD驗證器的`--battle-speed-check`呼叫，實際點擊獨立戰鬥速度、核對設定保存與地圖不變；[正式契約](61-modern-theme-runtime-spec.md#工具列戰鬥速度與原版金字命令框)另列執行期與試稿範圍。
+
+[戰鬥速度與金框收據核對器](../../tools/verify_fd2_battle_speed_ui.py)接受正常GUI的`--run`與`--binary`，核對出招倍率、返回、冷讀及四組實機畫面，以`--out`寫入新收據；選填`--overview`產生裁切拼排PNG。
+
 [工作區清理紀錄](../data/fd2-workspace-cleanup-20261105.json)保存明示清單、移除原因、封包／錄影雜湊與清理前後用量。[清理工具](../../tools/cleanup_fd2_workspace.py)僅在Docker使用，傳入`--plan`清單、`--tracked-list`受版控檔案清單及`--report`紀錄；預設只檢查，`--apply`才移除。它保護最新成品、受版控來源與兩份未提交工作樹，拒絕指紋已變動或經符號連結轉向的候選。歷次驗收保留原有雜湊，已清理的中間產物依本紀錄辨識。
 
 ## HD2首章站姿原型

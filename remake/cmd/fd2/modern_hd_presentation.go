@@ -3,6 +3,7 @@ package main
 import (
 	"image"
 	"math"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -24,12 +25,15 @@ type modernHDPresentation struct {
 	townDepartureSurface           *ebiten.Image
 	interfaceHUDGPU                *modernHDMapGPU
 	appliedPlayerSpeed             int
+	speedMenuOpen                  bool
+	speedMenuSurface               *ebiten.Image
 	poster                         playerPosterPresentation
 	balanceSurface                 *ebiten.Image
 	posterMenuSurface, posterPixel *ebiten.Image
 }
 
 func (p *modernHDPresentation) Update() error {
+	p.Game.syncPlayerClockSpeedAt(time.Now())
 	if p.updateBalanceEditor() {
 		return nil
 	}
@@ -39,6 +43,7 @@ func (p *modernHDPresentation) Update() error {
 	p.poster.consumeInput = false
 	if !p.Game.playerPosterControlsAllowed() {
 		p.poster.menuOpen = false
+		p.speedMenuOpen = false
 	}
 	if p.toolbar {
 		p.Game.playerViewportLeft = p.posterOffset()
@@ -46,11 +51,15 @@ func (p *modernHDPresentation) Update() error {
 		p.updateToolbarVisibility()
 		p.Game.playerToolbarTouchBlocked = p.floatingToolbar && p.toolbarTicks > 0
 		p.queueToolbarInput()
+		p.stepSpeedMenuInput()
 		p.stepPosterControls()
 	}
 	p.Game.playerOverlayBlock = image.Rectangle{}
 	if p.poster.menuOpen {
 		p.Game.playerOverlayBlock = playerPosterMenu
+	}
+	if p.speedMenuOpen {
+		p.Game.playerOverlayBlock = playerSpeedMenu
 	}
 	if !p.poster.consumeInput && !p.Game.balanceUI.open {
 		if err := p.Game.Update(); err != nil {
@@ -63,8 +72,10 @@ func (p *modernHDPresentation) Update() error {
 	}
 	if !p.Game.playerPosterControlsAllowed() {
 		p.poster.menuOpen = false
+		p.speedMenuOpen = false
 	}
-	speed := normalizePlayerSpeed(p.Game.playerSpeed)
+	p.Game.syncPlayerClockSpeedAt(time.Now())
+	speed := p.Game.effectivePlayerSpeed()
 	if p.appliedPlayerSpeed != speed {
 		if p.appliedPlayerSpeed > 0 {
 			p.toolbarTicks = (p.toolbarTicks*speed + p.appliedPlayerSpeed - 1) / p.appliedPlayerSpeed
@@ -220,6 +231,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		toolbarGeometry.Concat(geometry)
 		p.drawThemeToolbar(screen, toolbarGeometry)
 		p.drawPosterMenu(screen, toolbarGeometry)
+		p.drawSpeedMenu(screen, toolbarGeometry)
 	}
 	p.drawBalanceEditor(screen, contentGeometry)
 }

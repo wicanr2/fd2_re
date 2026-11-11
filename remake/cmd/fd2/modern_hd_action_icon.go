@@ -16,24 +16,14 @@ func (g *Game) drawModernActionIcon(target, icon *ebiten.Image, rect image.Recta
 	if icon == nil || index < 0 || index >= len(g.nativeActionCells) || g.nativeActionCells[index] == nil || rect.Empty() {
 		return fmt.Errorf("modern action icon: native frame unavailable")
 	}
-	frame := g.nativeActionCells[index]
+	frame, err := g.goldActionFrame(index, enabled)
+	if err != nil {
+		return err
+	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(float64(rect.Dx())/float64(frame.Bounds().Dx()), float64(rect.Dy())/float64(frame.Bounds().Dy()))
 	op.GeoM.Translate(float64(rect.Min.X), float64(rect.Min.Y))
 	target.DrawImage(frame, op)
-	// The admitted 28x26 icon is opaque. Its old dark, flat border is excluded;
-	// the native bevel remains visible on all four edges.
-	inside := icon.SubImage(image.Rect(2, 2, 26, 24)).(*ebiten.Image)
-	op = &ebiten.DrawImageOptions{}
-	sx, sy := float64(rect.Dx())/28, float64(rect.Dy())/26
-	op.GeoM.Scale(sx, sy)
-	op.GeoM.Translate(float64(rect.Min.X)+2*sx, float64(rect.Min.Y)+2*sy)
-	light := float32(1.6)
-	if !enabled {
-		light = 1.05
-	}
-	op.ColorScale.Scale(light, light, light, 1)
-	target.DrawImage(inside, op)
 	return nil
 }
 

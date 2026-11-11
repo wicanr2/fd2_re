@@ -290,6 +290,7 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 
 // refreshThemeVisuals 只替換繪圖資源；戰場單位、回合、事件、鏡頭與存檔狀態均不重設。
 func (g *Game) refreshThemeVisuals() {
+	g.resetGoldActionFrames()
 	img := g.baseMapTileset
 	g.modernMapTilesetLoaded = false
 	if g.modernStoryPortraits != nil {
