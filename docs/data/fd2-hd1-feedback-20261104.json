@@ -8762,5 +8762,232 @@
       "suspected_completed": 0
     }
   },
-  "active_promo": "promo_gaia_repair_20261111"
+  "active_promo": "yuni_taiwan_voice_20261111",
+  "yuni_tts_provider_followup_20261111": {
+    "status": "SUPERSEDED-BY-MICROSOFT-TTS",
+    "user_request": "改試主機agy／Gemini CLI產生悠妮旁白，並試其他可用模型",
+    "requested_model": "gemini-3.8-flash-tts",
+    "style": "沿用已選溫柔可愛、自然台灣國語；新聲線尚未試聽定案",
+    "official_model_reference": "https://aistudio.google.com/docs/models/gemini-3.8-flash-tts",
+    "work": "work/yuni-agy-voice-20261111-r93",
+    "checks": {
+      "direct_tts_selector": "agy拒絕，未登錄此模型",
+      "gemini_4_argon_high": "RESOURCE_EXHAUSTED 429",
+      "gemini_3_8_flash_high": "可執行；無原生音訊工具，已用單一命令允許規則執行TTS客戶端",
+      "gemini_cli_extensions": "No extensions installed",
+      "service_environment": {
+        "GEMINI_API_KEY": false,
+        "GOOGLE_API_KEY": false,
+        "GOOGLE_APPLICATION_CREDENTIALS": false
+      }
+    },
+    "probe": {
+      "file": "work/yuni-agy-voice-20261111-r93/tts-service-probe.json",
+      "sha256": "e250fd6b3df37163aa5bef3a759598691cf297c0bb2a4a277b9f5d3db07d4eae"
+    },
+    "generated_audio": false,
+    "formal_movie_changed": false,
+    "scope": "使用者本次明確允許host agy的TTS流程；其他工作仍依Docker-only。尚未更動正式旁白或影片。",
+    "standard_access_probe": {
+      "file": "work/yuni-agy-voice-20261111-r93/tts-access-probe.json",
+      "sha256": "36453624ed4d3a6576e485a8045738c70f33683408aa9913336f17984e6a49b7",
+      "result": {
+        "environment": {
+          "GEMINI_API_KEY": false,
+          "GOOGLE_API_KEY": false,
+          "GOOGLE_APPLICATION_CREDENTIALS": false
+        },
+        "dotenv": [
+          {
+            "file": "/home/anr2/cht/fd2/.env",
+            "exists": false,
+            "tts_key_present": false
+          },
+          {
+            "file": "/home/anr2/cht/fd2/.env.local",
+            "exists": false,
+            "tts_key_present": false
+          },
+          {
+            "file": "/home/anr2/cht/fd2/remake/.env",
+            "exists": false,
+            "tts_key_present": false
+          }
+        ],
+        "gemini_mcp_server_names": [],
+        "generated_audio": false,
+        "standard_adc_file_exists": false,
+        "gemini_settings_exists": true
+      }
+    },
+    "additional_model_tests": [
+      {
+        "model": "claude-sonnet-5-5-low",
+        "cli_status": "SUCCESS",
+        "audio_generated": false,
+        "reason": "目前agy工具介面未提供語音生成能力",
+        "receipt": "work/yuni-agy-voice-20261111-r93/claude-sonnet-5-5-low-capability.json",
+        "sha256": "e4191240e8bac0f0863a44a653648d4ea679472f9e5fc23775917e9408898264"
+      },
+      {
+        "model": "gpt-oss-120b-medium",
+        "cli_status": "SUCCESS",
+        "audio_generated": false,
+        "reason": "目前agy工具介面未提供語音生成能力",
+        "receipt": "work/yuni-agy-voice-20261111-r93/gpt-oss-120b-medium-capability.json",
+        "sha256": "356dfdd4baafdba9fe85792546bfe3d0e363af8b12013aaf7b2466aeab9ab771"
+      }
+    ],
+    "resolved_by": "yuni_taiwan_voice_20261111"
+  },
+  "yuni_taiwan_voice_20261111": {
+    "status": "PASS-TECHNICAL-USER-VOICE-SELECTED",
+    "work": "work/yuni-tw-tts-20261111-r94",
+    "user_decision": "使用者明確授權Microsoft TTS並選定曉雨快8%",
+    "voice": "zh-TW-HsiaoYuNeural",
+    "generation_rate": "+8%",
+    "generation_pitch": "+0Hz",
+    "provider": "Microsoft Edge online TTS",
+    "edge_tts_version": "7.3.1",
+    "original_actor_imitation": false,
+    "container_image": "rich2-narration:edge-tts7.3.1-20261101-r1",
+    "container_image_id": "sha256:cfad34b2da56da721c42a93d9802d345a85e5b3de1e0d49befc209a37ec3ef63",
+    "auditions": {
+      "file": "work/yuni-tw-tts-20261111-r94/audition-verification.json",
+      "sha256": "004715805862962c60674f0782ba77c5ea9b24acfc6af693d754d29064aa9328"
+    },
+    "sources": {
+      "file": "work/yuni-tw-tts-20261111-r94/sources.json",
+      "sha256": "e34d15855b6eef90866b6fb29d81ba6891ff59db278d7c7002e575720585a1fc"
+    },
+    "full_generation": {
+      "file": "work/yuni-tw-tts-20261111-r94/full-generation.json",
+      "sha256": "167de0ba3ecc7e430c63c59c74568c9232459973e65b4615f57204ac2a27f04c"
+    },
+    "generation_segments": 36,
+    "timing_pass_segments": 36,
+    "overflow_rejection": {
+      "file": "work/yuni-tw-tts-20261111-r94/original-rate-negative.json",
+      "sha256": "b0d415840cfac3f9265e3ba435b8aef5727b6e19681d0ba46d79c187249a94aa"
+    },
+    "narration_text_plan": {
+      "file": "dist-all/v.1.1.5-20261111/promo/NARRATION-TEXT.json",
+      "sha256": "f5c75535b1c8df4dd8a48a527005495ad680566fbf508571e9b095a76adc94c4"
+    },
+    "tools": [
+      {
+        "file": "tools/synthesize_fd2_microsoft_voice.py",
+        "sha256": "6db0d864385bab0fc674e3dac2176068b13fbc63cbdceafdb3a3d7bcc9e5b0d4"
+      },
+      {
+        "file": "tools/mix_fd2_promo_narration.py",
+        "sha256": "c5a661785568d62e5349a52a3dd8070b2bf63b86daec189f7db5376b81e9da8b"
+      },
+      {
+        "file": "tools/validate_fd2_hd1_promo.py",
+        "sha256": "2da43e0b54238d69a00c7215831bb71e31d261cb730151be47ceebe2c66b9c27"
+      },
+      {
+        "file": "tools/verify_fd2_microsoft_voice.py",
+        "sha256": "acf0bbed40fc8bc49e2e74013933b23e3899a7cc184587f7fbd568ea8d912600"
+      }
+    ],
+    "offline_model_research": [
+      {
+        "name": "BlueMagpie-TTS",
+        "url": "https://github.com/OpenFormosa/BlueMagpie-TTS",
+        "tested": false
+      },
+      {
+        "name": "PrimeTTS",
+        "url": "https://huggingface.co/Luigi/PrimeTTS",
+        "tested": false
+      }
+    ],
+    "ada": {
+      "gpu": "NVIDIA RTX 2000 Ada Generation",
+      "vram_mib": 16380,
+      "isolation": "登入入口只在host使用；模型能力及網路檢查在非root有界Docker執行。",
+      "result": "既有Python工具image缺torch／pip；容器DNS解析失敗，未安裝或下載新模型。"
+    },
+    "formal_movie_changed": true,
+    "current_movie": {
+      "file": "dist-all/v.1.1.5-20261111/promo/FD2-v.1.1.5-20261111-hd1-promo.mp4",
+      "sha256": "18bc020c4ee284be2b15afae6534a7b71eca68f88f1831ccc95be805a2cb8f71"
+    },
+    "publication": false,
+    "human_full_listening_confirmed": false,
+    "version": "v.1.1.5-20261111",
+    "generation_reused_segments": 35,
+    "generation_new_segments": 1,
+    "final_generation": {
+      "file": "dist-all/v.1.1.5-20261111/promo/GENERATION-RECEIPT.json",
+      "sha256": "7eef398be01a8b308bd943072ff1945cb55a724c098f34cb23b3a716e2b5a4ab"
+    },
+    "delivery": "dist-all/v.1.1.5-20261111",
+    "delivery_manifest": {
+      "file": "dist-all/v.1.1.5-20261111/SHA256SUMS.json",
+      "sha256": "e6f2f10c2605a37b97e19095753f58cdec7fd01be240c04f935ab6c53d9e8318"
+    },
+    "validation": {
+      "file": "dist-all/v.1.1.5-20261111/promo/VALIDATION.json",
+      "sha256": "67736e589f18895aa9502d3cc72de55a579a04321723aa9603725dbcc25acb38"
+    },
+    "voice_proof": {
+      "file": "dist-all/v.1.1.5-20261111/promo/VOICE-PROOF.json",
+      "sha256": "c0ece689cf1afd1e6c8524e1c8cc3add9af216c5c71cd95e83e4299add46b599"
+    },
+    "source_guards": {
+      "file": "dist-all/v.1.1.5-20261111/promo/SOURCE-GUARDS.json",
+      "sha256": "ac2e1dc7d414498932436cedfac9fc60e632629e89d6cafea94f24143262a434"
+    },
+    "preview": {
+      "file": "dist-all/v.1.1.5-20261111/promo/yuni-taiwan-voice-preview.mp4",
+      "sha256": "62195668f7a14ae19ccb4b821a6a14e609193c604671974be9c5bbfd3df1a98d"
+    },
+    "preview_seconds": 48,
+    "voice_ogg": {
+      "file": "dist-all/v.1.1.5-20261111/promo/yuni-narration.ogg",
+      "sha256": "4119ed3d9d9d5f6426e255a9cbc7a14375907bfe4bdf8adb9296ea8d930e40f5"
+    },
+    "audio": {
+      "codec": "AAC",
+      "sample_rate": 48000,
+      "channels": 2,
+      "mean_db": -18.6,
+      "peak_db": -1.3,
+      "silent_intervals": []
+    },
+    "frames": 9390,
+    "duration_seconds": 313,
+    "music_playback_rate": 1,
+    "sfx_playback_rate": 1,
+    "video_packets_unchanged": true,
+    "cleanup": {
+      "file": "work/yuni-tw-tts-20261111-r94/cleanup.json",
+      "sha256": "ec983aa42372189d10084cb088997acc5fd5ab885098a6363488a8225d7ae658"
+    },
+    "remaining_scope": "全片人耳複核；其他鏡頭最新美術及三平台包更新另列，HD2暫緩。",
+    "copy_revision": {
+      "id": "companions-intro",
+      "current": "這些名字，你還記得嗎？再一次，並肩作戰。",
+      "proposed": "還記得嗎？再一次，並肩作戰。",
+      "current_trimmed_seconds": 5.245375,
+      "window_seconds": 4.55,
+      "status": "APPROVED-AND-GENERATED",
+      "automatic_review": "拒絕送出修改後文案，要求取得這句刪改的明確同意；未送出新文句。",
+      "approval": "使用者回覆「同意 go」",
+      "selected_text": "還記得嗎？再一次，並肩作戰。",
+      "automatic_review_resolution": "明確同意後才送出精簡文句並重生。"
+    },
+    "initial_timing_probe": {
+      "file": "work/yuni-tw-tts-20261111-r94/timing-probe.json",
+      "sha256": "f5c7cdbe19a4ff7bc23ddc7ce7023e0a14b79e07195113a010c2a0aeb11194a0"
+    },
+    "delivery_artifacts": 18,
+    "document_check": {
+      "file": "work/yuni-tw-tts-20261111-r94/document-check.json",
+      "sha256": "aeb37a232d4f0161911bbb9b0515e56873232c55755ce7d3cf70970c599e31de"
+    }
+  }
 }

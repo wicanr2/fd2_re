@@ -5553,6 +5553,21 @@
         ],
         "pattern": "presented.*battle_actor_fig.*30"
       }
+    },
+    {
+      "id": "promo-voice-delay-uses-integer-samples",
+      "area": "音訊驗證",
+      "date": "2026-11-11",
+      "rule": "要求旁白精確落點時，以音訊取樣數指定延遲，並從最終PCM核對逐段位置。入口tools/mix_fd2_promo_narration.py的--preserve-generated-rate使用48kHz與adelay的S單位；tools/verify_fd2_microsoft_voice.py逐段比較正規化來源與整軌，不以毫秒標籤或檔案存在代替音訊驗證。",
+      "why": "FFmpeg的112750毫秒延遲使鐵諾段提早一個48kHz取樣；改成5412000S後36段PCM及空白間隔精確相同。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#悠妮台灣華語旁白",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_microsoft_voice.py"
+        ],
+        "pattern": "timeline.readframes.*== samples"
+      }
     }
   ]
 }

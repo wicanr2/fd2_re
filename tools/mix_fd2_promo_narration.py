@@ -32,6 +32,11 @@ def main():
     for name in ['base', 'voice-plan', 'work', 'out']:
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--voice-receipt', type=Path, action='append', required=True)
+    parser.add_argument('--speaker', choices=['Serena', 'zh-TW-HsiaoYuNeural'], default='Serena')
+    parser.add_argument('--preserve-generated-rate', action='store_true',
+                        help='保留生成語速；任何裁靜音後仍超時的段落拒收')
+    parser.add_argument('--bed', type=Path, help='重配旁白時獨立指定不含舊旁白的底音')
+    parser.add_argument('--bed-sha256', help='獨立底音的已驗SHA-256')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and os.getuid() != 0
     assert not args.work.exists() and not args.out.exists()
@@ -39,6 +44,10 @@ def main():
     base = json.loads((args.base / 'EDIT-MANIFEST.json').read_text())
     movie = args.base / base['movie']['file']
     assert sha(movie) == base['movie']['sha256']
+    assert bool(args.bed) == bool(args.bed_sha256)
+    if args.bed:
+        assert sha(args.bed) == args.bed_sha256
+        assert abs(seconds(args.bed) - base['duration_seconds']) < .001
     assert args.out.name == 'promo' and args.out.parent.name == base['version']
     plan = json.loads(args.voice_plan.read_text())
     assert plan['kind'] == 'original-yuni-character-performance' and plan['original_actor_imitation'] is False
@@ -63,13 +72,18 @@ def main():
     for index, wanted in enumerate(plan['segments']):
         actual, source = inputs[wanted['id']]
         assert all(actual[key] == value for key, value in wanted.items())
-        assert wanted['speaker'] == 'Serena'
+        assert wanted['speaker'] == args.speaker
+        if args.speaker == 'zh-TW-HsiaoYuNeural':
+            assert args.preserve_generated_rate
+            assert actual['generation_rate'] == '+8%' and actual['generation_pitch'] == '+0Hz'
         trimmed = args.work / f'trimmed-{index:02}.wav'
         silence = 'silenceremove=start_periods=1:start_silence=0.04:start_threshold=-48dB'
         run(common + ['-i', str(source), '-af', silence + ',areverse,' + silence + ',areverse',
                       '-c:a', 'pcm_s16le', '-ar', '48000', '-ac', '2', str(trimmed)])
         duration = seconds(trimmed)
         speed = max(1.0, duration / wanted['window_seconds'])
+        if args.preserve_generated_rate:
+            assert speed == 1.0, ('旁白超時，請精簡文案後重生', wanted['id'], duration, wanted['window_seconds'])
         assert 0.3 < duration < 65 and speed <= 1.25, (wanted['id'], duration, wanted['window_seconds'])
         final_seconds = duration / speed
         start = wanted['start_seconds']
@@ -90,6 +104,9 @@ def main():
     for index, (path, record) in enumerate(zip(normalized, records)):
         command += ['-i', str(path)]
         delay = round(record['start_seconds'] * 1000)
+        if args.preserve_generated_rate:
+            # 毫秒轉換在FFmpeg部分時間值會提早一個sample；S明示整數取樣。
+            delay = f"{round(record['start_seconds'] * 48000)}S"
         filters.append(f'[{index}:a]adelay={delay}:all=1[v{index}]')
         labels.append(f'[v{index}]')
     filters.append(''.join(labels) + f'amix=inputs={len(labels)}:normalize=0,apad,atrim=duration={duration}[voice]')
@@ -98,21 +115,28 @@ def main():
                    '-ar', '48000', '-ac', '2', str(narration)])
     args.out.mkdir(parents=True)
     output = args.out / base['movie']['file']
+    bed_stream = '2:a' if args.bed else '0:a'
     filters = ('[1:a]asplit=2[side][voice];'
-               '[0:a][side]sidechaincompress=threshold=0.04:ratio=4:attack=15:release=220[bed];'
+               f'[{bed_stream}][side]sidechaincompress=threshold=0.04:ratio=4:attack=15:release=220[bed];'
                '[bed][voice]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=9[a]')
-    run(common + ['-filter_complex_threads', '1', '-i', str(movie), '-i', str(narration),
+    command = common + ['-filter_complex_threads', '1', '-i', str(movie), '-i', str(narration)]
+    if args.bed:
+        command += ['-i', str(args.bed)]
+    run(command + [
                   '-filter_complex', filters, '-map', '0:v:0', '-map', '[a]', '-c:v', 'copy',
                   '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', '-t', str(duration),
                   '-metadata', 'title=炎龍騎士團2：讓經典再現｜悠妮原創角色旁白',
                   '-movflags', '+faststart', str(output)])
-    report = dict(status='MIXED-AWAITING-VALIDATION', kind=plan['kind'], speaker='Serena',
+    report = dict(status='MIXED-AWAITING-VALIDATION', kind=plan['kind'], speaker=args.speaker,
                   original_actor_imitation=False, voice_plan_sha256=sha(args.voice_plan),
                   receipts=receipts, generation_sources=generation_sources,
                   segments=records, narration_wav_sha256=sha(narration),
                   mixer_sha256=sha(__file__), human_listening_confirmed=False,
                   ducking=dict(threshold=0.04, ratio=4, attack_ms=15, release_ms=220),
                   movie_sha256=sha(output))
+    if args.bed:
+        report['independent_bed'] = dict(file=str(args.bed), sha256=sha(args.bed),
+                                       old_narration_used=False, playback_rate=1)
     (args.out / 'NARRATION-MANIFEST.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     base['base_movie'] = dict(base['movie'], path=str(movie))
     base['movie'] = dict(file=output.name, bytes=output.stat().st_size, sha256=sha(output))

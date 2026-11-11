@@ -25,13 +25,18 @@ def main():
         assert hashlib.sha256(source.read_bytes()).hexdigest() == manifest['narration']['sha256']
         narration = json.loads(source.read_text())
         assert narration['movie_sha256'] == manifest['movie']['sha256']
-        assert narration['original_actor_imitation'] is False and narration['speaker'] == 'Serena'
+        assert narration['original_actor_imitation'] is False
+        assert narration['speaker'] in ['Serena', 'zh-TW-HsiaoYuNeural']
         assert len(narration['segments']) == 36
         end = 0
         for row in narration['segments']:
             assert row['start_seconds'] >= end - .001
             assert 1 <= row['playback_rate'] <= 1.25
             assert row['final_seconds'] <= row['window_seconds'] + .05
+            if narration['speaker'] == 'zh-TW-HsiaoYuNeural':
+                assert row['speaker'] == narration['speaker']
+                assert row['generation_rate'] == '+8%' and row['generation_pitch'] == '+0Hz'
+                assert row['playback_rate'] == 1
             end = row['start_seconds'] + row['final_seconds']
         assert end <= manifest['duration_seconds']
     probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_format','-show_streams','-of','json',str(movie)]))
@@ -78,7 +83,7 @@ def main():
             'validator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'limits':['音訊為原遊戲來源；既有FM渲染出處不完整，不宣稱硬體波形一致。','技術音量檢查不等於人耳試聽；視覺接觸表另行檢視。']}
     if narration:
-        report['narration'] = {'segments': 36, 'speaker': 'Serena', 'kind': narration['kind'],
+        report['narration'] = {'segments': 36, 'speaker': narration['speaker'], 'kind': narration['kind'],
                                'timing': 'PASS', 'human_listening_confirmed': narration['human_listening_confirmed']}
         report['limits'][0] = '底音沿原遊戲來源，另混入明示的悠妮原創角色旁白；不宣稱原版配音或硬體波形一致。'
     (root/'VALIDATION.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
