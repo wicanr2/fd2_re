@@ -8992,7 +8992,7 @@
     "superseded_by_promo": "promo_refresh_20261111"
   },
   "promo_refresh_20261111": {
-    "status": "PASS-TECHNICAL-CURRENT-CAPTURES-DELIVERED",
+    "status": "PASS-TECHNICAL-NORMAL-CLOCK-BATTLE-PACE",
     "work": "work/hd1-promo-refresh-20261111-r96",
     "source_head": "417cba1f8e203428997534646b91ffc5f610b520",
     "captures_pass": [
@@ -9035,46 +9035,72 @@
       "file": "work/hd1-promo-refresh-20261111-r96/story-spawn-conformance.json",
       "sha256": "58919a89c70db6425efd9ae91dff9ee73e89b0f3a354465e4c8df47c9f345571"
     },
-    "version": "v.1.1.7-20261111",
+    "version": "v.1.1.8-20261111",
     "current_movie": {
-      "file": "dist-all/v.1.1.7-20261111/promo/FD2-v.1.1.7-20261111-hd1-promo.mp4",
-      "sha256": "8144816c1d05475eea0a48baed95e923eb4f601a89764c2753716429b75f001a"
+      "file": "dist-all/v.1.1.8-20261111/promo/FD2-v.1.1.8-20261111-hd1-promo.mp4",
+      "sha256": "6d4961af5b8332ad7b584e771c24e46f2a1e8ada602e21c3a7a1383839a0b741"
     },
-    "delivery": "dist-all/v.1.1.7-20261111",
+    "delivery": "dist-all/v.1.1.8-20261111",
     "delivery_manifest": {
-      "file": "dist-all/v.1.1.7-20261111/SHA256SUMS.json",
-      "sha256": "8557a02efdf7bc5b6b7730a283647454c9b7603ce697915caf310a0511b2ad7f"
+      "file": "dist-all/v.1.1.8-20261111/SHA256SUMS.json",
+      "sha256": "0e43309cbc802fe57731754f097b1f6d9cc243a5f90a7d14f949d64eb800e5fb"
     },
     "validation": {
-      "file": "dist-all/v.1.1.7-20261111/promo/VALIDATION.json",
-      "sha256": "b3997b737e36537dd6ff02f24850c4ecb191ca00aa8af594c9ca71ff0379fe05"
+      "file": "dist-all/v.1.1.8-20261111/promo/VALIDATION.json",
+      "sha256": "f7702e569f5fe7cf686fb19d341c3b1f3015d661ecd82b90c46ab083ffeb4d67"
     },
     "refresh_proof": {
-      "file": "dist-all/v.1.1.7-20261111/promo/REFRESH-PROOF.json",
-      "sha256": "96a37fce8a3d7b56e48c97063b177e437015a5b25daa2e7ec7eedd5f37b31051"
+      "file": "dist-all/v.1.1.8-20261111/promo/REFRESH-PROOF.json",
+      "sha256": "fe9eee4dde4c2e2644bb1bf58f4bb8dbb0dbd1b2b1eabd69c88e1a90c5988f2f"
     },
     "edit_plan": {
-      "file": "work/hd1-promo-refresh-20261111-r96/promo-plan-r3.json",
-      "sha256": "176b63774204ef9fc84edd68bee069bac24bc9e6bf02c3156cb050b80f40c870"
+      "file": "work/hd1-promo-refresh-20261111-r96/pace-review-r2/PLAN.json",
+      "sha256": "66e4cee56fd9dc6b5a78e00f07f146e48821a3f5494be7340d00844bec1ca0ca"
     },
     "audio_plan": {
-      "file": "work/hd1-promo-refresh-20261111-r96/promo-plan-r3-audio.json",
-      "sha256": "54ebc80e7cfd61baba0cfb6d1e5d02de379a79a1d94ceb5c565ccc7127f310d5"
+      "file": "work/hd1-promo-refresh-20261111-r96/pace-review-r2/AUDIO-PLAN.json",
+      "sha256": "d49a4c115a4ffae92f4cb126f517a01cf0b48fbb7a867def7c1bd2a425e68b10"
     },
     "preview": {
-      "file": "dist-all/v.1.1.7-20261111/promo/hd1-new-battles-preview.mp4",
-      "sha256": "9a2517313cd6c89ffc2b4e197ba8901163e7a1a5a37f0d73f13e6f132fd1da36"
+      "file": "dist-all/v.1.1.8-20261111/promo/battle-pace-preview.mp4",
+      "sha256": "d344c959ac8f60a4079e2c5dac5ac570f6553dc0f867a8b83dc7400e3021a1e0"
     },
     "fresh_scenes": 27,
     "reused_scenes": 16,
     "scenes": 43,
     "voice_segments": 36,
-    "duration_seconds": 313,
+    "duration_seconds": 293.9,
     "music_playback_rate": 1,
     "sfx_playback_rate": 1,
     "issue_state": "CLOSED",
     "public_video_upload": false,
     "human_full_listening_confirmed": false,
-    "remaining_scope": "Windows i7-9700K實機60fps、獨立地形／物件圖集造型與全片人耳複核；三平台完整包仍為v.1.1.2-20261105。"
+    "remaining_scope": "Windows i7-9700K實機60fps、獨立地形／物件圖集造型與全片人耳複核；三平台完整包仍為v.1.1.2-20261105。",
+    "pace_followup": {
+      "status": "CONFORMED-SCOPED-DELIVERED",
+      "user_feedback": "推廣片裡的戰鬥動作偏慢",
+      "work": "work/hd1-promo-refresh-20261111-r96/pace-review-r2",
+      "method": "normal 60 Update clock from actual observation; no engine or audio speed change",
+      "current_movie_preserved": "v.1.1.7-20261111",
+      "target_duration_seconds": 293.9,
+      "version": "v.1.1.8-20261111",
+      "battle_seconds_before": 39,
+      "battle_seconds_after": 19.9,
+      "unchanged_scene_segments": 37,
+      "reference_voice_segments_unchanged": 36,
+      "waveform_sample_alignment": "PASS",
+      "game_runtime_changed": false,
+      "voice_window_guard": "PASS reused final WAV fits; raw-trim overflow was rejected",
+      "report": {
+        "file": "dist-all/v.1.1.8-20261111/promo/PACE-REPORT.json",
+        "sha256": "0a0db05eef7c8b8c8c60e23d0ff4c21b111729e460f2e7217632a4ea31d847f9"
+      }
+    },
+    "previous_movie": {
+      "file": "dist-all/v.1.1.7-20261111/promo/FD2-v.1.1.7-20261111-hd1-promo.mp4",
+      "sha256": "8144816c1d05475eea0a48baed95e923eb4f601a89764c2753716429b75f001a"
+    },
+    "preview_seconds": 19.9,
+    "frames": 8817
   }
 }

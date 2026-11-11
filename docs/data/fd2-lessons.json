@@ -5598,6 +5598,21 @@
         ],
         "pattern": "g\\.storyNativeMapState = candidateMapState"
       }
+    },
+    {
+      "id": "promo-media-duration-and-frame-count",
+      "area": "影片編製",
+      "date": "2026-11-11",
+      "rule": "依操作拍點重剪錄影時，先以影片自身時長界定可用範圍，再逐段驗證輸出畫格；拍數映射用高解析時間基準，尾幀以整數指定。入口為tools/plan_fd2_promo_battle_pace.py的影片範圍限制，以及tools/build_fd2_hd1_promo.py的logical_clock_filter與片段缺格守衛。",
+      "why": "X11編碼佇列可能未保存操作結束後的等待；用較長的操作紀錄選段會提前EOF。137個拍點的長加法超過濾鏡解析深度，改平衡和式；低解析時間基準與小數尾幀又少一格，AVTB及整數stop在同曲線實測132格。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥動作節奏校正",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd1_promo.py"
+        ],
+        "pattern": "片段缺格"
+      }
     }
   ]
 }

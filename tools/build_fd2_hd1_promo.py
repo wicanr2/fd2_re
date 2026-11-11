@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -24,6 +25,27 @@ def validate_audio_clock(scene):
     rate = scene.get('source_duration', scene['duration']) / scene['duration']
     if rate != 1 and not scene.get('audio_cues') and scene.get('source_audio_kind') != 'sfx_only':
         raise ValueError('retimed mixed audio prohibited: use normal-speed music and separate native SFX')
+
+
+def logical_clock_filter(scene):
+    points = scene['logical_clock']
+    assert len(points) >= 2
+    assert points[0]['source_seconds'] == points[0]['movie_seconds'] == 0
+    assert abs(points[-1]['source_seconds'] - scene['source_duration']) < 1e-7
+    hold = scene.get('logical_hold_seconds', 0)
+    assert 0 <= hold <= .1
+    assert abs(points[-1]['movie_seconds'] + hold - scene['duration']) < 1e-7
+    terms = []
+    for a, b in zip(points, points[1:]):
+        dt = b['source_seconds'] - a['source_seconds']
+        movie_dt = b['movie_seconds'] - a['movie_seconds']
+        assert math.isfinite(dt) and math.isfinite(movie_dt) and dt > 0 and movie_dt > 0
+        terms.append(f'{movie_dt/dt:.15g}*clip(T-{a["source_seconds"]:.15g},0,{dt:.15g})')
+    # 長加法鏈會超過FFmpeg運算式解析深度；平衡樹保留每個觀測點。
+    while len(terms) > 1:
+        terms = ['(' + terms[i] + '+' + terms[i+1] + ')' if i+1 < len(terms) else terms[i]
+                 for i in range(0, len(terms), 2)]
+    return "settb=AVTB,setpts=PTS-STARTPTS,setpts='(" + terms[0] + ")/TB'"
 
 
 def prepare(plan, work, font_path):
@@ -196,8 +218,9 @@ def encode_video_only(plan, work, out, reuse_manifest=None, reuse_work=None):
             old=reuse_work/previous['segments'][index]['file']
             assert digest(old)==previous['segments'][index]['sha256']
             streams=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries',
-                'stream=codec_type','-of','json',str(old)],text=True,timeout=30))['streams']
+                'stream=codec_type,nb_frames,avg_frame_rate','-of','json',str(old)],text=True,timeout=30))['streams']
             assert [s['codec_type'] for s in streams]==['video'], '純畫面沿用不可帶入舊音軌'
+            assert int(streams[0]['nb_frames'])==frames and streams[0]['avg_frame_rate']=='30/1'
             shutil.copyfile(old,segment);segments.append(segment.resolve())
             print(f'純畫面片段 {index+1}/{len(plan["scenes"])} SHA核對後沿用',flush=True)
             continue
@@ -224,15 +247,24 @@ def encode_video_only(plan, work, out, reuse_manifest=None, reuse_work=None):
                 assert x+width<=probe['width'] and y+height<=probe['height']
                 assert width*5==height*8, '遊戲視窗比例必須與原始8:5一致'
                 crop=f'crop={width}:{height}:{x}:{y},'
-            hold=max(0,duration-source_duration/rate)
-            pad=f'tpad=stop_mode=clone:stop_duration={hold:.12g},' if hold else ''
-            filters=(f'[0:v]trim=duration={source_duration},setpts=(PTS-STARTPTS)/{rate:.12g},'
+            hold=scene.get('logical_hold_seconds',0) if scene.get('logical_clock') else max(0,duration-source_duration/rate)
+            if scene.get('logical_clock'):
+                pad=f'tpad=stop_mode=clone:stop={round(hold*30)},' if hold else ''
+            else:
+                pad=f'tpad=stop_mode=clone:stop_duration={hold:.12g},' if hold else ''
+            clock=logical_clock_filter(scene) if scene.get('logical_clock') else f'setpts=(PTS-STARTPTS)/{rate:.12g}'
+            if scene.get('logical_clock'):
+                assert 0 <= hold <= .1, '拍數映射僅允許不超過0.1秒收尾'
+            filters=(f'[0:v]trim=duration={source_duration},{clock},'
                      f'fps=30,{pad}{crop}scale=1536:960:flags=lanczos,'
                      'pad=1920:1080:192:20:color=0x08121e,setsar=1[game];'
                      '[game][1:v]overlay=shortest=1,format=yuv420p[v]')
         command+=['-filter_complex',filters,'-map','[v]','-an','-frames:v',str(frames),
                   '-c:v','libx264','-preset','veryfast','-crf','18','-threads','2',str(segment)]
         subprocess.run(command,check=True,timeout=max(90,int(duration*8)))
+        probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0',
+            '-show_entries','stream=nb_frames,avg_frame_rate','-of','json',str(segment)],text=True,timeout=30))['streams'][0]
+        assert int(probe['nb_frames'])==frames and probe['avg_frame_rate']=='30/1', ('片段缺格',scene['id'],probe)
         segments.append(segment.resolve())
         print(f'純畫面片段 {index+1}/{len(plan["scenes"])} 完成',flush=True)
     listing=work/'concat.txt'

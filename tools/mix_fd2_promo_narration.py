@@ -37,6 +37,10 @@ def main():
                         help='保留生成語速；任何裁靜音後仍超時的段落拒收')
     parser.add_argument('--bed', type=Path, help='重配旁白時獨立指定不含舊旁白的底音')
     parser.add_argument('--bed-sha256', help='獨立底音的已驗SHA-256')
+    parser.add_argument('--timing-reference-plan', type=Path,
+                        help='重剪時明示原生成計畫；只允許改開始時間與時窗，文字及聲線必須相同')
+    parser.add_argument('--reuse-normalized-promo', type=Path, help='明示已驗旁白清冊，重用已正規化音訊')
+    parser.add_argument('--reuse-normalized-work', type=Path, help='已驗逐段正規化WAV所在目錄')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and os.getuid() != 0
     assert not args.work.exists() and not args.out.exists()
@@ -52,6 +56,15 @@ def main():
     plan = json.loads(args.voice_plan.read_text())
     assert plan['kind'] == 'original-yuni-character-performance' and plan['original_actor_imitation'] is False
     assert plan['duration_seconds'] == base['duration_seconds']
+    timing_reference = None
+    reference_rows = None
+    if args.timing_reference_plan:
+        reference = json.loads(args.timing_reference_plan.read_text())
+        timing_reference = dict(file=str(args.timing_reference_plan), sha256=sha(args.timing_reference_plan))
+        assert plan['timing_reference']['sha256'] == timing_reference['sha256']
+        assert reference['kind'] == plan['kind'] and reference['original_actor_imitation'] is False
+        reference_rows = {r['id']: r for r in reference['segments']}
+        assert set(reference_rows) == {r['id'] for r in plan['segments']}
     inputs, receipts, generation_sources = {}, [], []
     for path in args.voice_receipt:
         receipt = json.loads(path.read_text())
@@ -69,13 +82,42 @@ def main():
     normalized, records = [], []
     common = ['ffmpeg', '-nostdin', '-hide_banner', '-loglevel', 'warning', '-threads', '2']
     previous_end = 0.0
+    assert bool(args.reuse_normalized_promo) == bool(args.reuse_normalized_work)
+    reuse_voice = None
+    if args.reuse_normalized_promo:
+        reuse_voice = json.loads((args.reuse_normalized_promo/'NARRATION-MANIFEST.json').read_text())
+        assert reuse_voice['speaker'] == args.speaker and reuse_voice['original_actor_imitation'] is False
+        assert len(reuse_voice['segments']) == len(plan['segments'])
     for index, wanted in enumerate(plan['segments']):
         actual, source = inputs[wanted['id']]
-        assert all(actual[key] == value for key, value in wanted.items())
+        original = reference_rows[wanted['id']] if reference_rows is not None else wanted
+        assert all(actual[key] == value for key, value in original.items())
+        protected = lambda row: {k: v for k, v in row.items() if k not in ['start_seconds', 'window_seconds']}
+        assert protected(original) == protected(wanted), '重排只能改時間，不得改生成文字或聲線'
         assert wanted['speaker'] == args.speaker
         if args.speaker == 'zh-TW-HsiaoYuNeural':
             assert args.preserve_generated_rate
             assert actual['generation_rate'] == '+8%' and actual['generation_pitch'] == '+0Hz'
+        if reuse_voice is not None:
+            approved = reuse_voice['segments'][index]
+            assert all(approved.get(k) == v for k, v in protected(original).items()), '已驗聲音與原文／聲線不符'
+            assert approved['id'] == wanted['id'] and approved['input_sha256'] == sha(source)
+            assert approved['playback_rate'] == 1
+            reference = args.reuse_normalized_work/approved['normalized_file']
+            assert sha(reference) == approved['normalized_sha256']
+            final_seconds = seconds(reference)
+            assert final_seconds == approved['final_seconds'] and final_seconds <= wanted['window_seconds']
+            start = wanted['start_seconds']
+            assert start >= previous_end-.001 and start+final_seconds <= plan['duration_seconds']
+            previous_end = start+final_seconds
+            target = args.work/f'voice-{index:02}.wav'
+            shutil.copyfile(reference, target)
+            normalized.append(target)
+            records.append(dict(wanted, input_file=str(source), input_sha256=sha(source),
+                normalized_file=target.name, normalized_sha256=sha(target),
+                trimmed_seconds=approved['trimmed_seconds'], playback_rate=1, final_seconds=final_seconds,
+                reused_normalized_file=str(reference)))
+            continue
         trimmed = args.work / f'trimmed-{index:02}.wav'
         silence = 'silenceremove=start_periods=1:start_silence=0.04:start_threshold=-48dB'
         run(common + ['-i', str(source), '-af', silence + ',areverse,' + silence + ',areverse',
@@ -137,6 +179,11 @@ def main():
     if args.bed:
         report['independent_bed'] = dict(file=str(args.bed), sha256=sha(args.bed),
                                        old_narration_used=False, playback_rate=1)
+    if timing_reference:
+        report['timing_reference_plan'] = timing_reference
+    if reuse_voice is not None:
+        report['normalized_reuse_manifest'] = dict(file=str(args.reuse_normalized_promo/'NARRATION-MANIFEST.json'),
+            sha256=sha(args.reuse_normalized_promo/'NARRATION-MANIFEST.json'), segments=len(records))
     (args.out / 'NARRATION-MANIFEST.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     base['base_movie'] = dict(base['movie'], path=str(movie))
     base['movie'] = dict(file=output.name, bytes=output.stat().st_size, sha256=sha(output))

@@ -1023,6 +1023,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 [新實錄剪輯計畫器](../../tools/plan_fd2_hd1_promo_refresh.py)逐一核對目前程式、清冊、普通操作收據與畫面來源，明示新錄及沿用場景；[重剪核對器](../../tools/verify_fd2_promo_refresh.py)驗證新畫面封包、36段已選旁白PCM及原速配樂PCM。現況與重跑輸入沿[HD1主收據](../data/fd2-hd1-feedback-20261104.json)的`promo_refresh_20261111`。
 
+[戰鬥節奏計畫器](../../tools/plan_fd2_promo_battle_pace.py)將軟體繪圖拖長的錄影時間映射至既有60拍觀測，保留原速配樂與36段原速旁白；使用者「影片戰鬥偏慢」回饋的試看與驗證沿同一主收據，不修改遊戲速度。
+
 [工作區清理紀錄](../data/fd2-workspace-cleanup-20261105.json)保存明示清單、移除原因、封包／錄影雜湊與清理前後用量。[清理工具](../../tools/cleanup_fd2_workspace.py)僅在Docker使用，傳入`--plan`清單、`--tracked-list`受版控檔案清單及`--report`紀錄；預設只檢查，`--apply`才移除。它保護最新成品、受版控來源與兩份未提交工作樹，拒絕指紋已變動或經符號連結轉向的候選。歷次驗收保留原有雜湊，已清理的中間產物依本紀錄辨識。
 
 ## HD2首章站姿原型

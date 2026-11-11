@@ -59,7 +59,7 @@ HD介面採古典明體、加重英數與立體血條，保留原版多層框線
 
 蓋亞的原版／HD攻擊鏡頭已重新錄製，HD採目前的原版像素手繪與B厚重命中音。上圖為同份首章來源經正常LOAD及普通攻擊取得的成片縮圖拼排；原版指重製引擎的原版美術與介面。[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片蓋亞原版鏡頭修正)另列。
 
-新版推廣影片位於`dist-all/v.1.1.7-20261111/promo/`，附48秒戰鬥試看、來源、SHA-256與驗收紀錄。全片5分13秒，更新HD開場、開始選單、皇城切換、首關站位、六段戰鬥與32人HD介紹，保留已選的曉雨快8%旁白及原速配樂。[重錄與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1最新實錄重剪)明示27幕更新及16幕沿用；影片經剪輯，不代表Windows實機60fps。三平台本機完整版仍為`dist-all/v.1.1.2-20261105/`，[完整包交付範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)另列。完整素材包與影片限本機保存，尚未建立新版公開下載。
+新版推廣影片位於`dist-all/v.1.1.8-20261111/promo/`，附20秒戰鬥試看、來源、SHA-256與驗收紀錄。全片約4分54秒，包含HD開場、開始選單、皇城切換、首關站位、六段戰鬥與32人HD介紹。戰鬥已依遊戲拍數校正節奏，移除軟體錄影拖長的停頓；曉雨旁白與配樂保持原速。[重錄與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1最新實錄重剪)及[戰鬥節奏校正](docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥動作節奏校正)分列，影片剪輯不代表Windows實機60fps。三平台本機完整版仍為`dist-all/v.1.1.2-20261105/`，[完整包交付範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1推廣片與三平台本機完整版)另列。完整素材包與影片限本機保存，尚未建立新版公開下載。
 
 ![開始選單、皇城原版與HD、第一關及六段戰鬥的最新實錄](docs/figures/hd1-promo-rerecord-overview.png)
 
