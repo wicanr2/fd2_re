@@ -5711,6 +5711,21 @@
         ],
         "pattern": "SYSTEM_INFO_CAPTION_KEYS = "
       }
+    },
+    {
+      "id": "local-cross-build-receipt-honesty",
+      "date": "2026-11-13",
+      "area": "工具鏈",
+      "rule": "本機建三平台引擎包用remake/packaging/build-local-release.sh。Windows映像要用trixie的Wine 10（Go 1.22 runtime要bcryptprimitives.dll，Wine 8.0沒有），自檢要開Xvfb（Ebiten在init就建視窗）；osxcross預編工具鏈要glibc 2.38，也用trixie為底。macOS在Linux無法執行，收據只能是static-verified，collect要--allow-static macos-universal明示接受，不可寫成原生自檢通過。",
+      "why": "使用者2026-11-13要求macOS改用osxcross。第一次試建時bookworm的osxcross-conf缺GLIBC_2.38、Wine 8.0下fd2.exe報bcryptprimitives.dll not found，補Xvfb前則panic於CreateWindowExW；collect用copyfile讓AppImage失去執行權限，完整版stage因此PermissionError。",
+      "evidence": "remake/packaging/build-local-release.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/packaging/release.py"
+        ],
+        "pattern": "static-verified"
+      }
     }
   ]
 }

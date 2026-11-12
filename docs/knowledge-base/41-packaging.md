@@ -328,7 +328,10 @@ XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**�
 
 ## 4. macOS（工作流程與 bundle 自我檢查已在真實 runner 成功）
 
-### 4.1 為什麼不能純 docker 跨編
+### 4.1 為什麼原本不採 docker 跨編
+
+使用者2026-11-13定案：本機三平台建置的 macOS 改用 osxcross，入口見§4.4。下列是原本不採用的理由，
+SDK 授權的顧慮仍然成立，所以 SDK 只留在本機映像，不推送、不匯出，也不進任何交付物。
 
 Go 的 CGO 需要目標平台的 C 工具鏈與 SDK headers;Ebiten 的 macOS 後端吃 Cocoa/OpenGL framework,
 這些 header 只存在於 macOS SDK 內。跨平台編譯 macOS binary 理論上可行(`osxcross`),但:
@@ -357,6 +360,28 @@ build)直接原生編譯。草稿見 `.github/workflows/build-macos.yml`:
 DMG／tar.gz及artifact上傳。仍未驗證的是實體Mac上的視窗、鍵盤、存檔與音訊，以及簽章／公證。
 未簽署app可能被Gatekeeper阻擋；測試者可依README使用
 `xattr -dr com.apple.quarantine FD2.app`，但這不是正式發行方案。
+
+### 4.4 本機 osxcross 建置（使用者2026-11-13定案）
+
+[build-local-release.sh](../../remake/packaging/build-local-release.sh)在本機Docker依序建三平台引擎包，
+輸出與`release.yml`相同的`dist-all/<版號>/patch`、`smoke`及`SHA256SUMS.json`，之後照常交給
+[完整版組裝器](../../tools/build_fd2_full_local.py)。
+
+| 平台 | 映像 | 自檢 |
+|---|---|---|
+| Linux | `fd2-build-appimage:latest`，與CI同一支`build-appimage.sh` | Xvfb下執行AppImage封裝自檢 |
+| Windows | [Dockerfile.mingw](../../remake/packaging/Dockerfile.mingw)：trixie、mingw-w64、Wine 10、Xvfb | Wine執行`fd2.exe`封裝自檢 |
+| macOS | [Dockerfile.osxcross](../../remake/packaging/Dockerfile.osxcross)：crazymax/osxcross 15.5、trixie | 只做靜態檢查 |
+
+- Go一律1.22.12，ldflags與CI相同。macOS每弧各編一次再`lipo`，`MACOSX_DEPLOYMENT_TARGET=11.0`，
+  即Go 1.22支援的最低版本；CI原生版的最低版本是建置機的15.0。
+- Linux上無法執行Mach-O，macOS收據狀態為`static-verified`：雙架構、arm64的`LC_CODE_SIGNATURE`、
+  只連結`/usr/lib`與`/System/Library`、最低版本與SDK，以及本版功能字串。`collect`須以
+  `--allow-static macos-universal`明示接受，VALIDATION另列本機建置的限制。
+- 收據的`builder`欄位區分`github-actions`與`local-docker`；Windows本機收據的檢查項目寫明在Wine執行。
+- 兩個陷阱：bookworm的Wine 8.0沒有Go 1.22 runtime載入的`bcryptprimitives.dll`；
+  osxcross預編工具鏈需要glibc 2.38。兩個映像因此都以trixie為底，Go從官方映像複製。
+  Ebiten在套件初始化就建立視窗，Wine自檢需要Xvfb。
 
 ## 5. 版權資產分離(三平台一致)
 

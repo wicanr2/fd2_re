@@ -301,6 +301,7 @@ def collect(downloads, output, allow_static=()):
         if sha(package) != report["sha256"] or package.stat().st_size != report["size"]:
             raise ValueError("封包雜湊或大小不符")
         shutil.copyfile(package, output / expected)
+        shutil.copymode(package, output / expected)
         reports.append(report)
     write_json(output / "SHA256SUMS.json", {
         "version": version(), "source_commit": commit(),

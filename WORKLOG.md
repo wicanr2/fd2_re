@@ -5590,3 +5590,19 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 ## 2026-11-13 語系驗證工具同步引擎契約
 
 `tools/validate_locale_packs.py`在HEAD即拒收四份官方語系檔。原因是允許清單與引擎`officialLocaleContract`各自手動維護：45b64235的六個`battle.status.expiry.*`與7bbce98f在`native_system_info_locale.go`以規則生成的68個`battle.info.*`只進了引擎。補上六筆靜態項，戰場資訊依引擎同一規則生成；`tools/test_locale_packs.py`新增比對兩邊的測試，同時解析`locale.go`靜態表與生成規則的標題陣列和範圍。四份語系檔驗證、6項測試通過，拿掉一筆允許項的反向檢查會失敗。
+
+## 2026-11-13 v.1.1.11 三平台完整版重打包（本機建置）
+
+使用者要求以戰中快照與執行紀錄的新引擎重打包三平台完整版，並指定macOS改用osxcross。版號升為`v.1.1.11-20261113`，三平台引擎改由新的`remake/packaging/build-local-release.sh`在本機Docker建置，來源提交5186e022；未推送release分支，未用GitHub Actions，未建tag或Release。`41-packaging.md`§4.1原本不採osxcross的SDK授權理由保留，SDK只留在本機映像`fd2-build-osxcross:15.5-go1.22.12-r1`，不推送、不匯出。
+
+| 引擎包 | 位元組 | SHA-256 | 收據 |
+|---|---|---|---|
+| Linux AppImage | 8641016 | b6aa24c6c4e6f7a49b6ffbb5f38275ce2f64c29c5c99e0e2666dc17c4d0c366e | Xvfb自檢passed |
+| Windows ZIP | 8938801 | 372ddb9097767c452125e38fbcbad18cb70cc6600bd03533f73777c54e35d815 | Wine 10＋Xvfb自檢passed |
+| macOS universal ZIP | 14572812 | 30561993143d441172d73ea8b37c37b73074a1525ef6ea4393e233dae3582e00 | static-verified：雙架構、arm64簽章、系統框架、minos 11.0／SDK 15.5 |
+
+完整版沿`tools/build_fd2_full_local.py` stage／package，HD1私人清冊與正式來源相同（私人庫e6e9bff6），字型沿v.1.1.9同SHA，Noto授權取自`fd2-promo-local`映像內的同一份。Windows ZIP 3748400365位元組／49ed9056c44c3b6a2100162a45fd0c95843a6af0b3c83db07c1a763789f1faf6，macOS ZIP 3757084494位元組／985ae7d682318ba1181cfbe06a1a197b22956ec6eefedec7a3c910968385e626，Linux AppImage 3236526584位元組／7411a96a5641b0fda965c27a95fcf76cbbddc1affa2ad1274a9bda3dd033d410。`verify_fd2_full_local.py`三包各54577份素材通過；與v.1.1.9相比只有四份語系`pack.json`不同。Linux與Wine完整包自檢及`FD2_SHOT_FRAME=120`受控截圖通過，兩張截圖SHA與v.1.1.9 Linux截圖相同。`finalize --promo-version v.1.1.10-20261112`為PASS-SCOPED，推廣片沿用v.1.1.10。
+
+試建時遇到三個工具鏈問題：osxcross預編工具鏈需要glibc 2.38、bookworm的Wine 8.0缺`bcryptprimitives.dll`、Wine自檢需要Xvfb，兩個新映像因此改以trixie為底。`release.py collect`以copyfile複製時遺失AppImage執行權限，完整版stage第一次因此PermissionError；當場補回權限（SHA不變），刪除只含公開清單的半成品staging後重跑，collect已改為保留權限。macOS無任何執行證據，Windows證據來自Wine，不等於原生Windows或實機。
+
+核對後刪除本輪完整版三平台組裝樹163824檔、11690268127位元組，保留`work/full-local-v.1.1.11-20261113`的清冊與staging.json、引擎staging及`work/local-release-v.1.1.11-20261113`的建置紀錄。本輪只留`fd2-build-mingw:1.22.12-r1`與`fd2-build-osxcross:15.5-go1.22.12-r1`兩個映像，重建時被取代的版本沒有留下懸空映像；FD2容器皆已退出。
