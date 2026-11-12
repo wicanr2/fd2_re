@@ -71,6 +71,8 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"system.audio.changed":                {[]string{"%s"}, "runtime.settings.audio.changed"},
 	"save.unsupported":                    {[]string{}, "runtime.save.unsupported"},
 	"save.postbattle_blocked":             {[]string{}, "runtime.save.postbattle_blocked"},
+	"save.battle_busy":                    {[]string{}, "runtime.save.battle_busy"},
+	"save.battle_restore_failed":          {[]string{"%s"}, "runtime.save.battle_restore_failed"},
 	"save.saved":                          {[]string{"%d", "%s"}, "runtime.save.saved"},
 	"save.none":                           {[]string{}, "runtime.save.none"},
 	"save.node_missing":                   {[]string{"%s"}, "runtime.save.node_missing"},

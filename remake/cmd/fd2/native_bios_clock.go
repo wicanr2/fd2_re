@@ -35,6 +35,16 @@ func (c *nativeBIOSClock) Seed(rawTick int, now time.Time) bool {
 	return true
 }
 
+// RestoreTick 接回戰場快照保存的 signed BIOS low word，不綁主機時間；下一次
+// Sample 以當時的 now 為起點繼續累計。
+func (c *nativeBIOSClock) RestoreTick(rawTick int) bool {
+	if c == nil || rawTick < -0x8000 || rawTick > 0x7fff {
+		return false
+	}
+	*c = nativeBIOSClock{elapsedTicks: uint64(uint16(int16(rawTick)))}
+	return true
+}
+
 func (c *nativeBIOSClock) Sample(now time.Time) int {
 	if c.last.IsZero() {
 		c.last = now

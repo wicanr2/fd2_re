@@ -56,6 +56,8 @@
     "system.audio.changed": {"text": "音源：%s", "variables": ["%s"], "source_string_id": "runtime.settings.audio.changed"},
     "save.unsupported": {"text": "存档仅支持战役模式", "variables": [], "source_string_id": "runtime.save.unsupported"},
     "save.postbattle_blocked": {"text": "战后演出进行中，请在下一个节点存档", "variables": [], "source_string_id": "runtime.save.postbattle_blocked"},
+    "save.battle_busy": {"text": "现在无法存档：请在我方回合、没有行动进行时存档", "variables": [], "source_string_id": "runtime.save.battle_busy"},
+    "save.battle_restore_failed": {"text": "战场存档无法还原，已回到本战开头：%s", "variables": ["%s"], "source_string_id": "runtime.save.battle_restore_failed"},
     "save.saved": {"text": "已存档（槽位 %d：%s）", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
     "save.none": {"text": "无存档", "variables": [], "source_string_id": "runtime.save.none"},
     "save.node_missing": {"text": "存档节点不存在：%s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},

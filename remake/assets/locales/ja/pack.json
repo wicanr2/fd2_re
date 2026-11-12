@@ -56,6 +56,8 @@
     "system.audio.changed": {"text": "音源：%s", "variables": ["%s"], "source_string_id": "runtime.settings.audio.changed"},
     "save.unsupported": {"text": "セーブはキャンペーンモードのみ対応しています", "variables": [], "source_string_id": "runtime.save.unsupported"},
     "save.postbattle_blocked": {"text": "戦後演出中です。次の場面でセーブしてください", "variables": [], "source_string_id": "runtime.save.postbattle_blocked"},
+    "save.battle_busy": {"text": "今はセーブできません。自軍ターンで行動していない時にセーブしてください", "variables": [], "source_string_id": "runtime.save.battle_busy"},
+    "save.battle_restore_failed": {"text": "戦場セーブを復元できません。この戦闘の最初に戻りました：%s", "variables": ["%s"], "source_string_id": "runtime.save.battle_restore_failed"},
     "save.saved": {"text": "スロット %d にセーブしました：%s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
     "save.none": {"text": "セーブデータがありません", "variables": [], "source_string_id": "runtime.save.none"},
     "save.node_missing": {"text": "セーブ地点が見つかりません：%s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},

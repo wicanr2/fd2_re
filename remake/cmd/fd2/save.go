@@ -1,5 +1,6 @@
 // save.go — 存檔/讀檔(自有 JSON 格式,doc19;非破解原版 FD2.SAV)。
-// 語意:存「campaign 節點邊界」進度(目前節點/旗標/金幣/道具),戰鬥中存檔=回到該戰鬥節點重開。
+// 語意:存「campaign 節點邊界」進度(目前節點/旗標/金幣/道具)。戰鬥中我方可操作時另附
+// battle_snapshot(battle_snapshot.go),讀檔回到同一回合;其他時刻戰鬥中拒絕存檔。
 package main
 
 import (
@@ -80,6 +81,8 @@ type saveData struct {
 	NativeRaw53AF9 *int                `json:"native_raw_53af9,omitempty"`
 	NativeRaw51E61 *int                `json:"native_raw_51e61,omitempty"`
 	NativeRaw51E62 *int                `json:"native_raw_51e62,omitempty"`
+
+	BattleSnapshot *battleSnapshot `json:"battle_snapshot,omitempty"`
 }
 
 // validateSavePartyTopology 在 loadGameFromSlot 發布戰役或介面狀態前，拒絕不完整的
@@ -127,7 +130,11 @@ func validateSavePartyTopology(d saveData) error {
 
 func (g *Game) saveGame() { g.saveGameToSlot(0) }
 
-func (g *Game) saveGameToSlot(slot int) error {
+func (g *Game) saveGameToSlot(slot int) error { return g.saveGameToSlotFrom(slot, false) }
+
+// saveGameToSlotFrom 的 fromSystemMenu 由戰鬥系統選單的存檔入口使用；見
+// battleSnapshotBlockerFor。
+func (g *Game) saveGameToSlotFrom(slot int, fromSystemMenu bool) error {
 	if g.nativeEndTurnRecovery != nil {
 		return fmt.Errorf("save blocked during native END recovery")
 	}
@@ -149,12 +156,25 @@ func (g *Game) saveGameToSlot(slot int) error {
 		}
 		return fmt.Errorf("save transient postbattle node blocked")
 	}
+	var snapshot *battleSnapshot
+	if n := g.camp.Node(); n != nil && n.Type == "battle" && g.st != nil {
+		// 戰鬥中只在我方可操作的地圖待機存快照；其他時刻存節點邊界會讓讀檔
+		// 回到本戰開頭，與玩家按 F5 的意圖不符，所以拒絕並明示原因。
+		var err error
+		if snapshot, err = g.captureBattleSnapshot(fromSystemMenu); err != nil {
+			if message, ok := g.localeMessage("save.battle_busy"); ok {
+				g.msg = message
+			}
+			return err
+		}
+	}
 	g.captureNativeMapHUDPersistence()
 	d := saveData{
 		Node: g.camp.Cur, Flags: g.camp.Flags, Gold: g.gold, Items: g.items,
 		PartyMembers: g.partyMembers, PartyJoinOrder: g.partyJoinOrder,
 		PartyDeploy: g.partyDeploy,
 		PartyRoster: g.partyRoster, Chapter: g.handlerChapter,
+		BattleSnapshot: snapshot,
 	}
 	if g.nativeMapHUDPersistent.HasDisplayGateA {
 		gateA := int(g.nativeMapHUDPersistent.DisplayGateA)
@@ -181,7 +201,8 @@ func (g *Game) saveGameToSlot(slot int) error {
 	}
 	// 正常 START 或原版四槽 LOAD，且有明示可寫的 FD2.SAV 覆蓋層時，同步寫回原版槽
 	// （0x30012）。失敗只留訊息，不回滾重製端自有存檔。
-	if (g.nativeChapterSlotBaseline != nil || g.nativeChapterSlotStarted) && nativeCurrentSavePath() != "" {
+	// 原版章節槽寫入端 0x30012 只由整備與酒店呼叫；戰鬥中的快照不同步原版槽。
+	if snapshot == nil && (g.nativeChapterSlotBaseline != nil || g.nativeChapterSlotStarted) && nativeCurrentSavePath() != "" {
 		if err := g.saveNativeChapterSlot(slot); err != nil {
 			g.msg = err.Error()
 			g.nativeChapterSlotSaveErr = err
@@ -224,7 +245,15 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 		}
 		return false
 	}
+	if d.BattleSnapshot != nil && !inHotel {
+		if err := g.validateBattleSnapshotNode(d.BattleSnapshot, d.Node); err != nil {
+			g.msg = err.Error()
+			return false
+		}
+	}
 	if inHotel {
+		// 酒店讀檔回到城鎮節點，戰場快照不適用。
+		d.BattleSnapshot = nil
 		town := d.Node
 		if node := g.camp.C.Nodes[d.Node]; node.Type == "hotel" {
 			town = node.Next
@@ -302,6 +331,16 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 	g.enterNode()
 	if message, ok := g.localeMessage("save.loaded", slot+1, d.Node); ok {
 		g.msg = message
+	}
+	if d.BattleSnapshot != nil && g.loadErr == "" {
+		if err := g.applyBattleSnapshot(d.BattleSnapshot); err != nil {
+			// 快照在私有複本上驗證；失敗時保留剛正常進場的本戰開頭，不發布半套狀態。
+			if message, ok := g.localeMessage("save.battle_restore_failed", err.Error()); ok {
+				g.msg = message
+			} else {
+				g.msg = err.Error()
+			}
+		}
 	}
 	return g.loadErr == ""
 }

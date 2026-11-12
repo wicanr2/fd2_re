@@ -56,6 +56,8 @@
     "system.audio.changed": {"text": "Music source: %s", "variables": ["%s"], "source_string_id": "runtime.settings.audio.changed"},
     "save.unsupported": {"text": "Saving is available only in campaign mode", "variables": [], "source_string_id": "runtime.save.unsupported"},
     "save.postbattle_blocked": {"text": "The post-battle scene is still running; save at the next node", "variables": [], "source_string_id": "runtime.save.postbattle_blocked"},
+    "save.battle_busy": {"text": "Cannot save now; save on your turn when no action is in progress", "variables": [], "source_string_id": "runtime.save.battle_busy"},
+    "save.battle_restore_failed": {"text": "The battle save could not be restored; restarted this battle: %s", "variables": ["%s"], "source_string_id": "runtime.save.battle_restore_failed"},
     "save.saved": {"text": "Saved to slot %d: %s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
     "save.none": {"text": "No saved game", "variables": [], "source_string_id": "runtime.save.none"},
     "save.node_missing": {"text": "Save node not found: %s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},

@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 29 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -340,6 +340,25 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
+### P1 戰鬥中存檔：F5讀檔回到章首，戰鬥選單存檔無反應
+
+`battle-midsave-json-snapshot` · 缺陷 · [#303](https://github.com/wicanr2/fd2_re/issues/303) · **可能已完成，回去確認** · 已經出現在 remake/cmd/fd2/save.go
+
+使用者2026-11-12以v.1.1.9 Windows完整版回報：即時存檔讀回後回到每一章開頭，戰鬥中無法正常存檔。
+
+程式根因（已證實，讀碼）：
+
+| 現象 | 根因 | 位置 |
+|---|---|---|
+| F5／F9回章首 | 自有JSON只記戰役節點，戰鬥中存檔依設計回到該戰節點 | `remake/cmd/fd2/save.go` 檔頭與 `saveGameToSlot` |
+| 戰鬥選單存檔無反應 | 原版戰況寫入端要求 `FD2_NATIVE_SAVE`，正式包未設定 | `remake/cmd/fd2/native_current_save.go` `buildNativeCurrentSaveStored` |
+| 同上 | 一般劇情進戰從未物化原版戰場控制影像，只有標題CONTINUE進戰才設 `HasNativeFieldControlState` | `remake/internal/campaign/native_continue_field_boundary.go` |
+| 失敗無提示 | 錯誤只寫 `loadErr`，一般遊玩不顯示 | `remake/cmd/fd2/action_overlay_runtime.go` `beginNativeNestedCurrentSave` |
+
+使用者2026-11-12定案：戰中完整還原，採重製自有JSON戰場快照，不走原版FD2.SAV current snapshot。原版FD2.SAV寫入端0x30012只由整備與酒店呼叫，戰鬥中不得寫原版章節槽。規格先於`56`立READY契約再實作。
+
+怎樣算做完：一般劇情進戰後於我方可操作狀態F5，新程序F9與標題LOAD回到同一回合、單位位置／HP／MP／狀態、敵軍、事件旗標、寶箱與鏡頭；繼續遊玩至戰後節點無分歧。演出、AI回合或對話中F5明示拒絕並有玩家可見提示。戰鬥選單存檔在正式包有可見結果。原版FD2.SAV章節槽不在戰鬥中寫入。既有節點存檔可照常讀取。
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -517,6 +536,30 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
+
+### P1 Windows遊玩中當機：補執行紀錄並定位原因
+
+`windows-crash-run-log` · 缺陷 · [#304](https://github.com/wicanr2/fd2_re/issues/304) · 仍未完成 · 要人判
+
+使用者2026-11-12回報v.1.1.9 Windows完整版遊玩中當機，發生時機不確定。
+
+Windows版以`-H=windowsgui`建置（`.github/workflows/build-windows.yml`），沒有主控台，引擎也沒有崩潰紀錄；panic與fatal error的堆疊全部遺失，目前無法回查。Go 1.22 runtime在Windows每次寫fd 2都重新呼叫`GetStdHandle(STD_ERROR_HANDLE)`，啟動時`SetStdHandle`導向檔案即可保存堆疊。
+
+處理順序：先加入使用者資料夾內的`fd2-run.log`（保留前一次為`fd2-run.prev.log`），同時記錄`loadErr`與狀態訊息轉換；交付診斷版給使用者重現，再依紀錄定位真因。
+
+怎樣算做完：正式Windows包啟動即建立fd2-run.log；人為panic的堆疊會完整寫入（Wine或真機驗證）。依使用者重現的紀錄找到當機真因並修正，同一操作在Windows實機不再當機。
+
+### P1 Windows HD背景與人物閃爍變換
+
+`hd1-windows-flicker` · 缺陷 · [#305](https://github.com/wicanr2/fd2_re/issues/305) · 仍未完成 · 要人判
+
+使用者2026-11-12回報v.1.1.9 Windows完整版的HD背景與人物畫面閃爍變換，型態未能描述。
+
+2026-11-12 Linux Docker重現（llvmpipe／OpenGL，正式loadGame、modern-handpainted-a、HD介面、均衡畫質、首章戰場）：每tick一次Update配三次Draw共360次Draw，與每次Draw前兩次以上Update共240次Update，皆無World交替、無不可見幀、無loadErr；相鄰幀差異只在單位待機動畫與HUD。「同tick多次Draw不冪等」假說在OpenGL下否定。Ebiten v2.6.6每幀Draw前清畫布，DrawFinalScreen不會被跳過（`internal/ui/context.go`）。測試與輸出在本機work/flicker-repro-20261112，未納入版控。
+
+未測：DirectX 11／12後端、F2／F11與畫質切換中、HD戰鬥演出、敵方回合、城鎮與設施。需要Windows實機的錄影，以及閃爍時工具列顯示的繪圖後端與fps。與#298掉速可能相關。
+
+怎樣算做完：取得Windows實機閃爍錄影與後端資訊，定位真因並修正；同場景在Windows實機與Linux回歸都不再閃爍。
 
 ## tooling — 工具、編輯器與工作流程
 

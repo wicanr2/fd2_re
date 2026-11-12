@@ -416,3 +416,32 @@ func (s Sprite) blitAtOffset(dst []byte, stride, offset int, paletteBand bool) e
 	}
 	return nil
 }
+
+// Keys returns the raw keys in first-seen slot order. Slot i always belongs
+// to Keys()[i], so the list is the complete serialized form of the cache.
+func (c *NativeSelectorCache) Keys() []byte {
+	if c == nil {
+		return nil
+	}
+	return append([]byte(nil), c.keys...)
+}
+
+// NewNativeSelectorCacheFromKeys rebuilds a cache by replaying SlotFor in the
+// saved first-seen order. Duplicate keys cannot come from SlotFor and are
+// rejected.
+func NewNativeSelectorCacheFromKeys(keys []byte) (*NativeSelectorCache, error) {
+	c := &NativeSelectorCache{}
+	for i, key := range keys {
+		if _, seen := c.slots[key]; seen {
+			return nil, errors.New("fdicon: duplicate native selector key")
+		}
+		slot, err := c.SlotFor(int(key))
+		if err != nil {
+			return nil, err
+		}
+		if slot != i {
+			return nil, errors.New("fdicon: native selector slot order mismatch")
+		}
+	}
+	return c, nil
+}

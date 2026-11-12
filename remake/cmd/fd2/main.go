@@ -97,6 +97,7 @@ type Game struct {
 	modernHDBattleGPU            *modernHDBattleGPU
 	modernHDBattleVisible        bool
 	modernHDWorldVisible         bool
+	runLog                       runLogTrace
 	modernHDMapComposing         bool
 	modernHDMapPresentedFrame    int
 	modernHDMapPresented         *modernHDMapFrame
@@ -8349,6 +8350,7 @@ func (g *Game) Update() error {
 		g.playerSpeedRequested, g.playerFontRequested, g.playerFullscreenRequested = false, false, false
 	}()
 	defer g.recordInputAuditState()
+	defer g.traceRunLog()
 	g.frame++
 	if g.playerPosterControlsAllowed() && inpututil.IsKeyJustPressed(ebiten.KeyF10) {
 		g.playerPosterCycleRequested = true
@@ -8976,7 +8978,7 @@ func (g *Game) Update() error {
 	if g.nativePalettePulse != nil {
 		return nil
 	}
-	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
+	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔:節點進度;戰鬥中可操作時附戰場快照(battle_snapshot.go)
 		g.saveGame()
 	}
 	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF9) { // 快速讀檔
@@ -13423,6 +13425,7 @@ func main() {
 		fmt.Printf("FD2 %s 封裝自我檢查通過\n", buildVersion)
 		return
 	}
+	openRunLog()
 	applyPackagedPlayerDefaults()
 	floatingToolbar := os.Getenv("FD2_TOOLBAR_LAYOUT") != "fixed"
 	height := logicalH

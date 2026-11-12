@@ -5574,3 +5574,15 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 新增docs/releases/v.1.1.10-20261112.md，列出金字HD操作鏡頭、1:18～1:22原版／HD切換及README新截圖，分開交代既有完整版功能與待驗平台。README及知識庫索引同時設入口；相同位元組另存dist-all/v.1.1.10-20261112/RELEASE-NOTES.md，SHA為2ada70644517f01d21f64a1661cab9b812b0c59b69103b8f4ed3b1328503f1b8。根清單新增該文件後共23份產物，SHA更新為851a5aed185a45c5c829f8035ec5420bf9c4512dddc790ef24b215c5c6ceb9d4，唯一交付摘要同步；原22份影片及證據的大小／SHA保持。
 
 兩份說明一致、README／索引入口、引用錨點與23份交付大小／SHA及UID/GID通過。舊完整版根清單SHA、三包大小與mtime保持，沿用前輪內容與啟動驗收，不重跑未變的多GB封包。遠端26個開項、19項人工、零疑似完成，449條教訓及288個守衛通過。本輪未新增tag、GitHub Release、公開影片或原版素材，使用者既有圖片刪除與work不暫存。最終提交、遠端與容器清理回讀保存於本輪git-delivery.json。
+
+## 2026-11-13 Windows回報：戰中存檔、當機紀錄與HD閃爍
+
+使用者以v.1.1.9 Windows完整版回報HD背景與人物閃爍、無法正常存檔、即時存檔回到章首且會當機。開#303戰中存檔、#304當機紀錄、#305閃爍三張缺陷工單。
+
+存檔根因由程式碼確認：F5的自有JSON只記戰役節點，戰鬥中讀檔依設計回到該戰開頭；戰鬥系統選單存檔走原版current snapshot寫入端，要求`FD2_NATIVE_SAVE`及CONTINUE基底，正式包兩者都沒有，一般劇情進戰從未物化原版戰場控制影像。使用者定案採重製自有JSON戰場快照。依56先立READY契約再實作，State 61欄位以反射分類表守住，還原沿正常戰鬥進場後覆寫快照，系統選單缺原版基底時改存同一份快照。第一關沿正常劇情快進、第2回合中段F5、新Game讀檔逐欄相等，續玩一個敵方回合戰況與RNG相同。完整回歸剩25項，與同輸入乾淨df2389ac匯出相比皆為既有環境失敗。語系驗證工具在HEAD即因`battle.status.expiry.attack`未列入允許清單失敗，本輪新增兩鍵已同步四語、locale.go與驗證工具。
+
+當機無法定位：windowsgui建置沒有主控台，panic堆疊遺失。新增fd2-run.log，啟動時以SetStdHandle導向stderr並記錄loadErr／訊息轉換；Windows交叉編譯與go vet通過，Wine與實機尚未驗證崩潰堆疊確實落檔。
+
+閃爍在Linux llvmpipe／OpenGL沒有重現：每tick一次Update配三次Draw共360次，以及每次Draw前兩次以上Update共240次，皆無World交替、無不可見幀。「同tick多次Draw不冪等」假說在OpenGL下否定；DirectX、F2／F11切換、HD戰鬥演出與城鎮未測。測試留在本機work/flicker-repro-20261112。
+
+診斷版`work/win-report-20261112/build/fd2.exe`（SHA256 c4db43652a0f8e646aee2b802e6cbdcaa193fa2d3689d986851fec232c98fda4）含快照與執行紀錄，供使用者取代v.1.1.9完整版的fd2.exe重測；不是正式發行，未建tag或Release。分析與測試容器皆以--rm執行並已退出。

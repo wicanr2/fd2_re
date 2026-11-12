@@ -555,6 +555,16 @@ func (g *Game) activateNativeSystemDirectionOne() bool {
 		return false
 	}
 	if g.nativeSystemNestedOpen {
+		if nativeCurrentSavePath() == "" || len(g.nativeCurrentSavePlain) == 0 {
+			// 一般劇情進戰沒有原版 current snapshot 基底（只有 CONTINUE 進戰才有），
+			// 正式包也不設 FD2_NATIVE_SAVE。改存重製端戰場快照到第一槽；成功與
+			// 拒絕都由 saveGameToSlotFrom 寫入玩家可見訊息。56「#303 戰場JSON快照」。
+			g.msg = ""
+			if err := g.saveGameToSlotFrom(0, true); err != nil && g.msg == "" {
+				g.msg = "戰場存檔失敗：" + err.Error()
+			}
+			return true
+		}
 		if !g.beginNativeNestedCurrentSave() {
 			g.msg = "原版目前戰況存檔來源或資產不完整，未寫入檔案"
 		}

@@ -5651,6 +5651,51 @@
         ],
         "pattern": "media\\['producer_sha256'\\] == sha"
       }
+    },
+    {
+      "id": "battle-state-new-field-needs-snapshot-class",
+      "date": "2026-11-13",
+      "area": "重製端",
+      "rule": "battle.State新增欄位時，同時在internal/battle/snapshot.go的stateSnapshotFieldClass標成saved、bound或transient；saved欄位要加進StateSnapshot與RestoreSnapshot。戰場JSON快照靠這張表保證讀檔不漏狀態。",
+      "why": "戰中F5讀檔要回到同一刻。State有61個欄位，含未匯出旗標、函式與struct鍵map；漏存一個欄位不會報錯，只會讓讀檔後的戰況靜默偏差。反射分類測試把漏分類變成編譯後立即失敗。",
+      "evidence": "docs/knowledge-base/56-fd2-remake-sdd.md#2026-11-13-303-戰場json快照",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/snapshot.go"
+        ],
+        "pattern": "var stateSnapshotFieldClass = map\\[string\\]string"
+      }
+    },
+    {
+      "id": "ai-tests-need-story-route-battle",
+      "date": "2026-11-13",
+      "area": "回歸",
+      "rule": "要跑敵方AI的整合測試，戰場用loadGame加fastForwardShotCampaign沿正常劇情建立，並設FD2_SHOT_AI與FD2_SEED；FD2_CAMP_NODE直接跳節點的戰場缺我方原版紀錄出處，敵方回合會以unit 0 lacks raw provenance拒絕。END前先Draw一次，END回復要用當下的原生地圖影格。",
+      "why": "戰場快照測試第一次用直接跳節點的第一關，第一個敵方回合就失敗，與快照無關。改用正常劇情快進後才走得完敵方回合。",
+      "evidence": "remake/cmd/fd2/battle_snapshot_test.go loadChapterOneStoryBattle",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "func \\(g \\*Game\\) fastForwardShotCampaign\\("
+      }
+    },
+    {
+      "id": "windows-gui-build-needs-run-log",
+      "date": "2026-11-13",
+      "area": "發行",
+      "rule": "Windows正式版以-H=windowsgui建置，沒有主控台；玩家回報當機時先要fd2_re資料夾裡的fd2-run.log與fd2-run.prev.log。紀錄由remake/cmd/fd2/run_log_windows.go在啟動時以SetStdHandle把stderr導向檔案，FD2_RUN_LOG=0可關閉。",
+      "why": "v.1.1.9 Windows完整版回報當機，但panic堆疊全部遺失，無從定位。Go 1.22 runtime在Windows每次寫fd 2都重新呼叫GetStdHandle，啟動時換掉handle就能保存堆疊。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/304",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/run_log_windows.go"
+        ],
+        "pattern": "SetStdHandle"
+      }
     }
   ]
 }

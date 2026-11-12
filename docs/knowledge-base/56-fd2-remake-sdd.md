@@ -10165,3 +10165,71 @@ BattleFig7／23已沿61「BattleFig7騎乘劍士與23弓手圖源」接入。唯
 BG0..2過渡背景已接物理與24／29的既有caller，限定CONFORMED-SCOPED／RUNTIME-E1。原遮罩歷史、位移、裁切、節拍與結算保持；兩包完整繪圖、F2與原生回退已驗。手繪條帶及色彩近似明示，其餘場景／效果／HUD與正常／集中人工／平台仍待；唯一數量與驗收依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「BG0～2捲動過渡背景HD」及主收據transition_backgrounds_followup_20261024。
 
 全部固定可見BG／TAI圖源已補齊並接到已驗共背景／分離物理與24／29 caller，限定CONFORMED-SCOPED／RUNTIME-E1。特殊原框與透明孔洞、舊主題原圖回退及原規則保持；手繪適配與輪廓近似明示。資料補齊不外推其他caller、HUD或普通／集中人工／平台完成；唯一現況與數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依HD主收據remaining_scenery_followup_20261024。
+
+## 2026-11-13 #303 戰場JSON快照
+
+狀態：`RUNTIME-E1`。READY契約先立，實作與重製端回歸通過；Windows實機與一般玩家長路徑待驗。本節是重製端自有存檔擴充，不是原版ABI。
+
+### 來源與定案
+
+原版有戰鬥中存檔：戰鬥系統選單`sub_19DF7` selector1寫入`FD2.SAV`目前戰況，標題CONTINUE接續。章節槽寫入端`0x30012`只由整備與酒店呼叫（[57](57-ui-evidence-matrix.md) UI-12）。重製端已有兩端程式，`buildNativeCurrentSaveStored`與`prepareNativeContinueFromCurrentSnapshot`，但只在明示`FD2_NATIVE_SAVE`，且戰鬥由CONTINUE進入時可用。一般劇情進戰不會物化`NativeFieldControlRaw`，因為`HasNativeFieldControlState`只由`MaterializeNativeContinueFieldBoundary`設定。
+
+使用者2026-11-12回報F5讀回章首、戰鬥中無法存檔，定案採重製自有JSON戰場快照。原版current snapshot路線保留給CONTINUE，不在本節擴張。
+
+### 型別資料
+
+`saveData.battle_snapshot`為選填物件，有`version`。舊存檔沒有這個欄位，照原本的節點邊界讀取。內容分三層。
+
+| 層 | 內容 | 還原方式 |
+|---|---|---|
+| 資產重建 | 地圖、`battle.Load`單位資產、劇本、`resetBattle`既有的bind表（future item、movement cost、command learn／book／resistance、field rules、death programs） | 依快照節點的`units`／`scenario`重新載入；不呼叫`SetupChecked`，不重播`on_battle_start` |
+| 快照 | `battle.State`可變欄位、劇本已觸發事件ID、Game層RNG、游標、鏡頭、回合階段、金幣、道具、持續隊伍、平衡與系統選項 | 覆寫到資產重建結果 |
+| 暫態 | 動畫、對話、演出工作、AI游標、行動經驗累積等 | 受理條件要求為零值；還原時沿CONTINUE發布清單清空 |
+
+`battle.State`每個欄位都要列入三層之一。測試以反射列舉欄位，有新欄位未分類即失敗，避免新狀態漏存後靜默偏差。`Scenario`的`fired`與`pendingJoins`未匯出，由battle套件提供讀寫方法；受理時`pendingJoins`必須為空。
+
+### 時序與受理
+
+只在我方可操作的地圖待機受理F5：未選單位、沒有開啟中的選單、行走、攻擊、AI、事件、對話、淡入、橫幅、END回復、戰果或暫態介面。其他時刻拒絕，顯示`save.battle_busy`，不寫檔。
+
+戰鬥中F5只寫JSON，不呼叫`saveNativeChapterSlot`，原版章節槽在戰鬥中保持不變。戰鬥系統選單存檔在缺少原版baseline時，改寫同一份JSON快照到第一槽並顯示結果，不再只寫`loadErr`。
+
+### 讀檔
+
+F9與標題LOAD讀到快照時，在私有候選Game上完成資產重建、快照覆寫與驗證，全部成功才一次發布。快照版本、節點型別、資產路徑、地圖尺寸或單位拓撲不符就拒絕，現行狀態不變，並顯示原因。
+
+### 驗收
+
+1. 往返等價：戰場在第1回合開局、移動一名單位後、經過一次敵方回合後各取快照，還原後所有快照層欄位深度相等。
+2. 續玩決定性：原局與還原局送相同輸入跑到下一個我方回合，`battle.State`快照層與RNG相同。
+3. 受理：行走、對話、AI回合中的F5被拒且不寫檔。
+4. 相容：既有節點存檔、酒店／整備存檔與原版槽同步行為不變。
+5. 正式包：一般劇情進戰後F5、關閉程式、新程序F9回到同一回合。
+
+限制：這是重製端RUNTIME-E1，不比對原版current snapshot bytes，也不提升任何章的PLAYER-E2。
+
+### 實作與驗證（2026-11-13）
+
+| 位置 | 內容 |
+|---|---|
+| `remake/internal/battle/snapshot.go` | `StateSnapshot`、61欄位分類表`stateSnapshotFieldClass`、劇本`FiredEvents`以索引加ID雙重核對 |
+| `remake/internal/fdicon/fdicon.go` | 選擇器快取依首見順序的`Keys`序列化與重放 |
+| `remake/cmd/fd2/battle_snapshot.go` | 受理條件、擷取、地圖雜湊與資產核對、私有複本覆寫後一次發布；另存地圖BIOS計時low word |
+| `remake/cmd/fd2/save.go` | `battle_snapshot`欄位；戰鬥中拒絕時顯示`save.battle_busy`，有快照時不同步原版章節槽 |
+| `remake/cmd/fd2/action_overlay_runtime.go` | 系統選單巢狀selector1缺原版基底時改存快照到第一槽 |
+
+還原沿正常戰鬥節點進場建立所有綁定表，再以快照覆寫；不另寫一條不跑`resetBattle`的平行建構路徑。
+
+| 驗收項 | 結果 |
+|---|---|
+| 分類完整 | `TestStateSnapshotClassifiesEveryField`：61欄位全部分類 |
+| JSON往返 | `TestStateSnapshotRoundTripPreservesSavedFields`：saved類逐欄相等，`nativeConstructorPending`保留 |
+| 往返等價與續玩 | `TestBattleSnapshotQuickSaveRestoresSameTurn`：第一關沿正常劇情快進，第1回合一名行動並經敵方回合，第2回合一名行動後F5；新Game讀檔，`battle.State`全欄、已觸發事件、RNG、游標、金幣、道具、隊伍相同；兩局再過一個敵方回合，戰況與RNG相同 |
+| Game層殘值 | 同測試以反射比對Game純資料欄位，只允許已核對的選單索引、DAC／VGA重組、主機時間相位與frame不同 |
+| 受理與拒絕 | `TestBattleSnapshotRejectsBusyBattle`、`TestBattleSnapshotRejectsMismatchedNode` |
+| 系統選單 | `TestBattleSystemMenuSaveFallsBackToSnapshot`、更新後的`TestNestedDirectionOneCurrentRuntimeSaveFailsClosedWithoutBaseline` |
+| 既有存讀檔 | QuickSave／QuickLoad／Save／Load與原版current save測試通過 |
+
+續玩比對排除四個地圖動畫計時欄位：它們由`advanceNativeMapClock`依主機時間推進，兩局在不同實際時間執行必然不同，只影響待機動畫與地形相位；讀檔當下仍逐欄相等。
+
+完整回歸（`tools/remake_go_test.sh`，原版分離素材，未掛HD主題包）剩25項失敗，與同輸入的乾淨`df2389ac`匯出相比皆為既有環境失敗，其中三項另以補掛`org_game`等目錄重跑確認在HEAD同樣失敗。

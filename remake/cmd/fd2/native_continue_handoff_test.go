@@ -11,6 +11,7 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -1250,7 +1251,11 @@ func TestNativeSystemGroupMarchUnknownEventFailsBeforeOverlayMutation(t *testing
 	}
 }
 
+// 沒有原版 current snapshot 基底時，巢狀 selector1 改走重製端戰場快照
+// （56「#303 戰場JSON快照」）；仍不得落入外層全軍移動。沒有戰役可存時保持
+// 選單、不寫檔，並留下玩家可見訊息。
 func TestNestedDirectionOneCurrentRuntimeSaveFailsClosedWithoutBaseline(t *testing.T) {
+	battleSnapshotTestDir(t)
 	unit := nativeSystemGroupMarchUnit(0, 0)
 	g := &Game{
 		st:   &battle.State{Units: []*battle.Unit{unit}},
@@ -1262,9 +1267,11 @@ func TestNestedDirectionOneCurrentRuntimeSaveFailsClosedWithoutBaseline(t *testi
 		t.Fatal("nested direction1 was not consumed")
 	}
 	if g.nativeSystemGroupMarch != nil || g.actionOverlayPhase != "" ||
-		!g.nativeSystemNestedOpen ||
-		g.msg != "原版目前戰況存檔來源或資產不完整，未寫入檔案" {
+		!g.nativeSystemNestedOpen || !strings.Contains(g.msg, "存檔") {
 		t.Fatalf("nested save fell into outer group march: %+v", g)
+	}
+	if _, err := os.Stat(saveSlotPath(0)); !os.IsNotExist(err) {
+		t.Fatalf("沒有戰役時仍寫了存檔：%v", err)
 	}
 }
 

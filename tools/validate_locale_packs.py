@@ -63,6 +63,8 @@ APPROVED_SOURCE = {
     "system.audio.changed": "runtime.settings.audio.changed",
     "save.unsupported": "runtime.save.unsupported",
     "save.postbattle_blocked": "runtime.save.postbattle_blocked",
+    "save.battle_busy": "runtime.save.battle_busy",
+    "save.battle_restore_failed": "runtime.save.battle_restore_failed",
     "save.saved": "runtime.save.saved",
     "save.none": "runtime.save.none",
     "save.node_missing": "runtime.save.node_missing",
