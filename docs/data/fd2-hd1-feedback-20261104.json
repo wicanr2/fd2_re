@@ -9674,7 +9674,7 @@
     "current_movie": "dist-all/v.1.1.10-20261112/promo/FD2-v.1.1.10-20261112-hd1-promo.mp4",
     "delivery": "dist-all/v.1.1.10-20261112/promo",
     "delivery_manifest": "dist-all/v.1.1.10-20261112/SHA256SUMS.json",
-    "delivery_manifest_sha256": "f7b1d17b874da87ee948fb1c78d73b716f3bd380b4bea929b54c4b27d1324493",
+    "delivery_manifest_sha256": "851a5aed185a45c5c829f8035ec5420bf9c4512dddc790ef24b215c5c6ceb9d4",
     "movie": {
       "file": "FD2-v.1.1.10-20261112-hd1-promo.mp4",
       "bytes": 49853509,
@@ -9696,6 +9696,13 @@
     "remaining": [],
     "source_publication_commit": "2617e67eef583ae29c79aca5f90ae0e4cfe3be09",
     "source_remote_verified": true,
-    "issue_state": "CLOSED"
+    "issue_state": "CLOSED",
+    "release_notes": {
+      "source": "docs/releases/v.1.1.10-20261112.md",
+      "delivery": "dist-all/v.1.1.10-20261112/RELEASE-NOTES.md",
+      "sha256": "2ada70644517f01d21f64a1661cab9b812b0c59b69103b8f4ed3b1328503f1b8"
+    },
+    "full_package_rebuild_required": false,
+    "full_package_rebuild_reason": "本次只更新推廣片與README，遊戲程式與素材和已驗收v.1.1.9完整版相同。"
   }
 }

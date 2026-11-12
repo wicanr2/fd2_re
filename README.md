@@ -63,7 +63,7 @@ HD介面採古典明體、加重英數與立體血條，保留原版多層框線
 
 三平台本機完整版位於`dist-all/v.1.1.9-20261111/`，包含Windows、macOS通用版與Linux版本。完整包已加入目前地形修正、均衡畫質、古典明體及獨立戰鬥速度；三平台內容已逐檔核對，Linux另驗自檢與受控畫面，Windows／macOS完整版實機操作及Windows 60fps仍待驗。[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#逐戰場hd地形圖冊與草地拼接回饋)另列。
 
-最新推廣片位於`dist-all/v.1.1.10-20261112/promo/`，約4分54秒，已補錄原版金字浮雕HD操作按鈕。README的操作按鈕圖片也已同步；其餘42幕、36段已核准旁白與原速音軌保持。[按鈕修訂與驗證](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)另列。完整素材包與影片限本機保存，公開下載版維持前述正式第一版。
+最新推廣片位於`dist-all/v.1.1.10-20261112/promo/`，約4分54秒，已補錄原版金字浮雕HD操作按鈕。README的操作按鈕圖片也已同步；其餘42幕、36段已核准旁白與原速音軌保持。[v.1.1.10修正說明](docs/releases/v.1.1.10-20261112.md)與[按鈕修訂驗證](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)另列。本次遊戲程式與素材未變，沿用v.1.1.9完整版。完整素材包與影片限本機保存，公開下載版維持前述正式第一版。
 
 ![開始選單、皇城原版與HD、第一關及六段戰鬥的最新實錄](docs/figures/hd1-promo-rerecord-overview.png)
 

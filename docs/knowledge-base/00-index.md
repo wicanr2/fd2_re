@@ -1051,6 +1051,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 [金字操作按鈕影片與README編製器](../../tools/prepare_fd2_gold_command_promo.py)使用`--run`正常操作收據、`--recording`實錄、`--binary`正式引擎、`--source-promo`前版、`--previous-terrain`舊對照圖與`--font`，以`--version`指定合規修訂版號。先在FFmpeg映像執行`--phase video`，再於Pillow映像執行`--phase figures`，共用`--out`產生新剪輯表、來源紀錄及兩張候選截圖。舊對照圖可從`3b7bf7f2:docs/figures/hd1-pixel-terrain-normal-comparison.png`取回；不得以已更新圖片代替。規格依[操作按鈕同步](61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)。
 
+[v.1.1.10修正說明](../releases/v.1.1.10-20261112.md)列出推廣片與README的金字HD操作按鈕修正，並說明三平台完整版沿用v.1.1.9。本機交付目錄另附相同內容的`RELEASE-NOTES.md`，由根`SHA256SUMS.json`登錄大小與雜湊。
+
 [HD1繪製效能與60fps量測](61-modern-theme-runtime-spec.md#hd1繪製效能與60fps量測)及[本輪唯一現況表](../data/fd2-hd1-performance-20261105.json)區分30fps推廣片、遊戲實際頻率與普通地圖重繪重構；HD2依使用者指示延後。
 
 [HD1戰鬥音畫修訂](61-modern-theme-runtime-spec.md#2026-11-06-hd1戰鬥音畫修訂)保存三人的完整姿勢修正、已選A音色及B分鏡接線。入口沿HD1主收據的`battle_audiovisual_review_20261106`，不由離線60fps短片推論遊戲效能。
