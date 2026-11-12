@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -64,6 +65,27 @@ class LocalePackTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "invalid fields"):
                 validator.validate_one(path)
 
+
+    def test_approved_sources_match_engine_contract(self):
+        # validate_locale_packs.APPROVED_SOURCE 與引擎 officialLocaleContract 各自手動
+        # 維護；只改一邊時，語系檔會在驗證工具被拒，或引擎接受未核准的來源。
+        source = (ROOT / "remake" / "cmd" / "fd2" / "locale.go").read_text(encoding="utf-8")
+        block = re.search(r"var officialLocaleContract = map\[string\]localeEntryContract\{\n(.*?)\n\}", source, re.S)
+        self.assertIsNotNone(block)
+        engine = dict(re.findall(r'^\t"([^"]+)":\s*\{\[\]string\{[^}]*\}, "([^"]+)"\},$', block.group(1), re.M))
+        self.assertEqual(len(engine), block.group(1).count("\n") + 1, "locale.go 有無法解析的契約列")
+        info = (ROOT / "remake" / "cmd" / "fd2" / "native_system_info_locale.go").read_text(encoding="utf-8")
+        captions = re.search(r"systemInfoCaptionKeys = \[8\]string\{([^}]*)\}", info)
+        bounds = re.search(r"for index := (\d+); index < (\d+); index\+\+", info)
+        self.assertIsNotNone(captions)
+        self.assertIsNotNone(bounds)
+        self.assertEqual(tuple(re.findall(r'"([^"]+)"', captions.group(1))), validator.SYSTEM_INFO_CAPTION_KEYS)
+        self.assertEqual(range(int(bounds.group(1)), int(bounds.group(2))), validator.SYSTEM_INFO_CONDITION_RANGE)
+        for key in validator.SYSTEM_INFO_CAPTION_KEYS:
+            engine[f"battle.info.{key}"] = f"FDOTHER_005/system-info/{key}"
+        for index in validator.SYSTEM_INFO_CONDITION_RANGE:
+            engine[f"battle.info.condition.{index:04d}"] = f"FDTXT_000/string_{index:04d}"
+        self.assertEqual(engine, validator.APPROVED_SOURCE)
 
 if __name__ == "__main__":
     unittest.main()

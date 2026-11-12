@@ -13,6 +13,12 @@ PACK_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]+$")
 KEY_RE = re.compile(r"^[a-z][a-z0-9]*(?:\.[a-z0-9_]+)+$")
 VAR_RE = re.compile(r"^%(?:%|[-+0-9.#]*[a-zA-Z])$")
 APPROVED_SOURCE = {
+    "battle.status.expiry.attack": "FDTXT_000/string_0481",
+    "battle.status.expiry.defence": "FDTXT_000/string_0482",
+    "battle.status.expiry.speed": "FDTXT_000/string_0483",
+    "battle.status.expiry.poison": "FDTXT_000/string_0484",
+    "battle.status.expiry.paralysis": "FDTXT_000/string_0485",
+    "battle.status.expiry.silence": "FDTXT_000/string_0486",
     "battle.attack.miss": "legacy.go.remake.cmd.fd2.main.l5973-c22",
     "battle.attack.hit": "legacy.go.remake.cmd.fd2.main.l5975-c25",
     "battle.attack.critical_suffix": "legacy.go.remake.cmd.fd2.main.l5977-c14",
@@ -130,6 +136,15 @@ APPROVED_SOURCE = {
     "ending.terminal_missing": "legacy.go.remake.cmd.fd2.ending_preview.l817-c26",
     "ending.montage_requirements": "legacy.go.remake.cmd.fd2.ending_preview.l819-c26",
 }
+
+# 引擎在 remake/cmd/fd2/native_system_info_locale.go 的 init 以規則生成的戰場資訊
+# 契約：八個標題取 FDOTHER #5 system-info，勝負條件取 FDTXT 0597..0656。
+SYSTEM_INFO_CAPTION_KEYS = ("map", "turn", "enemy", "friend", "npc", "currency", "victory", "defeat")
+SYSTEM_INFO_CONDITION_RANGE = range(597, 657)
+for _key in SYSTEM_INFO_CAPTION_KEYS:
+    APPROVED_SOURCE[f"battle.info.{_key}"] = f"FDOTHER_005/system-info/{_key}"
+for _index in SYSTEM_INFO_CONDITION_RANGE:
+    APPROVED_SOURCE[f"battle.info.condition.{_index:04d}"] = f"FDTXT_000/string_{_index:04d}"
 
 def fail(message: str) -> None:
     raise ValueError(message)

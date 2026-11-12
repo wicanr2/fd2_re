@@ -5586,3 +5586,7 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 閃爍在Linux llvmpipe／OpenGL沒有重現：每tick一次Update配三次Draw共360次，以及每次Draw前兩次以上Update共240次，皆無World交替、無不可見幀。「同tick多次Draw不冪等」假說在OpenGL下否定；DirectX、F2／F11切換、HD戰鬥演出與城鎮未測。測試留在本機work/flicker-repro-20261112。
 
 診斷版`work/win-report-20261112/build/fd2.exe`（SHA256 c4db43652a0f8e646aee2b802e6cbdcaa193fa2d3689d986851fec232c98fda4）含快照與執行紀錄，供使用者取代v.1.1.9完整版的fd2.exe重測；不是正式發行，未建tag或Release。分析與測試容器皆以--rm執行並已退出。
+
+## 2026-11-13 語系驗證工具同步引擎契約
+
+`tools/validate_locale_packs.py`在HEAD即拒收四份官方語系檔。原因是允許清單與引擎`officialLocaleContract`各自手動維護：45b64235的六個`battle.status.expiry.*`與7bbce98f在`native_system_info_locale.go`以規則生成的68個`battle.info.*`只進了引擎。補上六筆靜態項，戰場資訊依引擎同一規則生成；`tools/test_locale_packs.py`新增比對兩邊的測試，同時解析`locale.go`靜態表與生成規則的標題陣列和範圍。四份語系檔驗證、6項測試通過，拿掉一筆允許項的反向檢查會失敗。

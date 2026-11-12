@@ -5696,6 +5696,21 @@
         ],
         "pattern": "SetStdHandle"
       }
+    },
+    {
+      "id": "locale-contract-two-registries",
+      "date": "2026-11-13",
+      "area": "語系",
+      "rule": "新增官方語系鍵時，引擎remake/cmd/fd2/locale.go的officialLocaleContract（含native_system_info_locale.go的生成規則）與tools/validate_locale_packs.py的APPROVED_SOURCE要同時改；跑python3 -I tools/test_locale_packs.py，test_approved_sources_match_engine_contract會比對兩邊。驗證工具要帶四個pack.json路徑執行，不帶參數只會報locale數不符。",
+      "why": "45b64235加的六個狀態到期鍵與7bbce98f生成的68個戰場資訊鍵只進了引擎，驗證工具在HEAD即拒收官方語系檔；兩份清單各自手動維護，沒有測試比對。",
+      "evidence": "tools/test_locale_packs.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/validate_locale_packs.py"
+        ],
+        "pattern": "SYSTEM_INFO_CAPTION_KEYS = "
+      }
     }
   ]
 }
