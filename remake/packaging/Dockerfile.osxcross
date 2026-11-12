@@ -1,0 +1,23 @@
+# Dockerfile.osxcross — macOS universal 本機交叉建置映像（osxcross，SDK 15.5）。
+# 與 .github/workflows/build-macos.yml 的原生建置逐項對齊：同一 Go 版本、同一 ldflags、
+# 每弧各編一次再 lipo、同一 release.py stage／verify／zip。改一邊就改另一邊。
+# Apple SDK 只在這個本機映像內使用；映像與 SDK 不得推送、匯出或隨任何交付物散布。
+# 預編工具鏈以 trixie 建置，需要 glibc 2.38；Go 本身是靜態連結，從官方映像複製。
+FROM crazymax/osxcross:15.5-debian AS osxcross
+FROM golang:1.22.12-bookworm AS go
+
+FROM debian:trixie
+RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends \
+        ca-certificates git clang lld llvm python3 python3-pil file zip \
+        libssl-dev liblzma-dev libxml2-dev zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=osxcross /osxcross /osxcross
+# ld64 依賴 /osxcross/lib 的 libxar；少了這行連結時只報 unable to execute command。
+RUN echo /osxcross/lib > /etc/ld.so.conf.d/osxcross.conf && ldconfig
+COPY --from=go /usr/local/go /usr/local/go
+# 模組快取放在固定 GOPATH，讓以目前 UID/GID 執行的建置容器讀得到。
+ENV PATH="/osxcross/bin:/usr/local/go/bin:${PATH}" GOTOOLCHAIN=local GOPATH=/go
+
+WORKDIR /src
+COPY remake/go.mod remake/go.sum ./
+RUN go mod download all && chmod -R a+rX /go

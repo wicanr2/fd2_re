@@ -1,12 +1,19 @@
-# Dockerfile.mingw — golang:1.22-bookworm + mingw-w64,供 CGO 跨編 Windows .exe(Ebiten 需要 CGO)。
-# 建置一次快取成 image,避免每次 build-windows.sh 都重裝套件。
-FROM golang:1.22-bookworm
-RUN apt-get update -qq && apt-get install -y -qq \
-    gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 file zip \
+# Dockerfile.mingw — Windows x86_64 本機建置映像：Go 1.22.12、mingw-w64（Ebiten 需要 CGO）、
+# Wine＋Xvfb 供空白目錄執行封裝自檢（Ebiten 在 init 就建立視窗）。與 .github/workflows/build-windows.yml 的原生建置逐項對齊：
+# 同一 Go 版本、同一 ldflags、同一 release.py stage／verify／zip／attest。改一邊就改另一邊。
+# Go 1.22 的 Windows runtime 載入 bcryptprimitives.dll；bookworm 的 Wine 8.0 沒有，改用 trixie。
+FROM golang:1.22.12-bookworm AS go
+
+FROM debian:trixie
+RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends \
+        ca-certificates git gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 file zip python3 wine wine64 xvfb xauth \
     && rm -rf /var/lib/apt/lists/*
+COPY --from=go /usr/local/go /usr/local/go
+# 模組快取放在固定 GOPATH，讓以目前 UID/GID 執行的建置容器讀得到。
+ENV PATH="/usr/local/go/bin:${PATH}" GOTOOLCHAIN=local GOPATH=/go
 
 WORKDIR /src
 
-# 建置映像時先抓好模組；正式封包命令可關閉網路，不臨時污染主機或下載相依套件。
+# 建置映像時先抓好模組；正式封包命令關閉網路，不臨時下載相依套件。
 COPY remake/go.mod remake/go.sum ./
-RUN go mod download
+RUN go mod download all && chmod -R a+rX /go

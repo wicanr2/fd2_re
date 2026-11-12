@@ -107,6 +107,44 @@ class ReleasePackaging(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "macos-universal"):
                 release.collect(root, root / "out")
 
+    def test_collect_accepts_static_macos_only_when_allowed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.fixture(root)
+            receipt = next(root.rglob("macos-universal-smoke.json"))
+            data = json.loads(receipt.read_text())
+            data.update(status="static-verified", builder="local-docker")
+            release.write_json(receipt, data)
+            with self.assertRaisesRegex(ValueError, "狀態"):
+                release.collect(root, root / "out")
+            release.collect(root, root / "out2", ("macos-universal",))
+            validation = json.loads((root / "out2/VALIDATION.json").read_text())
+            self.assertTrue(any("osxcross" in item for item in validation["limitations"]))
+            linux = next(root.rglob("linux-x86_64-smoke.json"))
+            data = json.loads(linux.read_text())
+            data["status"] = "static-verified"
+            release.write_json(linux, data)
+            with self.assertRaisesRegex(ValueError, "linux-x86_64"):
+                release.collect(root, root / "out3", ("macos-universal",))
+
+    def test_static_attest_requires_local_macos(self):
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(
+                release, "verify", return_value={"assets": {}}):
+            root = Path(temporary)
+            log = root / "static.log"
+            log.write_text(release.STATIC_PASS.format(release.version()), encoding="utf-8")
+            archive = root / "a.zip"
+            archive.write_bytes(b"zip")
+            with mock.patch.dict(release.os.environ, {"FD2_RELEASE_BUILDER": "github-actions"}):
+                with self.assertRaisesRegex(ValueError, "本機"):
+                    release.attest(root, "macos-universal", archive, log, static=True)
+            with mock.patch.dict(release.os.environ, {"FD2_RELEASE_BUILDER": "local-docker"}):
+                with self.assertRaisesRegex(ValueError, "本機"):
+                    release.attest(root, "windows-x86_64", archive, log, static=True)
+                release.attest(root, "macos-universal", archive, log, static=True)
+            report = json.loads((root / "macos-universal-smoke.json").read_text())
+            self.assertEqual((report["status"], report["builder"]), ("static-verified", "local-docker"))
+
 
 if __name__ == "__main__":
     unittest.main()

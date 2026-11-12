@@ -7,7 +7,8 @@ original_mount=()
 if test -d "$root/org_game"; then original_mount=(--mount type=bind,source="$root/org_game",target=/repo/org_game,readonly); fi
 docker run --rm --init --network none --memory 3g --cpus 2 --pids-limit 384 \
   "${original_mount[@]}" --user "$(id -u):$(id -g)" --mount type=bind,source="$root",target=/repo \
-  -e FD2_BUILD_OUTPUT_ROOT -e HOME=/tmp/fd2-home -e GOCACHE=/tmp/fd2-go-cache -w /repo/remake \
+  --log-opt max-size=10m --log-opt max-file=3 \
+  -e FD2_BUILD_OUTPUT_ROOT -e FD2_RELEASE_BUILDER -e HOME=/tmp/fd2-home -e GOCACHE=/tmp/fd2-go-cache -w /repo/remake \
   fd2-build-appimage:latest bash -euo pipefail -c '
     version=$(cat /repo/VERSION)
     stage="/repo/work/release-$version/linux/AppDir"

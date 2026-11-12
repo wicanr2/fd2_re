@@ -241,14 +241,37 @@ def make_zip(source, archive):
                 raise ValueError("非ASCII ZIP名稱缺少UTF-8旗標")
 
 
-def attest(destination, platform, archive, log):
+# 本機交叉建置的 macOS 無法在 Linux 執行，只能做 Mach-O／bundle 靜態檢查；
+# 收據以不同狀態標示，不冒充原生自檢。
+STATIC_PASS = "FD2 {} macOS 靜態檢查通過"
+
+
+def builder():
+    value = os.environ.get("FD2_RELEASE_BUILDER", "github-actions")
+    if value not in ("github-actions", "local-docker"):
+        raise ValueError("FD2_RELEASE_BUILDER 只接受 github-actions 或 local-docker")
+    return value
+
+
+def attest(destination, platform, archive, log, static=False):
     doc = verify(destination, platform)
-    expected = f"FD2 {version()} 封裝自我檢查通過"
-    if expected not in log.read_text(encoding="utf-8"):
-        raise ValueError("缺少本版本原生封包自檢成功紀錄")
+    text = log.read_text(encoding="utf-8")
+    if static:
+        if platform != "macos-universal" or builder() != "local-docker":
+            raise ValueError("只有本機交叉建置的 macOS 可用靜態收據")
+        if STATIC_PASS.format(version()) not in text:
+            raise ValueError("缺少本版本 macOS 靜態檢查成功紀錄")
+        status, check = "static-verified", ("osxcross cross-build; static Mach-O/bundle checks; "
+                                            "native self-check not run")
+    else:
+        if f"FD2 {version()} 封裝自我檢查通過" not in text:
+            raise ValueError("缺少本版本原生封包自檢成功紀錄")
+        status, check = "passed", "native-package-self-check; not physical desktop acceptance"
+        if builder() == "local-docker" and platform == "windows-x86_64":
+            check = "wine-package-self-check; not native Windows or physical desktop acceptance"
     report = {"version": version(), "source_commit": commit(), "platform": platform,
-              "status": "passed", "distribution": "engine-only",
-              "check": "native-package-self-check; not physical desktop acceptance",
+              "status": status, "distribution": "engine-only", "builder": builder(),
+              "check": check,
               "log_sha256": sha(log), "package": archive.name,
               "size": archive.stat().st_size, "sha256": sha(archive),
               "public_asset_count": len(doc["assets"])}
@@ -257,7 +280,7 @@ def attest(destination, platform, archive, log):
         f"{sha(archive)}  {archive.name}\n", encoding="ascii")
 
 
-def collect(downloads, output):
+def collect(downloads, output, allow_static=()):
     output.mkdir(parents=True, exist_ok=True)
     reports = []
     for platform in PLATFORMS:
@@ -265,9 +288,10 @@ def collect(downloads, output):
         if len(matches) != 1:
             raise ValueError(f"{platform} 收據缺少或重複")
         report = json.loads(matches[0].read_text(encoding="utf-8"))
-        if (report["version"], report["source_commit"], report["status"],
-                report["distribution"], report["platform"]) != (
-                    version(), commit(), "passed", "engine-only", platform):
+        statuses = {"passed"} | ({"static-verified"} if platform in allow_static else set())
+        if (report["version"], report["source_commit"], report["distribution"],
+                report["platform"]) != (version(), commit(), "engine-only", platform) or \
+                report["status"] not in statuses:
             raise ValueError(f"{platform} 收據來源或狀態不符")
         suffix = ".AppImage" if platform.startswith("linux") else ".zip"
         expected = f"FD2-{version()}-{platform}{suffix}"
@@ -282,11 +306,14 @@ def collect(downloads, output):
         "version": version(), "source_commit": commit(),
         "files": [{"file": r["package"], "size": r["size"], "sha256": r["sha256"]}
                   for r in reports]})
+    limitations = ["HD未完成", "各章受控流程與保存例外見正式台帳",
+                   "實體桌面輸入／音訊未驗；Windows／macOS未簽署，macOS未公證",
+                   "公開引擎包需玩家自備完整合法分離素材；現有單一匯入工具不產生全包"]
+    if any(r.get("builder") == "local-docker" for r in reports):
+        limitations.append("本機Docker建置：Windows自檢在Wine執行，macOS以osxcross交叉建置且只做靜態檢查")
     write_json(output / "VALIDATION.json", {
         "version": version(), "source_commit": commit(), "platforms": reports,
-        "limitations": ["HD未完成", "各章受控流程與保存例外見正式台帳",
-                        "實體桌面輸入／音訊未驗；Windows／macOS未簽署，macOS未公證",
-                        "公開引擎包需玩家自備完整合法分離素材；現有單一匯入工具不產生全包"]})
+        "limitations": limitations})
 
 
 def main():
@@ -296,6 +323,9 @@ def main():
     parser.add_argument("--platform", choices=PLATFORMS)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--log", type=Path)
+    parser.add_argument("--static", action="store_true", help="attest：本機交叉建置的 macOS 靜態收據")
+    parser.add_argument("--allow-static", action="append", default=[], choices=PLATFORMS,
+                        help="collect：接受該平台的靜態收據")
     args = parser.parse_args()
     version()
     if args.command == "stage":
@@ -305,9 +335,9 @@ def main():
     elif args.command == "zip":
         make_zip(args.source, args.output)
     elif args.command == "attest":
-        attest(args.source, args.platform, args.output, args.log)
+        attest(args.source, args.platform, args.output, args.log, args.static)
     else:
-        collect(args.source, args.output)
+        collect(args.source, args.output, tuple(args.allow_static))
 
 
 if __name__ == "__main__":
