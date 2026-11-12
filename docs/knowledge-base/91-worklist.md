@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -517,6 +517,16 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
+
+### P1 同步推廣片與README的原版金字HD操作按鈕
+
+`promo-readme-current-gold-command` · 缺陷 · [#302](https://github.com/wicanr2/fd2_re/issues/302) · **可能已完成，回去確認** · 找不到 "promo_gold_command_verified": false
+
+使用者回報目前推廣片的HD操作按鈕未反映已定A原版金字浮雕，並要求更新README按鈕截圖。程式已於941c919c接入A，但v.1.1.9推廣片其餘42幕沿用前次錄影，README首張地表比較與modern-battle-ui-overview仍顯示較早的劍／魔杖／藥水／沙漏圖示。
+
+怎樣算做完：沿目前正式引擎及清冊正常LOAD、選人／合法走行與指令環四組切換擷取；更新推廣片操作鏡頭及README舊圖與圖說。整片等長保留已核准旁白與原速音軌，驗來源／串流SHA、畫面、字幕及解碼。新版本不覆寫既有交付，來源與README推送並核對遠端HEAD。
+
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-hd1-feedback-20261104.json', 'README.md', 'tools/record_fd2_hd_gameplay.py']`
 
 ## tooling — 工具、編輯器與工作流程
 

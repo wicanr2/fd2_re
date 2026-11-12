@@ -35,9 +35,9 @@
 
 開發主線已接入33張地圖的地形／前景、125組Q版地圖人物、操作介面、獨立美術／介面控制與完整浮出工具列。這些範圍的必要來源、載入、缺件拒收、切換及保存冷讀已驗證；細部觀感、逐章操作與平台實機交由使用者確認。本批確認的玩家法術入口與羅德曼淒煌斬正式動畫已補齊，完整戰鬥HD仍依[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[戰鬥指令入口稽核](docs/knowledge-base/61-modern-theme-runtime-spec.md#戰鬥指令入口稽核)分列，不外推全部角色組合或原版對拍。公開下載版未重發，HD2與HD-2D另期。
 
-首關與共用圖源的地表改採像素手繪加強：橄欖綠草地、褐色碎石路與灰褐岩面，保留原有道路、坡地與海岸配置。樹木及建築周圍的草地同步更新，保留完整HD物件輪廓。下圖由同一重製引擎正常LOAD後切換原版／HD美術取得，僅裁切拼排；[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)另列。
+首關與共用圖源的地表改採像素手繪加強：橄欖綠草地、褐色碎石路與灰褐岩面，保留原有道路、坡地與海岸配置。樹木及建築周圍的草地同步更新，保留完整HD物件輪廓。下圖上半為目前正式引擎正常LOAD、走行及切換原版／HD美術的畫面，兩側都使用原版金字浮雕HD按鈕；下半保留既有物件對照，僅裁切拼排。[按鈕來源](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)與[地表驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)另列。
 
-![首關相同鏡頭的原版美術與HD1像素手繪地表對照](docs/figures/hd1-pixel-terrain-normal-comparison.png)
+![首關原版美術與HD1地表，均使用目前HD金字指令框](docs/figures/hd1-gold-command-terrain-comparison.png)
 
 ![亞雷斯完整輪廓與古典明體的實際普通攻擊畫面](docs/figures/hd1-ares-full-outline-serif.png)
 
@@ -61,7 +61,9 @@ HD介面採古典明體、加重英數與立體血條，保留原版多層框線
 
 蓋亞的原版／HD攻擊鏡頭已重新錄製，HD採目前的原版像素手繪與B厚重命中音。上圖為同份首章來源經正常LOAD及普通攻擊取得的成片縮圖拼排；原版指重製引擎的原版美術與介面。[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片蓋亞原版鏡頭修正)另列。
 
-本機最新版位於`dist-all/v.1.1.9-20261111/`，包含Windows、macOS通用版、Linux完整版與約4分54秒的推廣影片。完整包已加入目前地形修正、均衡畫質、古典明體及獨立戰鬥速度；三平台內容已逐檔核對，Linux另驗自檢與受控畫面，Windows／macOS完整版實機操作及Windows 60fps仍待驗。影片更新天空之鑰圖源，其他42幕與已核准音軌保持；戰鬥沿遊戲拍數校正的節奏，配樂維持原速。[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#逐戰場hd地形圖冊與草地拼接回饋)另列。完整素材包與影片限本機保存，公開下載版維持前述正式第一版。
+三平台本機完整版位於`dist-all/v.1.1.9-20261111/`，包含Windows、macOS通用版與Linux版本。完整包已加入目前地形修正、均衡畫質、古典明體及獨立戰鬥速度；三平台內容已逐檔核對，Linux另驗自檢與受控畫面，Windows／macOS完整版實機操作及Windows 60fps仍待驗。[交付與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#逐戰場hd地形圖冊與草地拼接回饋)另列。
+
+最新推廣片位於`dist-all/v.1.1.10-20261112/promo/`，約4分54秒，已補錄原版金字浮雕HD操作按鈕。README的操作按鈕圖片也已同步；其餘42幕、36段已核准旁白與原速音軌保持。[按鈕修訂與驗證](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)另列。完整素材包與影片限本機保存，公開下載版維持前述正式第一版。
 
 ![開始選單、皇城原版與HD、第一關及六段戰鬥的最新實錄](docs/figures/hd1-promo-rerecord-overview.png)
 
@@ -1127,12 +1129,11 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 水岸與柔化材質；現代戰鬥狀態面板也已有獨立無文字底板，由程式疊加即時數值。這是
 較早可玩的 `RUNTIME-E1` 現代主題基底，現行144人物路徑的地形覆蓋另依上方實際遊戲畫面與[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。完整逐格PNG保存於私人素材庫。後續仍會抽測相鄰圖塊接縫、前景遮擋與各地區辨識度。*
 
-![現代戰場狀態面板與四向行動圖示總覽](docs/figures/modern-battle-ui-overview.png)
+![原版金字浮雕操作按鈕的四組美術與介面切換](docs/figures/hd1-gold-command-current.png)
 
-*現代戰場 UI 素材總覽：上方是無文字狀態面板，正式執行時才疊加角色名稱、
-LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機。四向選單仍顯示在
-目前選取方塊附近，不固定到左上角。這是壓平展示圖；正式 loader 會依 catalog
-逐檔驗證 149×42 HUD、四張 28×26 圖示與 SHA-256，再由現代主題消費。*
+*目前的HD操作按鈕保留原版金字輪廓，加入古金框、深藍底與朱紅選取。
+上圖來自同份首章進度的正常LOAD、走行及四組切換，僅裁切拼排。
+美術與介面可分別用F2／F11切換，選單維持在角色附近。[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)另列。*
 
 | 33 張原版戰場低解析索引 |
 |---|

@@ -406,6 +406,28 @@
         "note": "需Windows實際GPU與幀率觀測；本機軟體繪圖僅供定位。"
       },
       "issue": 298
+    },
+    {
+      "id": "promo-readme-current-gold-command",
+      "layer": "release",
+      "category": "缺陷",
+      "title": "P1 同步推廣片與README的原版金字HD操作按鈕",
+      "body": "使用者回報目前推廣片的HD操作按鈕未反映已定A原版金字浮雕，並要求更新README按鈕截圖。程式已於941c919c接入A，但v.1.1.9推廣片其餘42幕沿用前次錄影，README首張地表比較與modern-battle-ui-overview仍顯示較早的劍／魔杖／藥水／沙漏圖示。",
+      "acceptance": "沿目前正式引擎及清冊正常LOAD、選人／合法走行與指令環四組切換擷取；更新推廣片操作鏡頭及README舊圖與圖說。整片等長保留已核准旁白與原速音軌，驗來源／串流SHA、畫面、字幕及解碼。新版本不覆寫既有交付，來源與README推送並核對遠端HEAD。",
+      "evidence": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-hd1-feedback-20261104.json",
+        "README.md",
+        "tools/record_fd2_hd_gameplay.py"
+      ],
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-hd1-feedback-20261104.json"
+        ],
+        "pattern": "\"promo_gold_command_verified\": false"
+      },
+      "issue": 302
     }
   ]
 }

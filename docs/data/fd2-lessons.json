@@ -5636,6 +5636,21 @@
       "rule": "完整地圖的CPU參照沿正式世界人物矩形與像素中心取樣；非整數縮放只在已證實的texel邊界採穩定核心，逐例記錄排除數。入口為remake/cmd/fd2/modern_hd_heal_map_gpu_test.go的healHDCPUWorld與healHDWorldStableCore，回歸在modern_hd_visual_scale_test.go。",
       "why": "30章圖冊的第13章因CPU漏用115%人物矩形誤報，第22章則在透明與半透明texel的精確邊界取樣不同。實際遊戲繪圖保持，修正參照後四批30章與24種比例／畫質／裁切GPU檢查通過。",
       "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#逐戰場hd地形圖冊與草地拼接回饋"
+    },
+    {
+      "id": "promo-split-image-video-tool-images",
+      "date": "2026-11-12",
+      "area": "媒體工具鏈",
+      "rule": "影片與圖片工具分屬既有映像時，先核對各映像依賴，再以附SHA的檔案介面分段編製，不混掛主機函式庫。入口tools/prepare_fd2_gold_command_promo.py的--phase video／figures，透過VIDEO.json核對影格、來源與編製器指紋。",
+      "why": "初稿把FFmpeg與Pillow放在同一步，但現有兩映像各缺一方；套件鏡像連線也失敗。分開兩個已存在的離線映像後可重跑，不需修改主機或遊戲。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/prepare_fd2_gold_command_promo.py"
+        ],
+        "pattern": "media\\['producer_sha256'\\] == sha"
+      }
     }
   ]
 }

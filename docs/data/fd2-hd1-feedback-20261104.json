@@ -8762,7 +8762,7 @@
       "suspected_completed": 0
     }
   },
-  "active_promo": "local_delivery_20261111",
+  "active_promo": "promo_gold_buttons_20261112",
   "yuni_tts_provider_followup_20261111": {
     "status": "SUPERSEDED-BY-MICROSOFT-TTS",
     "user_request": "改試主機agy／Gemini CLI產生悠妮旁白，並試其他可用模型",
@@ -9639,5 +9639,62 @@
       "removed_files": 165971,
       "reclaimed_bytes": 12409343516
     }
+  },
+  "promo_gold_buttons_20261112": {
+    "status": "PASS-SCOPED-LOCAL-PROMO-AND-README",
+    "date": "2026-11-12",
+    "promo_gold_command_verified": true,
+    "work": "work/hd1-promo-gold-buttons-20261112-r99",
+    "source_head": "3b7bf7f2df453bd7a3c717013f5c633a379a6c2b",
+    "current_engine_sha256": "0336e28adc516179d95debc1ae6d0e856e69d6ab6165e3b610b923a6ee677514",
+    "catalog_sha256": "ea41e4b9a9d656f707a4f05c7eb64ddf36f0bbbeaee55ea1ff085b2f067988f1",
+    "approved_style": "A原版金字浮雕",
+    "readme_targets": [
+      "docs/figures/hd1-gold-command-terrain-comparison.png",
+      "docs/figures/hd1-gold-command-current.png"
+    ],
+    "scope": "重錄目前A按鈕操作來源，等長更新推廣片並替換README舊圖；不改玩法、美術設計或重打三平台完整包。",
+    "issue": 302,
+    "normal_gui_receipt": "work/hd1-promo-gold-buttons-20261112-r99/gui-r1/receipt.json",
+    "recording_receipt": "work/hd1-promo-gold-buttons-20261112-r99/record-r1/recording.json",
+    "source_proof": "work/hd1-promo-gold-buttons-20261112-r99/candidate-r2/SOURCE-PROOF.json",
+    "figures": [
+      {
+        "file": "docs/figures/hd1-gold-command-terrain-comparison.png",
+        "sha256": "b7bde12348218de76c7a6932e7eaac74f17c7010ecf961727ed6fc39468eb654"
+      },
+      {
+        "file": "docs/figures/hd1-gold-command-current.png",
+        "sha256": "d955b57bb85bdd29d2edc5e164541d12b37ec032c2a1809acd2547904a70c17b"
+      }
+    ],
+    "new_process_title_load": true,
+    "runtime_state_injection": false,
+    "version": "v.1.1.10-20261112",
+    "current_movie": "dist-all/v.1.1.10-20261112/promo/FD2-v.1.1.10-20261112-hd1-promo.mp4",
+    "delivery": "dist-all/v.1.1.10-20261112/promo",
+    "delivery_manifest": "dist-all/v.1.1.10-20261112/SHA256SUMS.json",
+    "delivery_manifest_sha256": "e85c1bed0aca9b1b8e5e077e1f6470c2465461455f4b3ee5443be818b3b6963c",
+    "movie": {
+      "file": "FD2-v.1.1.10-20261112-hd1-promo.mp4",
+      "bytes": 49853509,
+      "sha256": "de3b10b13dcf226f34f21a6e7a0bac14920f3c7357ab8f5dc782860a44c42fb2"
+    },
+    "validation": "dist-all/v.1.1.10-20261112/promo/VALIDATION.json",
+    "visual_review": "dist-all/v.1.1.10-20261112/promo/VISUAL-REVIEW.json",
+    "repair_proof": "dist-all/v.1.1.10-20261112/promo/GOLD-COMMAND-REPAIR.json",
+    "audio_packet_sha256": "SHA256=1b0fb1ecf486cc3e9701950419cf5b04010831192ea5746c17d75c957380acdf",
+    "audio_packets_identical_to_previous": true,
+    "unchanged_scenes": 42,
+    "voice_segments_unchanged": 36,
+    "duration_seconds": 293.9,
+    "frames": 8817,
+    "previous_full_delivery": "dist-all/v.1.1.9-20261111",
+    "engine_version": "v.1.1.9-20261111",
+    "public_video_upload": false,
+    "human_full_listening_confirmed": false,
+    "remaining": [
+      "來源與README推送、工單結案"
+    ]
   }
 }
