@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 29 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 38 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -359,6 +359,66 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 怎樣算做完：一般劇情進戰後於我方可操作狀態F5，新程序F9與標題LOAD回到同一回合、單位位置／HP／MP／狀態、敵軍、事件旗標、寶箱與鏡頭；繼續遊玩至戰後節點無分歧。演出、AI回合或對話中F5明示拒絕並有玩家可見提示。戰鬥選單存檔在正式包有可見結果。原版FD2.SAV章節槽不在戰鬥中寫入。既有節點存檔可照常讀取。
 
+### Rust改寫R1：fd2-formats移植七個原版格式套件
+
+`rust-r1-formats` · 工作 · [#307](https://github.com/wicanr2/fd2_re/issues/307) · 仍未完成 · 還沒出現
+
+移植`fdicon` `fdsave` `afm` `fdtxt` `fdother` `dato` `figani`（約1.3萬行）。fdsave已完成並通過204案例黃金差分。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：七個套件的Go測試全部移植通過；對org_game原版檔的解碼結果與Go黃金資料逐位元相同。
+
+### Rust改寫R2：fd2-rules移植戰鬥核心
+
+`rust-r2-rules` · 工作 · [#308](https://github.com/wicanr2/fd2_re/issues/308) · 仍未完成 · 還沒出現
+
+移植`internal/battle`（20931行）：戰鬥、AI、事件、經驗、商店等決定性規則，不依賴Bevy。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：battle的Go測試全部移植通過；Go的戰鬥決定性測試以相同種子產生相同狀態軌跡。
+
+### Rust改寫R3：fd2-campaign移植戰役與內容層
+
+`rust-r3-campaign` · 工作 · [#309](https://github.com/wicanr2/fd2_re/issues/309) · 仍未完成 · 還沒出現
+
+移植`campaign` `indexedmap` `battlepresent` `ending` `editorcanonical` `localization` `musiccatalog`（約2.4萬行）。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：讀入全部`remake/assets`劇本與語系，結果與Go黃金資料相同；相關Go測試全部移植通過。
+
+### Rust改寫R4：fd2-game無畫面遊戲狀態機
+
+`rust-r4-game-state` · 工作 · [#310](https://github.com/wicanr2/fd2_re/issues/310) · 仍未完成 · 還沒出現
+
+把`cmd/fd2`的流程部分移成純Rust狀態機：標題、劇情、戰場操作、城鎮、整備、存讀檔，以固定邏輯幀推進。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：無畫面跑完標題到第一章戰鬥、城鎮與存讀檔，狀態軌跡與Go黃金軌跡相同；能讀Go版既有存檔。
+
+### Rust改寫R5：Bevy外殼與原版美術
+
+`rust-r5-bevy-original` · 工作 · [#311](https://github.com/wicanr2/fd2_re/issues/311) · 仍未完成 · 要人判
+
+`fd2-app`：原版像素繪圖、對話框、選單、音訊、輸入。原版模式以整數倍放大、最近鄰取樣。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：開場與第一章畫面和Go版同狀態截圖逐像素一致；輸入與音訊在Docker下有可重跑收據。
+
+### Rust改寫R6：HD1主題、工具列與設定
+
+`rust-r6-hd1-toolbar` · 工作 · [#312](https://github.com/wicanr2/fd2_re/issues/312) · 仍未完成 · 要人判
+
+HD主題、F2／F11切換、畫質與速度設定、浮出工具列，沿用私人HD清冊。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：HD1清冊全部素材可載入；美術／介面切換與設定保存和Go版相容。
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -561,6 +621,26 @@ Windows版以`-H=windowsgui`建置（`.github/workflows/build-windows.yml`），
 
 怎樣算做完：取得Windows實機閃爍錄影與後端資訊，定位真因並修正；同場景在Windows實機與Linux回歸都不再閃爍。
 
+### Rust改寫R7：三平台、網頁與手機打包
+
+`rust-r7-platforms` · 工作 · [#313](https://github.com/wicanr2/fd2_re/issues/313) · 仍未完成 · 要人判
+
+Windows（mingw＋Wine自檢）、macOS（osxcross，只做靜態檢查）、Linux AppImage、wasm、Android／iOS。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：三平台完整包可組裝並通過現有驗證工具；Windows實機驗收#303～#305相關行為；網頁與手機至少一個平台可啟動到標題。
+
+### Rust改寫R8：30章對拍後切換為正式主線
+
+`rust-r8-cutover` · 工作 · [#314](https://github.com/wicanr2/fd2_re/issues/314) · 仍未完成 · 要人判
+
+依111的章收據規則以Rust版重跑30章受控流程；通過後Rust版成為正式主線並發行，Go版封存保留。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：30章章收據全部通過；發行說明、README與58／56同步更新；Go原始碼保留於repo。
+
 ## tooling — 工具、編輯器與工作流程
 
 ### 戰場編輯器待最終自動端到端驗收
@@ -640,5 +720,15 @@ Windows版以`-H=windowsgui`建置（`.github/workflows/build-windows.yml`），
 怎樣算做完：受版控READY規格先於修正；相鄰兩個insideScreenWriter邊界的PNG都不丟失且來源／延後步數可追；保留CPU與輸入時序、不以中途畫面充數。正反向測試及固定原版重跑通過，既有前綴與畫面比較保持。
 
 證據：`docs/data/fd2-remake-toolchain-recovery-20261015.json`
+
+### Rust改寫R0：workspace、映像、黃金差分框架與Bevy可行性
+
+`rust-r0-foundation` · 工作 · [#306](https://github.com/wicanr2/fd2_re/issues/306) · 仍未完成 · 還沒出現
+
+已完成：`remake-rs/` workspace、`fd2-rust:1.99.1-r1`映像、fdsave黃金差分範例。剩下Bevy最小視窗、Xvfb截圖、CJK TTC字型與OGG播放的可行性，以及確認Bevy能建wasm。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
+
+怎樣算做完：Bevy視窗在Docker／Xvfb下產出截圖；TTC字型可直接或經轉換顯示中文；OGG可播放；wasm32可建置。結果與版本寫回119。
 
 <!-- END fd2_worklist.py render -->

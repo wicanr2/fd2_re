@@ -12,6 +12,7 @@
 ## Go 版凍結的意思
 
 - 凍結點是 `v.1.1.11-20261113`，來源提交 `5186e022`；之後 `remake/` 不再新增遊戲功能，也不再發新版。
+- Go 原始碼與測試完整保留在 `remake/`，切換後也不刪除；Rust 程式另放 `remake-rs/`，兩者並存。
 - 凍結的 Go 版改當「可執行規格」。它的行為已累積大量原版對拍證據，Rust 版逐模組和它比對輸出。
 - 允許的例外只有一種：在 `remake/cmd/` 下新增只輸出黃金資料的工具，不改任何遊戲行為。
 - 玩家回報的 Go 版缺陷（#303～#305）不在 Go 修，改列為 Rust 版的驗收項目。真的需要緊急修 Go，另外徵得使用者同意。
@@ -88,6 +89,8 @@ Go 版正式程式約 13.7 萬行，測試約 15 萬行（2026-11-13 以 `wc -l`
 | R6 HD1 與工具列 | HD 主題、F2／F11、畫質、速度設定 | HD1 清冊全部素材可載入；切換與設定保存相容 |
 | R7 平台 | Windows、macOS、Linux、網頁、手機打包 | 三平台完整包可組裝；Windows 實機驗收 #303～#305 |
 | R8 切換 | 30 章受控流程對拍、正式發行 | 依 `111` 的章收據規則重跑；通過後 Rust 版成為正式主線，Go 版封存 |
+
+各階段工單：R0 [#306](https://github.com/wicanr2/fd2_re/issues/306)、R1 [#307](https://github.com/wicanr2/fd2_re/issues/307)、R2 [#308](https://github.com/wicanr2/fd2_re/issues/308)、R3 [#309](https://github.com/wicanr2/fd2_re/issues/309)、R4 [#310](https://github.com/wicanr2/fd2_re/issues/310)、R5 [#311](https://github.com/wicanr2/fd2_re/issues/311)、R6 [#312](https://github.com/wicanr2/fd2_re/issues/312)、R7 [#313](https://github.com/wicanr2/fd2_re/issues/313)、R8 [#314](https://github.com/wicanr2/fd2_re/issues/314)。R0 到 R4 完成時在下方「進度」加上含「R<n> 完成」的小節，工單的機器檢查會據此判定。
 
 R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每個階段完成時更新 `56` 與 `58`，切換前 Go 版的發行包維持可用。
 

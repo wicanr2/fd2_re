@@ -449,6 +449,143 @@
         "note": "需要Windows實機GPU與錄影。"
       },
       "issue": 305
+    },
+    {
+      "id": "rust-r0-foundation",
+      "layer": "tooling",
+      "category": "工作",
+      "title": "Rust改寫R0：workspace、映像、黃金差分框架與Bevy可行性",
+      "body": "已完成：`remake-rs/` workspace、`fd2-rust:1.99.1-r1`映像、fdsave黃金差分範例。剩下Bevy最小視窗、Xvfb截圖、CJK TTC字型與OGG播放的可行性，以及確認Bevy能建wasm。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "Bevy視窗在Docker／Xvfb下產出截圖；TTC字型可直接或經轉換顯示中文；OGG可播放；wasm32可建置。結果與版本寫回119。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+        ],
+        "pattern": "R0 完成",
+        "note": "完成時在119的「進度」加上含「R0 完成」的小節與收據。"
+      },
+      "issue": 306
+    },
+    {
+      "id": "rust-r1-formats",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫R1：fd2-formats移植七個原版格式套件",
+      "body": "移植`fdicon` `fdsave` `afm` `fdtxt` `fdother` `dato` `figani`（約1.3萬行）。fdsave已完成並通過204案例黃金差分。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "七個套件的Go測試全部移植通過；對org_game原版檔的解碼結果與Go黃金資料逐位元相同。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+        ],
+        "pattern": "R1 完成",
+        "note": "完成時在119的「進度」加上含「R1 完成」的小節與收據。"
+      },
+      "issue": 307
+    },
+    {
+      "id": "rust-r2-rules",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫R2：fd2-rules移植戰鬥核心",
+      "body": "移植`internal/battle`（20931行）：戰鬥、AI、事件、經驗、商店等決定性規則，不依賴Bevy。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "battle的Go測試全部移植通過；Go的戰鬥決定性測試以相同種子產生相同狀態軌跡。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+        ],
+        "pattern": "R2 完成",
+        "note": "完成時在119的「進度」加上含「R2 完成」的小節與收據。"
+      },
+      "issue": 308
+    },
+    {
+      "id": "rust-r3-campaign",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫R3：fd2-campaign移植戰役與內容層",
+      "body": "移植`campaign` `indexedmap` `battlepresent` `ending` `editorcanonical` `localization` `musiccatalog`（約2.4萬行）。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "讀入全部`remake/assets`劇本與語系，結果與Go黃金資料相同；相關Go測試全部移植通過。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+        ],
+        "pattern": "R3 完成",
+        "note": "完成時在119的「進度」加上含「R3 完成」的小節與收據。"
+      },
+      "issue": 309
+    },
+    {
+      "id": "rust-r4-game-state",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫R4：fd2-game無畫面遊戲狀態機",
+      "body": "把`cmd/fd2`的流程部分移成純Rust狀態機：標題、劇情、戰場操作、城鎮、整備、存讀檔，以固定邏輯幀推進。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "無畫面跑完標題到第一章戰鬥、城鎮與存讀檔，狀態軌跡與Go黃金軌跡相同；能讀Go版既有存檔。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+        ],
+        "pattern": "R4 完成",
+        "note": "完成時在119的「進度」加上含「R4 完成」的小節與收據。"
+      },
+      "issue": 310
+    },
+    {
+      "id": "rust-r5-bevy-original",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫R5：Bevy外殼與原版美術",
+      "body": "`fd2-app`：原版像素繪圖、對話框、選單、音訊、輸入。原版模式以整數倍放大、最近鄰取樣。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "開場與第一章畫面和Go版同狀態截圖逐像素一致；輸入與音訊在Docker下有可重跑收據。",
+      "verify": {
+        "kind": "manual",
+        "note": "逐像素比對需人工審核差異與截圖狀態。"
+      },
+      "issue": 311
+    },
+    {
+      "id": "rust-r6-hd1-toolbar",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫R6：HD1主題、工具列與設定",
+      "body": "HD主題、F2／F11切換、畫質與速度設定、浮出工具列，沿用私人HD清冊。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "HD1清冊全部素材可載入；美術／介面切換與設定保存和Go版相容。",
+      "verify": {
+        "kind": "manual",
+        "note": "HD觀感與切換需人工驗收。"
+      },
+      "issue": 312
+    },
+    {
+      "id": "rust-r7-platforms",
+      "layer": "release",
+      "category": "工作",
+      "title": "Rust改寫R7：三平台、網頁與手機打包",
+      "body": "Windows（mingw＋Wine自檢）、macOS（osxcross，只做靜態檢查）、Linux AppImage、wasm、Android／iOS。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "三平台完整包可組裝並通過現有驗證工具；Windows實機驗收#303～#305相關行為；網頁與手機至少一個平台可啟動到標題。",
+      "verify": {
+        "kind": "manual",
+        "note": "需要Windows實機與手機實機。"
+      },
+      "issue": 313
+    },
+    {
+      "id": "rust-r8-cutover",
+      "layer": "release",
+      "category": "工作",
+      "title": "Rust改寫R8：30章對拍後切換為正式主線",
+      "body": "依111的章收據規則以Rust版重跑30章受控流程；通過後Rust版成為正式主線並發行，Go版封存保留。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
+      "acceptance": "30章章收據全部通過；發行說明、README與58／56同步更新；Go原始碼保留於repo。",
+      "verify": {
+        "kind": "manual",
+        "note": "切換需使用者確認。"
+      },
+      "issue": 314
     }
   ]
 }
