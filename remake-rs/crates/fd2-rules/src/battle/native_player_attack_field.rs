@@ -14,6 +14,31 @@ impl State {
     /// 所有權：`u` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_player_attack_target_field(&self, u: Option<UnitIdx>) -> Result<Vec<u8>> {
-        todo!("battle/native_player_attack_field.go:State.NativePlayerAttackTargetField")
+        let Some(ui) = u else {
+            return Err(battle_err!("native player attack field: state or unit unavailable"));
+        };
+        let unit = &self.units[ui];
+        let (slot, ok) = native_equipped_weapon_slot(Some(unit));
+        if !ok {
+            return Err(battle_err!("native player attack field: no equipped weapon"));
+        }
+        let offset = native_item_effect_row_offset(unit.inventory[slot as usize])
+            .map_err(|err| err.wrap("native player attack field: "))?;
+        if offset + NATIVE_ITEM_EFFECT_ROW_SIZE > self.native_future_item_rows.len() as i64 {
+            return Err(battle_err!("native player attack field: item table unavailable"));
+        }
+        let row = &self.native_future_item_rows[offset as usize..(offset + NATIVE_ITEM_EFFECT_ROW_SIZE) as usize];
+        let flags = self.native_command_base_flags()?;
+        native_command_target_field_bytes(
+            self.w,
+            self.h,
+            Cell { x: unit.x, y: unit.y },
+            i64::from(row[0x0c]),
+            i64::from(row[0x0b]),
+            &flags,
+        )
     }
 }
+
+#[cfg(test)]
+mod native_player_attack_field_test;

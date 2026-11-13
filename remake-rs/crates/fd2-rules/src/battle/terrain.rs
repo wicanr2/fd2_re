@@ -12,7 +12,13 @@ use super::*;
 /// Go：`terrain.go:8`，`func NativeTerrainAPDPPct(moveCode byte) (apPct, dpPct int, ok bool)`
 /// Go 具名回傳值依序為：apPct、dpPct、ok。
 pub fn native_terrain_apdp_pct(move_code: u8) -> (i64, i64, bool) {
-    todo!("battle/terrain.go:NativeTerrainAPDPPct")
+    match move_code {
+        0 => (5, 0, true),
+        1 | 5 => (0, 0, true),
+        2 | 3 => (-5, 10, true),
+        4 => (-5, -5, true),
+        _ => (0, 0, false),
+    }
 }
 
 impl State {
@@ -25,6 +31,31 @@ impl State {
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     /// Go 具名回傳值依序為：apPct、dpPct。
     pub fn terrain_apdp_pct(&self, x: i64, y: i64) -> (i64, i64) {
-        todo!("battle/terrain.go:State.TerrainAPDPPct")
+        if x >= 0
+            && x < self.w
+            && y >= 0
+            && y < self.h
+            && self.native_terrain_move_codes.len() as i64 == self.w.wrapping_mul(self.h)
+        {
+            let (ap_pct, dp_pct, ok) =
+                native_terrain_apdp_pct(self.native_terrain_move_codes[(y * self.w + x) as usize]);
+            if ok {
+                return (ap_pct, dp_pct);
+            }
+        }
+        match self.move_cost(x, y) {
+            // 沼澤(export_engine_assets.py:move_code 4 -> cost 2)
+            2 => (-5, -5),
+            // 正常(含目前無法分辨的森林,見檔頭與本函式註解;s.Cost==nil/越界也落此分支)
+            1 => (5, -5),
+            // 不可通行(cost>=BLOCKED_COST)等其他值:不套地形修正
+            _ => (0, 0),
+        }
     }
 }
+
+#[cfg(test)]
+mod native_combat_tables_test;
+
+#[cfg(test)]
+mod terrain_native_test;

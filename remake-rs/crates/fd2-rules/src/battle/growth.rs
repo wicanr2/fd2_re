@@ -43,11 +43,15 @@ pub struct StatRange {
 /// 亂數來源，套用範圍的方式相同。
 ///
 /// Go：`growth.go:46`
-pub(crate) type StatRoll<'a> = dyn FnMut(i64) -> i64 + 'a;
+///
+/// Rust：多一個開頭參數 `&Unit`，是擲骰當下的單位（`applyGrowthRow` 已先把 `Lv` 加一）。
+/// Go 的 `AwardExpNative` 在閉包裡把 `*Unit` 傳給 `NativeGrowthRollObserver`；Rust 的閉包
+/// 不能同時借用正在被 `applyGrowthRow` 修改的單位，所以由呼叫端把單位傳進來。其他擲法忽略它。
+pub(crate) type StatRoll<'a> = dyn FnMut(&Unit, i64) -> i64 + 'a;
 
 /// Go：`growth.go:48`，`func goStatRoll(rng *rand.Rand) statRoll`
 pub(crate) fn go_stat_roll(rng: &mut dyn GoRand) -> Box<StatRoll<'_>> {
-    todo!("battle/growth.go:goStatRoll")
+    Box::new(move |_, span| rng.intn(span))
 }
 
 /// nativeStatRoll 重現 `0x1E529`：`0x1E54A call 0x4E893` 後 `idiv (max − min)` 取餘數。
@@ -55,13 +59,22 @@ pub(crate) fn go_stat_roll(rng: &mut dyn GoRand) -> Box<StatRoll<'_>> {
 ///
 /// Go：`growth.go:54`，`func nativeStatRoll(state *uint16) statRoll`
 pub(crate) fn native_stat_roll(state: &mut u16) -> Box<StatRoll<'_>> {
-    todo!("battle/growth.go:nativeStatRoll")
+    Box::new(move |_, span| {
+        *state = fd2_formats::native_rng::native_rng_step(*state);
+        i64::from(*state) % span
+    })
 }
 
 impl StatRange {
     /// Go：`growth.go:61`，`func (r StatRange) roll(roll statRoll) int`
-    pub(crate) fn roll(self, roll: &mut StatRoll<'_>) -> i64 {
-        todo!("battle/growth.go:StatRange.roll")
+    ///
+    /// Rust：`unit` 是轉給 `roll` 的擲骰當下單位（見 [`StatRoll`]）。
+    pub(crate) fn roll(self, unit: &Unit, roll: &mut StatRoll<'_>) -> i64 {
+        if self.fixed || self.max < self.min || (self.max == self.min && !self.native) {
+            // 0x1E546 sub esi,ebp; je：原版跨距為零就不擲，也不消耗亂數。
+            return self.min;
+        }
+        self.min + roll(unit, self.max - self.min + 1)
     }
 }
 
@@ -944,7 +957,11 @@ impl Unit {
     ///
     /// Go：`growth.go:233`，`func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool)`
     pub(crate) fn apply_level_up_growth(&mut self, rng: &mut dyn GoRand) -> (LevelUpEvent, bool) {
-        todo!("battle/growth.go:Unit.applyLevelUpGrowth")
+        let (row, ok) = legacy_growth_row(self);
+        if !ok {
+            return (LevelUpEvent::default(), false);
+        }
+        (self.apply_growth_row(row, &mut *go_stat_roll(rng)), true)
     }
 }
 
@@ -954,7 +971,10 @@ impl Unit {
 ///
 /// Go：`growth.go:244`，`func legacyGrowthRow(u *Unit) (GrowthRow, bool)`
 pub(crate) fn legacy_growth_row(u: &Unit) -> (GrowthRow, bool) {
-    todo!("battle/growth.go:legacyGrowthRow")
+    match GROWTH_TABLE.get(u.name.as_str()).and_then(|by_cls| by_cls.get(u.cls_name.as_str())) {
+        Some(row) => (*row, true),
+        None => (GrowthRow::default(), false),
+    }
 }
 
 impl Unit {
@@ -963,7 +983,73 @@ impl Unit {
     ///
     /// Go：`growth.go:255`，`func (u *Unit) applyGrowthRow(row GrowthRow, roll statRoll) LevelUpEvent`
     pub(crate) fn apply_growth_row(&mut self, row: GrowthRow, roll: &mut StatRoll<'_>) -> LevelUpEvent {
-        todo!("battle/growth.go:Unit.applyGrowthRow")
+        self.lv = self.lv.wrapping_add(1);
+        let mut ev = {
+            let u: &Unit = self;
+            // Go 的結構字面值依欄位順序求值：AP、DP、DX、HP、MP。
+            let ap_gain = row.ap.roll(u, roll);
+            let dp_gain = row.dp.roll(u, roll);
+            let dx_gain = row.dx.roll(u, roll);
+            let hp_gain = row.hp.roll(u, roll);
+            let mp_gain = row.mp.roll(u, roll);
+            LevelUpEvent { new_lv: u.lv, ap_gain, dp_gain, dx_gain, hp_gain, mp_gain, learned_command_ids: Vec::new() }
+        };
+        if let Some(r) = row.balance_rates
+            && r != original_growth_rates()
+        {
+            let cap_gain = |value: i64, current: i64, percent: i64| {
+                let mut v = scale_balance(value, percent);
+                if current.wrapping_add(v) > 32767 {
+                    v = 32767 - current;
+                }
+                if v < 0 {
+                    v = 0;
+                }
+                v
+            };
+            ev.ap_gain = cap_gain(ev.ap_gain, self.ap, r.ap);
+            ev.dp_gain = cap_gain(ev.dp_gain, self.dp, r.dp);
+            ev.dx_gain = cap_gain(ev.dx_gain, self.dx, r.dx);
+            ev.hp_gain = cap_gain(ev.hp_gain, self.max_hp, r.hp);
+            ev.mp_gain = cap_gain(ev.mp_gain, self.max_mp, r.mp);
+        }
+        self.ap = self.ap.wrapping_add(ev.ap_gain);
+        self.dp = self.dp.wrapping_add(ev.dp_gain);
+        self.dx = self.dx.wrapping_add(ev.dx_gain);
+        // 0x1E529 寫的是基礎攻防 +0x37／+0x39，之後 0x1B750 才把裝備加成疊成 +0x48／
+        // +0x4A；有拆出基礎值的單位兩邊一起長，持續紀錄寫回時才對得上。
+        if self.equipment_base_set {
+            self.base_ap = self.base_ap.wrapping_add(ev.ap_gain);
+            self.base_dp = self.base_dp.wrapping_add(ev.dp_gain);
+        }
+        // DX is the shared raw source for both derived HIT and EV in the
+        // original status constructor (references/text/memory.md; docs/32).
+        // Keep the equipment contributions intact while carrying a level-up's
+        // speed gain through to the displayed/combat values.  EquipmentBaseSet is
+        // only true after the authored effective line has been split into base +
+        // equipped contributions; without it, legacy fixtures have no trustworthy
+        // base to update and retain their historical behaviour.
+        if self.equipment_base_set && ev.dx_gain != 0 {
+            self.base_hit = self.base_hit.wrapping_add(ev.dx_gain);
+            self.base_ev = self.base_ev.wrapping_add(ev.dx_gain);
+            self.hit = self.hit.wrapping_add(ev.dx_gain);
+            self.ev = self.ev.wrapping_add(ev.dx_gain);
+        }
+        // 0x1E529 只把擲出的增量加到傳入的欄位：0x1E4AD 傳 +0x42（MaxHP）、0x1E4C7 傳
+        // +0x46（MaxMP）。之後的 0x1B750 只重算 +0x48..+0x4E，整條升級路徑不碰目前 HP
+        // +0x40 與目前 MP +0x44，所以升級當下的 HP／MP 不變。
+        self.max_hp = self.max_hp.wrapping_add(ev.hp_gain);
+        self.max_mp = self.max_mp.wrapping_add(ev.mp_gain);
+        // 原版就是直接加在記錄的 +0x42／+0x46 上；HUD 小窗（0x1AE8E 比 +0x40 與 +0x42 選數字
+        // 底色）與存檔讀的是這兩個 word，不是引擎欄位（第七章 r6 seq 1152：蓋亞升級後
+        // 314/328 要用「不等」的綠字）。
+        if self.has_native_record_word42 {
+            self.native_record_word42 = self.max_hp as u16;
+        }
+        if self.has_native_record_word46 {
+            self.native_record_word46 = self.max_mp as u16;
+        }
+        ev
     }
 }
 
@@ -973,33 +1059,136 @@ impl Unit {
 ///
 /// Go：`growth.go:324`，`func GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent`
 pub fn gain_exp(u: Option<&mut Unit>, amount: f64, rng: &mut dyn GoRand) -> Vec<LevelUpEvent> {
-    todo!("battle/growth.go:GainExp")
+    let mut roll = go_stat_roll(rng);
+    let mut host = u.map(LegacyGainExpHost);
+    let (_, events) = gain_exp_inner(host.as_mut().map(|h| h as &mut dyn GainExpHost), amount, &mut *roll);
+    events
 }
 
 /// gainExp 重現 0x1E292 的經驗與升級流程，回傳實際收下的經驗值與升級事件。
 /// 套件層的 GainExp 走舊名字表；State.AwardExp 另外套原版的 +7 成長列與指令學習。
 ///
 /// Go：`growth.go:331`，`func gainExp(u *Unit, amount float64, roll statRoll, learn func(*Unit) []int, rowFor func(*Unit) (GrowthRow, bool)) (float64, []LevelUpEvent)`
+///
+/// Rust：Go 的 `u`、`learn`、`rowFor` 三個參數合成一個 [`GainExpHost`]（`None` 是 Go 的 nil 單位）。
 pub(crate) fn gain_exp_inner(
-    u: Option<&mut Unit>,
+    host: Option<&mut dyn GainExpHost>,
     amount: f64,
     roll: &mut StatRoll<'_>,
-    learn: Option<&mut dyn FnMut(&Unit) -> Vec<i64>>,
-    row_for: &mut dyn FnMut(&Unit) -> (GrowthRow, bool),
 ) -> (f64, Vec<LevelUpEvent>) {
-    gain_exp_for_caller(u, amount, roll, learn, row_for, true)
+    gain_exp_for_caller(host, amount, roll, true)
+}
+
+/// gainExp 的單位與兩個回呼（Go 的 `u *Unit`、`learn func(*Unit) []int`、
+/// `rowFor func(*Unit) (GrowthRow, bool)`）。
+///
+/// Rust 新增：`State.AwardExp` 的兩個回呼是 `State` 方法（`learnNativeCommandsAtLevel`、
+/// `NativeGrowthRowFor`），要在單位正被改寫時讀寫 `State`；Rust 不能同時持有單位的可變借用與
+/// `State` 的借用，所以把「單位在哪裡」與回呼一起交給實作者，每次需要時才取單位。
+pub(crate) trait GainExpHost {
+    fn unit(&self) -> &Unit;
+    fn unit_mut(&mut self) -> &mut Unit;
+    /// Go `rowFor(u)`。
+    fn row_for(&self) -> (GrowthRow, bool);
+    /// Go `learn(u)`；Go 的 `learn` 為 nil 時回 `None`。
+    fn learn(&mut self) -> Option<Vec<i64>>;
+}
+
+/// 套件層 `GainExp` 的 host：舊名字表、沒有指令學習。
+struct LegacyGainExpHost<'a>(&'a mut Unit);
+
+impl GainExpHost for LegacyGainExpHost<'_> {
+    fn unit(&self) -> &Unit {
+        self.0
+    }
+    fn unit_mut(&mut self) -> &mut Unit {
+        self.0
+    }
+    fn row_for(&self) -> (GrowthRow, bool) {
+        legacy_growth_row(self.0)
+    }
+    fn learn(&mut self) -> Option<Vec<i64>> {
+        None
+    }
+}
+
+/// `State.AwardExp`／`AwardExpNative` 的 host：`State.units[u]`，回呼是
+/// `NativeGrowthRowFor` 與 `learnNativeCommandsAtLevel`。
+struct StateGainExpHost<'a> {
+    s: &'a mut State,
+    u: UnitIdx,
+}
+
+impl GainExpHost for StateGainExpHost<'_> {
+    fn unit(&self) -> &Unit {
+        &self.s.units[self.u]
+    }
+    fn unit_mut(&mut self) -> &mut Unit {
+        &mut self.s.units[self.u]
+    }
+    fn row_for(&self) -> (GrowthRow, bool) {
+        self.s.native_growth_row_for(Some(self.u))
+    }
+    fn learn(&mut self) -> Option<Vec<i64>> {
+        Some(self.s.learn_native_commands_at_level(Some(self.u)))
+    }
 }
 
 /// Go：`growth.go:336`，`func gainExpForCaller(u *Unit, amount float64, roll statRoll, learn func(*Unit) []int, rowFor func(*Unit) (GrowthRow, bool), friendlyOnly bool) (float64, []LevelUpEvent)`
+///
+/// Rust：`u`、`learn`、`rowFor` 合成 [`GainExpHost`]，同 [`gain_exp_inner`]。
 pub(crate) fn gain_exp_for_caller(
-    u: Option<&mut Unit>,
+    host: Option<&mut dyn GainExpHost>,
     amount: f64,
     roll: &mut StatRoll<'_>,
-    learn: Option<&mut dyn FnMut(&Unit) -> Vec<i64>>,
-    row_for: &mut dyn FnMut(&Unit) -> (GrowthRow, bool),
     friendly_only: bool,
 ) -> (f64, Vec<LevelUpEvent>) {
-    todo!("battle/growth.go:gainExpForCaller")
+    let Some(host) = host else {
+        return (0.0, Vec::new());
+    };
+    {
+        let u = host.unit();
+        if (friendly_only && u.camp != OWN && u.camp != ALLY) || amount <= 0.0 {
+            return (0.0, Vec::new());
+        }
+        if u.has_native_record_byte5 && u.native_record_byte5 & 1 != 0 {
+            // 0x1E2D6 test byte [esi+5],1：原版的死亡旗標在就不收經驗。沒有原版 +5 的
+            // 單位維持舊行為（重製端自訂資料由呼叫端決定）。
+            return (0.0, Vec::new());
+        }
+    }
+    let (level_cap, machine, native) = native_level_cap(Some(host.unit()));
+    if native && host.unit().lv == level_cap {
+        // 0x1E2F2 je 0x1317D：等級剛好等於上限就整段返回，連經驗都不加，也不顯示
+        // 「得到經驗值」。比的是相等，不是大於等於。
+        return (0.0, Vec::new());
+    }
+    host.unit_mut().exp += amount;
+    let mut events = Vec::new();
+    while host.unit().exp >= EXP_THRESHOLD {
+        host.unit_mut().exp -= EXP_THRESHOLD;
+        let (row, ok) = host.row_for();
+        if ok {
+            let mut ev = host.unit_mut().apply_growth_row(row, roll);
+            if let Some(learned) = host.learn() {
+                ev.learned_command_ids = learned;
+            }
+            events.push(ev);
+        } else {
+            // 查無成長資料:等級與經驗池仍照門檻演進(避免經驗卡死無法歸零),
+            // 只是不套用屬性成長——誠實反映「這個單位缺成長曲線」而非静默丟棄經驗。
+            host.unit_mut().lv += 1;
+            host.learn();
+        }
+        // 0x1E3F3..0x1E40C 與 0x1E4F6：每升一級扣 100 之後，升到 30 級、或機兵升到
+        // 99 級，剩下的經驗歸零。30 級這一條是原版的錯誤（修改指南 modify1.md 第 13 條
+        // 把 `1E 0F 85` 改成 `28` 才是 40 級），忠實模式照原版。
+        let lv = host.unit().lv;
+        if native && (lv == 30 || (machine && lv == 99)) {
+            host.unit_mut().exp = 0.0;
+        }
+    }
+    (amount, events)
 }
 
 /// nativeLevelCap 重現 0x1E2E0..0x1E2F2 的升級上限：記錄 `+7` 為 0x1E／0x1F（機兵）
@@ -1010,7 +1199,13 @@ pub(crate) fn gain_exp_for_caller(
 /// Go：`growth.go:384`，`func nativeLevelCap(u *Unit) (levelCap int, machine bool, native bool)`
 /// Go 具名回傳值依序為：levelCap、machine、native。
 pub(crate) fn native_level_cap(u: Option<&Unit>) -> (i64, bool, bool) {
-    todo!("battle/growth.go:nativeLevelCap")
+    let Some(u) = u.filter(|u| u.has_battle_fig) else {
+        return (0, false, false);
+    };
+    if u.battle_fig == 0x1e || u.battle_fig == 0x1f {
+        return (99, true, true);
+    }
+    (40, false, true)
 }
 
 impl State {
@@ -1019,7 +1214,8 @@ impl State {
     /// Go：`growth.go:395`，`func (s *State) GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent`
     /// 所有權：`u` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     pub fn gain_exp(&mut self, u: Option<UnitIdx>, amount: f64, rng: &mut dyn GoRand) -> Vec<LevelUpEvent> {
-        todo!("battle/growth.go:State.GainExp")
+        let (_, events) = self.award_exp(u, amount, rng);
+        events
     }
 
     /// AwardExp 與 GainExp 相同，另外回傳實際收下的經驗值：上限、陣營不符或單位已陣亡
@@ -1028,7 +1224,9 @@ impl State {
     /// Go：`growth.go:402`，`func (s *State) AwardExp(u *Unit, amount float64, rng *rand.Rand) (float64, []LevelUpEvent)`
     /// 所有權：`u` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     pub fn award_exp(&mut self, u: Option<UnitIdx>, amount: f64, rng: &mut dyn GoRand) -> (f64, Vec<LevelUpEvent>) {
-        todo!("battle/growth.go:State.AwardExp")
+        let mut roll = go_stat_roll(rng);
+        let mut host = u.map(|u| StateGainExpHost { s: self, u });
+        gain_exp_inner(host.as_mut().map(|h| h as &mut dyn GainExpHost), amount, &mut *roll)
     }
 
     /// AwardExpNative 與 AwardExp 相同，但升級成長改擲原版的全域 RNG（`0x1E529` 每一欄
@@ -1043,7 +1241,29 @@ impl State {
         amount: i64,
         rng_state: u16,
     ) -> (i64, Vec<LevelUpEvent>, u16) {
-        todo!("battle/growth.go:State.AwardExpNative")
+        let mut state = rng_state;
+        let observer = self.native_growth_roll_observer.clone();
+        // 0x1566A 對被打記錄呼叫；0x1E292 沒有陣營閘門，敵人也能承接共享累計。
+        // 只對有原版來源的單位使用此 caller 契約，正規化單位維持舊範圍。
+        let native = u.is_some_and(|i| {
+            let unit = &self.units[i];
+            unit.has_native_record_byte5 && unit.has_native_record_byte6 && unit.has_battle_fig
+        });
+        let got = {
+            // Go 先建 nativeStatRoll(&state)，有 observer 時包一層：每一擲之前先以 observer 的回傳值
+            // 取代 state，再由內層推進同一個 state。
+            let state = &mut state;
+            let mut roll = move |unit: &Unit, span: i64| {
+                if let Some(observer) = &observer {
+                    *state = observer(unit, *state);
+                }
+                *state = fd2_formats::native_rng::native_rng_step(*state);
+                i64::from(*state) % span
+            };
+            let mut host = u.map(|u| StateGainExpHost { s: self, u });
+            gain_exp_for_caller(host.as_mut().map(|h| h as &mut dyn GainExpHost), amount as f64, &mut roll, !native)
+        };
+        (got.0 as i64, got.1, state)
     }
 
     /// NativeGrowthRowFor 重現 0x1E292 的成長列選擇：`0x1E2F8 movzx eax,[esi+7]`、
@@ -1058,7 +1278,15 @@ impl State {
     /// 所有權：`u` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_growth_row_for(&self, u: Option<UnitIdx>) -> (GrowthRow, bool) {
-        todo!("battle/growth.go:State.NativeGrowthRowFor")
+        let unit = &self.units[u.expect("Go 對 nil 單位會在 legacyGrowthRow 解參照時 panic")];
+        if unit.has_battle_fig
+            && let Some(rows) = &self.native_growth_rows
+            && let Some(row) = rows.get(&unit.battle_fig)
+        {
+            return (self.balance_growth_row(u, *row), true);
+        }
+        let (row, ok) = legacy_growth_row(unit);
+        (self.balance_growth_row(u, row), ok)
     }
 }
 
@@ -1082,7 +1310,69 @@ pub fn load_native_growth_slots(path: &str) -> Result<BTreeMap<i64, GrowthRow>> 
 
 /// Go：`growth.go:458`，`func loadNativeGrowthRows(path string, signedSlots bool) (map[int]GrowthRow, error)`
 pub(crate) fn load_native_growth_rows_inner(path: &str, signed_slots: bool) -> Result<BTreeMap<i64, GrowthRow>> {
-    todo!("battle/growth.go:loadNativeGrowthRows")
+    let raw = read_file(path)?;
+    let rows: Vec<NativeGrowthRowJson> = decode_json(&raw)?;
+    if rows.is_empty() {
+        return Err(battle_err!("native growth rows: empty table"));
+    }
+    if signed_slots && rows.len() != 256 {
+        return Err(battle_err!("native growth slots: rows={}, want 256", rows.len()));
+    }
+    let mut out = BTreeMap::new();
+    for (i, row) in rows.iter().enumerate() {
+        let i = i as i64;
+        if row.idx != i {
+            return Err(battle_err!("native growth rows: row {i} has idx {}", row.idx));
+        }
+        let mut ranges = [StatRange::default(); 5];
+        for (k, r) in [row.ap, row.dp, row.dx, row.hp, row.mp].into_iter().enumerate() {
+            if r[0] < 0 || r[1] < 0 || (!signed_slots && r[1] < r[0]) || (signed_slots && (r[0] > 255 || r[1] > 255)) {
+                return Err(battle_err!("native growth rows: invalid range [{} {}] at idx {i}", r[0], r[1]));
+            }
+            let mut hi = r[1] - 1;
+            if signed_slots && r[1] < r[0] {
+                hi = r[0] + (r[0] - r[1]) - 1;
+            }
+            if hi < r[0] {
+                hi = r[0];
+            }
+            ranges[k] = StatRange { min: r[0], max: hi, native: true, fixed: r[1] == r[0] };
+        }
+        out.insert(
+            i,
+            GrowthRow {
+                ap: ranges[0],
+                dp: ranges[1],
+                dx: ranges[2],
+                hp: ranges[3],
+                mp: ranges[4],
+                balance_rates: None,
+            },
+        );
+    }
+    Ok(out)
+}
+
+/// `loadNativeGrowthRows` 裡的匿名 struct（Go 函式內型別）。
+///
+/// Go 只有 `idx` 有標籤，`AP`…`MP` 沒有標籤；Go 解碼不分大小寫，資產檔寫的是小寫 `ap`…`mp`，
+/// 所以這裡讀小寫並另收 Go 欄位名。缺欄位是零值（Go 行為）；陣列長度不是 2 時 Go 截斷或補零，
+/// Rust 拒收（損壞輸入只比接受或拒收）。
+#[derive(serde::Deserialize)]
+#[serde(default)]
+#[derive(Default)]
+struct NativeGrowthRowJson {
+    idx: i64,
+    #[serde(alias = "AP")]
+    ap: [i64; 2],
+    #[serde(alias = "DP")]
+    dp: [i64; 2],
+    #[serde(alias = "DX")]
+    dx: [i64; 2],
+    #[serde(alias = "HP")]
+    hp: [i64; 2],
+    #[serde(alias = "MP")]
+    mp: [i64; 2],
 }
 
 // ---- 經驗值公式(doc02 §4.5,逐條見檔頭表)----
@@ -1094,7 +1384,15 @@ pub(crate) fn load_native_growth_rows_inner(path: &str, signed_slots: bool) -> R
 ///
 /// Go：`growth.go:507`，`func AttackExp(atkLv, defLv, dmgHP, defTotalHP, defExpPerLv int) float64`
 pub fn attack_exp(atk_lv: i64, def_lv: i64, dmg_hp: i64, def_total_hp: i64, def_exp_per_lv: i64) -> f64 {
-    todo!("battle/growth.go:AttackExp")
+    if atk_lv <= 0 || def_total_hp <= 0 || def_exp_per_lv <= 0 {
+        return 0.0;
+    }
+    let dmg_hp = dmg_hp.min(def_total_hp);
+    if dmg_hp <= 0 {
+        return 0.0;
+    }
+    let ratio = dmg_hp as f64 / def_total_hp as f64;
+    ratio * def_lv.wrapping_mul(def_exp_per_lv) as f64 * (def_lv as f64 / atk_lv as f64)
 }
 
 /// healExpTerm「恢復法術」列的單一受法者項:(恢復HP/總HP) × 受法者等級。呼叫端把每個受
@@ -1102,21 +1400,30 @@ pub fn attack_exp(atk_lv: i64, def_lv: i64, dmg_hp: i64, def_total_hp: i64, def_
 ///
 /// Go：`growth.go:523`，`func healExpTerm(healHP, totalHP, targetLv int) float64`
 pub(crate) fn heal_exp_term(heal_hp: i64, total_hp: i64, target_lv: i64) -> f64 {
-    todo!("battle/growth.go:healExpTerm")
+    if total_hp <= 0 || heal_hp <= 0 {
+        return 0.0;
+    }
+    heal_hp as f64 / total_hp as f64 * target_lv as f64
 }
 
 /// TeleportExp「傳送術」列:10 × (受法者等級/施法者等級)。
 ///
 /// Go：`growth.go:531`，`func TeleportExp(casterLv, targetLv int) float64`
 pub fn teleport_exp(caster_lv: i64, target_lv: i64) -> f64 {
-    todo!("battle/growth.go:TeleportExp")
+    if caster_lv <= 0 {
+        return 0.0;
+    }
+    10.0 * target_lv as f64 / caster_lv as f64
 }
 
 /// ActionExp「行動術」列:8 × (受法者等級/施法者等級)。
 ///
 /// Go：`growth.go:539`，`func ActionExp(casterLv, targetLv int) float64`
 pub fn action_exp(caster_lv: i64, target_lv: i64) -> f64 {
-    todo!("battle/growth.go:ActionExp")
+    if caster_lv <= 0 {
+        return 0.0;
+    }
+    8.0 * target_lv as f64 / caster_lv as f64
 }
 
 /// buffExpTerm「魔刃術/魔鎧術/風行術」列的單一受法者項:受法者等級/施法者等級。呼叫端
@@ -1124,7 +1431,10 @@ pub fn action_exp(caster_lv: i64, target_lv: i64) -> f64 {
 ///
 /// Go：`growth.go:548`，`func buffExpTerm(casterLv, targetLv int) float64`
 pub(crate) fn buff_exp_term(caster_lv: i64, target_lv: i64) -> f64 {
-    todo!("battle/growth.go:buffExpTerm")
+    if caster_lv <= 0 {
+        return 0.0;
+    }
+    target_lv as f64 / caster_lv as f64
 }
 
 /// statusExpTerm「麻痺術/毒擊術/解毒術/祛麻術」列的單一受法者項:
@@ -1132,5 +1442,14 @@ pub(crate) fn buff_exp_term(caster_lv: i64, target_lv: i64) -> f64 {
 ///
 /// Go：`growth.go:557`，`func statusExpTerm(casterLv, targetLv, targetTotalHP int) float64`
 pub(crate) fn status_exp_term(caster_lv: i64, target_lv: i64, target_total_hp: i64) -> f64 {
-    todo!("battle/growth.go:statusExpTerm")
+    if caster_lv <= 0 || target_total_hp <= 0 {
+        return 0.0;
+    }
+    (360.0 / target_total_hp as f64) * (target_lv as f64 / caster_lv as f64)
 }
+
+#[cfg(test)]
+mod growth_native_test;
+
+#[cfg(test)]
+mod growth_test;

@@ -229,7 +229,6 @@ fn clear_native_hp_from_syncs_projection() {
 ///
 /// 事件 30 的 [0x53EC8]=0：擊倒帶無條件 exp_cancel 的單位，整次行動的經驗是 0。
 #[test]
-#[ignore = "等 E 合併"]
 fn kill_with_exp_cancel_awards_no_experience() {
     let Some(path) = docs_file("data/exe_tables/growth.json") else { return };
     let rows = load_native_growth_rows(&path).unwrap();

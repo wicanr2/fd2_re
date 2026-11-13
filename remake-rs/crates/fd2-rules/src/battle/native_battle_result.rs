@@ -14,5 +14,21 @@ use super::*;
 ///
 /// Go：`native_battle_result.go:14`，`func NativeBattleResultCode205B4(records []byte, count int) (int, error)`
 pub fn native_battle_result_code205_b4(records: &[u8], count: i64) -> Result<i64> {
-    todo!("battle/native_battle_result.go:NativeBattleResultCode205B4")
+    if count <= 0 || count > 0x100 || records.len() as i64 != count * NATIVE_RECORD_SIZE {
+        return Err(battle_err!("native battle result 0x205b4 records are malformed"));
+    }
+    let mut result = 2;
+    for index in 0..count {
+        let record = &records[(index * NATIVE_RECORD_SIZE) as usize..];
+        if record[6] == 0 && record[5] & 1 == 0 {
+            result = 0;
+        }
+    }
+    if records[5] & 1 != 0 {
+        result = 1;
+    }
+    Ok(result)
 }
+
+#[cfg(test)]
+mod native_battle_result_test;

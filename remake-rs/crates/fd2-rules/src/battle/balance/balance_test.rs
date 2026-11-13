@@ -8,7 +8,6 @@ use crate::test_support::docs_file;
 /// Go 的 a～e 是不在 `st.Units` 的區域單位；Rust 依模組文件第 6 點先 push 再傳索引
 /// （`AwardExpNative`／`GainExp` 只動傳入的單位）。
 #[test]
-#[ignore = "等 E 合併"]
 fn balance_growth_keeps_original_roll_sequence_and_zero_growth() {
     let Some(path) = docs_file("data/exe_tables/native_growth_slots.json") else { return };
     let rows = load_native_growth_slots(&path).unwrap();

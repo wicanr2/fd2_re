@@ -21,6 +21,6 @@ fd2-formats = { path = "../fd2-formats" }
 # Cargo.lock 既有版本，不新增套件版本。
 base64 = "=0.23.1"
 serde = { version = "=1.0.229", features = ["derive"] }
-serde_json = "=1.0.154"
+serde_json = { version = "=1.0.154", features = ["float_roundtrip"] }
 # `model.go` 以 SHA-256 核對 native_turn_event_controls.json；黃金差分也用它核對輸入檔。
 sha2 = "=0.10.9"

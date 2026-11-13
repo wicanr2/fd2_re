@@ -489,7 +489,7 @@
         {
           "name": "State.Attack",
           "rust": "State::attack",
-          "status": "todo",
+          "status": "ported",
           "go_line": 44,
           "calls": [
             "State.AttackWithRNG"
@@ -507,7 +507,7 @@
         {
           "name": "State.attackWithExperience",
           "rust": "State::attack_with_experience",
-          "status": "todo",
+          "status": "ported",
           "go_line": 58,
           "calls": [
             "AttackExp",
@@ -527,13 +527,13 @@
         {
           "name": "rollsHitPct",
           "rust": "rolls_hit_pct",
-          "status": "todo",
+          "status": "ported",
           "go_line": 119
         },
         {
           "name": "hostile",
           "rust": "hostile",
-          "status": "todo",
+          "status": "ported",
           "go_line": 131
         },
         {
@@ -554,7 +554,7 @@
         {
           "name": "State.estDamage",
           "rust": "State::est_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 158,
           "calls": [
             "State.TerrainAPDPPct"
@@ -563,7 +563,7 @@
         {
           "name": "State.aiTargets",
           "rust": "State::ai_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 171,
           "calls": [
             "State.estDamage",
@@ -575,7 +575,7 @@
         {
           "name": "State.aiApproachPath",
           "rust": "State::ai_approach_path",
-          "status": "todo",
+          "status": "ported",
           "go_line": 198,
           "calls": [
             "State.Path",
@@ -587,7 +587,7 @@
         {
           "name": "State.aiActUnit",
           "rust": "State::ai_act_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 217,
           "calls": [
             "State.Attack",
@@ -603,7 +603,7 @@
         {
           "name": "State.AITurn",
           "rust": "State::ai_turn",
-          "status": "todo",
+          "status": "ported",
           "go_line": 253,
           "calls": [
             "State.aiActUnit",
@@ -613,7 +613,7 @@
         {
           "name": "State.Result",
           "rust": "State::result",
-          "status": "todo",
+          "status": "ported",
           "go_line": 270,
           "calls": [
             "State.AliveCount",
@@ -623,7 +623,7 @@
         {
           "name": "State.nativeAIPlanScoredCommands",
           "rust": "State::native_ai_plan_scored_commands",
-          "status": "todo",
+          "status": "ported",
           "go_line": 387,
           "calls": [
             "NativeAvailableAIScoredCommandIDs"
@@ -632,13 +632,13 @@
         {
           "name": "State.AIAvailableSpells",
           "rust": "State::ai_available_spells",
-          "status": "todo",
+          "status": "ported",
           "go_line": 399
         },
         {
           "name": "State.AISpellCandidates",
           "rust": "State::ai_spell_candidates",
-          "status": "todo",
+          "status": "ported",
           "go_line": 427,
           "calls": [
             "Unit.Alive",
@@ -648,7 +648,7 @@
         {
           "name": "State.aiSpellOptions",
           "rust": "State::ai_spell_options",
-          "status": "todo",
+          "status": "ported",
           "go_line": 493,
           "calls": [
             "State.AIAvailableSpells"
@@ -657,13 +657,13 @@
         {
           "name": "aiSpellPriority",
           "rust": "ai_spell_priority",
-          "status": "todo",
+          "status": "ported",
           "go_line": 539
         },
         {
           "name": "State.aiSpellTargetScore",
           "rust": "State::ai_spell_target_score",
-          "status": "todo",
+          "status": "ported",
           "go_line": 559,
           "calls": [
             "Unit.Alive",
@@ -674,7 +674,7 @@
         {
           "name": "State.aiSpellPath",
           "rust": "State::ai_spell_path",
-          "status": "todo",
+          "status": "ported",
           "go_line": 611,
           "calls": [
             "State.Path",
@@ -686,7 +686,7 @@
         {
           "name": "State.nextAISpellPlan",
           "rust": "State::next_ai_spell_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 649,
           "calls": [
             "State.AISpellCandidates",
@@ -700,7 +700,7 @@
         {
           "name": "State.NextAIPlan",
           "rust": "State::next_ai_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 688,
           "calls": [
             "State.nextAIPlanForUnit",
@@ -711,7 +711,7 @@
         {
           "name": "State.ResetNativeAIScan",
           "rust": "State::reset_native_ai_scan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 714
         },
         {
@@ -726,7 +726,7 @@
         {
           "name": "State.nextNativeScannedAIPlan",
           "rust": "State::next_native_scanned_ai_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 730,
           "calls": [
             "State.nativeAIPreselected",
@@ -738,7 +738,7 @@
         {
           "name": "State.nativeAIScanEligible",
           "rust": "State::native_ai_scan_eligible",
-          "status": "todo",
+          "status": "ported",
           "go_line": 777,
           "calls": [
             "Unit.Alive",
@@ -748,7 +748,7 @@
         {
           "name": "State.nativeAIPreselected",
           "rust": "State::native_ai_preselected",
-          "status": "todo",
+          "status": "ported",
           "go_line": 800,
           "calls": [
             "ScoreNativeAI1567E",
@@ -760,7 +760,7 @@
         {
           "name": "State.nextAIPlanForUnit",
           "rust": "State::next_ai_plan_for_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 839,
           "calls": [
             "State.InAttackRange",
@@ -1314,25 +1314,25 @@
         {
           "name": "goStatRoll",
           "rust": "go_stat_roll",
-          "status": "todo",
+          "status": "ported",
           "go_line": 48
         },
         {
           "name": "nativeStatRoll",
           "rust": "native_stat_roll",
-          "status": "todo",
+          "status": "ported",
           "go_line": 54
         },
         {
           "name": "StatRange.roll",
           "rust": "StatRange::roll",
-          "status": "todo",
+          "status": "ported",
           "go_line": 61
         },
         {
           "name": "Unit.applyLevelUpGrowth",
           "rust": "Unit::apply_level_up_growth",
-          "status": "todo",
+          "status": "ported",
           "go_line": 233,
           "calls": [
             "Unit.applyGrowthRow",
@@ -1343,13 +1343,13 @@
         {
           "name": "legacyGrowthRow",
           "rust": "legacy_growth_row",
-          "status": "todo",
+          "status": "ported",
           "go_line": 244
         },
         {
           "name": "Unit.applyGrowthRow",
           "rust": "Unit::apply_growth_row",
-          "status": "todo",
+          "status": "ported",
           "go_line": 255,
           "calls": [
             "OriginalGrowthRates",
@@ -1360,7 +1360,7 @@
         {
           "name": "GainExp",
           "rust": "gain_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 324,
           "calls": [
             "gainExp",
@@ -1380,7 +1380,7 @@
         {
           "name": "gainExpForCaller",
           "rust": "gain_exp_for_caller",
-          "status": "todo",
+          "status": "ported",
           "go_line": 336,
           "calls": [
             "Unit.applyGrowthRow",
@@ -1390,13 +1390,13 @@
         {
           "name": "nativeLevelCap",
           "rust": "native_level_cap",
-          "status": "todo",
+          "status": "ported",
           "go_line": 384
         },
         {
           "name": "State.GainExp",
           "rust": "State::gain_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 395,
           "calls": [
             "State.AwardExp"
@@ -1405,7 +1405,7 @@
         {
           "name": "State.AwardExp",
           "rust": "State::award_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 402,
           "calls": [
             "State.NativeGrowthRowFor",
@@ -1417,7 +1417,7 @@
         {
           "name": "State.AwardExpNative",
           "rust": "State::award_exp_native",
-          "status": "todo",
+          "status": "ported",
           "go_line": 409,
           "calls": [
             "State.NativeGrowthRowFor",
@@ -1429,7 +1429,7 @@
         {
           "name": "State.NativeGrowthRowFor",
           "rust": "State::native_growth_row_for",
-          "status": "todo",
+          "status": "ported",
           "go_line": 434,
           "calls": [
             "State.balanceGrowthRow",
@@ -1457,43 +1457,43 @@
         {
           "name": "loadNativeGrowthRows",
           "rust": "load_native_growth_rows_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 458
         },
         {
           "name": "AttackExp",
           "rust": "attack_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 507
         },
         {
           "name": "healExpTerm",
           "rust": "heal_exp_term",
-          "status": "todo",
+          "status": "ported",
           "go_line": 523
         },
         {
           "name": "TeleportExp",
           "rust": "teleport_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 531
         },
         {
           "name": "ActionExp",
           "rust": "action_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 539
         },
         {
           "name": "buffExpTerm",
           "rust": "buff_exp_term",
-          "status": "todo",
+          "status": "ported",
           "go_line": 548
         },
         {
           "name": "statusExpTerm",
           "rust": "status_exp_term",
-          "status": "todo",
+          "status": "ported",
           "go_line": 557
         }
       ],
@@ -1560,13 +1560,13 @@
         {
           "name": "LoadSpells",
           "rust": "load_spells",
-          "status": "todo",
+          "status": "ported",
           "go_line": 55
         },
         {
           "name": "State.InCastRange",
           "rust": "State::in_cast_range",
-          "status": "todo",
+          "status": "ported",
           "go_line": 73
         },
         {
@@ -1578,25 +1578,25 @@
         {
           "name": "randomizeAmount",
           "rust": "randomize_amount",
-          "status": "todo",
+          "status": "ported",
           "go_line": 106
         },
         {
           "name": "rollsHit",
           "rust": "rolls_hit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 120
         },
         {
           "name": "isEnemyOf",
           "rust": "is_enemy_of",
-          "status": "todo",
+          "status": "ported",
           "go_line": 130
         },
         {
           "name": "State.Cast",
           "rust": "State::cast",
-          "status": "todo",
+          "status": "ported",
           "go_line": 140,
           "calls": [
             "State.CastArea"
@@ -1605,7 +1605,7 @@
         {
           "name": "State.CastArea",
           "rust": "State::cast_area",
-          "status": "todo",
+          "status": "ported",
           "go_line": 158,
           "calls": [
             "State.AwardExp",
@@ -1622,7 +1622,7 @@
         {
           "name": "awardCastExp",
           "rust": "award_cast_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 223,
           "calls": [
             "ActionExp",
@@ -1635,7 +1635,7 @@
         {
           "name": "State.applySpell",
           "rust": "State::apply_spell",
-          "status": "todo",
+          "status": "ported",
           "go_line": 295,
           "calls": [
             "State.dealDamage",
@@ -1648,7 +1648,7 @@
         {
           "name": "State.dealDamage",
           "rust": "State::deal_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 364,
           "calls": [
             "Unit.ApplyHPDamage",
@@ -1658,7 +1658,7 @@
         {
           "name": "applyBuff",
           "rust": "apply_buff",
-          "status": "todo",
+          "status": "ported",
           "go_line": 372,
           "calls": [
             "buffRoll"
@@ -4510,7 +4510,7 @@
         {
           "name": "NativeBattleResultCode205B4",
           "rust": "native_battle_result_code205_b4",
-          "status": "todo",
+          "status": "ported",
           "go_line": 14
         }
       ],
@@ -10057,19 +10057,19 @@
         {
           "name": "nativeIgnoresTerrainModifier",
           "rust": "native_ignores_terrain_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43
         },
         {
           "name": "nativeEquippedWeaponSlot",
           "rust": "native_equipped_weapon_slot",
-          "status": "todo",
+          "status": "ported",
           "go_line": 67
         },
         {
           "name": "State.nativeEquippedWeapon",
           "rust": "State::native_equipped_weapon",
-          "status": "todo",
+          "status": "ported",
           "go_line": 90,
           "calls": [
             "NativeItemEffectRowOffset",
@@ -10079,7 +10079,7 @@
         {
           "name": "State.buildNativePhysicalRoll",
           "rust": "State::build_native_physical_roll",
-          "status": "todo",
+          "status": "ported",
           "go_line": 106,
           "calls": [
             "State.TerrainAPDPPct",
@@ -10095,7 +10095,7 @@
         {
           "name": "State.nativePhysicalExchange",
           "rust": "State::native_physical_exchange",
-          "status": "todo",
+          "status": "ported",
           "go_line": 128,
           "calls": [
             "RollNativePhysicalDamage",
@@ -10107,7 +10107,7 @@
         {
           "name": "State.counterattackDefender",
           "rust": "State::counterattack_defender",
-          "status": "todo",
+          "status": "ported",
           "go_line": 178,
           "calls": [
             "State.nativeEquippedWeapon",
@@ -10117,7 +10117,7 @@
         {
           "name": "State.NativePhysicalCounterattackEligible",
           "rust": "State::native_physical_counterattack_eligible",
-          "status": "todo",
+          "status": "ported",
           "go_line": 189,
           "calls": [
             "NativeCounterattackEligible",
@@ -10127,7 +10127,7 @@
         {
           "name": "State.AttackNativePhysical",
           "rust": "State::attack_native_physical",
-          "status": "todo",
+          "status": "ported",
           "go_line": 198,
           "calls": [
             "State.attackNativePhysical"
@@ -10136,7 +10136,7 @@
         {
           "name": "State.attackNativePhysical",
           "rust": "State::attack_native_physical_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 202,
           "calls": [
             "NativeCounterattackEligible",
@@ -10153,7 +10153,7 @@
         {
           "name": "nativeLastStrikeExperience",
           "rust": "native_last_strike_experience",
-          "status": "todo",
+          "status": "ported",
           "go_line": 283,
           "calls": [
             "nativePhysicalExperiencePlan.award"
@@ -10162,13 +10162,13 @@
         {
           "name": "summarizeNativeStrikes",
           "rust": "summarize_native_strikes",
-          "status": "todo",
+          "status": "ported",
           "go_line": 293
         },
         {
           "name": "State.awardNativePhysicalExperience",
           "rust": "State::award_native_physical_experience",
-          "status": "todo",
+          "status": "ported",
           "go_line": 310,
           "calls": [
             "AttackExp",
@@ -10180,7 +10180,7 @@
         {
           "name": "State.AttackNativePhysicalWithExperience",
           "rust": "State::attack_native_physical_with_experience",
-          "status": "todo",
+          "status": "ported",
           "go_line": 334,
           "calls": [
             "State.attackNativePhysical",
@@ -10190,7 +10190,7 @@
         {
           "name": "nativeClassCritPct",
           "rust": "native_class_crit_pct",
-          "status": "todo",
+          "status": "ported",
           "go_line": 362
         }
       ],
@@ -10270,13 +10270,13 @@
         {
           "name": "RollNativePhysicalDamage",
           "rust": "roll_native_physical_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 62
         },
         {
           "name": "NativeCounterattackEligible",
           "rust": "native_counterattack_eligible",
-          "status": "todo",
+          "status": "ported",
           "go_line": 136,
           "calls": [
             "abs"
@@ -10347,7 +10347,7 @@
         {
           "name": "planNativePhysicalExperience",
           "rust": "plan_native_physical_experience",
-          "status": "todo",
+          "status": "ported",
           "go_line": 17,
           "calls": [
             "NativeConstructorTable.validate",
@@ -10357,13 +10357,13 @@
         {
           "name": "nativePhysicalExperiencePlan.award",
           "rust": "NativePhysicalExperiencePlan::award",
-          "status": "todo",
+          "status": "ported",
           "go_line": 61
         },
         {
           "name": "State.AttackWithNativeExperience",
           "rust": "State::attack_with_native_experience",
-          "status": "todo",
+          "status": "ported",
           "go_line": 76,
           "calls": [
             "State.attackWithExperience",
@@ -10454,7 +10454,7 @@
         {
           "name": "State.NativePlayerAttackTargetField",
           "rust": "State::native_player_attack_target_field",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11,
           "calls": [
             "NativeCommandTargetFieldBytes",
@@ -11807,13 +11807,13 @@
         {
           "name": "NativeTerrainAPDPPct",
           "rust": "native_terrain_apdp_pct",
-          "status": "todo",
+          "status": "ported",
           "go_line": 8
         },
         {
           "name": "State.TerrainAPDPPct",
           "rust": "State::terrain_apdp_pct",
-          "status": "todo",
+          "status": "ported",
           "go_line": 27,
           "calls": [
             "NativeTerrainAPDPPct",

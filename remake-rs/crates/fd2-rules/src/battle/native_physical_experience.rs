@@ -19,7 +19,60 @@ pub(crate) fn plan_native_physical_experience(
     actor: Option<&Unit>,
     target: Option<&Unit>,
 ) -> Result<NativePhysicalExperiencePlan> {
-    todo!("battle/native_physical_experience.go:planNativePhysicalExperience")
+    let fail = || Err(battle_err!("native physical EXP: raw source or integer state unavailable"));
+    let (Some(actor), Some(target)) = (actor, target) else {
+        return fail();
+    };
+    if !actor.has_native_record_byte6 || !actor.has_native_record_byte5 {
+        return fail();
+    }
+    if actor.native_record_byte6 != 2 {
+        return Ok(NativePhysicalExperiencePlan::default());
+    }
+    if actor.camp != OWN
+        || !actor.has_native_record_class
+        || actor.lv < 1
+        || actor.lv > 255
+        || actor.exp < 0.0
+        || actor.exp >= 100.0
+        || actor.exp.is_nan()
+        || actor.exp != actor.exp.trunc()
+        || !target.has_battle_fig
+    {
+        return fail();
+    }
+    let (identity, ok) = native_record_byte8_for_unit(Some(actor));
+    if !ok || target.battle_fig < 0 || target.battle_fig > 255 {
+        return fail();
+    }
+    if target.battle_fig < 68 {
+        return Ok(NativePhysicalExperiencePlan::default());
+    }
+    let Some(table) = target.native_constructor.as_ref() else {
+        return fail();
+    };
+    if table.validate().is_err()
+        || table.branch != "high_class"
+        || table.index != target.battle_fig - 68
+        || target.lv < 1
+        || target.lv > 255
+        || target.max_hp < 1
+        || target.max_hp > 65535
+    {
+        return fail();
+    }
+    let mut level = actor.lv as u8;
+    if actor.native_record_class > 8 && actor.native_record_class < 25 || identity == 28 {
+        level = level.wrapping_add(30);
+    }
+    if level == 0 {
+        return fail();
+    }
+    Ok(NativePhysicalExperiencePlan {
+        base: i64::from(table.record[9]) * target.lv / i64::from(level),
+        target_max_hp: target.max_hp,
+        writes_accumulator: true,
+    })
 }
 
 impl NativePhysicalExperiencePlan {
@@ -29,7 +82,16 @@ impl NativePhysicalExperiencePlan {
     ///
     /// Go：`native_physical_experience.go:61`，`func (p nativePhysicalExperiencePlan) award(damage int, killed bool) int`
     pub(crate) fn award(self, damage: i64, killed: bool) -> i64 {
-        todo!("battle/native_physical_experience.go:nativePhysicalExperiencePlan.award")
+        if self.base == 0 {
+            return 0;
+        }
+        if killed {
+            return self.base;
+        }
+        if damage <= 0 {
+            return 0;
+        }
+        damage.wrapping_mul(self.base) / self.target_max_hp
     }
 }
 impl State {
@@ -45,6 +107,15 @@ impl State {
         target: Option<UnitIdx>,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<AttackResult> {
-        todo!("battle/native_physical_experience.go:State.AttackWithNativeExperience")
+        let Some(rng) = rng else {
+            return Err(battle_err!("native physical EXP: state or RNG unavailable"));
+        };
+        let plan = plan_native_physical_experience(actor.map(|i| &self.units[i]), target.map(|i| &self.units[i]))?;
+        // plan 成功代表兩者都不是 nil（Go 的 nil 檢查在 planNativePhysicalExperience 裡）。
+        let target = target.expect("planNativePhysicalExperience 已確認 target 存在");
+        Ok(self.attack_with_experience(actor, target, rng, Some(&plan)))
     }
 }
+
+#[cfg(test)]
+mod native_physical_experience_test;

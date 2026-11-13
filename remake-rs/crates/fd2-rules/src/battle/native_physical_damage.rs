@@ -70,7 +70,63 @@ pub struct NativePhysicalRollResult {
 ///
 /// Go：`native_physical_damage.go:62`，`func RollNativePhysicalDamage(in NativePhysicalRoll) (NativePhysicalRollResult, error)`
 pub fn roll_native_physical_damage(r#in: NativePhysicalRoll) -> Result<NativePhysicalRollResult> {
-    todo!("battle/native_physical_damage.go:RollNativePhysicalDamage")
+    if r#in.attacker_ap < 0 || r#in.defender_dp < 0 {
+        return Err(battle_err!(
+            "native physical roll has negative stats: ap={} dp={}",
+            r#in.attacker_ap,
+            r#in.defender_dp
+        ));
+    }
+    let mut rng = r#in.rng_state;
+    let mut next = || {
+        rng = fd2_formats::native_rng::native_rng_step(rng);
+        i64::from(rng)
+    };
+
+    // 1. 地形修正。原版是 `v30 += v30 * 表值 / 100`，所以負百分比也走同一式。
+    let ap = r#in.attacker_ap.wrapping_add(r#in.attacker_ap.wrapping_mul(r#in.attacker_terrain_ap_pct) / 100);
+    let mut dp = r#in.defender_dp.wrapping_add(r#in.defender_dp.wrapping_mul(r#in.defender_terrain_dp_pct) / 100);
+
+    // 2. 武器分支（0x29FE6 的 switch），在命中判定之前。
+    let mut result = NativePhysicalRollResult { missed: true, ..Default::default() };
+    let mut crit_pct = r#in.attacker_crit_pct;
+    match r#in.weapon.effect {
+        4 => crit_pct = crit_pct.wrapping_add(r#in.weapon.param),
+        2 => {
+            if next() % 100 < r#in.weapon.param {
+                result.status = true;
+                result.status_value = next() % 4 + 2;
+            }
+        }
+        3 => result.extra = true,
+        _ => {}
+    }
+
+    // 3. 命中：`rand()%100 < 命中 − 迴避`。未命中就到此為止，不再擲。
+    if next() % 100 >= r#in.attacker_hit.wrapping_sub(r#in.defender_ev) {
+        result.rng_state = rng;
+        return Ok(result);
+    }
+    result.missed = false;
+
+    // 4. 暴擊讓守方防禦減半——**在地形修正之後**。
+    if next() % 100 < crit_pct {
+        result.crit = true;
+        dp /= 2;
+    }
+
+    // 5. 傷害：九成的差額，再加最多約一成的隨機。
+    let mut damage = ap.wrapping_sub(dp).wrapping_mul(9) / 10;
+    if damage < 0 {
+        damage = 0;
+    }
+    let span = damage / 9;
+    if span != 0 {
+        damage += next() % span;
+    }
+    result.damage = damage;
+    result.rng_state = rng;
+    Ok(result)
 }
 
 /// NativeCounterattackDefender 是反擊資格判定需要的守方資訊。`WeaponReach` 是守方
@@ -99,5 +155,23 @@ pub struct NativeCounterattackDefender {
 ///
 /// Go：`native_physical_damage.go:136`，`func NativeCounterattackEligible(attackerX, attackerY int, defender NativeCounterattackDefender) bool`
 pub fn native_counterattack_eligible(attacker_x: i64, attacker_y: i64, defender: NativeCounterattackDefender) -> bool {
-    todo!("battle/native_physical_damage.go:NativeCounterattackEligible")
+    if defender.alive_hp <= 0 {
+        return false;
+    }
+    if defender.byte38 != 0 {
+        return false;
+    }
+    if abs(attacker_x.wrapping_sub(defender.x)).wrapping_add(abs(attacker_y.wrapping_sub(defender.y))) != 1 {
+        return false;
+    }
+    if !defender.has_weapon {
+        return false;
+    }
+    defender.weapon_reach == 1
 }
+
+#[cfg(test)]
+mod native_physical_damage_test;
+
+#[cfg(test)]
+mod native_physical_parity_test;

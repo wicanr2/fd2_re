@@ -25,7 +25,10 @@ use super::*;
 /// 其他值(目前只有 23 傳送術=3)=特殊定位類,不掃場上單位。
 ///
 /// Go：`magic.go:30`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+///
+/// JSON 欄位名照 Go 標籤；`Name` 沒有標籤，寫出 Go 欄位名 `Name`，讀取另收 `name`（Go 解碼不分大小寫）。
+#[derive(Debug, Clone, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct Spell {
     /// Go 標籤：`json:"id"`
     pub id: i64,
@@ -43,6 +46,7 @@ pub struct Spell {
     pub mp: i64,
     /// Go 標籤：`json:"target"`
     pub target: i64,
+    #[serde(rename = "Name", alias = "name", deserialize_with = "null_as_default")]
     pub name: String,
 }
 
@@ -96,7 +100,14 @@ pub(crate) static SPELL_NAMES: [&str; 36] = [
 ///
 /// Go：`magic.go:55`，`func LoadSpells(path string) ([]Spell, error)`
 pub fn load_spells(path: &str) -> Result<Vec<Spell>> {
-    todo!("battle/magic.go:LoadSpells")
+    let raw = read_file(path)?;
+    let mut sp: Vec<Spell> = decode_json(&raw)?;
+    for s in &mut sp {
+        if s.id >= 0 && s.id < SPELL_NAMES.len() as i64 {
+            s.name = SPELL_NAMES[s.id as usize].to_string();
+        }
+    }
+    Ok(sp)
 }
 
 impl State {
@@ -105,7 +116,10 @@ impl State {
     /// Go：`magic.go:73`，`func (s *State) InCastRange(u *Unit, sp Spell, tx, ty int) bool`
     /// 所有權：`u` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     pub fn in_cast_range(&self, u: UnitIdx, sp: &Spell, tx: i64, ty: i64) -> bool {
-        todo!("battle/magic.go:State.InCastRange")
+        let unit = &self.units[u];
+        let dx = abs(tx.wrapping_sub(unit.x));
+        let dy = abs(ty.wrapping_sub(unit.y));
+        dx + dy <= sp.dist && dx + dy > 0
     }
 }
 
@@ -160,7 +174,15 @@ pub(crate) fn buff_roll(rng: &mut dyn GoRand) -> i64 {
 ///
 /// Go：`magic.go:106`，`func randomizeAmount(max int, rng *rand.Rand) int`
 pub(crate) fn randomize_amount(max: i64, rng: &mut dyn GoRand) -> i64 {
-    todo!("battle/magic.go:randomizeAmount")
+    if max <= 0 {
+        return 0;
+    }
+    let lo = max.wrapping_mul(9) / 10;
+    let mut hi = max - 1;
+    if hi < lo {
+        hi = lo;
+    }
+    lo + rng.intn(hi - lo + 1)
 }
 
 /// rollsHit 命中判定。spell.json 的 hit 欄=0 一律視為必中(劍技/封咒/傳送/組合技皆屬此類,
@@ -168,7 +190,10 @@ pub(crate) fn randomize_amount(max: i64, rng: &mut dyn GoRand) -> i64 {
 ///
 /// Go：`magic.go:120`，`func rollsHit(sp Spell, rng *rand.Rand) bool`
 pub(crate) fn rolls_hit(sp: &Spell, rng: &mut dyn GoRand) -> bool {
-    todo!("battle/magic.go:rollsHit")
+    if sp.hit <= 0 {
+        return true;
+    }
+    rng.intn(100) < sp.hit
 }
 
 /// isEnemyOf 施法目標的陣營判斷:Own 與 Ally 同一陣線,對 Enemy 互為敵方(涵蓋玩家/NPC/敵方任一方施法)。
@@ -177,7 +202,10 @@ pub(crate) fn rolls_hit(sp: &Spell, rng: &mut dyn GoRand) -> bool {
 ///
 /// Go：`magic.go:130`，`func isEnemyOf(a, b *Unit) bool`
 pub(crate) fn is_enemy_of(a: &Unit, b: &Unit) -> bool {
-    todo!("battle/magic.go:isEnemyOf")
+    if a.camp == ENEMY {
+        return b.camp != ENEMY;
+    }
+    b.camp == ENEMY
 }
 
 impl State {
@@ -188,7 +216,18 @@ impl State {
     /// Go：`magic.go:140`，`func (s *State) Cast(caster, tgt *Unit, sp Spell) int`
     /// 所有權：`caster`、`tgt` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     pub fn cast(&mut self, caster: Option<UnitIdx>, tgt: UnitIdx, sp: &Spell) -> i64 {
-        todo!("battle/magic.go:State.Cast")
+        let (tx, ty) = (self.units[tgt].x, self.units[tgt].y);
+        let results = with_engine_rand(|rng| self.cast_area(caster, tx, ty, sp, rng));
+        if results.is_empty() {
+            // Go 的 CastArea 只有在 MP 不足、被封咒或沒有任何目標時回 nil（Rust 的空 Vec）。
+            return -1;
+        }
+        for r in &results {
+            if r.target == Some(tgt) {
+                return r.amount;
+            }
+        }
+        0
     }
 
     /// CastArea 以 (cx,cy) 為中心,對 sp.Range 內(曼哈頓距離)所有「合法目標」各套用一次法術效果。
@@ -207,7 +246,72 @@ impl State {
         sp: &Spell,
         rng: &mut dyn GoRand,
     ) -> Vec<CastResult> {
-        todo!("battle/magic.go:State.CastArea")
+        let ci = caster.expect("Go 對 nil 施法者會在讀 MP 時 panic");
+        if self.units[ci].mp < sp.mp || self.units[ci].sealed {
+            return Vec::new();
+        }
+        self.units[ci].mp -= sp.mp;
+
+        if sp.target != 0 && sp.target != 1 {
+            // 特殊定位類法術(目前只有 23 傳送術)不掃場上單位,定位邏輯留給地圖 UI(見上方註解)。
+            // 傳送術經驗值(doc02 §4.5「傳送術」列)沒有真正的「受法者」可掃(現況等同施法者傳送
+            // 自己),以施法者自身等級當受法者等級——這是配合現有「待實裝」定位邏輯的近似,不是
+            // 完整傳送機制,見 doc42 gap 追蹤。
+            let (mut exp, mut level_ups) = (0.0, Vec::new());
+            let c = &self.units[ci];
+            if sp.id == 23 && (c.camp == OWN || c.camp == ALLY) {
+                let lv = c.lv;
+                (exp, level_ups) = self.award_exp(caster, teleport_exp(lv, lv), rng);
+            }
+            return vec![CastResult { target: caster, amount: 0, missed: false, exp_gained: exp, level_ups }];
+        }
+
+        let mut results = Vec::new();
+        for i in 0..self.units.len() {
+            let u = &self.units[i];
+            if !u.on_field || !u.alive() {
+                continue;
+            }
+            if manhattan(u.x, u.y, cx, cy) > sp.range {
+                continue;
+            }
+            let want_enemy = sp.target == 0;
+            if is_enemy_of(&self.units[ci], u) != want_enemy {
+                continue;
+            }
+            if sp.hit > 0 {
+                let chance = self.command_hit(caster, sp.id, sp.hit);
+                if chance == 0 {
+                    let _ = rng.intn(100);
+                    results.push(CastResult { target: Some(i), missed: true, ..Default::default() });
+                    continue;
+                }
+                let mut adjusted = sp.clone();
+                adjusted.hit = chance;
+                let r = self.apply_spell(ci, i, &adjusted, rng);
+                results.push(r);
+            } else {
+                let r = self.apply_spell(ci, i, sp, rng);
+                results.push(r);
+            }
+        }
+
+        let camp = self.units[ci].camp;
+        if camp == OWN || camp == ALLY {
+            let mut exp = award_cast_exp(&self.units, ci, sp, &results);
+            for r in &results {
+                if self.kill_cancels_exp(&[r.target.expect("CastArea 的結果都有目標")]) {
+                    exp = 0.0;
+                    break;
+                }
+            }
+            let (exp, level_ups) = self.award_exp(caster, exp, rng);
+            for r in &mut results {
+                r.exp_gained = exp;
+                r.level_ups = level_ups.clone();
+            }
+        }
+        results
     }
 }
 
@@ -219,7 +323,64 @@ impl State {
 /// 所有權：`units` 是 Rust 新增的參數。Go 經由結構欄位裡的 `*Unit`（Rust 是 `UnitIdx`）讀寫單位，Rust 需要單位陣列才能解參照；傳入產生那些索引時的同一個陣列（通常是 `state.units`）。
 /// 所有權：`caster` 是 `units` 的索引（Go 傳 `*Unit`）。
 pub(crate) fn award_cast_exp(units: &[Unit], caster: UnitIdx, sp: &Spell, results: &[CastResult]) -> f64 {
-    todo!("battle/magic.go:awardCastExp")
+    let c = &units[caster];
+    let target = |r: &CastResult| &units[r.target.expect("CastArea 的結果都有目標")];
+    match sp.id {
+        // 魔刃術/魔鎧術/風行術:2 × Σ(受法者等級/施法者等級)
+        17..=19 => {
+            let mut sum = 0.0;
+            for r in results.iter().filter(|r| !r.missed) {
+                sum += buff_exp_term(c.lv, target(r).lv);
+            }
+            return 2.0 * sum;
+        }
+        // 解毒術/祛麻術:Σ(40×9/受法者總HP) × (受法者等級/施法者等級)
+        // 毒擊術/麻痺術:同解毒/祛麻同一公式(doc02 §4.5 兩列共用同一式子)
+        20 | 21 | 26 | 27 => {
+            let mut sum = 0.0;
+            for r in results.iter().filter(|r| !r.missed) {
+                let t = target(r);
+                sum += status_exp_term(c.lv, t.lv, t.max_hp);
+            }
+            return sum;
+        }
+        // 行動術:8 × (受法者等級/施法者等級),單體
+        25 => {
+            for r in results {
+                if !r.missed {
+                    return action_exp(c.lv, target(r).lv);
+                }
+            }
+            return 0.0;
+        }
+        // 封咒術/破壞神/暗邪鬼:doc02 §4.5 未列公式,不編造,見函式註解
+        22 | 34 | 35 => return 0.0,
+        // 傳送術(另有早退路徑處理)/劍技(待實裝加乘率)/未知法術
+        23 | 24 | 28..=31 => return 0.0,
+        _ => {}
+    }
+    if sp.target == 1 {
+        // 一般治療:治療/回復/再生/神恩/風妖精(doc02 §4.4/§6.3)
+        let mut sum = 0.0;
+        for r in results.iter().filter(|r| !r.missed) {
+            let t = target(r);
+            sum += heal_exp_term(r.amount, t.max_hp, t.lv);
+        }
+        if c.lv <= 0 {
+            return 0.0;
+        }
+        return 40.0 / c.lv as f64 * sum;
+    }
+    // 一般攻擊型法術(火炎/烈炎/炎龍…):doc02 §4.5 只列「攻擊」一條物理攻擊公式,未另立
+    // 法術攻擊經驗值條目——以同一條「攻擊」公式套用(defExpPerLv 來源與近戰攻擊相同,
+    // Unit.ExpPerLevel),對死亡目標同樣視同傷害HP=總HP。
+    let mut sum = 0.0;
+    for r in results.iter().filter(|r| !r.missed) {
+        let t = target(r);
+        let dmg_for_exp = if t.hp == 0 { t.max_hp } else { r.amount };
+        sum += attack_exp(c.lv, t.lv, dmg_for_exp, t.max_hp, t.exp_per_level);
+    }
+    sum
 }
 
 impl State {
@@ -234,7 +395,106 @@ impl State {
         sp: &Spell,
         rng: &mut dyn GoRand,
     ) -> CastResult {
-        todo!("battle/magic.go:State.applySpell")
+        let _ = caster; // Go 的 applySpell 也沒有讀施法者。
+        // doc02 §6.4:輔助/治療(target=1)不 miss;攻擊與攻擊性輔助(毒擊/麻痺/封咒等,target=0)依命中率擲骰。
+        if sp.target == 0 && !rolls_hit(sp, rng) {
+            return CastResult { target: Some(tgt), amount: 0, missed: true, ..Default::default() };
+        }
+        let done = CastResult { target: Some(tgt), ..Default::default() };
+        match sp.id {
+            // 魔刃術:AP +15%(doc02 §6.4)
+            17 => {
+                apply_buff(&mut self.units[tgt], rng, 15, 0, 0, 0);
+                return done;
+            }
+            // 魔鎧術:DP +15%
+            18 => {
+                apply_buff(&mut self.units[tgt], rng, 0, 15, 0, 0);
+                return done;
+            }
+            // 風行術:HIT +15、EV +15(doc02 明文,取代先前規格草案的「MV+2」猜測)
+            19 => {
+                apply_buff(&mut self.units[tgt], rng, 0, 0, 15, 15);
+                return done;
+            }
+            // 解毒術:清除中毒
+            20 => {
+                let t = &mut self.units[tgt];
+                (t.poisoned, t.poison_turns) = (false, 0);
+                return done;
+            }
+            // 祛麻術:清除麻痺
+            21 => {
+                let t = &mut self.units[tgt];
+                (t.paralyzed, t.paralyze_turns) = (false, 0);
+                return done;
+            }
+            // 封咒術:2–4 回合禁止施法
+            22 => {
+                let turns = buff_roll(rng);
+                let t = &mut self.units[tgt];
+                (t.sealed, t.seal_turns) = (true, turns);
+                return done;
+            }
+            // 行動術:使已行動的人本回合可再次行動(doc02 §6.4)
+            25 => {
+                self.units[tgt].acted = false;
+                return done;
+            }
+            // 毒擊術:傷害 + 2–4 回合中毒(doc02 §6.4;dmg=10 經 randomizeAmount 恆得 9,對應攻略「附加 9 點傷害」)
+            26 => {
+                let dmg = self.deal_damage(tgt, sp, rng);
+                let turns = buff_roll(rng);
+                let t = &mut self.units[tgt];
+                (t.poisoned, t.poison_turns) = (true, turns);
+                return CastResult { amount: dmg, ..done };
+            }
+            // 麻痺術:傷害 + 2–4 回合麻痺(同上,dmg=10 恆得 9)
+            27 => {
+                let dmg = self.deal_damage(tgt, sp, rng);
+                let turns = buff_roll(rng);
+                let t = &mut self.units[tgt];
+                (t.paralyzed, t.paralyze_turns) = (true, turns);
+                return CastResult { amount: dmg, ..done };
+            }
+            // 破壞神:同時施魔刃+魔鎧+風行(doc02 §6.4 combo)
+            34 => {
+                apply_buff(&mut self.units[tgt], rng, 15, 15, 15, 15);
+                return done;
+            }
+            // 暗邪鬼:同時施麻痺+封咒+毒擊(doc02 §6.4 combo)。
+            // spell.json 此條 dmg=0(組合技本身不含固定傷害值),故只施狀態、不額外扣血;
+            // 三個狀態共用同一次擲骰的回合數,貼近「同時施放」語意。
+            35 => {
+                let turns = buff_roll(rng);
+                let t = &mut self.units[tgt];
+                (t.paralyzed, t.paralyze_turns) = (true, turns);
+                (t.sealed, t.seal_turns) = (true, turns);
+                (t.poisoned, t.poison_turns) = (true, turns);
+                return done;
+            }
+            // 傳送術:目的地由地圖 UI 選取,battle 套件不處理定位——待實裝
+            23 => return done,
+            // 破龍擊/淒煌斬/熾炎刀/音速刃(劍技):AP×加乘率(doc02 §4.2/§6.2),
+            // 加乘率(1.2~2.0)未在 spell.json 欄位中,需另建劍技倍率表——待實裝
+            24 | 28..=30 => return done,
+            // spellNames[31]="?",語意未知(EXE dump 無對應攻略條目)——待 RE
+            31 => return done,
+            _ => {}
+        }
+
+        if sp.target == 1 {
+            // 一般治療:治療/回復/再生/神恩/風妖精(doc02 §4.4/§6.3)
+            let mut heal = randomize_amount(sp.dmg, rng);
+            let t = &mut self.units[tgt];
+            if t.hp + heal > t.max_hp {
+                heal = t.max_hp - t.hp;
+            }
+            t.hp += heal;
+            return CastResult { amount: heal, ..done };
+        }
+        let dmg = self.deal_damage(tgt, sp, rng);
+        CastResult { amount: dmg, ..done }
     }
 
     /// dealDamage 一般攻擊型法術傷害結算(doc02 §4.3)。魔法抗性欄位尚未進資料管線,先以 0 計。
@@ -242,7 +502,9 @@ impl State {
     /// Go：`magic.go:364`，`func (s *State) dealDamage(tgt *Unit, sp Spell, rng *rand.Rand) int`
     /// 所有權：`tgt` 是 `self.units` 的索引（Go 傳 `*Unit`）。
     pub(crate) fn deal_damage(&mut self, tgt: UnitIdx, sp: &Spell, rng: &mut dyn GoRand) -> i64 {
-        todo!("battle/magic.go:State.dealDamage")
+        let dmg = randomize_amount(sp.dmg, rng);
+        self.units[tgt].apply_hp_damage(dmg);
+        dmg
     }
 }
 
@@ -251,5 +513,15 @@ impl State {
 ///
 /// Go：`magic.go:372`，`func applyBuff(u *Unit, rng *rand.Rand, apPct, dpPct, hit, ev int)`
 pub(crate) fn apply_buff(u: &mut Unit, rng: &mut dyn GoRand, ap_pct: i64, dp_pct: i64, hit: i64, ev: i64) {
-    todo!("battle/magic.go:applyBuff")
+    u.buff_ap_pct += ap_pct;
+    u.buff_dp_pct += dp_pct;
+    u.buff_hit += hit;
+    u.buff_ev += ev;
+    let turns = buff_roll(rng);
+    if turns > u.buff_turns {
+        u.buff_turns = turns;
+    }
 }
+
+#[cfg(test)]
+pub(crate) mod magic_test;
