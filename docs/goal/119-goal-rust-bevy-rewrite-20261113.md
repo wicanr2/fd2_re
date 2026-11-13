@@ -147,3 +147,20 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 | wasm | `wasm32-unknown-unknown` 可編譯（120 MB，未處理） |
 
 待查：OGG 解碼長度與 ffprobe 有小差異（音樂少 0.088 秒、音效多 0.003 秒），R5 要和 Go 版解碼器逐樣本比對；wasm 的 bindgen、瘦身與瀏覽器執行留到 R7；軟體繪圖只證明可行，不代表 Windows 實機幀率或閃爍行為。
+
+### 2026-11-14 R1 進行中：格式模組移植
+
+R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；主代理審查差異、在主 checkout 重跑黃金差分確認 SHA 相同後，以 squash 合併。
+
+| 模組 | Go 測試移植 | 黃金差分 | 黃金檔 SHA-256 |
+|---|---|---|---|
+| `archive`、`native_rng`（自 `fdother` 拆出的共用層） | 5／5 | 以原版 FDOTHER.DAT 實跑 | — |
+| `dato` | 13／13 | 1285 案例＋DATO.DAT 全部 137 筆＋544 張分離頭像 | `cd0c5d11…` |
+| `afm` | 6／6 | 1158 案例＋ANI.DAT 289 幀＋587 個分離動畫檔 | `346f368c…` |
+| `fdicon` | 31／31 | 3336 案例＋FDICON.B24＋5041 個單位圖＋24801 個 FDSHAP 檔 | `72003b8f…` |
+| `fdtxt` | 13／13 | FDTXT.DAT 全部 35 筆、FDOTHER #4 全部 1824 字形＋分離字表與字型 | `46b35584…` |
+
+分離素材的 JSON、PNG 與路徑一律用已鎖定的 serde、serde_json、png 與 `std::path`，不逐行移植 Go 標準函式庫。原版資料、真實分離素材與格式正確的生成輸入逐欄比對；損壞的 JSON／PNG 只比接受或拒收，差異依種類列在各黃金測試的 `KNOWN_DIFFERENCES`，標為刻意不照做。png crate 不驗 zlib 的 Adler-32，壓縮資料損壞時靠素材包雜湊把關。
+
+未完成：`fdother`（分三份：核心與分離載入、原版流程邏輯、依賴核心的其餘檔案）與 `figani`。讀原版檔的環境變數尚未統一（`FD2_FLAME2_DIR`、`FD2_FDICON_REAL_FLAME`、`FD2_FLAME` 並存），R1 收尾時統一。
+

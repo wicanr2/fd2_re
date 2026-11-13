@@ -5631,3 +5631,9 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 依#306在`remake-rs/crates/fd2-app`加入Bevy 0.20.1與R0探針`r0_probe`，由`tools/rust_r0_probe.sh`在Docker／Xvfb／Mesa llvmpipe（Vulkan）執行。視窗開啟並截圖；640×400測試圖2倍最近鄰放大後，字框外934999個像素0個不符；Noto Sans CJK的TTC經parley／fontique直接載入，家族名稱與直接載入兩種方式都排出正確中文；FDMUS_001與原版音效OGG完整解碼並建立播放；wasm32可編譯。收據為`docs/data/rust-r0-probe-20261113.json`。
 
 過程中映像缺`libxkbcommon-x11-0`使winit在X11 panic，補上後為`fd2-rust:1.99.1-r3`（r2加入wasm目標與ALSA null裝置）。clippy的參數數量限制在Bevy系統上以局部允許處理，改碼後重跑探針，截圖SHA與先前相同。OGG長度與ffprobe有毫秒級差異，wasm產物120MB未處理，皆列為後續階段待查；本輪沒有聽辨或瀏覽器執行。
+
+## 2026-11-14 Rust改寫R1：五個格式模組合併
+
+R1由子代理在各自worktree平行移植。第一批子代理為了讓損壞輸入的錯誤文字與Go一致，逐行移植了Go的encoding/json、image/png、zlib、bufio與filepath（各1000～2600行）；主代理判斷這是Go標準函式庫的實作細節而非原版行為，且BSD授權程式會帶來署名與維護負擔，要求全部改用已鎖定的serde、serde_json、png。合併一律squash，中間版本不進主線歷史。
+
+已合併：archive與native_rng（fbc6d989）、dato（6a08c7ea）、afm（e645209b）、fdicon（a0246e13）、fdtxt（8f82c5f7）。每個模組在主checkout重跑黃金差分，SHA與子代理回報相同；fd2-formats單元測試95項在FD2_REQUIRE_ORIGINAL=1下通過，clippy -D warnings與--locked皆通過。合併fdtxt時lib.rs被腳本重複寫入模組宣告而編譯失敗，改為只保留文件註解加去重排序清單後通過。已合併的worktree、分支與各自的target目錄已刪除。
