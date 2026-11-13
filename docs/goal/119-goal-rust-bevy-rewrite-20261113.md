@@ -1,0 +1,131 @@
+# 以 Rust／Bevy 改寫重製引擎
+
+## 定案（使用者 2026-11-13）
+
+| 項目 | 決定 |
+|---|---|
+| 推進方式 | 凍結 Go 版，直接改寫 |
+| 繪圖與平台層 | Bevy |
+| 動機 | 與 dosgolem-rust 統一工具鏈；長期維護與擴充引擎；處理 Windows 閃爍、效能與當機；網頁與手機版 |
+| 本輪產出 | 計畫書，加上第一個可驗證切片 |
+
+## Go 版凍結的意思
+
+- 凍結點是 `v.1.1.11-20261113`，來源提交 `5186e022`；之後 `remake/` 不再新增遊戲功能，也不再發新版。
+- 凍結的 Go 版改當「可執行規格」。它的行為已累積大量原版對拍證據，Rust 版逐模組和它比對輸出。
+- 允許的例外只有一種：在 `remake/cmd/` 下新增只輸出黃金資料的工具，不改任何遊戲行為。
+- 玩家回報的 Go 版缺陷（#303～#305）不在 Go 修，改列為 Rust 版的驗收項目。真的需要緊急修 Go，另外徵得使用者同意。
+- 原版 `FD2.EXE` 仍是最終判準，dosgolem 對拍、E0／E1／E2 證據分級與「RE → 規格 → 實作」閘門全部照舊。Go 版只是較便宜的中間對照，不能取代原版證據。
+
+## 規模
+
+Go 版正式程式約 13.7 萬行，測試約 15 萬行（2026-11-13 以 `wc -l` 量測）。
+
+| 層 | Go 套件 | 正式程式行數 | 是否依賴 Ebiten |
+|---|---|---|---|
+| 原版格式 | `fdicon` `fdsave` `afm` `fdtxt` `fdother` `dato` `figani` | 約 1.3 萬 | 否 |
+| 規則核心 | `battle` | 20931 | 否 |
+| 戰役與內容 | `campaign` `indexedmap` `battlepresent` `ending` `editorcanonical` `localization` `musiccatalog` | 約 2.4 萬 | 否 |
+| 遊戲程式 | `cmd/fd2`（255 檔：`native_*` 105、`modern_*` 107、`player_*` 12 等） | 77697 | 是 |
+| 工具 | `cmd/fd2-asset-import` 與各 oracle 工具 | 約 0.5 萬 | 部分 |
+
+`internal/` 的相依方向是單向的：格式層 → `battle` → 戰役與內容層，沒有任何套件依賴 Ebiten。這是改寫能逐層推進的前提。
+
+## 架構
+
+新程式放在 `remake-rs/`，是一個 Cargo workspace，和 `remake/` 並存。`remake/assets/` 的劇本、語系、HD 清冊與存檔格式沿用不改，Rust 版直接讀同一份資料與玩家既有存檔。
+
+| crate | 職責 | 對應 Go | 依賴 Bevy |
+|---|---|---|---|
+| `fd2-formats` | 原版檔案格式：存檔 ABI、字表、圖格、動畫、頭像 | 格式層七個套件 | 否 |
+| `fd2-rules` | 戰鬥、AI、事件、經驗、商店等決定性規則 | `battle` | 否 |
+| `fd2-campaign` | 劇本節點圖、戰役流程、結局、編輯器資料、語系、音樂清冊 | 戰役與內容層 | 否 |
+| `fd2-game` | 遊戲狀態機：標題、劇情、戰場操作、城鎮、整備、存讀檔 | `cmd/fd2` 的流程部分 | 否 |
+| `fd2-app` | Bevy 外殼：視窗、繪圖、輸入、音訊、HD 主題、工具列 | `cmd/fd2` 的畫面與平台部分 | 是 |
+| `fd2-tools` | 素材匯入、黃金資料比對、oracle 橋接 | `cmd/fd2-*` 工具 | 否 |
+
+設計原則：
+
+- **遊戲邏輯不放進 ECS。** `fd2-game` 以下都是一般 Rust 型別與純函式，給定狀態、輸入與亂數種子就有固定結果。Bevy 只負責把狀態畫出來、收輸入、放聲音。這樣規則可以在沒有 GPU 的容器裡測試，也能讓 dosgolem-rust 直接引用。
+- **固定邏輯幀。** 原版行為以 tick 計時，`fd2-game` 用固定步長推進；畫面幀率與邏輯幀分開。Go 版「Draw 在沒有 Update 時也會被呼叫」的時序問題在設計上就不存在。
+- **介面窄、內部深。** 每個 crate 只公開少數型別與函式；原始位址、偏移與證據等級寫在程式註解與 `docs/data/`，不靠命名承載。
+- **失敗即關閉照舊。** 未知行為回傳錯誤或拒絕操作，不猜測。
+
+## 驗證策略
+
+每個移植單位都要同時通過三層：
+
+| 層 | 內容 | 能證明什麼 |
+|---|---|---|
+| 1. 移植單元測試 | Go 的 `_test.go` 逐條改寫成 Rust 測試，期望值不改 | Rust 版重現 Go 版已知的邊界與拒收行為 |
+| 2. Go 黃金差分 | 凍結的 Go 版輸出黃金 JSON（固定輸入、隨機輸入、真實原版檔），Rust 版逐欄比對 | 兩版在大量輸入下行為相同 |
+| 3. 原版 oracle | 既有 dosgolem 收據與章節對拍照舊執行 | 和原版一致；只有這一層能升格 E2 |
+
+黃金差分的隨機輸入以固定種子產生，種子與輸入雜湊寫進收據。第 1、2 層只證明 Rust 版和 Go 版一致，不能單獨宣稱忠於原版。
+
+## 工具鏈
+
+| 項目 | 選擇 |
+|---|---|
+| Rust | 1.99.1、edition 2024，和 dosgolem-rust 相同 |
+| 映像 | `tools/docker/fd2-rust.Dockerfile`；所有建置與測試在 Docker 內執行，`CARGO_HOME` 與 `target/` 放在 `work/rust-build/` |
+| Bevy | 版本由 `Cargo.lock` 鎖定；升級另開工單，不隨手更新 |
+| Windows | `x86_64-pc-windows-gnu`（mingw-w64），沿用本機 Wine＋Xvfb 自檢 |
+| macOS | osxcross（SDK 15.5），沿用 `remake/packaging/Dockerfile.osxcross` 的工具鏈，只做靜態檢查 |
+| Linux | AppImage，沿用既有打包流程 |
+| 網頁、手機 | wasm32 與 Android／iOS 在 R7 才處理，R0 只確認 Bevy 能建 wasm |
+
+## 階段
+
+| 階段 | 內容 | 完成條件 |
+|---|---|---|
+| R0 基礎 | workspace、Docker 映像、黃金差分框架、Bevy 最小視窗 | 映像可重建；`cargo test` 通過；Bevy 視窗在 Xvfb 下產出截圖；確認 CJK 字型（含 TTC）與 OGG 播放可行 |
+| R1 格式層 | `fd2-formats` 移植七個格式套件 | 三層驗證通過；對 `org_game` 原版檔的解碼結果與 Go 黃金資料逐位元相同 |
+| R2 規則核心 | `fd2-rules` 移植 `battle` | 三層驗證通過；Go 的戰鬥決定性測試以相同種子產生相同結果 |
+| R3 戰役與內容 | `fd2-campaign` | 讀入全部 `remake/assets` 劇本與語系，與 Go 黃金資料相同 |
+| R4 遊戲狀態機 | `fd2-game`：無畫面跑完標題、劇情、第一章戰鬥、城鎮、存讀檔 | 第一章受控流程的狀態軌跡與 Go 黃金軌跡相同；能讀 Go 版的存檔 |
+| R5 Bevy 外殼（原版美術） | `fd2-app`：原版像素繪圖、對話框、選單、音訊、輸入 | 開場與第一章畫面和 Go 版同狀態截圖逐像素一致 |
+| R6 HD1 與工具列 | HD 主題、F2／F11、畫質、速度設定 | HD1 清冊全部素材可載入；切換與設定保存相容 |
+| R7 平台 | Windows、macOS、Linux、網頁、手機打包 | 三平台完整包可組裝；Windows 實機驗收 #303～#305 |
+| R8 切換 | 30 章受控流程對拍、正式發行 | 依 `111` 的章收據規則重跑；通過後 Rust 版成為正式主線，Go 版封存 |
+
+R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每個階段完成時更新 `56` 與 `58`，切換前 Go 版的發行包維持可用。
+
+## 風險
+
+| 風險 | 處理 |
+|---|---|
+| Bevy 版本更新頻繁、API 變動大 | 鎖定版本；Bevy 只在 `fd2-app`，換版時只動這一層 |
+| Bevy 編譯時間長、執行檔大 | 開發用動態連結與增量編譯；發行用 release profile 並量測大小 |
+| 中文字型：Bevy 是否能直接讀 TTC | R0 驗證；不行就在匯入時把 TTC 拆成 TTF |
+| 逐像素一致：GPU 取樣與 Ebiten 不同 | 原版模式以整數倍放大、最近鄰取樣；R5 用同狀態截圖逐像素驗收 |
+| Windows 閃爍的根因仍未知（#305） | 換引擎不保證消失；R7 以實機錄影驗收，不以換 Bevy 當作修好 |
+| 改寫期間沒有新版 | Go 版 v.1.1.11 維持可玩；改寫進度只以通過驗收的階段計算 |
+
+## 本輪工作（R0 起步與 R1 第一個切片）
+
+1. 建 `remake-rs/` workspace 與 `fd2-rust` 映像。
+2. `fd2-formats` 先移植 `fdsave`（存檔 ABI，813 行，無其他相依），三層驗證中的前兩層：
+   - `save_test.go` 與 `keyboard_buffer_test.go` 逐條移植。
+   - 新增 Go 黃金匯出工具，對固定與隨機輸入輸出解碼結果，Rust 測試逐欄比對。
+3. Bevy 最小視窗與 CJK 字型、OGG 的可行性驗證留到下一輪，結果寫回本文件。
+
+## 進度
+
+### 2026-11-13 R0 起步、R1 第一個切片：`fdsave`
+
+| 項目 | 結果 |
+|---|---|
+| 映像 | `fd2-rust:1.99.1-r1`，由 [fd2-rust.Dockerfile](../../tools/docker/fd2-rust.Dockerfile) 建置，rustc 1.99.1（58cf8f9c3 2026-10-13） |
+| workspace | [`remake-rs/`](../../remake-rs/Cargo.toml)，edition 2024，`unsafe_code = "forbid"`，rustfmt 120 欄 |
+| 移植 | [`fd2-formats::save`](../../remake-rs/crates/fd2-formats/src/save.rs) 與 [`keyboard`](../../remake-rs/crates/fd2-formats/src/keyboard.rs)，錯誤訊息與 Go 版逐字相同 |
+| 第 1 層 | Go 的 19 項測試全部移植，另加驗證橋竄改與錯誤文字 2 項，共 21 項通過；Go 版 nil 指標拒寫一項由 Rust 型別排除 |
+| 第 2 層 | [Go 黃金匯出工具](../../remake/cmd/fd2-golden-fdsave/main.go)以 PCG 種子 20261113 產生 192 個隨機與結構化案例，另加 12 份真實 FD2.SAV，共 204 案例逐欄相符 |
+| 黃金檔 | `work/rust-build/golden/fdsave-v1.json`，SHA-256 `c12a72e270685de3bd579b1ff4ca288722ad58eed9623f3e0a1829f1c7436070`，同輸入重跑兩次相同；真實存檔清單在同目錄 `fdsave-saves.txt` |
+| 反向檢查 | 把一個案例的 selector slot 改掉，差分測試精確報出 `case 7 result.continue.selector[0][1]` 並失敗 |
+| 覆蓋 | 161 案例解碼成功、43 案例校驗失敗、6 案例大小錯誤；28 案例 CONTINUE 通過且驗證橋成立，其餘涵蓋各類拒收訊息。HUD 錨點 `0xf2` 分支沒有隨機案例命中，由第 1 層測試覆蓋 |
+| 第 3 層 | 本切片沒有新增原版對拍；fdsave 的原版證據沿用 Go 版既有收據 |
+
+重跑：`tools/rust_golden_fdsave.sh $(cat work/rust-build/golden/fdsave-saves.txt)`。clippy 以 `-D warnings` 無警告。
+
+下一步：R0 剩下的 Bevy 最小視窗、Xvfb 截圖、CJK TTC 字型與 OGG 播放可行性，以及 R1 其餘六個格式套件。

@@ -59,6 +59,7 @@ FD2工具鏈恢復與合併後oracle來源准入見[2026-10-15主收據](../data
 | 位址／位元組主證據 | `docs/data/ida/`、`docs/data/fd2_*` | 自訂名稱、handoff 重述、generated binding |
 | 位元組一致的反編譯（matching decompilation）可行性 | [三函式試驗](../data/ida/fd2_matching_pilot_20261008.json)、[原始 IDA 匯出](../data/ida/fd2_matching_pilot_original_20261008.json)、[編譯比對工具](../../tools/fd2_matching_pilot.py) | C 能編譯或函式長度相同不代表位元組一致；原作工具版本仍依 [04](04-original-toolchain.md) |
 | 全檔位元組一致反編譯的完成範圍 | [118 全檔目標](../goal/118-goal-fd2-matching-decompilation-20261008.md) | 全檔雜湊與 C／原作組語／第三方函式庫覆蓋分開驗收 |
+| Rust／Bevy 改寫：Go 凍結範圍、crate 架構、驗證層與階段 | [119 改寫目標](../goal/119-goal-rust-bevy-rewrite-20261113.md) | Go 黃金差分只證明兩版一致，不取代原版 oracle |
 | 工作歷程與提交驗證 | [WORKLOG](../../WORKLOG.md) | 本輪變更、可重跑入口與限制；目前分層狀態仍以58及主收據為準 |
 | DOS服務與檔案流程C匹配 | [C來源](../../tools/fd2_matching_game_dos_file.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_dos_file、[完整函式與別名回歸](../../tools/test_fd2_matching_dos_file.py) | 361CC／36284／36344／36900／36955完整815 bytes匹配；保留分支、204-byte局部布局與EBX跨呼叫存活；原始分類及作者宣告保持未知 |
 | 狀態處理與四函式共用尾段C候選 | [C來源](../../tools/fd2_matching_game_state_group.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_state_group、[原始載入位元組與完整群組回歸](../../tools/test_fd2_matching_state_group.py) | 比較22AF6暫存值與22A85／22AA8／22AF6／22BC6完整群組；從原版及LE fixup重算loaded_bytes，拒收偽造匹配；局部相同不增加覆蓋 |

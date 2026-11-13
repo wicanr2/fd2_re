@@ -1,0 +1,18 @@
+# 《炎龍騎士團 2》重製引擎的 Rust 改寫（docs/goal/119-goal-rust-bevy-rewrite-20261113.md）。
+# Go 版 remake/ 凍結於 v.1.1.11，作為黃金資料來源；原版 FD2.EXE 仍是最終判準。
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license-file = "../LICENSE"
+repository = "https://github.com/wicanr2/fd2_re"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[profile.dev]
+opt-level = 1

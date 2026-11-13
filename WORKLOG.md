@@ -5606,3 +5606,22 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 試建時遇到三個工具鏈問題：osxcross預編工具鏈需要glibc 2.38、bookworm的Wine 8.0缺`bcryptprimitives.dll`、Wine自檢需要Xvfb，兩個新映像因此改以trixie為底。`release.py collect`以copyfile複製時遺失AppImage執行權限，完整版stage第一次因此PermissionError；當場補回權限（SHA不變），刪除只含公開清單的半成品staging後重跑，collect已改為保留權限。macOS無任何執行證據，Windows證據來自Wine，不等於原生Windows或實機。
 
 核對後刪除本輪完整版三平台組裝樹163824檔、11690268127位元組，保留`work/full-local-v.1.1.11-20261113`的清冊與staging.json、引擎staging及`work/local-release-v.1.1.11-20261113`的建置紀錄。本輪只留`fd2-build-mingw:1.22.12-r1`與`fd2-build-osxcross:15.5-go1.22.12-r1`兩個映像，重建時被取代的版本沒有留下懸空映像；FD2容器皆已退出。
+
+## 2026-11-13 工作區清理
+
+使用者要求清出空間再開工。刪除前逐檔記錄路徑、大小與SHA-256於`work/cleanup-20261113-r1.json`，並核對大小與擁有者。
+
+| 項目 | 檔數 | 位元組 |
+|---|---|---|
+| work/內未被受版控文件以路徑引用的大檔：舊推廣片錄影mkv、音軌wav、輸入稽核jsonl、Watcom C 10.0a的ISO與7z | 53 | 5049369044 |
+| `dist-all/v.1.1.9-20261111/full-local/`三個完整包，已由v.1.1.11取代；雜湊沿用原VALIDATION，未重算 | 3 | 10741676260 |
+
+另清空本工作階段暫存約2.7GB。Watcom 10.0a壓縮檔可由`tools/fd2_matching_prepare_tools.py`依固定網址與SHA重新取得，解開的`work/matching-full-20261008/wc10a-input`保留。v.1.1.9的引擎包、清冊、收據與推廣片保留；v.1.1.10發行說明已加註完整版改由v.1.1.11提供。fd2以外的Docker快取、映像與家目錄大戶依全域規則只列候選，由使用者自行處理。
+
+## 2026-11-13 Rust／Bevy 改寫定案與第一個切片
+
+使用者要求以 Rust 改寫，選定凍結 Go、直接改寫、繪圖層用 Bevy，產出計畫書並開工；動機為與 dosgolem-rust 統一工具鏈、長期維護與擴充、Windows 閃爍效能當機，以及網頁與手機。計畫書為`docs/goal/119-goal-rust-bevy-rewrite-20261113.md`，`AGENTS.md`的實作主線敘述同步改為Rust／Bevy，Go版凍結於v.1.1.11且只允許新增黃金匯出工具。
+
+第一個切片移植`internal/fdsave`到`remake-rs/crates/fd2-formats`：Go的19項測試加2項新測共21項通過，Go黃金匯出工具`remake/cmd/fd2-golden-fdsave`產生的204案例（192個種子案例與12份真實FD2.SAV）逐欄相符，黃金檔SHA-256為c12a72e270685de3bd579b1ff4ca288722ad58eed9623f3e0a1829f1c7436070。竄改一值的反向檢查會精確失敗。第一次挑真實存檔用`find | head -400`，順序不固定導致黃金檔SHA不同；改為排序後挑選並保存清單，兩次重跑SHA相同。
+
+工具鏈為新映像`fd2-rust:1.99.1-r1`，Rust版本與dosgolem-rust相同；Cargo快取與編譯產物放在`work/rust-build/`。Bevy尚未加入，視窗、字型與音訊可行性留到下一輪。本輪沒有新增原版對拍，不宣稱任何Rust版玩家可見功能。

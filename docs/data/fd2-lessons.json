@@ -5726,6 +5726,21 @@
         ],
         "pattern": "static-verified"
       }
+    },
+    {
+      "id": "rust-port-three-layer-golden",
+      "date": "2026-11-13",
+      "area": "改寫",
+      "rule": "Rust改寫每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。黃金匯出放在remake/cmd/fd2-golden-*，輸入以固定種子產生並連同結果寫進JSON；挑真實檔案要先排序並保存清單，跑差分時設FD2_REQUIRE_GOLDEN=1，並做一次竄改反向檢查確認比對有效。",
+      "why": "fdsave第一個切片一次就204案例全過，必須確認比對真的在比；第一次以find | head挑真實存檔，順序不固定使黃金檔SHA每次不同。",
+      "evidence": "tools/rust_golden_fdsave.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/rust_golden_fdsave.sh"
+        ],
+        "pattern": "FD2_REQUIRE_GOLDEN=1"
+      }
     }
   ]
 }
