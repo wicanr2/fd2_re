@@ -5741,6 +5741,14 @@
         ],
         "pattern": "FD2_REQUIRE_GOLDEN=1"
       }
+    },
+    {
+      "id": "worklist-absent-signal-in-prose",
+      "date": "2026-11-13",
+      "area": "紀律",
+      "rule": "worklist的absent訊號綁在文件字串時，文件其他段落不能寫出那個字串；寫說明前先跑tools/fd2_worklist.py verify，確認只有真正完成的條目被列為「訊號已經消失」。",
+      "why": "119的說明句「R0 到 R4 完成時」含有「R4 完成」，讓R4工單在完全沒動工時被判為可能已完成。",
+      "evidence": "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
     }
   ]
 }

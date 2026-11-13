@@ -5625,3 +5625,9 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 第一個切片移植`internal/fdsave`到`remake-rs/crates/fd2-formats`：Go的19項測試加2項新測共21項通過，Go黃金匯出工具`remake/cmd/fd2-golden-fdsave`產生的204案例（192個種子案例與12份真實FD2.SAV）逐欄相符，黃金檔SHA-256為c12a72e270685de3bd579b1ff4ca288722ad58eed9623f3e0a1829f1c7436070。竄改一值的反向檢查會精確失敗。第一次挑真實存檔用`find | head -400`，順序不固定導致黃金檔SHA不同；改為排序後挑選並保存清單，兩次重跑SHA相同。
 
 工具鏈為新映像`fd2-rust:1.99.1-r1`，Rust版本與dosgolem-rust相同；Cargo快取與編譯產物放在`work/rust-build/`。Bevy尚未加入，視窗、字型與音訊可行性留到下一輪。本輪沒有新增原版對拍，不宣稱任何Rust版玩家可見功能。
+
+## 2026-11-13 Rust改寫R0完成：Bevy可行性
+
+依#306在`remake-rs/crates/fd2-app`加入Bevy 0.20.1與R0探針`r0_probe`，由`tools/rust_r0_probe.sh`在Docker／Xvfb／Mesa llvmpipe（Vulkan）執行。視窗開啟並截圖；640×400測試圖2倍最近鄰放大後，字框外934999個像素0個不符；Noto Sans CJK的TTC經parley／fontique直接載入，家族名稱與直接載入兩種方式都排出正確中文；FDMUS_001與原版音效OGG完整解碼並建立播放；wasm32可編譯。收據為`docs/data/rust-r0-probe-20261113.json`。
+
+過程中映像缺`libxkbcommon-x11-0`使winit在X11 panic，補上後為`fd2-rust:1.99.1-r3`（r2加入wasm目標與ALSA null裝置）。clippy的參數數量限制在Bevy系統上以局部允許處理，改碼後重跑探針，截圖SHA與先前相同。OGG長度與ffprobe有毫秒級差異，wasm產物120MB未處理，皆列為後續階段待查；本輪沒有聽辨或瀏覽器執行。

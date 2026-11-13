@@ -90,7 +90,7 @@ Go 版正式程式約 13.7 萬行，測試約 15 萬行（2026-11-13 以 `wc -l`
 | R7 平台 | Windows、macOS、Linux、網頁、手機打包 | 三平台完整包可組裝；Windows 實機驗收 #303～#305 |
 | R8 切換 | 30 章受控流程對拍、正式發行 | 依 `111` 的章收據規則重跑；通過後 Rust 版成為正式主線，Go 版封存 |
 
-各階段工單：R0 [#306](https://github.com/wicanr2/fd2_re/issues/306)、R1 [#307](https://github.com/wicanr2/fd2_re/issues/307)、R2 [#308](https://github.com/wicanr2/fd2_re/issues/308)、R3 [#309](https://github.com/wicanr2/fd2_re/issues/309)、R4 [#310](https://github.com/wicanr2/fd2_re/issues/310)、R5 [#311](https://github.com/wicanr2/fd2_re/issues/311)、R6 [#312](https://github.com/wicanr2/fd2_re/issues/312)、R7 [#313](https://github.com/wicanr2/fd2_re/issues/313)、R8 [#314](https://github.com/wicanr2/fd2_re/issues/314)。R0 到 R4 完成時在下方「進度」加上含「R<n> 完成」的小節，工單的機器檢查會據此判定。
+各階段工單：R0 [#306](https://github.com/wicanr2/fd2_re/issues/306)、R1 [#307](https://github.com/wicanr2/fd2_re/issues/307)、R2 [#308](https://github.com/wicanr2/fd2_re/issues/308)、R3 [#309](https://github.com/wicanr2/fd2_re/issues/309)、R4 [#310](https://github.com/wicanr2/fd2_re/issues/310)、R5 [#311](https://github.com/wicanr2/fd2_re/issues/311)、R6 [#312](https://github.com/wicanr2/fd2_re/issues/312)、R7 [#313](https://github.com/wicanr2/fd2_re/issues/313)、R8 [#314](https://github.com/wicanr2/fd2_re/issues/314)。R0～R4 各階段收尾時，在下方「進度」加一個標題寫明該階段已完成的小節（格式見 R0），工單的機器檢查以這個標題判定；其他段落不要寫出那個字串，以免誤判。
 
 R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每個階段完成時更新 `56` 與 `58`，切換前 Go 版的發行包維持可用。
 
@@ -132,3 +132,18 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 重跑：`tools/rust_golden_fdsave.sh $(cat work/rust-build/golden/fdsave-saves.txt)`。clippy 以 `-D warnings` 無警告。
 
 下一步：R0 剩下的 Bevy 最小視窗、Xvfb 截圖、CJK TTC 字型與 OGG 播放可行性，以及 R1 其餘六個格式套件。
+
+### 2026-11-13 R0 完成：Bevy 可行性
+
+收據：[rust-r0-probe-20261113.json](../data/rust-r0-probe-20261113.json)，探針 [r0_probe.rs](../../remake-rs/crates/fd2-app/src/bin/r0_probe.rs)，重跑 `tools/rust_r0_probe.sh <輸出目錄> <TTC> <OGG>...`。
+
+| 項目 | 結果 |
+|---|---|
+| 版本 | Bevy 0.20.1、wgpu 30.0.2；映像 `fd2-rust:1.99.1-r3`（加入 wasm 目標、ALSA null 裝置、`libxkbcommon-x11-0`） |
+| 視窗與截圖 | Xvfb＋Mesa llvmpipe（Vulkan）開啟 1280×800 視窗並截圖；同輸入兩次截圖 SHA 相同 |
+| 整數倍最近鄰放大 | 中文字框外 934999 個像素全部等於 640×400 測試圖 2 倍放大的預期值 |
+| 中文 TTC | Bevy 0.20 改用 parley／fontique，TTC 字型集合可直接載入；以家族名稱與直接載入兩種方式都排出正確字形，不需拆成 TTF |
+| OGG | FM 音樂與原版音效完整解碼，聲道與取樣率與 ffprobe 相符；兩個播放器都建立了 AudioSink（容器內是 null 裝置，沒有人耳聽辨） |
+| wasm | `wasm32-unknown-unknown` 可編譯（120 MB，未處理） |
+
+待查：OGG 解碼長度與 ffprobe 有小差異（音樂少 0.088 秒、音效多 0.003 秒），R5 要和 Go 版解碼器逐樣本比對；wasm 的 bindgen、瘦身與瀏覽器執行留到 R7；軟體繪圖只證明可行，不代表 Windows 實機幀率或閃爍行為。

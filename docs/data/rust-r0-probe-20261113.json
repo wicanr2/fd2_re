@@ -1,0 +1,129 @@
+{
+  "schema": "fd2-rust-r0-receipt/1",
+  "date": "2026-11-13",
+  "issue": 306,
+  "goal": "docs/goal/119-goal-rust-bevy-rewrite-20261113.md",
+  "tools": {
+    "image": "fd2-rust:1.99.1-r3",
+    "dockerfile": "tools/docker/fd2-rust.Dockerfile",
+    "runner": "tools/rust_r0_probe.sh",
+    "probe": "remake-rs/crates/fd2-app/src/bin/r0_probe.rs",
+    "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "bevy": "0.20.1",
+    "wgpu": "30.0.2"
+  },
+  "inputs": {
+    "font": {
+      "file": "NotoSansCJK-Regular.ttc (host fonts-noto-cjk 1:20230817+repack1-3)",
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a"
+    },
+    "ogg": [
+      {
+        "file": "remake/assets/music_fm/FDMUS_001.ogg (local, not tracked)",
+        "sha256": "a9cf1fd2a71090ad6f8f4fd3736b5698b93e95985dc56e6f0fe7539502526b36"
+      },
+      {
+        "file": "remake/generated-assets/fd2-original-b97caf22/sfx/FDOTHER_080/sample_005.ogg (local, not tracked)",
+        "sha256": "8e16a390ca454205e9ea2ade92cde56b1562d2447b92693113e5c475ee367f2e"
+      }
+    ]
+  },
+  "probe_report": {
+    "adapter": {
+      "backend": "Vulkan",
+      "driver": "llvmpipe",
+      "driver_info": "Mesa 25.0.7-2+deb13u1 (LLVM 19.1.7)",
+      "name": "llvmpipe (LLVM 19.1.7, 256 bits)"
+    },
+    "audio": {
+      "decoded": [
+        {
+          "bytes": 778833,
+          "channels": 2,
+          "path": "/repo/remake/assets/music_fm/FDMUS_001.ogg",
+          "peak": 0.6045498847961426,
+          "sample_rate": 192000,
+          "samples": 12603630,
+          "seconds": 32.821953125
+        },
+        {
+          "bytes": 5361,
+          "channels": 1,
+          "path": "/repo/remake/generated-assets/fd2-original-b97caf22/sfx/FDOTHER_080/sample_005.ogg",
+          "peak": 0.3733893632888794,
+          "sample_rate": 11025,
+          "samples": 7168,
+          "seconds": 0.6501587301587302
+        }
+      ],
+      "players": 2,
+      "sinks": 2
+    },
+    "bevy": "0.20.1",
+    "font": {
+      "family": "Noto Sans CJK TC",
+      "loaded": true,
+      "path": "/fonts/NotoSansCJK-Regular.ttc"
+    },
+    "frames": 50,
+    "logical": [
+      640,
+      400
+    ],
+    "scale": 2,
+    "schema": "fd2-rust-r0-probe/1",
+    "shot": "/out/r0-probe.png",
+    "status": "captured",
+    "text": [
+      {
+        "chars": 17,
+        "glyphs": 19,
+        "lines": 2,
+        "size": [
+          324.0,
+          87.0
+        ],
+        "source": "family"
+      },
+      {
+        "chars": 17,
+        "glyphs": 19,
+        "lines": 2,
+        "size": [
+          324.0,
+          87.0
+        ],
+        "source": "handle"
+      }
+    ],
+    "window": [
+      1280,
+      800,
+      1.0
+    ]
+  },
+  "outputs": {
+    "screenshot": {
+      "file": "work/rust-r0-probe-20261113/r0-probe.png",
+      "sha256": "e1eb70d2d45f837c1e37f4d6816e74946ae078b94fbc9f999477a01732631f16"
+    },
+    "wasm": {
+      "file": "work/rust-build/target/wasm32-unknown-unknown/release/r0_probe.wasm",
+      "bytes": 120889937,
+      "sha256": "26015efdfae932f153b81738d57d643706c5d54cc15d12d93209ba59d547d10a"
+    }
+  },
+  "checks": {
+    "window_and_screenshot": "PASS：Xvfb＋Mesa llvmpipe（Vulkan）開啟1280×800視窗，第45幀截圖成功。",
+    "integer_nearest_scaling": "PASS：中文字框外934999個像素全部等於640×400測試圖以2倍最近鄰放大的預期值，0個不符。",
+    "cjk_ttc": "PASS：同一TTC以家族名稱「Noto Sans CJK TC」與直接載入兩種方式都排出兩行、19個字形，截圖人工檢視字形正確無缺字框。",
+    "ogg_decode_and_playback": "PASS：兩個OGG完整解碼，聲道與取樣率與ffprobe相符；兩個AudioPlayer都建立了AudioSink（ALSA null裝置，沒有人耳聽辨）。",
+    "wasm_build": "PASS（只限編譯）：fd2-app的r0_probe可建wasm32-unknown-unknown；尚未wasm-bindgen、瘦身或在瀏覽器執行。",
+    "determinism": "PASS：clippy修正後以同輸入重跑，截圖SHA-256與修正前相同（e1eb70d2…）。"
+  },
+  "open_items": [
+    "OGG長度與ffprobe有小差異：FDMUS_001解出32.822秒、ffprobe報32.910秒；sample_005解出0.6502秒、ffprobe報0.6474秒。R5需與Go版解碼器逐樣本比對。",
+    "wasm產物120MB未處理；R7處理wasm-bindgen、wasm-opt與瀏覽器執行。",
+    "軟體繪圖只證明可行，不代表Windows實機的幀率或閃爍行為（#305）。"
+  ]
+}
