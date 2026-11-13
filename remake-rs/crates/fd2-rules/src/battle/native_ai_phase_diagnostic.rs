@@ -47,5 +47,75 @@ pub fn build_native_ai_phase_diagnostic_plan(
     item_rows: &[u8],
     inputs: &[NativeAIPhaseZeroInput],
 ) -> Result<(fdother::NativePhaseUnitScanPlan, Vec<NativeAIPhaseZeroDiagnostic>)> {
-    todo!("battle/native_ai_phase_diagnostic.go:BuildNativeAIPhaseDiagnosticPlan")
+    let Some(st) = st.filter(|st| !st.units.is_empty() && st.units.len() <= 0x100) else {
+        return Err(battle_err!("native AI phase state is malformed"));
+    };
+    let records = native_ai_scoring_records(&st.units)?;
+    let base_flags = native_composition_base_flags(st.w, st.h, &st.native_composition_event_bytes)?;
+    let count = st.units.len() as i64;
+    let mut zero_scores = vec![fdother::NativePhasePreselectionScores::default(); count as usize];
+    let admission = fdother::plan_native_phase_unit_scans(&records, count, &zero_scores)?;
+
+    let mut input_by_unit: BTreeMap<i64, &NativeAIPhaseZeroInput> = BTreeMap::new();
+    for input in inputs {
+        if input.unit_index < 0 || input.unit_index >= count {
+            return Err(battle_err!("native AI phase input unit {} is out of bounds", input.unit_index));
+        }
+        if input_by_unit.contains_key(&input.unit_index) {
+            return Err(battle_err!("native AI phase input unit {} is duplicated", input.unit_index));
+        }
+        input_by_unit.insert(input.unit_index, input);
+    }
+
+    let mut eligible = BTreeSet::new();
+    let mut diagnostics = Vec::with_capacity(admission.zero_preselection.len());
+    for candidate in &admission.zero_preselection {
+        let unit_index = candidate.unit_index;
+        eligible.insert(unit_index);
+        let Some(input) = input_by_unit.get(&unit_index) else {
+            return Err(battle_err!("native AI phase input for eligible unit {unit_index} is unavailable"));
+        };
+        let mut skip_fn = input.skip.as_ref().map(|cb| move |index: i64| cb(index));
+        let command_mask = score_native_ai1598_a(
+            st.w,
+            st.h,
+            &records,
+            count,
+            unit_index,
+            0,
+            Some(&st.units[unit_index as usize]),
+            book,
+            &base_flags,
+            &st.native_terrain_move_codes,
+            &input.cost_row,
+            skip_fn.as_mut().map(|f| f as &mut dyn FnMut(i64) -> bool),
+        )?;
+        let item_command =
+            score_native_ai1567_e(st.w, st.h, &records, count, unit_index, 0, item_rows, book, &base_flags)?;
+        if command_mask.max_score > i32::MAX as i64 || item_command.max_score > i32::MAX as i64 {
+            return Err(battle_err!("native AI phase score for unit {unit_index} exceeds signed dword"));
+        }
+        let pair = fdother::NativePhasePreselectionScores {
+            spell_candidate_score_53c23: command_mask.max_score as i32,
+            item_command_score_53c33: item_command.max_score as i32,
+        };
+        zero_scores[unit_index as usize] = pair;
+        diagnostics.push(NativeAIPhaseZeroDiagnostic {
+            unit_index,
+            command_mask_result: command_mask,
+            item_command_result: item_command,
+            phase_gate_score_pair: pair,
+        });
+    }
+    // Go 迭代 map：多筆不合格輸入時報哪一筆隨 map 順序而定；Rust 依單位索引升冪（battle.rs 模組文件）。
+    for &unit_index in input_by_unit.keys() {
+        if !eligible.contains(&unit_index) {
+            return Err(battle_err!("native AI phase input unit {unit_index} is not selector-zero eligible"));
+        }
+    }
+    let plan = fdother::plan_native_phase_unit_scans(&records, count, &zero_scores)?;
+    Ok((plan, diagnostics))
 }
+
+#[cfg(test)]
+mod native_ai_phase_diagnostic_test;

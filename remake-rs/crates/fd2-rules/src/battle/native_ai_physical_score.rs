@@ -59,7 +59,36 @@ pub struct NativePhysicalAttackSelection {
 pub fn score_native_physical_attack_candidate(
     r#in: NativePhysicalAttackScoreInput,
 ) -> Result<(NativePhysicalAttackScore, bool)> {
-    todo!("battle/native_ai_physical_score.go:ScoreNativePhysicalAttackCandidate")
+    // Go 迭代 map，多個欄位同時越界時報哪一個隨 map 順序而定；Rust 依鍵名升冪（battle.rs 模組文件）。
+    let fields = BTreeMap::from([
+        ("actor_word48", r#in.actor_word48),
+        ("actor_word4a", r#in.actor_word4_a),
+        ("target_word48", r#in.target_word48),
+        ("target_word4a", r#in.target_word4_a),
+        ("target_word40", r#in.target_word40),
+    ]);
+    for (name, value) in fields {
+        if !(0..=0xffff).contains(&value) {
+            return Err(battle_err!("{name} outside native u16 range: {value}"));
+        }
+    }
+
+    let mut score = r#in.actor_word48 - r#in.target_word4_a;
+    let mut priority = 0;
+    if score > 2 {
+        priority = 8;
+    }
+    if score > r#in.target_word40 {
+        score *= 2;
+        priority = 18;
+    }
+    if r#in.raw_helper1_debe_result == 1 {
+        score += r#in.actor_word4_a - r#in.target_word48;
+    }
+    if r#in.raw_target_byte8 == 0 {
+        score = native_mul_three_halves_toward_zero(score);
+    }
+    Ok((NativePhysicalAttackScore { priority, score }, true))
 }
 
 /// SelectNativePhysicalAttackCandidate preserves 0x144C5..0x144F4: priority is
@@ -69,10 +98,44 @@ pub fn score_native_physical_attack_candidate(
 pub fn select_native_physical_attack_candidate(
     candidates: &[NativePhysicalAttackCandidate],
 ) -> Result<(NativePhysicalAttackSelection, bool)> {
-    todo!("battle/native_ai_physical_score.go:SelectNativePhysicalAttackCandidate")
+    let mut best = NativePhysicalAttackSelection::default();
+    let mut found = false;
+    for (i, candidate) in candidates.iter().enumerate() {
+        // 同上：多欄同時越界時 Go 報哪一個隨 map 順序而定，Rust 依鍵名升冪。
+        let fields = BTreeMap::from([
+            ("destination_x", candidate.destination_x),
+            ("destination_y", candidate.destination_y),
+            ("target_index", candidate.target_index),
+        ]);
+        for (name, value) in fields {
+            if !(0..=0xff).contains(&value) {
+                return Err(battle_err!("candidate {i} {name} outside native byte range: {value}"));
+            }
+        }
+        let (ranking, accepted) = score_native_physical_attack_candidate(candidate.inputs)
+            .map_err(|err| err.wrap(format!("candidate {i}: ")))?;
+        if !accepted {
+            continue;
+        }
+        // 0x14248／0x1427E 的初值為 score/priority=0/0；priority0
+        // 的非正分不能靠「尚未找到候選」繞過原版比較。
+        if ranking.priority > best.ranking.priority
+            || (ranking.priority == best.ranking.priority && ranking.score > best.ranking.score)
+        {
+            best = NativePhysicalAttackSelection { candidate: *candidate, ranking };
+            found = true;
+        }
+    }
+    Ok((best, found))
 }
 
 /// Go：`native_ai_physical_score.go:109`，`func nativeMulThreeHalvesTowardZero(value int) int`
 pub(crate) fn native_mul_three_halves_toward_zero(value: i64) -> i64 {
-    todo!("battle/native_ai_physical_score.go:nativeMulThreeHalvesTowardZero")
+    if value < 0 {
+        return (value.wrapping_neg().wrapping_mul(3) / 2).wrapping_neg();
+    }
+    value.wrapping_mul(3) / 2
 }
+
+#[cfg(test)]
+mod native_ai_physical_score_test;

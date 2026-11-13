@@ -2445,7 +2445,7 @@
         {
           "name": "PlanNativeAI14EF0Dispatch",
           "rust": "plan_native_ai14_ef0_dispatch",
-          "status": "todo",
+          "status": "ported",
           "go_line": 51,
           "calls": [
             "SelectNativeAI14EF0Tail"
@@ -2454,7 +2454,7 @@
         {
           "name": "SelectNativeAI14EF0Tail",
           "rust": "select_native_ai14_ef0_tail",
-          "status": "todo",
+          "status": "ported",
           "go_line": 64
         }
       ],
@@ -2516,7 +2516,7 @@
         {
           "name": "ScoreNativeAI1598A",
           "rust": "score_native_ai1598_a",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26,
           "calls": [
             "NativeAIScoredCommandCandidateGroups",
@@ -2555,7 +2555,7 @@
         {
           "name": "State.nextNativeAI14EF0Plan",
           "rust": "State::next_native_ai14_ef0_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16,
           "calls": [
             "NativeAIScoringRecords",
@@ -2575,13 +2575,13 @@
         {
           "name": "nativeAIModeUses14EF0",
           "rust": "native_ai_mode_uses14_ef0",
-          "status": "todo",
+          "status": "ported",
           "go_line": 231
         },
         {
           "name": "State.nativeAI14EF0PhysicalSelection",
           "rust": "State::native_ai14_ef0_physical_selection",
-          "status": "todo",
+          "status": "ported",
           "go_line": 240,
           "calls": [
             "BuildNativeAIPhysicalAttackCandidates",
@@ -2595,7 +2595,7 @@
         {
           "name": "State.nativeAIPlanForStationarySelection",
           "rust": "State::native_ai_plan_for_stationary_selection",
-          "status": "todo",
+          "status": "ported",
           "go_line": 287,
           "calls": [
             "State.nativeAIPlanScoredCommands"
@@ -2604,7 +2604,7 @@
         {
           "name": "State.nativeAIPlanForDestination",
           "rust": "State::native_ai_plan_for_destination",
-          "status": "todo",
+          "status": "ported",
           "go_line": 309,
           "calls": [
             "NativeCommandRuntimeFlags",
@@ -2616,7 +2616,7 @@
         {
           "name": "State.nextNativeAIModeFallbackPlan",
           "rust": "State::next_native_ai_mode_fallback_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 350,
           "calls": [
             "NativePathBlockedCoordinate",
@@ -2636,7 +2636,7 @@
         {
           "name": "State.nativeAIIdleRecoveryOnlyPlan",
           "rust": "State::native_ai_idle_recovery_only_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 571,
           "calls": [
             "PlanNativeAIIdleRecovery",
@@ -2646,7 +2646,7 @@
         {
           "name": "State.attachNativeFallbackIdleRecovery",
           "rust": "State::attach_native_fallback_idle_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 587,
           "calls": [
             "PlanNativeAIIdleRecovery"
@@ -2655,7 +2655,7 @@
         {
           "name": "State.nativeAIMovementApproachPoint",
           "rust": "State::native_ai_movement_approach_point",
-          "status": "todo",
+          "status": "ported",
           "go_line": 602,
           "calls": [
             "NativePathDirections",
@@ -2665,13 +2665,13 @@
         {
           "name": "nativeAIRawRecord8Index",
           "rust": "native_ai_raw_record8_index",
-          "status": "todo",
+          "status": "ported",
           "go_line": 657
         },
         {
           "name": "State.nativeAIModeRuntimeContext",
           "rust": "State::native_ai_mode_runtime_context",
-          "status": "todo",
+          "status": "ported",
           "go_line": 671,
           "calls": [
             "NativeAIScoringRecords",
@@ -2682,7 +2682,7 @@
         {
           "name": "nativeAIModeBlockedSearchFlags",
           "rust": "native_ai_mode_blocked_search_flags",
-          "status": "todo",
+          "status": "ported",
           "go_line": 709,
           "calls": [
             "nativeAIOppositeSelectorGroup"
@@ -2691,7 +2691,7 @@
         {
           "name": "nativeAIActiveUnitAtRawCell",
           "rust": "native_ai_active_unit_at_raw_cell",
-          "status": "todo",
+          "status": "ported",
           "go_line": 734,
           "calls": [
             "nativeAIOppositeSelectorGroup"
@@ -2700,7 +2700,7 @@
         {
           "name": "State.nativeAIPlanTowardRawDestination",
           "rust": "State::native_ai_plan_toward_raw_destination",
-          "status": "todo",
+          "status": "ported",
           "go_line": 759,
           "calls": [
             "NativeAIPhysicalDestinations",
@@ -2765,7 +2765,7 @@
         {
           "name": "SelectNativeAISpellCandidate",
           "rust": "select_native_ai_spell_candidate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 22
         }
       ],
@@ -2921,13 +2921,13 @@
         {
           "name": "BuildNativeAIIdleRecoveryPresentation",
           "rust": "build_native_ai_idle_recovery_presentation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 86
         },
         {
           "name": "ApplyNativeAIIdleRecoveryWithPresentation",
           "rust": "apply_native_ai_idle_recovery_with_presentation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 112,
           "calls": [
             "BuildNativeAIIdleRecoveryPresentation",
@@ -2937,13 +2937,13 @@
         {
           "name": "PlanNativeAIIdleRecovery",
           "rust": "plan_native_ai_idle_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 150
         },
         {
           "name": "ApplyNativeAIIdleRecovery",
           "rust": "apply_native_ai_idle_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 177,
           "calls": [
             "PlanNativeAIIdleRecovery"
@@ -3002,7 +3002,7 @@
         {
           "name": "ScoreNativeAI1567E",
           "rust": "score_native_ai1567_e",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26,
           "calls": [
             "NativeCommandTargetFieldBytes",
@@ -3015,7 +3015,7 @@
         {
           "name": "nativeAI1567EAreaTargets",
           "rust": "native_ai1567_e_area_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 129,
           "calls": [
             "NativeCommandTargetFieldBytes",
@@ -3025,7 +3025,7 @@
         {
           "name": "nativeAI1567ECardinalTargets",
           "rust": "native_ai1567_e_cardinal_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 161
         }
       ],
@@ -3064,7 +3064,7 @@
         {
           "name": "ScoreNativeAIItemCommandTargets",
           "rust": "score_native_ai_item_command_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11
         }
       ],
@@ -3135,13 +3135,13 @@
         {
           "name": "NativeAIMode11Transaction.Stages",
           "rust": "NativeAIMode11Transaction::stages",
-          "status": "todo",
+          "status": "ported",
           "go_line": 37
         },
         {
           "name": "ExecuteNativeAIMode11Transaction",
           "rust": "execute_native_ai_mode11_transaction",
-          "status": "todo",
+          "status": "ported",
           "go_line": 56,
           "calls": [
             "NativeAIMode11Transaction.Stages"
@@ -3150,7 +3150,7 @@
         {
           "name": "SelectNativeAIMode11Transaction",
           "rust": "select_native_ai_mode11_transaction",
-          "status": "todo",
+          "status": "ported",
           "go_line": 80
         }
       ],
@@ -3168,7 +3168,7 @@
         {
           "name": "State.nextNativeAIMode11Plan",
           "rust": "State::next_native_ai_mode11_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 10,
           "calls": [
             "NativeAIMode11Transaction.Stages",
@@ -3187,13 +3187,13 @@
         {
           "name": "nativeAIPhysicalGate",
           "rust": "native_ai_physical_gate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 114
         },
         {
           "name": "State.nativeAIMode11BlockedOrRecovery",
           "rust": "State::native_ai_mode11_blocked_or_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 125,
           "calls": [
             "NativePathBlockedCoordinate",
@@ -3307,19 +3307,19 @@
         {
           "name": "NativeAIMode5AudioCueForRawTail",
           "rust": "native_ai_mode5_audio_cue_for_raw_tail",
-          "status": "todo",
+          "status": "ported",
           "go_line": 28
         },
         {
           "name": "State.NativeAIMode5EventCell",
           "rust": "State::native_ai_mode5_event_cell",
-          "status": "todo",
+          "status": "ported",
           "go_line": 41
         },
         {
           "name": "State.nativeChestControlRow",
           "rust": "State::native_chest_control_row",
-          "status": "todo",
+          "status": "ported",
           "go_line": 73
         },
         {
@@ -3334,7 +3334,7 @@
         {
           "name": "State.ApplyNativeAIMode5EventWithAudioCue",
           "rust": "State::apply_native_ai_mode5_event_with_audio_cue",
-          "status": "todo",
+          "status": "ported",
           "go_line": 100,
           "calls": [
             "State.applyNativeAIMode5Event"
@@ -3343,7 +3343,7 @@
         {
           "name": "State.applyNativeAIMode5Event",
           "rust": "State::apply_native_ai_mode5_event_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 109,
           "calls": [
             "NativeAIMode5AudioCueForRawTail",
@@ -3359,25 +3359,25 @@
         {
           "name": "State.NativeMapDrawTiles",
           "rust": "State::native_map_draw_tiles",
-          "status": "todo",
+          "status": "ported",
           "go_line": 179
         },
         {
           "name": "State.NativeMapTileAt",
           "rust": "State::native_map_tile_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 193
         },
         {
           "name": "State.advanceNativeAIMode5EventGrid",
           "rust": "State::advance_native_ai_mode5_event_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 207
         },
         {
           "name": "State.validateNativeAIMode5EventGrid",
           "rust": "State::validate_native_ai_mode5_event_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 233
         }
       ],
@@ -3411,7 +3411,7 @@
         {
           "name": "NativeAIModeRecordForUnit",
           "rust": "native_ai_mode_record_for_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9
         }
       ],
@@ -3444,13 +3444,13 @@
         {
           "name": "SetNativeAIModeRange",
           "rust": "set_native_ai_mode_range",
-          "status": "todo",
+          "status": "ported",
           "go_line": 8
         },
         {
           "name": "SetNativeAIModeByte",
           "rust": "set_native_ai_mode_byte",
-          "status": "todo",
+          "status": "ported",
           "go_line": 27
         }
       ],
@@ -3655,7 +3655,7 @@
         {
           "name": "BuildNativeAIPhaseDiagnosticPlan",
           "rust": "build_native_ai_phase_diagnostic_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 41,
           "calls": [
             "NativeAIScoringRecords",
@@ -3719,7 +3719,7 @@
         {
           "name": "BuildNativeAIPhysicalAttackCandidates",
           "rust": "build_native_ai_physical_attack_candidates",
-          "status": "todo",
+          "status": "ported",
           "go_line": 42,
           "calls": [
             "NativeAIPhysicalDestinations",
@@ -3729,7 +3729,7 @@
         {
           "name": "nativeAIPhysicalTargetIndices",
           "rust": "native_ai_physical_target_indices",
-          "status": "todo",
+          "status": "ported",
           "go_line": 111,
           "calls": [
             "NativeCommandTargetCells",
@@ -3779,7 +3779,7 @@
         {
           "name": "ResolveNativeAIPhysicalItemSource",
           "rust": "resolve_native_ai_physical_item_source",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26,
           "calls": [
             "NativeEquippedInventorySlot",
@@ -3840,7 +3840,7 @@
         {
           "name": "ScoreNativePhysicalAttackCandidate",
           "rust": "score_native_physical_attack_candidate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 45,
           "calls": [
             "nativeMulThreeHalvesTowardZero"
@@ -3849,7 +3849,7 @@
         {
           "name": "SelectNativePhysicalAttackCandidate",
           "rust": "select_native_physical_attack_candidate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 78,
           "calls": [
             "ScoreNativePhysicalAttackCandidate"
@@ -3858,7 +3858,7 @@
         {
           "name": "nativeMulThreeHalvesTowardZero",
           "rust": "native_mul_three_halves_toward_zero",
-          "status": "todo",
+          "status": "ported",
           "go_line": 109
         }
       ],
@@ -3995,7 +3995,7 @@
         {
           "name": "State.nextNativeAIPhysicalPlan",
           "rust": "State::next_native_ai_physical_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11,
           "calls": [
             "BuildNativeAIPhysicalAttackCandidates",
@@ -4016,13 +4016,13 @@
         {
           "name": "nativeAIPhysicalTargetCode",
           "rust": "native_ai_physical_target_code",
-          "status": "todo",
+          "status": "ported",
           "go_line": 132
         },
         {
           "name": "nativeAICostRowForRecord",
           "rust": "native_ai_cost_row_for_record",
-          "status": "todo",
+          "status": "ported",
           "go_line": 139,
           "calls": [
             "nativeAIIsTerrainSpecialRecord"
@@ -4031,13 +4031,13 @@
         {
           "name": "nativeAIIsTerrainSpecialRecord",
           "rust": "native_aiis_terrain_special_record",
-          "status": "todo",
+          "status": "ported",
           "go_line": 164
         },
         {
           "name": "nativeAI1F183TargetGate",
           "rust": "native_ai1_f183_target_gate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 171,
           "calls": [
             "nativeAIIsTerrainSpecialRecord"
@@ -4046,7 +4046,7 @@
         {
           "name": "State.nativeAIPhysicalScoreInput",
           "rust": "State::native_ai_physical_score_input",
-          "status": "todo",
+          "status": "ported",
           "go_line": 177,
           "calls": [
             "State.nativeAITerrainAdjustedWords",
@@ -4056,7 +4056,7 @@
         {
           "name": "State.nativeAITerrainAdjustedWords",
           "rust": "State::native_ai_terrain_adjusted_words",
-          "status": "todo",
+          "status": "ported",
           "go_line": 214,
           "calls": [
             "NativeTerrainAPDPPct",
@@ -4066,7 +4066,7 @@
         {
           "name": "nativeAIPhysicalHelper1DEBE",
           "rust": "native_ai_physical_helper1_debe",
-          "status": "todo",
+          "status": "ported",
           "go_line": 232,
           "calls": [
             "ResolveNativeAIPhysicalItemSource",
@@ -4076,13 +4076,13 @@
         {
           "name": "nativeAIDirectionPath",
           "rust": "native_ai_direction_path",
-          "status": "todo",
+          "status": "ported",
           "go_line": 253
         },
         {
           "name": "State.nativeAIMode2IdleRecoveryPlan",
           "rust": "State::native_ai_mode2_idle_recovery_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 277,
           "calls": [
             "PlanNativeAIIdleRecovery",
@@ -4249,7 +4249,7 @@
         {
           "name": "ScoreNativeAIScoredCommandGroups",
           "rust": "score_native_ai_scored_command_groups",
-          "status": "todo",
+          "status": "ported",
           "go_line": 17,
           "calls": [
             "scoreNativeAIScoredCommandTargets"
@@ -4258,7 +4258,7 @@
         {
           "name": "scoreNativeAIScoredCommandTargets",
           "rust": "score_native_ai_scored_command_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43,
           "calls": [
             "ScoreNativeAISpell22",
@@ -4306,7 +4306,7 @@
         {
           "name": "ScoreNativeAISpellAttack",
           "rust": "score_native_ai_spell_attack",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11,
           "calls": [
             "validateNativeAISpellCandidates"
@@ -4315,7 +4315,7 @@
         {
           "name": "ScoreNativeAISpellRecovery",
           "rust": "score_native_ai_spell_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 45,
           "calls": [
             "validateNativeAISpellCandidates"
@@ -4324,7 +4324,7 @@
         {
           "name": "ScoreNativeAISpellFlag",
           "rust": "score_native_ai_spell_flag",
-          "status": "todo",
+          "status": "ported",
           "go_line": 74,
           "calls": [
             "validateNativeAISpellCandidates"
@@ -4333,7 +4333,7 @@
         {
           "name": "ScoreNativeAISpellZeroFlag",
           "rust": "score_native_ai_spell_zero_flag",
-          "status": "todo",
+          "status": "ported",
           "go_line": 100,
           "calls": [
             "validateNativeAISpellCandidates"
@@ -4342,7 +4342,7 @@
         {
           "name": "ScoreNativeAISpell22",
           "rust": "score_native_ai_spell22",
-          "status": "todo",
+          "status": "ported",
           "go_line": 133,
           "calls": [
             "validateNativeAISpellCandidates"
@@ -4351,7 +4351,7 @@
         {
           "name": "validateNativeAISpellCandidates",
           "rust": "validate_native_ai_spell_candidates",
-          "status": "todo",
+          "status": "ported",
           "go_line": 157
         }
       ],
@@ -5615,13 +5615,13 @@
         {
           "name": "nativeCommandDerivedStrikeMultiplier",
           "rust": "native_command_derived_strike_multiplier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 36
         },
         {
           "name": "ResolveNativeCommandDerivedStrikeDamage",
           "rust": "resolve_native_command_derived_strike_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 55
         },
         {
@@ -5645,7 +5645,7 @@
         {
           "name": "State.ExecuteNativeCommandDerivedStrike",
           "rust": "State::execute_native_command_derived_strike",
-          "status": "todo",
+          "status": "ported",
           "go_line": 85,
           "calls": [
             "ApplyNativeCommand28TargetStage",
@@ -5658,7 +5658,7 @@
         {
           "name": "State.PlanNativeCommandDerivedStrike",
           "rust": "State::plan_native_command_derived_strike",
-          "status": "todo",
+          "status": "ported",
           "go_line": 114,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5669,7 +5669,7 @@
         {
           "name": "State.NativeCommand29EffectTargets",
           "rust": "State::native_command29_effect_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 135,
           "calls": [
             "NativeCommandEffectTargetsAtCursor",
@@ -5680,7 +5680,7 @@
         {
           "name": "State.PlanNativeCommand29AtCursor",
           "rust": "State::plan_native_command29_at_cursor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 150,
           "calls": [
             "State.NativeCommand29EffectTargets",
@@ -5690,7 +5690,7 @@
         {
           "name": "State.planNativeCommandDerivedStrikeTargets",
           "rust": "State::plan_native_command_derived_strike_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 158,
           "calls": [
             "ResolveNativeCommandDerivedStrikeDamage",
@@ -5700,13 +5700,13 @@
         {
           "name": "ApplyNativeCommandDerivedStrikeMP",
           "rust": "apply_native_command_derived_strike_mp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 215
         },
         {
           "name": "ApplyNativeCommandDerivedStrikeTarget",
           "rust": "apply_native_command_derived_strike_target",
-          "status": "todo",
+          "status": "ported",
           "go_line": 223,
           "calls": [
             "Unit.ApplyHPDamage"
@@ -5715,13 +5715,13 @@
         {
           "name": "NativeCommand28StageResult",
           "rust": "native_command28_stage_result",
-          "status": "todo",
+          "status": "ported",
           "go_line": 248
         },
         {
           "name": "ApplyNativeCommand28TargetStage",
           "rust": "apply_native_command28_target_stage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 265,
           "calls": [
             "NativeCommand28StageResult"
@@ -5730,19 +5730,19 @@
         {
           "name": "RestoreNativeCommand30Targets",
           "rust": "restore_native_command30_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 291
         },
         {
           "name": "CompleteNativeCommandDerivedStrike",
           "rust": "complete_native_command_derived_strike",
-          "status": "todo",
+          "status": "ported",
           "go_line": 306
         },
         {
           "name": "State.NativeCommand30EffectTargets",
           "rust": "State::native_command30_effect_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 338,
           "calls": [
             "NativeCommand30Targets",
@@ -5753,7 +5753,7 @@
         {
           "name": "State.PlanNativeCommand30",
           "rust": "State::plan_native_command30",
-          "status": "todo",
+          "status": "ported",
           "go_line": 372,
           "calls": [
             "ResolveNativeCommandDerivedStrikeDamage",
@@ -5763,7 +5763,7 @@
         {
           "name": "State.ExecuteNativeCommand30",
           "rust": "State::execute_native_command30",
-          "status": "todo",
+          "status": "ported",
           "go_line": 407,
           "calls": [
             "ResolveNativeCommandDerivedStrikeDamage",
@@ -10489,7 +10489,7 @@
         {
           "name": "State.PlanNativePlayerMovement",
           "rust": "State::plan_native_player_movement",
-          "status": "todo",
+          "status": "ported",
           "go_line": 15,
           "calls": [
             "NativeAIScoringRecords",
@@ -10501,7 +10501,7 @@
         {
           "name": "NativePlayerMovement.Path",
           "rust": "NativePlayerMovement::path",
-          "status": "todo",
+          "status": "ported",
           "go_line": 68,
           "calls": [
             "NativePathDirections",

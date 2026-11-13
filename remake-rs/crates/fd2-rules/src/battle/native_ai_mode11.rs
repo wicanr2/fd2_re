@@ -50,7 +50,18 @@ impl NativeAIMode11Transaction {
     ///
     /// Go：`native_ai_mode11.go:37`，`func (t NativeAIMode11Transaction) Stages() ([]NativeAIMode11Stage, error)`
     pub fn stages(self) -> Result<Vec<NativeAIMode11Stage>> {
-        todo!("battle/native_ai_mode11.go:NativeAIMode11Transaction.Stages")
+        if self.second_route != NATIVE_AI_MODE11_CALL14121 && self.second_route != NATIVE_AI_MODE11_CALL1548_E {
+            return Err(battle_err!("native AI mode 11 second route {:#x} is invalid", self.second_route.0));
+        }
+        let mut stages = Vec::with_capacity(2);
+        if self.first_route != NATIVE_AI_MODE11_NO_FIRST {
+            if self.first_route != NATIVE_AI_MODE11_CALL15311 {
+                return Err(battle_err!("native AI mode 11 first route {:#x} is invalid", self.first_route.0));
+            }
+            stages.push(NativeAIMode11Stage { ordinal: 1, route: self.first_route });
+        }
+        stages.push(NativeAIMode11Stage { ordinal: 2, route: self.second_route });
+        Ok(stages)
     }
 }
 
@@ -64,7 +75,16 @@ pub fn execute_native_ai_mode11_transaction(
     t: NativeAIMode11Transaction,
     execute: Option<&mut dyn FnMut(NativeAIMode11Stage) -> Result<()>>,
 ) -> Result<()> {
-    todo!("battle/native_ai_mode11.go:ExecuteNativeAIMode11Transaction")
+    let Some(execute) = execute else {
+        return Err(battle_err!("native AI mode 11 stage executor is unavailable"));
+    };
+    let stages = t.stages()?;
+    for stage in stages {
+        if let Err(err) = execute(stage) {
+            return Err(err.wrap(format!("native AI mode 11 stage {} route {:#x}: ", stage.ordinal, stage.route.0)));
+        }
+    }
+    Ok(())
 }
 
 /// SelectNativeAIMode11Transaction preserves the direct mode-11 control flow:
@@ -80,5 +100,19 @@ pub fn select_native_ai_mode11_transaction(
     has_raw_score_c23: bool,
     has_raw_score_c4_f: bool,
 ) -> Result<NativeAIMode11Transaction> {
-    todo!("battle/native_ai_mode11.go:SelectNativeAIMode11Transaction")
+    if !has_raw_score_c23 || !has_raw_score_c4_f {
+        return Err(battle_err!("native AI mode 11 raw scores are incomplete"));
+    }
+    let mut transaction =
+        NativeAIMode11Transaction { first_route: NATIVE_AI_MODE11_NO_FIRST, second_route: NATIVE_AI_MODE11_CALL14121 };
+    if score_c23 >= 6 {
+        transaction.first_route = NATIVE_AI_MODE11_CALL15311;
+    }
+    if score_c4_f >= 6 {
+        transaction.second_route = NATIVE_AI_MODE11_CALL1548_E;
+    }
+    Ok(transaction)
 }
+
+#[cfg(test)]
+mod native_ai_mode11_test;

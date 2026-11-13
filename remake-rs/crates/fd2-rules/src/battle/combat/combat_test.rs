@@ -1,7 +1,6 @@
 //! 移植自 `remake/internal/battle/combat_test.go`。
 //!
-//! `NextAIPlan` 的測試會先走 D 組的 native 規劃器（`nextNativeAIMode11Plan` 等），D 合併前停在
-//! 那裡的 `todo!()`，所以標 `#[ignore = "等 D 合併"]`。
+//! `NextAIPlan` 的測試會先走 D 組的 native 規劃器（`nextNativeAIMode11Plan` 等）。
 
 use super::*;
 use crate::battle::magic::magic_test::{mk_unit, new_test_state};
@@ -177,7 +176,6 @@ fn est_damage_uses_terrain() {
 
 /// Go：`TestNextAIPlan_SkipsLowDamageTarget`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_skips_low_damage_target() {
     let mut ai = mk_fighter(ENEMY, 0, 0, 100, 5, 0, 100, 0, 0);
     let mut target = mk_fighter(OWN, 1, 0, 100, 0, 20, 0, 0, 0);
@@ -196,7 +194,6 @@ fn next_ai_plan_skips_low_damage_target() {
 
 /// Go：`TestNextAIPlan_PrefersDamageAboveThreshold`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_prefers_damage_above_threshold() {
     let mut ai = mk_fighter(ENEMY, 0, 0, 100, 50, 0, 100, 0, 0);
     let mut weak = mk_fighter(OWN, 0, 1, 100, 0, 100, 0, 0, 0); // low damage, nearer
@@ -213,7 +210,6 @@ fn next_ai_plan_prefers_damage_above_threshold() {
 
 /// Go：`TestNextAIPlan_DefaultSpellCommandIsDisabled`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_default_spell_command_is_disabled() {
     let mut ai = mk_fighter(ENEMY, 0, 0, 100, 50, 0, 100, 0, 0);
     let mut target = mk_fighter(OWN, 1, 0, 100, 0, 1, 0, 0, 0);
@@ -239,7 +235,6 @@ fn next_ai_plan_default_spell_command_is_disabled() {
 
 /// Go：`TestNextAIPlanSelectsEditableHealSpellBeforePhysicalFallback`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_selects_editable_heal_spell_before_physical_fallback() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
     (caster.mp, caster.spells, caster.on_field) = (10, vec![13], true);
@@ -263,7 +258,6 @@ fn next_ai_plan_selects_editable_heal_spell_before_physical_fallback() {
 
 /// Go：`TestNextAIPlanApproachesEditableAttackSpellTarget`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_approaches_editable_attack_spell_target() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
     (caster.mp, caster.mv, caster.spells, caster.on_field) = (5, 2, vec![0], true);
@@ -288,7 +282,6 @@ fn next_ai_plan_approaches_editable_attack_spell_target() {
 
 /// Go：`TestNextAIPlanAllyTargetsEnemyWithEditableAttackSpell`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_ally_targets_enemy_with_editable_attack_spell() {
     let mut caster = mk_fighter(ALLY, 0, 0, 100, 40, 0, 100, 0, 0);
     (caster.mp, caster.spells, caster.on_field) = (5, vec![0], true);
@@ -312,7 +305,6 @@ fn next_ai_plan_ally_targets_enemy_with_editable_attack_spell() {
 
 /// Go：`TestNextAIPlanUsesEditableInventorySpellMapping`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_uses_editable_inventory_spell_mapping() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
     (caster.mp, caster.inventory, caster.on_field) = (5, vec![0x61], true);
@@ -335,7 +327,6 @@ fn next_ai_plan_uses_editable_inventory_spell_mapping() {
 
 /// Go：`TestNextAIPlanSpellPathUsesStableCellTieBreak`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_spell_path_uses_stable_cell_tie_break() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
     (caster.mp, caster.mv, caster.spells, caster.on_field) = (5, 2, vec![0], true);
@@ -357,7 +348,6 @@ fn next_ai_plan_spell_path_uses_stable_cell_tie_break() {
 
 /// Go：`TestNextAIPlanPreservesRawNativeScoredCommandsWithoutExecutingThem`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_preserves_raw_native_scored_commands_without_executing_them() {
     let actor = Unit {
         camp: ENEMY,
@@ -384,7 +374,6 @@ fn next_ai_plan_preserves_raw_native_scored_commands_without_executing_them() {
 
 /// Go：`TestNextAIPlanOmitsRawScoredCommandsWithoutVerifiedBook`
 #[test]
-#[ignore = "等 D 合併"]
 fn next_ai_plan_omits_raw_scored_commands_without_verified_book() {
     let actor = Unit { camp: ENEMY, on_field: true, hp: 10, max_hp: 10, x: 0, y: 0, ..Default::default() };
     let target = Unit { camp: OWN, on_field: true, hp: 10, max_hp: 10, x: 1, y: 0, ..Default::default() };

@@ -38,7 +38,13 @@ pub struct NativeCommandDerivedStrikePlan {
 
 /// Go：`native_command24.go:36`，`func nativeCommandDerivedStrikeMultiplier(commandID int) (int, bool)`
 pub(crate) fn native_command_derived_strike_multiplier(command_id: i64) -> (i64, bool) {
-    todo!("battle/native_command24.go:nativeCommandDerivedStrikeMultiplier")
+    match command_id {
+        24 => (15, true),
+        28 => (20, true),
+        29 => (12, true),
+        31 => (18, true),
+        _ => (0, false),
+    }
 }
 
 /// ResolveNativeCommandDerivedStrikeDamage mirrors the signed amount path in
@@ -54,7 +60,16 @@ pub fn resolve_native_command_derived_strike_damage(
     multiplier: i64,
     rng: Option<&mut dyn GoRand>,
 ) -> Result<(i64, i64)> {
-    todo!("battle/native_command24.go:ResolveNativeCommandDerivedStrikeDamage")
+    let Some(rng) = rng else {
+        return Err(battle_err!("nil rng"));
+    };
+    if multiplier <= 0 {
+        return Err(battle_err!("invalid native derived-strike multiplier={multiplier}"));
+    }
+    let amount = actor_ap.wrapping_mul(multiplier).wrapping_div(10).wrapping_sub(target_dp);
+    let damage =
+        amount.wrapping_mul(9).wrapping_div(10).wrapping_add(rng.intn(100).wrapping_mul(amount).wrapping_div(1000));
+    Ok((amount, damage))
 }
 
 /// ResolveNativeCommand24Damage preserves the ID24-specific public helper.
@@ -101,7 +116,19 @@ impl State {
         command_id: i64,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<Vec<NativeCommand24Damage>> {
-        todo!("battle/native_command24.go:State.ExecuteNativeCommandDerivedStrike")
+        let mut plan = self.plan_native_command_derived_strike(actor, confirmed, command_id, rng)?;
+        apply_native_command_derived_strike_mp(&mut self.units, Some(&plan))?;
+        for i in 0..plan.results.len() as i64 {
+            if command_id == 28 {
+                for stage in 1..=plan.target_impact_count {
+                    apply_native_command28_target_stage(&mut self.units, Some(&mut plan), i, stage)?;
+                }
+            } else {
+                apply_native_command_derived_strike_target(&mut self.units, Some(&plan), i)?;
+            }
+        }
+        complete_native_command_derived_strike(&mut self.units, Some(&plan))?;
+        Ok(plan.results)
     }
 
     /// PlanNativeCommandDerivedStrike validates every target and consumes the
@@ -117,7 +144,31 @@ impl State {
         command_id: i64,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<NativeCommandDerivedStrikePlan> {
-        todo!("battle/native_command24.go:State.PlanNativeCommandDerivedStrike")
+        if rng.is_none() {
+            return Err(battle_err!("missing native derived-strike state/rng"));
+        }
+        let book = &self.native_command_book;
+        if book.len() != 36
+            || command_id < 0
+            || command_id >= book.len() as i64
+            || book[command_id as usize].id != command_id
+        {
+            return Err(battle_err!("native derived-strike record unavailable id={command_id}"));
+        }
+        let record = book[command_id as usize];
+        let flags = self.native_command_base_flags()?;
+        let targets = native_command_effect_targets(
+            self.w,
+            self.h,
+            actor,
+            confirmed,
+            record.selection_mode,
+            record.effect_mode,
+            record.target_code,
+            &flags,
+            &self.units,
+        )?;
+        self.plan_native_command_derived_strike_targets(actor, &targets, command_id, rng)
     }
 
     /// NativeCommand29EffectTargets keeps the original self-centered cursor separate
@@ -128,7 +179,36 @@ impl State {
     /// 所有權：回傳的單位是 `self.units` 的索引。
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_command29_effect_targets(&self, actor: Option<UnitIdx>, cursor: Cell) -> Result<Vec<UnitIdx>> {
-        todo!("battle/native_command24.go:State.NativeCommand29EffectTargets")
+        let book = &self.native_command_book;
+        let Some(actor_idx) = actor.filter(|&i| {
+            self.units[i].camp != ENEMY && book.len() as i64 == NATIVE_COMMAND_RECORD_COUNT && book[29].id == 29
+        }) else {
+            return Err(battle_err!("native player command29 record/actor unavailable"));
+        };
+        let record = book[29];
+        let flags = self.native_command_base_flags()?;
+        if record.selection_mode == 0 {
+            return native_command_self_centered_targets(
+                self.w,
+                self.h,
+                Some(actor_idx),
+                cursor,
+                record.effect_mode,
+                &flags,
+                &self.units,
+            );
+        }
+        native_command_effect_targets_at_cursor(
+            self.w,
+            self.h,
+            Some(actor_idx),
+            cursor,
+            record.selection_mode,
+            record.effect_mode,
+            record.target_code,
+            &flags,
+            &self.units,
+        )
     }
 
     /// Go：`native_command24.go:150`，`func (s *State) PlanNativeCommand29AtCursor(actor *Unit, cursor Cell, rng *rand.Rand) (*NativeCommandDerivedStrikePlan, error)`
@@ -139,7 +219,8 @@ impl State {
         cursor: Cell,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<NativeCommandDerivedStrikePlan> {
-        todo!("battle/native_command24.go:State.PlanNativeCommand29AtCursor")
+        let targets = self.native_command29_effect_targets(actor, cursor)?;
+        self.plan_native_command_derived_strike_targets(actor, &targets, 29, rng)
     }
 
     /// Go：`native_command24.go:158`，`func (s *State) planNativeCommandDerivedStrikeTargets(actor *Unit, targets []*Unit, commandID int, rng *rand.Rand) (*NativeCommandDerivedStrikePlan, error)`
@@ -153,7 +234,71 @@ impl State {
         command_id: i64,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<NativeCommandDerivedStrikePlan> {
-        todo!("battle/native_command24.go:State.planNativeCommandDerivedStrikeTargets")
+        let book = &self.native_command_book;
+        let Some(rng) = rng.filter(|_| {
+            command_id >= 0
+                && command_id < book.len() as i64
+                && book.len() as i64 == NATIVE_COMMAND_RECORD_COUNT
+                && book[command_id as usize].id == command_id
+        }) else {
+            return Err(battle_err!("native derived-strike record/rng unavailable id={command_id}"));
+        };
+        let (multiplier, ok) = native_command_derived_strike_multiplier(command_id);
+        if !ok {
+            return Err(battle_err!("native derived-strike command unavailable id={command_id}"));
+        }
+        let record = book[command_id as usize];
+        let Some(actor_idx) =
+            actor.filter(|&i| (0..=0xff).contains(&record.mp_cost) && self.units[i].mp >= record.mp_cost)
+        else {
+            return Err(battle_err!("native command {command_id} insufficient MP"));
+        };
+        let actor_unit = &self.units[actor_idx];
+        if command_id == 28 && (!actor_unit.has_battle_fig || actor_unit.battle_fig != 19) {
+            return Err(battle_err!("native command28 requires proven selector19 impact contract"));
+        }
+        let mut plan = NativeCommandDerivedStrikePlan {
+            actor: Some(actor_idx),
+            command_id,
+            mp_before: actor_unit.mp,
+            mp_after: actor_unit.mp - record.mp_cost,
+            results: Vec::with_capacity(targets.len()),
+            ..Default::default()
+        };
+        if command_id == 28 {
+            // FIGANI59 has eight target raw+4 markers. Other selectors require
+            // their own reviewed contract rather than a single-marker guess.
+            plan.target_impact_count = 8;
+            plan.published_target_stages = vec![0; targets.len()];
+        }
+        // Go 另檢查 nil 目標；Rust 的目標是 `self.units` 的索引，不會是 nil。
+        for &target_idx in targets {
+            let target = &self.units[target_idx];
+            let (amount, damage) =
+                resolve_native_command_derived_strike_damage(actor_unit.ap, target.dp, multiplier, Some(&mut *rng))?;
+            let mut applied_damage = damage.max(0);
+            // 0x27C44 clamps the roll to original HP before command28 divides
+            // its cumulative eight impact stages. Keep the final capped damage.
+            if applied_damage > target.hp {
+                applied_damage = target.hp;
+            }
+            let hp_after = target.hp - applied_damage;
+            let mut raw_byte5_after = target.native_record_byte5;
+            if hp_after == 0 && target.has_native_record_byte5 {
+                raw_byte5_after = 1;
+            }
+            plan.results.push(NativeCommand24Damage {
+                target: Some(target_idx),
+                amount,
+                damage: applied_damage,
+                hp_before: target.hp,
+                hp_after,
+                native_record_byte5_before: target.native_record_byte5,
+                native_record_byte5_after: raw_byte5_after,
+                ..Default::default()
+            });
+        }
+        Ok(plan)
     }
 }
 
@@ -163,7 +308,15 @@ pub fn apply_native_command_derived_strike_mp(
     units: &mut [Unit],
     plan: Option<&NativeCommandDerivedStrikePlan>,
 ) -> Result<()> {
-    todo!("battle/native_command24.go:ApplyNativeCommandDerivedStrikeMP")
+    let Some((plan, actor)) = plan.and_then(|p| p.actor.map(|a| (p, a))) else {
+        return Err(battle_err!("native derived-strike MP publish state changed"));
+    };
+    let unit = &mut units[actor];
+    if unit.mp != plan.mp_before || unit.acted {
+        return Err(battle_err!("native derived-strike MP publish state changed"));
+    }
+    unit.mp = plan.mp_after;
+    Ok(())
 }
 
 /// Go：`native_command24.go:223`，`func ApplyNativeCommandDerivedStrikeTarget(plan *NativeCommandDerivedStrikePlan, index int) error`
@@ -173,7 +326,28 @@ pub fn apply_native_command_derived_strike_target(
     plan: Option<&NativeCommandDerivedStrikePlan>,
     index: i64,
 ) -> Result<()> {
-    todo!("battle/native_command24.go:ApplyNativeCommandDerivedStrikeTarget")
+    let Some(plan) = plan.filter(|p| index >= 0 && index < p.results.len() as i64) else {
+        return Err(battle_err!("native derived-strike target publish index unavailable"));
+    };
+    if plan.command_id == 28 {
+        return Err(battle_err!("native command28 requires ordered impact-stage publication"));
+    }
+    let result = plan.results[index as usize];
+    let Some(target) = result.target.map(|t| &mut units[t]).filter(|t| {
+        t.hp == result.hp_before
+            && !(t.has_native_record_byte5 && t.native_record_byte5 != result.native_record_byte5_before)
+    }) else {
+        return Err(battle_err!("native derived-strike target publish state changed"));
+    };
+    if plan.command_id == 30 {
+        target.apply_hp_damage(result.hp_before - result.hp_after);
+        return Ok(());
+    }
+    target.hp = result.hp_after;
+    if target.has_native_record_byte5 {
+        target.native_record_byte5 = result.native_record_byte5_after;
+    }
+    Ok(())
 }
 
 /// NativeCommand28StageResult is a frozen panel/HP projection. Stage0 denotes
@@ -187,18 +361,58 @@ pub fn native_command28_stage_result(
     index: i64,
     stage: i64,
 ) -> Result<NativeCommand24Damage> {
-    todo!("battle/native_command24.go:NativeCommand28StageResult")
+    let Some(plan) = plan.filter(|p| {
+        p.command_id == 28
+            && p.target_impact_count == 8
+            && index >= 0
+            && index < p.results.len() as i64
+            && (0..=8).contains(&stage)
+    }) else {
+        return Err(battle_err!("native command28 stage projection unavailable"));
+    };
+    let mut result = plan.results[index as usize];
+    let Some(target) = result.target.map(|t| &units[t]) else {
+        return Err(battle_err!("native command28 target projection unavailable"));
+    };
+    result.damage = result.damage * stage / 8;
+    result.hp_after = result.hp_before - result.damage;
+    result.native_record_byte5_after = result.native_record_byte5_before;
+    if result.hp_after == 0 && target.has_native_record_byte5 {
+        result.native_record_byte5_after = 1;
+    }
+    Ok(result)
 }
 
 /// Go：`native_command24.go:265`，`func ApplyNativeCommand28TargetStage(plan *NativeCommandDerivedStrikePlan, index, stage int) error`
 /// 所有權：`units` 是 Rust 新增的參數。Go 經由結構欄位裡的 `*Unit`（Rust 是 `UnitIdx`）讀寫單位，Rust 需要單位陣列才能解參照；傳入產生那些索引時的同一個陣列（通常是 `state.units`）。
 pub fn apply_native_command28_target_stage(
-    units: &[Unit],
+    units: &mut [Unit],
     plan: Option<&mut NativeCommandDerivedStrikePlan>,
     index: i64,
     stage: i64,
 ) -> Result<()> {
-    todo!("battle/native_command24.go:ApplyNativeCommand28TargetStage")
+    let Some(plan) = plan.filter(|p| {
+        p.actor.is_some_and(|a| units[a].mp == p.mp_after && !units[a].acted)
+            && index >= 0
+            && index < p.published_target_stages.len() as i64
+            && stage == p.published_target_stages[index as usize] + 1
+    }) else {
+        return Err(battle_err!("native command28 stage publication state changed"));
+    };
+    let before = native_command28_stage_result(units, Some(&*plan), index, stage - 1)?;
+    let after = native_command28_stage_result(units, Some(&*plan), index, stage)?;
+    let Some(target) = after.target.map(|t| &mut units[t]).filter(|t| {
+        t.hp == before.hp_after
+            && !(t.has_native_record_byte5 && t.native_record_byte5 != before.native_record_byte5_after)
+    }) else {
+        return Err(battle_err!("native command28 target changed before impact"));
+    };
+    target.hp = after.hp_after;
+    if target.has_native_record_byte5 {
+        target.native_record_byte5 = after.native_record_byte5_after;
+    }
+    plan.published_target_stages[index as usize] = stage;
+    Ok(())
 }
 
 /// RestoreNativeCommand30Targets restores the death-presentation provenance as
@@ -207,7 +421,18 @@ pub fn apply_native_command28_target_stage(
 /// Go：`native_command24.go:291`，`func RestoreNativeCommand30Targets(plan *NativeCommandDerivedStrikePlan)`
 /// 所有權：`units` 是 Rust 新增的參數。Go 經由結構欄位裡的 `*Unit`（Rust 是 `UnitIdx`）讀寫單位，Rust 需要單位陣列才能解參照；傳入產生那些索引時的同一個陣列（通常是 `state.units`）。
 pub fn restore_native_command30_targets(units: &mut [Unit], plan: Option<&NativeCommandDerivedStrikePlan>) {
-    todo!("battle/native_command24.go:RestoreNativeCommand30Targets")
+    let Some(plan) = plan.filter(|p| p.command_id == 30) else {
+        return;
+    };
+    for result in &plan.results {
+        let Some(target) = result.target.map(|t| &mut units[t]) else {
+            continue;
+        };
+        target.hp = result.hp_before;
+        target.native_record_byte5 = result.native_record_byte5_before;
+        target.native_death_flag_before = result.death_flag_before;
+        target.native_death_flag_valid = result.death_flag_valid_before;
+    }
 }
 
 /// Go：`native_command24.go:306`，`func CompleteNativeCommandDerivedStrike(plan *NativeCommandDerivedStrikePlan) error`
@@ -216,7 +441,33 @@ pub fn complete_native_command_derived_strike(
     units: &mut [Unit],
     plan: Option<&NativeCommandDerivedStrikePlan>,
 ) -> Result<()> {
-    todo!("battle/native_command24.go:CompleteNativeCommandDerivedStrike")
+    let Some((plan, actor)) = plan.and_then(|p| p.actor.map(|a| (p, a))) else {
+        return Err(battle_err!("native derived-strike completion state changed"));
+    };
+    if units[actor].mp != plan.mp_after || units[actor].acted {
+        return Err(battle_err!("native derived-strike completion state changed"));
+    }
+    if plan.command_id == 28 {
+        if plan.published_target_stages.len() != plan.results.len() {
+            return Err(battle_err!("native command28 impact publication unavailable"));
+        }
+        if plan.published_target_stages.iter().any(|&stage| stage != 8) {
+            return Err(battle_err!("native command28 impacts are incomplete"));
+        }
+    }
+    for result in &plan.results {
+        let published = result.target.map(|t| &units[t]).is_some_and(|t| {
+            t.hp == result.hp_after
+                && !(t.has_native_record_byte5 && t.native_record_byte5 != result.native_record_byte5_after)
+        });
+        if !published {
+            return Err(battle_err!("native derived-strike target is not published"));
+        }
+    }
+    // 0x18D8C applies the invoking actor's completion bit only after 0x1CFF0
+    // returns success; presentation owners call this after their final frame.
+    units[actor].acted = true;
+    Ok(())
 }
 
 impl State {
@@ -237,7 +488,42 @@ impl State {
         saved_cursor: Cell,
         confirmed_cursor: Cell,
     ) -> Result<Vec<UnitIdx>> {
-        todo!("battle/native_command24.go:State.NativeCommand30EffectTargets")
+        let book = &self.native_command_book;
+        let Some(actor_idx) = actor.filter(|_| book.len() == 36 && book[30].id == 30) else {
+            return Err(battle_err!("native command 30 state unavailable"));
+        };
+        let record = book[30];
+        if record.selection_mode < 0x10 {
+            return Err(battle_err!("native command 30 invalid selector mode={}", record.selection_mode));
+        }
+        // The preceding 0x14818 -> 0x115B6 confirmation is still required. It
+        // proves the provided confirmed cursor is a valid target candidate before
+        // the special line selector is allowed to mutate MP or HP.
+        let flags = self.native_command_base_flags()?;
+        let actor_unit = &self.units[actor_idx];
+        let selection = native_command_targets(
+            self.w,
+            self.h,
+            Cell { x: actor_unit.x, y: actor_unit.y },
+            record.selection_mode,
+            record.target_code,
+            &flags,
+            &self.units,
+        )?;
+        let confirmed = selection.iter().any(|&candidate| {
+            self.units[candidate].x == confirmed_cursor.x && self.units[candidate].y == confirmed_cursor.y
+        });
+        if !confirmed {
+            return Err(battle_err!("confirmed cursor is not a native command 30 candidate"));
+        }
+        native_command30_targets(
+            self.w,
+            self.h,
+            saved_cursor,
+            confirmed_cursor,
+            record.selection_mode - 0x10,
+            &self.units,
+        )
     }
 
     /// PlanNativeCommand30 shares the proven selector with the existing state-only
@@ -252,7 +538,47 @@ impl State {
         confirmed_cursor: Cell,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<NativeCommandDerivedStrikePlan> {
-        todo!("battle/native_command24.go:State.PlanNativeCommand30")
+        let Some(rng) = rng else {
+            return Err(battle_err!("native command 30 rng unavailable"));
+        };
+        let targets = self.native_command30_effect_targets(actor, saved_cursor, confirmed_cursor)?;
+        let record = self.native_command_book[30];
+        // `native_command30_effect_targets` 成功代表 actor 不是 None。
+        let actor_idx = actor.expect("native_command30_effect_targets 已檢查 actor");
+        let actor_unit = &self.units[actor_idx];
+        if actor_unit.acted || record.mp_cost < 0 || actor_unit.mp < record.mp_cost {
+            return Err(battle_err!("native command 30 insufficient MP or completed actor"));
+        }
+        let mut plan = NativeCommandDerivedStrikePlan {
+            actor: Some(actor_idx),
+            command_id: 30,
+            mp_before: actor_unit.mp,
+            mp_after: actor_unit.mp - record.mp_cost,
+            ..Default::default()
+        };
+        for target_idx in targets {
+            let target = &self.units[target_idx];
+            let (amount, damage) =
+                resolve_native_command_derived_strike_damage(actor_unit.ap, target.dp, 18, Some(&mut *rng))?;
+            let applied = damage.max(0).min(target.hp);
+            let mut after = target.native_record_byte5;
+            if applied > 0 && target.hp - applied == 0 && target.has_native_record_byte5 {
+                after = 1;
+            }
+            // Damage keeps the existing ID30 state-only result's unclamped roll.
+            plan.results.push(NativeCommand24Damage {
+                target: Some(target_idx),
+                amount,
+                damage,
+                hp_before: target.hp,
+                hp_after: target.hp - applied,
+                native_record_byte5_before: target.native_record_byte5,
+                native_record_byte5_after: after,
+                death_flag_before: target.native_death_flag_before,
+                death_flag_valid_before: target.native_death_flag_valid,
+            });
+        }
+        Ok(plan)
     }
 
     /// Go：`native_command24.go:407`，`func (s *State) ExecuteNativeCommand30(actor *Unit, savedCursor, confirmedCursor Cell, rng *rand.Rand) ([]NativeCommand24Damage, error)`
@@ -264,6 +590,28 @@ impl State {
         confirmed_cursor: Cell,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<Vec<NativeCommand24Damage>> {
-        todo!("battle/native_command24.go:State.ExecuteNativeCommand30")
+        let Some(rng) = rng else {
+            return Err(battle_err!("native command 30 state unavailable"));
+        };
+        let targets = self.native_command30_effect_targets(actor, saved_cursor, confirmed_cursor)?;
+        let record = self.native_command_book[30];
+        // `native_command30_effect_targets` 成功代表 actor 不是 None。
+        let actor_idx = actor.expect("native_command30_effect_targets 已檢查 actor");
+        if !spend_native_command_mp(Some(&mut self.units[actor_idx]), record.mp_cost) {
+            return Err(battle_err!("native command 30 insufficient MP"));
+        }
+        let mut results = Vec::with_capacity(targets.len());
+        for target_idx in targets {
+            let (actor_ap, target_dp) = (self.units[actor_idx].ap, self.units[target_idx].dp);
+            let (amount, damage) =
+                resolve_native_command_derived_strike_damage(actor_ap, target_dp, 18, Some(&mut *rng))?;
+            self.units[target_idx].apply_hp_damage(damage);
+            results.push(NativeCommand24Damage { target: Some(target_idx), amount, damage, ..Default::default() });
+        }
+        self.units[actor_idx].acted = true;
+        Ok(results)
     }
 }
+
+#[cfg(test)]
+mod native_command24_test;

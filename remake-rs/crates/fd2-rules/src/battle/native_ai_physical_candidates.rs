@@ -57,13 +57,76 @@ pub fn build_native_ai_physical_attack_candidates(
     selector: i64,
     initial_budget: i64,
     geometry: NativeAIPhysicalAttackGeometry,
-    movement_flags: &mut [u8],
+    movement_flags: &[u8],
     target_flags: &[u8],
     terrain_move_codes: &[u8],
     cost_row: &[u8],
     resolve: Option<&mut NativeAIPhysicalAttackScoreResolver<'_>>,
 ) -> Result<Vec<NativePhysicalAttackCandidate>> {
-    todo!("battle/native_ai_physical_candidates.go:BuildNativeAIPhysicalAttackCandidates")
+    if count <= 0 || records.len() as i64 != count.wrapping_mul(NATIVE_RECORD_SIZE) {
+        return Err(battle_err!("native AI physical candidate roster is malformed"));
+    }
+    let Some(resolve) = resolve else {
+        return Err(battle_err!("native AI physical candidate score resolver is unavailable"));
+    };
+    if target_flags.len() as i64 != w.wrapping_mul(h) {
+        return Err(battle_err!("native AI physical target grid is malformed"));
+    }
+    if !(0..=0xff).contains(&geometry.target_mode)
+        || !(0..=0xff).contains(&geometry.target_inner_mark)
+        || !(0..=3).contains(&geometry.target_code)
+    {
+        return Err(battle_err!("native AI physical target geometry is malformed"));
+    }
+
+    let destinations = native_ai_physical_destinations(
+        w,
+        h,
+        records,
+        count,
+        actor,
+        selector,
+        initial_budget,
+        movement_flags,
+        terrain_move_codes,
+        cost_row,
+    )?;
+
+    let rs = NATIVE_RECORD_SIZE as usize;
+    let mut result = Vec::new();
+    for destination in destinations {
+        let targets = native_ai_physical_target_indices(
+            w,
+            h,
+            records,
+            count,
+            destination,
+            geometry.target_mode,
+            geometry.target_inner_mark,
+            geometry.target_code,
+            target_flags,
+        )?;
+        for target_index in targets {
+            let index = target_index as usize;
+            let actor_at = actor as usize;
+            let candidate = resolve(NativeAIPhysicalAttackRawCandidate {
+                destination,
+                target_index: index as i64,
+                actor_record: records[actor_at * rs..(actor_at + 1) * rs].to_vec(),
+                target_record: records[index * rs..(index + 1) * rs].to_vec(),
+            })
+            .map_err(|err| {
+                err.wrap(format!("native AI physical candidate ({},{})/{}: ", destination.x, destination.y, index))
+            })?;
+            result.push(NativePhysicalAttackCandidate {
+                destination_x: destination.x,
+                destination_y: destination.y,
+                target_index: index as i64,
+                inputs: candidate,
+            });
+        }
+    }
+    Ok(result)
 }
 
 /// nativeAIPhysicalTargetIndices 保存 0x14818 的 cell geometry 與 raw +5/+6
@@ -82,5 +145,33 @@ pub(crate) fn native_ai_physical_target_indices(
     target_code: i64,
     target_flags: &[u8],
 ) -> Result<Vec<u8>> {
-    todo!("battle/native_ai_physical_candidates.go:nativeAIPhysicalTargetIndices")
+    if count <= 0 || records.len() as i64 != count.wrapping_mul(NATIVE_RECORD_SIZE) {
+        return Err(battle_err!("native AI physical target roster is malformed"));
+    }
+    if inner_mark < 0 || !(0..=3).contains(&target_code) {
+        return Err(battle_err!("native AI physical target geometry is malformed"));
+    }
+    let cells = native_command_target_cells(w, h, origin, mode, target_flags)?;
+    let mut result = Vec::new();
+    for index in 0..count {
+        let record = &records[(index * NATIVE_RECORD_SIZE) as usize..];
+        if record[5] & 1 != 0 || !native_ai_scored_raw_target_matches(target_code, record[6]) {
+            continue;
+        }
+        let cell = Cell { x: record[0] as i64, y: record[1] as i64 };
+        if cell.x < 0 || cell.y < 0 || cell.x >= w || cell.y >= h {
+            return Err(battle_err!("native AI physical target {index} is outside the grid"));
+        }
+        if !cells.get(&cell).copied().unwrap_or(false) {
+            continue;
+        }
+        if mode < 0x10 && inner_mark > 0 && abs_int(cell.x - origin.x) + abs_int(cell.y - origin.y) < inner_mark {
+            continue;
+        }
+        result.push(index as u8);
+    }
+    Ok(result)
 }
+
+#[cfg(test)]
+mod native_ai_physical_candidates_test;

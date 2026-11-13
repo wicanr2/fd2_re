@@ -102,7 +102,42 @@ pub(crate) const NATIVE_AI_IDLE_RECOVERY_RESOURCE_BASE: &str = "[0x53A49]+0x8088
 pub fn build_native_ai_idle_recovery_presentation(
     decision: NativeAIIdleRecoveryDecision,
 ) -> Result<NativeAIIdleRecoveryPresentation> {
-    todo!("battle/native_ai_idle_recovery.go:BuildNativeAIIdleRecoveryPresentation")
+    if !decision.accepted
+        || decision.current_hp == decision.maximum_hp
+        || decision.raw_gate25 != 0
+        || decision.raw_gate26 != 0
+    {
+        return Err(battle_err!("native AI idle recovery presentation requires an accepted raw decision"));
+    }
+    let copy_args = NativeAIIdleRecoveryCopy {
+        source_offset: 0xA0504,
+        destination_offset: 0x140,
+        source_stride: 0x1C8,
+        destination_stride: 0x140,
+        rows: 0xC0,
+        length: 0x138,
+    };
+    let decode = |mode, tail| NativeAIIdleRecoveryDecode {
+        resource_base: NATIVE_AI_IDLE_RECOVERY_RESOURCE_BASE.to_string(),
+        mode,
+        tail,
+    };
+    Ok(NativeAIIdleRecoveryPresentation {
+        unit: decision.unit,
+        before_hp: decision.current_hp,
+        after_hp: decision.next_hp,
+        before_global_write: NativeAIIdleRecoveryGlobalWrite { address: 0x51A83, value: 0 },
+        coordinate_call: NativeAIIdleRecoveryCall { address: 0x12D7B, unit: decision.unit },
+        sample_handle_expr: NATIVE_AI_IDLE_RECOVERY_SAMPLE_HANDLE.to_string(),
+        sample_index: 4,
+        sample_loop_count: 1,
+        first_decode: decode(2, 0xFD),
+        second_decode: decode(0, 0),
+        first_copy: copy_args,
+        second_copy: copy_args,
+        wait_ticks: [1, 1, 1],
+        after_global_write: NativeAIIdleRecoveryGlobalWrite { address: 0x51A83, value: 1 },
+    })
 }
 
 /// ApplyNativeAIIdleRecoveryWithPresentation performs the 0x13FD4 transaction
@@ -116,7 +151,33 @@ pub fn apply_native_ai_idle_recovery_with_presentation(
     unit: i64,
     present: Option<&mut dyn FnMut(NativeAIIdleRecoveryPresentation) -> Result<()>>,
 ) -> Result<bool> {
-    todo!("battle/native_ai_idle_recovery.go:ApplyNativeAIIdleRecoveryWithPresentation")
+    let decision = plan_native_ai_idle_recovery(records, count, unit)?;
+    if !decision.accepted {
+        return Ok(false);
+    }
+    let before = records.to_vec();
+    let Some(present) = present else {
+        return Err(battle_err!("native AI idle recovery presentation owner is unavailable"));
+    };
+    let presentation = build_native_ai_idle_recovery_presentation(decision)?;
+    if let Err(err) = present(presentation) {
+        records.copy_from_slice(&before);
+        return Err(err);
+    }
+    let current = match plan_native_ai_idle_recovery(records, count, unit) {
+        Ok(current) => current,
+        Err(err) => {
+            records.copy_from_slice(&before);
+            return Err(err);
+        }
+    };
+    if current != decision {
+        records.copy_from_slice(&before);
+        return Err(battle_err!("native AI idle recovery raw record changed before commit"));
+    }
+    let offset = (unit * NATIVE_RECORD_SIZE) as usize;
+    records[offset + 0x40..offset + 0x42].copy_from_slice(&decision.next_hp.to_le_bytes());
+    Ok(true)
 }
 
 /// PlanNativeAIIdleRecovery is the side-effect-free E0 adapter for 0x13fd4.
@@ -126,7 +187,25 @@ pub fn apply_native_ai_idle_recovery_with_presentation(
 ///
 /// Go：`native_ai_idle_recovery.go:150`，`func PlanNativeAIIdleRecovery(records []byte, count, unit int) (NativeAIIdleRecoveryDecision, error)`
 pub fn plan_native_ai_idle_recovery(records: &[u8], count: i64, unit: i64) -> Result<NativeAIIdleRecoveryDecision> {
-    todo!("battle/native_ai_idle_recovery.go:PlanNativeAIIdleRecovery")
+    let mut decision = NativeAIIdleRecoveryDecision { unit, ..Default::default() };
+    if count < 0 || count > records.len() as i64 / NATIVE_RECORD_SIZE || unit < 0 || unit >= count {
+        return Err(battle_err!("native AI idle recovery unit is out of bounds"));
+    }
+    let offset = (unit * NATIVE_RECORD_SIZE) as usize;
+    let record = &records[offset..offset + NATIVE_RECORD_SIZE as usize];
+    let current = u16::from_le_bytes([record[0x40], record[0x41]]);
+    let maximum = u16::from_le_bytes([record[0x42], record[0x43]]);
+    decision.current_hp = current;
+    decision.maximum_hp = maximum;
+    decision.raw_gate25 = record[0x25];
+    decision.raw_gate26 = record[0x26];
+    if current == maximum || record[0x25] != 0 || record[0x26] != 0 {
+        return Ok(decision);
+    }
+    let next = (current as u32 + maximum as u32 / 5).min(maximum as u32);
+    decision.accepted = true;
+    decision.next_hp = next as u16;
+    Ok(decision)
 }
 
 /// ApplyNativeAIIdleRecovery commits a previously verified 0x13fd4 decision.
@@ -135,5 +214,14 @@ pub fn plan_native_ai_idle_recovery(records: &[u8], count: i64, unit: i64) -> Re
 ///
 /// Go：`native_ai_idle_recovery.go:177`，`func ApplyNativeAIIdleRecovery(records []byte, count, unit int) (bool, error)`
 pub fn apply_native_ai_idle_recovery(records: &mut [u8], count: i64, unit: i64) -> Result<bool> {
-    todo!("battle/native_ai_idle_recovery.go:ApplyNativeAIIdleRecovery")
+    let decision = plan_native_ai_idle_recovery(records, count, unit)?;
+    if !decision.accepted {
+        return Ok(false);
+    }
+    let offset = (unit * NATIVE_RECORD_SIZE) as usize;
+    records[offset + 0x40..offset + 0x42].copy_from_slice(&decision.next_hp.to_le_bytes());
+    Ok(true)
 }
+
+#[cfg(test)]
+mod native_ai_idle_recovery_test;

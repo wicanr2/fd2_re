@@ -32,5 +32,55 @@ pub fn resolve_native_ai_physical_item_source(
     record: &[u8],
     item_rows: &[u8],
 ) -> Result<(NativeAIPhysicalItemSource, bool)> {
-    todo!("battle/native_ai_physical_item_source.go:ResolveNativeAIPhysicalItemSource")
+    if (record.len() as i64) < NATIVE_RECORD_SIZE {
+        return Err(battle_err!(
+            "native AI physical item source record has {} bytes, want at least {}",
+            record.len(),
+            NATIVE_RECORD_SIZE
+        ));
+    }
+    let row_size = NATIVE_ITEM_EFFECT_ROW_SIZE as usize;
+    if item_rows.is_empty() || !item_rows.len().is_multiple_of(row_size) || item_rows.len() / row_size > 0x100 {
+        return Err(battle_err!("native AI physical item source table has invalid byte length {}", item_rows.len()));
+    }
+
+    let cells = NATIVE_INVENTORY_CELLS as usize;
+    let mut flags = vec![0i64; cells];
+    let mut slots = vec![0i64; cells];
+    for slot in 0..cells {
+        let offset = 0x0a + slot * 2;
+        flags[slot] = record[offset] as i64;
+        slots[slot] = record[offset + 1] as i64;
+    }
+    let selected = native_equipped_inventory_slot(&flags, &slots, 0)?;
+    if selected < 0 {
+        return Ok((NativeAIPhysicalItemSource::default(), false));
+    }
+
+    let item_id = slots[selected as usize] as u8;
+    let row_offset = match native_item_effect_row_offset(item_id as i64) {
+        Ok(offset) if offset as usize + row_size <= item_rows.len() => offset as usize,
+        Ok(offset) => {
+            return Err(battle_err!(
+                "native AI physical item source item {:#x}: item row offset {} exceeds table",
+                item_id,
+                go_sharp_x(offset)
+            ));
+        }
+        Err(err) => return Err(err.wrap(format!("native AI physical item source item {item_id:#x}: "))),
+    };
+    let row = item_rows[row_offset..row_offset + row_size].to_vec();
+    Ok((
+        NativeAIPhysicalItemSource {
+            slot: selected,
+            item_id,
+            raw_geometry_byte0_b: row[0x0b],
+            raw_geometry_byte0_c: row[0x0c],
+            row,
+        },
+        true,
+    ))
 }
+
+#[cfg(test)]
+mod native_ai_physical_item_source_test;

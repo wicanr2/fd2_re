@@ -27,5 +27,19 @@ pub struct NativeAISpellCandidate {
 ///
 /// Go：`native_ai_choice.go:22`，`func SelectNativeAISpellCandidate(candidates []NativeAISpellCandidate) (NativeAISpellCandidate, bool)`
 pub fn select_native_ai_spell_candidate(candidates: &[NativeAISpellCandidate]) -> (NativeAISpellCandidate, bool) {
-    todo!("battle/native_ai_choice.go:SelectNativeAISpellCandidate")
+    let Some(first) = candidates.first() else {
+        return (NativeAISpellCandidate::default(), false);
+    };
+    let mut best = first;
+    for candidate in &candidates[1..] {
+        if candidate.score > best.score
+            || (candidate.score == best.score && candidate.command_value > best.command_value)
+        {
+            best = candidate;
+        }
+    }
+    (best.clone(), true)
 }
+
+#[cfg(test)]
+mod native_ai_choice_test;

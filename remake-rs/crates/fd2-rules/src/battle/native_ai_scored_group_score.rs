@@ -26,7 +26,26 @@ pub fn score_native_ai_scored_command_groups(
     groups: &[NativeAIScoredCommandCandidateGroup],
     skip: Option<&mut dyn FnMut(i64) -> bool>,
 ) -> Result<Vec<NativeAIScoredCommandGroupScore>> {
-    todo!("battle/native_ai_scored_group_score.go:ScoreNativeAIScoredCommandGroups")
+    let mut skip = skip;
+    if !(0..NATIVE_COMMAND_RECORD_COUNT).contains(&command_id) || command_value < 0 {
+        return Err(battle_err!("native AI group score: invalid command id/value"));
+    }
+    let mut result = Vec::with_capacity(groups.len());
+    for group in groups {
+        let score = score_native_ai_scored_command_targets(
+            records,
+            &group.target_indices,
+            command_id,
+            command_value,
+            native_ai_reborrow_skip(&mut skip),
+        )?;
+        result.push(NativeAIScoredCommandGroupScore {
+            destination: group.destination,
+            target_indices: group.target_indices.clone(),
+            score,
+        });
+    }
+    Ok(result)
 }
 
 /// Go：`native_ai_scored_group_score.go:43`，`func scoreNativeAIScoredCommandTargets( records []byte, targets []byte, commandID, commandValue int, skip func(int) bool, ) (int, error)`
@@ -37,5 +56,28 @@ pub(crate) fn score_native_ai_scored_command_targets(
     command_value: i64,
     skip: Option<&mut dyn FnMut(i64) -> bool>,
 ) -> Result<i64> {
-    todo!("battle/native_ai_scored_group_score.go:scoreNativeAIScoredCommandTargets")
+    match command_id {
+        ..=12 => score_native_ai_spell_attack(records, targets, command_id, command_value, skip),
+        13..=16 => score_native_ai_spell_recovery(records, targets, command_id),
+        17..=19 => score_native_ai_spell_zero_flag(records, targets, command_id),
+        20..=21 => score_native_ai_spell_flag(records, targets, command_id),
+        22 => score_native_ai_spell22(records, targets),
+        23..=25 => Ok(0),
+        26..=27 => score_native_ai_spell_zero_flag(records, targets, command_id),
+        _ => Ok(0),
+    }
 }
+
+/// 在迴圈裡重複借出呼叫端的 `skip` 閘門（Go 的 `func(int) bool` 可以直接重複傳遞）。
+/// Rust 新增的小工具，沒有對應的 Go 函式。
+pub(crate) fn native_ai_reborrow_skip<'a>(
+    skip: &'a mut Option<&mut dyn FnMut(i64) -> bool>,
+) -> Option<&'a mut dyn FnMut(i64) -> bool> {
+    match skip {
+        Some(f) => Some(&mut **f),
+        None => None,
+    }
+}
+
+#[cfg(test)]
+mod native_ai_scored_group_score_test;

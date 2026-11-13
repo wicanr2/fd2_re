@@ -58,7 +58,8 @@ pub struct NativeAI14EF0Decision {
 
 /// Go：`native_ai_14ef0_dispatch.go:51`，`func PlanNativeAI14EF0Dispatch(in NativeAI14EF0Input) (NativeAI14EF0Decision, error)`
 pub fn plan_native_ai14_ef0_dispatch(r#in: NativeAI14EF0Input) -> Result<NativeAI14EF0Decision> {
-    todo!("battle/native_ai_14ef0_dispatch.go:PlanNativeAI14EF0Dispatch")
+    let tail = select_native_ai14_ef0_tail(r#in)?;
+    Ok(NativeAI14EF0Decision { tail, accepted: r#in.score_c4_f >= 6 || r#in.score_c23 >= 6 || r#in.score_c33 >= 6 })
 }
 
 /// SelectNativeAI14EF0Tail 只保存 0x14ef0 的 raw 尾端決策樹。呼叫端必須
@@ -67,5 +68,68 @@ pub fn plan_native_ai14_ef0_dispatch(r#in: NativeAI14EF0Input) -> Result<NativeA
 ///
 /// Go：`native_ai_14ef0_dispatch.go:64`，`func SelectNativeAI14EF0Tail(in NativeAI14EF0Input) (NativeAI14EF0Tail, error)`
 pub fn select_native_ai14_ef0_tail(r#in: NativeAI14EF0Input) -> Result<NativeAI14EF0Tail> {
-    todo!("battle/native_ai_14ef0_dispatch.go:SelectNativeAI14EF0Tail")
+    if !r#in.has_raw_score_c4_f
+        || !r#in.has_raw_score_c23
+        || !r#in.has_raw_score_c33
+        || !r#in.has_raw_record34
+        || !r#in.has_raw_actor_word48
+        || !r#in.has_raw_target_word4_a
+    {
+        return Err(battle_err!("native AI 0x14ef0 raw inputs are incomplete"));
+    }
+
+    // 0x14f4c..0x14f5d：record+0x34 bit 0x40 與 unsigned words +0x48/+0x4a。
+    let flag40 = r#in.record34 & 0x40;
+    let delta = r#in.actor_word48 as i32 - r#in.target_word4_a as i32;
+    let (c4f, c23, c33) = (r#in.score_c4_f, r#in.score_c23, r#in.score_c33);
+
+    // 0x14f62..0x14f7f：沒有 producer 達到 signed threshold。
+    if c4f < 6 && c23 < 6 && c33 < 6 {
+        return Ok(NATIVE_AI14_EF0_NO_TAIL);
+    }
+
+    // 0x14f84..0x14f9b：c4f 是 strict maximum。
+    if c4f > c23 && c4f > c33 {
+        return Ok(NATIVE_AI14_EF0_CALL1548_E);
+    }
+
+    // 0x14fa5..0x14fe5：c4f 與 c23 平手且高於 c33。0x4e516 提供 command
+    // word；command IDs >= 11 改用 record+0x34 bit 0x40。
+    if c4f == c23 && c4f > c33 {
+        if !r#in.has_raw_command_id || !r#in.has_raw_command_word {
+            return Err(battle_err!("native AI 0x14ef0 command tie inputs are incomplete"));
+        }
+        if r#in.command_id >= 11 {
+            if flag40 == 0 {
+                return Ok(NATIVE_AI14_EF0_CALL15311);
+            }
+            return Ok(NATIVE_AI14_EF0_CALL1548_E);
+        }
+        if r#in.command_word as i32 >= delta {
+            return Ok(NATIVE_AI14_EF0_CALL15311);
+        }
+        return Ok(NATIVE_AI14_EF0_CALL1548_E);
+    }
+
+    // 0x14feb..0x15006：c4f 與 c33 平手且高於 c23。raw bit 選擇
+    // 0x1548e 或 0x15055。
+    if c4f == c33 && c4f > c23 {
+        if flag40 != 0 {
+            return Ok(NATIVE_AI14_EF0_CALL1548_E);
+        }
+        return Ok(NATIVE_AI14_EF0_CALL15055);
+    }
+
+    // 0x1500d..0x15039：c23 勝出（包括與 c33 平手），或 c33 是 strict
+    // maximum。其餘平手直接通過，不呼叫尾端函式。
+    if c23 > c4f && c23 >= c33 {
+        return Ok(NATIVE_AI14_EF0_CALL15311);
+    }
+    if c33 > c4f && c33 > c23 {
+        return Ok(NATIVE_AI14_EF0_CALL15055);
+    }
+    Ok(NATIVE_AI14_EF0_NO_TAIL)
 }
+
+#[cfg(test)]
+mod native_ai_14ef0_dispatch_test;

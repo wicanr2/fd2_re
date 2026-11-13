@@ -39,5 +39,86 @@ pub fn score_native_ai1598_a(
     cost_row: &[u8],
     skip: Option<&mut dyn FnMut(i64) -> bool>,
 ) -> Result<NativeAI1598AScoreResult> {
-    todo!("battle/native_ai_1598a_score.go:ScoreNativeAI1598A")
+    let mut skip = skip;
+    let Some(unit) = unit.filter(|_| {
+        count > 0
+            && count <= 0x100
+            && actor >= 0
+            && actor < count
+            && records.len() as i64 == count.wrapping_mul(NATIVE_RECORD_SIZE)
+            && w > 0
+            && h > 0
+            && base_flags.len() as i64 == w.wrapping_mul(h)
+            && terrain_move_codes.len() as i64 == w.wrapping_mul(h)
+            && cost_row.len() as i64 == NATIVE_MOVEMENT_COST_ROW_SIZE
+            && (selector == 0 || selector == 1)
+            && book.len() as i64 == NATIVE_COMMAND_RECORD_COUNT
+    }) else {
+        return Err(battle_err!("native AI 0x1598a inputs are malformed"));
+    };
+    let actor_record = &records[(actor * NATIVE_RECORD_SIZE) as usize..];
+    for (index, &value) in unit.native_command_mask.iter().enumerate() {
+        if actor_record[0x1a + index] != value {
+            return Err(battle_err!("native AI 0x1598a actor mask disagrees with record"));
+        }
+    }
+    if unit.mp < 0 || unit.mp > 0xffff || u16::from_le_bytes([actor_record[0x44], actor_record[0x45]]) != unit.mp as u16
+    {
+        return Err(battle_err!("native AI 0x1598a actor MP disagrees with record"));
+    }
+    for (id, command) in book.iter().enumerate() {
+        if command.id != id as i64 {
+            return Err(battle_err!("native AI 0x1598a command book is malformed"));
+        }
+    }
+    let mut candidates = Vec::new();
+    for command_id in native_available_ai_scored_command_ids(Some(unit), book) {
+        let command = book[command_id as usize];
+        // 施法落點不走行動者的移動成本：0x159A5 push 0 → 0x4E555 取成本列 0（20 個 1），
+        // 0x15A60 把它與指令 +3 距離一起交給 0x4E040。傳進來的 costRow 是行動者那一列，
+        // 地形成本大於 1 的路上會把距離 5 的施法算成走不到（第八章 r1 seq 940 記錄 18）。
+        let groups = native_ai_scored_command_candidate_groups(
+            w,
+            h,
+            records,
+            count,
+            actor,
+            selector,
+            command,
+            base_flags,
+            terrain_move_codes,
+            &NATIVE_AI_COMMAND_COST_ROW,
+        )?;
+        let scores = score_native_ai_scored_command_groups(
+            records,
+            command_id,
+            command.damage,
+            &groups,
+            native_ai_reborrow_skip(&mut skip),
+        )?;
+        for score in scores {
+            if score.score < 0 {
+                return Err(battle_err!("native AI 0x1598a score is negative"));
+            }
+            if score.score == 0 {
+                continue;
+            }
+            candidates.push(NativeAISpellCandidate {
+                command_id,
+                command_value: command.damage,
+                x: score.destination.x,
+                y: score.destination.y,
+                score: score.score,
+                target_indices: score.target_indices.clone(),
+            });
+        }
+    }
+    let (winner, ok) = select_native_ai_spell_candidate(&candidates);
+    if !ok {
+        return Ok(NativeAI1598AScoreResult::default());
+    }
+    Ok(NativeAI1598AScoreResult { max_score: winner.score, positive_winner: winner, has_positive_winner: true })
 }
+
+#[cfg(test)]
+mod native_ai_1598a_score_test;
