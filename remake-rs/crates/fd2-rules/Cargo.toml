@@ -1,0 +1,19 @@
+[package]
+name = "fd2-rules"
+description = "FD2 remake deterministic battle rules (port of the frozen Go battle package)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[lib]
+# 函式 doc 逐字保留 Go 註解，其中縮排行在 rustdoc 會被當成 Rust 程式碼；不跑 doctest。
+doctest = false
+
+[dependencies]
+fd2-formats = { path = "../fd2-formats" }

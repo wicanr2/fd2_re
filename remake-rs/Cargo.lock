@@ -2682,6 +2682,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "fd2-rules"
+version = "0.1.0"
+dependencies = [
+ "fd2-formats",
+]
+
+[[package]]
 name = "fdeflate"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"

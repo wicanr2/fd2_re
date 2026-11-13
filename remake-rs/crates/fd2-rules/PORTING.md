@@ -1,0 +1,130 @@
+# fd2-rules 移植說明（R2 階段 1 骨架）
+
+`fd2-rules::battle` 對應凍結 Go 版 `remake/internal/battle`。階段 1 把型別、常數、表格與全部函式簽名搬過來，函式本體是 `todo!("battle/<file>.go:<FuncName>")`；階段 2 由多個子代理依下方分組平行補上本體、移植測試並加黃金差分。單位的所有權設計與其他型別決定寫在 [`src/battle.rs`](src/battle.rs) 的模組文件，階段 2 照用，不重新決定。
+
+逐檔、逐函式的機器可讀清單在 [`PORTING.json`](PORTING.json)：Rust 路徑、Go 正式行數、測試檔與行數、每個函式的 Rust 路徑與狀態、檔內函式的呼叫對象、檔案相依，以及每檔的階段 2 組別。
+
+## 骨架現況
+
+以凍結 Go 版 `dccfd895` 的 `remake/internal/battle` 量測（2026-11-14）。
+
+| 項目 | 數量 |
+|---|---|
+| Go 正式檔／行數 | 129 檔／20931 行 |
+| Go 測試檔／行數 | 133 檔／16355 行 |
+| 型別 | Go 具名型別 204 個，另有 4 個 Go 匿名 struct 在 Rust 給了名稱 |
+| 常數 | 83 |
+| 套件層變數 | 11（8 張表格、3 個可改寫的全域 func／亂數源） |
+| 函式與方法 | 632，其中 29 個本體已直接移植，603 個是 `todo!()` |
+
+- 直接移植的只有一行委派、常數或欄位運算（例如 `Unit::alive`、`State::claim_treasure`），PORTING.json 標 `ported`。Go 會繞回的整數運算一律用 `wrapping_*`。
+- 每個函式的 doc 保留 Go 註解，接著一行 `Go：<檔>:<行>` 與原始 Go 簽名；有所有權轉換時另有「所有權：」說明索引指向哪個陣列。
+- Go 的 JSON 標籤保留在欄位 doc 的「Go 標籤：」。
+- `cargo build`、`cargo clippy -- -D warnings` 通過。`lib.rs` 的 crate 層 `allow(unused, dead_code, …)` 是骨架專用，全部組完成後移除。
+- 骨架由一次性的 Go `go/types` 分析工具產生（參數可變性、nil 檢查、回傳值是否新建、單位指標的流向都由型別資訊推導）。產生器沒有進版控；從現在起這些檔案改為人工維護。
+
+## 階段 2 分組
+
+依函式呼叫圖與「每個測試檔實際需要哪些函式」（測試呼叫的函式及其遞移呼叫）分組：先把呼叫圖拓撲排序，再固定波次做局部搜尋，壓低「測試要等同波次其他組或後面波次」的行數與呼叫到未完成組的次數，並讓各組行數相近。Go 的函式之間的呼叫沒有環，但以檔案為單位時有一個 33 檔、約 19800 行的循環區（`model`、`event`、`combat`、`growth`、指令與 AI 互相呼叫），所以無法讓每一組的測試都只依賴前面的組；剩下的跨組測試列在下方「延後的測試」。
+
+| 組 | 主題 | 波次 | Go 檔 | 正式行數 | 測試檔 | 測試行數 | 函式 |
+|---|---|---|---|---|---|---|---|
+| A | 單位、記錄與物品欄基礎 | 1 | 41 | 4627 | 42 | 3040 | 152 |
+| B | 指令、目標與死亡程式 | 2 | 22 | 4411 | 25 | 3337 | 165 |
+| C | 物品效果與面板繪製 | 2 | 28 | 3087 | 27 | 2367 | 82 |
+| D | 敵我 AI | 3 | 21 | 3608 | 19 | 3017 | 90 |
+| E | 戰鬥、成長與法術 | 3 | 9 | 2606 | 11 | 2102 | 86 |
+| F | 劇本事件、回合與快照 | 3 | 8 | 2592 | 9 | 2492 | 57 |
+
+順序：
+
+1. **波次 1：A。** 其他每一組的測試都要用到 A（`Unit`、`State` 基本操作、物品欄與原版記錄）。
+2. **波次 2：B、C 平行**，A 合併後開始驗證。C 只有一個測試要等 B。
+3. **波次 3：D、E、F 平行**，A、B、C 合併後開始驗證。D 與 E 互相依賴（AI 執行期的測試要跑戰鬥，`combat_test` 要跑 AI 計畫），兩組都合併後再跑彼此的延後測試；F 最後收尾。
+4. **整合：** 全部合併後跑下表的延後測試，再移除 `lib.rs` 的骨架 allow。
+
+各組檔案：
+
+- **A**：model、command_learn、native_ai_destination、native_ai_record、native_class_compat、native_command、native_command_availability、native_command_mp、native_command_record、native_coordinate_write、native_equipment、native_equipped_item、native_future_constructor、native_inventory_{assign,available,flags,records,remove,search,slots,transfer}、native_item_panel_record、native_item_row、native_map_presentation、native_marker_rewrite、native_movement_cost、native_persistent_{copy,lookup}、native_raw_{application,damage,flag_restore,pair_step,restore,word_step,word_subtract}、native_record_{byte5,byte5_bit0,flags}、native_transient、native_unit_byte_clear、native_word_delta_remove
+- **B**：balance、move、native_ai_path、native_ai_scored_candidates、native_command0／13／17／20／20_ai_plan／25／26／32／33／34／35、native_command_{compound,damage,modifier,target}、native_death_program、native_item_target、native_map_view
+- **C**：native_battle_panel、native_ch28_post_{prelude,present}、native_command_{grid,overlay_render,palette_flash,scene}、native_item_{ap_dp_step,base_stat_unit,capacity_step,capacity_unit,command_damage,dispatch,hit_ev_step,hp_restore,marker_application,marker_clear_restore,mp_restore,panel_data_render,panel_render,relocation,selector,table}、native_map_unit_window、native_physical_scene、native_presentation_queue、native_revive_list_render、native_transfer_item_render
+- **D**：native_ai_14ef0_dispatch、native_ai_1598a_score、native_ai_action_runtime、native_ai_choice、native_ai_idle_recovery、native_ai_item_{preselection,score}、native_ai_mode11、native_ai_mode11_runtime、native_ai_mode5、native_ai_mode_{record,write}、native_ai_phase_diagnostic、native_ai_physical_{candidates,item_source,score}、native_ai_runtime、native_ai_scored_group_score、native_ai_spell_score、native_command24、native_player_movement
+- **E**：combat、growth、magic、native_battle_result、native_physical_{attack,damage,experience}、native_player_attack_field、terrain
+- **F**：event、native_end_turn_recovery、native_field_event、native_result、native_system_group_march、native_turn_pair_mutation、native_turn_progression、snapshot
+
+測試檔歸屬：`x_test.go` 歸 `x.go`；名稱不對應的歸最長前綴相符的正式檔，再不行就歸測試呼叫最多函式的那個檔（例如 `treasure_test.go` 歸 `model.go`、`native_combat_tables_test.go` 歸 `terrain.go`）。
+
+### 延後的測試
+
+這些測試檔由所屬組移植，但要等「等待」欄的組合併後才會通過；移植時先標 `#[ignore = "等 <組> 合併"]`，整合時拿掉。合計 2572 行，約占測試的 16%。
+
+| 所屬組 | 測試檔 | 行數 | 等待 |
+|---|---|---|---|
+| A | `treasure_test.go` | 273 | B、D、F |
+| A | `native_command_test.go` | 117 | B、E |
+| B | `balance_test.go` | 95 | E |
+| B | `move_test.go` | 183 | F |
+| B | `native_death_program_test.go` | 318 | E、F |
+| C | `native_item_command_damage_test.go` | 60 | B |
+| D | `native_ai_mode5_test.go` | 289 | E |
+| D | `native_ai_runtime_test.go` | 649 | E |
+| D | `native_ai_target_terrain_test.go` | 38 | E |
+| E | `combat_test.go` | 396 | D |
+| F | `native_system_group_march_test.go` | 154 | D、E |
+
+組內函式呼叫到「尚未完成的組」（同波次其他組或後面波次）的次數：A→B 1、A→D 3、C→B 2、D→E 8、E→D 8、F→D 2；B 沒有。這些呼叫在對方完成前會碰到 `todo!()`，所屬測試已列在上表。
+
+## 階段 2 的工作規則
+
+- 每組只改自己擁有的 `src/battle/<file>.rs`，以及本檔與 PORTING.json 裡自己那幾列的狀態（`todo` → `ported`）。
+- 測試放在所屬正式檔的子模組：`x.go` 名下的 `t_test.go` 寫成 `src/battle/x/t_test.rs`，在 `x.rs` 加 `#[cfg(test)] mod t_test;`。這樣各組不會改到同一個檔。
+- 型別、常數與簽名是共同契約。真的要改別組擁有的簽名時，先在本檔「簽名變更紀錄」追加一列（日期、函式、原因），再通知該組；不要直接改別組的檔。
+- 錯誤訊息用 `BattleError`（`battle_err!` 巨集），`Display` 與 Go 錯誤字串逐字相同。Go 的 `%q`、`%x`、`%#v` 等格式要逐處對照 Go 輸出。
+- 黃金差分沿用 R1 的做法：在 `remake/cmd/` 新增只輸出資料的 Go 工具，Rust 測試逐欄比對；種子與輸入雜湊寫進收據。
+
+## 開工前的決定（2026-11-14）
+
+1. **Go `math/rand` 相容序列：移植，放在 `src/battle/rng.rs`，由 A 組實作。** 119 的 R2 完成條件是「Go 的戰鬥決定性測試以相同種子產生相同結果」，約 90 處 Go 測試的期望值綁在 `rand.NewSource(seed)` 的序列上，只有重現序列才能不改期望值。這是 `rust-port-no-go-stdlib` 教訓唯一具名的例外，範圍限定為：
+   - `GoSource`：Go `rngSource` 的種子化（`seedrand`）、607 項加法延遲費氏產生器與 `Int63`／`Uint64`，以及 `rngCooked` 表。表格由容器內 Go 1.22.12 的 `$GOROOT/src/math/rand/rng.go` 機械轉出，不手抄；檔頭保留 Go 的 BSD 授權聲明。
+   - `GoRandImpl`（名稱由 A 組定）：Go `(*rand.Rand).Intn`、`Int31n`、`Int63n`、`Int31` 的取樣，實作 `GoRand`。`battle` 只用 `Intn`，其他方法不移植。
+   - 黃金差分：`remake/cmd/fd2-golden-gorand` 輸出多個種子（含負數、0、`seed` 迴圈用到的 0～999）在不同 `n`（含 2 的冪、1、`1<<31` 以上）的 `Intn` 序列，Rust 逐值比對。
+   - `with_engine_rand`（Go 的 `engineRand`，以時間播種）用同一個型別，種子取 `SystemTime`；它只服務舊版相容介面，不要求跨版本一致。
+   - 原版自己的亂數不經過這裡，仍是 `fd2_formats::native_rng`。
+2. **JSON：`serde` + `serde_json`，`[]byte` 欄位用工作區已鎖定的 `base64 =0.23.1`。** 依賴寫法照 `fd2-formats/Cargo.toml`（`=` 釘版）。共用的 serde 輔助放在 `src/battle/support.rs`，由 A 組建立，其他組只引用：
+   - `go_bytes`：Go `[]byte` ↔ 標準 base64 字串（含 `null` 讀成空或 `None`，依欄位是否 `Option`）。
+   - `null_as_default`：Go 把 nil 切片／map 寫成 `null`，Rust 讀成空值。
+   - `omitempty` → `skip_serializing_if`；`json:"-"` → `#[serde(skip)]`；Go 接受未知欄位，serde 預設也接受，不加 `deny_unknown_fields`。
+   - 刻意不照做（列入各組的 `KNOWN_DIFFERENCES`）：Go 解碼時欄位名不分大小寫，Rust 只認標籤原文；損壞 JSON 只比接受或拒收，不比錯誤文字。重製端資產都由 Go 以標籤原文寫出，不受影響。
+   - `fd2-formats` 的 `NativeMapSpriteCycleState`、`NativeBinaryTickState`、`NativeTerrainPhaseState` 補 serde，`fdother::Frame` 補 `Debug`，`fdtxt::Font` 補 `Debug`，由 F 組在 `fd2-formats` 內補（只加 derive 與必要的 serde 屬性，欄位名對照 Go 標籤），不改既有行為；改完 `tools/rust_formats_test.sh` 必須照舊全過。
+3. **DebugAI 掛鉤：** Go `func(format string, args ...any)` 在 Rust 收 `fmt::Arguments`；`cmd/fd2` 端的對應在 R4 處理。
+
+## 格式層缺口
+
+`src/battle/format_deps.rs` 在編譯期列出 `battle` 用到的全部格式層項目，都已有公開的 Rust 對應。形狀不同、呼叫端要注意的地方：
+
+| Go | Rust | 差異 |
+|---|---|---|
+| `fdother.ReadResource(path, int)` | `fdother::read_resource(path, usize)` | 資源索引是 `usize`，Go 負索引無法傳入 |
+| `fdicon.NewNativeSelectorCacheFromKeys` | `fdicon::NativeSelectorCache::from_keys` | 關聯函式 |
+| `fdother.Frame` | 只有 `Clone`、`Default` | 沒有 `Debug`、`PartialEq` |
+| `fdtxt.Font` | 只有 `Clone` | 沒有 `Debug`、`Default` |
+| `fdtxt.Strings` | 沒有 `Default` | |
+| 上列三個狀態型別 | 沒有 serde | 見上節第 2 點 |
+
+因此 `NativeItemPanelDataAssets`（含 `fdother::Frame` 與 `fdtxt::Font`）沒有 `Debug`；它把兩者包在 `Option` 裡，所以仍有 `Default`。
+
+## Go 寫法對應時的注意事項
+
+- **單位指標**：規則見 `battle.rs`。另有兩類函式的 Rust 簽名多了開頭參數 `units`：經由結構欄位裡的 `UnitIdx` 讀寫單位的自由函式（例如 `apply_native_command_damage_mp`、`complete_native_command_damage`，共 34 個），以及兩個以上 `*Unit` 參數可能指向同一單位並被改寫的函式（`transfer_native_inventory_item`、`apply_native_item_base_stat_delta_to_unit`、`apply_native_item_capacity_to_unit`）。
+- **nil 接收者**：Go 有不少 `if s == nil` 的防護，Rust 的 `self` 不會是 null，這些分支與「對 nil 呼叫方法」的 Go 測試不移植；函式 doc 有註明。
+- **nil 參數**：Go 會檢查 nil 的指標、func 參數包成 `Option`；nil map／切片讀起來等於空的，除非函式明寫 `== nil`，否則用 `&BTreeMap`／`&[T]`。
+- **map 迭代順序**：Go 隨機、Rust 有序；會受順序影響的 7 處列在 `battle.rs`。
+- **淺複製**：Go `candidate := *s` 共用子指標，Rust `clone()` 是深複製；移植時逐處確認沒有依賴共用的副作用。
+- **函式內的區域型別**（例如 `native_death_program.go` 的 `type setter func()`）與函式內的匿名 struct 不在骨架裡，由移植本體的組自行處理。
+
+## 簽名變更紀錄
+
+階段 2 若必須修改骨架既定的型別或簽名，在此追加。
+
+| 日期 | 項目 | 原因 | 組 |
+|---|---|---|---|
