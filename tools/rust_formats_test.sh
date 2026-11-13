@@ -3,6 +3,7 @@
 # 並設 FD2_REQUIRE_ORIGINAL=1，缺檔即失敗，不會悄悄跳過。
 # 用法：tools/rust_formats_test.sh [cargo test 的額外參數]
 # 各模組讀原版檔的環境變數尚未統一（R1 收尾處理），這裡一次全部設定。
+# docs/ 掛在 /docs（remake-rs 的上一層），供讀受版控 IDA 證據的測試使用。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
 flame="$root/org_game/炎龍騎士團/FLAME2"
@@ -23,6 +24,7 @@ timeout 3000s docker run --rm --network none --memory 6g --cpus 4 --pids-limit 1
   --mount "type=bind,source=$root/remake/assets,target=/assets,readonly" \
   --mount "type=bind,source=$root/remake-rs,target=/src" \
   --mount "type=bind,source=$root/LICENSE,target=/LICENSE,readonly" \
+  --mount "type=bind,source=$root/docs,target=/docs,readonly" \
   --mount "type=bind,source=$root/work/rust-build,target=/build" -w /src \
   fd2-rust:1.99.1-r3 bash -euo pipefail -c '
     cargo fmt --check

@@ -3,15 +3,9 @@
 use super::go_compat::{nullable, nullable_struct, nullable_struct_vec};
 use super::separated_item_panel::load_item_panel_indexed_png;
 use super::separated_surface::read_document;
-use super::{FdotherError, LMI1Entry, Result};
+use super::{FdotherError, LMI1Entry, NATIVE_SPAWN_INTRO_FRAME_RESOURCE, NATIVE_SPAWN_INTRO_PASS_COUNT, Result};
 use serde::Deserialize;
 use std::path::Path;
-
-/// Go `spawn_intro.go` 的 `NativeSpawnIntroFrameResource`／`NativeSpawnIntroPassCount`。
-/// spawn_intro.go 不在本批移植範圍（第三組），這裡先以私有常數照抄同值；移植那個檔案時
-/// 改用它的公開常數。
-const NATIVE_SPAWN_INTRO_FRAME_RESOURCE: i64 = 9;
-const NATIVE_SPAWN_INTRO_PASS_COUNT: usize = 12;
 
 #[derive(Debug, Default, Deserialize)]
 #[serde(default)]
@@ -169,8 +163,9 @@ pub fn load_separated_lmi1_bank(root: impl AsRef<Path>, resource: i64) -> Result
     Ok(entries)
 }
 
-fn validate_native_spawn_intro_frames(entries: &[LMI1Entry]) -> Result<()> {
-    const WANT: [(i64, i64); NATIVE_SPAWN_INTRO_PASS_COUNT] = [
+/// Go `validateNativeSpawnIntroFrames`；`spawn_intro` 的封存解碼也用它。
+pub(super) fn validate_native_spawn_intro_frames(entries: &[LMI1Entry]) -> Result<()> {
+    const WANT: [(i64, i64); NATIVE_SPAWN_INTRO_PASS_COUNT as usize] = [
         (42, 24),
         (44, 24),
         (45, 24),

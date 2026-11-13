@@ -1,19 +1,24 @@
-//! 逐條移植自 Go `remake/internal/fdother` 本批（核心與分離載入器）的 `_test.go`，期望值不改。
-//! 每個子模組對應一個 Go 測試檔。
+//! 逐條移植自 Go `remake/internal/fdother` 核心與分離載入器、以及依賴它們的第三組的 `_test.go`，
+//! 期望值不改。每個子模組對應一個 Go 測試檔；第三組只有一到三項測試的小檔合併在
+//! `flow_schedules_test`。
 //!
 //! 需要原版檔的測試與 Go 版一樣，檔案不存在就略過；`FD2_REQUIRE_ORIGINAL=1` 時缺檔即失敗。
 //! 原版目錄由 `FD2_FLAME2_DIR` 指定，分離素材包根目錄由 `FD2_ASSET_PACK` 指定。Go 測試讀的
 //! `extracted/raw/<DAT>/<DAT>_NNN.bin` 是同一封存項目的抽出檔（Go 的 `TestFDOTHER054ArchiveLoader`
 //! 就驗證兩者相等），這裡改由 `FD2_FLAME2_DIR` 的封存直接取出，不另設環境變數。
 
+mod action_overlay_test;
 mod chapter_aux_surface_test;
 mod dialogue_grid_test;
+mod flow_schedules_test;
 mod frame_test;
 mod frame_text_test;
 mod lmi1_test;
 mod lutbank_test;
 mod map_parallax_test;
+mod native_ch23_test;
 mod palette_test;
+mod preparation_roster_test;
 mod range_overlay_test;
 mod rawcells_test;
 mod remap_test;
@@ -28,10 +33,12 @@ mod separated_lutbank_test;
 mod separated_palette_test;
 mod separated_range_overlay_test;
 mod separated_sound_test;
+mod spawn_intro_test;
 mod split_slide_test;
 mod sprite_bank_test;
 mod terrain_lut_test;
 mod terrain_phase_test;
+mod unit_present_schedule_test;
 
 use std::path::{Path, PathBuf};
 

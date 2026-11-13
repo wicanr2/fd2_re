@@ -20,16 +20,25 @@
 //!   Go 標準函式庫；說明見 `go_compat` 模組。格式正確的輸入結果與 Go 相同，包裝的內層錯誤
 //!   文字（[`FdotherError::External`]）則是 Rust 函式庫的。
 //!
+//! 依賴核心與原版流程邏輯的第三組（`action_overlay`、`native_ch23`、`preparation_roster`、
+//! `spawn_intro`、`unit_present_schedule` 等）也用 [`FdotherError`]：它們的錯誤多半包裝核心那一組的
+//! 繪圖與載入錯誤。Go 的 nil callback 以 `Option` 保留拒收分支；Go 閉包捕捉同一個緩衝再改寫的地方，
+//! 改成把緩衝交給 callback，或像 `run_native_ch23_loop` 一樣用 `&[Cell<u8>]` 保留共用別名。
+//!
 //! 封存目錄已拆到 [`crate::archive`]，這裡轉出同名函式，保留 Go `fdother.ReadResource` 的對應。
 
 mod go_compat;
 
+mod action_overlay;
 mod battle_entry_step;
+mod ch28_post_present;
 mod chapter_aux_surface;
 mod dialogue_grid;
 mod frame;
+mod indexed_transition;
 mod indexed_transition_buffer;
 mod indexed_transition_lut;
+mod indexed_transition_pass;
 mod indexed_transition_schedule;
 mod lmi1;
 mod lmi1_frame;
@@ -37,8 +46,15 @@ mod lutbank;
 mod map_binding;
 mod map_parallax;
 mod native_ai_item_damage_tail;
+mod native_ai_item_type21_tail;
+mod native_ch23;
 mod native_command10_12;
+mod native_command20_22_tail;
+mod native_command32_tail;
+mod native_command33_tail;
 mod native_command34_tail;
+mod native_command35_tail;
+mod native_command9;
 mod native_command_heal_presentation;
 mod native_command_heal_tail;
 mod native_compound_palette;
@@ -52,10 +68,12 @@ mod native_shop_route;
 mod native_unit_mode;
 mod native_unit_mode_branch;
 mod palette;
+mod pending_code1_interlude;
 mod post_resolution_commands;
 mod preparation_dispatch;
 mod preparation_gate;
 mod preparation_input;
+mod preparation_roster;
 mod preparation_timer;
 mod range_overlay;
 mod rawcells;
@@ -72,11 +90,13 @@ mod separated_palette;
 mod separated_range_overlay;
 mod separated_sound;
 mod separated_surface;
+mod spawn_intro;
 mod split_slide;
 mod sprite_bank;
 mod system_info_transition;
 mod terrain_lut;
 mod terrain_phase;
+mod unit_present_schedule;
 
 #[cfg(test)]
 mod tests;
@@ -87,12 +107,16 @@ pub use crate::archive::{
 };
 pub use crate::native_rng::{native_rng_marker, native_rng_step};
 
+pub use action_overlay::*;
 pub use battle_entry_step::*;
+pub use ch28_post_present::*;
 pub use chapter_aux_surface::*;
 pub use dialogue_grid::*;
 pub use frame::*;
+pub use indexed_transition::*;
 pub use indexed_transition_buffer::*;
 pub use indexed_transition_lut::*;
+pub use indexed_transition_pass::*;
 pub use indexed_transition_schedule::*;
 pub use lmi1::*;
 pub use lmi1_frame::*;
@@ -100,10 +124,17 @@ pub use lutbank::*;
 pub use map_binding::*;
 pub use map_parallax::*;
 pub use native_ai_item_damage_tail::*;
+pub use native_ai_item_type21_tail::*;
+pub use native_ch23::*;
 pub use native_command_heal_presentation::*;
 pub use native_command_heal_tail::*;
+pub use native_command9::*;
 pub use native_command10_12::*;
+pub use native_command20_22_tail::*;
+pub use native_command32_tail::*;
+pub use native_command33_tail::*;
 pub use native_command34_tail::*;
+pub use native_command35_tail::*;
 pub use native_compound_palette::*;
 pub use native_flow_error::*;
 pub use native_hotel_route::*;
@@ -115,10 +146,12 @@ pub use native_shop_route::*;
 pub use native_unit_mode::*;
 pub use native_unit_mode_branch::*;
 pub use palette::*;
+pub use pending_code1_interlude::*;
 pub use post_resolution_commands::*;
 pub use preparation_dispatch::*;
 pub use preparation_gate::*;
 pub use preparation_input::*;
+pub use preparation_roster::*;
 pub use preparation_timer::*;
 pub use range_overlay::*;
 pub use rawcells::*;
@@ -135,8 +168,10 @@ pub use separated_palette::*;
 pub use separated_range_overlay::*;
 pub use separated_sound::*;
 pub use separated_surface::*;
+pub use spawn_intro::*;
 pub use split_slide::*;
 pub use sprite_bank::*;
 pub use system_info_transition::*;
 pub use terrain_lut::*;
 pub use terrain_phase::*;
+pub use unit_present_schedule::*;
