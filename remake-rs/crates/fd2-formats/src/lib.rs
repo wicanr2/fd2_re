@@ -7,6 +7,7 @@ pub mod afm;
 pub mod archive;
 pub mod dato;
 pub mod fdicon;
+pub mod fdother;
 pub mod fdtxt;
 pub mod figani;
 pub mod keyboard;
