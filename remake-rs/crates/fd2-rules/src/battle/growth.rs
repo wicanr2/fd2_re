@@ -58,6 +58,10 @@ pub(crate) fn go_stat_roll(rng: &mut dyn GoRand) -> Box<StatRoll<'_>> {
 /// 回傳的閉包會一路推進 *state，呼叫者用完要把它存回去。
 ///
 /// Go：`growth.go:54`，`func nativeStatRoll(state *uint16) statRoll`
+///
+/// Rust：正式路徑 `State::award_exp_native` 把這個閉包展開在原地（observer 與擲骰要改同一個
+/// `state`，包兩層閉包借用不過），這裡只供測試重算期望值。
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn native_stat_roll(state: &mut u16) -> Box<StatRoll<'_>> {
     Box::new(move |_, span| {
         *state = fd2_formats::native_rng::native_rng_step(*state);
@@ -956,6 +960,9 @@ impl Unit {
     /// false、不改變任何數值,這不是錯誤,是「這個單位本來就沒有可用的成長曲線資料」。
     ///
     /// Go：`growth.go:233`，`func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool)`
+    ///
+    /// Go 版也沒有呼叫者；照移植保留對照。
+    #[allow(dead_code)]
     pub(crate) fn apply_level_up_growth(&mut self, rng: &mut dyn GoRand) -> (LevelUpEvent, bool) {
         let (row, ok) = legacy_growth_row(self);
         if !ok {

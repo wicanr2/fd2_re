@@ -81,7 +81,6 @@ fn reachable_high_cost_terrain_limits_range() {
 /// Go 以 `json.Marshal` 寫出測試檔：`[]byte` 欄位是 base64 字串，`[]NativeFieldEvent` 用 JSON 標籤。
 /// 這裡直接寫出同樣的 JSON。
 #[test]
-#[ignore = "等 F 合併"]
 fn load_reads_cost_from_map_json() {
     let dir = temp_dir("move-load-cost");
     let units_path = dir.join("u.json");

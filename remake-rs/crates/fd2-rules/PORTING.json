@@ -1054,13 +1054,13 @@
         {
           "name": "Scenario.NativeResultCode1",
           "rust": "Scenario::native_result_code1",
-          "status": "todo",
+          "status": "ported",
           "go_line": 46
         },
         {
           "name": "LoadScenario",
           "rust": "load_scenario",
-          "status": "todo",
+          "status": "ported",
           "go_line": 321,
           "calls": [
             "NativeResultRule.Validate",
@@ -1070,7 +1070,7 @@
         {
           "name": "Scenario.Setup",
           "rust": "Scenario::setup",
-          "status": "todo",
+          "status": "ported",
           "go_line": 541,
           "calls": [
             "Scenario.SetupChecked"
@@ -1079,7 +1079,7 @@
         {
           "name": "Scenario.SetupChecked",
           "rust": "Scenario::setup_checked",
-          "status": "todo",
+          "status": "ported",
           "go_line": 548,
           "calls": [
             "Scenario.Fire",
@@ -1091,7 +1091,7 @@
         {
           "name": "Scenario.bindNativeFieldEventRules",
           "rust": "Scenario::bind_native_field_event_rules_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 588
         },
         {
@@ -1106,25 +1106,25 @@
         {
           "name": "Scenario.materializePendingGroups",
           "rust": "Scenario::materialize_pending_groups",
-          "status": "todo",
+          "status": "ported",
           "go_line": 614
         },
         {
           "name": "Scenario.NativeTurnActionEventsAt",
           "rust": "Scenario::native_turn_action_events_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 647
         },
         {
           "name": "Scenario.NativeTurnEventsAt",
           "rust": "Scenario::native_turn_events_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 665
         },
         {
           "name": "Scenario.AdoptHandlerBattleState",
           "rust": "Scenario::adopt_handler_battle_state",
-          "status": "todo",
+          "status": "ported",
           "go_line": 702,
           "calls": [
             "Scenario.bindNativeFieldEventRules",
@@ -1135,7 +1135,7 @@
         {
           "name": "Scenario.Fire",
           "rust": "Scenario::fire",
-          "status": "todo",
+          "status": "ported",
           "go_line": 735,
           "calls": [
             "Scenario.ExecuteAction",
@@ -1154,7 +1154,7 @@
         {
           "name": "Scenario.TriggerActionsWhere",
           "rust": "Scenario::trigger_actions_where",
-          "status": "todo",
+          "status": "ported",
           "go_line": 756,
           "calls": [
             "When.match"
@@ -1163,13 +1163,13 @@
         {
           "name": "Event.NativeTurnPhaseSelector",
           "rust": "Event::native_turn_phase_selector",
-          "status": "todo",
+          "status": "ported",
           "go_line": 776
         },
         {
           "name": "When.match",
           "rust": "When::r#match",
-          "status": "todo",
+          "status": "ported",
           "go_line": 797,
           "calls": [
             "Unit.Alive"
@@ -1178,7 +1178,7 @@
         {
           "name": "Scenario.ExecuteAction",
           "rust": "Scenario::execute_action",
-          "status": "todo",
+          "status": "ported",
           "go_line": 829,
           "calls": [
             "Scenario.ExecuteActionChecked"
@@ -1187,7 +1187,7 @@
         {
           "name": "Scenario.ExecuteActionChecked",
           "rust": "Scenario::execute_action_checked",
-          "status": "todo",
+          "status": "ported",
           "go_line": 836,
           "calls": [
             "Scenario.PartyUnits",
@@ -1200,13 +1200,13 @@
         {
           "name": "Scenario.TakePartyJoins",
           "rust": "Scenario::take_party_joins",
-          "status": "todo",
+          "status": "ported",
           "go_line": 925
         },
         {
           "name": "Scenario.PartyUnits",
           "rust": "Scenario::party_units",
-          "status": "todo",
+          "status": "ported",
           "go_line": 939,
           "calls": [
             "NativeInventoryFlagsFromSource",
@@ -7384,7 +7384,7 @@
         {
           "name": "State.PlanNativeEndTurnRecovery",
           "rust": "State::plan_native_end_turn_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26,
           "calls": [
             "Unit.Alive",
@@ -7394,7 +7394,7 @@
         {
           "name": "State.CommitNativeEndTurnRecovery",
           "rust": "State::commit_native_end_turn_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 73,
           "calls": [
             "State.ValidateNativeEndTurnRecovery"
@@ -7403,7 +7403,7 @@
         {
           "name": "State.ValidateNativeEndTurnRecovery",
           "rust": "State::validate_native_end_turn_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 87,
           "calls": [
             "State.PlanNativeEndTurnRecovery"
@@ -7412,7 +7412,7 @@
         {
           "name": "State.ApplyNativeEndTurnRecovery",
           "rust": "State::apply_native_end_turn_recovery",
-          "status": "todo",
+          "status": "ported",
           "go_line": 101,
           "calls": [
             "State.CommitNativeEndTurnRecovery",
@@ -7422,7 +7422,7 @@
         {
           "name": "State.MarkNativeDeadRecords",
           "rust": "State::mark_native_dead_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 113,
           "calls": [
             "State.syncNativeRuntimeRecord"
@@ -7638,7 +7638,7 @@
         {
           "name": "PlanNativeFieldEvent75",
           "rust": "plan_native_field_event75",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18,
           "calls": [
             "NativeFieldEventIDAt"
@@ -7647,7 +7647,7 @@
         {
           "name": "CommitNativeFieldEvent75",
           "rust": "commit_native_field_event75",
-          "status": "todo",
+          "status": "ported",
           "go_line": 86,
           "calls": [
             "PlanNativeFieldEvent75"
@@ -7656,13 +7656,13 @@
         {
           "name": "NativeFieldEventIDAt",
           "rust": "native_field_event_id_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 127
         },
         {
           "name": "ApplyNativeFieldModeEvent",
           "rust": "apply_native_field_mode_event",
-          "status": "todo",
+          "status": "ported",
           "go_line": 154,
           "calls": [
             "NativeFieldEventIDAt",
@@ -7672,7 +7672,7 @@
         {
           "name": "ApplyNativeFieldTurnActivationEvent",
           "rust": "apply_native_field_turn_activation_event",
-          "status": "todo",
+          "status": "ported",
           "go_line": 223,
           "calls": [
             "NativeFieldEventIDAt",
@@ -7682,7 +7682,7 @@
         {
           "name": "ApplyNativeChapter28FieldTurnActivation",
           "rust": "apply_native_chapter28_field_turn_activation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 264,
           "calls": [
             "NativeFieldEventIDAt",
@@ -7692,13 +7692,13 @@
         {
           "name": "commitNativeFieldTurnActivation",
           "rust": "commit_native_field_turn_activation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 310
         },
         {
           "name": "PlanNativeFieldEvent61",
           "rust": "plan_native_field_event61",
-          "status": "todo",
+          "status": "ported",
           "go_line": 360,
           "calls": [
             "NativeFieldEventIDAt",
@@ -7708,7 +7708,7 @@
         {
           "name": "CommitNativeFieldEvent61",
           "rust": "commit_native_field_event61",
-          "status": "todo",
+          "status": "ported",
           "go_line": 436,
           "calls": [
             "RemoveNativeCompactInventory",
@@ -11046,13 +11046,13 @@
         {
           "name": "NativeResultRule.Validate",
           "rust": "NativeResultRule::validate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 19
         },
         {
           "name": "NativeResultRule.Match",
           "rust": "NativeResultRule::r#match",
-          "status": "todo",
+          "status": "ported",
           "go_line": 55,
           "calls": [
             "NativeResultRule.Validate"
@@ -11061,7 +11061,7 @@
         {
           "name": "NativeInitialResultCode",
           "rust": "native_initial_result_code",
-          "status": "todo",
+          "status": "ported",
           "go_line": 92,
           "calls": [
             "NativeDefaultResultCode"
@@ -11070,7 +11070,7 @@
         {
           "name": "NativeDefaultResultCode",
           "rust": "native_default_result_code",
-          "status": "todo",
+          "status": "ported",
           "go_line": 108
         }
       ],
@@ -11183,7 +11183,7 @@
         {
           "name": "State.PlanNativeSystemGroupMarch",
           "rust": "State::plan_native_system_group_march",
-          "status": "todo",
+          "status": "ported",
           "go_line": 33,
           "calls": [
             "NativeAIScoringRecords",
@@ -11198,13 +11198,13 @@
         {
           "name": "cloneNativeSystemGroupMarchUnit",
           "rust": "clone_native_system_group_march_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 112
         },
         {
           "name": "cloneNativeSystemGroupMarchState",
           "rust": "clone_native_system_group_march_state",
-          "status": "todo",
+          "status": "ported",
           "go_line": 125,
           "calls": [
             "cloneNativeSystemGroupMarchUnit"
@@ -11213,7 +11213,7 @@
         {
           "name": "planNativeSystemGroupMarchEvent",
           "rust": "plan_native_system_group_march_event",
-          "status": "todo",
+          "status": "ported",
           "go_line": 148,
           "calls": [
             "CommitNativeFieldEvent61",
@@ -11225,7 +11225,7 @@
         {
           "name": "State.CommitNativeSystemGroupMarchStep",
           "rust": "State::commit_native_system_group_march_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 189
         }
       ],
@@ -11478,13 +11478,13 @@
         {
           "name": "validateNativeTurnEvent79",
           "rust": "validate_native_turn_event79",
-          "status": "todo",
+          "status": "ported",
           "go_line": 10
         },
         {
           "name": "ApplyNativeTurnEvent79",
           "rust": "apply_native_turn_event79",
-          "status": "todo",
+          "status": "ported",
           "go_line": 23,
           "calls": [
             "validateNativeTurnEvent79"
@@ -11514,13 +11514,13 @@
         {
           "name": "validateNativeTurnEvent76",
           "rust": "validate_native_turn_event76",
-          "status": "todo",
+          "status": "ported",
           "go_line": 14
         },
         {
           "name": "PlanNativeTurnEvent76",
           "rust": "plan_native_turn_event76",
-          "status": "todo",
+          "status": "ported",
           "go_line": 32,
           "calls": [
             "validateNativeTurnEvent76"
@@ -11529,7 +11529,7 @@
         {
           "name": "CommitNativeTurnEvent76Repeat",
           "rust": "commit_native_turn_event76_repeat",
-          "status": "todo",
+          "status": "ported",
           "go_line": 66,
           "calls": [
             "PlanNativeTurnEvent76"
@@ -11692,13 +11692,13 @@
         {
           "name": "State.SnapshotReady",
           "rust": "State::snapshot_ready",
-          "status": "todo",
+          "status": "ported",
           "go_line": 165
         },
         {
           "name": "State.Snapshot",
           "rust": "State::snapshot",
-          "status": "todo",
+          "status": "ported",
           "go_line": 179,
           "calls": [
             "State.SnapshotReady",
@@ -11710,7 +11710,7 @@
         {
           "name": "State.RestoreSnapshot",
           "rust": "State::restore_snapshot",
-          "status": "todo",
+          "status": "ported",
           "go_line": 258,
           "calls": [
             "cloneMap",
@@ -11721,43 +11721,43 @@
         {
           "name": "snapshotUnits",
           "rust": "snapshot_units",
-          "status": "todo",
+          "status": "ported",
           "go_line": 339
         },
         {
           "name": "restoreUnits",
           "rust": "restore_units",
-          "status": "todo",
+          "status": "ported",
           "go_line": 361
         },
         {
           "name": "cloneMap",
           "rust": "clone_map",
-          "status": "todo",
+          "status": "ported",
           "go_line": 377
         },
         {
           "name": "cloneSlice",
           "rust": "clone_slice",
-          "status": "todo",
+          "status": "ported",
           "go_line": 389
         },
         {
           "name": "Scenario.FiredEvents",
           "rust": "Scenario::fired_events",
-          "status": "todo",
+          "status": "ported",
           "go_line": 404
         },
         {
           "name": "Scenario.PendingJoinCount",
           "rust": "Scenario::pending_join_count",
-          "status": "todo",
+          "status": "ported",
           "go_line": 418
         },
         {
           "name": "Scenario.RestoreFiredEvents",
           "rust": "Scenario::restore_fired_events",
-          "status": "todo",
+          "status": "ported",
           "go_line": 426
         }
       ],

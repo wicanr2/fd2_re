@@ -3,9 +3,14 @@
 use super::{FdotherError, Result};
 
 /// 擁有 `0x11eee` 的穩定地形全域 `[0x53c1f]`／`[0x539f4]`。計時器值是有號延伸的 BIOS 低位字。
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+///
+/// serde 欄位名是 Go 型別沒有標籤時 `encoding/json` 的輸出（Go 欄位名），供 `fd2-rules` 的戰場快照讀寫。
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct NativeTerrainPhaseState {
+    #[serde(rename = "Phase")]
     pub phase: i64,
+    #[serde(rename = "LastTimerTick")]
     pub last_timer_tick: i64,
 }
 

@@ -1,7 +1,7 @@
 //! 移植自 `remake/internal/battle/native_ai_runtime_test.go`。
 //!
 //! 除了 `nativeAIPhysicalHelper1DEBE` 的純函式測試，其餘都經由 E 組的 `State::next_ai_plan`
-//! （`combat.go:NextAIPlan`），E 合併前停在 E 的 `todo!()`。Go 以 `*Unit` 指標比較目標身份，
+//! （`combat.go:NextAIPlan`）。Go 以 `*Unit` 指標比較目標身份，
 //! Rust 比較 `state.units` 的索引。
 
 use super::*;

@@ -20,7 +20,7 @@
 - 直接移植的只有一行委派、常數或欄位運算（例如 `Unit::alive`、`State::claim_treasure`），PORTING.json 標 `ported`。Go 會繞回的整數運算一律用 `wrapping_*`。
 - 每個函式的 doc 保留 Go 註解，接著一行 `Go：<檔>:<行>` 與原始 Go 簽名；有所有權轉換時另有「所有權：」說明索引指向哪個陣列。
 - Go 的 JSON 標籤保留在欄位 doc 的「Go 標籤：」。
-- `cargo build`、`cargo clippy -- -D warnings` 通過。`lib.rs` 的 crate 層 `allow(unused, dead_code, …)` 是骨架專用，全部組完成後移除。
+- `cargo build`、`cargo clippy -- -D warnings` 通過。`lib.rs` 的 crate 層 `allow(unused, dead_code, …)` 是骨架專用，已在整合時移除（見檔尾「整合紀錄」）。
 - 骨架由一次性的 Go `go/types` 分析工具產生（參數可變性、nil 檢查、回傳值是否新建、單位指標的流向都由型別資訊推導）。產生器沒有進版控；從現在起這些檔案改為人工維護。
 
 ## 階段 2 分組
@@ -106,12 +106,12 @@
 |---|---|---|
 | `fdother.ReadResource(path, int)` | `fdother::read_resource(path, usize)` | 資源索引是 `usize`，Go 負索引無法傳入 |
 | `fdicon.NewNativeSelectorCacheFromKeys` | `fdicon::NativeSelectorCache::from_keys` | 關聯函式 |
-| `fdother.Frame` | 只有 `Clone`、`Default` | 沒有 `Debug`、`PartialEq` |
-| `fdtxt.Font` | 只有 `Clone` | 沒有 `Debug`、`Default` |
+| `fdother.Frame` | `Clone`、`Default`，`Debug` 手寫 | 沒有 `PartialEq` |
+| `fdtxt.Font` | `Clone`，`Debug` 手寫 | 沒有 `Default` |
 | `fdtxt.Strings` | 沒有 `Default` | |
-| 上列三個狀態型別 | 沒有 serde | 見上節第 2 點 |
+| 上列三個狀態型別 | F 組已補 serde | 欄位名用 Go 欄位名 |
 
-因此 `NativeItemPanelDataAssets`（含 `fdother::Frame` 與 `fdtxt::Font`）沒有 `Debug`；它把兩者包在 `Option` 裡，所以仍有 `Default`。
+`NativeItemPanelDataAssets`（含 `fdother::Frame` 與 `fdtxt::Font`）只 derive `Clone`、`Default`；它把兩者包在 `Option` 裡，所以有 `Default`。
 
 ## Go 寫法對應時的注意事項
 
@@ -145,6 +145,9 @@
 | 2026-11-14 | `NativePlayerMovement::path` 的 `&mut self` → `&self` | Go 只讀 `Reach` 與路徑輸入 | D |
 | 2026-11-14 | D 組 runtime 的 crate 私有方法 `next_native_ai14_ef0_plan`、`next_native_ai_mode_fallback_plan`、`next_native_ai_mode11_plan`、`next_native_ai_physical_plan`、`native_ai_plan_for_destination`、`native_ai_movement_approach_point`、`native_ai_plan_toward_raw_destination`、`native_ai_mode11_blocked_or_recovery`：`&mut self` → `&self`，其中的 `base_flags`／`runtime_flags`／`cost_row: &mut [u8]` → `&[u8]`；`native_ai_mode_blocked_search_flags` 的 `base_flags` → `&[u8]` | Go 不改 `State`，也只讀這些切片（`nativeAIModeBlockedSearchFlags` 先複製再改）。E 組 `combat.rs`、F 組 `native_system_group_march.rs` 的呼叫端持有 `&mut self`／`&mut Vec<u8>` 時照樣可以呼叫 | D |
 | 2026-11-14 | 新增 `native_ai_reborrow_skip`（`native_ai_scored_group_score.rs`，`pub(crate)`） | Go 的 `func(int) bool` 可以在迴圈裡重複傳遞；Rust 的 `Option<&mut dyn FnMut>` 每次要重新借出，`as_deref_mut` 因 trait object 生命週期不變性編不過 | D |
+| 2026-11-14 | `State::commit_native_end_turn_recovery` 的 `&self` → `&mut self` | Go 透過計畫裡的 `*Unit` 寫回 HP 與 +5 bit7；Rust 的計畫只存索引，寫入要經過 `self.units`。呼叫端只有同檔的 `apply_native_end_turn_recovery` | F |
+| 2026-11-14 | `StateSnapshot::cost`：`Vec<i64>` → `Option<Vec<i64>>`；`StateSnapshot::opened_treasure`：`BTreeMap<i64, bool>` → `Option<BTreeMap<i64, bool>>` | `State` 的這兩個欄位已用 `Option` 區分 Go 的 nil 與空值（Go `cloneSlice`／`cloneMap` 保留這個差別），快照照樣保存才能往返相等 | F |
+| 2026-11-14 | F 組型別加 serde：`Scenario`、`NativeTurnEvent`、`NativeTurnDynamicGroup`、`NativeTurnProgression`、`NativeTurnPairMutation`、`NativeTurnStaging`、`NativeTurnStagingCall`、`InitialGroupAbsent`、`PartyMember`、`Event`、`When`、`Action`、`NativeStagingPlacement`、`NativeEventDialogue`、`NativeSpawnCall`、`NativeFollowingActing`、`NativeResultRule`、`StateSnapshot`、`SnapshotTreasure`、`FiredEventRef`；`fd2-formats` 的 `NativeMapSpriteCycleState`、`NativeBinaryTickState`、`NativeTerrainPhaseState` 加 serde（Go 欄位名 `Idle`、`Value`、`Phase`、`LastTimerTick` 等） | 欄位名對照 Go 標籤；`StateSnapshot` 用到的別組無 serde 型別（`Spell`、`Treasure`、`NativeChestControl`、`NativeFieldUnitControl`、`NativeRuntimeRecordState`、`NativeMapHUDRuntimeState`、`NativeMapViewState`）在 `snapshot.rs` 以鏡像結構轉換，沒有改那些組的檔 | F |
 
 ## A 組完成紀錄（2026-11-14）
 
@@ -191,3 +194,22 @@
 - A 組 `treasure_test` 的 4 個延後測試中，兩個 `PlayerTreasure*` 與 `Map25NativeEventTreasure*` 在 D 合併後已可通過（`--include-ignored` 實測），`SkyKeyMaterialAssets*` 仍停在 F 組 `event.go:LoadScenario`。這些 ignore 標記屬 A 組檔，D 組沒有改，整合時拿掉。
 - 黃金差分：`tools/rust_golden_rules_d.sh`，Go 端 `remake/cmd/fd2-golden-rules-d`、Rust 端 `tests/golden_rules_d.rs`。33 張真實地圖（排序後的清單、`map.json` 與資料表的 SHA-256 寫進黃金檔；32 張可產生原始記錄，map32 的單位缺 provenance）加 40 份合成戰場，以固定種子產生 5570 個案例，涵蓋 D 組不經過 E 的公開函式（含錯誤路徑，錯誤文字逐字比對）。`KNOWN_DIFFERENCES` 與比對正規化寫在 `tests/golden_rules_d.rs` 檔頭。原版的 0x1F183 目標閘門與地形 AP/DP 修正是 crate 私有或 E 組函式，黃金工具改用自己的確定性閘門與 score-input 來源。
 - 整合後才能涵蓋（經由 E 組或只有 crate 私有入口）：`next_native_ai14_ef0_plan`、`next_native_ai_mode_fallback_plan`、`next_native_ai_mode11_plan`、`next_native_ai_physical_plan` 及其私有輔助（`native_ai14_ef0_physical_selection`、`native_ai_plan_for_stationary_selection`、`native_ai_plan_for_destination`、`native_ai_plan_toward_raw_destination`、`native_ai_movement_approach_point`、`native_ai_mode_runtime_context`、`native_ai_mode11_blocked_or_recovery`、`native_ai_idle_recovery_only_plan`、`attach_native_fallback_idle_recovery`、`native_ai_mode2_idle_recovery_plan`、`native_ai_physical_score_input`、`native_ai_terrain_adjusted_words`、`native_ai_physical_helper1_debe`、`native_ai_cost_row_for_record`、`native_ai1_f183_target_gate`、`native_ai_raw_record8_index`、`native_ai_active_unit_at_raw_cell`、`native_ai_mode_blocked_search_flags`）。其中純函式的部分已由單元測試與上面的公開函式間接涵蓋。
+
+## F 組完成紀錄（2026-11-14）
+
+- 8 個檔的 55 個 `todo!()` 全部移植（PORTING.json 標 `ported`），F 組 57 個函式沒有剩下的 `todo!()`。F→D 的兩處呼叫（`native_system_group_march.rs` 裡的 `native_ai_cost_row_for_record` 與 `State::native_ai_plan_toward_raw_destination`）照 Go 寫好，D 合併前停在 D 的 `todo!()`。
+- 型別與 JSON：F 組型別加 serde（清單見簽名變更紀錄），欄位名是 Go 標籤，`omitempty` → `skip_serializing_if`，`[]byte` 用 `go_bytes`。Go 讀 `[N]int`（`deploy_cells`、`grid`、`state_range`）時長度不足補零、過長丟棄，`event.rs` 的 `go_int_arrays`／`go_int_array_opt` 照這個規則讀。`StateSnapshot` 寫出時把空的切片與 map 寫成 `null`（Go nil），`[]byte` 寫 base64，`[N]byte` 寫數字陣列；別組沒有 serde 的七個型別在 `snapshot.rs` 以鏡像結構轉換。Go 的 `[]*Unit` 允許 nil 元素，Rust 沒有，讀到 `null` 元素會拒收。
+- `fd2-formats`：`NativeMapSpriteCycleState`、`NativeBinaryTickState`、`NativeTerrainPhaseState` 加 serde（只加 derive 與 `rename`／`default`），`tools/rust_formats_test.sh` 同樣的檢查 421 個測試照舊全過。`fdother::Frame` 與 `fdtxt::Font` 在 R1 已有手寫的 `Debug`，不需補；上方「格式層缺口」表的這兩列已過時。
+- 單位所有權：觸發者（Go 的 `trigger *Unit`）是 `st.units` 的索引；Go 測試把不在 `State.Units` 的觸發者傳進去時，Rust 測試先 push 到 `units` 尾端。`PlanNativeSystemGroupMarch` 的預演副本 Go 是淺複製（map 與多數切片和來源共用），Rust 是整份深複製；預演只寫值型別欄位、Units／Roster 與 `NativeFieldControlRaw`（Go 也另外複製），結果相同。Go 在 nil `State` 解參照的分支（`When.match` 的回合／槽位條件、`ExecuteActionChecked` 的 `spawn_party` 等），Rust 以 `expect` 同樣中止。
+- 順序：`snapshot.go` 迭代寶箱 map 後依 (Y, X) 排序，鍵不重複，結果唯一；其餘只用 map 做重複檢查。F 組沒有依賴 `sort.Slice` 穩定性或 map 迭代順序的結果。
+- 測試：F 組 9 個 Go 測試檔共 77 個測試逐條移植，73 個現在就跑，`native_system_group_march_test` 的 4 個標 `#[ignore = "等 D、E 合併"]`（`--include-ignored` 停在 D 的 `nativeAICostRowForRecord`）。Go 的 `TestStateSnapshotClassifiesEveryField` 以反射列欄位，Rust 讀 `model.rs` 的 `State` 定義比對。`tools/rust_rules_test.sh` 同樣的檢查在 `FD2_REQUIRE_ORIGINAL=1` 下 442 通過、14 ignore、沒有略過。原本等 F 的測試裡，`load_reads_cost_from_map_json`、`native_death_programs_cover_every_battle_map`、`sky_key_material_assets_match_original_sources` 已能通過；`treasure_test` 另外三個停在 D 的 `validateNativeAIMode5EventGrid`。
+- 黃金差分：`tools/rust_golden_rules_f.sh`（`remake/cmd/fd2-golden-rules-f`、`tests/golden_rules_f.rs`）。30 份劇本與 33 張地圖（排序後的清單、大小與 SHA-256 寫進黃金檔）組成 93 個腳本，以固定種子推進劇本載入、開局、14 回合的事件觸發與執行、陣亡事件、勝負判定、回合末回復、格子事件、event76／79 與 handler 接手；另有劇本 JSON 變異、快照還原錯誤、`RestoreFiredEvents` 錯誤與系統群行軍發布的合成案例。快照雙向：Rust 讀入 Go 快照再寫出、Rust 自己的戰場快照、還原後再快照都與 Go 相同，Rust 寫出的 186 份快照再由 Go 工具 `-verify-rust` 讀回還原比對。`KNOWN_DIFFERENCES` 與比對正規化寫在 `tests/golden_rules_f.rs` 檔頭。沒有涵蓋：`PlanNativeSystemGroupMarch` 及其私有的 `clone_native_system_group_march_*`、`plan_native_system_group_march_event`（經過 D 組尋路，整合後才能涵蓋）。
+
+## 整合紀錄（2026-11-14）
+
+- 六組合併後沒有剩下的 `todo!()`（只有註解提到）。PORTING.json 的函式狀態全部是 `ported`。
+- 延後測試全部拿掉 `#[ignore]`：`tools/rust_rules_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 647 項通過、0 ignore、0 略過。D、E 互等的測試（含 `combat_test` 的 `NextAIPlan`）實跑通過，`combat.go` reach 平手的 map 順序沒有影響任何期望值。
+- `lib.rs` 的骨架 allow 已移除，clippy `-D warnings` 乾淨。浮出的未使用項目逐一處理：只有 crate 內部使用者的 glob 改成 `pub(crate) use`，沒有對外項目的 `pub use` 刪除；`native_stat_roll` 與快照分類表只有測試使用者，以 `cfg_attr(not(test), allow(dead_code))` 標明；`apply_level_up_growth` 在 Go 也沒有呼叫者，照移植保留並標 `allow(dead_code)`。
+- F 組的系統群行軍預演依 D 組改成唯讀的簽名，改傳 `&base_flags`、`&cost_row`。
+- `serde_json` 開啟 `float_roundtrip`：預設讀小數可能差 1 ulp，與 Go `strconv` 的正確捨入不同（E 組黃金第一次執行就因此誤報）。`fd2-formats` 不從 JSON 讀小數，不需要。
+- 黃金差分 gorand、rules-a～f 與 fd2-formats 的 fdicon、fdother_core 在整合後的主 checkout 全部重跑通過，SHA 與各組回報相同；`tools/rust_formats_test.sh` 421 項照舊通過。

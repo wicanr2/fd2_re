@@ -1,6 +1,6 @@
 //! 移植自 `remake/internal/battle/native_ai_target_terrain_test.go`。
 //!
-//! 地形修正查 E 組的 `native_terrain_apdp_pct`（`terrain.go`），E 合併前停在 E 的 `todo!()`。
+//! 地形修正查 E 組的 `native_terrain_apdp_pct`（`terrain.go`）。
 
 use super::*;
 use crate::battle::native_ai_runtime::d_test_support::*;

@@ -34,7 +34,7 @@ fn op(name: &str) -> NativeDeathOp {
 #[test]
 fn native_death_ops_follow_transcription() {
     let mut st = death_test_state(8);
-    let mut must = |st: &mut State, o: NativeDeathOp| {
+    let must = |st: &mut State, o: NativeDeathOp| {
         if let Err(err) = st.apply_native_death_op(&o) {
             panic!("{}: {err}", o.op);
         }
@@ -310,7 +310,6 @@ fn kill_with_exp_cancel_awards_no_experience() {
 /// Go 以 `filepath.Glob` 取劇本（字典序）；Rust 列目錄後排序，得到相同順序。Go 用 `t.Errorf` 收集
 /// 全部錯誤，Rust 收進清單最後一次報出。
 #[test]
-#[ignore = "等 F 合併"]
 fn native_death_programs_cover_every_battle_map() {
     let Some(scenarios) = remake_asset("scenarios") else { return };
     let Some(assets) = remake_asset("") else { return };

@@ -4,9 +4,14 @@ use super::{Result, fixed};
 
 /// 一個原版 0/1 動畫全域及其符號延伸的低 BIOS word 閂鎖。`0x11eee` 的地形用一份，
 /// `0x127e0` 的單位像素位移另用一份獨立實例。
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+///
+/// serde 欄位名是 Go 型別沒有標籤時 `encoding/json` 的輸出（Go 欄位名），供 `fd2-rules` 的戰場快照讀寫。
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct NativeBinaryTickState {
+    #[serde(rename = "Value")]
     pub value: i64,
+    #[serde(rename = "LastTimerTick")]
     pub last_timer_tick: i64,
 }
 

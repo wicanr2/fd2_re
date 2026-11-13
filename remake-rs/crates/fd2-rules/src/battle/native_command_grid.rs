@@ -1,7 +1,5 @@
 //! Go 來源：`remake/internal/battle/native_command_grid.go`（66 行）。
 
-use super::*;
-
 /// NativeCommandGridCell is one recovered 0x1ceed command-menu cell in the
 /// original 320×200 coordinate space. The caller supplies command IDs in the
 /// exact 0x1c269 order; this type intentionally contains no effect semantics.

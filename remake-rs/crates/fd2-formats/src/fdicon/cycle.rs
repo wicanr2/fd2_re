@@ -1,10 +1,16 @@
 //! 移植自 Go `cycle.go`。
 
 /// `0x127e0` 消費、`0x1297d` 修改的三個戰場全域。
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+///
+/// serde 欄位名是 Go 型別沒有標籤時 `encoding/json` 的輸出（Go 欄位名），供 `fd2-rules` 的戰場快照讀寫。
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct NativeMapSpriteCycleState {
+    #[serde(rename = "Idle")]
     pub idle: i64,
+    #[serde(rename = "Moving")]
     pub moving: i64,
+    #[serde(rename = "LastTimerTick")]
     pub last_timer_tick: i64,
 }
 

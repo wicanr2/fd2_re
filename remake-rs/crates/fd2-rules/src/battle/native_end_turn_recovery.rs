@@ -31,27 +31,89 @@ impl State {
     /// Go：`native_end_turn_recovery.go:26`，`func (s *State) PlanNativeEndTurnRecovery() []NativeEndTurnRecovery`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn plan_native_end_turn_recovery(&self) -> Vec<NativeEndTurnRecovery> {
-        todo!("battle/native_end_turn_recovery.go:State.PlanNativeEndTurnRecovery")
+        let mut out = Vec::new();
+        for (index, u) in self.units.iter().enumerate() {
+            if !u.on_field {
+                continue;
+            }
+            if u.has_native_record_byte6 {
+                if u.native_record_byte6 != 2 {
+                    continue;
+                }
+            } else if u.camp != OWN {
+                continue;
+            }
+            if !u.alive() {
+                continue;
+            }
+            if u.has_native_record_byte5 {
+                if u.native_record_byte5 & 0x81 != 0 {
+                    continue;
+                }
+            } else if u.acted {
+                continue;
+            }
+            if let (d, true) = u.native_transient_duration(0x25)
+                && d != 0
+            {
+                continue;
+            }
+            if let (d, true) = u.native_transient_duration(0x26)
+                && d != 0
+            {
+                continue;
+            }
+            if u.hp == u.max_hp || u.max_hp <= 0 {
+                continue;
+            }
+            let before = u.hp;
+            let next = u.hp.wrapping_add(u.max_hp / 5).min(u.max_hp);
+            out.push(NativeEndTurnRecovery { unit: Some(index), before, after: next, max_hp: u.max_hp });
+        }
+        out
     }
 
     /// CommitNativeEndTurnRecovery rechecks the whole scan before the first write.
     /// A changed gate or HP rejects every candidate, including preceding records.
     ///
     /// Go：`native_end_turn_recovery.go:73`，`func (s *State) CommitNativeEndTurnRecovery(plan []NativeEndTurnRecovery) error`
-    pub fn commit_native_end_turn_recovery(&self, plan: &[NativeEndTurnRecovery]) -> Result<()> {
-        todo!("battle/native_end_turn_recovery.go:State.CommitNativeEndTurnRecovery")
+    pub fn commit_native_end_turn_recovery(&mut self, plan: &[NativeEndTurnRecovery]) -> Result<()> {
+        self.validate_native_end_turn_recovery(plan)?;
+        for rec in plan {
+            // 計畫剛重驗過，`unit` 一定是 `self.units` 的有效索引。
+            let unit = &mut self.units[rec.unit.expect("重驗後的計畫一定有單位")];
+            unit.hp = rec.after;
+            if unit.has_native_record_byte5 {
+                unit.native_record_byte5 |= 0x80; // 0x1A477 → 0x13512
+                unit.acted = true; // live projection of the same bit; no extra raw write
+            }
+        }
+        Ok(())
     }
 
     /// Go：`native_end_turn_recovery.go:87`，`func (s *State) ValidateNativeEndTurnRecovery(plan []NativeEndTurnRecovery) error`
     pub fn validate_native_end_turn_recovery(&self, plan: &[NativeEndTurnRecovery]) -> Result<()> {
-        todo!("battle/native_end_turn_recovery.go:State.ValidateNativeEndTurnRecovery")
+        let current = self.plan_native_end_turn_recovery();
+        if current.len() != plan.len() {
+            return Err(battle_err!("native END recovery: candidate set changed"));
+        }
+        for (i, (cur, want)) in current.iter().zip(plan).enumerate() {
+            if cur != want {
+                return Err(battle_err!("native END recovery: candidate {i} changed"));
+            }
+        }
+        Ok(())
     }
 
     /// ApplyNativeEndTurnRecovery preserves the synchronous legacy caller.
     ///
     /// Go：`native_end_turn_recovery.go:101`，`func (s *State) ApplyNativeEndTurnRecovery() []NativeEndTurnRecovery`
     pub fn apply_native_end_turn_recovery(&mut self) -> Vec<NativeEndTurnRecovery> {
-        todo!("battle/native_end_turn_recovery.go:State.ApplyNativeEndTurnRecovery")
+        let plan = self.plan_native_end_turn_recovery();
+        if self.commit_native_end_turn_recovery(&plan).is_err() {
+            return Vec::new();
+        }
+        plan
     }
 
     /// MarkNativeDeadRecords 是 0x1DB65 的狀態部分：每次行動結算後（玩家路徑與敵方
@@ -63,6 +125,19 @@ impl State {
     /// 所有權：回傳的單位是 `self.units` 的索引。
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn mark_native_dead_records(&mut self) -> Vec<UnitIdx> {
-        todo!("battle/native_end_turn_recovery.go:State.MarkNativeDeadRecords")
+        let mut marked = Vec::new();
+        for index in 0..self.units.len() {
+            let u = &mut self.units[index];
+            if !u.has_native_record_byte5 || u.hp != 0 || u.native_record_byte5 == 1 {
+                continue;
+            }
+            u.native_record_byte5 = 1;
+            self.sync_native_runtime_record(index as i64, 0x05, 1, 1);
+            marked.push(index);
+        }
+        marked
     }
 }
+
+#[cfg(test)]
+mod native_end_turn_recovery_test;

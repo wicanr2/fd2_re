@@ -1,7 +1,5 @@
 //! Go 來源：`remake/internal/battle/native_ai_choice.go`（34 行）。
 
-use super::*;
-
 /// NativeAISpellCandidate is the already-resolved raw candidate tuple consumed
 /// by 0x1598a after command availability and target resolution. CommandValue
 /// is the command record word at +0; X/Y are caller-provided raw coordinates.

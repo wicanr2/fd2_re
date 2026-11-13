@@ -1,7 +1,5 @@
 //! Go 來源：`remake/internal/battle/native_command_compound.go`（46 行）。
 
-use super::*;
-
 /// NativeCompoundStep is an evidence-only step in the 0x27fc9 wrapper.
 /// Addresses and raw offsets are retained deliberately; this plan does not
 /// execute a callee or assign a gameplay/effect name.

@@ -230,7 +230,6 @@ fn map25_native_event_treasure_uses_editable_event58_rule() {
 
 /// Go：`TestSkyKeyMaterialAssetsMatchOriginalSources`
 #[test]
-#[ignore = "等 F 合併"]
 fn sky_key_material_assets_match_original_sources() {
     for (map_id, x, y, slot, item, hidden) in
         [(10, 18, 37, 0, 0xd2, false), (12, 38, 18, 8, 0xd6, false), (19, 30, 7, 7, 0xd4, true)]
