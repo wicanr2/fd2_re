@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 38 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 37 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -720,15 +720,5 @@ Windows（mingw＋Wine自檢）、macOS（osxcross，只做靜態檢查）、Lin
 怎樣算做完：受版控READY規格先於修正；相鄰兩個insideScreenWriter邊界的PNG都不丟失且來源／延後步數可追；保留CPU與輸入時序、不以中途畫面充數。正反向測試及固定原版重跑通過，既有前綴與畫面比較保持。
 
 證據：`docs/data/fd2-remake-toolchain-recovery-20261015.json`
-
-### Rust改寫R0：workspace、映像、黃金差分框架與Bevy可行性
-
-`rust-r0-foundation` · 工作 · [#306](https://github.com/wicanr2/fd2_re/issues/306) · 仍未完成 · 還沒出現
-
-已完成：`remake-rs/` workspace、`fd2-rust:1.99.1-r1`映像、fdsave黃金差分範例。剩下Bevy最小視窗、Xvfb截圖、CJK TTC字型與OGG播放的可行性，以及確認Bevy能建wasm。
-
-依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
-
-怎樣算做完：Bevy視窗在Docker／Xvfb下產出截圖；TTC字型可直接或經轉換顯示中文；OGG可播放；wasm32可建置。結果與版本寫回119。
 
 <!-- END fd2_worklist.py render -->

@@ -451,23 +451,6 @@
       "issue": 305
     },
     {
-      "id": "rust-r0-foundation",
-      "layer": "tooling",
-      "category": "工作",
-      "title": "Rust改寫R0：workspace、映像、黃金差分框架與Bevy可行性",
-      "body": "已完成：`remake-rs/` workspace、`fd2-rust:1.99.1-r1`映像、fdsave黃金差分範例。剩下Bevy最小視窗、Xvfb截圖、CJK TTC字型與OGG播放的可行性，以及確認Bevy能建wasm。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
-      "acceptance": "Bevy視窗在Docker／Xvfb下產出截圖；TTC字型可直接或經轉換顯示中文；OGG可播放；wasm32可建置。結果與版本寫回119。",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
-        ],
-        "pattern": "R0 完成",
-        "note": "完成時在119的「進度」加上含「R0 完成」的小節與收據。"
-      },
-      "issue": 306
-    },
-    {
       "id": "rust-r1-formats",
       "layer": "runtime",
       "category": "工作",
