@@ -451,23 +451,6 @@
       "issue": 305
     },
     {
-      "id": "rust-r1-formats",
-      "layer": "runtime",
-      "category": "工作",
-      "title": "Rust改寫R1：fd2-formats移植七個原版格式套件",
-      "body": "移植`fdicon` `fdsave` `afm` `fdtxt` `fdother` `dato` `figani`（約1.3萬行）。fdsave已完成並通過204案例黃金差分。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
-      "acceptance": "七個套件的Go測試全部移植通過；對org_game原版檔的解碼結果與Go黃金資料逐位元相同。",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
-        ],
-        "pattern": "R1 完成",
-        "note": "完成時在119的「進度」加上含「R1 完成」的小節與收據。"
-      },
-      "issue": 307
-    },
-    {
       "id": "rust-r2-rules",
       "layer": "runtime",
       "category": "工作",
