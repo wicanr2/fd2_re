@@ -185,3 +185,28 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 刻意不照做：分離素材的損壞 JSON／PNG 只比接受或拒收，差異依種類列在各黃金測試的 `KNOWN_DIFFERENCES`；png crate 不驗 zlib Adler-32；`archive` 以無號整數表示資源索引，Go 的負索引在型別上無法傳入；`figani` 在負容量輸入時不 panic。
 - 只證明 Rust 與凍結 Go 版一致，沒有新增原版對拍。
 
+### 2026-11-14 R2 完成：戰鬥規則核心
+
+`fd2-rules` 已涵蓋 Go `internal/battle` 的 129 個檔、633 個函式與方法，PORTING.json 全部標 `ported`。做法分兩段：先建立含全部型別、常數與函式簽名的骨架，定下單位所有權設計（單位本體只在 `State::units`／`roster`，其他地方以索引參照）；再分六組、三個波次平行補上本體。分組、決定與每組紀錄在 `remake-rs/crates/fd2-rules/PORTING.md`。
+
+| 組 | 內容 | Go 測試移植 | 黃金案例 | 黃金檔 SHA-256 |
+|---|---|---|---|---|
+| — | Go `math/rand` 序列 | 2 | 146432 個值 | `5fbfe200…` |
+| A | 單位、記錄、物品欄 | 144 | 6797 | `40a7130d…` |
+| B | 指令、目標、死亡程式 | 136 | 8541 | `c677d580…` |
+| C | 物品效果、面板繪製 | 97 | 2481 | `e5e6610b…` |
+| D | 敵我 AI | 108 | 5570 | `0bd44fb5…` |
+| E | 戰鬥、成長、法術 | 83 | 5188 | `30b4c98a…` |
+| F | 劇本事件、回合、快照 | 77 | 9385 步 | `4101bc16…` |
+| 跨組 | AI 戰鬥逐步重播與跨組路徑 | — | 99 場、36552 步 | `32d0fd19…` |
+
+- 完成條件「Go 的戰鬥決定性測試以相同種子產生相同結果」：Go 測試的固定種子期望值不改即全部通過；跨組黃金在 33 張地圖 × 3 個種子上跑敵我 AI 戰鬥（上限 24 回合），每一步的計畫、結果、單位變化與下一個亂數都和 Go 相同，結局 `StateSnapshot` 相同。
+- `tools/rust_rules_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 647 項單元測試通過，沒有 ignore 或略過；clippy `-D warnings` 乾淨。每份黃金都在子代理 worktree 與整合後的主 checkout 各產一次，SHA 相同，並做過竄改反向檢查。
+- 快照與 Go 雙向相容：Rust 讀 Go 寫的快照再寫出與 Go 相同，Rust 寫出的快照 Go 能讀回。
+- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的唯一具名例外（見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`）。
+- `serde_json` 開啟 `float_roundtrip`，讀小數與 Go 一樣正確捨入。
+- 跨組黃金抓到一處：Go `native_ai_action_runtime.go` 531 行以 `:=` 重新賦值了 `found`，診斷欄位 `NativeModeBlockedFound` 實際寫入「找到最近對立單位」。Rust 照 Go 的實際值寫入並在註解寫明。
+- 刻意不照做：Go 解 JSON 時欄位名不分大小寫，Rust 只認標籤原文；損壞輸入只比接受或拒收；Go map 迭代順序造成的平手與錯誤訊息選擇（`combat.go` reach 平手在重播中出現 0 次）；nil 接收者與不在 `State.Units` 裡的單位指標。各組清單在各黃金測試的 `KNOWN_DIFFERENCES`。
+- 跨組重播的我方每回合直接結束回合，並省略死亡程式、格子事件、帶演出的出場與部分原生指令效果，這些路徑由各組單元測試與黃金涵蓋；完整流程的狀態軌跡留給 R4。
+- 只證明 Rust 與凍結 Go 版一致，沒有新增原版對拍；`58` 的證據分層沒有變動。
+

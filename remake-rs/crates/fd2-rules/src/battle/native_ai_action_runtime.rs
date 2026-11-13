@@ -659,7 +659,11 @@ impl State {
         plan.native_mode_fallback_active = true;
         plan.native_mode_fallback = mode as u8;
         plan.native_mode_focus_actor = true; // 0x13F86
-        (plan.native_mode_blocked_cell, plan.native_mode_blocked_found) = (blocked, found);
+        // Go `native_ai_action_runtime.go` 531 行以 `nearest, found, err :=` 在同一作用域重新賦值了
+        // 487 行的 `found`，558 行寫進 `NativeModeBlockedFound` 的其實是「找到最近對立單位」，走到這裡
+        // 恆為 true（阻擋格仍是 0x14121 的結果）。這一欄只供 `FD2_SHOT_AI` 診斷，照凍結 Go 版的
+        // 實際值寫入，讓狀態軌跡與 Go 相同；`rules-int` 黃金涵蓋這條路徑。
+        (plan.native_mode_blocked_cell, plan.native_mode_blocked_found) = (blocked, found_nearest);
         for index in 0..self.units.len() {
             let record = &records[index * rs..];
             if native_ai_opposite_selector_group(record[6], selector) {

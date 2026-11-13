@@ -5772,6 +5772,36 @@
       "rule": "移植Go程式時不逐行移植Go標準函式庫（encoding/json、image/png、compress/*、bufio、path/filepath、os錯誤文字）。改用remake-rs/Cargo.lock已鎖定的serde、serde_json、png與std::path；套件自身的契約錯誤仍與Go逐字相同，損壞輸入只比接受或拒收，差異以具名的KNOWN_DIFFERENCES列為刻意不照做。唯一例外是math/rand的rngSource與Intn取樣：119的R2完成條件要求同種子同結果，實作只放在fd2-rules的battle/rng.rs，表格由Go原始碼機械轉出並保留BSD聲明。",
       "why": "第一批子代理為了讓損壞PNG／JSON的錯誤文字與Go一致，各寫了1000～2600行Go標準函式庫移植；那些行為是Go實作細節而非原版遊戲行為，且引入BSD授權署名與維護負擔。",
       "evidence": "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+    },
+    {
+      "id": "rust-port-go-quirk-follow-actual",
+      "date": "2026-11-14",
+      "area": "改寫",
+      "rule": "移植時發現凍結Go版的實際行為與欄位語意不符（例如:=重新賦值同名變數），Rust照Go的實際值寫入，並在註解寫明Go檔行號與原因，不自行修正；跨組黃金以完整AI戰鬥逐步重播抓這類差異。",
+      "why": "R2跨組黃金在23場重播分歧：Go native_ai_action_runtime.go 531行nearest, found, err :=覆寫了487行的found，診斷欄位NativeModeBlockedFound寫入的是找到最近對立單位；D組移植時改用新變數名，語意變對了卻與Go軌跡不同。",
+      "evidence": "remake-rs/crates/fd2-rules/src/battle/native_ai_action_runtime.rs、tools/rust_golden_rules_int.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-rules/src/battle/native_ai_action_runtime.rs"
+        ],
+        "pattern": "重新賦值了"
+      }
+    },
+    {
+      "id": "rust-serde-json-float-roundtrip",
+      "date": "2026-11-14",
+      "area": "改寫",
+      "rule": "Rust讀Go寫出的JSON小數時，serde_json要開float_roundtrip；預設解析可能差1 ulp，Go strconv是正確捨入。黃金比對不要用「JSON文字往返」這類正規化掩蓋讀檔差異。",
+      "why": "E組黃金第一次執行在小數欄位誤報，子代理以Rust結果先寫JSON再讀回的正規化繞過；Unit.exp等欄位走同一個讀取器，正式讀檔也會差。開啟float_roundtrip後拿掉正規化即通過。",
+      "evidence": "remake-rs/crates/fd2-rules/Cargo.toml",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-rules/Cargo.toml"
+        ],
+        "pattern": "float_roundtrip"
+      }
     }
   ]
 }

@@ -730,6 +730,20 @@ UI skin/assets (FDOTHER/FDTXT/DATO/FIGANI/TAI/FDFIELD) + audio
 
 Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像素座標。下一階段先定義 interfaces，再搬移；在搬移完成前不增加新的 hard-coded handler。
 
+### 3.1 Rust／Bevy 改寫的 crate 對應（2026-11-14）
+
+實作主線改為 `remake-rs/`，Go 版凍結為對照規格；計畫與階段依 [119](../goal/119-goal-rust-bevy-rewrite-20261113.md)。上圖的分層在 Rust 版對應如下，規則層以下不依賴 Bevy，可在無畫面容器中測試。
+
+| 層 | Rust crate | Go 對應 | 狀態 |
+|---|---|---|---|
+| 原版格式解碼 | `fd2-formats` | `fdsave`、`fdicon`、`afm`、`fdtxt`、`fdother`、`dato`、`figani` | R1 已完成，與 Go 黃金資料一致 |
+| 戰鬥規則、目標、AI | `fd2-rules` | `internal/battle` | R2 已完成，同種子 AI 戰鬥逐步重播與 Go 一致 |
+| 戰役與內容 | `fd2-campaign` | `internal/campaign` 等 | R3 未開始 |
+| 遊戲狀態機 | `fd2-game` | `cmd/fd2` 的場景流程 | R4 未開始 |
+| 畫面、輸入、音訊 | `fd2-app`（Bevy） | Ebiten 呈現層 | R0 可行性已驗，R5 未開始 |
+
+Rust 版目前只證明與凍結 Go 版一致，沒有新增原版對拍；E 級證據仍以 Go 版與 dosgolem 收據為準，R8 切換前不得宣稱 Rust 版可玩。
+
 ## 4. UI interaction contracts
 
 每個 contract 都必須有 state、可見 render model、輸入 command、side effect、headless test 與一個實機／截圖 gate。
