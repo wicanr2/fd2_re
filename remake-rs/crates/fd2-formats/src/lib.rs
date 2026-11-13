@@ -7,6 +7,7 @@ pub mod afm;
 pub mod archive;
 pub mod dato;
 pub mod fdicon;
+pub mod fdtxt;
 pub mod keyboard;
 pub mod native_rng;
 pub mod save;
