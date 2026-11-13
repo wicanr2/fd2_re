@@ -2,7 +2,7 @@
 # fd2-formats 完整檢查（docs/goal/119）：fmt、clippy、全部單元測試；原版檔與分離素材包都掛上，
 # 並設 FD2_REQUIRE_ORIGINAL=1，缺檔即失敗，不會悄悄跳過。
 # 用法：tools/rust_formats_test.sh [cargo test 的額外參數]
-# 各模組讀原版檔的環境變數尚未統一（R1 收尾處理），這裡一次全部設定。
+# 環境變數名稱見 remake-rs/crates/fd2-formats/src/test_support.rs，全 crate 統一。
 # docs/ 掛在 /docs（remake-rs 的上一層），供讀受版控 IDA 證據的測試使用。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -14,10 +14,7 @@ done
 timeout 3000s docker run --rm --network none --memory 6g --cpus 4 --pids-limit 1024 \
   --log-opt max-size=10m --log-opt max-file=3 --user "$(id -u):$(id -g)" -e HOME=/tmp/h \
   -e CARGO_HOME=/build/cargo -e CARGO_TARGET_DIR=/build/target -e FD2_REQUIRE_ORIGINAL=1 \
-  -e FD2_FLAME2_DIR=/flame2 -e FD2_FLAME=/flame2 -e FD2_FDICON_REAL_FLAME=/flame2 -e FD2_ANI_DAT=/flame2/ANI.DAT \
-  -e FD2_ASSET_PACK=/pack -e FD2_TEST_ORIGINAL_PACK=/pack -e FD2_SEPARATED_DIR=/pack -e FD2_FDICON_REAL_ASSETS=/pack \
-  -e FD2_PORTRAITS_DIR=/pack/portraits -e FD2_SEPARATED_ANIMATIONS=/pack/animations \
-  -e FD2_EXTRACTED_RAW_DIR=/raw -e FD2_REMAKE_ASSETS=/assets \
+  -e FD2_FLAME2_DIR=/flame2 -e FD2_ASSET_PACK=/pack -e FD2_EXTRACTED_RAW_DIR=/raw -e FD2_REMAKE_ASSETS=/assets \
   --mount "type=bind,source=$flame,target=/flame2,readonly" \
   --mount "type=bind,source=$pack,target=/pack,readonly" \
   --mount "type=bind,source=$root/extracted/raw,target=/raw,readonly" \

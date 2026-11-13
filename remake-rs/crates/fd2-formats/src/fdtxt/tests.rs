@@ -2,7 +2,7 @@
 //!
 //! Go 測試以相對路徑讀 `extracted/raw/` 與 `remake/generated-assets/`；Rust 改由環境變數指定：
 //! `FD2_FLAME2_DIR`（原版 FLAME2 目錄）、`FD2_EXTRACTED_RAW_DIR`（`extracted/raw`）、
-//! `FD2_SEPARATED_DIR`（`remake/generated-assets/fd2-original-b97caf22`）。缺檔時跳過，
+//! `FD2_ASSET_PACK`（`remake/generated-assets/fd2-original-b97caf22`）。缺檔時跳過，
 //! 與 Go 的 `t.Skip` 相同；`FD2_REQUIRE_ORIGINAL=1` 時缺檔即失敗。
 
 use super::*;
@@ -11,12 +11,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 /// 與 `archive::tests::original` 相同的慣例，延伸到多個輸入根目錄。
 fn input(var: &str, rel: &str) -> Option<PathBuf> {
-    let path = std::env::var_os(var).map(|d| PathBuf::from(d).join(rel)).filter(|p| p.exists());
-    if path.is_none() {
-        assert!(std::env::var_os("FD2_REQUIRE_ORIGINAL").is_none(), "缺少 {var}/{rel}");
-        eprintln!("略過：沒有 {var}/{rel}");
-    }
-    path
+    crate::test_support::input(var, rel)
 }
 
 /// Go 在分離素材載入失敗時以 `t.Skipf` 跳過；要求原版輸入時改為失敗，避免把壞素材當成缺檔。
@@ -98,7 +93,7 @@ fn load_separated_resource_rejects_stale_utf8_projection() {
 fn separated_resource_31_matches_original_words() {
     let Some(raw_path) = input("FD2_EXTRACTED_RAW_DIR", "FDTXT/FDTXT_031.bin") else { return };
     let original = parse(&std::fs::read(raw_path).unwrap()).unwrap();
-    let Some(text_root) = input("FD2_SEPARATED_DIR", "text") else { return };
+    let Some(text_root) = input("FD2_ASSET_PACK", "text") else { return };
     let separated = match load_separated_resource(text_root, 31) {
         Ok(s) => s,
         Err(e) => return skip_or_fail("separated FDTXT_031 is absent", &e),
@@ -116,7 +111,7 @@ fn separated_resource_31_matches_original_words() {
 fn separated_font_matches_original_bits() {
     let Some(raw_path) = input("FD2_EXTRACTED_RAW_DIR", "FDOTHER/FDOTHER_004.bin") else { return };
     let original = parse_font(&std::fs::read(raw_path).unwrap()).unwrap();
-    let Some(font_root) = input("FD2_SEPARATED_DIR", "fonts") else { return };
+    let Some(font_root) = input("FD2_ASSET_PACK", "fonts") else { return };
     let separated = match load_separated_font(font_root) {
         Ok(f) => f,
         Err(e) => return skip_or_fail("separated FDOTHER_004 font is absent", &e),

@@ -1,6 +1,6 @@
 //! 逐條移植自 Go `remake/internal/afm/separated_test.go`，期望值不改。
 //!
-//! 本機分離素材包同樣 gitignore；Rust 版另外接受環境變數 `FD2_SEPARATED_ANIMATIONS`。
+//! 本機分離素材包同樣 gitignore；Rust 版另外接受環境變數 `FD2_ASSET_PACK`（其下 `animations/`）。
 
 use super::super::tests::ani_path;
 use super::super::{FRAME_BYTES, decode_resource};
@@ -8,8 +8,16 @@ use super::*;
 
 fn separated_animation_root() -> Option<String> {
     let has_metadata = |root: &str| std::path::Path::new(root).join("ANI_000").join("animation.json").is_file();
-    if let Ok(p) = std::env::var("FD2_SEPARATED_ANIMATIONS") {
-        return has_metadata(&p).then_some(p);
+    if let Ok(dir) = std::env::var("FD2_ASSET_PACK") {
+        let p = format!("{dir}/animations");
+        let found = has_metadata(&p).then_some(p);
+        if found.is_none() {
+            crate::test_support::skip("FD2_ASSET_PACK/animations");
+        }
+        return found;
+    }
+    if crate::test_support::require_original() {
+        crate::test_support::skip("FD2_ASSET_PACK");
     }
     let manifest = env!("CARGO_MANIFEST_DIR");
     [

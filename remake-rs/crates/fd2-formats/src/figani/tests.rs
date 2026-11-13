@@ -55,7 +55,7 @@ fn env_dir(var: &str) -> Option<String> {
 
 /// 分離素材包根目錄（含 `animations/` 與 `raw/`）。
 pub(super) fn original_pack() -> Option<String> {
-    env_dir("FD2_TEST_ORIGINAL_PACK")
+    env_dir("FD2_ASSET_PACK")
 }
 
 pub(super) fn asset_pack() -> Option<String> {

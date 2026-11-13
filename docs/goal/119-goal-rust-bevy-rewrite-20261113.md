@@ -164,3 +164,24 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 
 未完成：`fdother`（分三份：核心與分離載入、原版流程邏輯、依賴核心的其餘檔案）與 `figani`。讀原版檔的環境變數尚未統一（`FD2_FLAME2_DIR`、`FD2_FDICON_REAL_FLAME`、`FD2_FLAME` 並存），R1 收尾時統一。
 
+### 2026-11-14 R1 完成：原版格式層
+
+`fd2-formats` 已涵蓋 Go 格式層的七個套件（`fdsave`、`fdicon`、`afm`、`fdtxt`、`fdother`、`dato`、`figani`），另從 `fdother` 拆出共用的 `archive` 與 `native_rng`。正式程式約 1.6 萬行、單元測試約 8200 行、黃金差分測試約 7000 行。
+
+| 模組 | Go 測試移植 | 黃金案例 | 黃金檔 SHA-256 |
+|---|---|---|---|
+| `fdsave` | 21 | 204 | `c12a72e2…` |
+| `dato` | 13 | 1285＋DATO.DAT 137 筆＋544 張頭像 | `cd0c5d11…` |
+| `afm` | 6 | 1158＋ANI.DAT 289 幀 | `346f368c…` |
+| `fdicon` | 31 | 3336 | `72003b8f…` |
+| `fdtxt` | 13 | FDTXT.DAT 全部＋1824 字形 | `46b35584…` |
+| `figani` | 86 | 5061 | `143e1de1…` |
+| `fdother` 核心與分離載入 | 103 | 22200 | `e7bac982…` |
+| `fdother` 原版流程邏輯 | 66 | 21362 | `e3aa5a4e…` |
+| `fdother` 其餘流程 | 71 | 15249 | `edb5b35a…` |
+
+- 每個黃金檔都在子代理 worktree 與主 checkout 各產一次，SHA 相同；每份都做過竄改反向檢查。
+- `tools/rust_formats_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下跑完 421 項單元測試，沒有任何略過。讀原版檔的環境變數統一為 `FD2_FLAME2_DIR`、`FD2_ASSET_PACK`、`FD2_EXTRACTED_RAW_DIR`、`FD2_REMAKE_ASSETS`（`src/test_support.rs`）。
+- 刻意不照做：分離素材的損壞 JSON／PNG 只比接受或拒收，差異依種類列在各黃金測試的 `KNOWN_DIFFERENCES`；png crate 不驗 zlib Adler-32；`archive` 以無號整數表示資源索引，Go 的負索引在型別上無法傳入；`figani` 在負容量輸入時不 panic。
+- 只證明 Rust 與凍結 Go 版一致，沒有新增原版對拍。
+

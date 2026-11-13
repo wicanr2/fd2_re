@@ -5637,3 +5637,9 @@ README改用正常實錄的兩張新圖，保留舊圖檔及入口供技術追�
 R1由子代理在各自worktree平行移植。第一批子代理為了讓損壞輸入的錯誤文字與Go一致，逐行移植了Go的encoding/json、image/png、zlib、bufio與filepath（各1000～2600行）；主代理判斷這是Go標準函式庫的實作細節而非原版行為，且BSD授權程式會帶來署名與維護負擔，要求全部改用已鎖定的serde、serde_json、png。合併一律squash，中間版本不進主線歷史。
 
 已合併：archive與native_rng（fbc6d989）、dato（6a08c7ea）、afm（e645209b）、fdicon（a0246e13）、fdtxt（8f82c5f7）。每個模組在主checkout重跑黃金差分，SHA與子代理回報相同；fd2-formats單元測試95項在FD2_REQUIRE_ORIGINAL=1下通過，clippy -D warnings與--locked皆通過。合併fdtxt時lib.rs被腳本重複寫入模組宣告而編譯失敗，改為只保留文件註解加去重排序清單後通過。已合併的worktree、分支與各自的target目錄已刪除。
+
+## 2026-11-14 Rust改寫R1完成
+
+figani（b536270c）、fdother B份（d3157892）、A份（2ca7cd59）、C份（7bcbb928）相繼合併，Go格式層七個套件全部移植。每份在主checkout重產黃金檔，SHA與子代理回報相同；fdother C份改動共用檔後，A、B份黃金SHA不變。
+
+收尾時發現主checkout的完整測試把fdicon的環境變數打成FD2_FDICON_REAL_FLAME（實際是FD2_FDICON_REAL_FLAME2），而fdicon與afm在變數缺席時退回相對路徑且不檢查FD2_REQUIRE_ORIGINAL，原版檔測試因此默默跳過。新增src/test_support.rs統一四個變數並一律在要求旗標下失敗；以--nocapture確認421項沒有任何略過，反向拿掉變數時fdicon與afm確實失敗。教訓兩條：測試環境變數統一且失敗即關閉、不逐行移植Go標準函式庫。

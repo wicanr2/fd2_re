@@ -13,3 +13,6 @@ pub mod figani;
 pub mod keyboard;
 pub mod native_rng;
 pub mod save;
+
+#[cfg(test)]
+mod test_support;

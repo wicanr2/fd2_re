@@ -1,6 +1,6 @@
 //! 逐條移植自 Go `remake/internal/fdicon/*_test.go`，期望值不改。每個子模組對應一個 Go
 //! 測試檔。需要原版檔的測試與 Go 版一樣，檔案不存在就略過；路徑可用
-//! `FD2_FDICON_REAL_FLAME2`（含 FDICON.B24 的目錄）與 `FD2_FDICON_REAL_ASSETS`
+//! `FD2_FLAME2_DIR`（含 FDICON.B24 的目錄）與 `FD2_ASSET_PACK`
 //! （分離素材包根目錄）指定，否則沿用 Go 測試的相對位置。
 
 mod binary_tick_test;
@@ -16,18 +16,26 @@ use std::path::PathBuf;
 
 /// 玩家提供的 FDICON.B24；Go 測試用 `../../../org_game/炎龍騎士團/FLAME2/FDICON.B24`。
 fn original_fdicon_path() -> String {
-    match std::env::var("FD2_FDICON_REAL_FLAME2") {
+    let path = match std::env::var("FD2_FLAME2_DIR") {
         Ok(dir) => format!("{dir}/FDICON.B24"),
         Err(_) => format!("{}/../../../org_game/炎龍騎士團/FLAME2/FDICON.B24", env!("CARGO_MANIFEST_DIR")),
+    };
+    if !std::path::Path::new(&path).is_file() {
+        crate::test_support::skip(&path);
     }
+    path
 }
 
 /// Go 測試用 `../../generated-assets/fd2-original-b97caf22`。
 fn separated_assets_root() -> String {
-    match std::env::var("FD2_FDICON_REAL_ASSETS") {
+    let root = match std::env::var("FD2_ASSET_PACK") {
         Ok(dir) => dir,
         Err(_) => format!("{}/../../../remake/generated-assets/fd2-original-b97caf22", env!("CARGO_MANIFEST_DIR")),
+    };
+    if !std::path::Path::new(&root).is_dir() {
+        crate::test_support::skip(&root);
     }
+    root
 }
 
 /// Go `t.TempDir()`：測試結束時刪除。

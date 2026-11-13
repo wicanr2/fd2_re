@@ -8,25 +8,13 @@ use std::path::PathBuf;
 /// 原版檔案目錄：`FD2_FLAME2_DIR`；未設定時跳過（Go 版以 t.Skip 處理缺檔），
 /// `FD2_REQUIRE_ORIGINAL=1` 時缺檔即失敗。與 `archive` 模組測試的同名輔助函式相同。
 fn original(name: &str) -> Option<PathBuf> {
-    let dir = std::env::var_os("FD2_FLAME2_DIR").map(PathBuf::from);
-    let path = dir.map(|d| d.join(name)).filter(|p| p.is_file());
-    if path.is_none() {
-        assert!(std::env::var_os("FD2_REQUIRE_ORIGINAL").is_none(), "缺少原版 {name}");
-        eprintln!("略過：沒有原版 {name}");
-    }
-    path
+    crate::test_support::flame2(name)
 }
 
-/// 離線分離頭像目錄：`FD2_PORTRAITS_DIR`（對應 Go 測試的
+/// 離線分離頭像目錄：`FD2_ASSET_PACK/portraits`（對應 Go 測試的
 /// `remake/generated-assets/fd2-original-b97caf22/portraits`），缺檔規則同 [`original`]。
 fn portraits(probe: &str) -> Option<PathBuf> {
-    let dir = std::env::var_os("FD2_PORTRAITS_DIR").map(PathBuf::from);
-    let dir = dir.filter(|d| d.join(probe).is_file());
-    if dir.is_none() {
-        assert!(std::env::var_os("FD2_REQUIRE_ORIGINAL").is_none(), "缺少分離頭像 {probe}");
-        eprintln!("略過：沒有分離頭像 {probe}");
-    }
-    dir
+    crate::test_support::asset_pack(&format!("portraits/{probe}")).and_then(|p| p.parent().map(PathBuf::from))
 }
 
 /// 每個測試自己的暫存目錄（Go 的 t.TempDir）。

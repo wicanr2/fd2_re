@@ -5749,6 +5749,29 @@
       "rule": "worklist的absent訊號綁在文件字串時，文件其他段落不能寫出那個字串；寫說明前先跑tools/fd2_worklist.py verify，確認只有真正完成的條目被列為「訊號已經消失」。",
       "why": "119的說明句「R0 到 R4 完成時」含有「R4 完成」，讓R4工單在完全沒動工時被判為可能已完成。",
       "evidence": "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
+    },
+    {
+      "id": "rust-test-env-unified-fail-closed",
+      "date": "2026-11-14",
+      "area": "改寫",
+      "rule": "Rust單元測試讀原版檔一律經remake-rs/crates/fd2-formats/src/test_support.rs，只用FD2_FLAME2_DIR、FD2_ASSET_PACK、FD2_EXTRACTED_RAW_DIR、FD2_REMAKE_ASSETS四個變數；缺檔時在FD2_REQUIRE_ORIGINAL=1下必須失敗。驗收用tools/rust_formats_test.sh -- --nocapture，確認輸出沒有「略過」。",
+      "why": "子代理各自取了FD2_FDICON_REAL_FLAME2、FD2_ANI_DAT等變數名，fdicon與afm在變數缺席時退回相對路徑且不檢查REQUIRE旗標；主checkout的完整測試因變數名打錯一字，fdicon原版檔測試全部默默跳過卻顯示全綠。",
+      "evidence": "remake-rs/crates/fd2-formats/src/test_support.rs",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-formats/src/lib.rs"
+        ],
+        "pattern": "mod test_support;"
+      }
+    },
+    {
+      "id": "rust-port-no-go-stdlib",
+      "date": "2026-11-14",
+      "area": "改寫",
+      "rule": "移植Go程式時不逐行移植Go標準函式庫（encoding/json、image/png、compress/*、bufio、path/filepath、os錯誤文字）。改用remake-rs/Cargo.lock已鎖定的serde、serde_json、png與std::path；套件自身的契約錯誤仍與Go逐字相同，損壞輸入只比接受或拒收，差異以具名的KNOWN_DIFFERENCES列為刻意不照做。",
+      "why": "第一批子代理為了讓損壞PNG／JSON的錯誤文字與Go一致，各寫了1000～2600行Go標準函式庫移植；那些行為是Go實作細節而非原版遊戲行為，且引入BSD授權署名與維護負擔。",
+      "evidence": "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
     }
   ]
 }

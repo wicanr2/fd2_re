@@ -106,13 +106,7 @@ mod tests {
     /// 原版檔案目錄：`FD2_FLAME2_DIR`；未設定時跳過（Go 版以 t.Skip 處理缺檔），
     /// `FD2_REQUIRE_ORIGINAL=1` 時缺檔即失敗。
     pub(crate) fn original(name: &str) -> Option<PathBuf> {
-        let dir = std::env::var_os("FD2_FLAME2_DIR").map(PathBuf::from);
-        let path = dir.map(|d| d.join(name)).filter(|p| p.is_file());
-        if path.is_none() {
-            assert!(std::env::var_os("FD2_REQUIRE_ORIGINAL").is_none(), "缺少原版 {name}");
-            eprintln!("略過：沒有原版 {name}");
-        }
-        path
+        crate::test_support::flame2(name)
     }
 
     fn archive(entries: &[&[u8]]) -> Vec<u8> {

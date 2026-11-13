@@ -1,14 +1,22 @@
 //! 逐條移植自 Go `remake/internal/afm/afm_test.go`，期望值不改。
 //!
 //! Go 版以相對路徑找玩家自備的 ANI.DAT（`org_game`，gitignore），缺檔則 skip。Rust 版另外
-//! 接受環境變數 `FD2_ANI_DAT`，讓 Docker 內的測試能掛載同一份原版檔。
+//! 接受環境變數 `FD2_FLAME2_DIR`，讓 Docker 內的測試能掛載同一份原版檔。
 
 use super::*;
 
 /// 找玩家自備的 ANI.DAT；找不到回 `None`，測試視同 Go 的 `t.Skip`。
 pub(crate) fn ani_path() -> Option<String> {
-    if let Ok(p) = std::env::var("FD2_ANI_DAT") {
-        return std::path::Path::new(&p).is_file().then_some(p);
+    if let Ok(dir) = std::env::var("FD2_FLAME2_DIR") {
+        let p = format!("{dir}/ANI.DAT");
+        let found = std::path::Path::new(&p).is_file().then_some(p);
+        if found.is_none() {
+            crate::test_support::skip("FD2_FLAME2_DIR/ANI.DAT");
+        }
+        return found;
+    }
+    if crate::test_support::require_original() {
+        crate::test_support::skip("FD2_FLAME2_DIR");
     }
     let manifest = env!("CARGO_MANIFEST_DIR");
     ["../../../org_game/炎龍騎士團/FLAME2/ANI.DAT", "../../../../org_game/炎龍騎士團/FLAME2/ANI.DAT"]
