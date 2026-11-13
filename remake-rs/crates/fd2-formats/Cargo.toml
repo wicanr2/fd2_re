@@ -11,8 +11,10 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
-# 分離頭像 PNG 解碼；版本釘在工作區 Cargo.lock 已有的 0.18.1（Bevy 的 image 引入），不新增套件版本。
+# 分離素材的 PNG 與 metadata 解碼（dato、afm）；版本釘在工作區 Cargo.lock 既有版本，不新增套件版本。
 png = "=0.18.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
 sha2 = "0.10"
 
 [dev-dependencies]
