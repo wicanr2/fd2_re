@@ -17,7 +17,10 @@ pub const NATIVE_COMMAND_GRID_ZERO_BUDGET: u8 = 0x80;
 ///
 /// Go：`native_command_target.go:18`，`func NativeCompositionBaseFlags(w, h int, eventBytes []byte) ([]byte, error)`
 pub fn native_composition_base_flags(w: i64, h: i64, event_bytes: &[u8]) -> Result<Vec<u8>> {
-    todo!("battle/native_command_target.go:NativeCompositionBaseFlags")
+    if w <= 0 || h <= 0 || event_bytes.len() as i64 != w.wrapping_mul(h) {
+        return Err(battle_err!("invalid native composition event bytes"));
+    }
+    Ok(event_bytes.iter().map(|v| v & 0x1f).collect())
 }
 
 impl State {
@@ -29,7 +32,7 @@ impl State {
     /// Go：`native_command_target.go:33`，`func (s *State) NativeCommandBaseFlags() ([]byte, error)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_command_base_flags(&self) -> Result<Vec<u8>> {
-        todo!("battle/native_command_target.go:State.NativeCommandBaseFlags")
+        native_composition_base_flags(self.w, self.h, &self.native_composition_event_bytes)
     }
 }
 
@@ -47,7 +50,9 @@ pub fn native_command_runtime_flags(
     units: &[Unit],
     selector: u8,
 ) -> Result<Vec<u8>> {
-    todo!("battle/native_command_target.go:NativeCommandRuntimeFlags")
+    let mut flags = native_composition_base_flags(w, h, event_bytes)?;
+    apply_native_runtime_flag_writer(w, h, &mut flags, units, selector)?;
+    Ok(flags)
 }
 
 /// applyNativeRuntimeFlagWriter mutates one caller-owned live composition
@@ -63,7 +68,31 @@ pub(crate) fn apply_native_runtime_flag_writer(
     units: &[Unit],
     selector: u8,
 ) -> Result<()> {
-    todo!("battle/native_command_target.go:applyNativeRuntimeFlagWriter")
+    if w <= 0 || h <= 0 || flags.len() as i64 != w.wrapping_mul(h) {
+        return Err(battle_err!("invalid native runtime flag grid"));
+    }
+    for (index, unit) in units.iter().enumerate() {
+        if !unit.has_native_map_presentation || !unit.has_native_record_byte5 || !unit.has_native_record_byte6 {
+            return Err(battle_err!("native command runtime flags: unit {index} lacks raw provenance"));
+        }
+        if unit.native_record_byte5 & 1 != 0 || (selector == 0) == (unit.native_record_byte6 == 0) {
+            continue;
+        }
+        let x = unit.native_map_presentation.x as i64;
+        let y = unit.native_map_presentation.y as i64;
+        if x < 0 || y < 0 || x >= w || y >= h {
+            return Err(battle_err!("native command runtime flags: unit {index} is out of bounds"));
+        }
+        flags[(y * w + x) as usize] |= NATIVE_COMMAND_GRID_BLOCKED;
+        for (dx, dy) in [(-1, 0), (0, -1), (1, 0), (0, 1)] {
+            let (next_x, next_y) = (x + dx, y + dy);
+            if next_x < 0 || next_y < 0 || next_x >= w || next_y >= h {
+                continue;
+            }
+            flags[(next_y * w + next_x) as usize] |= NATIVE_COMMAND_GRID_ZERO_BUDGET;
+        }
+    }
+    Ok(())
 }
 
 /// NativeFutureGroupPlacement reproduces the placement prefix of
@@ -86,7 +115,44 @@ pub fn native_future_group_placement(
     position: NativePositionRecord,
     raw_gate: u8,
 ) -> Result<Cell> {
-    todo!("battle/native_command_target.go:NativeFutureGroupPlacement")
+    let origin = Cell { x: (position.x_word as u8) as i64, y: (position.y_word as u8) as i64 };
+    let mut flags = native_composition_base_flags(w, h, event_bytes)?;
+    apply_native_runtime_flag_writer(w, h, &mut flags, units, 0)?;
+    apply_native_runtime_flag_writer(w, h, &mut flags, units, 1)?;
+    if raw_gate != 0 {
+        if origin.x < 0 || origin.y < 0 || origin.x >= w || origin.y >= h {
+            return Err(battle_err!(
+                "native future placement direct coordinate ({},{}) outside {}x{}",
+                origin.x,
+                origin.y,
+                w,
+                h
+            ));
+        }
+        return Ok(origin);
+    }
+
+    let mut best_distance = 0xff;
+    let mut best = Cell::default();
+    let mut found = false;
+    for y in 0..h {
+        for x in 0..w {
+            if flags[(y * w + x) as usize] & NATIVE_COMMAND_GRID_BLOCKED != 0 {
+                continue;
+            }
+            let distance = abs_int(x - origin.x) + abs_int(y - origin.y);
+            if distance > best_distance {
+                continue;
+            }
+            best_distance = distance;
+            best = Cell { x, y };
+            found = true;
+        }
+    }
+    if !found {
+        return Err(battle_err!("native future placement has no unoccupied cell"));
+    }
+    Ok(best)
 }
 
 /// NativeCommandTargetCells mirrors one 0x14818 geometry invocation before
@@ -108,7 +174,8 @@ pub fn native_command_target_cells(
     dist: i64,
     flags: &[u8],
 ) -> Result<BTreeMap<Cell, bool>> {
-    todo!("battle/native_command_target.go:NativeCommandTargetCells")
+    let budgets = native_command_target_budgets(w, h, origin, dist, flags)?;
+    Ok(budgets.into_keys().map(|cell| (cell, true)).collect())
 }
 
 /// Go：`native_command_target.go:191`，`func nativeCommandTargetBudgets(w, h int, origin Cell, dist int, flags []byte) (map[Cell]int, error)`
@@ -119,7 +186,65 @@ pub(crate) fn native_command_target_budgets(
     dist: i64,
     flags: &[u8],
 ) -> Result<BTreeMap<Cell, i64>> {
-    todo!("battle/native_command_target.go:nativeCommandTargetBudgets")
+    if w <= 0 || h <= 0 || origin.x < 0 || origin.y < 0 || origin.x >= w || origin.y >= h {
+        return Err(battle_err!("invalid native target grid/origin"));
+    }
+    if flags.len() as i64 != w.wrapping_mul(h) {
+        return Err(battle_err!("native target flags len={} want {}", flags.len(), w.wrapping_mul(h)));
+    }
+    if dist < 0 {
+        return Err(battle_err!("invalid native target dist={dist}"));
+    }
+    let mut result = BTreeMap::new();
+    if dist >= 0x10 {
+        // 0x148c7: cross ignores the grid flags.
+        let radius = dist - 0x10;
+        for x in 0..w {
+            if abs_int(x - origin.x) <= radius {
+                result.insert(Cell { x, y: origin.y }, 0);
+            }
+        }
+        for y in 0..h {
+            if abs_int(y - origin.y) <= radius {
+                result.insert(Cell { x: origin.x, y }, 0);
+            }
+        }
+        return Ok(result);
+    }
+
+    // 0x4e040 starts the origin at budget=dist then recursively visits the
+    // four cardinal neighbours. Row 0's twenty terrain costs are all one.
+    let mut remaining: BTreeMap<Cell, i64> = BTreeMap::from([(origin, dist)]);
+    let mut queue = std::collections::VecDeque::from([origin]);
+    result.insert(origin, dist);
+    while let Some(cell) = queue.pop_front() {
+        for (dx, dy) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
+            let next = Cell { x: cell.x + dx, y: cell.y + dy };
+            if next.x < 0 || next.y < 0 || next.x >= w || next.y >= h {
+                continue;
+            }
+            let flag = flags[(next.y * w + next.x) as usize];
+            if flag & NATIVE_COMMAND_GRID_BLOCKED != 0 {
+                continue;
+            }
+            let mut next_budget = remaining.get(&cell).copied().unwrap_or(0) - 1;
+            if next_budget < 0 {
+                continue;
+            }
+            if flag & NATIVE_COMMAND_GRID_ZERO_BUDGET != 0 {
+                next_budget = 0;
+            }
+            if let Some(&old) = remaining.get(&next)
+                && old >= next_budget
+            {
+                continue;
+            }
+            remaining.insert(next, next_budget);
+            result.insert(next, next_budget);
+            queue.push_back(next);
+        }
+    }
+    Ok(result)
 }
 
 /// NativeCommandTargetFieldBytes materializes the byte+3 state produced by
@@ -137,7 +262,18 @@ pub fn native_command_target_field_bytes(
     inner_radius: i64,
     flags: &[u8],
 ) -> Result<Vec<u8>> {
-    todo!("battle/native_command_target.go:NativeCommandTargetFieldBytes")
+    if inner_radius < 0 {
+        return Err(battle_err!("invalid native target inner radius"));
+    }
+    let budgets = native_command_target_budgets(w, h, origin, dist, flags)?;
+    let mut field = vec![0xffu8; (w * h) as usize];
+    for (cell, budget) in budgets {
+        if dist < 0x10 && inner_radius > 0 && abs_int(cell.x - origin.x) + abs_int(cell.y - origin.y) < inner_radius {
+            continue;
+        }
+        field[(cell.y * w + cell.x) as usize] = budget as u8;
+    }
+    Ok(field)
 }
 
 /// Go：`native_command_target.go:279`，`func absInt(n int) int`
@@ -152,7 +288,13 @@ pub(crate) fn abs_int(n: i64) -> i64 {
 ///
 /// Go：`native_command_target.go:290`，`func NativeCommandTargetMatches(code int, camp Camp) bool`
 pub fn native_command_target_matches(code: i64, camp: Camp) -> bool {
-    todo!("battle/native_command_target.go:NativeCommandTargetMatches")
+    match code {
+        0 => camp == ENEMY,
+        1 => camp != ENEMY,
+        2 => camp == ALLY,
+        3 => camp == OWN,
+        _ => false,
+    }
 }
 
 /// NativeCursorConfirmationAllowed preserves the non-relocation Enter/Space
@@ -174,7 +316,34 @@ pub fn native_cursor_confirmation_allowed(
     target_code: i64,
     units: &[Unit],
 ) -> Result<bool> {
-    todo!("battle/native_command_target.go:NativeCursorConfirmationAllowed")
+    if !(0..=NATIVE_MAP_OVERLAY_SELECTOR_MAX).contains(&overlay_selector) {
+        return Err(battle_err!("invalid native overlay selector {overlay_selector}"));
+    }
+    if target_code == 5 || field_byte == 0xff {
+        return Ok(false);
+    }
+    if target_code == 4 {
+        return Ok(true);
+    }
+    if !(0..=3).contains(&target_code) {
+        return Err(battle_err!("native cursor target code {target_code} uses another branch"));
+    }
+    if !native_target_roster_raw_complete(units) {
+        return Err(battle_err!("native cursor confirmation requires complete raw roster"));
+    }
+    let mut radius = overlay_selector;
+    if radius > 1 {
+        radius -= 1;
+    }
+    for unit in units {
+        if !native_target_unit_usable(Some(unit), true) || !native_command_target_matches(target_code, unit.camp) {
+            continue;
+        }
+        if abs_int(unit.x - cursor.x) + abs_int(unit.y - cursor.y) < radius {
+            return Ok(true);
+        }
+    }
+    Ok(false)
 }
 
 /// nativeTargetUnitUsable applies the raw 0x14818 inactive predicate whenever
@@ -184,17 +353,34 @@ pub fn native_cursor_confirmation_allowed(
 ///
 /// Go：`native_command_target.go:351`，`func nativeTargetUnitUsable(unit *Unit, rawComplete bool) bool`
 pub(crate) fn native_target_unit_usable(unit: Option<&Unit>, raw_complete: bool) -> bool {
-    todo!("battle/native_command_target.go:nativeTargetUnitUsable")
+    let Some(unit) = unit else {
+        return false;
+    };
+    if raw_complete {
+        return unit.has_native_record_byte5 && unit.native_record_byte5 & 1 == 0;
+    }
+    if unit.has_native_record_byte5 {
+        return unit.native_record_byte5 & 1 == 0;
+    }
+    unit.on_field && unit.alive()
 }
 
 /// Go：`native_command_target.go:364`，`func nativeTargetRosterRawComplete(units []*Unit) bool`
 pub(crate) fn native_target_roster_raw_complete(units: &[Unit]) -> bool {
-    todo!("battle/native_command_target.go:nativeTargetRosterRawComplete")
+    !units.is_empty() && units.iter().all(|unit| unit.has_native_record_byte5)
 }
 
 /// Go：`native_command_target.go:376`，`func nativeTargetActorUsable(unit *Unit, rawComplete bool) bool`
 pub(crate) fn native_target_actor_usable(unit: Option<&Unit>, raw_complete: bool) -> bool {
-    todo!("battle/native_command_target.go:nativeTargetActorUsable")
+    let Some(unit) = unit else {
+        return false;
+    };
+    if raw_complete {
+        return native_target_unit_usable(Some(unit), true);
+    }
+    // The legacy caller only established an on-grid actor/confirmed pointer;
+    // keep that compatibility boundary while candidate lists remain alive-gated.
+    unit.on_field
 }
 
 /// NativeCommandTargets applies one recovered 0x14818 invocation and its
@@ -213,7 +399,20 @@ pub fn native_command_targets(
     flags: &[u8],
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_command_target.go:NativeCommandTargets")
+    let cells = native_command_target_cells(w, h, origin, dist, flags)?;
+    let raw_complete = native_target_roster_raw_complete(units);
+    let mut targets = Vec::new();
+    for (index, unit) in units.iter().enumerate() {
+        if !native_target_unit_usable(Some(unit), raw_complete)
+            || !native_command_target_matches(target_code, unit.camp)
+        {
+            continue;
+        }
+        if cells.get(&Cell { x: unit.x, y: unit.y }).copied().unwrap_or(false) {
+            targets.push(index);
+        }
+    }
+    Ok(targets)
 }
 
 /// NativeAttackCandidates preserves the additional 0x14818 geometry used by
@@ -234,7 +433,26 @@ pub fn native_attack_candidates(
     flags: &[u8],
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_command_target.go:NativeAttackCandidates")
+    if inner_radius < 0 {
+        return Err(battle_err!("invalid native attack inner radius"));
+    }
+    let mut cells = native_command_target_cells(w, h, origin, mode, flags)?;
+    if mode < 0x10 && inner_radius > 0 {
+        cells.retain(|cell, _| abs_int(cell.x - origin.x) + abs_int(cell.y - origin.y) >= inner_radius);
+    }
+    let raw_complete = native_target_roster_raw_complete(units);
+    let mut targets = Vec::new();
+    for (index, unit) in units.iter().enumerate() {
+        if !native_target_unit_usable(Some(unit), raw_complete)
+            || !native_command_target_matches(target_code, unit.camp)
+        {
+            continue;
+        }
+        if cells.get(&Cell { x: unit.x, y: unit.y }).copied().unwrap_or(false) {
+            targets.push(index);
+        }
+    }
+    Ok(targets)
 }
 
 /// NativeCommandEffectTargets 保留既有直接單位入口的候選檢查。
@@ -255,7 +473,36 @@ pub fn native_command_effect_targets(
     flags: &[u8],
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_command_target.go:NativeCommandEffectTargets")
+    let raw_complete = native_target_roster_raw_complete(units);
+    let (Some(actor_unit), Some(confirmed_unit)) = (actor.map(|i| &units[i]), confirmed.map(|i| &units[i])) else {
+        return Err(battle_err!("invalid native command actor/confirmed unit"));
+    };
+    if !native_target_actor_usable(Some(actor_unit), raw_complete)
+        || !native_target_actor_usable(Some(confirmed_unit), raw_complete)
+    {
+        return Err(battle_err!("invalid native command actor/confirmed unit"));
+    }
+    let selection = native_command_targets(
+        w,
+        h,
+        Cell { x: actor_unit.x, y: actor_unit.y },
+        selection_mode,
+        target_code,
+        flags,
+        units,
+    )?;
+    if !selection.iter().any(|&candidate| Some(candidate) == confirmed) {
+        return Err(battle_err!("confirmed unit is not a native command candidate"));
+    }
+    native_command_targets(
+        w,
+        h,
+        Cell { x: confirmed_unit.x, y: confirmed_unit.y },
+        effect_mode,
+        target_code,
+        flags,
+        units,
+    )
 }
 
 /// NativeCommandEffectTargetsAtCursor 依 sub_1CFF0 的一般分支驗證游標中心。
@@ -277,7 +524,35 @@ pub fn native_command_effect_targets_at_cursor(
     flags: &[u8],
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_command_target.go:NativeCommandEffectTargetsAtCursor")
+    let actor_unit = actor.map(|i| &units[i]);
+    let Some(actor_unit) = actor_unit.filter(|_| {
+        native_target_roster_raw_complete(units)
+            && native_target_actor_usable(actor_unit, true)
+            && cursor.x >= 0
+            && cursor.y >= 0
+            && cursor.x < w
+            && cursor.y < h
+            && (0..=0xff).contains(&effect_mode)
+    }) else {
+        return Err(battle_err!("invalid native command cursor/raw roster"));
+    };
+    let field =
+        native_command_target_field_bytes(w, h, Cell { x: actor_unit.x, y: actor_unit.y }, selection_mode, 0, flags)?;
+    let allowed = native_cursor_confirmation_allowed(
+        cursor,
+        field[(cursor.y * w + cursor.x) as usize],
+        native_map_overlay_selector_from_record_byte(effect_mode as u8),
+        target_code,
+        units,
+    )?;
+    if !allowed {
+        return Err(battle_err!("native command cursor confirmation refused"));
+    }
+    let targets = native_command_targets(w, h, cursor, effect_mode, target_code, flags, units)?;
+    if targets.is_empty() {
+        return Err(battle_err!("native command cursor effect list is empty"));
+    }
+    Ok(targets)
 }
 
 /// NativeCommandSelfCenteredTargets follows sub_1CFF0 0x1D366..0x1D3B4.
@@ -297,7 +572,27 @@ pub fn native_command_self_centered_targets(
     flags: &[u8],
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_command_target.go:NativeCommandSelfCenteredTargets")
+    let actor_unit = actor.map(|i| &units[i]);
+    let Some(actor_unit) = actor_unit.filter(|_| {
+        native_target_roster_raw_complete(units)
+            && native_target_actor_usable(actor_unit, true)
+            && cursor.x >= 0
+            && cursor.y >= 0
+            && cursor.x < w
+            && cursor.y < h
+    }) else {
+        return Err(battle_err!("invalid native self-centered command cursor/raw roster"));
+    };
+    let origin = Cell { x: actor_unit.x, y: actor_unit.y };
+    let field = native_command_target_field_bytes(w, h, origin, effect_mode, 0, flags)?;
+    let targets = native_command_targets(w, h, origin, effect_mode, 0, flags, units)?;
+    let code = if targets.is_empty() { 5 } else { 4 };
+    let allowed =
+        native_cursor_confirmation_allowed(cursor, field[(cursor.y * w + cursor.x) as usize], 1, code, units)?;
+    if !allowed {
+        return Err(battle_err!("native self-centered command confirmation refused"));
+    }
+    Ok(targets)
 }
 
 /// NativeCommand30Targets mirrors the special 0x149F8 selector used only by
@@ -317,5 +612,54 @@ pub fn native_command30_targets(
     steps: i64,
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_command_target.go:NativeCommand30Targets")
+    if w <= 0
+        || h <= 0
+        || saved_cursor.x < 0
+        || saved_cursor.y < 0
+        || saved_cursor.x >= w
+        || saved_cursor.y >= h
+        || confirmed_cursor.x < 0
+        || confirmed_cursor.y < 0
+        || confirmed_cursor.x >= w
+        || confirmed_cursor.y >= h
+        || steps < 0
+    {
+        return Err(battle_err!("invalid native command 30 selector"));
+    }
+    let (mut dx, mut dy) = (0, 0);
+    if saved_cursor.x != confirmed_cursor.x {
+        dx = if saved_cursor.x > confirmed_cursor.x { -1 } else { 1 };
+    } else if saved_cursor.y > confirmed_cursor.y {
+        dy = -1;
+    } else {
+        dy = 1;
+    }
+    let mut cell = saved_cursor;
+    let mut targets = Vec::new();
+    let raw_complete = native_target_roster_raw_complete(units);
+    for _ in 0..steps {
+        cell.x += dx;
+        cell.y += dy;
+        if cell.x < 0 || cell.y < 0 || cell.x >= w || cell.y >= h {
+            continue;
+        }
+        // sub_12C0D returns the first active unit at a coordinate; it does
+        // not search past a non-enemy unit occupying the same malformed cell.
+        for (index, unit) in units.iter().enumerate() {
+            if !native_target_unit_usable(Some(unit), raw_complete) || unit.x != cell.x || unit.y != cell.y {
+                continue;
+            }
+            if unit.camp == ENEMY {
+                targets.push(index);
+            }
+            break;
+        }
+    }
+    Ok(targets)
 }
+
+#[cfg(test)]
+mod native_attack_target_test;
+
+#[cfg(test)]
+mod native_command_target_test;

@@ -22,5 +22,27 @@ pub struct NativeCompoundStep {
 ///
 /// Go：`native_command_compound.go:17`，`func NativeCompoundCommandPlan(commandID int) ([]NativeCompoundStep, bool)`
 pub fn native_compound_command_plan(command_id: i64) -> (Vec<NativeCompoundStep>, bool) {
-    todo!("battle/native_command_compound.go:NativeCompoundCommandPlan")
+    let step = |callee: u32, command_id: i64, marker_offset: i64, amount: i64| NativeCompoundStep {
+        callee,
+        command_id,
+        marker_offset,
+        amount,
+    };
+    let steps = match command_id {
+        32 => vec![step(0x2111a, 32, 0, 0)],
+        33 => vec![
+            // Callee==0 denotes the wrapper's direct byte clear, not a call.
+            step(0, 33, 0x25, 0),
+            step(0, 33, 0x26, 0),
+            step(0, 33, 0x27, 0),
+            step(0x211a4, 33, 0, 0x320),
+        ],
+        34 => vec![step(0x22721, 17, 0x22, 0), step(0x22866, 18, 0x23, 0), step(0x22997, 19, 0x24, 0)],
+        35 => vec![step(0x22d1b, 26, 0x25, 0), step(0x22d1b, 22, 0x27, 0), step(0x22d1b, 27, 0x26, 0)],
+        _ => return (Vec::new(), false),
+    };
+    (steps, true)
 }
+
+#[cfg(test)]
+mod native_command_compound_test;

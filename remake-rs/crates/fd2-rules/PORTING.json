@@ -288,7 +288,7 @@
         {
           "name": "BalanceOptions.Validate",
           "rust": "BalanceOptions::validate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 21,
           "calls": [
             "NativeCommandHasHitRoll"
@@ -297,7 +297,7 @@
         {
           "name": "BalanceOptions.IsOriginal",
           "rust": "BalanceOptions::is_original",
-          "status": "todo",
+          "status": "ported",
           "go_line": 54,
           "calls": [
             "OriginalGrowthRates"
@@ -306,7 +306,7 @@
         {
           "name": "BalanceIdentity",
           "rust": "balance_identity",
-          "status": "todo",
+          "status": "ported",
           "go_line": 58
         },
         {
@@ -318,7 +318,7 @@
         {
           "name": "State.CommandHit",
           "rust": "State::command_hit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 69,
           "calls": [
             "BalanceIdentity",
@@ -328,7 +328,7 @@
         {
           "name": "State.balanceGrowthRow",
           "rust": "State::balance_growth_row",
-          "status": "todo",
+          "status": "ported",
           "go_line": 80,
           "calls": [
             "BalanceIdentity"
@@ -337,13 +337,13 @@
         {
           "name": "Unit.BalanceStats",
           "rust": "Unit::balance_stats",
-          "status": "todo",
+          "status": "ported",
           "go_line": 100
         },
         {
           "name": "Unit.SetBalanceStats",
           "rust": "Unit::set_balance_stats",
-          "status": "todo",
+          "status": "ported",
           "go_line": 109,
           "calls": [
             "Unit.BalanceStats"
@@ -352,13 +352,13 @@
         {
           "name": "scaleBalance",
           "rust": "scale_balance",
-          "status": "todo",
+          "status": "ported",
           "go_line": 144
         },
         {
           "name": "State.ApplyEnemyStrength",
           "rust": "State::apply_enemy_strength",
-          "status": "todo",
+          "status": "ported",
           "go_line": 155,
           "calls": [
             "Unit.BalanceStats",
@@ -2350,7 +2350,7 @@
         {
           "name": "State.Reachable",
           "rust": "State::reachable",
-          "status": "todo",
+          "status": "ported",
           "go_line": 5,
           "calls": [
             "State.MoveCost",
@@ -2360,19 +2360,19 @@
         {
           "name": "State.MoveCost",
           "rust": "State::move_cost",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43
         },
         {
           "name": "State.InAttackRange",
           "rust": "State::in_attack_range",
-          "status": "todo",
+          "status": "ported",
           "go_line": 53
         },
         {
           "name": "State.Path",
           "rust": "State::path",
-          "status": "todo",
+          "status": "ported",
           "go_line": 73,
           "calls": [
             "State.MoveCost",
@@ -3518,7 +3518,7 @@
         {
           "name": "SelectNativeMovementDestination",
           "rust": "select_native_movement_destination",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16,
           "calls": [
             "nativeMovementDestinationMetrics"
@@ -3527,13 +3527,13 @@
         {
           "name": "NativePathBlockedCoordinate",
           "rust": "native_path_blocked_coordinate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 36
         },
         {
           "name": "nativeMovementDestinationMetrics",
           "rust": "native_movement_destination_metrics",
-          "status": "todo",
+          "status": "ported",
           "go_line": 88,
           "calls": [
             "absInt"
@@ -3542,7 +3542,7 @@
         {
           "name": "SelectNativeNearestOppositeCoordinate",
           "rust": "select_native_nearest_opposite_coordinate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 98,
           "calls": [
             "absInt",
@@ -3552,7 +3552,7 @@
         {
           "name": "NativePathDirections",
           "rust": "native_path_directions",
-          "status": "todo",
+          "status": "ported",
           "go_line": 132,
           "calls": [
             "nativePathSearch.considerDestination",
@@ -3562,7 +3562,7 @@
         {
           "name": "nativePathSearch.walk",
           "rust": "NativePathSearch::walk",
-          "status": "todo",
+          "status": "ported",
           "go_line": 201,
           "calls": [
             "nativePathRunMetric",
@@ -3572,13 +3572,13 @@
         {
           "name": "nativePathRunMetric",
           "rust": "native_path_run_metric",
-          "status": "todo",
+          "status": "ported",
           "go_line": 236
         },
         {
           "name": "nativePathSearch.considerDestination",
           "rust": "NativePathSearch::consider_destination",
-          "status": "todo",
+          "status": "ported",
           "go_line": 249
         }
       ],
@@ -4151,7 +4151,7 @@
         {
           "name": "NativeAIScoredCommandCandidateGroups",
           "rust": "native_ai_scored_command_candidate_groups",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18,
           "calls": [
             "nativeAIScoredCommandDestinations",
@@ -4162,7 +4162,7 @@
         {
           "name": "nativeAIScoredCommandDestinations",
           "rust": "native_ai_scored_command_destinations",
-          "status": "todo",
+          "status": "ported",
           "go_line": 55,
           "calls": [
             "nativeAIPropagateDestinationBudget"
@@ -4171,13 +4171,13 @@
         {
           "name": "nativeAIScoredCommandTargetCode",
           "rust": "native_ai_scored_command_target_code",
-          "status": "todo",
+          "status": "ported",
           "go_line": 104
         },
         {
           "name": "nativeAIScoredCommandTargetIndices",
           "rust": "native_ai_scored_command_target_indices",
-          "status": "todo",
+          "status": "ported",
           "go_line": 118,
           "calls": [
             "NativeCommandTargetCells",
@@ -4187,7 +4187,7 @@
         {
           "name": "nativeAIScoredRawTargetMatches",
           "rust": "native_ai_scored_raw_target_matches",
-          "status": "todo",
+          "status": "ported",
           "go_line": 147
         }
       ],
@@ -4820,7 +4820,7 @@
         {
           "name": "State.ExecuteBoundNativeCommand0",
           "rust": "State::execute_bound_native_command0",
-          "status": "todo",
+          "status": "ported",
           "go_line": 35,
           "calls": [
             "State.ExecuteNativeCommandDamage"
@@ -4829,7 +4829,7 @@
         {
           "name": "State.PlanBoundNativeCommand0",
           "rust": "State::plan_bound_native_command0",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43,
           "calls": [
             "State.PlanNativeCommandDamage"
@@ -4838,7 +4838,7 @@
         {
           "name": "State.ExecuteNativeCommandDamage",
           "rust": "State::execute_native_command_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 56,
           "calls": [
             "ApplyNativeCommandDamageMP",
@@ -4859,7 +4859,7 @@
         {
           "name": "State.PlanNativeCommandDamageWalk",
           "rust": "State::plan_native_command_damage_walk",
-          "status": "todo",
+          "status": "ported",
           "go_line": 83,
           "calls": [
             "NativeCommandEffectTargets",
@@ -4879,7 +4879,7 @@
         {
           "name": "State.PlanNativeCommandDamageAtCursor",
           "rust": "State::plan_native_command_damage_at_cursor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 110,
           "calls": [
             "NativeCommandEffectTargetsAtCursor",
@@ -4891,7 +4891,7 @@
         {
           "name": "State.planNativeCommandDamageTargets",
           "rust": "State::plan_native_command_damage_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 131,
           "calls": [
             "State.CommandHit",
@@ -4903,7 +4903,7 @@
         {
           "name": "resolveNativeCommandDamagePlan",
           "rust": "resolve_native_command_damage_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 168,
           "calls": [
             "ResolveNativeCommandDamage",
@@ -4913,7 +4913,7 @@
         {
           "name": "State.PlanNativeAICommandDamageSingleTarget",
           "rust": "State::plan_native_ai_command_damage_single_target",
-          "status": "todo",
+          "status": "ported",
           "go_line": 227,
           "calls": [
             "ResolveNativeCommandDamage",
@@ -4933,7 +4933,7 @@
         {
           "name": "State.PlanNativeAICommandDamageWalk",
           "rust": "State::plan_native_ai_command_damage_walk",
-          "status": "todo",
+          "status": "ported",
           "go_line": 277,
           "calls": [
             "NativeAIScoringRecords",
@@ -4950,31 +4950,31 @@
         {
           "name": "State.nativeAICommandOriginInGrid",
           "rust": "State::native_ai_command_origin_in_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 343
         },
         {
           "name": "nativeCommandDamageStages",
           "rust": "native_command_damage_stages",
-          "status": "todo",
+          "status": "ported",
           "go_line": 353
         },
         {
           "name": "ApplyNativeCommandDamageMP",
           "rust": "apply_native_command_damage_mp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 364
         },
         {
           "name": "ApplyNativeCommandDamageStage",
           "rust": "apply_native_command_damage_stage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 377
         },
         {
           "name": "CompleteNativeCommandDamage",
           "rust": "complete_native_command_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 396
         }
       ],
@@ -5029,7 +5029,7 @@
         {
           "name": "State.NativeCommandHealTargets",
           "rust": "State::native_command_heal_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 19,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5039,7 +5039,7 @@
         {
           "name": "State.NativeAICommandHealTargets",
           "rust": "State::native_ai_command_heal_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 47,
           "calls": [
             "NativeAIScoringRecords",
@@ -5052,7 +5052,7 @@
         {
           "name": "State.ExecuteNativeCommandHeal",
           "rust": "State::execute_native_command_heal",
-          "status": "todo",
+          "status": "ported",
           "go_line": 98,
           "calls": [
             "ApplyNativeCommandRestore",
@@ -5063,7 +5063,7 @@
         {
           "name": "State.ExecuteNativeAICommandHeal",
           "rust": "State::execute_native_ai_command_heal",
-          "status": "todo",
+          "status": "ported",
           "go_line": 116,
           "calls": [
             "ApplyNativeCommandRestore",
@@ -5074,7 +5074,7 @@
         {
           "name": "State.ExecuteNativeCommandHealNative",
           "rust": "State::execute_native_command_heal_native",
-          "status": "todo",
+          "status": "ported",
           "go_line": 132,
           "calls": [
             "State.NativeCommandHealTargets",
@@ -5084,7 +5084,7 @@
         {
           "name": "State.ExecuteNativeAICommandHealNative",
           "rust": "State::execute_native_ai_command_heal_native",
-          "status": "todo",
+          "status": "ported",
           "go_line": 147,
           "calls": [
             "State.NativeAICommandHealTargets",
@@ -5094,7 +5094,7 @@
         {
           "name": "State.executeNativeCommandHealTargetsNative",
           "rust": "State::execute_native_command_heal_targets_native",
-          "status": "todo",
+          "status": "ported",
           "go_line": 158,
           "calls": [
             "ApplyNativeCommandRestoreNative",
@@ -5104,7 +5104,7 @@
         {
           "name": "State.executeNativeCommandHealTargets",
           "rust": "State::execute_native_command_heal_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 174,
           "calls": [
             "SpendNativeCommandMP"
@@ -5169,7 +5169,7 @@
         {
           "name": "State.NativeCommandModifierTargets",
           "rust": "State::native_command_modifier_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 12,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5180,7 +5180,7 @@
         {
           "name": "State.NativeAICommandModifierTargets",
           "rust": "State::native_ai_command_modifier_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 38,
           "calls": [
             "NativeAIScoringRecords",
@@ -5194,7 +5194,7 @@
         {
           "name": "State.ExecuteNativeCommandModifier",
           "rust": "State::execute_native_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 88,
           "calls": [
             "State.NativeCommandModifierTargets",
@@ -5204,7 +5204,7 @@
         {
           "name": "State.ExecuteNativeAICommandModifier",
           "rust": "State::execute_native_ai_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 98,
           "calls": [
             "AbortNativeAICommandModifier",
@@ -5216,7 +5216,7 @@
         {
           "name": "State.PlanNativeAICommandModifier",
           "rust": "State::plan_native_ai_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 129,
           "calls": [
             "ApplyNativeCommandModifier",
@@ -5229,7 +5229,7 @@
         {
           "name": "PublishNativeAICommandModifier",
           "rust": "publish_native_ai_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 173,
           "calls": [
             "nativeCommand34EqualCurrent",
@@ -5239,7 +5239,7 @@
         {
           "name": "CompleteNativeAICommandModifier",
           "rust": "complete_native_ai_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 184,
           "calls": [
             "nativeCommand34EqualCurrent"
@@ -5248,7 +5248,7 @@
         {
           "name": "AbortNativeAICommandModifier",
           "rust": "abort_native_ai_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 194,
           "calls": [
             "nativeCommand34Publish"
@@ -5257,7 +5257,7 @@
         {
           "name": "State.ValidateNativeCommandModifierTargets",
           "rust": "State::validate_native_command_modifier_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 213,
           "calls": [
             "State.preflightNativeCommandModifierActor",
@@ -5267,13 +5267,13 @@
         {
           "name": "State.preflightNativeCommandModifierActor",
           "rust": "State::preflight_native_command_modifier_actor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 221
         },
         {
           "name": "State.executeNativeCommandModifierTargets",
           "rust": "State::execute_native_command_modifier_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 239,
           "calls": [
             "ApplyNativeCommandModifier",
@@ -5286,13 +5286,13 @@
         {
           "name": "publishNativeCommandModifierRecords",
           "rust": "publish_native_command_modifier_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 263
         },
         {
           "name": "nativeCommandModifierRecords",
           "rust": "native_command_modifier_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 274
         }
       ],
@@ -5350,19 +5350,19 @@
         {
           "name": "ApplyNativeCommandRestore",
           "rust": "apply_native_command_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 21
         },
         {
           "name": "ApplyNativeCommandRestoreNative",
           "rust": "apply_native_command_restore_native",
-          "status": "todo",
+          "status": "ported",
           "go_line": 37
         },
         {
           "name": "State.ExecuteNativeCommandClearRestore",
           "rust": "State::execute_native_command_clear_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 65,
           "calls": [
             "ApplyNativeCommandRestore",
@@ -5375,7 +5375,7 @@
         {
           "name": "State.NativeCommandClearRestoreTargets",
           "rust": "State::native_command_clear_restore_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 94,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5450,7 +5450,7 @@
         {
           "name": "State.NativeAICommand2022Targets",
           "rust": "State::native_ai_command2022_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43,
           "calls": [
             "NativeAIScoringRecords",
@@ -5463,25 +5463,25 @@
         {
           "name": "nativeAICommand2022States",
           "rust": "native_ai_command2022_states",
-          "status": "todo",
+          "status": "ported",
           "go_line": 89
         },
         {
           "name": "nativeAICommand2022Equal",
           "rust": "native_ai_command2022_equal",
-          "status": "todo",
+          "status": "ported",
           "go_line": 97
         },
         {
           "name": "nativeAICommand2022Publish",
           "rust": "native_ai_command2022_publish",
-          "status": "todo",
+          "status": "ported",
           "go_line": 106
         },
         {
           "name": "State.PlanNativeAICommand2022",
           "rust": "State::plan_native_ai_command2022",
-          "status": "todo",
+          "status": "ported",
           "go_line": 112,
           "calls": [
             "State.NativeAICommand2022Targets",
@@ -5491,7 +5491,7 @@
         {
           "name": "State.PlanNativePlayerCommand2022",
           "rust": "State::plan_native_player_command2022",
-          "status": "todo",
+          "status": "ported",
           "go_line": 124,
           "calls": [
             "State.NativeCommand25Targets",
@@ -5503,7 +5503,7 @@
         {
           "name": "State.planNativeCommand2022Targets",
           "rust": "State::plan_native_command2022_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 143,
           "calls": [
             "ApplyNativeRawApplication",
@@ -5516,13 +5516,13 @@
         {
           "name": "nativeAICommand2022StatesFromRecords",
           "rust": "native_ai_command2022_states_from_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 207
         },
         {
           "name": "PublishNativeAICommand2022",
           "rust": "publish_native_ai_command2022",
-          "status": "todo",
+          "status": "ported",
           "go_line": 217,
           "calls": [
             "nativeAICommand2022Equal",
@@ -5532,7 +5532,7 @@
         {
           "name": "CompleteNativeAICommand2022",
           "rust": "complete_native_ai_command2022",
-          "status": "todo",
+          "status": "ported",
           "go_line": 227,
           "calls": [
             "nativeAICommand2022Equal"
@@ -5541,7 +5541,7 @@
         {
           "name": "AbortNativeAICommand2022",
           "rust": "abort_native_ai_command2022",
-          "status": "todo",
+          "status": "ported",
           "go_line": 236,
           "calls": [
             "nativeAICommand2022Publish"
@@ -5813,7 +5813,7 @@
         {
           "name": "State.ExecuteNativeCommand25",
           "rust": "State::execute_native_command25",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18,
           "calls": [
             "SpendNativeCommandMP",
@@ -5823,7 +5823,7 @@
         {
           "name": "State.NativeCommand25Targets",
           "rust": "State::native_command25_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 45,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5873,7 +5873,7 @@
         {
           "name": "State.ExecuteNativeCommandApplication",
           "rust": "State::execute_native_command_application",
-          "status": "todo",
+          "status": "ported",
           "go_line": 29,
           "calls": [
             "SpendNativeCommandMP",
@@ -5887,7 +5887,7 @@
         {
           "name": "State.NativeCommandApplicationTargets",
           "rust": "State::native_command_application_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 61,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5955,7 +5955,7 @@
         {
           "name": "State.ExecuteNativeCompoundCommand32",
           "rust": "State::execute_native_compound_command32",
-          "status": "todo",
+          "status": "ported",
           "go_line": 36,
           "calls": [
             "AbortNativeCompoundCommand32",
@@ -5967,7 +5967,7 @@
         {
           "name": "State.PlanNativeCompoundCommand32",
           "rust": "State::plan_native_compound_command32",
-          "status": "todo",
+          "status": "ported",
           "go_line": 56,
           "calls": [
             "NativeCommandEffectTargets",
@@ -5982,19 +5982,19 @@
         {
           "name": "ApplyNativeCompoundCommand32Target",
           "rust": "apply_native_compound_command32_target",
-          "status": "todo",
+          "status": "ported",
           "go_line": 123
         },
         {
           "name": "CompleteNativeCompoundCommand32",
           "rust": "complete_native_compound_command32",
-          "status": "todo",
+          "status": "ported",
           "go_line": 137
         },
         {
           "name": "AbortNativeCompoundCommand32",
           "rust": "abort_native_compound_command32",
-          "status": "todo",
+          "status": "ported",
           "go_line": 155
         }
       ],
@@ -6062,7 +6062,7 @@
         {
           "name": "State.ExecuteNativeCompoundCommand33",
           "rust": "State::execute_native_compound_command33",
-          "status": "todo",
+          "status": "ported",
           "go_line": 44,
           "calls": [
             "AbortNativeCompoundCommand33",
@@ -6074,7 +6074,7 @@
         {
           "name": "State.PlanNativeCompoundCommand33",
           "rust": "State::plan_native_compound_command33",
-          "status": "todo",
+          "status": "ported",
           "go_line": 61,
           "calls": [
             "ApplyNativeRawHPRestoreList",
@@ -6087,25 +6087,25 @@
         {
           "name": "PublishNativeCompoundCommand33",
           "rust": "publish_native_compound_command33",
-          "status": "todo",
+          "status": "ported",
           "go_line": 125
         },
         {
           "name": "CompleteNativeCompoundCommand33",
           "rust": "complete_native_compound_command33",
-          "status": "todo",
+          "status": "ported",
           "go_line": 145
         },
         {
           "name": "AbortNativeCompoundCommand33",
           "rust": "abort_native_compound_command33",
-          "status": "todo",
+          "status": "ported",
           "go_line": 160
         },
         {
           "name": "nativeCompoundCommandTargetRecords",
           "rust": "native_compound_command_target_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 181
         }
       ],
@@ -6165,25 +6165,25 @@
         {
           "name": "nativeCommand34States",
           "rust": "native_command34_states",
-          "status": "todo",
+          "status": "ported",
           "go_line": 25
         },
         {
           "name": "nativeCommand34Publish",
           "rust": "native_command34_publish",
-          "status": "todo",
+          "status": "ported",
           "go_line": 33
         },
         {
           "name": "nativeCommand34EqualCurrent",
           "rust": "native_command34_equal_current",
-          "status": "todo",
+          "status": "ported",
           "go_line": 40
         },
         {
           "name": "State.PlanNativeCompoundCommand34",
           "rust": "State::plan_native_compound_command34",
-          "status": "todo",
+          "status": "ported",
           "go_line": 51,
           "calls": [
             "ApplyNativeCommandModifier",
@@ -6198,7 +6198,7 @@
         {
           "name": "PublishNativeCompoundCommand34Stage",
           "rust": "publish_native_compound_command34_stage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 97,
           "calls": [
             "nativeCommand34EqualCurrent",
@@ -6208,13 +6208,13 @@
         {
           "name": "CompleteNativeCompoundCommand34",
           "rust": "complete_native_compound_command34",
-          "status": "todo",
+          "status": "ported",
           "go_line": 113
         },
         {
           "name": "AbortNativeCompoundCommand34",
           "rust": "abort_native_compound_command34",
-          "status": "todo",
+          "status": "ported",
           "go_line": 121,
           "calls": [
             "nativeCommand34Publish"
@@ -6223,7 +6223,7 @@
         {
           "name": "State.ExecuteNativeCompoundCommand34",
           "rust": "State::execute_native_compound_command34",
-          "status": "todo",
+          "status": "ported",
           "go_line": 136,
           "calls": [
             "AbortNativeCompoundCommand34",
@@ -6235,7 +6235,7 @@
         {
           "name": "nativeCompoundPlayerSelector",
           "rust": "native_compound_player_selector",
-          "status": "todo",
+          "status": "ported",
           "go_line": 154
         }
       ],
@@ -6300,25 +6300,25 @@
         {
           "name": "nativeCommand35States",
           "rust": "native_command35_states",
-          "status": "todo",
+          "status": "ported",
           "go_line": 36
         },
         {
           "name": "nativeCommand35Publish",
           "rust": "native_command35_publish",
-          "status": "todo",
+          "status": "ported",
           "go_line": 44
         },
         {
           "name": "nativeCommand35EqualCurrent",
           "rust": "native_command35_equal_current",
-          "status": "todo",
+          "status": "ported",
           "go_line": 50
         },
         {
           "name": "State.PlanNativeCompoundCommand35",
           "rust": "State::plan_native_compound_command35",
-          "status": "todo",
+          "status": "ported",
           "go_line": 59,
           "calls": [
             "ApplyNativeRawApplication",
@@ -6333,7 +6333,7 @@
         {
           "name": "PublishNativeCompoundCommand35Stage",
           "rust": "publish_native_compound_command35_stage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 109,
           "calls": [
             "nativeCommand35EqualCurrent",
@@ -6343,13 +6343,13 @@
         {
           "name": "CompleteNativeCompoundCommand35",
           "rust": "complete_native_compound_command35",
-          "status": "todo",
+          "status": "ported",
           "go_line": 125
         },
         {
           "name": "AbortNativeCompoundCommand35",
           "rust": "abort_native_compound_command35",
-          "status": "todo",
+          "status": "ported",
           "go_line": 133,
           "calls": [
             "nativeCommand35Publish"
@@ -6358,7 +6358,7 @@
         {
           "name": "State.ExecuteNativeCompoundCommand35",
           "rust": "State::execute_native_compound_command35",
-          "status": "todo",
+          "status": "ported",
           "go_line": 148,
           "calls": [
             "AbortNativeCompoundCommand35",
@@ -6472,7 +6472,7 @@
         {
           "name": "NativeCompoundCommandPlan",
           "rust": "native_compound_command_plan",
-          "status": "todo",
+          "status": "ported",
           "go_line": 17
         }
       ],
@@ -6516,25 +6516,25 @@
         {
           "name": "LoadNativeCommandResistances",
           "rust": "load_native_command_resistances",
-          "status": "todo",
+          "status": "ported",
           "go_line": 23
         },
         {
           "name": "nativeCommandResistanceClass",
           "rust": "native_command_resistance_class",
-          "status": "todo",
+          "status": "ported",
           "go_line": 59
         },
         {
           "name": "ResolveNativeCommandDamage",
           "rust": "resolve_native_command_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 69
         },
         {
           "name": "ApplyNativeCommandDamage",
           "rust": "apply_native_command_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 87,
           "calls": [
             "ResolveNativeCommandDamage",
@@ -6647,7 +6647,7 @@
         {
           "name": "ApplyNativeCommandModifier",
           "rust": "apply_native_command_modifier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20,
           "calls": [
             "ApplyNativeRawPairStep",
@@ -6971,13 +6971,13 @@
         {
           "name": "NativeCompositionBaseFlags",
           "rust": "native_composition_base_flags",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18
         },
         {
           "name": "State.NativeCommandBaseFlags",
           "rust": "State::native_command_base_flags",
-          "status": "todo",
+          "status": "ported",
           "go_line": 33,
           "calls": [
             "NativeCompositionBaseFlags"
@@ -6986,7 +6986,7 @@
         {
           "name": "NativeCommandRuntimeFlags",
           "rust": "native_command_runtime_flags",
-          "status": "todo",
+          "status": "ported",
           "go_line": 47,
           "calls": [
             "NativeCompositionBaseFlags",
@@ -6996,13 +6996,13 @@
         {
           "name": "applyNativeRuntimeFlagWriter",
           "rust": "apply_native_runtime_flag_writer",
-          "status": "todo",
+          "status": "ported",
           "go_line": 67
         },
         {
           "name": "NativeFutureGroupPlacement",
           "rust": "native_future_group_placement",
-          "status": "todo",
+          "status": "ported",
           "go_line": 118,
           "calls": [
             "NativeCompositionBaseFlags",
@@ -7013,7 +7013,7 @@
         {
           "name": "NativeCommandTargetCells",
           "rust": "native_command_target_cells",
-          "status": "todo",
+          "status": "ported",
           "go_line": 179,
           "calls": [
             "nativeCommandTargetBudgets"
@@ -7022,7 +7022,7 @@
         {
           "name": "nativeCommandTargetBudgets",
           "rust": "native_command_target_budgets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 191,
           "calls": [
             "absInt"
@@ -7031,7 +7031,7 @@
         {
           "name": "NativeCommandTargetFieldBytes",
           "rust": "native_command_target_field_bytes",
-          "status": "todo",
+          "status": "ported",
           "go_line": 257,
           "calls": [
             "absInt",
@@ -7047,13 +7047,13 @@
         {
           "name": "NativeCommandTargetMatches",
           "rust": "native_command_target_matches",
-          "status": "todo",
+          "status": "ported",
           "go_line": 290
         },
         {
           "name": "NativeCursorConfirmationAllowed",
           "rust": "native_cursor_confirmation_allowed",
-          "status": "todo",
+          "status": "ported",
           "go_line": 315,
           "calls": [
             "NativeCommandTargetMatches",
@@ -7065,7 +7065,7 @@
         {
           "name": "nativeTargetUnitUsable",
           "rust": "native_target_unit_usable",
-          "status": "todo",
+          "status": "ported",
           "go_line": 351,
           "calls": [
             "Unit.Alive"
@@ -7074,13 +7074,13 @@
         {
           "name": "nativeTargetRosterRawComplete",
           "rust": "native_target_roster_raw_complete",
-          "status": "todo",
+          "status": "ported",
           "go_line": 364
         },
         {
           "name": "nativeTargetActorUsable",
           "rust": "native_target_actor_usable",
-          "status": "todo",
+          "status": "ported",
           "go_line": 376,
           "calls": [
             "nativeTargetUnitUsable"
@@ -7089,7 +7089,7 @@
         {
           "name": "NativeCommandTargets",
           "rust": "native_command_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 392,
           "calls": [
             "NativeCommandTargetCells",
@@ -7101,7 +7101,7 @@
         {
           "name": "NativeAttackCandidates",
           "rust": "native_attack_candidates",
-          "status": "todo",
+          "status": "ported",
           "go_line": 415,
           "calls": [
             "NativeCommandTargetCells",
@@ -7114,7 +7114,7 @@
         {
           "name": "NativeCommandEffectTargets",
           "rust": "native_command_effect_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 446,
           "calls": [
             "NativeCommandTargets",
@@ -7125,7 +7125,7 @@
         {
           "name": "NativeCommandEffectTargetsAtCursor",
           "rust": "native_command_effect_targets_at_cursor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 472,
           "calls": [
             "NativeCommandTargetFieldBytes",
@@ -7139,7 +7139,7 @@
         {
           "name": "NativeCommandSelfCenteredTargets",
           "rust": "native_command_self_centered_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 503,
           "calls": [
             "NativeCommandTargetFieldBytes",
@@ -7152,7 +7152,7 @@
         {
           "name": "NativeCommand30Targets",
           "rust": "native_command30_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 537,
           "calls": [
             "nativeTargetRosterRawComplete",
@@ -7257,13 +7257,13 @@
         {
           "name": "NativeDeathEffectOf",
           "rust": "native_death_effect_of",
-          "status": "todo",
+          "status": "ported",
           "go_line": 48
         },
         {
           "name": "Scenario.NativeDeathProgram",
           "rust": "Scenario::native_death_program",
-          "status": "todo",
+          "status": "ported",
           "go_line": 66,
           "calls": [
             "NativeDeathEffectOf"
@@ -7272,7 +7272,7 @@
         {
           "name": "Scenario.NativeDeathCancelsExp",
           "rust": "Scenario::native_death_cancels_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 79,
           "calls": [
             "Scenario.NativeDeathProgram"
@@ -7281,7 +7281,7 @@
         {
           "name": "NativeActionWhen.Match",
           "rust": "NativeActionWhen::r#match",
-          "status": "todo",
+          "status": "ported",
           "go_line": 93,
           "calls": [
             "NativeRecordInactive"
@@ -7290,7 +7290,7 @@
         {
           "name": "NativeRecordInactive",
           "rust": "native_record_inactive",
-          "status": "todo",
+          "status": "ported",
           "go_line": 144,
           "calls": [
             "Unit.Alive"
@@ -7299,7 +7299,7 @@
         {
           "name": "State.ApplyNativeDeathOp",
           "rust": "State::apply_native_death_op",
-          "status": "todo",
+          "status": "ported",
           "go_line": 153,
           "calls": [
             "State.syncNativeRuntimeRecord",
@@ -7309,7 +7309,7 @@
         {
           "name": "State.ClearNativeHPFrom",
           "rust": "State::clear_native_hp_from",
-          "status": "todo",
+          "status": "ported",
           "go_line": 259,
           "calls": [
             "State.syncNativeRuntimeRecord"
@@ -7318,13 +7318,13 @@
         {
           "name": "State.syncNativeRuntimeRecord",
           "rust": "State::sync_native_runtime_record",
-          "status": "todo",
+          "status": "ported",
           "go_line": 273
         },
         {
           "name": "applyNativeRecordWrites",
           "rust": "apply_native_record_writes",
-          "status": "todo",
+          "status": "ported",
           "go_line": 289,
           "calls": [
             "nativeRawCamp"
@@ -7333,13 +7333,13 @@
         {
           "name": "nativeRawCamp",
           "rust": "native_raw_camp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 352
         },
         {
           "name": "State.killCancelsExp",
           "rust": "State::kill_cancels_exp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 366
         }
       ],
@@ -9455,13 +9455,13 @@
         {
           "name": "NativeItemTargetPlanFromRow",
           "rust": "native_item_target_plan_from_row",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20
         },
         {
           "name": "NativeItemEffectTargets",
           "rust": "native_item_effect_targets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 41,
           "calls": [
             "NativeAttackCandidates",
@@ -9758,7 +9758,7 @@
         {
           "name": "validateNativeMapView",
           "rust": "validate_native_map_view",
-          "status": "todo",
+          "status": "ported",
           "go_line": 31,
           "calls": [
             "NativeMapViewState.CursorInField"
@@ -9767,19 +9767,19 @@
         {
           "name": "NativeMapViewState.CursorInField",
           "rust": "NativeMapViewState::cursor_in_field",
-          "status": "todo",
+          "status": "ported",
           "go_line": 70
         },
         {
           "name": "NativeMapViewState.VisibleCursorInViewport",
           "rust": "NativeMapViewState::visible_cursor_in_viewport",
-          "status": "todo",
+          "status": "ported",
           "go_line": 74
         },
         {
           "name": "State.MaterializeNativeMapViewState",
           "rust": "State::materialize_native_map_view_state",
-          "status": "todo",
+          "status": "ported",
           "go_line": 79,
           "calls": [
             "validateNativeMapView"
@@ -9788,19 +9788,19 @@
         {
           "name": "State.MaterializeNativeMapRangeMode",
           "rust": "State::materialize_native_map_range_mode",
-          "status": "todo",
+          "status": "ported",
           "go_line": 91
         },
         {
           "name": "NativeMapOverlaySelectorFromRecordByte",
           "rust": "native_map_overlay_selector_from_record_byte",
-          "status": "todo",
+          "status": "ported",
           "go_line": 104
         },
         {
           "name": "State.MoveNativeMapCursor",
           "rust": "State::move_native_map_cursor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 113,
           "calls": [
             "absInt",
@@ -9810,7 +9810,7 @@
         {
           "name": "State.AdvanceNativeMapWalkStepView",
           "rust": "State::advance_native_map_walk_step_view",
-          "status": "todo",
+          "status": "ported",
           "go_line": 180,
           "calls": [
             "AdvanceNativeMapWalkStepViewState"
@@ -9819,7 +9819,7 @@
         {
           "name": "AdvanceNativeMapWalkStepViewState",
           "rust": "advance_native_map_walk_step_view_state",
-          "status": "todo",
+          "status": "ported",
           "go_line": 195,
           "calls": [
             "absInt",
@@ -9829,7 +9829,7 @@
         {
           "name": "State.FocusNativeMapCursor",
           "rust": "State::focus_native_map_cursor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 252,
           "calls": [
             "State.FocusNativeMapCursorSteps"
@@ -9838,7 +9838,7 @@
         {
           "name": "State.FocusNativeMapCursorSteps",
           "rust": "State::focus_native_map_cursor_steps",
-          "status": "todo",
+          "status": "ported",
           "go_line": 264,
           "calls": [
             "NativeMapViewState.CursorInField",
@@ -9848,7 +9848,7 @@
         {
           "name": "State.NativeMapCursorStepRedraws",
           "rust": "State::native_map_cursor_step_redraws",
-          "status": "todo",
+          "status": "ported",
           "go_line": 310
         }
       ],

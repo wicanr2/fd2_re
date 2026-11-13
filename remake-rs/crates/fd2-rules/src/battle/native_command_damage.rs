@@ -8,9 +8,11 @@ use super::*;
 /// deriving it from a presentation percentage at runtime.
 ///
 /// Go：`native_command_damage.go:15`
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct NativeCommandResistanceRow {
     /// Go 標籤：`json:"cls"`
+    #[serde(rename = "cls")]
     pub class_id: i64,
     /// Go 標籤：`json:"resist_raw"`
     pub resist_raw: i64,
@@ -22,7 +24,19 @@ pub struct NativeCommandResistanceRow {
 ///
 /// Go：`native_command_damage.go:23`，`func LoadNativeCommandResistances(path string) (map[int]int, error)`
 pub fn load_native_command_resistances(path: &str) -> Result<BTreeMap<i64, i64>> {
-    todo!("battle/native_command_damage.go:LoadNativeCommandResistances")
+    let raw = read_file(path)?;
+    let rows: Vec<NativeCommandResistanceRow> = decode_json::<Option<_>>(&raw)?.unwrap_or_default();
+    let mut table = BTreeMap::new();
+    for row in rows {
+        if row.class_id <= 0 || row.resist_raw < 0 || row.resist_raw > 10 {
+            return Err(battle_err!("invalid native command resistance class={} raw={}", row.class_id, row.resist_raw));
+        }
+        if table.contains_key(&row.class_id) {
+            return Err(battle_err!("duplicate native command resistance class={}", row.class_id));
+        }
+        table.insert(row.class_id, row.resist_raw);
+    }
+    Ok(table)
 }
 
 /// NativeCommandDamage is the recovered numeric writer used by verified
@@ -45,7 +59,10 @@ pub struct NativeCommandDamage {
 ///
 /// Go：`native_command_damage.go:59`，`func nativeCommandResistanceClass(target *Unit) int`
 pub(crate) fn native_command_resistance_class(target: &Unit) -> i64 {
-    todo!("battle/native_command_damage.go:nativeCommandResistanceClass")
+    if target.has_native_record_class {
+        return target.native_record_class as i64;
+    }
+    target.class_id
 }
 
 /// ResolveNativeCommandDamage mirrors 0x1c75e -> 0x1c81f for a single target.
@@ -59,7 +76,17 @@ pub fn resolve_native_command_damage(
     target_resist_raw: i64,
     rng_state: u16,
 ) -> Result<(NativeCommandDamage, u16)> {
-    todo!("battle/native_command_damage.go:ResolveNativeCommandDamage")
+    if record_damage < 0 || !(0..=100).contains(&hit) || !(0..=10).contains(&target_resist_raw) {
+        return Err(battle_err!("invalid native damage={record_damage} hit={hit} resist_raw={target_resist_raw}"));
+    }
+    let mut rng_state = fdother::native_rng_step(rng_state);
+    if (rng_state % 100) as i64 >= hit {
+        return Ok((NativeCommandDamage::default(), rng_state));
+    }
+    let base = record_damage.wrapping_mul(target_resist_raw) / 10;
+    rng_state = fdother::native_rng_step(rng_state);
+    let damage = base.wrapping_mul(9) / 10 + ((rng_state % 100) as i64).wrapping_mul(base) / 1000;
+    Ok((NativeCommandDamage { hit: true, damage }, rng_state))
 }
 
 /// ApplyNativeCommandDamage is the state mutation proven at 0x1c81f: subtract
@@ -75,5 +102,16 @@ pub fn apply_native_command_damage(
     target_resist_raw: i64,
     rng_state: u16,
 ) -> Result<(NativeCommandDamage, u16)> {
-    todo!("battle/native_command_damage.go:ApplyNativeCommandDamage")
+    let Some(target) = target else {
+        return Err(battle_err!("nil target"));
+    };
+    let (result, next_rng) = resolve_native_command_damage(record_damage, hit, target_resist_raw, rng_state)?;
+    if !result.hit {
+        return Ok((result, next_rng));
+    }
+    target.apply_hp_damage(result.damage);
+    Ok((result, next_rng))
 }
+
+#[cfg(test)]
+mod native_command_damage_test;

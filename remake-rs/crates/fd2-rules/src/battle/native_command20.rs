@@ -23,7 +23,19 @@ pub fn apply_native_command_restore(
     amount: i64,
     rng: Option<&mut dyn GoRand>,
 ) -> Result<NativeCommandRestore> {
-    todo!("battle/native_command20.go:ApplyNativeCommandRestore")
+    let (Some(target), Some(rng)) = (target, rng) else {
+        return Err(battle_err!("invalid native command restore state"));
+    };
+    if amount < 0 || target.max_hp < 0 || target.hp < 0 || target.hp > target.max_hp {
+        return Err(battle_err!("invalid native command restore state"));
+    }
+    let rolled = amount.wrapping_mul(9) / 10 + rng.intn(100).wrapping_mul(amount) / 1000;
+    let before = target.hp;
+    target.hp += rolled;
+    if target.hp > target.max_hp {
+        target.hp = target.max_hp;
+    }
+    Ok(NativeCommandRestore { rolled, actual: target.hp - before })
 }
 
 /// ApplyNativeCommandRestoreNative 是 ApplyNativeCommandRestore 的原版亂數版：0x1C916 先
@@ -36,7 +48,20 @@ pub fn apply_native_command_restore_native(
     amount: i64,
     rng_state: u16,
 ) -> Result<(NativeCommandRestore, u16)> {
-    todo!("battle/native_command20.go:ApplyNativeCommandRestoreNative")
+    let Some(target) = target else {
+        return Err(battle_err!("invalid native command restore state"));
+    };
+    if amount < 0 || target.max_hp < 0 || target.hp < 0 || target.hp > target.max_hp {
+        return Err(battle_err!("invalid native command restore state"));
+    }
+    let next = fdother::native_rng_step(rng_state);
+    let rolled = amount.wrapping_mul(9) / 10 + ((next % 100) as i64).wrapping_mul(amount) / 1000;
+    let before = target.hp;
+    target.hp += rolled;
+    if target.hp > target.max_hp {
+        target.hp = target.max_hp;
+    }
+    Ok((NativeCommandRestore { rolled, actual: target.hp - before }, next))
 }
 
 /// NativeCommandClearRestoreResult records one final target in the common
@@ -67,7 +92,32 @@ impl State {
         command_id: i64,
         rng: Option<&mut dyn GoRand>,
     ) -> Result<Vec<NativeCommandClearRestoreResult>> {
-        todo!("battle/native_command20.go:State.ExecuteNativeCommandClearRestore")
+        let Some(rng) = rng else {
+            return Err(battle_err!("missing native command clear/restore state/rng"));
+        };
+        let (targets, offset) = self.native_command_clear_restore_targets(actor, confirmed, command_id)?;
+        let record = self.native_command_book[command_id as usize];
+        if !spend_native_command_mp(actor.map(|i| &mut self.units[i]), record.mp_cost) {
+            return Err(battle_err!("native command clear/restore insufficient MP"));
+        }
+        let amount = self.native_command_book[10].damage;
+        let mut results = Vec::with_capacity(targets.len());
+        for target in targets {
+            let mut result = NativeCommandClearRestoreResult { target: Some(target), offset, ..Default::default() };
+            let (duration, _) = self.units[target].native_transient_duration(offset);
+            if duration != 0 {
+                // Go 忽略這裡的錯誤（`restore, _ :=`）；預檢已排除 HP 不合法的目標。
+                let restore = apply_native_command_restore(Some(&mut self.units[target]), amount, Some(&mut *rng))
+                    .unwrap_or_default();
+                self.units[target].set_native_transient_duration(offset, 0);
+                (result.cleared, result.restore) = (true, restore);
+            }
+            results.push(result);
+        }
+        if let Some(actor) = actor {
+            self.units[actor].acted = true;
+        }
+        Ok(results)
     }
 
     /// NativeCommandClearRestoreTargets performs the complete non-mutating
@@ -83,6 +133,45 @@ impl State {
         confirmed: Option<UnitIdx>,
         command_id: i64,
     ) -> Result<(Vec<UnitIdx>, i64)> {
-        todo!("battle/native_command20.go:State.NativeCommandClearRestoreTargets")
+        let Some(actor_idx) = actor else {
+            return Err(battle_err!("missing native command clear/restore state/actor"));
+        };
+        let offset = match command_id {
+            20 => 0x25,
+            21 => 0x26,
+            _ => return Err(battle_err!("native command clear/restore unavailable id={command_id}")),
+        };
+        if self.native_command_book.len() != 36
+            || self.native_command_book[command_id as usize].id != command_id
+            || self.native_command_book[10].id != 10
+        {
+            return Err(battle_err!("native command clear/restore records unavailable id={command_id}"));
+        }
+        let record = self.native_command_book[command_id as usize];
+        if record.mp_cost < 0 || self.units[actor_idx].mp < record.mp_cost || self.native_command_book[10].damage < 0 {
+            return Err(battle_err!("native command clear/restore cost/amount unavailable"));
+        }
+        let flags = self.native_command_base_flags()?;
+        let targets = native_command_effect_targets(
+            self.w,
+            self.h,
+            actor,
+            confirmed,
+            record.selection_mode,
+            record.effect_mode,
+            record.target_code,
+            &flags,
+            &self.units,
+        )?;
+        for &target in &targets {
+            let t = &self.units[target];
+            if t.hp < 0 || t.max_hp < 0 || t.hp > t.max_hp {
+                return Err(battle_err!("invalid native command clear/restore target state"));
+            }
+        }
+        Ok((targets, offset))
     }
 }
+
+#[cfg(test)]
+mod native_command20_test;

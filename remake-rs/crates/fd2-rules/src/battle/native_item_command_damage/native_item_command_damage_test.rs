@@ -15,7 +15,6 @@ fn target(class_id: i64) -> Unit {
 
 /// Go：`TestNativeType21ReusesCommandDamageWithoutConsumingSource`
 #[test]
-#[ignore = "等 B 合併"]
 fn native_type21_reuses_command_damage_without_consuming_source() {
     let (route, ok) = native_item_command_damage_route_for_type(21, 6);
     assert!(
@@ -48,7 +47,6 @@ fn native_types20_and24_use_ten_frame_presentation_and_command_damage() {
 
 /// Go：`TestNativeType21PreflightsAllTargets`
 #[test]
-#[ignore = "等 B 合併"]
 fn native_type21_preflights_all_targets() {
     let (route, _) = native_item_command_damage_route_for_type(21, 1);
     let book = book_with(1, 100, 100);

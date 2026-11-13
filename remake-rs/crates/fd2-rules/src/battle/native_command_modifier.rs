@@ -28,5 +28,28 @@ pub fn apply_native_command_modifier(
     command_id: i64,
     rng_state: u16,
 ) -> Result<NativeCommandModifierResult> {
-    todo!("battle/native_command_modifier.go:ApplyNativeCommandModifier")
+    if !(17..=19).contains(&command_id) {
+        return Err(battle_err!("native modifier: unsupported command id {command_id}"));
+    }
+    let mut result = NativeCommandModifierResult { command_id, ..Default::default() };
+    match command_id {
+        17 => {
+            let (steps, state, score) =
+                apply_native_raw_word_step_at_offsets(records, unit_indices, rng_state, 0x22, 0x48)?;
+            (result.word_steps, result.rng_state, result.accumulator) = (steps, state, score);
+        }
+        18 => {
+            let (steps, state, score) =
+                apply_native_raw_word_step_at_offsets(records, unit_indices, rng_state, 0x23, 0x4a)?;
+            (result.word_steps, result.rng_state, result.accumulator) = (steps, state, score);
+        }
+        _ => {
+            let (steps, state, score) = apply_native_raw_pair_step(records, unit_indices, rng_state)?;
+            (result.pair_steps, result.rng_state, result.accumulator) = (steps, state, score);
+        }
+    }
+    Ok(result)
 }
+
+#[cfg(test)]
+mod native_command_modifier_test;

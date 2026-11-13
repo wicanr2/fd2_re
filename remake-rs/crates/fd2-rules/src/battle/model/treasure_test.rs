@@ -48,7 +48,7 @@ fn write_map(tag: &str, units: &str, map_json: Option<&str>) -> String {
 
 /// Go：`TestPlayerTreasureUsesNativeEventStateAndMutableMap`
 #[test]
-#[ignore = "等 B、D、F 合併"]
+#[ignore = "等 D、F 合併"]
 fn player_treasure_uses_native_event_state_and_mutable_map() {
     let mut st = player_treasure_map_state();
     // 相容投影不能決定是否領取；事件表才是原版唯一來源。
@@ -73,7 +73,7 @@ fn player_treasure_uses_native_event_state_and_mutable_map() {
 
 /// Go：`TestPlayerTreasureDefersMapUntilClosingAndRejectsMalformedMap`
 #[test]
-#[ignore = "等 B、D、F 合併"]
+#[ignore = "等 D、F 合併"]
 fn player_treasure_defers_map_until_closing_and_rejects_malformed_map() {
     let mut st = player_treasure_map_state();
     assert!(st.claim_treasure_before_closing(Some(0), 0, 0).1, "YES item transaction failed");
@@ -206,7 +206,7 @@ fn native_event_treasure_loads_but_fails_closed() {
 
 /// Go：`TestMap25NativeEventTreasureUsesEditableEvent58Rule`
 #[test]
-#[ignore = "等 B、D、F 合併"]
+#[ignore = "等 D、F 合併"]
 fn map25_native_event_treasure_uses_editable_event58_rule() {
     let Some(path) = remake_asset("maps/map25/map25_units.json") else { return };
     let mut st = load(&path).unwrap();
@@ -233,7 +233,7 @@ fn map25_native_event_treasure_uses_editable_event58_rule() {
 
 /// Go：`TestSkyKeyMaterialAssetsMatchOriginalSources`
 #[test]
-#[ignore = "等 B、D、F 合併"]
+#[ignore = "等 D、F 合併"]
 fn sky_key_material_assets_match_original_sources() {
     for (map_id, x, y, slot, item, hidden) in
         [(10, 18, 37, 0, 0xd2, false), (12, 38, 18, 8, 0xd6, false), (19, 30, 7, 7, 0xd4, true)]

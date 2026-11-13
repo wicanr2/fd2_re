@@ -37,7 +37,52 @@ pub struct NativeMapViewState {
 ///
 /// Go：`native_map_view.go:31`，`func validateNativeMapView(view NativeMapViewState, width, height int) error`
 pub(crate) fn validate_native_map_view(view: NativeMapViewState, width: i64, height: i64) -> Result<()> {
-    todo!("battle/native_map_view.go:validateNativeMapView")
+    if width < NATIVE_MAP_VIEW_WIDTH || height < NATIVE_MAP_VIEW_HEIGHT {
+        return Err(battle_err!(
+            "battle: native map field {}x{} is smaller than the {}x{} viewport",
+            width,
+            height,
+            NATIVE_MAP_VIEW_WIDTH,
+            NATIVE_MAP_VIEW_HEIGHT
+        ));
+    }
+    if view.camera_x < 0
+        || view.camera_x > width - NATIVE_MAP_VIEW_WIDTH
+        || view.camera_y < 0
+        || view.camera_y > height - NATIVE_MAP_VIEW_HEIGHT
+    {
+        return Err(battle_err!(
+            "battle: native map camera ({},{}) is outside 0..{}/0..{}",
+            view.camera_x,
+            view.camera_y,
+            width - NATIVE_MAP_VIEW_WIDTH,
+            height - NATIVE_MAP_VIEW_HEIGHT
+        ));
+    }
+    // 絕對游標留著場內檢查，但理由不是「原版會夾它」——原版沒有任何一處夾。
+    // 全部寫入端（全段掃描 0x53AB1／0x53AB5 的寫入形式）是：四個鍵盤處理器
+    // `0x11B6D`/`0x11B7B`/`0x11BCC`/`0x11BDA`/`0x11C2B`/`0x11C39`/`0x11C7E`/
+    // `0x11C8C`、四個走行步進 `0x12FEA`/`0x13149`/`0x1330A`/`0x13455`、劇情
+    // pan `0x13606`/`0x13614`/`0x1363F`/`0x1364D`、沿線掃描 helper
+    // `0x14A6F`..`0x14B0A`（結尾自己復原），以及開機與章節常數。
+    //
+    // 這些寫入端**成對搬動**三組全域，使 `visible == cursor - camera` 全程成立：
+    // 鍵盤與走行是「游標±1，可見±1 或鏡頭±1」，pan 是「游標與鏡頭同±1」。
+    // 鏡頭被自己的分支條件夾在 0..W-13／0..H-8，可見游標被安全帶維持在視窗內，
+    // 兩者相加就落在場內。所以場外的絕對游標代表**重製端**有一條路徑打破了那個
+    // 配對（例如只搬游標不搬可見游標），在這裡擋下來是重製端的自我檢查。
+    if !view.cursor_in_field(width, height) {
+        return Err(battle_err!(
+            "battle: native map cursor ({},{}) is outside the {}x{} field",
+            view.cursor_x,
+            view.cursor_y,
+            width,
+            height
+        ));
+    }
+    // 節點常數是另一種東西，不走這條驗證：進場即繪的靜止視圖由
+    // campaign.NativeMapViewConfig.Validate 檢查它自己的契約。
+    Ok(())
 }
 
 impl NativeMapViewState {
@@ -52,25 +97,36 @@ impl NativeMapViewState {
     ///
     /// Go：`native_map_view.go:70`，`func (v NativeMapViewState) CursorInField(width, height int) bool`
     pub fn cursor_in_field(self, width: i64, height: i64) -> bool {
-        todo!("battle/native_map_view.go:NativeMapViewState.CursorInField")
+        self.cursor_x >= 0 && self.cursor_x < width && self.cursor_y >= 0 && self.cursor_y < height
     }
 
     /// Go：`native_map_view.go:74`，`func (v NativeMapViewState) VisibleCursorInViewport() bool`
     pub fn visible_cursor_in_viewport(self) -> bool {
-        todo!("battle/native_map_view.go:NativeMapViewState.VisibleCursorInViewport")
+        self.visible_cursor_x >= 0
+            && self.visible_cursor_x < NATIVE_MAP_VIEW_WIDTH
+            && self.visible_cursor_y >= 0
+            && self.visible_cursor_y < NATIVE_MAP_VIEW_HEIGHT
     }
 }
 impl State {
     /// Go：`native_map_view.go:79`，`func (s *State) MaterializeNativeMapViewState(view NativeMapViewState) error`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn materialize_native_map_view_state(&mut self, view: NativeMapViewState) -> Result<()> {
-        todo!("battle/native_map_view.go:State.MaterializeNativeMapViewState")
+        validate_native_map_view(view, self.w, self.h)?;
+        self.native_map_view_state = view;
+        self.has_native_map_view_state = true;
+        Ok(())
     }
 
     /// Go：`native_map_view.go:91`，`func (s *State) MaterializeNativeMapRangeMode(mode int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn materialize_native_map_range_mode(&mut self, mode: i64) -> bool {
-        todo!("battle/native_map_view.go:State.MaterializeNativeMapRangeMode")
+        if !(0..=NATIVE_MAP_OVERLAY_SELECTOR_MAX).contains(&mode) {
+            return false;
+        }
+        self.native_map_range_mode = mode;
+        self.has_native_map_range_mode_state = true;
+        true
     }
 }
 
@@ -81,7 +137,7 @@ impl State {
 ///
 /// Go：`native_map_view.go:104`，`func NativeMapOverlaySelectorFromRecordByte(recordByte byte) int`
 pub fn native_map_overlay_selector_from_record_byte(record_byte: u8) -> i64 {
-    todo!("battle/native_map_view.go:NativeMapOverlaySelectorFromRecordByte")
+    record_byte as i64 + 2
 }
 
 impl State {
@@ -95,7 +151,59 @@ impl State {
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     /// Go 具名回傳值依序為：moved、ok。
     pub fn move_native_map_cursor(&mut self, dx: i64, dy: i64) -> (bool, bool) {
-        todo!("battle/native_map_view.go:State.MoveNativeMapCursor")
+        if !self.has_native_map_view_state || abs_int(dx).wrapping_add(abs_int(dy)) != 1 {
+            return (false, false);
+        }
+        let mut view = self.native_map_view_state;
+        if validate_native_map_view(view, self.w, self.h).is_err() {
+            return (false, false);
+        }
+        if dy < 0 {
+            if view.cursor_y == 0 {
+                return (false, true);
+            }
+            view.cursor_y -= 1;
+            if view.visible_cursor_y < 2 && view.camera_y != 0 {
+                view.camera_y -= 1;
+            } else {
+                view.visible_cursor_y -= 1;
+            }
+        } else if dy > 0 {
+            if view.cursor_y == self.h - 1 {
+                return (false, true);
+            }
+            view.cursor_y += 1;
+            if view.visible_cursor_y > 5 && view.camera_y != self.h - NATIVE_MAP_VIEW_HEIGHT {
+                view.camera_y += 1;
+            } else {
+                view.visible_cursor_y += 1;
+            }
+        } else if dx > 0 {
+            if view.cursor_x == self.w - 1 {
+                return (false, true);
+            }
+            view.cursor_x += 1;
+            if view.visible_cursor_x > 10 && view.camera_x != self.w - NATIVE_MAP_VIEW_WIDTH {
+                view.camera_x += 1;
+            } else {
+                view.visible_cursor_x += 1;
+            }
+        } else if dx < 0 {
+            if view.cursor_x == 0 {
+                return (false, true);
+            }
+            view.cursor_x -= 1;
+            if view.visible_cursor_x < 2 && view.camera_x != 0 {
+                view.camera_x -= 1;
+            } else {
+                view.visible_cursor_x -= 1;
+            }
+        }
+        if validate_native_map_view(view, self.w, self.h).is_err() {
+            return (false, false);
+        }
+        self.native_map_view_state = view;
+        (true, true)
     }
 
     /// AdvanceNativeMapWalkStepView 重現走行步進家族
@@ -112,7 +220,16 @@ impl State {
     /// Go：`native_map_view.go:180`，`func (s *State) AdvanceNativeMapWalkStepView(unitX, unitY, dx, dy int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn advance_native_map_walk_step_view(&mut self, unit_x: i64, unit_y: i64, dx: i64, dy: i64) -> bool {
-        todo!("battle/native_map_view.go:State.AdvanceNativeMapWalkStepView")
+        if !self.has_native_map_view_state {
+            return false;
+        }
+        let (view, ok) =
+            advance_native_map_walk_step_view_state(self.native_map_view_state, self.w, self.h, unit_x, unit_y, dx, dy);
+        if !ok {
+            return false;
+        }
+        self.native_map_view_state = view;
+        true
     }
 }
 
@@ -130,7 +247,49 @@ pub fn advance_native_map_walk_step_view_state(
     dx: i64,
     dy: i64,
 ) -> (NativeMapViewState, bool) {
-    todo!("battle/native_map_view.go:AdvanceNativeMapWalkStepViewState")
+    if abs_int(dx).wrapping_add(abs_int(dy)) != 1 {
+        return (view, false);
+    }
+    if validate_native_map_view(view, width, height).is_err() {
+        return (view, false);
+    }
+    let mut view = view;
+    let (relative_x, relative_y) = (unit_x - view.camera_x, unit_y - view.camera_y);
+    if dy < 0 {
+        // 0x13185：unitY-camY >= 2 或鏡頭已到頂 → 移可見游標
+        if relative_y >= 2 || view.camera_y == 0 {
+            view.visible_cursor_y -= 1;
+        } else {
+            view.camera_y -= 1;
+        }
+    } else if dy > 0 {
+        // 0x12EAA：unitY-camY <= 5 或鏡頭已到底 → 移可見游標
+        if relative_y <= 5 || view.camera_y == height - NATIVE_MAP_VIEW_HEIGHT {
+            view.visible_cursor_y += 1;
+        } else {
+            view.camera_y += 1;
+        }
+    } else if dx < 0 {
+        // 0x1300D
+        if relative_x >= 2 || view.camera_x == 0 {
+            view.visible_cursor_x -= 1;
+        } else {
+            view.camera_x -= 1;
+        }
+    } else if dx > 0 {
+        // 0x13315
+        if relative_x <= 10 || view.camera_x == width - NATIVE_MAP_VIEW_WIDTH {
+            view.visible_cursor_x += 1;
+        } else {
+            view.camera_x += 1;
+        }
+    }
+    view.cursor_x += dx;
+    view.cursor_y += dy;
+    if validate_native_map_view(view, width, height).is_err() {
+        return (view, false);
+    }
+    (view, true)
 }
 
 impl State {
@@ -150,7 +309,7 @@ impl State {
     ///
     /// Go：`native_map_view.go:252`，`func (s *State) FocusNativeMapCursor(x, y int) bool`
     pub fn focus_native_map_cursor(&mut self, x: i64, y: i64) -> bool {
-        todo!("battle/native_map_view.go:State.FocusNativeMapCursor")
+        self.focus_native_map_cursor_steps(x, y, None)
     }
 }
 
@@ -177,7 +336,42 @@ impl State {
         y: i64,
         on_step: Option<&mut dyn FnMut(NativeMapViewState, NativeMapViewState)>,
     ) -> bool {
-        todo!("battle/native_map_view.go:State.FocusNativeMapCursorSteps")
+        let mut on_step = on_step;
+        if !self.has_native_map_view_state {
+            return false;
+        }
+        // 先取出 callback 再呼叫，避免呼叫期間持有鎖。
+        let hook = NATIVE_FOCUS_TRACE_HOOK.read().unwrap_or_else(|e| e.into_inner()).clone();
+        if let Some(hook) = hook {
+            hook(x, y, self.native_map_view_state);
+        }
+        if !self.native_map_view_state.cursor_in_field(self.w, self.h) || x < 0 || x >= self.w || y < 0 || y >= self.h {
+            return false;
+        }
+        let mut step_once = |s: &mut State, dx: i64, dy: i64| -> bool {
+            let before = s.native_map_view_state;
+            let (_, ok) = s.move_native_map_cursor(dx, dy);
+            if !ok {
+                return false;
+            }
+            if let Some(f) = on_step.as_mut() {
+                f(before, s.native_map_view_state);
+            }
+            true
+        };
+        while self.native_map_view_state.cursor_x != x {
+            let step = if self.native_map_view_state.cursor_x > x { -1 } else { 1 };
+            if !step_once(self, step, 0) {
+                return false;
+            }
+        }
+        while self.native_map_view_state.cursor_y != y {
+            let step = if self.native_map_view_state.cursor_y > y { -1 } else { 1 };
+            if !step_once(self, 0, step) {
+                return false;
+            }
+        }
+        true
     }
 
     /// NativeMapCursorStepRedraws 是四個游標鍵處理器（0x11B48／0x11B9B／0x11BFA／0x11C59）
@@ -188,6 +382,15 @@ impl State {
     /// Go：`native_map_view.go:310`，`func (s *State) NativeMapCursorStepRedraws(before, after NativeMapViewState) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_map_cursor_step_redraws(&self, before: NativeMapViewState, after: NativeMapViewState) -> bool {
-        todo!("battle/native_map_view.go:State.NativeMapCursorStepRedraws")
+        if before.camera_x != after.camera_x || before.camera_y != after.camera_y {
+            return true;
+        }
+        self.native_map_range_mode != 0
     }
 }
+
+#[cfg(test)]
+mod native_map_view_test;
+
+#[cfg(test)]
+mod native_map_walk_view_test;

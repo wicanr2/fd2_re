@@ -27,7 +27,27 @@ impl State {
         actor: Option<UnitIdx>,
         confirmed: Option<UnitIdx>,
     ) -> Result<Vec<NativeCommand25Result>> {
-        todo!("battle/native_command25.go:State.ExecuteNativeCommand25")
+        const COMMAND_ID: usize = 25;
+        let targets = self.native_command25_targets(actor, confirmed)?;
+        let record = self.native_command_book[COMMAND_ID];
+        if !spend_native_command_mp(actor.map(|i| &mut self.units[i]), record.mp_cost) {
+            return Err(battle_err!("native command 25 insufficient MP"));
+        }
+        let mut results = Vec::with_capacity(targets.len());
+        for target in targets {
+            let unit = &mut self.units[target];
+            let cleared = unit.native_record_byte5 & 0x80 != 0;
+            if cleared {
+                unit.native_record_byte5 &= !0x80;
+            }
+            results.push(NativeCommand25Result { target: Some(target), cleared });
+        }
+        // 0x18D8C sets the invoking actor's completion bit only after the handler
+        // returns success. It is independent from the target bit that ID25 clears.
+        if let Some(actor) = actor {
+            self.units[actor].acted = true;
+        }
+        Ok(results)
     }
 
     /// NativeCommand25Targets performs the complete non-mutating preflight before
@@ -39,6 +59,34 @@ impl State {
     /// 所有權：回傳的單位是 `self.units` 的索引。
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_command25_targets(&self, actor: Option<UnitIdx>, confirmed: Option<UnitIdx>) -> Result<Vec<UnitIdx>> {
-        todo!("battle/native_command25.go:State.NativeCommand25Targets")
+        const COMMAND_ID: i64 = 25;
+        let Some(actor_idx) = actor.filter(|_| {
+            self.native_command_book.len() == 36 && self.native_command_book[COMMAND_ID as usize].id == COMMAND_ID
+        }) else {
+            return Err(battle_err!("native command 25 record unavailable"));
+        };
+        let record = self.native_command_book[COMMAND_ID as usize];
+        if record.mp_cost < 0 || self.units[actor_idx].mp < record.mp_cost {
+            return Err(battle_err!("native command 25 insufficient MP"));
+        }
+        let flags = self.native_command_base_flags()?;
+        let targets = native_command_effect_targets(
+            self.w,
+            self.h,
+            actor,
+            confirmed,
+            record.selection_mode,
+            record.effect_mode,
+            record.target_code,
+            &flags,
+            &self.units,
+        )?;
+        if targets.iter().any(|&target| !self.units[target].has_native_record_byte5) {
+            return Err(battle_err!("native command 25 target lacks raw +5 provenance"));
+        }
+        Ok(targets)
     }
 }
+
+#[cfg(test)]
+mod native_command25_test;

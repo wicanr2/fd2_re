@@ -51,7 +51,11 @@ impl State {
         confirmed: Option<UnitIdx>,
         rng_state: u16,
     ) -> Result<(Vec<NativeCommandDamageResult>, u16)> {
-        todo!("battle/native_command0.go:State.ExecuteBoundNativeCommand0")
+        if self.native_command_resistances.is_empty() {
+            return Err(battle_err!("native command 0 resistances unavailable"));
+        }
+        let resistances = self.native_command_resistances.clone();
+        self.execute_native_command_damage(actor, confirmed, 0, &resistances, rng_state)
     }
 
     /// PlanBoundNativeCommand0 validates and resolves command0 without mutation.
@@ -65,7 +69,10 @@ impl State {
         confirmed: Option<UnitIdx>,
         rng_state: u16,
     ) -> Result<NativeCommandDamagePlan> {
-        todo!("battle/native_command0.go:State.PlanBoundNativeCommand0")
+        if self.native_command_resistances.is_empty() {
+            return Err(battle_err!("native command 0 resistances unavailable"));
+        }
+        self.plan_native_command_damage(actor, confirmed, 0, &self.native_command_resistances, rng_state)
     }
 
     /// ExecuteNativeCommandDamage covers the byte-for-byte numeric route proven
@@ -85,7 +92,14 @@ impl State {
         resist_by_class: &BTreeMap<i64, i64>,
         rng_state: u16,
     ) -> Result<(Vec<NativeCommandDamageResult>, u16)> {
-        todo!("battle/native_command0.go:State.ExecuteNativeCommandDamage")
+        let mut plan = self.plan_native_command_damage(actor, confirmed, command_id, resist_by_class, rng_state)?;
+        apply_native_command_damage_mp(&mut self.units, Some(&mut plan))?;
+        let stages = plan.damage_stages;
+        for index in 0..plan.results.len() {
+            apply_native_command_damage_stage(&mut self.units, Some(&mut plan), index as i64, stages)?;
+        }
+        complete_native_command_damage(&mut self.units, Some(&mut plan))?;
+        Ok((plan.results.clone(), plan.rng_after))
     }
 
     /// PlanNativeCommandDamage consumes the verified RNG sequence but leaves all
@@ -119,7 +133,26 @@ impl State {
         rng_state: u16,
         walk: Option<&mut NativeCommandDamageRNGWalk<'_>>,
     ) -> Result<NativeCommandDamagePlan> {
-        todo!("battle/native_command0.go:State.PlanNativeCommandDamageWalk")
+        if !(0..=12).contains(&command_id)
+            || self.native_command_book.len() != 36
+            || self.native_command_book[command_id as usize].id != command_id
+        {
+            return Err(battle_err!("native command damage record unavailable id={command_id}"));
+        }
+        let record = self.native_command_book[command_id as usize];
+        let flags = self.native_command_base_flags()?;
+        let targets = native_command_effect_targets(
+            self.w,
+            self.h,
+            actor,
+            confirmed,
+            record.selection_mode,
+            record.effect_mode,
+            record.target_code,
+            &flags,
+            &self.units,
+        )?;
+        self.plan_native_command_damage_targets(actor, command_id, record, &targets, resist_by_class, rng_state, walk)
     }
 
     /// PlanNativeCommand6DamageAtCursor 驗證玩家游標中心並沿用完整損傷預檢交易。
@@ -153,7 +186,40 @@ impl State {
         rng_state: u16,
         walk: Option<&mut NativeCommandDamageRNGWalk<'_>>,
     ) -> Result<NativeCommandDamagePlan> {
-        todo!("battle/native_command0.go:State.PlanNativeCommandDamageAtCursor")
+        let actor_ok = actor.is_some_and(|i| self.units[i].camp != ENEMY);
+        if !actor_ok
+            || (command_id != 6 && !(10..=12).contains(&command_id))
+            || self.native_command_book.len() as i64 != NATIVE_COMMAND_RECORD_COUNT
+            || self.native_command_book[command_id as usize].id != command_id
+        {
+            return Err(battle_err!("native player command{command_id} cursor record/actor unavailable"));
+        }
+        let record = self.native_command_book[command_id as usize];
+        let flags = self.native_command_base_flags()?;
+        let targets = if record.selection_mode == 0 {
+            native_command_self_centered_targets(
+                self.w,
+                self.h,
+                actor,
+                cursor,
+                record.effect_mode,
+                &flags,
+                &self.units,
+            )?
+        } else {
+            native_command_effect_targets_at_cursor(
+                self.w,
+                self.h,
+                actor,
+                cursor,
+                record.selection_mode,
+                record.effect_mode,
+                record.target_code,
+                &flags,
+                &self.units,
+            )?
+        };
+        self.plan_native_command_damage_targets(actor, command_id, record, &targets, resist_by_class, rng_state, walk)
     }
 
     /// Go：`native_command0.go:131`，`func (s *State) planNativeCommandDamageTargets(actor *Unit, commandID int, record NativeCommandRecord, targets []*Unit, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error)`
@@ -169,7 +235,38 @@ impl State {
         rng_state: u16,
         walk: Option<&mut NativeCommandDamageRNGWalk<'_>>,
     ) -> Result<NativeCommandDamagePlan> {
-        todo!("battle/native_command0.go:State.planNativeCommandDamageTargets")
+        let mut record = record;
+        // The original table is total for valid runtime class IDs.  Validate every
+        // target before 0x1CA89-equivalent MP mutation to keep a missing editable
+        // table entry fail-closed rather than making a partial command transaction.
+        for &target in targets {
+            let class = native_command_resistance_class(&self.units[target]);
+            match resist_by_class.get(&class) {
+                Some(raw) if (0..=10).contains(raw) => {}
+                _ => return Err(battle_err!("native command damage missing resistance class={class}")),
+            }
+        }
+        let Some(actor_idx) = actor else {
+            return Err(battle_err!("native command damage insufficient MP"));
+        };
+        let actor_unit = &self.units[actor_idx];
+        if actor_unit.acted || !(0..=0xff).contains(&record.mp_cost) || actor_unit.mp < record.mp_cost {
+            return Err(battle_err!("native command damage insufficient MP"));
+        }
+        let damage_stages = native_command_damage_stages(command_id)?;
+        let mut plan = NativeCommandDamagePlan {
+            actor,
+            command_id,
+            mp_before: actor_unit.mp,
+            mp_after: actor_unit.mp - record.mp_cost,
+            actor_acted_before: actor_unit.acted,
+            rng_before: rng_state,
+            damage_stages,
+            ..Default::default()
+        };
+        record.hit = self.command_hit(actor, command_id, record.hit);
+        resolve_native_command_damage_plan(&mut plan, record, &self.units, targets, resist_by_class, rng_state, walk)?;
+        Ok(plan)
     }
 }
 
@@ -187,15 +284,64 @@ pub type NativeCommandDamageRNGWalk<'a> =
 /// 的命中／傷害擲骰，並把演出結束時的亂數寫進 plan.RNGAfter。
 ///
 /// Go：`native_command0.go:168`，`func resolveNativeCommandDamagePlan(plan *NativeCommandDamagePlan, record NativeCommandRecord, targets []*Unit, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) error`
+/// 所有權：`units` 是 Rust 新增的參數，`targets` 是其中的索引（Go 傳 `[]*Unit`）；結果的
+/// `target` 直接存這些索引。
 pub(crate) fn resolve_native_command_damage_plan(
     plan: &mut NativeCommandDamagePlan,
     record: NativeCommandRecord,
-    targets: &[Unit],
+    units: &[Unit],
+    targets: &[UnitIdx],
     resist_by_class: &BTreeMap<i64, i64>,
     rng_state: u16,
     walk: Option<&mut NativeCommandDamageRNGWalk<'_>>,
 ) -> Result<()> {
-    todo!("battle/native_command0.go:resolveNativeCommandDamagePlan")
+    plan.results = targets
+        .iter()
+        .map(|&target| NativeCommandDamageResult {
+            target: Some(target),
+            hp_before: units[target].hp,
+            hp_after: units[target].hp,
+            ..Default::default()
+        })
+        .collect();
+    plan.published_target_stages = vec![0; targets.len()];
+    let mut resolved = vec![false; targets.len()];
+    let mut resolve = |index: i64, rng: u16| -> Result<(u16, bool)> {
+        if index < 0 || index >= targets.len() as i64 || resolved[index as usize] {
+            return Err(battle_err!("native command damage walk resolved target {index} out of order"));
+        }
+        let target = &units[targets[index as usize]];
+        let resist = resist_by_class.get(&native_command_resistance_class(target)).copied().unwrap_or(0);
+        let (result, next) = resolve_native_command_damage(record.damage, record.hit, resist, rng)?;
+        let mut hp_after = target.hp;
+        if result.hit {
+            hp_after -= result.damage;
+            if hp_after < 0 {
+                hp_after = 0;
+            }
+        }
+        plan.results[index as usize].native_command_damage = result;
+        plan.results[index as usize].hp_after = hp_after;
+        resolved[index as usize] = true;
+        Ok((next, result.hit))
+    };
+    let target_count = targets.len() as i64;
+    let after = match walk {
+        Some(walk) => walk(target_count, &mut resolve)?,
+        None => {
+            let mut rng = rng_state;
+            for index in 0..target_count {
+                let (next, _) = resolve(index, rng)?;
+                rng = next;
+            }
+            rng
+        }
+    };
+    if let Some(index) = resolved.iter().position(|done| !done) {
+        return Err(battle_err!("native command damage walk left target {index} unresolved"));
+    }
+    plan.rng_after = after;
+    Ok(())
 }
 
 impl State {
@@ -216,7 +362,66 @@ impl State {
         resist_by_class: &BTreeMap<i64, i64>,
         rng_state: u16,
     ) -> Result<NativeCommandDamagePlan> {
-        todo!("battle/native_command0.go:State.PlanNativeAICommandDamageSingleTarget")
+        let (Some(actor_idx), Some(target_idx)) = (actor, target) else {
+            return Err(battle_err!("native AI command single target unavailable"));
+        };
+        let (actor_unit, target_unit) = (&self.units[actor_idx], &self.units[target_idx]);
+        if actor_unit.camp != ENEMY
+            || target_unit.camp == ENEMY
+            || !actor_unit.on_field
+            || !target_unit.on_field
+            || actor_unit.hp <= 0
+            || target_unit.hp <= 0
+        {
+            return Err(battle_err!("native AI command single target unavailable"));
+        }
+        if !(0..=9).contains(&command_id)
+            || self.native_command_book.len() as i64 != NATIVE_COMMAND_RECORD_COUNT
+            || self.native_command_book[command_id as usize].id != command_id
+        {
+            return Err(battle_err!("native AI command damage record unavailable id={command_id}"));
+        }
+        let record = self.native_command_book[command_id as usize];
+        if record.effect_mode != 0
+            || record.target_code != 0
+            || actor_unit.acted
+            || !(0..=0xff).contains(&record.mp_cost)
+            || actor_unit.mp < record.mp_cost
+        {
+            return Err(battle_err!("native AI command single-target contract unavailable id={command_id}"));
+        }
+        let class = native_command_resistance_class(target_unit);
+        let resistance = match resist_by_class.get(&class) {
+            Some(&raw) if (0..=10).contains(&raw) => raw,
+            _ => return Err(battle_err!("native AI command damage missing resistance class={class}")),
+        };
+        let stages = native_command_damage_stages(command_id)?;
+        let (resolved, next_rng) = resolve_native_command_damage(record.damage, record.hit, resistance, rng_state)?;
+        let mut hp_after = target_unit.hp;
+        if resolved.hit {
+            hp_after -= resolved.damage;
+            if hp_after < 0 {
+                hp_after = 0;
+            }
+        }
+        Ok(NativeCommandDamagePlan {
+            actor,
+            command_id,
+            mp_before: actor_unit.mp,
+            mp_after: actor_unit.mp - record.mp_cost,
+            actor_acted_before: actor_unit.acted,
+            rng_before: rng_state,
+            rng_after: next_rng,
+            damage_stages: stages,
+            results: vec![NativeCommandDamageResult {
+                target,
+                native_command_damage: resolved,
+                hp_before: target_unit.hp,
+                hp_after,
+            }],
+            published_target_stages: vec![0; 1],
+            ..Default::default()
+        })
     }
 
     /// PlanNativeAICommandDamage rebuilds the exact final target array selected by
@@ -253,7 +458,93 @@ impl State {
         rng_state: u16,
         walk: Option<&mut NativeCommandDamageRNGWalk<'_>>,
     ) -> Result<NativeCommandDamagePlan> {
-        todo!("battle/native_command0.go:State.PlanNativeAICommandDamageWalk")
+        let actor_ok = actor.is_some_and(|i| {
+            let u = &self.units[i];
+            u.camp == ENEMY && u.has_native_record_byte6 && u.has_native_map_presentation
+        });
+        if !actor_ok
+            || !(0..=9).contains(&command_id)
+            || self.native_command_book.len() as i64 != NATIVE_COMMAND_RECORD_COUNT
+            || self.native_command_book[command_id as usize].id != command_id
+        {
+            return Err(battle_err!("native AI command damage selector unavailable id={command_id}"));
+        }
+        let actor_unit = &self.units[actor.unwrap_or_default()];
+        self.native_ai_command_origin_in_grid(origin)?;
+        let selector = actor_unit.native_record_byte6 as i64;
+        if selector != 0 && selector != 1 {
+            return Err(battle_err!("native AI command selector={selector} is outside 0/1"));
+        }
+        let records = native_ai_scoring_records(&self.units)?;
+        let mut record = self.native_command_book[command_id as usize];
+        let target_code = native_ai_scored_command_target_code(record.target_code, selector)?;
+        let flags = self.native_command_base_flags()?;
+        let indices = native_ai_scored_command_target_indices(
+            self.w,
+            self.h,
+            &records,
+            self.units.len() as i64,
+            origin,
+            record.effect_mode,
+            target_code,
+            &flags,
+        )?;
+        if indices.is_empty() {
+            return Err(battle_err!(
+                "native AI command damage target array is empty（actor ({},{}) origin ({},{}) selector={} command={} effect_mode={} target_code={}）",
+                actor_unit.native_map_presentation.x,
+                actor_unit.native_map_presentation.y,
+                origin.x,
+                origin.y,
+                selector,
+                command_id,
+                record.effect_mode,
+                target_code
+            ));
+        }
+        if actor_unit.acted || !(0..=0xff).contains(&record.mp_cost) || actor_unit.mp < record.mp_cost {
+            return Err(battle_err!("native AI command damage insufficient MP"));
+        }
+        let stages = native_command_damage_stages(command_id)?;
+        let mut targets = Vec::with_capacity(indices.len());
+        for &index in &indices {
+            let target = index as usize;
+            let class = native_command_resistance_class(&self.units[target]);
+            match resist_by_class.get(&class) {
+                Some(raw) if (0..=10).contains(raw) => {}
+                _ => return Err(battle_err!("native AI command damage missing resistance class={class}")),
+            }
+            targets.push(target);
+        }
+        let mut plan = NativeCommandDamagePlan {
+            actor,
+            command_id,
+            mp_before: actor_unit.mp,
+            mp_after: actor_unit.mp - record.mp_cost,
+            actor_acted_before: actor_unit.acted,
+            rng_before: rng_state,
+            damage_stages: stages,
+            ..Default::default()
+        };
+        record.hit = self.command_hit(actor, command_id, record.hit);
+        resolve_native_command_damage_plan(&mut plan, record, &self.units, &targets, resist_by_class, rng_state, walk)?;
+        let debug = DEBUG_AI.read().unwrap_or_else(|e| e.into_inner()).clone();
+        if let Some(debug) = debug {
+            // Go 以 %+v 印出結果（含單位指標位址）；Rust 印 Debug 格式，只供診斷。
+            debug(format_args!(
+                "AI command {} actor ({},{}) origin ({},{}) targets={} rng {}→{} results={:?}",
+                command_id,
+                actor_unit.native_map_presentation.x,
+                actor_unit.native_map_presentation.y,
+                origin.x,
+                origin.y,
+                indices.len(),
+                plan.rng_before,
+                plan.rng_after,
+                plan.results
+            ));
+        }
+        Ok(plan)
     }
 
     /// nativeAICommandOriginInGrid rejects a winner cell that the 0x15311 route
@@ -262,7 +553,16 @@ impl State {
     ///
     /// Go：`native_command0.go:343`，`func (s *State) nativeAICommandOriginInGrid(origin Cell) error`
     pub(crate) fn native_ai_command_origin_in_grid(&self, origin: Cell) -> Result<()> {
-        todo!("battle/native_command0.go:State.nativeAICommandOriginInGrid")
+        if origin.x < 0 || origin.y < 0 || origin.x >= self.w || origin.y >= self.h {
+            return Err(battle_err!(
+                "native AI command origin ({},{}) is outside the {}x{} grid",
+                origin.x,
+                origin.y,
+                self.w,
+                self.h
+            ));
+        }
+        Ok(())
     }
 }
 
@@ -272,13 +572,35 @@ impl State {
 ///
 /// Go：`native_command0.go:353`，`func nativeCommandDamageStages(commandID int) (int, error)`
 pub(crate) fn native_command_damage_stages(command_id: i64) -> Result<i64> {
-    todo!("battle/native_command0.go:nativeCommandDamageStages")
+    const SHARED: [i64; 10] = [7, 8, 6, 13, 6, 6, 5, 5, 16, 20];
+    if (0..SHARED.len() as i64).contains(&command_id) {
+        return Ok(SHARED[command_id as usize]);
+    }
+    if (10..=12).contains(&command_id) {
+        return Ok(1);
+    }
+    Err(battle_err!("native command damage stages unavailable id={command_id}"))
 }
 
 /// Go：`native_command0.go:364`，`func ApplyNativeCommandDamageMP(plan *NativeCommandDamagePlan) error`
 /// 所有權：`units` 是 Rust 新增的參數。Go 經由結構欄位裡的 `*Unit`（Rust 是 `UnitIdx`）讀寫單位，Rust 需要單位陣列才能解參照；傳入產生那些索引時的同一個陣列（通常是 `state.units`）。
 pub fn apply_native_command_damage_mp(units: &mut [Unit], plan: Option<&mut NativeCommandDamagePlan>) -> Result<()> {
-    todo!("battle/native_command0.go:ApplyNativeCommandDamageMP")
+    let Some(plan) = plan else {
+        return Err(battle_err!("native command damage MP publish state changed"));
+    };
+    let Some(actor) = plan.actor else {
+        return Err(battle_err!("native command damage MP publish state changed"));
+    };
+    if plan.mp_published
+        || plan.completed
+        || units[actor].mp != plan.mp_before
+        || units[actor].acted != plan.actor_acted_before
+    {
+        return Err(battle_err!("native command damage MP publish state changed"));
+    }
+    units[actor].mp = plan.mp_after;
+    plan.mp_published = true;
+    Ok(())
 }
 
 /// ApplyNativeCommandDamageStage publishes the exact intermediate HP formula
@@ -293,11 +615,66 @@ pub fn apply_native_command_damage_stage(
     index: i64,
     stage: i64,
 ) -> Result<()> {
-    todo!("battle/native_command0.go:ApplyNativeCommandDamageStage")
+    let Some(plan) = plan else {
+        return Err(battle_err!("native command damage stage unavailable"));
+    };
+    if !plan.mp_published
+        || plan.completed
+        || plan.damage_stages < 1
+        || index < 0
+        || index >= plan.results.len() as i64
+        || stage < 1
+        || stage > plan.damage_stages
+    {
+        return Err(battle_err!("native command damage stage unavailable"));
+    }
+    let result = plan.results[index as usize];
+    let previous = plan.published_target_stages[index as usize];
+    let Some(target) =
+        result.target.filter(|_| stage >= previous && (stage == plan.damage_stages || stage == previous + 1))
+    else {
+        return Err(battle_err!("native command damage stage order changed"));
+    };
+    let want_current = result.hp_before - (result.hp_before - result.hp_after) * previous / plan.damage_stages;
+    if units[target].hp != want_current {
+        return Err(battle_err!("native command damage target publish state changed"));
+    }
+    units[target].hp = result.hp_before - (result.hp_before - result.hp_after) * stage / plan.damage_stages;
+    plan.published_target_stages[index as usize] = stage;
+    Ok(())
 }
 
 /// Go：`native_command0.go:396`，`func CompleteNativeCommandDamage(plan *NativeCommandDamagePlan) error`
 /// 所有權：`units` 是 Rust 新增的參數。Go 經由結構欄位裡的 `*Unit`（Rust 是 `UnitIdx`）讀寫單位，Rust 需要單位陣列才能解參照；傳入產生那些索引時的同一個陣列（通常是 `state.units`）。
 pub fn complete_native_command_damage(units: &mut [Unit], plan: Option<&mut NativeCommandDamagePlan>) -> Result<()> {
-    todo!("battle/native_command0.go:CompleteNativeCommandDamage")
+    let Some(plan) = plan else {
+        return Err(battle_err!("native command damage completion state changed"));
+    };
+    let Some(actor) = plan.actor else {
+        return Err(battle_err!("native command damage completion state changed"));
+    };
+    if !plan.mp_published
+        || plan.completed
+        || units[actor].mp != plan.mp_after
+        || units[actor].acted != plan.actor_acted_before
+    {
+        return Err(battle_err!("native command damage completion state changed"));
+    }
+    for (index, result) in plan.results.iter().enumerate() {
+        let complete = result.target.is_some_and(|target| {
+            plan.published_target_stages[index] == plan.damage_stages && units[target].hp == result.hp_after
+        });
+        if !complete {
+            return Err(battle_err!("native command damage target is not fully published"));
+        }
+    }
+    units[actor].acted = true;
+    plan.completed = true;
+    Ok(())
 }
+
+#[cfg(test)]
+mod native_command0_test;
+
+#[cfg(test)]
+mod native_command9_ai_test;

@@ -131,6 +131,11 @@
 | 2026-11-14 | `record_bounds_error` 回傳 `Result<()>` → `BattleError` | Go `recordBoundsError` 回傳的是 `error` 值本身（永不為 nil），呼叫端寫成 `Err(record_bounds_error(i))` | A |
 | 2026-11-14 | `native_ai_physical_destinations`、`native_movement_destination_field`、`native_movement_budget_field` 的 `base_flags: &mut [u8]` → `&[u8]` | Go 先複製一份再改，不改呼叫端的切片；`&mut [u8]` 仍可自動轉成 `&[u8]`，既有呼叫端不用改 | A |
 | 2026-11-14 | `magic.rs` 的 `with_engine_rand`（E 組檔）由 A 組實作本體，簽名不變 | PORTING.md 決定 1 指定與 `rng.rs` 一起完成 | A |
+| 2026-11-14 | `native_path_directions` 的 `flags`、`terrain_move_codes`、`cost_row`：`&mut [u8]` → `&[u8]` | Go 只讀不寫（存進搜尋結構的是副本）；`&mut` 呼叫端仍可自動轉型 | B |
+| 2026-11-14 | `resolve_native_command_damage_plan` 的 `targets: &[Unit]` → `units: &[Unit], targets: &[UnitIdx]` | 結果的 `target` 必須是 `state.units` 的索引；子集合切片給不出這個索引。呼叫端都在 `native_command0.rs` | B |
+| 2026-11-14 | `native_command34_states`、`native_command35_states`、`native_ai_command2022_states`、`native_command_modifier_records`、`native_compound_command_target_records`：`targets: &[Unit]` → `units: &[Unit], targets: &[UnitIdx]`；`publish_native_command_modifier_records` → `(units: &mut [Unit], targets: &[UnitIdx], records)`；`native_ai_command2022_states_from_records` 的 `targets` → `&[UnitIdx]` | 同上：Go 的 `[]*Unit` 是 `state.Units` 的子集合，狀態快照要存原陣列索引、發布要寫回原單位。全部是 B 組內部函式，呼叫端都在 B 組 | B |
+| 2026-11-14 | 新增 `native_command_modifier_shadow_states`（`native_command17.rs`，`pub(crate)`） | Go 的「淺複製目標→寫記錄→取狀態→換回 Target」在 4 處重複，Rust 以深複製副本陣列集中做 | B |
+| 2026-11-14 | `BalanceOptions`、`GrowthRates`、`BalanceStats`、`NativeCommandResistanceRow`、`NativeActionWhen`、`NativeDeathOp` 加 serde | 欄位名對照 Go 標籤；沒有標籤的欄位用 Go 欄位名（`HP`、`MP`…）。`model.rs` 的 `go_balance_stats` 鏡像可改用 `BalanceStats` 自己的 serde，A 組檔未改 | B |
 
 ## A 組完成紀錄（2026-11-14）
 
@@ -138,6 +143,15 @@
 - A 組型別加了 serde：`Unit`、`Camp`、`Cell`、`NativeMapPresentationState`、`NativePositionRecord`、`DeathEffect`、`NativeConstructorTable`、地圖 JSON 的各列型別與 `Load*` 的檔案型別。`Unit` 沒有 Go 標籤的欄位用 Go 欄位名（例如 `HP`、`MaxHP`），與 Go `json.Marshal(Unit)` 相同；`Cell` 寫出 `X`／`Y`、讀取另收 `x`／`y`（`units.json` 的 `own_deploy`）。B 組的 `BalanceStats` 沒有 serde，`Unit::enemy_balance_base` 在 `model.rs` 以鏡像結構轉換。
 - 測試：A 組 42 個 Go 測試檔逐條移植（`src/battle/<x>/<t>_test.rs`），只用到 A 組的測試現在就跑；上表列出的 6 個延後測試標 `#[ignore = "等 … 合併"]`。共用輸入由 `src/test_support.rs` 提供（變數名同 fd2-formats）。`model_test` 的 `TestLoadSerial0` 讀不入庫的 `remake/assets/map0_units.json`，在工作樹副本執行 `tools/rust_rules_test.sh` 時要把 `FD2_REMAKE_ASSETS` 指向主工作區。
 - 黃金差分：`tools/rust_golden_gorand.sh`（Go `math/rand` 序列）與 `tools/rust_golden_rules_a.sh`（A 組規則）。後者的合成寶箱領取前會關掉事件格網，因為格網的驗證與推進屬 D 組 `native_ai_mode5`。
+
+## B 組完成紀錄（2026-11-14）
+
+- 22 個檔的 158 個 `todo!()` 全部移植（PORTING.json 標 `ported`），B 組 165 個函式沒有剩下的 `todo!()`。B 組沒有呼叫到其他未完成組的函式。
+- B 組型別加了 serde：`BalanceOptions`、`GrowthRates`、`BalanceStats`、`NativeCommandResistanceRow`、`NativeActionWhen`、`NativeDeathOp`，欄位名對照 Go 標籤（沒有標籤的用 Go 欄位名）。`model.rs` 的 `go_balance_stats` 鏡像與 `BalanceStats` 的 serde 輸出相同，之後可以改成直接用 `BalanceStats`。
+- 測試：B 組 25 個 Go 測試檔逐條移植，共 136 個測試；4 個標 `#[ignore]`：`balance_growth_keeps_original_roll_sequence_and_zero_growth`、`kill_with_exp_cancel_awards_no_experience`（等 E）、`load_reads_cost_from_map_json`、`native_death_programs_cover_every_battle_map`（等 F）。`tools/rust_rules_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 272 通過、10 ignore（A 組 6、B 組 4）、沒有略過。
+- 黃金差分：`tools/rust_golden_rules_b.sh`，Go 端 `remake/cmd/fd2-golden-rules-b`。33 張真實地圖（排序後的清單與 SHA-256 寫進黃金檔）各出原樣與補齊原版 provenance 兩份戰場，另加 24 份合成戰場，以固定種子產生 8541 個案例，涵蓋 22 個檔的公開函式（含錯誤路徑，B 組錯誤文字逐字比對）。沒有涵蓋：crate 私有的 `balance_growth_row`、`NATIVE_FOCUS_TRACE_HOOK` 掛鉤。
+- 順序風險：`BalanceOptions::validate` 迭代 `skill_hit`，同時有「角色無效」與「招式無效」時 Go 報哪一則隨 map 順序而定，Rust 依鍵升冪；黃金每組最多放一筆不合法。`native_command_target_cells`、`reachable` 回傳 map，黃金依 (y, x) 排序比集合。B 組沒有用 `sort.Slice`。
+- `DEBUG_AI` 診斷文字：Go 以 `%+v` 印出含單位指標的結果，Rust 印 `Debug` 格式，只供診斷，不比對。
 
 ## C 組完成紀錄（2026-11-14）
 

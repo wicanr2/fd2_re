@@ -22,7 +22,7 @@ fn native_command_mask_constructor_and_dynamic_fifth_byte() {
 
 /// Go：`TestStateGainExpLearnsExactNativeCommandAtLevel`
 #[test]
-#[ignore = "等 B、E 合併"]
+#[ignore = "等 E 合併"]
 fn state_gain_exp_learns_exact_native_command_at_level() {
     let u = Unit {
         camp: OWN,
@@ -53,7 +53,7 @@ fn state_gain_exp_learns_exact_native_command_at_level() {
 
 /// Go：`TestStateGainExpDoesNotUsePortraitAsLearnRow`
 #[test]
-#[ignore = "等 B、E 合併"]
+#[ignore = "等 E 合併"]
 fn state_gain_exp_does_not_use_portrait_as_learn_row() {
     let u = Unit {
         camp: OWN,

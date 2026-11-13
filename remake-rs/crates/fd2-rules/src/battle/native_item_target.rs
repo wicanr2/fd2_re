@@ -23,7 +23,17 @@ pub struct NativeItemTargetPlan {
 ///
 /// Go：`native_item_target.go:20`，`func NativeItemTargetPlanFromRow(row []byte) (NativeItemTargetPlan, error)`
 pub fn native_item_target_plan_from_row(row: &[u8]) -> Result<NativeItemTargetPlan> {
-    todo!("battle/native_item_target.go:NativeItemTargetPlanFromRow")
+    if row.len() as i64 != NATIVE_ITEM_EFFECT_ROW_SIZE {
+        return Err(battle_err!("native item row len={} want {}", row.len(), NATIVE_ITEM_EFFECT_ROW_SIZE));
+    }
+    let inner = if row[0x0d] == 0x17 { 1 } else { 0 };
+    Ok(NativeItemTargetPlan {
+        item_type: row[0x0d],
+        selection_mode: row[0x10] as i64,
+        selection_inner_mark: inner,
+        effect_mode: row[0x12] as i64,
+        target_code: row[0x15] as i64,
+    })
 }
 
 /// NativeItemEffectTargets reproduces the mutation-free target transaction
@@ -43,5 +53,39 @@ pub fn native_item_effect_targets(
     flags: &[u8],
     units: &[Unit],
 ) -> Result<Vec<UnitIdx>> {
-    todo!("battle/native_item_target.go:NativeItemEffectTargets")
+    let raw_complete = native_target_roster_raw_complete(units);
+    let (Some(actor_unit), Some(confirmed_unit)) = (actor.map(|i| &units[i]), confirmed.map(|i| &units[i])) else {
+        return Err(battle_err!("invalid native item actor/confirmed unit"));
+    };
+    if !native_target_actor_usable(Some(actor_unit), raw_complete)
+        || !native_target_actor_usable(Some(confirmed_unit), raw_complete)
+    {
+        return Err(battle_err!("invalid native item actor/confirmed unit"));
+    }
+    let selection = native_attack_candidates(
+        w,
+        h,
+        Cell { x: actor_unit.x, y: actor_unit.y },
+        plan.selection_mode,
+        plan.selection_inner_mark,
+        plan.target_code,
+        flags,
+        units,
+    )?;
+    if !selection.iter().any(|&candidate| Some(candidate) == confirmed) {
+        return Err(battle_err!("confirmed unit is not a native item candidate"));
+    }
+    native_attack_candidates(
+        w,
+        h,
+        Cell { x: confirmed_unit.x, y: confirmed_unit.y },
+        plan.effect_mode,
+        0,
+        plan.target_code,
+        flags,
+        units,
+    )
 }
+
+#[cfg(test)]
+mod native_item_target_test;
