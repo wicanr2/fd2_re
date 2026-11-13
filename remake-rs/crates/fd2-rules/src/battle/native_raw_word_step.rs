@@ -26,7 +26,7 @@ pub fn apply_native_raw_word_step(
     unit_indices: &[u8],
     rng_state: u16,
 ) -> Result<(Vec<NativeRawWordStepResult>, u16, i64)> {
-    todo!("battle/native_raw_word_step.go:ApplyNativeRawWordStep")
+    apply_native_raw_word_step_at_offsets(records, unit_indices, rng_state, 0x22, 0x48)
 }
 
 /// ApplyNativeRawWordStepAtOffsets is the shared implementation used by
@@ -41,5 +41,53 @@ pub fn apply_native_raw_word_step_at_offsets(
     marker_offset: i64,
     word_offset: i64,
 ) -> Result<(Vec<NativeRawWordStepResult>, u16, i64)> {
-    todo!("battle/native_raw_word_step.go:ApplyNativeRawWordStepAtOffsets")
+    if !(0..NATIVE_RECORD_SIZE).contains(&marker_offset)
+        || word_offset < 0
+        || word_offset.wrapping_add(2) > NATIVE_RECORD_SIZE
+    {
+        return Err(battle_err!(
+            "native raw word offsets marker={} word={} out of bounds",
+            go_sharp_x(marker_offset),
+            go_sharp_x(word_offset)
+        ));
+    }
+    for &raw_index in unit_indices {
+        let base = raw_index as i64 * NATIVE_RECORD_SIZE;
+        if base + NATIVE_RECORD_SIZE > records.len() as i64 {
+            return Err(record_bounds_error(raw_index as i64));
+        }
+    }
+    let (marker_offset, word_offset) = (marker_offset as usize, word_offset as usize);
+    let mut rng_state = rng_state;
+    let mut results = Vec::with_capacity(unit_indices.len());
+    let mut total = 0i64;
+    for &raw_index in unit_indices {
+        let unit_index = raw_index as i64;
+        let base = unit_index as usize * NATIVE_RECORD_SIZE as usize;
+        let record = &mut records[base..base + NATIVE_RECORD_SIZE as usize];
+        let mut result = NativeRawWordStepResult { unit_index, ..Default::default() };
+        if record[marker_offset] != 0 {
+            results.push(result);
+            continue;
+        }
+        rng_state = fdother::native_rng_step(rng_state);
+        record[marker_offset] = (rng_state % 4 + 2) as u8;
+        let current = u16::from_le_bytes([record[word_offset], record[word_offset + 1]]);
+        let increment = (current as f64 * 0.15 + 1.0).trunc() as i64;
+        let updated = current.wrapping_add(increment as u16);
+        record[word_offset..word_offset + 2].copy_from_slice(&updated.to_le_bytes());
+        let mut effective = record[0x21] as i64;
+        if record[0x20] > 8 && record[0x20] < 0x19 {
+            effective += 30;
+        }
+        result.processed = true;
+        result.marker = record[marker_offset];
+        result.delta = increment as u16;
+        total = total.wrapping_add(2 * effective);
+        results.push(result);
+    }
+    Ok((results, rng_state, total))
 }
+
+#[cfg(test)]
+mod native_raw_word_step_test;

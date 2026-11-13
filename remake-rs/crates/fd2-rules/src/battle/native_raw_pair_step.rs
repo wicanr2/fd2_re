@@ -23,5 +23,41 @@ pub fn apply_native_raw_pair_step(
     unit_indices: &[u8],
     rng_state: u16,
 ) -> Result<(Vec<NativeRawPairStepResult>, u16, i64)> {
-    todo!("battle/native_raw_pair_step.go:ApplyNativeRawPairStep")
+    for &raw_index in unit_indices {
+        let base = raw_index as i64 * NATIVE_RECORD_SIZE;
+        if base + NATIVE_RECORD_SIZE > records.len() as i64 {
+            return Err(record_bounds_error(raw_index as i64));
+        }
+    }
+    let mut rng_state = rng_state;
+    let mut results = Vec::with_capacity(unit_indices.len());
+    let mut total = 0i64;
+    for &raw_index in unit_indices {
+        let unit_index = raw_index as i64;
+        let base = unit_index as usize * NATIVE_RECORD_SIZE as usize;
+        let record = &mut records[base..base + NATIVE_RECORD_SIZE as usize];
+        let mut result = NativeRawPairStepResult { unit_index, ..Default::default() };
+        if record[0x24] != 0 {
+            results.push(result);
+            continue;
+        }
+        rng_state = fdother::native_rng_step(rng_state);
+        record[0x24] = (rng_state % 4 + 2) as u8;
+        for off in [0x4c, 0x4e] {
+            let value = u16::from_le_bytes([record[off], record[off + 1]]).wrapping_add(0x0f);
+            record[off..off + 2].copy_from_slice(&value.to_le_bytes());
+        }
+        let mut effective = record[0x21] as i64;
+        if record[0x20] > 8 && record[0x20] < 0x19 {
+            effective += 30;
+        }
+        result.processed = true;
+        result.marker = record[0x24];
+        total = total.wrapping_add(2 * effective);
+        results.push(result);
+    }
+    Ok((results, rng_state, total))
 }
+
+#[cfg(test)]
+mod native_raw_pair_step_test;

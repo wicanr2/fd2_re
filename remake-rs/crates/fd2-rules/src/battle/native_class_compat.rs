@@ -15,7 +15,10 @@ pub const NATIVE_CLASS_COMPATIBILITY_ROW_SIZE: i64 = 7;
 ///
 /// Go：`native_class_compat.go:16`，`func NativeClassCompatibilityRowOffset(classID int) (int, error)`
 pub fn native_class_compatibility_row_offset(class_id: i64) -> Result<i64> {
-    todo!("battle/native_class_compat.go:NativeClassCompatibilityRowOffset")
+    if !(0..=0xff).contains(&class_id) {
+        return Err(battle_err!("native class selector {class_id} is out of bounds"));
+    }
+    Ok(class_id * NATIVE_CLASS_COMPATIBILITY_ROW_SIZE)
 }
 
 /// NativeClassItemCompatible reproduces 0x1c1c3's six-byte comparison.  The
@@ -24,5 +27,11 @@ pub fn native_class_compatibility_row_offset(class_id: i64) -> Result<i64> {
 ///
 /// Go：`native_class_compat.go:26`，`func NativeClassItemCompatible(itemRowByte0 byte, classRow []byte) (bool, error)`
 pub fn native_class_item_compatible(item_row_byte0: u8, class_row: &[u8]) -> Result<bool> {
-    todo!("battle/native_class_compat.go:NativeClassItemCompatible")
+    if class_row.len() < 6 {
+        return Err(battle_err!("native class compatibility row too short: {}", class_row.len()));
+    }
+    Ok(class_row[..6].contains(&item_row_byte0))
 }
+
+#[cfg(test)]
+mod native_class_compat_test;

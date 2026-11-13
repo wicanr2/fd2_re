@@ -11,5 +11,18 @@ use super::*;
 ///
 /// Go：`native_inventory_slots.go:11`，`func NativeInventoryOccupiedCount(records []byte, unitIndex int) (int, error)`
 pub fn native_inventory_occupied_count(records: &[u8], unit_index: i64) -> Result<i64> {
-    todo!("battle/native_inventory_slots.go:NativeInventoryOccupiedCount")
+    let base = unit_index.wrapping_mul(NATIVE_RECORD_SIZE);
+    if unit_index < 0 || base < 0 || base.wrapping_add(0x1a) > records.len() as i64 {
+        return Err(battle_err!("native inventory record {unit_index} is out of bounds"));
+    }
+    let mut free = 0;
+    for slot in 0..8 {
+        if records[(base + 0x0a + slot * 2) as usize] & 0x80 == 0 {
+            free += 1;
+        }
+    }
+    Ok(free)
 }
+
+#[cfg(test)]
+mod native_inventory_slots_test;

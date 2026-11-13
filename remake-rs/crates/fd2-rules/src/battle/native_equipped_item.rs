@@ -9,5 +9,22 @@ use super::*;
 ///
 /// Go：`native_equipped_item.go:9`，`func NativeEquippedInventorySlot(flags, slots []int, a2 int) (int, error)`
 pub fn native_equipped_inventory_slot(flags: &[i64], slots: &[i64], a2: i64) -> Result<i64> {
-    todo!("battle/native_equipped_item.go:NativeEquippedInventorySlot")
+    if flags.len() as i64 != NATIVE_INVENTORY_CELLS || slots.len() as i64 != NATIVE_INVENTORY_CELLS {
+        return Err(battle_err!("native equipped item: need {} flags and slots", NATIVE_INVENTORY_CELLS));
+    }
+    for slot in 0..NATIVE_INVENTORY_CELLS as usize {
+        if !(0..=0xff).contains(&flags[slot]) || !(0..=0xff).contains(&slots[slot]) {
+            return Err(battle_err!("native equipped item: malformed cell {slot}"));
+        }
+        if flags[slot] & 0x40 == 0 {
+            continue;
+        }
+        if (a2 == 0 && slots[slot] < 0x80) || (a2 != 0 && slots[slot] >= 0x80) {
+            return Ok(slot as i64);
+        }
+    }
+    Ok(-1)
 }
+
+#[cfg(test)]
+mod native_equipped_item_test;

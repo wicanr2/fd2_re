@@ -12,3 +12,6 @@
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
 
 pub mod battle;
+
+#[cfg(test)]
+mod test_support;

@@ -39,7 +39,36 @@ pub struct NativeItemWordDeltaRoute {
 
 /// Go：`native_item_row.go:35`，`func NativeItemWordDeltaRouteForType(itemType int) (NativeItemWordDeltaRoute, bool)`
 pub fn native_item_word_delta_route_for_type(item_type: i64) -> (NativeItemWordDeltaRoute, bool) {
-    todo!("battle/native_item_row.go:NativeItemWordDeltaRouteForType")
+    match item_type {
+        8 => (
+            NativeItemWordDeltaRoute {
+                item_type,
+                base_stat: NATIVE_ITEM_BASE_AP,
+                field_offset: 0x37,
+                presentation_code: 0x11,
+            },
+            true,
+        ),
+        9 => (
+            NativeItemWordDeltaRoute {
+                item_type,
+                base_stat: NATIVE_ITEM_BASE_DP,
+                field_offset: 0x39,
+                presentation_code: 0x12,
+            },
+            true,
+        ),
+        0xa => (
+            NativeItemWordDeltaRoute {
+                item_type,
+                base_stat: NATIVE_ITEM_BASE_DX,
+                field_offset: 0x3e,
+                presentation_code: 0x13,
+            },
+            true,
+        ),
+        _ => (NativeItemWordDeltaRoute::default(), false),
+    }
 }
 
 /// NativeItemEffectRowOffset reproduces 0x4e56c(item): item rows are selected
@@ -49,5 +78,11 @@ pub fn native_item_word_delta_route_for_type(item_type: i64) -> (NativeItemWordD
 ///
 /// Go：`native_item_row.go:52`，`func NativeItemEffectRowOffset(item int) (int, error)`
 pub fn native_item_effect_row_offset(item: i64) -> Result<i64> {
-    todo!("battle/native_item_row.go:NativeItemEffectRowOffset")
+    if !(0..=0xff).contains(&item) {
+        return Err(battle_err!("native item selector {item} is out of bounds"));
+    }
+    Ok(item * NATIVE_ITEM_EFFECT_ROW_SIZE)
 }
+
+#[cfg(test)]
+mod native_item_row_test;

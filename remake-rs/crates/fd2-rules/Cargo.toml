@@ -17,3 +17,10 @@ doctest = false
 
 [dependencies]
 fd2-formats = { path = "../fd2-formats" }
+# JSON 載入與 Go []byte 的 base64 欄位（PORTING.md「開工前的決定」第 2 點）；版本釘在工作區
+# Cargo.lock 既有版本，不新增套件版本。
+base64 = "=0.23.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+# `model.go` 以 SHA-256 核對 native_turn_event_controls.json；黃金差分也用它核對輸入檔。
+sha2 = "=0.10.9"

@@ -9,5 +9,24 @@ use super::*;
 ///
 /// Go：`native_inventory_available.go:9`，`func NativeInventoryAvailableCount(flags []int) (int, error)`
 pub fn native_inventory_available_count(flags: &[i64]) -> Result<i64> {
-    todo!("battle/native_inventory_available.go:NativeInventoryAvailableCount")
+    if flags.len() as i64 != NATIVE_INVENTORY_CELLS {
+        return Err(battle_err!(
+            "native inventory available: flags length={}, want {}",
+            flags.len(),
+            NATIVE_INVENTORY_CELLS
+        ));
+    }
+    let mut count = 0;
+    for (slot, &flag) in flags.iter().enumerate() {
+        if !(0..=0xff).contains(&flag) {
+            return Err(battle_err!("native inventory available: malformed flag {slot}"));
+        }
+        if flag & 0x80 == 0 {
+            count += 1;
+        }
+    }
+    Ok(count)
 }
+
+#[cfg(test)]
+mod native_inventory_available_test;

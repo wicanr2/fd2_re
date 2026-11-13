@@ -2685,7 +2685,11 @@ dependencies = [
 name = "fd2-rules"
 version = "0.1.0"
 dependencies = [
+ "base64",
  "fd2-formats",
+ "serde",
+ "serde_json",
+ "sha2",
 ]
 
 [[package]]

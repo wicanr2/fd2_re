@@ -24,5 +24,37 @@ pub fn apply_native_raw_flag_restore(
     marker_offset: i64,
     rng_state: u16,
 ) -> Result<(Vec<NativeRawFlagRestoreResult>, u16, i64)> {
-    todo!("battle/native_raw_flag_restore.go:ApplyNativeRawFlagRestore")
+    if !(0..NATIVE_RECORD_SIZE).contains(&marker_offset) {
+        return Err(battle_err!("native flag restore marker offset {} is out of bounds", go_sharp_x(marker_offset)));
+    }
+    for &raw_index in target_indices {
+        if raw_index as i64 >= records.len() as i64 / NATIVE_RECORD_SIZE {
+            return Err(record_bounds_error(raw_index as i64));
+        }
+    }
+    let mut rng_state = rng_state;
+    let marker_offset = marker_offset as usize;
+    let mut results = Vec::with_capacity(target_indices.len());
+    let mut total = 0i64;
+    for &raw_index in target_indices {
+        let mut result = NativeRawFlagRestoreResult { target_index: raw_index as i64, ..Default::default() };
+        let base = raw_index as usize * NATIVE_RECORD_SIZE as usize;
+        if records[base + marker_offset] != 0 {
+            let restore = apply_native_raw_hp_restore(records, raw_index as i64, 10, rng_state)?;
+            rng_state = restore.rng_state;
+            let mut effective = records[base + 0x21] as i64;
+            if records[base + 0x20] > 8 && records[base + 0x20] < 0x19 {
+                effective += 0x1e;
+            }
+            records[base + marker_offset] = 0;
+            total = total.wrapping_add(effective * 4);
+            result.applied = true;
+            result.restore = restore;
+        }
+        results.push(result);
+    }
+    Ok((results, rng_state, total))
 }
+
+#[cfg(test)]
+mod native_raw_flag_restore_test;

@@ -29,7 +29,7 @@
 
 | 組 | 主題 | 波次 | Go 檔 | 正式行數 | 測試檔 | 測試行數 | 函式 |
 |---|---|---|---|---|---|---|---|
-| A | 單位、記錄與物品欄基礎 | 1 | 41 | 4627 | 42 | 3040 | 152 |
+| A | 單位、記錄與物品欄基礎（已移植，見「A 組完成紀錄」） | 1 | 41 | 4627 | 42 | 3040 | 152 |
 | B | 指令、目標與死亡程式 | 2 | 22 | 4411 | 25 | 3337 | 165 |
 | C | 物品效果與面板繪製 | 2 | 28 | 3087 | 27 | 2367 | 82 |
 | D | 敵我 AI | 3 | 21 | 3608 | 19 | 3017 | 90 |
@@ -60,8 +60,8 @@
 
 | 所屬組 | 測試檔 | 行數 | 等待 |
 |---|---|---|---|
-| A | `treasure_test.go` | 273 | B、D、F |
-| A | `native_command_test.go` | 117 | B、E |
+| A | `treasure_test.go`（9 個測試中 4 個 ignore：兩個 `PlayerTreasure*`、`Map25NativeEventTreasure*`、`SkyKeyMaterialAssets*`） | 273 | B、D、F |
+| A | `native_command_test.go`（7 個測試中 2 個 `StateGainExp*` ignore） | 117 | B、E |
 | B | `balance_test.go` | 95 | E |
 | B | `move_test.go` | 183 | F |
 | B | `native_death_program_test.go` | 318 | E、F |
@@ -128,3 +128,13 @@
 
 | 日期 | 項目 | 原因 | 組 |
 |---|---|---|---|
+| 2026-11-14 | `record_bounds_error` 回傳 `Result<()>` → `BattleError` | Go `recordBoundsError` 回傳的是 `error` 值本身（永不為 nil），呼叫端寫成 `Err(record_bounds_error(i))` | A |
+| 2026-11-14 | `native_ai_physical_destinations`、`native_movement_destination_field`、`native_movement_budget_field` 的 `base_flags: &mut [u8]` → `&[u8]` | Go 先複製一份再改，不改呼叫端的切片；`&mut [u8]` 仍可自動轉成 `&[u8]`，既有呼叫端不用改 | A |
+| 2026-11-14 | `magic.rs` 的 `with_engine_rand`（E 組檔）由 A 組實作本體，簽名不變 | PORTING.md 決定 1 指定與 `rng.rs` 一起完成 | A |
+
+## A 組完成紀錄（2026-11-14）
+
+- 41 個檔的 143 個 `todo!()` 全部移植（PORTING.json 標 `ported`），另完成 `rng.rs`（`GoSource`、`GoMathRand`）、`support.rs` 的 serde 輔助（`go_bytes`、`go_bytes::option`、`null_as_default`、`go_is_zero`）與 `magic.rs` 的 `with_engine_rand`。`rngCooked` 表在 `src/battle/rng/cooked.rs`，由 `tools/rust_gen_gorand_cooked.sh` 產生。
+- A 組型別加了 serde：`Unit`、`Camp`、`Cell`、`NativeMapPresentationState`、`NativePositionRecord`、`DeathEffect`、`NativeConstructorTable`、地圖 JSON 的各列型別與 `Load*` 的檔案型別。`Unit` 沒有 Go 標籤的欄位用 Go 欄位名（例如 `HP`、`MaxHP`），與 Go `json.Marshal(Unit)` 相同；`Cell` 寫出 `X`／`Y`、讀取另收 `x`／`y`（`units.json` 的 `own_deploy`）。B 組的 `BalanceStats` 沒有 serde，`Unit::enemy_balance_base` 在 `model.rs` 以鏡像結構轉換。
+- 測試：A 組 42 個 Go 測試檔逐條移植（`src/battle/<x>/<t>_test.rs`），只用到 A 組的測試現在就跑；上表列出的 6 個延後測試標 `#[ignore = "等 … 合併"]`。共用輸入由 `src/test_support.rs` 提供（變數名同 fd2-formats）。`model_test` 的 `TestLoadSerial0` 讀不入庫的 `remake/assets/map0_units.json`，在工作樹副本執行 `tools/rust_rules_test.sh` 時要把 `FD2_REMAKE_ASSETS` 指向主工作區。
+- 黃金差分：`tools/rust_golden_gorand.sh`（Go `math/rand` 序列）與 `tools/rust_golden_rules_a.sh`（A 組規則）。後者的合成寶箱領取前會關掉事件格網，因為格網的驗證與推進屬 D 組 `native_ai_mode5`。

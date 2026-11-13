@@ -133,8 +133,19 @@ pub struct CastResult {
 /// Rust 骨架：Go 版是以 `time.Now().UnixNano()` 播種的全域 `*rand.Rand`。Rust 不在骨架定義
 /// 具體亂數源；階段 2 以 `with_engine_rand` 取用，實作必須和 Go `math/rand` 的序列相同
 /// （見 `rng.rs`）。
+///
+/// 實作（A 組，PORTING.md 決定 1）：程序內共用一個 [`GoMathRand`]，第一次使用時以
+/// `SystemTime` 的奈秒數播種（對應 Go `time.Now().UnixNano()`），以 `Mutex` 序列化存取。
 pub(crate) fn with_engine_rand<R>(f: impl FnOnce(&mut dyn GoRand) -> R) -> R {
-    todo!("battle/magic.go:engineRand")
+    static ENGINE_RAND: LazyLock<std::sync::Mutex<GoMathRand>> = LazyLock::new(|| {
+        let nanos = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_nanos() as i64)
+            .unwrap_or(0);
+        std::sync::Mutex::new(GoMathRand::new(nanos))
+    });
+    let mut rng = ENGINE_RAND.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    f(&mut *rng)
 }
 
 /// buffRoll 輔助法術效果持續回合數(doc02 §6.4:2–4 回合)。

@@ -6,8 +6,8 @@
   "totals": {
     "consts": 83,
     "functions": 632,
-    "functions_ported": 29,
-    "functions_todo": 603,
+    "functions_ported": 172,
+    "functions_todo": 460,
     "go_files": 129,
     "go_lines": 20931,
     "test_files": 133,
@@ -830,19 +830,19 @@
         {
           "name": "LoadCommandLearn",
           "rust": "load_command_learn",
-          "status": "todo",
+          "status": "ported",
           "go_line": 29
         },
         {
           "name": "LoadCommandLearnSelectors",
           "rust": "load_command_learn_selectors",
-          "status": "todo",
+          "status": "ported",
           "go_line": 62
         },
         {
           "name": "State.learnNativeCommandsAtLevel",
           "rust": "State::learn_native_commands_at_level",
-          "status": "todo",
+          "status": "ported",
           "go_line": 86,
           "calls": [
             "Unit.EnableNativeCommand"
@@ -1552,7 +1552,8 @@
         {
           "kind": "var",
           "go": "engineRand",
-          "rust": "with_engine_rand"
+          "rust": "with_engine_rand",
+          "status": "ported"
         }
       ],
       "functions": [
@@ -1891,13 +1892,13 @@
         {
           "name": "NativeConstructorTable.validate",
           "rust": "NativeConstructorTable::validate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 234
         },
         {
           "name": "MaterializeNativeMapSelectorSlots",
           "rust": "materialize_native_map_selector_slots",
-          "status": "todo",
+          "status": "ported",
           "go_line": 259,
           "calls": [
             "Unit.MaterializeNativeMapPresentation"
@@ -1906,13 +1907,13 @@
         {
           "name": "initialEquipmentFlags",
           "rust": "initial_equipment_flags",
-          "status": "todo",
+          "status": "ported",
           "go_line": 295
         },
         {
           "name": "materializeInventory",
           "rust": "materialize_inventory",
-          "status": "todo",
+          "status": "ported",
           "go_line": 303,
           "calls": [
             "initialEquipmentFlags"
@@ -1921,13 +1922,13 @@
         {
           "name": "Unit.normalizeInventorySlots",
           "rust": "Unit::normalize_inventory_slots",
-          "status": "todo",
+          "status": "ported",
           "go_line": 334
         },
         {
           "name": "Unit.AddInventoryItem",
           "rust": "Unit::add_inventory_item",
-          "status": "todo",
+          "status": "ported",
           "go_line": 352,
           "calls": [
             "Unit.inventoryCellOccupied",
@@ -1937,7 +1938,7 @@
         {
           "name": "Unit.RemoveInventoryIndex",
           "rust": "Unit::remove_inventory_index",
-          "status": "todo",
+          "status": "ported",
           "go_line": 376,
           "calls": [
             "Unit.inventoryCellOccupied",
@@ -1953,25 +1954,25 @@
         {
           "name": "Unit.ApplyHPDamage",
           "rust": "Unit::apply_hp_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 411
         },
         {
           "name": "Unit.NativeDeathPresentationFlag",
           "rust": "Unit::native_death_presentation_flag",
-          "status": "todo",
+          "status": "ported",
           "go_line": 428
         },
         {
           "name": "Unit.ClearNativeDeathPresentationFlag",
           "rust": "Unit::clear_native_death_presentation_flag",
-          "status": "todo",
+          "status": "ported",
           "go_line": 435
         },
         {
           "name": "Unit.RestoreNativeHP",
           "rust": "Unit::restore_native_hp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 443,
           "calls": [
             "Unit.ClearNativeDeathPresentationFlag"
@@ -2004,13 +2005,13 @@
         {
           "name": "Unit.TickStatus",
           "rust": "Unit::tick_status",
-          "status": "todo",
+          "status": "ported",
           "go_line": 467
         },
         {
           "name": "State.BindNativeFutureItemRows",
           "rust": "State::bind_native_future_item_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 645,
           "calls": [
             "MaterializeNativeFutureConstructor"
@@ -2019,13 +2020,13 @@
         {
           "name": "State.BindNativeMovementCostRows",
           "rust": "State::bind_native_movement_cost_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 676
         },
         {
           "name": "State.TreasureAt",
           "rust": "State::treasure_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 836
         },
         {
@@ -2049,7 +2050,7 @@
         {
           "name": "State.claimTreasure",
           "rust": "State::claim_treasure_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 857,
           "calls": [
             "State.CompleteTreasureMapUpdate",
@@ -2064,13 +2065,13 @@
         {
           "name": "State.markTreasureEvent",
           "rust": "State::mark_treasure_event",
-          "status": "todo",
+          "status": "ported",
           "go_line": 894
         },
         {
           "name": "State.CompleteTreasureMapUpdate",
           "rust": "State::complete_treasure_map_update",
-          "status": "todo",
+          "status": "ported",
           "go_line": 904,
           "calls": [
             "State.advanceNativeAIMode5EventGrid",
@@ -2080,7 +2081,7 @@
         {
           "name": "State.claimNativeTreasureEvent",
           "rust": "State::claim_native_treasure_event",
-          "status": "todo",
+          "status": "ported",
           "go_line": 914,
           "calls": [
             "State.markTreasureEvent",
@@ -2090,7 +2091,7 @@
         {
           "name": "State.UnitAt",
           "rust": "State::unit_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 942,
           "calls": [
             "Unit.Alive"
@@ -2099,7 +2100,7 @@
         {
           "name": "State.AliveCount",
           "rust": "State::alive_count",
-          "status": "todo",
+          "status": "ported",
           "go_line": 953,
           "calls": [
             "Unit.Alive"
@@ -2108,7 +2109,7 @@
         {
           "name": "State.PendingCount",
           "rust": "State::pending_count",
-          "status": "todo",
+          "status": "ported",
           "go_line": 972,
           "calls": [
             "Unit.Alive"
@@ -2117,13 +2118,13 @@
         {
           "name": "campFrom",
           "rust": "camp_from",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1064
         },
         {
           "name": "Load",
           "rust": "load",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1076,
           "calls": [
             "DecodeNativeFutureConstructorBase",
@@ -2145,43 +2146,43 @@
         {
           "name": "loadNativeTurnEventControls",
           "rust": "load_native_turn_event_controls",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1305
         },
         {
           "name": "loadTreasures",
           "rust": "load_treasures",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1382
         },
         {
           "name": "loadTerrainCost",
           "rust": "load_terrain_cost",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1422
         },
         {
           "name": "loadNativeCompositionEventBytes",
           "rust": "load_native_composition_event_bytes",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1441
         },
         {
           "name": "loadNativeMapEventGrid",
           "rust": "load_native_map_event_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1459
         },
         {
           "name": "resetNativeMapEventGrid",
           "rust": "reset_native_map_event_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1494
         },
         {
           "name": "State.ResetNativeMapEventGrid",
           "rust": "State::reset_native_map_event_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1513,
           "calls": [
             "resetNativeMapEventGrid"
@@ -2190,25 +2191,25 @@
         {
           "name": "loadNativeFieldEvents",
           "rust": "load_native_field_events",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1525
         },
         {
           "name": "loadNativeTerrainRendererInputs",
           "rust": "load_native_terrain_renderer_inputs",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1581
         },
         {
           "name": "State.AddUnit",
           "rust": "State::add_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1604
         },
         {
           "name": "State.AppendNativeMapSelectorBatch",
           "rust": "State::append_native_map_selector_batch",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1611,
           "calls": [
             "MaterializeNativeMapSelectorSlots"
@@ -2217,31 +2218,31 @@
         {
           "name": "State.AdvanceNativeMapPresentationCycles",
           "rust": "State::advance_native_map_presentation_cycles",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1643
         },
         {
           "name": "State.AdvanceNativeTerrainPhase",
           "rust": "State::advance_native_terrain_phase",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1654
         },
         {
           "name": "State.AdvanceNativeTerrainFlip",
           "rust": "State::advance_native_terrain_flip",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1666
         },
         {
           "name": "State.AdvanceNativeUnitPixelShift",
           "rust": "State::advance_native_unit_pixel_shift",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1678
         },
         {
           "name": "State.AppendNativeMapSelectorBatchOrLegacy",
           "rust": "State::append_native_map_selector_batch_or_legacy",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1694,
           "calls": [
             "State.AppendNativeMapSelectorBatch"
@@ -2250,13 +2251,13 @@
         {
           "name": "State.NativeMapSpriteKey",
           "rust": "State::native_map_sprite_key",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1705
         },
         {
           "name": "State.AppendGroup",
           "rust": "State::append_group",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1722,
           "calls": [
             "State.AppendNativeMapSelectorBatchOrLegacy"
@@ -2265,7 +2266,7 @@
         {
           "name": "State.AppendGroupWithNativePlacement",
           "rust": "State::append_group_with_native_placement",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1755,
           "calls": [
             "MaterializeNativeFutureConstructor",
@@ -2278,7 +2279,7 @@
         {
           "name": "State.SpawnGroup",
           "rust": "State::spawn_group",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1843,
           "calls": [
             "State.AppendGroup",
@@ -2290,7 +2291,7 @@
         {
           "name": "State.nearestFree",
           "rust": "State::nearest_free",
-          "status": "todo",
+          "status": "ported",
           "go_line": 1883,
           "calls": [
             "State.UnitAt"
@@ -2800,7 +2801,7 @@
         {
           "name": "NativeAIPhysicalDestinations",
           "rust": "native_ai_physical_destinations",
-          "status": "todo",
+          "status": "ported",
           "go_line": 13,
           "calls": [
             "nativeMovementDestinationField"
@@ -2809,7 +2810,7 @@
         {
           "name": "nativeMovementDestinationField",
           "rust": "native_movement_destination_field",
-          "status": "todo",
+          "status": "ported",
           "go_line": 34,
           "calls": [
             "nativeAISameSelectorGroup",
@@ -2819,7 +2820,7 @@
         {
           "name": "nativeMovementBudgetField",
           "rust": "native_movement_budget_field",
-          "status": "todo",
+          "status": "ported",
           "go_line": 64,
           "calls": [
             "nativeAIOppositeSelectorGroup",
@@ -2829,19 +2830,19 @@
         {
           "name": "nativeAIOppositeSelectorGroup",
           "rust": "native_ai_opposite_selector_group",
-          "status": "todo",
+          "status": "ported",
           "go_line": 125
         },
         {
           "name": "nativeAISameSelectorGroup",
           "rust": "native_ai_same_selector_group",
-          "status": "todo",
+          "status": "ported",
           "go_line": 132
         },
         {
           "name": "nativeAIPropagateDestinationBudget",
           "rust": "native_ai_propagate_destination_budget",
-          "status": "todo",
+          "status": "ported",
           "go_line": 139
         }
       ],
@@ -3899,7 +3900,7 @@
         {
           "name": "NativeAIScoringRecords",
           "rust": "native_ai_scoring_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 13,
           "calls": [
             "NativeItemPanelRecordForUnit"
@@ -4685,13 +4686,13 @@
         {
           "name": "NativeClassCompatibilityRowOffset",
           "rust": "native_class_compatibility_row_offset",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16
         },
         {
           "name": "NativeClassItemCompatible",
           "rust": "native_class_item_compatible",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26
         }
       ],
@@ -4733,19 +4734,19 @@
         {
           "name": "Unit.SetInitialCommandMask",
           "rust": "Unit::set_initial_command_mask",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9
         },
         {
           "name": "Unit.NativeCommandIDs",
           "rust": "Unit::native_command_ids",
-          "status": "todo",
+          "status": "ported",
           "go_line": 24
         },
         {
           "name": "Unit.EnableNativeCommand",
           "rust": "Unit::enable_native_command",
-          "status": "todo",
+          "status": "ported",
           "go_line": 42
         }
       ],
@@ -6405,13 +6406,13 @@
         {
           "name": "NativeCommandAvailable",
           "rust": "native_command_available",
-          "status": "todo",
+          "status": "ported",
           "go_line": 8
         },
         {
           "name": "NativeAvailableCommandIDs",
           "rust": "native_available_command_ids",
-          "status": "todo",
+          "status": "ported",
           "go_line": 21,
           "calls": [
             "NativeCommandAvailable"
@@ -6420,7 +6421,7 @@
         {
           "name": "NativeAvailableAICommandIDs",
           "rust": "native_available_ai_command_ids",
-          "status": "todo",
+          "status": "ported",
           "go_line": 37,
           "calls": [
             "NativeAvailableCommandIDs"
@@ -6429,7 +6430,7 @@
         {
           "name": "NativeAvailableAIScoredCommandIDs",
           "rust": "native_available_ai_scored_command_ids",
-          "status": "todo",
+          "status": "ported",
           "go_line": 48,
           "calls": [
             "NativeAvailableAICommandIDs"
@@ -6683,7 +6684,7 @@
         {
           "name": "SpendNativeCommandMP",
           "rust": "spend_native_command_mp",
-          "status": "todo",
+          "status": "ported",
           "go_line": 12
         }
       ],
@@ -6829,7 +6830,7 @@
         {
           "name": "LoadNativeCommandRecords",
           "rust": "load_native_command_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 42
         }
       ],
@@ -7190,7 +7191,7 @@
         {
           "name": "SetNativeUnitCoordinateBytes",
           "rust": "set_native_unit_coordinate_bytes",
-          "status": "todo",
+          "status": "ported",
           "go_line": 7,
           "calls": [
             "recordBoundsError"
@@ -7494,25 +7495,25 @@
         {
           "name": "nativeSignedWord",
           "rust": "native_signed_word",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16
         },
         {
           "name": "nativePutWord",
           "rust": "native_put_word",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20
         },
         {
           "name": "nativeScale115TowardZero",
           "rust": "native_scale115_toward_zero",
-          "status": "todo",
+          "status": "ported",
           "go_line": 33
         },
         {
           "name": "nativeEquipmentTotals",
           "rust": "native_equipment_totals",
-          "status": "todo",
+          "status": "ported",
           "go_line": 47,
           "calls": [
             "NativeItemEffectRowOffset",
@@ -7523,7 +7524,7 @@
         {
           "name": "ApplyNativeEquipmentRecalc",
           "rust": "apply_native_equipment_recalc",
-          "status": "todo",
+          "status": "ported",
           "go_line": 107,
           "calls": [
             "nativeEquipmentTotals",
@@ -7533,7 +7534,7 @@
         {
           "name": "ApplyNativeRuntimeEquipmentRecalc",
           "rust": "apply_native_runtime_equipment_recalc",
-          "status": "todo",
+          "status": "ported",
           "go_line": 123,
           "calls": [
             "nativeEquipmentTotals",
@@ -7569,7 +7570,7 @@
         {
           "name": "NativeEquippedInventorySlot",
           "rust": "native_equipped_inventory_slot",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9
         }
       ],
@@ -7761,7 +7762,7 @@
         {
           "name": "DecodeNativeFutureConstructorBase",
           "rust": "decode_native_future_constructor_base",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26,
           "calls": [
             "NativeConstructorTable.validate",
@@ -7772,7 +7773,7 @@
         {
           "name": "MaterializeNativeFutureConstructor",
           "rust": "materialize_native_future_constructor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 87,
           "calls": [
             "ApplyNativeRuntimeEquipmentRecalc",
@@ -7786,13 +7787,13 @@
         {
           "name": "mulWord",
           "rust": "mul_word",
-          "status": "todo",
+          "status": "ported",
           "go_line": 149
         },
         {
           "name": "addScaledWord",
           "rust": "add_scaled_word",
-          "status": "todo",
+          "status": "ported",
           "go_line": 153
         }
       ],
@@ -7827,13 +7828,13 @@
         {
           "name": "recordBoundsError",
           "rust": "record_bounds_error",
-          "status": "todo",
+          "status": "ported",
           "go_line": 5
         },
         {
           "name": "AssignNativeReservedItem",
           "rust": "assign_native_reserved_item",
-          "status": "todo",
+          "status": "ported",
           "go_line": 13,
           "calls": [
             "recordBoundsError"
@@ -7868,7 +7869,7 @@
         {
           "name": "NativeInventoryAvailableCount",
           "rust": "native_inventory_available_count",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9
         }
       ],
@@ -7901,13 +7902,13 @@
         {
           "name": "NativeInventoryFlagsFromSource",
           "rust": "native_inventory_flags_from_source",
-          "status": "todo",
+          "status": "ported",
           "go_line": 12
         },
         {
           "name": "NativeInventoryCompactEligible",
           "rust": "native_inventory_compact_eligible",
-          "status": "todo",
+          "status": "ported",
           "go_line": 39
         }
       ],
@@ -7943,7 +7944,7 @@
         {
           "name": "NativeInventoryRecords",
           "rust": "native_inventory_records",
-          "status": "todo",
+          "status": "ported",
           "go_line": 10,
           "calls": [
             "minInt"
@@ -7952,7 +7953,7 @@
         {
           "name": "minInt",
           "rust": "min_int",
-          "status": "todo",
+          "status": "ported",
           "go_line": 33
         }
       ],
@@ -7987,7 +7988,7 @@
         {
           "name": "RemoveNativeInventorySlot",
           "rust": "remove_native_inventory_slot",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9,
           "calls": [
             "recordBoundsError"
@@ -8026,7 +8027,7 @@
         {
           "name": "FindNativeInventoryItemInUnit",
           "rust": "find_native_inventory_item_in_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11,
           "calls": [
             "NativeInventoryOccupiedCount",
@@ -8036,7 +8037,7 @@
         {
           "name": "FindNativeInventoryItem",
           "rust": "find_native_inventory_item",
-          "status": "todo",
+          "status": "ported",
           "go_line": 32,
           "calls": [
             "FindNativeInventoryItemInUnit"
@@ -8073,7 +8074,7 @@
         {
           "name": "NativeInventoryOccupiedCount",
           "rust": "native_inventory_occupied_count",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11
         }
       ],
@@ -8109,13 +8110,13 @@
         {
           "name": "ValidateNativeInventoryProjection",
           "rust": "validate_native_inventory_projection",
-          "status": "todo",
+          "status": "ported",
           "go_line": 8
         },
         {
           "name": "TransferNativeInventoryItem",
           "rust": "transfer_native_inventory_item",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43,
           "calls": [
             "Unit.AddInventoryItem",
@@ -8126,7 +8127,7 @@
         {
           "name": "ReplaceNativeFullInventoryReward",
           "rust": "replace_native_full_inventory_reward",
-          "status": "todo",
+          "status": "ported",
           "go_line": 96,
           "calls": [
             "Unit.AddInventoryItem",
@@ -8137,19 +8138,19 @@
         {
           "name": "firstInventoryHole",
           "rust": "first_inventory_hole",
-          "status": "todo",
+          "status": "ported",
           "go_line": 126
         },
         {
           "name": "Unit.inventoryCellOccupied",
           "rust": "Unit::inventory_cell_occupied",
-          "status": "todo",
+          "status": "ported",
           "go_line": 138
         },
         {
           "name": "removeNativeCompactInventory",
           "rust": "remove_native_compact_inventory_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 154,
           "calls": [
             "Unit.inventoryCellOccupied",
@@ -8159,7 +8160,7 @@
         {
           "name": "RemoveNativeCompactInventory",
           "rust": "remove_native_compact_inventory",
-          "status": "todo",
+          "status": "ported",
           "go_line": 189,
           "calls": [
             "removeNativeCompactInventory"
@@ -8967,7 +8968,7 @@
         {
           "name": "NativeItemPanelRecordForUnit",
           "rust": "native_item_panel_record_for_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 13,
           "calls": [
             "nativeRecordByte8ForUnit",
@@ -8977,13 +8978,13 @@
         {
           "name": "nativeRecordByte8ForUnit",
           "rust": "native_record_byte8_for_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 72
         },
         {
           "name": "putNativeItemPanelWord",
           "rust": "put_native_item_panel_word",
-          "status": "todo",
+          "status": "ported",
           "go_line": 88
         }
       ],
@@ -9197,13 +9198,13 @@
         {
           "name": "NativeItemWordDeltaRouteForType",
           "rust": "native_item_word_delta_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 35
         },
         {
           "name": "NativeItemEffectRowOffset",
           "rust": "native_item_effect_row_offset",
-          "status": "todo",
+          "status": "ported",
           "go_line": 52
         }
       ],
@@ -9535,91 +9536,91 @@
         {
           "name": "InitialNativeMapHUDPersistentState",
           "rust": "initial_native_map_hud_persistent_state",
-          "status": "todo",
+          "status": "ported",
           "go_line": 41
         },
         {
           "name": "NativeMapHUDPersistentState.CaptureNativeMapHUD",
           "rust": "NativeMapHUDPersistentState::capture_native_map_hud",
-          "status": "todo",
+          "status": "ported",
           "go_line": 49
         },
         {
           "name": "NativeMapHUDPersistentState.RestoreSavedGateA",
           "rust": "NativeMapHUDPersistentState::restore_saved_gate_a",
-          "status": "todo",
+          "status": "ported",
           "go_line": 65
         },
         {
           "name": "NativeMapHUDPersistentState.MaterializeRuntime",
           "rust": "NativeMapHUDPersistentState::materialize_runtime",
-          "status": "todo",
+          "status": "ported",
           "go_line": 76
         },
         {
           "name": "State.MaterializeNativeMapHUDState",
           "rust": "State::materialize_native_map_hud_state",
-          "status": "todo",
+          "status": "ported",
           "go_line": 88
         },
         {
           "name": "State.AdvanceNativeMapHUDAnchor",
           "rust": "State::advance_native_map_hud_anchor",
-          "status": "todo",
+          "status": "ported",
           "go_line": 104
         },
         {
           "name": "Unit.MaterializeNativeMapPresentation",
           "rust": "Unit::materialize_native_map_presentation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 145
         },
         {
           "name": "Unit.SetMapPose",
           "rust": "Unit::set_map_pose",
-          "status": "todo",
+          "status": "ported",
           "go_line": 158
         },
         {
           "name": "Unit.SetMapPlacement",
           "rust": "Unit::set_map_placement",
-          "status": "todo",
+          "status": "ported",
           "go_line": 172
         },
         {
           "name": "Unit.SetNativeMapCoordinatesRaw",
           "rust": "Unit::set_native_map_coordinates_raw",
-          "status": "todo",
+          "status": "ported",
           "go_line": 190
         },
         {
           "name": "Unit.SetNativeMapGridMotion",
           "rust": "Unit::set_native_map_grid_motion",
-          "status": "todo",
+          "status": "ported",
           "go_line": 202
         },
         {
           "name": "Unit.FinishNativeMapGridStep",
           "rust": "Unit::finish_native_map_grid_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 214
         },
         {
           "name": "Unit.NativeUnitLayerEntry",
           "rust": "Unit::native_unit_layer_entry",
-          "status": "todo",
+          "status": "ported",
           "go_line": 230
         },
         {
           "name": "Unit.NativeForegroundLayerEntry",
           "rust": "Unit::native_foreground_layer_entry",
-          "status": "todo",
+          "status": "ported",
           "go_line": 246
         },
         {
           "name": "State.NativeMapFrameRoster",
           "rust": "State::native_map_frame_roster",
-          "status": "todo",
+          "status": "ported",
           "go_line": 263,
           "calls": [
             "Unit.NativeForegroundLayerEntry",
@@ -9880,7 +9881,7 @@
         {
           "name": "RewriteNativeMarker1F",
           "rust": "rewrite_native_marker1_f",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9
         }
       ],
@@ -9930,13 +9931,13 @@
         {
           "name": "LoadNativeMovementCostRows",
           "rust": "load_native_movement_cost_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20
         },
         {
           "name": "NativeRelocationDestinationAllowed",
           "rust": "native_relocation_destination_allowed",
-          "status": "todo",
+          "status": "ported",
           "go_line": 56,
           "calls": [
             "recordBoundsError"
@@ -9972,7 +9973,7 @@
         {
           "name": "ApplyNativePersistentRecordCopy",
           "rust": "apply_native_persistent_record_copy",
-          "status": "todo",
+          "status": "ported",
           "go_line": 14,
           "calls": [
             "nativePersistentRecordBase"
@@ -9981,7 +9982,7 @@
         {
           "name": "nativePersistentRecordBase",
           "rust": "native_persistent_record_base",
-          "status": "todo",
+          "status": "ported",
           "go_line": 38
         }
       ],
@@ -10020,7 +10021,7 @@
         {
           "name": "FindNativePersistentIdentity",
           "rust": "find_native_persistent_identity",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11
         }
       ],
@@ -10594,7 +10595,7 @@
         {
           "name": "ApplyNativeRawApplication",
           "rust": "apply_native_raw_application",
-          "status": "todo",
+          "status": "ported",
           "go_line": 23,
           "calls": [
             "ApplyNativeRawHPDamage",
@@ -10639,7 +10640,7 @@
         {
           "name": "ApplyNativeRawHPDamage",
           "rust": "apply_native_raw_hp_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 22,
           "calls": [
             "recordBoundsError"
@@ -10683,7 +10684,7 @@
         {
           "name": "ApplyNativeRawFlagRestore",
           "rust": "apply_native_raw_flag_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16,
           "calls": [
             "ApplyNativeRawHPRestore",
@@ -10728,7 +10729,7 @@
         {
           "name": "ApplyNativeRawPairStep",
           "rust": "apply_native_raw_pair_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20,
           "calls": [
             "recordBoundsError"
@@ -10778,7 +10779,7 @@
         {
           "name": "ApplyNativeRawHPRestoreList",
           "rust": "apply_native_raw_hp_restore_list",
-          "status": "todo",
+          "status": "ported",
           "go_line": 35,
           "calls": [
             "ApplyNativeRawHPRestore",
@@ -10788,7 +10789,7 @@
         {
           "name": "ApplyNativeRawHPRestore",
           "rust": "apply_native_raw_hp_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 65,
           "calls": [
             "recordBoundsError"
@@ -10797,7 +10798,7 @@
         {
           "name": "ApplyNativeRawMPRestore",
           "rust": "apply_native_raw_mp_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 100,
           "calls": [
             "recordBoundsError"
@@ -10841,7 +10842,7 @@
         {
           "name": "ApplyNativeRawWordStep",
           "rust": "apply_native_raw_word_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 25,
           "calls": [
             "ApplyNativeRawWordStepAtOffsets"
@@ -10850,7 +10851,7 @@
         {
           "name": "ApplyNativeRawWordStepAtOffsets",
           "rust": "apply_native_raw_word_step_at_offsets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 32,
           "calls": [
             "recordBoundsError"
@@ -10887,7 +10888,7 @@
         {
           "name": "ApplyNativeRawWordSubtract",
           "rust": "apply_native_raw_word_subtract",
-          "status": "todo",
+          "status": "ported",
           "go_line": 13,
           "calls": [
             "recordBoundsError"
@@ -10926,7 +10927,7 @@
         {
           "name": "SetNativeRecordByte5One",
           "rust": "set_native_record_byte5_one",
-          "status": "todo",
+          "status": "ported",
           "go_line": 8
         }
       ],
@@ -10958,7 +10959,7 @@
         {
           "name": "NativeRecordByte5Bit0",
           "rust": "native_record_byte5_bit0",
-          "status": "todo",
+          "status": "ported",
           "go_line": 8
         }
       ],
@@ -10997,13 +10998,13 @@
         {
           "name": "SetNativeRecordBit7",
           "rust": "set_native_record_bit7",
-          "status": "todo",
+          "status": "ported",
           "go_line": 10
         },
         {
           "name": "ClearNativeRecordBit7All",
           "rust": "clear_native_record_bit7_all",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20
         }
       ],
@@ -11411,25 +11412,25 @@
         {
           "name": "Unit.NativeTransientDuration",
           "rust": "Unit::native_transient_duration",
-          "status": "todo",
+          "status": "ported",
           "go_line": 45
         },
         {
           "name": "Unit.SetNativeTransientDuration",
           "rust": "Unit::set_native_transient_duration",
-          "status": "todo",
+          "status": "ported",
           "go_line": 55
         },
         {
           "name": "State.TickNativeTransientsRaw",
           "rust": "State::tick_native_transients_raw",
-          "status": "todo",
+          "status": "ported",
           "go_line": 67
         },
         {
           "name": "State.AdvanceNativeTransientPhaseRaw",
           "rust": "State::advance_native_transient_phase_raw",
-          "status": "todo",
+          "status": "ported",
           "go_line": 94
         },
         {
@@ -11441,7 +11442,7 @@
         {
           "name": "State.AdvanceNativeTransientPhaseTyped",
           "rust": "State::advance_native_transient_phase_typed",
-          "status": "todo",
+          "status": "ported",
           "go_line": 178
         }
       ],
@@ -11571,7 +11572,7 @@
         {
           "name": "ClearNativeUnitByte",
           "rust": "clear_native_unit_byte",
-          "status": "todo",
+          "status": "ported",
           "go_line": 19,
           "calls": [
             "recordBoundsError"
@@ -11609,7 +11610,7 @@
         {
           "name": "ApplyNativeWordDeltaAndRemove",
           "rust": "apply_native_word_delta_and_remove",
-          "status": "todo",
+          "status": "ported",
           "go_line": 14,
           "calls": [
             "RemoveNativeInventorySlot",

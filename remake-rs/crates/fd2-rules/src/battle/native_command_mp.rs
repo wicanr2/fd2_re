@@ -14,5 +14,12 @@ use super::*;
 ///
 /// Go：`native_command_mp.go:12`，`func SpendNativeCommandMP(unit *Unit, cost int) bool`
 pub fn spend_native_command_mp(unit: Option<&mut Unit>, cost: i64) -> bool {
-    todo!("battle/native_command_mp.go:SpendNativeCommandMP")
+    let Some(unit) = unit.filter(|u| (0..=0xff).contains(&cost) && u.mp >= cost) else {
+        return false;
+    };
+    unit.mp -= cost;
+    true
 }
+
+#[cfg(test)]
+mod native_command_mp_test;

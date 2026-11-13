@@ -10,7 +10,17 @@ use super::*;
 ///
 /// Go：`native_command_availability.go:8`，`func NativeCommandAvailable(unit *Unit, book []NativeCommandRecord, commandID int) bool`
 pub fn native_command_available(unit: Option<&Unit>, book: &[NativeCommandRecord], command_id: i64) -> bool {
-    todo!("battle/native_command_availability.go:NativeCommandAvailable")
+    let Some(unit) = unit else {
+        return false;
+    };
+    if !(0..36).contains(&command_id) || book.len() != 36 || book[command_id as usize].id != command_id {
+        return false;
+    }
+    if unit.native_command_mask[(command_id / 8) as usize] & (1 << (command_id % 8)) == 0 {
+        return false;
+    }
+    let record = &book[command_id as usize];
+    record.mp_cost >= 0 && record.mp_cost <= unit.mp
 }
 
 /// NativeAvailableCommandIDs returns only IDs with a closed command record and
@@ -19,7 +29,10 @@ pub fn native_command_available(unit: Option<&Unit>, book: &[NativeCommandRecord
 ///
 /// Go：`native_command_availability.go:21`，`func NativeAvailableCommandIDs(unit *Unit, book []NativeCommandRecord) []int`
 pub fn native_available_command_ids(unit: Option<&Unit>, book: &[NativeCommandRecord]) -> Vec<i64> {
-    todo!("battle/native_command_availability.go:NativeAvailableCommandIDs")
+    if unit.is_none() || book.len() != 36 {
+        return Vec::new();
+    }
+    (0..36).filter(|&id| native_command_available(unit, book, id)).collect()
 }
 
 /// NativeAvailableAICommandIDs adds the 0x1598a dispatcher gate to the
@@ -28,7 +41,10 @@ pub fn native_available_command_ids(unit: Option<&Unit>, book: &[NativeCommandRe
 ///
 /// Go：`native_command_availability.go:37`，`func NativeAvailableAICommandIDs(unit *Unit, book []NativeCommandRecord) []int`
 pub fn native_available_ai_command_ids(unit: Option<&Unit>, book: &[NativeCommandRecord]) -> Vec<i64> {
-    todo!("battle/native_command_availability.go:NativeAvailableAICommandIDs")
+    match unit {
+        Some(u) if u.native_transient[5] == 0 => native_available_command_ids(unit, book),
+        _ => Vec::new(),
+    }
 }
 
 /// NativeAvailableAIScoredCommandIDs is the bounded command-index list consumed
@@ -38,5 +54,8 @@ pub fn native_available_ai_command_ids(unit: Option<&Unit>, book: &[NativeComman
 ///
 /// Go：`native_command_availability.go:48`，`func NativeAvailableAIScoredCommandIDs(unit *Unit, book []NativeCommandRecord) []int`
 pub fn native_available_ai_scored_command_ids(unit: Option<&Unit>, book: &[NativeCommandRecord]) -> Vec<i64> {
-    todo!("battle/native_command_availability.go:NativeAvailableAIScoredCommandIDs")
+    native_available_ai_command_ids(unit, book)
 }
+
+#[cfg(test)]
+mod native_command_availability_test;

@@ -55,7 +55,10 @@ impl Unit {
     /// Go：`native_transient.go:45`，`func (u *Unit) NativeTransientDuration(offset int) (byte, bool)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_transient_duration(&self, offset: i64) -> (u8, bool) {
-        todo!("battle/native_transient.go:Unit.NativeTransientDuration")
+        if !(NATIVE_TRANSIENT_OFFSET..NATIVE_TRANSIENT_OFFSET + NATIVE_TRANSIENT_COUNT).contains(&offset) {
+            return (0, false);
+        }
+        (self.native_transient[(offset - NATIVE_TRANSIENT_OFFSET) as usize], true)
     }
 
     /// SetNativeTransientDuration writes one recovered raw duration byte.  It is a
@@ -65,7 +68,11 @@ impl Unit {
     /// Go：`native_transient.go:55`，`func (u *Unit) SetNativeTransientDuration(offset int, duration byte) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn set_native_transient_duration(&mut self, offset: i64, duration: u8) -> bool {
-        todo!("battle/native_transient.go:Unit.SetNativeTransientDuration")
+        if !(NATIVE_TRANSIENT_OFFSET..NATIVE_TRANSIENT_OFFSET + NATIVE_TRANSIENT_COUNT).contains(&offset) {
+            return false;
+        }
+        self.native_transient[(offset - NATIVE_TRANSIENT_OFFSET) as usize] = duration;
+        true
     }
 }
 impl State {
@@ -77,7 +84,27 @@ impl State {
     /// Go：`native_transient.go:67`，`func (s *State) TickNativeTransientsRaw(selector byte) []NativeTransientExpiry`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn tick_native_transients_raw(&mut self, selector: u8) -> Vec<NativeTransientExpiry> {
-        todo!("battle/native_transient.go:State.TickNativeTransientsRaw")
+        let mut expired = Vec::new();
+        for (slot, u) in self.units.iter_mut().enumerate() {
+            if !u.has_native_record_byte6
+                || u.native_record_byte6 != selector
+                || !u.has_native_record_byte5
+                || u.native_record_byte5 & 1 != 0
+            {
+                continue;
+            }
+            for (i, duration) in u.native_transient.iter_mut().enumerate() {
+                if *duration == 0 {
+                    continue;
+                }
+                *duration -= 1;
+                if *duration == 0 {
+                    expired
+                        .push(NativeTransientExpiry { unit: Some(slot), offset: NATIVE_TRANSIENT_OFFSET + i as i64 });
+                }
+            }
+        }
+        expired
     }
 
     /// AdvanceNativeTransientPhaseRaw 重現 sub_1A866 的狀態寫入順序：先依 record 順序
@@ -88,7 +115,84 @@ impl State {
     /// Go：`native_transient.go:94`，`func (s *State) AdvanceNativeTransientPhaseRaw(selector byte) (NativeTransientPhaseResult, error)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn advance_native_transient_phase_raw(&mut self, selector: u8) -> Result<NativeTransientPhaseResult> {
-        todo!("battle/native_transient.go:State.AdvanceNativeTransientPhaseRaw")
+        if !self.has_native_runtime_unit_projection
+            || self.units.is_empty()
+            || self.units.len() != self.native_runtime_records.len()
+        {
+            return Err(battle_err!("native transient phase: runtime raw projection is incomplete"));
+        }
+        for (slot, unit) in self.units.iter().enumerate() {
+            if !unit.has_native_record_byte5
+                || !unit.has_native_record_byte6
+                || !(0..=0xffff).contains(&unit.hp)
+                || !(0..=0xffff).contains(&unit.max_hp)
+            {
+                return Err(battle_err!("native transient phase: unit {slot} lacks consumed raw fields"));
+            }
+            let raw = &self.native_runtime_records[slot].raw;
+            if raw[5] != unit.native_record_byte5
+                || raw[6] != unit.native_record_byte6
+                || u16::from_le_bytes([raw[0x40], raw[0x41]]) != unit.hp as u16
+                || u16::from_le_bytes([raw[0x42], raw[0x43]]) != unit.max_hp as u16
+            {
+                return Err(battle_err!("native transient phase: unit {slot} raw projection disagrees"));
+            }
+            for (index, &duration) in unit.native_transient.iter().enumerate() {
+                if raw[NATIVE_TRANSIENT_OFFSET as usize + index] != duration {
+                    return Err(battle_err!("native transient phase: unit {slot} transient projection disagrees"));
+                }
+            }
+        }
+
+        let mut result = NativeTransientPhaseResult::default();
+        let poison = (0x25 - NATIVE_TRANSIENT_OFFSET) as usize;
+        for (slot, unit) in self.units.iter_mut().enumerate() {
+            if unit.native_transient[poison] == 0
+                || unit.native_record_byte6 != selector
+                || unit.native_record_byte5 & 1 != 0
+            {
+                continue;
+            }
+            let (amount, before) = (unit.max_hp / 10, unit.hp);
+            let after = (before - amount).max(0);
+            unit.hp = after;
+            self.native_runtime_records[slot].raw[0x40..0x42].copy_from_slice(&(after as u16).to_le_bytes());
+            result.damage.push(NativeTransientDamage { unit: Some(slot), slot: slot as i64, amount, before, after });
+        }
+
+        // sub_1DB65 的兩個收尾 writer 都掃全部記錄並把整個 +5 byte 覆寫成 1；
+        // 不只處理這次 selector，也不保留 bit7 等舊值。
+        for (slot, unit) in self.units.iter_mut().enumerate() {
+            if unit.hp != 0 {
+                continue;
+            }
+            if unit.native_record_byte5 & 1 == 0 {
+                result.inactive_slots.push(slot as i64);
+            }
+            unit.native_record_byte5 = 1;
+            self.native_runtime_records[slot].raw[5] = 1;
+        }
+
+        for (slot, unit) in self.units.iter_mut().enumerate() {
+            if unit.native_record_byte6 != selector || unit.native_record_byte5 & 1 != 0 {
+                continue;
+            }
+            for index in 0..unit.native_transient.len() {
+                if unit.native_transient[index] == 0 {
+                    continue;
+                }
+                unit.native_transient[index] -= 1;
+                let raw = &mut self.native_runtime_records[slot].raw[NATIVE_TRANSIENT_OFFSET as usize + index];
+                *raw = raw.wrapping_sub(1);
+                if unit.native_transient[index] == 0 {
+                    result.expired.push(NativeTransientExpiry {
+                        unit: Some(slot),
+                        offset: NATIVE_TRANSIENT_OFFSET + index as i64,
+                    });
+                }
+            }
+        }
+        Ok(result)
     }
 
     /// TickNativeTransients is retained for source compatibility only. Camp is a
@@ -109,6 +213,61 @@ impl State {
     /// Go：`native_transient.go:178`，`func (s *State) AdvanceNativeTransientPhaseTyped(selector byte) (NativeTransientPhaseResult, error)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn advance_native_transient_phase_typed(&mut self, selector: u8) -> Result<NativeTransientPhaseResult> {
-        todo!("battle/native_transient.go:State.AdvanceNativeTransientPhaseTyped")
+        if self.units.is_empty() {
+            return Err(battle_err!("native transient phase: roster is empty"));
+        }
+        for (slot, unit) in self.units.iter().enumerate() {
+            if !unit.has_native_record_byte5
+                || !unit.has_native_record_byte6
+                || !(0..=0xffff).contains(&unit.hp)
+                || !(0..=0xffff).contains(&unit.max_hp)
+            {
+                return Err(battle_err!("native transient phase: unit {slot} lacks consumed raw fields"));
+            }
+        }
+        let mut result = NativeTransientPhaseResult::default();
+        let poison = (0x25 - NATIVE_TRANSIENT_OFFSET) as usize;
+        for (slot, unit) in self.units.iter_mut().enumerate() {
+            if unit.native_transient[poison] == 0
+                || unit.native_record_byte6 != selector
+                || unit.native_record_byte5 & 1 != 0
+            {
+                continue;
+            }
+            let (amount, before) = (unit.max_hp / 10, unit.hp);
+            let after = (before - amount).max(0);
+            unit.hp = after;
+            result.damage.push(NativeTransientDamage { unit: Some(slot), slot: slot as i64, amount, before, after });
+        }
+        for (slot, unit) in self.units.iter_mut().enumerate() {
+            if unit.hp != 0 {
+                continue;
+            }
+            if unit.native_record_byte5 & 1 == 0 {
+                result.inactive_slots.push(slot as i64);
+            }
+            unit.native_record_byte5 = 1;
+        }
+        for (slot, unit) in self.units.iter_mut().enumerate() {
+            if unit.native_record_byte6 != selector || unit.native_record_byte5 & 1 != 0 {
+                continue;
+            }
+            for (index, duration) in unit.native_transient.iter_mut().enumerate() {
+                if *duration == 0 {
+                    continue;
+                }
+                *duration -= 1;
+                if *duration == 0 {
+                    result.expired.push(NativeTransientExpiry {
+                        unit: Some(slot),
+                        offset: NATIVE_TRANSIENT_OFFSET + index as i64,
+                    });
+                }
+            }
+        }
+        Ok(result)
     }
 }
+
+#[cfg(test)]
+mod native_transient_test;

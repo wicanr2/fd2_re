@@ -26,5 +26,44 @@ pub fn apply_native_raw_application(
     marker_offset: i64,
     rng_state: u16,
 ) -> Result<(Vec<NativeRawApplicationResult>, u16, i64)> {
-    todo!("battle/native_raw_application.go:ApplyNativeRawApplication")
+    if !(0..NATIVE_RECORD_SIZE).contains(&marker_offset) {
+        return Err(battle_err!("native application marker offset {} is out of bounds", go_sharp_x(marker_offset)));
+    }
+    for &raw_index in target_indices {
+        if raw_index as i64 >= records.len() as i64 / NATIVE_RECORD_SIZE {
+            return Err(record_bounds_error(raw_index as i64));
+        }
+    }
+    let mut rng_state = rng_state;
+    let marker_offset = marker_offset as usize;
+    let mut results = Vec::with_capacity(target_indices.len());
+    let mut total = 0i64;
+    for &raw_index in target_indices {
+        let index = raw_index as i64;
+        let base = index as usize * NATIVE_RECORD_SIZE as usize;
+        let mut result = NativeRawApplicationResult { target_index: index, ..Default::default() };
+        if records[base + marker_offset] != 0 || records[base + 0x20] == 0x19 || records[base + 0x20] == 0x1a {
+            results.push(result);
+            continue;
+        }
+        let gate_state = fdother::native_rng_step(rng_state);
+        if gate_state % 100 >= 50 {
+            rng_state = gate_state;
+            results.push(result);
+            continue;
+        }
+        let damage = apply_native_raw_hp_damage(records, index, 10, gate_state)?;
+        rng_state = fdother::native_rng_step(damage.rng_state);
+        let marker = (rng_state % 4 + 2) as u8;
+        records[base + marker_offset] = marker;
+        total = total.wrapping_add(8 * records[base + 0x21] as i64);
+        result.applied = true;
+        result.damage = damage;
+        result.marker = marker;
+        results.push(result);
+    }
+    Ok((results, rng_state, total))
 }
+
+#[cfg(test)]
+mod native_raw_application_test;

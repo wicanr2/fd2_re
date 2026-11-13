@@ -8,11 +8,16 @@ use super::*;
 /// 1..6, then commits the destination and clears Motion at tick seven.
 ///
 /// Go：`native_map_presentation.go:13`
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct NativeMapPresentationState {
+    #[serde(rename = "X")]
     pub x: u8,
+    #[serde(rename = "Y")]
     pub y: u8,
+    #[serde(rename = "Pose")]
     pub pose: u8,
+    #[serde(rename = "Motion")]
     pub motion: u8,
 }
 
@@ -48,7 +53,7 @@ pub struct NativeMapHUDPersistentState {
 ///
 /// Go：`native_map_presentation.go:41`，`func InitialNativeMapHUDPersistentState() NativeMapHUDPersistentState`
 pub fn initial_native_map_hud_persistent_state() -> NativeMapHUDPersistentState {
-    todo!("battle/native_map_presentation.go:InitialNativeMapHUDPersistentState")
+    NativeMapHUDPersistentState { display_gate_a: 1, anchor_x: 1, has_display_gate_a: true, has_anchor_x: true }
 }
 
 impl NativeMapHUDPersistentState {
@@ -58,7 +63,14 @@ impl NativeMapHUDPersistentState {
     /// Go：`native_map_presentation.go:49`，`func (p *NativeMapHUDPersistentState) CaptureNativeMapHUD(runtime NativeMapHUDRuntimeState) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn capture_native_map_hud(&mut self, runtime: NativeMapHUDRuntimeState) -> bool {
-        todo!("battle/native_map_presentation.go:NativeMapHUDPersistentState.CaptureNativeMapHUD")
+        if fdicon::native_map_hud_layout_for(runtime.anchor_x, fdicon::NATIVE_MAP_STRIDE).is_err() {
+            return false;
+        }
+        self.display_gate_a = runtime.display_gate_a;
+        self.anchor_x = runtime.anchor_x;
+        self.has_display_gate_a = true;
+        self.has_anchor_x = true;
+        true
     }
 
     /// RestoreSavedGateA applies the only HUD byte stored by both native save
@@ -67,7 +79,9 @@ impl NativeMapHUDPersistentState {
     /// Go：`native_map_presentation.go:65`，`func (p *NativeMapHUDPersistentState) RestoreSavedGateA(gateA byte) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn restore_saved_gate_a(&mut self, gate_a: u8) -> bool {
-        todo!("battle/native_map_presentation.go:NativeMapHUDPersistentState.RestoreSavedGateA")
+        self.display_gate_a = gate_a;
+        self.has_display_gate_a = true;
+        true
     }
 
     /// MaterializeRuntime combines the persistent pair with an explicitly sourced
@@ -75,14 +89,33 @@ impl NativeMapHUDPersistentState {
     ///
     /// Go：`native_map_presentation.go:76`，`func (p NativeMapHUDPersistentState) MaterializeRuntime(gateB byte) (NativeMapHUDRuntimeState, bool)`
     pub fn materialize_runtime(self, gate_b: u8) -> (NativeMapHUDRuntimeState, bool) {
-        todo!("battle/native_map_presentation.go:NativeMapHUDPersistentState.MaterializeRuntime")
+        if !self.has_display_gate_a || !self.has_anchor_x {
+            return (NativeMapHUDRuntimeState::default(), false);
+        }
+        if fdicon::native_map_hud_layout_for(self.anchor_x, fdicon::NATIVE_MAP_STRIDE).is_err() {
+            return (NativeMapHUDRuntimeState::default(), false);
+        }
+        (
+            NativeMapHUDRuntimeState {
+                display_gate_a: self.display_gate_a,
+                display_gate_b: gate_b,
+                anchor_x: self.anchor_x,
+            },
+            true,
+        )
     }
 }
 impl State {
     /// Go：`native_map_presentation.go:88`，`func (s *State) MaterializeNativeMapHUDState(gateA, gateB byte, anchorX int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn materialize_native_map_hud_state(&mut self, gate_a: u8, gate_b: u8, anchor_x: i64) -> bool {
-        todo!("battle/native_map_presentation.go:State.MaterializeNativeMapHUDState")
+        if fdicon::native_map_hud_layout_for(anchor_x, fdicon::NATIVE_MAP_STRIDE).is_err() {
+            return false;
+        }
+        self.native_map_hud_state =
+            NativeMapHUDRuntimeState { display_gate_a: gate_a, display_gate_b: gate_b, anchor_x };
+        self.has_native_map_hud_state = true;
+        true
     }
 
     /// AdvanceNativeMapHUDAnchor applies the only two proven writes in 0x1acf3.
@@ -91,7 +124,29 @@ impl State {
     /// Go：`native_map_presentation.go:104`，`func (s *State) AdvanceNativeMapHUDAnchor(rawVisibleX, rawVisibleY int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn advance_native_map_hud_anchor(&mut self, raw_visible_x: i64, raw_visible_y: i64) -> bool {
-        todo!("battle/native_map_presentation.go:State.AdvanceNativeMapHUDAnchor")
+        if !self.has_native_map_hud_state {
+            return false;
+        }
+        // 0x1ACF3 先查兩個顯示閘門 [0x51AAB]／[0x51AAC]，任一為 0 就直接返回，0x1AD2A 的
+        // anchor 分支根本不會跑。移動確認後游標走回單位（0x18A26→0x12CEA，每格 0x11CAC
+        // 重繪）時閘門是關的，所以原版不會因為那幾格落在左下角而把小窗翻到右邊
+        //（第六章 r3 seq 817：悠妮從 (7,23) 走到 (8,23)，可見游標 (2,6) 沒有翻）。
+        if self.native_map_hud_state.display_gate_a == 0 || self.native_map_hud_state.display_gate_b == 0 {
+            return false;
+        }
+        let mut next = self.native_map_hud_state.anchor_x;
+        if raw_visible_y > 5 {
+            if raw_visible_x < 3 {
+                next = 0xf2;
+            } else if raw_visible_x > 9 {
+                next = 1;
+            }
+        }
+        if fdicon::native_map_hud_layout_for(next, fdicon::NATIVE_MAP_STRIDE).is_err() {
+            return false;
+        }
+        self.native_map_hud_state.anchor_x = next;
+        true
     }
 }
 
@@ -118,7 +173,15 @@ impl Unit {
     /// Go：`native_map_presentation.go:145`，`func (u *Unit) MaterializeNativeMapPresentation() error`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn materialize_native_map_presentation(&mut self) -> Result<()> {
-        todo!("battle/native_map_presentation.go:Unit.MaterializeNativeMapPresentation")
+        if !(0..=0xff).contains(&self.x) || !(0..=0xff).contains(&self.y) {
+            return Err(battle_err!("battle: native map presentation coordinate outside byte range"));
+        }
+        self.native_map_presentation =
+            NativeMapPresentationState { x: self.x as u8, y: self.y as u8, ..Default::default() };
+        self.has_native_map_presentation = true;
+        self.dir = 0;
+        (self.off_x, self.off_y) = (0.0, 0.0);
+        Ok(())
     }
 
     /// SetMapPose updates the normalized direction and, when materialized, raw
@@ -127,7 +190,14 @@ impl Unit {
     /// Go：`native_map_presentation.go:158`，`func (u *Unit) SetMapPose(pose int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn set_map_pose(&mut self, pose: i64) -> bool {
-        todo!("battle/native_map_presentation.go:Unit.SetMapPose")
+        if !(0..=3).contains(&pose) {
+            return false;
+        }
+        self.dir = pose;
+        if self.has_native_map_presentation {
+            self.native_map_presentation.pose = pose as u8;
+        }
+        true
     }
 
     /// SetMapPlacement updates an out-of-motion placement writer. Materialized
@@ -137,7 +207,16 @@ impl Unit {
     /// Go：`native_map_presentation.go:172`，`func (u *Unit) SetMapPlacement(x, y, pose int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn set_map_placement(&mut self, x: i64, y: i64, pose: i64) -> bool {
-        todo!("battle/native_map_presentation.go:Unit.SetMapPlacement")
+        if !(0..=0xff).contains(&x) || !(0..=0xff).contains(&y) || !(0..=3).contains(&pose) {
+            return false;
+        }
+        (self.x, self.y, self.dir) = (x, y, pose);
+        (self.off_x, self.off_y) = (0.0, 0.0);
+        if self.has_native_map_presentation {
+            self.native_map_presentation =
+                NativeMapPresentationState { x: x as u8, y: y as u8, pose: pose as u8, motion: 0 };
+        }
+        true
     }
 
     /// SetNativeMapCoordinatesRaw mirrors a direct write to runtime bytes +0/+1.
@@ -148,7 +227,13 @@ impl Unit {
     /// Go：`native_map_presentation.go:190`，`func (u *Unit) SetNativeMapCoordinatesRaw(x, y int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn set_native_map_coordinates_raw(&mut self, x: i64, y: i64) -> bool {
-        todo!("battle/native_map_presentation.go:Unit.SetNativeMapCoordinatesRaw")
+        if !self.has_native_map_presentation || !(0..=0xff).contains(&x) || !(0..=0xff).contains(&y) {
+            return false;
+        }
+        (self.x, self.y) = (x, y);
+        self.native_map_presentation.x = x as u8;
+        self.native_map_presentation.y = y as u8;
+        true
     }
 
     /// SetNativeMapGridMotion writes one native in-cell step. X/Y deliberately
@@ -157,7 +242,13 @@ impl Unit {
     /// Go：`native_map_presentation.go:202`，`func (u *Unit) SetNativeMapGridMotion(pose, motion int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn set_native_map_grid_motion(&mut self, pose: i64, motion: i64) -> bool {
-        todo!("battle/native_map_presentation.go:Unit.SetNativeMapGridMotion")
+        if !self.has_native_map_presentation || !(0..=3).contains(&pose) || !(1..=6).contains(&motion) {
+            return false;
+        }
+        self.dir = pose;
+        self.native_map_presentation.pose = pose as u8;
+        self.native_map_presentation.motion = motion as u8;
+        true
     }
 
     /// FinishNativeMapGridStep reproduces the seventh-tick commit: destination
@@ -166,7 +257,18 @@ impl Unit {
     /// Go：`native_map_presentation.go:214`，`func (u *Unit) FinishNativeMapGridStep(pose, x, y int) bool`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn finish_native_map_grid_step(&mut self, pose: i64, x: i64, y: i64) -> bool {
-        todo!("battle/native_map_presentation.go:Unit.FinishNativeMapGridStep")
+        if !self.has_native_map_presentation
+            || !(0..=3).contains(&pose)
+            || !(0..=0xff).contains(&x)
+            || !(0..=0xff).contains(&y)
+        {
+            return false;
+        }
+        (self.x, self.y, self.dir) = (x, y, pose);
+        (self.off_x, self.off_y) = (0.0, 0.0);
+        self.native_map_presentation =
+            NativeMapPresentationState { x: x as u8, y: y as u8, pose: pose as u8, motion: 0 };
+        true
     }
 
     /// NativeUnitLayerEntry returns the exact raw subset required by 0x127e0 and
@@ -176,7 +278,23 @@ impl Unit {
     /// Go：`native_map_presentation.go:230`，`func (u *Unit) NativeUnitLayerEntry() (fdicon.NativeUnitLayerEntry, bool)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_unit_layer_entry(&self) -> (fdicon::NativeUnitLayerEntry, bool) {
-        todo!("battle/native_map_presentation.go:Unit.NativeUnitLayerEntry")
+        if !self.has_native_map_presentation || !self.has_map_selector_slot || !self.has_native_record_byte5 {
+            return (fdicon::NativeUnitLayerEntry::default(), false);
+        }
+        let raw = self.native_map_presentation;
+        (
+            fdicon::NativeUnitLayerEntry {
+                x: raw.x as i64,
+                y: raw.y as i64,
+                slot: self.map_selector_slot,
+                pose: raw.pose as i64,
+                motion_offset: raw.motion as i64,
+                flags: self.native_record_byte5,
+                force_base: self.native_transient[4] != 0,
+                inactive: self.native_record_byte5 & 1 != 0,
+            },
+            true,
+        )
     }
 
     /// NativeForegroundLayerEntry returns the exact raw subset consumed by
@@ -186,7 +304,29 @@ impl Unit {
     /// Go：`native_map_presentation.go:246`，`func (u *Unit) NativeForegroundLayerEntry() (fdicon.NativeForegroundLayerEntry, bool)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_foreground_layer_entry(&self) -> (fdicon::NativeForegroundLayerEntry, bool) {
-        todo!("battle/native_map_presentation.go:Unit.NativeForegroundLayerEntry")
+        if !self.has_native_map_presentation
+            || !self.has_native_record_byte5
+            || !self.has_battle_fig
+            || !(0..=0xff).contains(&self.battle_fig)
+            || !self.has_native_record_race
+            || !self.has_native_record_class
+        {
+            return (fdicon::NativeForegroundLayerEntry::default(), false);
+        }
+        let raw = self.native_map_presentation;
+        (
+            fdicon::NativeForegroundLayerEntry {
+                x: raw.x as i64,
+                y: raw.y as i64,
+                pose: raw.pose,
+                motion_offset: raw.motion as i64,
+                inactive: self.native_record_byte5 & 1 != 0,
+                unit7: self.battle_fig as u8,
+                race: self.native_record_race,
+                class: self.native_record_class,
+            },
+            true,
+        )
     }
 }
 impl State {
@@ -197,6 +337,37 @@ impl State {
     /// Go：`native_map_presentation.go:263`，`func (s *State) NativeMapFrameRoster() (NativeMapFrameRoster, error)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn native_map_frame_roster(&self) -> Result<NativeMapFrameRoster> {
-        todo!("battle/native_map_presentation.go:State.NativeMapFrameRoster")
+        if self.native_map_selector_error.is_some()
+            || self.native_map_selector_cache.is_none()
+            || !self.has_native_map_cycle_state
+            || !self.has_native_terrain_phase_state
+            || !self.has_native_map_binary_timing_state
+        {
+            return Err(battle_err!("battle: native map frame state is incomplete"));
+        }
+        let mut out = NativeMapFrameRoster {
+            units: Vec::with_capacity(self.units.len()),
+            foreground: Vec::with_capacity(self.units.len()),
+            cycles: self.native_map_cycle_state,
+            terrain_phase: self.native_terrain_phase_state.phase,
+            terrain_flip: self.native_terrain_flip_state.value,
+            unit_pixel_shift: self.native_unit_pixel_shift_state.value,
+        };
+        for (i, u) in self.units.iter().enumerate() {
+            let (unit, ok) = u.native_unit_layer_entry();
+            if !ok {
+                return Err(battle_err!("battle: native map frame unit {i} lacks unit-layer provenance"));
+            }
+            let (foreground, ok) = u.native_foreground_layer_entry();
+            if !ok {
+                return Err(battle_err!("battle: native map frame unit {i} lacks foreground provenance"));
+            }
+            out.units.push(unit);
+            out.foreground.push(foreground);
+        }
+        Ok(out)
     }
 }
+
+#[cfg(test)]
+mod native_map_presentation_test;

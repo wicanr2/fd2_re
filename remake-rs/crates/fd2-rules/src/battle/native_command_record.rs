@@ -23,7 +23,8 @@ pub struct NativeCommandRecord {
 }
 
 /// Go：`native_command_record.go:27`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub(crate) struct NativeCommandRecordJSON {
     /// Go 標籤：`json:"id"`
     pub id: i64,
@@ -40,6 +41,7 @@ pub(crate) struct NativeCommandRecordJSON {
     /// Go 標籤：`json:"target"`
     pub target: i64,
     /// Go 標籤：`json:"raw"`
+    #[serde(deserialize_with = "null_as_default")]
     pub raw: String,
 }
 
@@ -50,5 +52,41 @@ pub(crate) struct NativeCommandRecordJSON {
 ///
 /// Go：`native_command_record.go:42`，`func LoadNativeCommandRecords(path string) ([]NativeCommandRecord, error)`
 pub fn load_native_command_records(path: &str) -> Result<Vec<NativeCommandRecord>> {
-    todo!("battle/native_command_record.go:LoadNativeCommandRecords")
+    let raw = read_file(path)?;
+    let rows: Vec<NativeCommandRecordJSON> = decode_json(&raw)?;
+    if rows.len() as i64 != NATIVE_COMMAND_RECORD_COUNT {
+        return Err(battle_err!("native command records len={} want {}", rows.len(), NATIVE_COMMAND_RECORD_COUNT));
+    }
+    let mut result = Vec::with_capacity(rows.len());
+    for (i, row) in rows.iter().enumerate() {
+        if row.id != i as i64 {
+            return Err(battle_err!("native command id={} at index={}", row.id, i));
+        }
+        let Some(bytes) = decode_hex(&row.raw).filter(|b| b.len() == 7) else {
+            return Err(battle_err!("native command id={} invalid raw", row.id));
+        };
+        let damage = bytes[0] as i64 | (bytes[1] as i64) << 8;
+        if row.dmg != damage
+            || row.hit != bytes[2] as i64
+            || row.dist != bytes[3] as i64
+            || row.range != bytes[4] as i64
+            || row.mp != bytes[5] as i64
+            || row.target != bytes[6] as i64
+        {
+            return Err(battle_err!("native command id={} fields disagree with raw", row.id));
+        }
+        result.push(NativeCommandRecord {
+            id: row.id,
+            damage,
+            hit: bytes[2] as i64,
+            selection_mode: bytes[3] as i64,
+            effect_mode: bytes[4] as i64,
+            mp_cost: bytes[5] as i64,
+            target_code: bytes[6] as i64,
+        });
+    }
+    Ok(result)
 }
+
+#[cfg(test)]
+mod native_command_record_test;
