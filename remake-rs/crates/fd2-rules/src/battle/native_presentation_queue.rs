@@ -20,7 +20,11 @@ pub struct NativePresentationDigit {
 ///
 /// Go：`native_presentation_queue.go:17`，`func AppendNativePresentationMiss(queue []NativePresentationDigit, target int) []NativePresentationDigit`
 pub fn append_native_presentation_miss(queue: &[NativePresentationDigit], target: i64) -> Vec<NativePresentationDigit> {
-    todo!("battle/native_presentation_queue.go:AppendNativePresentationMiss")
+    let mut queue = queue.to_vec();
+    for (slot, descriptor) in [0x74, 0x75, 0x76, 0x76].into_iter().enumerate() {
+        queue.push(NativePresentationDigit { position_code: [2, 8, 12, 17][slot], target, digit: descriptor });
+    }
+    queue
 }
 
 /// AppendNativePresentationDigits reproduces the data-only part of 0x1e0db.
@@ -37,5 +41,32 @@ pub fn append_native_presentation_digits(
     target: i64,
     in_camera: bool,
 ) -> Result<Vec<NativePresentationDigit>> {
-    todo!("battle/native_presentation_queue.go:AppendNativePresentationDigits")
+    if !(0..=0xff).contains(&digit_bias) {
+        return Err(battle_err!("native presentation: malformed digit bias {digit_bias}"));
+    }
+    if !(0..=0xff).contains(&target) {
+        return Err(battle_err!("native presentation: malformed target {target}"));
+    }
+    if !in_camera {
+        return Ok(queue.to_vec());
+    }
+    let mut digits = value.to_string().into_bytes();
+    if digits.len() > 4 {
+        // The native loop still reads v12[0..3] when strlen(value)>3; preserve
+        // that fixed-buffer behavior rather than normalizing to a number.
+        digits.truncate(4);
+    }
+    let mut out = queue.to_vec();
+    let n = digits.len();
+    for i in 0..4usize {
+        let mut digit = 0;
+        if n > 3 - i {
+            digit = digits[i + n - 4] as i64 + digit_bias - b'0' as i64;
+        }
+        out.push(NativePresentationDigit { position_code: 5 * i as i64 + 2, target, digit });
+    }
+    Ok(out)
 }
+
+#[cfg(test)]
+mod native_presentation_queue_test;

@@ -26,7 +26,29 @@ pub struct NativeItemAPDPStepRoute {
 
 /// Go：`native_item_ap_dp_step.go:23`，`func NativeItemAPDPStepRouteForType(itemType byte) (NativeItemAPDPStepRoute, bool)`
 pub fn native_item_apdp_step_route_for_type(item_type: u8) -> (NativeItemAPDPStepRoute, bool) {
-    todo!("battle/native_item_ap_dp_step.go:NativeItemAPDPStepRouteForType")
+    match item_type {
+        15 => (
+            NativeItemAPDPStepRoute {
+                item_type,
+                derived_stat: NATIVE_ITEM_DERIVED_DP,
+                marker_offset: 0x23,
+                word_offset: 0x4a,
+                consumes_source: false,
+            },
+            true,
+        ),
+        16 => (
+            NativeItemAPDPStepRoute {
+                item_type,
+                derived_stat: NATIVE_ITEM_DERIVED_AP,
+                marker_offset: 0x22,
+                word_offset: 0x48,
+                consumes_source: false,
+            },
+            true,
+        ),
+        _ => (NativeItemAPDPStepRoute::default(), false),
+    }
 }
 
 /// ApplyNativeItemAPDPStep executes the proven retained-item mutation without
@@ -40,5 +62,28 @@ pub fn apply_native_item_apdp_step(
     route: NativeItemAPDPStepRoute,
     rng_state: u16,
 ) -> Result<(Vec<NativeRawWordStepResult>, u16, i64)> {
-    todo!("battle/native_item_ap_dp_step.go:ApplyNativeItemAPDPStep")
+    let (verified, ok) = native_item_apdp_step_route_for_type(route.item_type);
+    if !ok || verified != route {
+        return Err(battle_err!("native item AP/DP route is invalid: {}", route.go_sharp_v()));
+    }
+    apply_native_raw_word_step_at_offsets(records, unit_indices, rng_state, route.marker_offset, route.word_offset)
 }
+
+impl NativeItemAPDPStepRoute {
+    /// Go `%#v`。
+    pub(crate) fn go_sharp_v(&self) -> String {
+        go_sharp_v(
+            "NativeItemAPDPStepRoute",
+            &[
+                ("ItemType", GoV::U(self.item_type as u64)),
+                ("DerivedStat", GoV::S(self.derived_stat.0)),
+                ("MarkerOffset", GoV::I(self.marker_offset)),
+                ("WordOffset", GoV::I(self.word_offset)),
+                ("ConsumesSource", GoV::B(self.consumes_source)),
+            ],
+        )
+    }
+}
+
+#[cfg(test)]
+mod native_item_ap_dp_step_test;

@@ -16,7 +16,10 @@ pub struct NativeItemHITEVStepRoute {
 
 /// Go：`native_item_hit_ev_step.go:14`，`func NativeItemHITEVStepRouteForType(itemType byte) (NativeItemHITEVStepRoute, bool)`
 pub fn native_item_hitev_step_route_for_type(item_type: u8) -> (NativeItemHITEVStepRoute, bool) {
-    todo!("battle/native_item_hit_ev_step.go:NativeItemHITEVStepRouteForType")
+    if item_type != 12 {
+        return (NativeItemHITEVStepRoute::default(), false);
+    }
+    (NativeItemHITEVStepRoute { item_type, increment: 15, consumes_source: false }, true)
 }
 
 /// ApplyNativeItemHITEVStep executes the proven type-12 mutation without its
@@ -30,5 +33,26 @@ pub fn apply_native_item_hitev_step(
     route: NativeItemHITEVStepRoute,
     rng_state: u16,
 ) -> Result<(Vec<NativeRawPairStepResult>, u16, i64)> {
-    todo!("battle/native_item_hit_ev_step.go:ApplyNativeItemHITEVStep")
+    let (verified, ok) = native_item_hitev_step_route_for_type(route.item_type);
+    if !ok || verified != route {
+        return Err(battle_err!("native item HIT/EV route is invalid: {}", route.go_sharp_v()));
+    }
+    apply_native_raw_pair_step(records, unit_indices, rng_state)
 }
+
+impl NativeItemHITEVStepRoute {
+    /// Go `%#v`。
+    pub(crate) fn go_sharp_v(&self) -> String {
+        go_sharp_v(
+            "NativeItemHITEVStepRoute",
+            &[
+                ("ItemType", GoV::U(self.item_type as u64)),
+                ("Increment", GoV::U(self.increment as u64)),
+                ("ConsumesSource", GoV::B(self.consumes_source)),
+            ],
+        )
+    }
+}
+
+#[cfg(test)]
+mod native_item_hit_ev_step_test;

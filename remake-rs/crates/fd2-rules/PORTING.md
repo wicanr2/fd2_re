@@ -138,3 +138,11 @@
 - A 組型別加了 serde：`Unit`、`Camp`、`Cell`、`NativeMapPresentationState`、`NativePositionRecord`、`DeathEffect`、`NativeConstructorTable`、地圖 JSON 的各列型別與 `Load*` 的檔案型別。`Unit` 沒有 Go 標籤的欄位用 Go 欄位名（例如 `HP`、`MaxHP`），與 Go `json.Marshal(Unit)` 相同；`Cell` 寫出 `X`／`Y`、讀取另收 `x`／`y`（`units.json` 的 `own_deploy`）。B 組的 `BalanceStats` 沒有 serde，`Unit::enemy_balance_base` 在 `model.rs` 以鏡像結構轉換。
 - 測試：A 組 42 個 Go 測試檔逐條移植（`src/battle/<x>/<t>_test.rs`），只用到 A 組的測試現在就跑；上表列出的 6 個延後測試標 `#[ignore = "等 … 合併"]`。共用輸入由 `src/test_support.rs` 提供（變數名同 fd2-formats）。`model_test` 的 `TestLoadSerial0` 讀不入庫的 `remake/assets/map0_units.json`，在工作樹副本執行 `tools/rust_rules_test.sh` 時要把 `FD2_REMAKE_ASSETS` 指向主工作區。
 - 黃金差分：`tools/rust_golden_gorand.sh`（Go `math/rand` 序列）與 `tools/rust_golden_rules_a.sh`（A 組規則）。後者的合成寶箱領取前會關掉事件格網，因為格網的驗證與推進屬 D 組 `native_ai_mode5`。
+
+## C 組完成紀錄（2026-11-14）
+
+- 28 個檔的 82 個 `todo!()` 全部移植（PORTING.json 標 `ported`），沒有改骨架的型別或簽名，也沒有改 C 組以外的檔。C 組型別加了 serde：`NativeItemEffectRowJSON`、`NativeCommandSceneTable`／`NativeCommandSceneSource`、`NativeCommandPaletteFlashTable`／`NativeCommandFlashSource`，欄位名就是 Go 標籤，`chapter_initial_background` 用 `go_bytes`。
+- C 組自己的共用輔助放在自己的檔裡：`native_item_dispatch.rs` 的 `go_sharp_v`／`GoV`（Go `%#v` 對道具路由結構的輸出，路由驗證失敗的錯誤訊息用它組成）、`native_item_panel_data_render.rs` 的 `blit_native_item_panel_text_opt` 與 `NativeItemPanelDataAssets::raw_cells_or_empty`／`frames_or_empty`。Go 的面板函式多半不先檢查 `assets.Strings`／`Font`／`RawCells`／`Frames` 是否為 nil，nil 指標與 nil map 在查表時才報錯；Rust 以 `Option` 表示 nil，錯誤文字照 Go 套件的字串組成，所以缺件時的錯誤與 Go 逐字相同。
+- `native_ch28_post_*` 的三個呈現函式依 `battle.rs` 單位所有權第 2 點就地修改 `units` 與 `native_runtime_records`；Go 先複製再整批換掉，但所有檢查都在改寫前完成，結果相同。C 組沒有 `sort.Slice` 或會受 map 迭代順序影響的程式（`nativeCh28PostFrontiers` 只查表）。
+- 測試：C 組 27 個 Go 測試檔共 96 個測試逐條移植，另加 1 個 Rust 補充測試（路由錯誤訊息的 `%#v` 格式）。`native_item_command_damage_test` 的兩個測試會呼叫 B 組的 `native_command_resistance_class`／`apply_native_command_damage`，標 `#[ignore = "等 B 合併"]`；同檔另外兩個只用路由的測試現在就跑。`native_map_unit_window.go` 沒有 Go 測試，由黃金差分涵蓋。
+- 黃金差分：`tools/rust_golden_rules_c.sh`（`remake/cmd/fd2-golden-rules-c`、`tests/golden_rules_c.rs`）。真實輸入除 `remake/assets` 外還掛原版 `FDOTHER.DAT`／`FDTXT.DAT` 與分離素材包（`ui/fdother_005_item_panel`、`text/FDTXT_000`、`fonts`、用到的 `portraits`），檔案清單排序後連同大小與 SHA-256 寫進黃金檔；繪製結果比 320×200 目的緩衝的 SHA-256。`KNOWN_DIFFERENCES` 與比對正規化寫在 `tests/golden_rules_c.rs` 檔頭。

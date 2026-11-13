@@ -19,7 +19,21 @@ pub struct NativeItemMarkerApplicationRoute {
 
 /// Go：`native_item_marker_application.go:17`，`func NativeItemMarkerApplicationRouteForType(itemType byte) (NativeItemMarkerApplicationRoute, bool)`
 pub fn native_item_marker_application_route_for_type(item_type: u8) -> (NativeItemMarkerApplicationRoute, bool) {
-    todo!("battle/native_item_marker_application.go:NativeItemMarkerApplicationRouteForType")
+    let (presentation_code, marker_offset) = match item_type {
+        14 => (27, 0x26),
+        22 => (22, 0x27),
+        _ => return (NativeItemMarkerApplicationRoute::default(), false),
+    };
+    (
+        NativeItemMarkerApplicationRoute {
+            item_type,
+            presentation_code,
+            marker_offset,
+            hp_damage_base: 10,
+            consumes_source: false,
+        },
+        true,
+    )
 }
 
 /// ApplyNativeItemMarkerApplication executes the proven retained-item mutation.
@@ -33,5 +47,28 @@ pub fn apply_native_item_marker_application(
     route: NativeItemMarkerApplicationRoute,
     rng_state: u16,
 ) -> Result<(Vec<NativeRawApplicationResult>, u16, i64)> {
-    todo!("battle/native_item_marker_application.go:ApplyNativeItemMarkerApplication")
+    let (verified, ok) = native_item_marker_application_route_for_type(route.item_type);
+    if !ok || verified != route {
+        return Err(battle_err!("native item marker route is invalid: {}", route.go_sharp_v()));
+    }
+    apply_native_raw_application(records, target_indices, route.marker_offset, rng_state)
 }
+
+impl NativeItemMarkerApplicationRoute {
+    /// Go `%#v`。
+    pub(crate) fn go_sharp_v(&self) -> String {
+        go_sharp_v(
+            "NativeItemMarkerApplicationRoute",
+            &[
+                ("ItemType", GoV::U(self.item_type as u64)),
+                ("PresentationCode", GoV::I(self.presentation_code)),
+                ("MarkerOffset", GoV::I(self.marker_offset)),
+                ("HPDamageBase", GoV::I(self.hp_damage_base)),
+                ("ConsumesSource", GoV::B(self.consumes_source)),
+            ],
+        )
+    }
+}
+
+#[cfg(test)]
+mod native_item_marker_application_test;

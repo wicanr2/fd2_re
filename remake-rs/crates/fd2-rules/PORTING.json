@@ -4405,7 +4405,7 @@
         {
           "name": "RenderNativeBattlePanelValuesAt",
           "rust": "render_native_battle_panel_values_at",
-          "status": "todo",
+          "status": "ported",
           "go_line": 27,
           "calls": [
             "renderNativeBattlePanelValuesAt"
@@ -4414,7 +4414,7 @@
         {
           "name": "renderNativeBattlePanelValuesAt",
           "rust": "render_native_battle_panel_values_at_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 48,
           "calls": [
             "blitNativeItemPanelBar",
@@ -4424,7 +4424,7 @@
         {
           "name": "NativeBattlePanelRecordForUnit",
           "rust": "native_battle_panel_record_for_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 96,
           "calls": [
             "nativeRecordByte8ForUnit",
@@ -4434,7 +4434,7 @@
         {
           "name": "RenderNativeBattlePanel",
           "rust": "render_native_battle_panel",
-          "status": "todo",
+          "status": "ported",
           "go_line": 126,
           "calls": [
             "renderNativeBattlePanel"
@@ -4443,7 +4443,7 @@
         {
           "name": "RenderNativeBattlePanelWithoutName",
           "rust": "render_native_battle_panel_without_name",
-          "status": "todo",
+          "status": "ported",
           "go_line": 136,
           "calls": [
             "renderNativeBattlePanel"
@@ -4452,13 +4452,13 @@
         {
           "name": "NativeBattlePanelOrigin",
           "rust": "native_battle_panel_origin",
-          "status": "todo",
+          "status": "ported",
           "go_line": 145
         },
         {
           "name": "renderNativeBattlePanel",
           "rust": "render_native_battle_panel_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 156,
           "calls": [
             "NativeBattlePanelOrigin",
@@ -4549,13 +4549,13 @@
         {
           "name": "ValidateNativeCh28PostFrontier",
           "rust": "validate_native_ch28_post_frontier",
-          "status": "todo",
+          "status": "ported",
           "go_line": 17
         },
         {
           "name": "ApplyNativeCh28PostRawPrelude",
           "rust": "apply_native_ch28_post_raw_prelude",
-          "status": "todo",
+          "status": "ported",
           "go_line": 82,
           "calls": [
             "ValidateNativeCh28PostFrontier"
@@ -4614,13 +4614,13 @@
         {
           "name": "validateNativeCh28PostPresenterFields",
           "rust": "validate_native_ch28_post_presenter_fields",
-          "status": "todo",
+          "status": "ported",
           "go_line": 30
         },
         {
           "name": "PlanNativeCh28PostPresentation",
           "rust": "plan_native_ch28_post_presentation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 64,
           "calls": [
             "validateNativeCh28PostPresenterFields"
@@ -4629,7 +4629,7 @@
         {
           "name": "ApplyNativeCh28PostPoseFrame",
           "rust": "apply_native_ch28_post_pose_frame",
-          "status": "todo",
+          "status": "ported",
           "go_line": 92,
           "calls": [
             "validateNativeCh28PostPresenterFields"
@@ -4638,7 +4638,7 @@
         {
           "name": "ApplyNativeCh28PostInactiveMark",
           "rust": "apply_native_ch28_post_inactive_mark",
-          "status": "todo",
+          "status": "ported",
           "go_line": 127,
           "calls": [
             "validateNativeCh28PostPresenterFields"
@@ -6602,13 +6602,13 @@
         {
           "name": "NativeCommandGrid",
           "rust": "native_command_grid",
-          "status": "todo",
+          "status": "ported",
           "go_line": 24
         },
         {
           "name": "NativeCommandGridMove",
           "rust": "native_command_grid_move",
-          "status": "todo",
+          "status": "ported",
           "go_line": 41
         }
       ],
@@ -6719,7 +6719,7 @@
         {
           "name": "RenderNativeCommandOverlay",
           "rust": "render_native_command_overlay",
-          "status": "todo",
+          "status": "ported",
           "go_line": 11,
           "calls": [
             "blitNativeItemPanelNumber",
@@ -6776,13 +6776,13 @@
         {
           "name": "LoadNativeCommandPaletteFlashTable",
           "rust": "load_native_command_palette_flash_table",
-          "status": "todo",
+          "status": "ported",
           "go_line": 36
         },
         {
           "name": "NativeCommandPaletteFlashTable.NativeCommandPaletteFlashPhases",
           "rust": "NativeCommandPaletteFlashTable::native_command_palette_flash_phases",
-          "status": "todo",
+          "status": "ported",
           "go_line": 67
         }
       ],
@@ -6878,19 +6878,19 @@
         {
           "name": "LoadNativeCommandSceneTable",
           "rust": "load_native_command_scene_table",
-          "status": "todo",
+          "status": "ported",
           "go_line": 32
         },
         {
           "name": "NativeCommandSceneTable.InitialBackground",
           "rust": "NativeCommandSceneTable::initial_background",
-          "status": "todo",
+          "status": "ported",
           "go_line": 58
         },
         {
           "name": "NativeCommandBackgroundGate",
           "rust": "native_command_background_gate",
-          "status": "todo",
+          "status": "ported",
           "go_line": 68
         }
       ],
@@ -8220,13 +8220,13 @@
         {
           "name": "NativeItemAPDPStepRouteForType",
           "rust": "native_item_apdp_step_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 23
         },
         {
           "name": "ApplyNativeItemAPDPStep",
           "rust": "apply_native_item_apdp_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 43,
           "calls": [
             "ApplyNativeRawWordStepAtOffsets",
@@ -8266,7 +8266,7 @@
         {
           "name": "ApplyNativeItemBaseStatDeltaToUnit",
           "rust": "apply_native_item_base_stat_delta_to_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 10,
           "calls": [
             "NativeItemWordDeltaRouteForType",
@@ -8277,7 +8277,7 @@
         {
           "name": "nativeItemSourceCompactIndex",
           "rust": "native_item_source_compact_index",
-          "status": "todo",
+          "status": "ported",
           "go_line": 62
         }
       ],
@@ -8342,13 +8342,13 @@
         {
           "name": "NativeItemCapacityStepRouteForType",
           "rust": "native_item_capacity_step_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 28
         },
         {
           "name": "ApplyNativeItemCapacityStep",
           "rust": "apply_native_item_capacity_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 50,
           "calls": [
             "ApplyNativeWordDeltaAndRemove",
@@ -8392,7 +8392,7 @@
         {
           "name": "ApplyNativeItemCapacityToUnit",
           "rust": "apply_native_item_capacity_to_unit",
-          "status": "todo",
+          "status": "ported",
           "go_line": 9,
           "calls": [
             "NativeItemCapacityStepRouteForType",
@@ -8441,13 +8441,13 @@
         {
           "name": "NativeItemCommandDamageRouteForType",
           "rust": "native_item_command_damage_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18
         },
         {
           "name": "ApplyNativeItemCommandDamage",
           "rust": "apply_native_item_command_damage",
-          "status": "todo",
+          "status": "ported",
           "go_line": 40,
           "calls": [
             "ApplyNativeCommandDamage",
@@ -8492,7 +8492,7 @@
         {
           "name": "NativeItemEffectRouteForType",
           "rust": "native_item_effect_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 19
         }
       ],
@@ -8531,13 +8531,13 @@
         {
           "name": "NativeItemHITEVStepRouteForType",
           "rust": "native_item_hitev_step_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 14
         },
         {
           "name": "ApplyNativeItemHITEVStep",
           "rust": "apply_native_item_hitev_step",
-          "status": "todo",
+          "status": "ported",
           "go_line": 24,
           "calls": [
             "ApplyNativeRawPairStep",
@@ -8583,13 +8583,13 @@
         {
           "name": "NativeItemHPRestoreRouteForType",
           "rust": "native_item_hp_restore_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 15
         },
         {
           "name": "ApplyNativeItemHPRestore",
           "rust": "apply_native_item_hp_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 29,
           "calls": [
             "ApplyNativeRawHPRestoreList",
@@ -8640,13 +8640,13 @@
         {
           "name": "NativeItemMarkerApplicationRouteForType",
           "rust": "native_item_marker_application_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 17
         },
         {
           "name": "ApplyNativeItemMarkerApplication",
           "rust": "apply_native_item_marker_application",
-          "status": "todo",
+          "status": "ported",
           "go_line": 37,
           "calls": [
             "ApplyNativeRawApplication",
@@ -8693,13 +8693,13 @@
         {
           "name": "NativeItemMarkerClearRestoreRouteForType",
           "rust": "native_item_marker_clear_restore_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16
         },
         {
           "name": "ApplyNativeItemMarkerClearRestore",
           "rust": "apply_native_item_marker_clear_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 33,
           "calls": [
             "ApplyNativeRawFlagRestore",
@@ -8755,13 +8755,13 @@
         {
           "name": "NativeItemMPRestoreRouteForType",
           "rust": "native_item_mp_restore_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 23
         },
         {
           "name": "ApplyNativeItemMPRestore",
           "rust": "apply_native_item_mp_restore",
-          "status": "todo",
+          "status": "ported",
           "go_line": 34,
           "calls": [
             "ApplyNativeRawMPRestore",
@@ -8823,19 +8823,19 @@
         {
           "name": "LoadNativeBattlePanelValueAssets",
           "rust": "load_native_battle_panel_value_assets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 26
         },
         {
           "name": "LoadNativeBattlePanelValueAssetsArchive",
           "rust": "load_native_battle_panel_value_assets_archive",
-          "status": "todo",
+          "status": "ported",
           "go_line": 61
         },
         {
           "name": "RenderNativeItemPanelResources",
           "rust": "render_native_item_panel_resources",
-          "status": "todo",
+          "status": "ported",
           "go_line": 90,
           "calls": [
             "LoadNativeItemPanelDataAssets",
@@ -8846,7 +8846,7 @@
         {
           "name": "RenderNativeItemPanelResourcesArchive",
           "rust": "render_native_item_panel_resources_archive",
-          "status": "todo",
+          "status": "ported",
           "go_line": 119,
           "calls": [
             "LoadNativeItemPanelDataAssetsArchive",
@@ -8857,7 +8857,7 @@
         {
           "name": "RenderNativeItemPanelData",
           "rust": "render_native_item_panel_data",
-          "status": "todo",
+          "status": "ported",
           "go_line": 145,
           "calls": [
             "NativeItemPanelDataPlanFor",
@@ -8870,7 +8870,7 @@
         {
           "name": "RenderNativeItemPanelRows",
           "rust": "render_native_item_panel_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 210,
           "calls": [
             "NativeItemSelectorCells",
@@ -8883,7 +8883,7 @@
         {
           "name": "blitNativeItemPanelBar",
           "rust": "blit_native_item_panel_bar",
-          "status": "todo",
+          "status": "ported",
           "go_line": 271,
           "calls": [
             "blitNativeItemPanelRawCell"
@@ -8892,13 +8892,13 @@
         {
           "name": "blitNativeItemPanelRawCell",
           "rust": "blit_native_item_panel_raw_cell",
-          "status": "todo",
+          "status": "ported",
           "go_line": 302
         },
         {
           "name": "blitNativeItemPanelNumber",
           "rust": "blit_native_item_panel_number",
-          "status": "todo",
+          "status": "ported",
           "go_line": 313,
           "calls": [
             "blitNativeItemPanelDigitFrame"
@@ -8907,19 +8907,19 @@
         {
           "name": "blitNativeItemPanelDigitFrame",
           "rust": "blit_native_item_panel_digit_frame",
-          "status": "todo",
+          "status": "ported",
           "go_line": 344
         },
         {
           "name": "blitNativeItemPanelText",
           "rust": "blit_native_item_panel_text",
-          "status": "todo",
+          "status": "ported",
           "go_line": 361
         },
         {
           "name": "blitNativeItemPanelIcon",
           "rust": "blit_native_item_panel_icon",
-          "status": "todo",
+          "status": "ported",
           "go_line": 386,
           "calls": [
             "blitNativeItemPanelRawCell"
@@ -8928,13 +8928,13 @@
         {
           "name": "LoadNativeItemPanelDataAssets",
           "rust": "load_native_item_panel_data_assets",
-          "status": "todo",
+          "status": "ported",
           "go_line": 407
         },
         {
           "name": "LoadNativeItemPanelDataAssetsArchive",
           "rust": "load_native_item_panel_data_assets_archive",
-          "status": "todo",
+          "status": "ported",
           "go_line": 437
         }
       ],
@@ -9027,7 +9027,7 @@
         {
           "name": "RenderNativeItemPanelBase",
           "rust": "render_native_item_panel_base",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18,
           "calls": [
             "NativeItemPanelBaseLayoutFor"
@@ -9036,7 +9036,7 @@
         {
           "name": "RenderNativeItemPanelBaseResources",
           "rust": "render_native_item_panel_base_resources",
-          "status": "todo",
+          "status": "ported",
           "go_line": 75,
           "calls": [
             "NativeItemPanelBaseLayoutFor",
@@ -9046,7 +9046,7 @@
         {
           "name": "RenderNativeItemPanelBaseResourcesArchive",
           "rust": "render_native_item_panel_base_resources_archive",
-          "status": "todo",
+          "status": "ported",
           "go_line": 114,
           "calls": [
             "NativeItemPanelBaseLayoutFor",
@@ -9098,13 +9098,13 @@
         {
           "name": "NativeItemRelocationRouteForType",
           "rust": "native_item_relocation_route_for_type",
-          "status": "todo",
+          "status": "ported",
           "go_line": 30
         },
         {
           "name": "ApplyNativeItemRelocation",
           "rust": "apply_native_item_relocation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 44,
           "calls": [
             "NativeItemRelocationRouteForType",
@@ -9115,7 +9115,7 @@
         {
           "name": "ApplyNativeCommand23Relocation",
           "rust": "apply_native_command23_relocation",
-          "status": "todo",
+          "status": "ported",
           "go_line": 70,
           "calls": [
             "applyNativeCommand23Relocation"
@@ -9124,7 +9124,7 @@
         {
           "name": "applyNativeCommand23Relocation",
           "rust": "apply_native_command23_relocation_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 74,
           "calls": [
             "recordBoundsError"
@@ -9318,13 +9318,13 @@
         {
           "name": "AdvanceNativeItemSelector",
           "rust": "advance_native_item_selector",
-          "status": "todo",
+          "status": "ported",
           "go_line": 16
         },
         {
           "name": "NativeItemSelectorCells",
           "rust": "native_item_selector_cells",
-          "status": "todo",
+          "status": "ported",
           "go_line": 72,
           "calls": [
             "recordBoundsError"
@@ -9333,25 +9333,25 @@
         {
           "name": "NativeItemPanelBaseLayoutFor",
           "rust": "native_item_panel_base_layout_for",
-          "status": "todo",
+          "status": "ported",
           "go_line": 173
         },
         {
           "name": "NativeItemPanelDataPlanFor",
           "rust": "native_item_panel_data_plan_for",
-          "status": "todo",
+          "status": "ported",
           "go_line": 237
         },
         {
           "name": "NativeItemPanelFrameFor",
           "rust": "native_item_panel_frame_for",
-          "status": "todo",
+          "status": "ported",
           "go_line": 278
         },
         {
           "name": "NativeItemPanelSchedule",
           "rust": "native_item_panel_schedule",
-          "status": "todo",
+          "status": "ported",
           "go_line": 328,
           "calls": [
             "NativeItemPanelFrameFor"
@@ -9414,7 +9414,7 @@
         {
           "name": "LoadNativeItemEffectRowPrefix",
           "rust": "load_native_item_effect_row_prefix",
-          "status": "todo",
+          "status": "ported",
           "go_line": 19
         }
       ],
@@ -9660,13 +9660,13 @@
         {
           "name": "NativeMapUnitWindowOrigin",
           "rust": "native_map_unit_window_origin",
-          "status": "todo",
+          "status": "ported",
           "go_line": 22
         },
         {
           "name": "RenderNativeMapUnitWindow",
           "rust": "render_native_map_unit_window",
-          "status": "todo",
+          "status": "ported",
           "go_line": 31,
           "calls": [
             "NativeMapUnitWindowOrigin",
@@ -10408,7 +10408,7 @@
         {
           "name": "SelectNativePhysicalScene",
           "rust": "select_native_physical_scene",
-          "status": "todo",
+          "status": "ported",
           "go_line": 18,
           "calls": [
             "NativeCommandBackgroundGate"
@@ -10551,13 +10551,13 @@
         {
           "name": "AppendNativePresentationMiss",
           "rust": "append_native_presentation_miss",
-          "status": "todo",
+          "status": "ported",
           "go_line": 17
         },
         {
           "name": "AppendNativePresentationDigits",
           "rust": "append_native_presentation_digits",
-          "status": "todo",
+          "status": "ported",
           "go_line": 31
         }
       ],
@@ -11115,7 +11115,7 @@
         {
           "name": "RenderNativeReviveRows",
           "rust": "render_native_revive_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 23,
           "calls": [
             "blitNativeItemPanelNumber",
@@ -11291,13 +11291,13 @@
         {
           "name": "NativeFacilityItemListPrice",
           "rust": "native_facility_item_list_price",
-          "status": "todo",
+          "status": "ported",
           "go_line": 20
         },
         {
           "name": "RenderNativeFacilityNumber",
           "rust": "render_native_facility_number",
-          "status": "todo",
+          "status": "ported",
           "go_line": 42,
           "calls": [
             "blitNativeItemPanelNumber"
@@ -11306,7 +11306,7 @@
         {
           "name": "RenderNativeTransferItemRows",
           "rust": "render_native_transfer_item_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 60,
           "calls": [
             "RenderNativeFacilityItemRows"
@@ -11315,7 +11315,7 @@
         {
           "name": "RenderNativeFacilityItemRows",
           "rust": "render_native_facility_item_rows",
-          "status": "todo",
+          "status": "ported",
           "go_line": 77,
           "calls": [
             "renderNativeFacilityItemRows"
@@ -11324,7 +11324,7 @@
         {
           "name": "RenderNativeFacilityItemRowsWithoutNames",
           "rust": "render_native_facility_item_rows_without_names",
-          "status": "todo",
+          "status": "ported",
           "go_line": 93,
           "calls": [
             "renderNativeFacilityItemRows"
@@ -11333,7 +11333,7 @@
         {
           "name": "renderNativeFacilityItemRows",
           "rust": "render_native_facility_item_rows_inner",
-          "status": "todo",
+          "status": "ported",
           "go_line": 107,
           "calls": [
             "NativeFacilityItemListPrice",
@@ -11347,7 +11347,7 @@
         {
           "name": "nativeTransferItemStat",
           "rust": "native_transfer_item_stat",
-          "status": "todo",
+          "status": "ported",
           "go_line": 212
         }
       ],

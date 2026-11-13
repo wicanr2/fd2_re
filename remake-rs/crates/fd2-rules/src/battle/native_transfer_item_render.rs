@@ -15,7 +15,20 @@ pub const NATIVE_FACILITY_THREE_QUARTER_PRICE: NativeFacilityPriceMode = NativeF
 
 /// Go：`native_transfer_item_render.go:20`，`func NativeFacilityItemListPrice( effectRows []byte, itemID int, mode NativeFacilityPriceMode, ) (int, error)`
 pub fn native_facility_item_list_price(effect_rows: &[u8], item_id: i64, mode: NativeFacilityPriceMode) -> Result<i64> {
-    todo!("battle/native_transfer_item_render.go:NativeFacilityItemListPrice")
+    let offset = item_id.wrapping_mul(NATIVE_ITEM_EFFECT_ROW_SIZE);
+    if item_id < 0
+        || offset < 0
+        || offset + NATIVE_ITEM_EFFECT_ROW_SIZE > effect_rows.len() as i64
+        || (mode != NATIVE_FACILITY_FULL_PRICE && mode != NATIVE_FACILITY_THREE_QUARTER_PRICE)
+    {
+        return Err(battle_err!("battle: native facility item price state is invalid"));
+    }
+    let at = offset as usize + 19;
+    let mut price = u16::from_le_bytes([effect_rows[at], effect_rows[at + 1]]) as i64;
+    if mode == NATIVE_FACILITY_THREE_QUARTER_PRICE {
+        price = (3 * price) >> 2;
+    }
+    Ok(price)
 }
 
 /// RenderNativeFacilityNumber exposes the already recovered 0x187d6 digit
@@ -32,7 +45,17 @@ pub fn render_native_facility_number(
     color_base: i64,
     width: i64,
 ) -> Result<()> {
-    todo!("battle/native_transfer_item_render.go:RenderNativeFacilityNumber")
+    if dst.len() as i64 != NATIVE_ITEM_PANEL_BYTES || width <= 0 {
+        return Err(battle_err!("battle: native facility number state is invalid"));
+    }
+    blit_native_item_panel_number(
+        assets.frames_or_empty(),
+        dst,
+        NativeItemPanelPoint { x, y },
+        value,
+        color_base,
+        width,
+    )
 }
 
 /// RenderNativeTransferItemRows reproduces 0x2dc55 mode 1, used by 0x2f8ea.
@@ -49,7 +72,16 @@ pub fn render_native_transfer_item_rows(
     effect_rows: &[u8],
     dst: &mut [u8],
 ) -> Result<()> {
-    todo!("battle/native_transfer_item_render.go:RenderNativeTransferItemRows")
+    render_native_facility_item_rows(
+        assets,
+        facility_cell,
+        item_ids,
+        start,
+        selected,
+        effect_rows,
+        NATIVE_FACILITY_THREE_QUARTER_PRICE,
+        dst,
+    )
 }
 
 /// RenderNativeFacilityItemRows reproduces 0x2dc55's shared shop/facility
@@ -67,7 +99,17 @@ pub fn render_native_facility_item_rows(
     price_mode: NativeFacilityPriceMode,
     dst: &mut [u8],
 ) -> Result<()> {
-    todo!("battle/native_transfer_item_render.go:RenderNativeFacilityItemRows")
+    render_native_facility_item_rows_inner(
+        assets,
+        facility_cell,
+        item_ids,
+        start,
+        selected,
+        effect_rows,
+        price_mode,
+        dst,
+        true,
+    )
 }
 
 /// RenderNativeFacilityItemRowsWithoutNames 保留原版圖示、數值、價格與選取色，
@@ -84,7 +126,17 @@ pub fn render_native_facility_item_rows_without_names(
     price_mode: NativeFacilityPriceMode,
     dst: &mut [u8],
 ) -> Result<()> {
-    todo!("battle/native_transfer_item_render.go:RenderNativeFacilityItemRowsWithoutNames")
+    render_native_facility_item_rows_inner(
+        assets,
+        facility_cell,
+        item_ids,
+        start,
+        selected,
+        effect_rows,
+        price_mode,
+        dst,
+        false,
+    )
 }
 
 /// Go：`native_transfer_item_render.go:107`，`func renderNativeFacilityItemRows( assets NativeItemPanelDataAssets, facilityCell fdother.RawCell, itemIDs []int, start, selected int, effectRows []byte, priceMode NativeFacilityPriceMode, dst []byte, renderNames bool, ) error`
@@ -99,11 +151,93 @@ pub(crate) fn render_native_facility_item_rows_inner(
     dst: &mut [u8],
     render_names: bool,
 ) -> Result<()> {
-    todo!("battle/native_transfer_item_render.go:renderNativeFacilityItemRows")
+    if dst.len() as i64 != NATIVE_ITEM_PANEL_BYTES
+        || item_ids.is_empty()
+        || start < 0
+        || start % 2 != 0
+        || selected < start
+        || selected >= item_ids.len() as i64
+        || selected >= start + NATIVE_TRANSFER_VISIBLE
+        || (price_mode != NATIVE_FACILITY_FULL_PRICE && price_mode != NATIVE_FACILITY_THREE_QUARTER_PRICE)
+    {
+        return Err(battle_err!("battle: native transfer item rows/state are invalid"));
+    }
+    let visible = (item_ids.len() as i64 - start).min(NATIVE_TRANSFER_VISIBLE);
+    let (raw_cells, frames) = (assets.raw_cells_or_empty(), assets.frames_or_empty());
+    let row_size = NATIVE_ITEM_EFFECT_ROW_SIZE;
+    let mut staged = dst.to_vec();
+    for i in 0..visible {
+        let item_id = item_ids[(start + i) as usize];
+        let row_offset = item_id.wrapping_mul(row_size);
+        if item_id < 0 || row_offset < 0 || row_offset + row_size > effect_rows.len() as i64 {
+            return Err(battle_err!("battle: native transfer item row {item_id} is unavailable"));
+        }
+        let row = &effect_rows[row_offset as usize..(row_offset + row_size) as usize];
+        let (column, line) = (i % 2, i / 2);
+        let x = 10 + 148 * column;
+        let y = 119 + 26 * line;
+        let category = if row[0] < 0x15 {
+            59
+        } else if row[0] < 0x20 {
+            60
+        } else {
+            61
+        };
+        blit_native_item_panel_raw_cell(raw_cells, category, &mut staged, y * 320 + x)?;
+        let foreground = if start + i == selected { 201 } else { 205 };
+        if render_names {
+            blit_native_item_panel_text_opt(
+                assets.strings.as_ref(),
+                assets.font.as_ref(),
+                &mut staged,
+                NativeItemPanelPoint { x: x + 28, y: y + 3 },
+                item_id + 181,
+                foreground,
+            )?;
+        }
+        let (stat_icon, stat_value, has_value) = native_transfer_item_stat(row);
+        if stat_icon == 41 {
+            blit_native_item_panel_digit_frame(frames, &mut staged, NativeItemPanelPoint { x: x + 95, y: y + 4 }, 41)?;
+        } else {
+            blit_native_item_panel_raw_cell(raw_cells, stat_icon, &mut staged, (y + 2) * 320 + x + 95)?;
+        }
+        if has_value {
+            blit_native_item_panel_number(
+                frames,
+                &mut staged,
+                NativeItemPanelPoint { x: x + 118, y: y + 2 },
+                stat_value,
+                42,
+                3,
+            )?;
+        }
+        facility_cell.blit_opaque_at_offset(&mut staged, 320, (y + 12) * 320 + x + 95)?;
+        let price = native_facility_item_list_price(effect_rows, item_id, price_mode)?;
+        blit_native_item_panel_number(
+            frames,
+            &mut staged,
+            NativeItemPanelPoint { x: x + 104, y: y + 12 },
+            price,
+            119,
+            5,
+        )?;
+    }
+    dst.copy_from_slice(&staged);
+    Ok(())
 }
 
 /// Go：`native_transfer_item_render.go:212`，`func nativeTransferItemStat(row []byte) (icon, value int, hasValue bool)`
 /// Go 具名回傳值依序為：icon、value、hasValue。
 pub(crate) fn native_transfer_item_stat(row: &[u8]) -> (i64, i64, bool) {
-    todo!("battle/native_transfer_item_render.go:nativeTransferItemStat")
+    let word = |off: usize| u16::from_le_bytes([row[off], row[off + 1]]) as i16 as i64;
+    match (row[0], row[13]) {
+        (t, _) if t < 0x15 => (64, word(1), true),
+        (t, _) if t < 0x20 => (65, word(5), true),
+        (0x20, 5) => (66, word(14), true),
+        (0x20, 11) => (67, word(14), true),
+        _ => (41, 0, false),
+    }
 }
+
+#[cfg(test)]
+mod native_transfer_item_render_test;

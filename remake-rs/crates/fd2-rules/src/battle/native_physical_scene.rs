@@ -28,5 +28,44 @@ pub fn select_native_physical_scene(
     target_control: [u8; 4],
     header_byte1: u8,
 ) -> Result<NativePhysicalSceneSelection> {
-    todo!("battle/native_physical_scene.go:SelectNativePhysicalScene")
+    let (Some(actor), Some(target)) = (actor, target) else {
+        return Err(battle_err!("native physical scene raw input unavailable"));
+    };
+    if initial > 3
+        || !actor.has_native_record_byte6
+        || !target.has_native_record_byte6
+        || !(0..=255).contains(&actor.battle_fig)
+        || !(0..=255).contains(&target.battle_fig)
+    {
+        return Err(battle_err!("native physical scene raw input unavailable"));
+    }
+    let actor_gate = native_command_background_gate(Some(actor))?;
+    let target_gate = native_command_background_gate(Some(target))?;
+    let (mut primary_gate, mut secondary_gate) = (actor_gate, target_gate);
+    let (mut primary_control, mut secondary_control) = (actor_control, target_control);
+    if actor.native_record_byte6 != 0 {
+        (primary_gate, secondary_gate) = (target_gate, actor_gate);
+        (primary_control, secondary_control) = (target_control, actor_control);
+    }
+    let choose_bg = |gate: bool, control: [u8; 4]| if gate && initial != 0 { initial } else { control[2] };
+    let mut selection = NativePhysicalSceneSelection {
+        primary_bg: choose_bg(primary_gate, primary_control),
+        secondary_bg: choose_bg(secondary_gate, secondary_control),
+        base_bg: 0,
+        tai: secondary_control[2],
+        has_separate_backgrounds: header_byte1 != 0,
+    };
+    // 0x28C01..0x28C06 在 initial==0 時只改 secondary BG 的 stack local。
+    // EAX 仍保留 initial，0x28C41 把它傳給 TAI；不能共用 chooseBG。
+    if secondary_gate {
+        selection.tai = initial;
+    }
+    selection.base_bg = selection.primary_bg;
+    if selection.has_separate_backgrounds && actor.native_record_byte6 != 0 {
+        selection.base_bg = selection.secondary_bg;
+    }
+    Ok(selection)
 }
+
+#[cfg(test)]
+mod native_physical_scene_test;
