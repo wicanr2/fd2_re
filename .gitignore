@@ -72,3 +72,6 @@ docs/data/fd2-string-inventory.json
 # 對拍的續跑點：遊戲自己寫出來的存檔與暫存檔。內容每跑一次就變，
 # 不是固定版本基準，重生方式寫在 docs/data/parity-plans/README.md。
 /work/parity-state/
+
+# 代理程式的 git worktree，不進版控。
+.claude/worktrees/

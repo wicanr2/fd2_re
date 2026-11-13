@@ -4,6 +4,7 @@
 //! 黃金差分資料驗證；原版位址與證據等級沿用 Go 版註解及 `docs/data/`。
 
 pub mod archive;
+pub mod dato;
 pub mod keyboard;
 pub mod native_rng;
 pub mod save;

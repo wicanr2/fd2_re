@@ -11,6 +11,8 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+# 分離頭像 PNG 解碼；版本釘在工作區 Cargo.lock 已有的 0.18.1（Bevy 的 image 引入），不新增套件版本。
+png = "=0.18.1"
 sha2 = "0.10"
 
 [dev-dependencies]
