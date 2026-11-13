@@ -34,7 +34,7 @@ RENDER_PATH = ROOT / "docs/knowledge-base/91-worklist.md"
 ISSUE_URL = "https://github.com/wicanr2/fd2_re/issues/"
 BEGIN = "<!-- BEGIN fd2_worklist.py render；不要手改這一段 -->"
 END = "<!-- END fd2_worklist.py render -->"
-SCANNED_SUFFIXES = {".go", ".py", ".sh", ".md", ".json", ".jsonl", ".yml", ".yaml", ".html"}
+SCANNED_SUFFIXES = {".go", ".rs", ".py", ".sh", ".md", ".json", ".jsonl", ".yml", ".yaml", ".html"}
 
 
 def scannable(path):

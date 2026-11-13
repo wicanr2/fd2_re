@@ -93,6 +93,12 @@ class RealWorklistBothDirections(unittest.TestCase):
             "parity-ch02-ch04-original-side": '{"town_save": true}\n',
             "ch27-death-event64-text-alignment": "\"2:64\": []\n",
             "campaign-postbattle-e2-full": '"all_chapters_passed": true\n',
+            "battle-midsave-json-snapshot": 'BattleSnapshot *battleSnapshot `json:"battle_snapshot,omitempty"`\n',
+            # Rust 改寫各階段以 119「進度」小節的標題判定。
+            "rust-r1-formats": "### 2026-11-14 R1 完成：原版格式層\n",
+            "rust-r2-rules": "### R2 完成：戰鬥核心\n",
+            "rust-r3-campaign": "### R3 完成：戰役與內容\n",
+            "rust-r4-game-state": "### R4 完成：遊戲狀態機\n",
         }
         for item in items:
             with self.subTest(item["id"]):
