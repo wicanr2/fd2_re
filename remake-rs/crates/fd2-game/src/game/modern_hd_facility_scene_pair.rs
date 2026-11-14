@@ -18,12 +18,36 @@ impl Game {
     /// patch belongs to the HD scene; later UI/party-portrait writes stay foreground.
     ///
     /// Go：`modern_hd_facility_scene_pair.go:103`，`func (g *Game) composeModernFacilityMarker(s *modernStableFacilitySource, fill byte, compose func() ([]byte, bool)) ([]byte, bool)`
+    ///
+    /// 簽名改寫：`compose` 收 `&mut dyn FnMut(&mut Game)`。Go 暫時換上背景與頭像填滿 `fill` 的素材複本，
+    /// `defer` 換回；Rust 照樣換上複本、呼叫後放回原值。
     pub(crate) fn compose_modern_facility_marker(
         &mut self,
         s: &ModernStableFacilitySource,
         fill: u8,
-        compose: &mut dyn FnMut() -> (Vec<u8>, bool),
+        compose: &mut dyn FnMut(&mut Game) -> (Vec<u8>, bool),
     ) -> (Vec<u8>, bool) {
-        todo!("modern_hd_facility_scene_pair.go:composeModernFacilityMarker")
+        let background = vec![fill; 64000];
+        let portrait = dato::Frame { width: 80, height: 80, pixels: vec![fill; 6400] };
+        if s.resource == 13 {
+            // Go 直接解參考 `g.nativeHotelUI` 與 `original.assets`。
+            let original = self.native_hotel_ui.take().expect("composeModernFacilityMarker: nativeHotelUI is nil");
+            let mut copy_ui = original.clone();
+            copy_ui.assets.as_mut().expect("composeModernFacilityMarker: hotel assets are nil").background = background;
+            copy_ui.portraits[0] = portrait;
+            self.native_hotel_ui = Some(copy_ui);
+            let result = compose(self);
+            self.native_hotel_ui = Some(original);
+            result
+        } else {
+            // Go 直接解參考 `g.nativeClassUI`。
+            let original = self.native_class_ui.take().expect("composeModernFacilityMarker: nativeClassUI is nil");
+            let mut copy_ui = original.clone();
+            (copy_ui.background, copy_ui.portrait) = (background, portrait);
+            self.native_class_ui = Some(copy_ui);
+            let result = compose(self);
+            self.native_class_ui = Some(original);
+            result
+        }
     }
 }

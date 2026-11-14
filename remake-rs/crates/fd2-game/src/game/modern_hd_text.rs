@@ -47,7 +47,11 @@ pub(crate) struct ModernHDIndexedText {
 
 /// Go：`modern_hd_text.go:81`，`func modernHDNativeTextColor(palette color.Palette, index byte) color.RGBA`
 pub(crate) fn modern_hd_native_text_color(palette: &ColorPalette, index: u8) -> ColorRgba {
-    todo!("modern_hd_text.go:modernHDNativeTextColor")
+    match index {
+        0xcd => ColorRgba { r: 240, g: 244, b: 255, a: 255 },
+        0x4c => ColorRgba { r: 20, g: 30, b: 60, a: 255 },
+        _ => native_palette_color(palette, index, ColorRgba { r: 240, g: 244, b: 255, a: 255 }),
+    }
 }
 
 impl Game {
@@ -66,11 +70,14 @@ impl Game {
     /// Go：`modern_hd_text.go:166`，`func (g *Game) modernHDShopText() bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn modern_hd_shop_text(&self) -> bool {
-        todo!("modern_hd_text.go:modernHDShopText")
+        self.font.as_ref().is_some_and(|f| f.indexed_hd.is_some())
     }
 
     /// Go：`modern_hd_text.go:170`，`func (g *Game) clearModernHDShopText()`
     pub(crate) fn clear_modern_hd_shop_text(&mut self) {
-        todo!("modern_hd_text.go:clearModernHDShopText")
+        if self.modern_hd_shop_text() {
+            let capture = self.font.as_mut().unwrap().indexed_hd.as_mut().unwrap();
+            capture.runs.retain(|run| run.y < 220.0);
+        }
     }
 }

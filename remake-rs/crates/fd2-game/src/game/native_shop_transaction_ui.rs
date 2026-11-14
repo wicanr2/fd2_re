@@ -6,5 +6,7 @@ use super::*;
 
 /// Go：`native_shop_transaction_ui.go:10`，`func cloneNativeShopUnit(source battle.Unit) battle.Unit`
 pub(crate) fn clone_native_shop_unit(source: &battle::Unit) -> battle::Unit {
-    todo!("native_shop_transaction_ui.go:cloneNativeShopUnit")
+    // Go 逐一複製 `Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags`、`Spells` 的底層陣列；
+    // Rust 的 `Unit::clone` 本來就是深複製。
+    source.clone()
 }

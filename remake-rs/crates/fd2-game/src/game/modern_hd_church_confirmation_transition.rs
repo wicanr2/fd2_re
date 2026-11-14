@@ -56,12 +56,36 @@ pub(crate) struct ModernChurchConfirmationFrame {
 
 impl Game {
     /// Go：`modern_hd_church_confirmation_transition.go:54`，`func (g *Game) captureModernFacilityConfirmationSource(owner string, compose func() ([]byte, bool)) (s modernChurchConfirmationSource, valid bool)`
-    /// Go 的 func 參數 `compose` 會被存起來（工作結構的延續），Rust 收擁有的 `Box`。
+    ///
+    /// 簽名改寫：`compose` 收 `&mut dyn FnMut(&mut Game)`。Go 的 `compose` 是讀 `g` 的方法值，只在本次呼叫期間
+    /// 重複呼叫、不被存起來；Rust 每次以 `&mut self` 傳入。
     pub(crate) fn capture_modern_facility_confirmation_source(
         &mut self,
         owner: &str,
-        compose: Option<Box<dyn FnMut(&mut Game) -> (Vec<u8>, bool) + Send>>,
+        compose: &mut dyn FnMut(&mut Game) -> (Vec<u8>, bool),
     ) -> (ModernChurchConfirmationSource, bool) {
-        todo!("modern_hd_church_confirmation_transition.go:captureModernFacilityConfirmationSource")
+        let mut s = ModernChurchConfirmationSource::default();
+        let (raw, ok) = compose(self);
+        if !ok || raw.len() != 64000 {
+            return (s, false);
+        }
+        s.raw = raw;
+        let raw = s.raw.clone();
+        let (mask, ok) = self.freeze_modern_facility_list_writer(owner, &raw, compose);
+        s.mask = mask;
+        if !ok {
+            return (s, false);
+        }
+        let (hd, runs, ok) = capture_modern_facility_list_text(self, compose);
+        (s.hd, s.runs) = (hd, runs);
+        if !ok || s.hd.len() != 64000 {
+            return (s, false);
+        }
+        for i in 0..s.raw.len() {
+            if s.mask[i] == 0 && s.hd[i] != s.raw[i] {
+                return (s, false);
+            }
+        }
+        (s, true)
     }
 }

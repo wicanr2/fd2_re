@@ -14,7 +14,7 @@ impl Game {
             && self.native_ending.is_none()
             && !self.help_visible
             && !self.transient_ui
-            && !native_modifier_held()
+            && !native_modifier_held(&self.tick_input)
             && self.native_system_end_turn_ui.as_ref().is_none_or(|ui| ui.reward_message.is_none())
     }
 }

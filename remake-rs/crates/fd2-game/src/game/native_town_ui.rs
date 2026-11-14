@@ -1,6 +1,8 @@
 //! Go 來源：`remake/cmd/fd2/native_town_ui.go`（234 行）。
 //!
 //! 骨架：Go 檔的 16 個函式中產生 11 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
+//! E 組另補移植 `captureNativeTownCaller`、`revealNativeTownSecret`（`r8`，`campInput` 的城鎮分支呼叫）。
+//! `drawNativeTown`（R5）不移植：它只呼叫 `composeNativeTownFrame` 再把畫面交給外殼。
 
 use super::*;
 
@@ -28,16 +30,79 @@ pub(crate) struct NativeTownFrameSource {
 
 impl Game {
     /// Go：`native_town_ui.go:27`，`func (g *Game) snapshotNativeTownSource() *nativeTownFrameSource`
-    pub(crate) fn snapshot_native_town_source(&mut self) -> Option<NativeTownFrameSource> {
-        todo!("native_town_ui.go:snapshotNativeTownSource")
+    ///
+    /// 簽名改寫：`&self`（Go 不改寫 `g`）。Go 的 `strings`／`font` 是指標，Rust 存複本。
+    pub(crate) fn snapshot_native_town_source(&self) -> Option<NativeTownFrameSource> {
+        let camp = self.camp.as_ref()?;
+        let scene = self.native_town_ui.as_ref()?.scene.as_ref()?;
+        let class_ui = self.native_class_ui.as_ref()?;
+        let n = camp.node()?;
+        if n.r#type != "town" {
+            return None;
+        }
+        let variant = n.native_town_variant?;
+        let mut d = NativeTownFrameSource {
+            scene: scene.clone(),
+            strings: class_ui.strings.clone(),
+            font: class_ui.font.clone(),
+            variant,
+            selection: self.camp_sel,
+            pulse: self.native_town_ui_pulse,
+            ..Default::default()
+        };
+        campaign::native_town_cursor_geometry_for(d.variant, d.selection, d.pulse).ok()?;
+        if let Some(first) = self.party_join_order.first() {
+            let unit = self.party_roster.get(first)?;
+            if unit.has_map_selector_key {
+                let units = class_ui.units.as_ref()?;
+                d.group = unit.map_selector_key;
+                for cycle in 0..d.scene.pulse.len() {
+                    let sprite = units.sprite_for(d.group, 0, cycle as i64).ok()?;
+                    d.scene.pulse[cycle] = sprite.clone();
+                }
+            }
+        }
+        Some(d)
     }
 }
 
 impl NativeTownFrameSource {
     /// Go：`native_town_ui.go:62`，`func (d *nativeTownFrameSource) compose(fill *byte, cursor bool, font *fdtxt.Font) ([]byte, bool)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
-    pub(crate) fn compose(&mut self, fill: Option<&u8>, cursor: bool, font: &mut fdtxt::Font) -> (Vec<u8>, bool) {
-        todo!("native_town_ui.go:compose")
+    ///
+    /// 簽名改寫：`&self`（Go 複製 `scene` 後才改背景）；`fill` 是值（Go 只讀 `*fill`）；`font` 可為 nil。
+    pub(crate) fn compose(&self, fill: Option<u8>, cursor: bool, font: Option<&fdtxt::Font>) -> (Vec<u8>, bool) {
+        let mut scene = self.scene.clone();
+        if let Some(fill) = fill {
+            scene.backgrounds[self.variant as usize] = vec![fill; 320 * 200];
+        }
+        let compose = if cursor {
+            campaign::compose_native_town_frame
+        } else {
+            campaign::compose_native_town_frame_without_cursor
+        };
+        match compose(Some(&scene), self.strings.as_ref(), font, self.variant, self.selection, self.pulse) {
+            Ok(frame) => (frame, true),
+            Err(_) => (Vec::new(), false),
+        }
+    }
+}
+
+impl Game {
+    /// Go：`native_town_ui.go:78`，`func (g *Game) captureNativeTownCaller()`（`r8`，E 組隨 `campInput` 補移植）
+    pub(crate) fn capture_native_town_caller(&mut self) {
+        self.prep_prompt_source = Vec::new();
+        self.prep_town_source = None;
+        let Some(mut d) = self.snapshot_native_town_source() else {
+            return;
+        };
+        let (frame, ok) = d.compose(None, true, d.font.as_ref());
+        if !ok {
+            return;
+        }
+        d.indexed = frame.clone();
+        self.prep_prompt_source = frame;
+        self.prep_town_source = Some(d);
     }
 }
 
@@ -48,7 +113,17 @@ impl NativeTownFrameSource {
 ///
 /// Go：`native_town_ui.go:130`，`func nativeTownMoveSelection(selection, delta int) (int, bool)`
 pub(crate) fn native_town_move_selection(selection: i64, delta: i64) -> (i64, bool) {
-    todo!("native_town_ui.go:nativeTownMoveSelection")
+    if !(0..=5).contains(&selection) || (delta != -1 && delta != 1) {
+        return (0, false);
+    }
+    let mut selection = selection + delta;
+    if selection < 0 {
+        selection = 4;
+    }
+    if selection > 4 {
+        selection = 0;
+    }
+    (selection, true)
 }
 
 impl Game {
@@ -57,19 +132,43 @@ impl Game {
     ///
     /// Go：`native_town_ui.go:146`，`func (g *Game) moveNativeTownSelection(delta int) bool`
     pub(crate) fn move_native_town_selection(&mut self, delta: i64) -> bool {
-        todo!("native_town_ui.go:moveNativeTownSelection")
+        let (selection, ok) = native_town_move_selection(self.camp_sel, delta);
+        if !ok {
+            return false;
+        }
+        self.camp_sel = selection;
+        true
+    }
+
+    /// revealNativeTownSecret changes only the selector. The original 0x2cef7
+    /// branch writes 5 to 0x5412b and does not touch pulse counter 0x54133.
+    ///
+    /// Go：`native_town_ui.go:157`，`func (g *Game) revealNativeTownSecret(scanCode int) bool`（`r8`，E 組隨 `campInput` 補移植）
+    pub(crate) fn reveal_native_town_secret(&mut self, scan_code: i64) -> bool {
+        let Some(camp) = self.camp.as_ref() else {
+            return false;
+        };
+        if !camp.match_native_town_secret(self.camp_sel, scan_code) {
+            return false;
+        }
+        self.camp_sel = 5;
+        true
     }
 }
 
 /// Go：`native_town_ui.go:166`，`func loadNativeTownUIAssets() (*nativeTownUIAssets, error)`
 pub(crate) fn load_native_town_ui_assets() -> Result<Option<NativeTownUIAssets>> {
-    todo!("native_town_ui.go:loadNativeTownUIAssets")
+    let scene = campaign::load_native_town_assets(&separated_asset_path(""))?;
+    Ok(Some(NativeTownUIAssets { scene: Some(scene) }))
 }
 
 impl Game {
     /// Go：`native_town_ui.go:174`，`func (g *Game) resetNativeTownUIPulse()`
     pub(crate) fn reset_native_town_ui_pulse(&mut self) {
-        todo!("native_town_ui.go:resetNativeTownUIPulse")
+        self.native_town_ui_clock.reset();
+        self.native_town_ui_pulse = 0;
+        self.native_town_ui_last_tick = 0;
+        self.native_town_ui_has_tick = false;
     }
 
     /// 0x2d1b5 advances the four-state counter after a signed BIOS low-word delta
@@ -77,26 +176,55 @@ impl Game {
     ///
     /// Go：`native_town_ui.go:183`，`func (g *Game) stepNativeTownUIPulseTick(rawTick int)`
     pub(crate) fn step_native_town_ui_pulse_tick(&mut self, raw_tick: i64) {
-        todo!("native_town_ui.go:stepNativeTownUIPulseTick")
+        if !self.native_town_ui_has_tick {
+            self.native_town_ui_last_tick = raw_tick;
+            self.native_town_ui_has_tick = true;
+            return;
+        }
+        let delta = (raw_tick as u16).wrapping_sub(self.native_town_ui_last_tick as u16) as i16;
+        if delta < 4 {
+            return;
+        }
+        self.native_town_ui_last_tick = raw_tick;
+        self.native_town_ui_pulse = (self.native_town_ui_pulse + 1) & 3;
     }
 
     /// Go：`native_town_ui.go:197`，`func (g *Game) stepNativeTownUILifecycle(nowTick int)`
     pub(crate) fn step_native_town_ui_lifecycle(&mut self, now_tick: i64) {
-        todo!("native_town_ui.go:stepNativeTownUILifecycle")
+        if self.native_town_ui.is_none() {
+            return;
+        }
+        let Some(n) = self.camp.as_ref().and_then(|c| c.node()) else {
+            return;
+        };
+        if n.r#type != "town" || n.native_town_variant.is_none() {
+            return;
+        }
+        self.step_native_town_ui_pulse_tick(now_tick);
     }
 
     /// Go：`native_town_ui.go:208`，`func (g *Game) composeNativeTownFrame() ([]byte, bool)`
-    pub(crate) fn compose_native_town_frame(&mut self) -> (Vec<u8>, bool) {
-        todo!("native_town_ui.go:composeNativeTownFrame")
+    pub(crate) fn compose_native_town_frame(&self) -> (Vec<u8>, bool) {
+        self.compose_native_town_frame_with_background(None)
     }
 
     /// Go：`native_town_ui.go:212`，`func (g *Game) composeNativeTownFrameWithBackground(fill *byte) ([]byte, bool)`
-    pub(crate) fn compose_native_town_frame_with_background(&mut self, fill: &mut u8) -> (Vec<u8>, bool) {
-        todo!("native_town_ui.go:composeNativeTownFrameWithBackground")
+    ///
+    /// 簽名改寫：`fill: Option<u8>`（Go 的 `*byte` 可為 nil、只讀）。
+    pub(crate) fn compose_native_town_frame_with_background(&self, fill: Option<u8>) -> (Vec<u8>, bool) {
+        self.compose_native_town_frame_layers(fill, true)
     }
 
     /// Go：`native_town_ui.go:216`，`func (g *Game) composeNativeTownFrameLayers(fill *byte, cursor bool) ([]byte, bool)`
-    pub(crate) fn compose_native_town_frame_layers(&mut self, fill: &mut u8, cursor: bool) -> (Vec<u8>, bool) {
-        todo!("native_town_ui.go:composeNativeTownFrameLayers")
+    ///
+    /// 簽名改寫：同上。
+    pub(crate) fn compose_native_town_frame_layers(&self, fill: Option<u8>, cursor: bool) -> (Vec<u8>, bool) {
+        let Some(d) = self.snapshot_native_town_source() else {
+            return (Vec::new(), false);
+        };
+        d.compose(fill, cursor, d.font.as_ref())
     }
 }
+
+#[cfg(test)]
+mod native_town_ui_test;

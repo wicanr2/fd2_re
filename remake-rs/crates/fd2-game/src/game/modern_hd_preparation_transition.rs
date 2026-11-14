@@ -43,13 +43,41 @@ pub(crate) struct NativePreparationTransitionText {
 
 impl Game {
     /// Go：`modern_hd_preparation_transition.go:30`，`func (g *Game) snapshotNativePreparationTransition(source []byte, confirmation bool, start int, closing bool) *nativePreparationTransitionText`
+    ///
+    /// 簽名改寫：`source: &[u8]`（Go 只讀、複製）。這份配方只給 HD 繪製（R6）讀，忠實模式也照 Go 建立。
     pub(crate) fn snapshot_native_preparation_transition(
         &self,
-        source: &mut [u8],
+        source: &[u8],
         confirmation: bool,
         start: i64,
         closing: bool,
     ) -> Option<NativePreparationTransitionText> {
-        todo!("modern_hd_preparation_transition.go:snapshotNativePreparationTransition")
+        let ui = self.native_preparation_ui.as_ref()?;
+        if source.len() != 320 * 200 {
+            return None;
+        }
+        let node = self.camp.as_ref()?.node()?;
+        let mut d = NativePreparationTransitionText {
+            source: source.to_vec(),
+            assets: ui.clone(),
+            start,
+            closing,
+            ..Default::default()
+        };
+        if let Some(town) = self.prep_town_source.as_ref()
+            && town.matches(source)
+        {
+            d.town = Some(town.clone());
+        }
+        if confirmation {
+            d.kind = NATIVE_PREPARATION_CONFIRM_QUESTION;
+        } else if let Some(identity) = self.prep_required_missing {
+            (d.kind, d.identity) = (NATIVE_PREPARATION_REQUIRED_QUESTION, identity);
+        } else if !node.cancel.is_empty() {
+            d.kind = NATIVE_PREPARATION_DEPARTURE_QUESTION;
+        } else {
+            d.kind = NATIVE_PREPARATION_RECORD_QUESTION;
+        }
+        Some(d)
     }
 }

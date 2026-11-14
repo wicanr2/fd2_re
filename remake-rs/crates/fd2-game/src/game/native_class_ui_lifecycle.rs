@@ -44,17 +44,82 @@ impl Game {
     ///
     /// Go：`native_class_ui_lifecycle.go:117`，`func (g *Game) stepNativeClassUILifecycle(now time.Time)`
     pub(crate) fn step_native_class_ui_lifecycle(&mut self, now: GameInstant) {
-        todo!("native_class_ui_lifecycle.go:stepNativeClassUILifecycle")
+        if self.native_class_ui_job.is_some() {
+            self.native_confirmation_mouth_owner = None;
+        }
+        if let Some(job) = self.native_class_ui_job.as_mut()
+            && !job.timeline.is_empty()
+        {
+            if job.started.is_zero() {
+                job.started = now;
+            }
+            job.elapsed = now - job.started;
+            // Go 第 128..131 行另算 `total`，本函式沒有使用。
+            if job.frame == 1 && job.drawn {
+                let mut job = self.native_class_ui_job.take().unwrap();
+                if let Some(after) = job.after.take() {
+                    after(self);
+                }
+            }
+            return;
+        }
+        if let Some(job) = self.native_class_ui_job.as_mut()
+            && job.drawn
+        {
+            job.drawn = false;
+            let frames = job.frames.len() as i64;
+            if job.frame < frames {
+                job.frame += 1;
+                if job.frame < frames || !job.restore.is_empty() {
+                    return;
+                }
+            }
+            if job.frame >= frames {
+                let mut job = self.native_class_ui_job.take().unwrap();
+                if job.redraw_native_map_after_restore && !job.restore.is_empty() {
+                    self.redraw_native_map_hud();
+                }
+                if let Some(after) = job.after.take() {
+                    after(self);
+                }
+            }
+        }
+        let mut preparation_confirm = false;
+        let mut preparation_prompt = false;
+        if let Some(node) = self.camp.as_ref().and_then(|c| c.node())
+            && node.r#type == "preparation"
+        {
+            preparation_confirm = self.prep_confirm;
+            preparation_prompt = !self.prep_selecting && !self.prep_confirm && !self.prep_record_slots;
+        }
+        if self.native_class_ui_job.is_none()
+            && (self.church_mode == "class_confirm"
+                || self.church_mode == "revive_confirm"
+                || preparation_confirm
+                || preparation_prompt
+                || self.native_system_end_turn_confirm)
+        {
+            let owner = self.native_confirmation_mouth_waiting_owner();
+            self.step_native_confirmation_mouth(owner, false);
+            let tick = self.native_class_ui_clock.sample(now);
+            let advanced = self.step_native_class_ui_pulse_tick(tick);
+            self.step_native_confirmation_mouth(owner, advanced);
+        } else {
+            self.step_native_confirmation_mouth(None, false);
+        }
     }
 
     /// Go：`native_class_ui_lifecycle.go:242`，`func (g *Game) nativeClassUIBlocksInput() bool`
     pub(crate) fn native_class_ui_blocks_input(&self) -> bool {
-        todo!("native_class_ui_lifecycle.go:nativeClassUIBlocksInput")
+        self.native_class_ui_job.is_some()
     }
 
     /// Go：`native_class_ui_lifecycle.go:246`，`func (g *Game) resetNativeClassUIPulse()`
     pub(crate) fn reset_native_class_ui_pulse(&mut self) {
-        todo!("native_class_ui_lifecycle.go:resetNativeClassUIPulse")
+        self.native_class_ui_clock.reset();
+        self.native_class_ui_pulse = 0;
+        self.native_class_ui_last_tick = 0;
+        self.native_class_ui_has_tick = false;
     }
 
     /// 0x19B1E sign-extends the BIOS word before a 32-bit subtraction. A negative
@@ -63,7 +128,7 @@ impl Game {
     ///
     /// Go：`native_class_ui_lifecycle.go:256`，`func (g *Game) stepNativeClassUIPulseTick(rawTick int) bool`
     pub(crate) fn step_native_class_ui_pulse_tick(&mut self, raw_tick: i64) -> bool {
-        todo!("native_class_ui_lifecycle.go:stepNativeClassUIPulseTick")
+        self.step_native_class_ui_pulse_ticks(raw_tick, raw_tick)
     }
 
     /// The DOS loop reads again at 0x19B4E before storing the latch at 0x19B51.
@@ -71,6 +136,22 @@ impl Game {
     ///
     /// Go：`native_class_ui_lifecycle.go:262`，`func (g *Game) stepNativeClassUIPulseTicks(rawTick, latchTick int) bool`
     pub(crate) fn step_native_class_ui_pulse_ticks(&mut self, raw_tick: i64, latch_tick: i64) -> bool {
-        todo!("native_class_ui_lifecycle.go:stepNativeClassUIPulseTicks")
+        let raw_tick = raw_tick as u16 as i16 as i64;
+        let latch_tick = latch_tick as u16 as i16 as i64;
+        if !self.native_class_ui_has_tick {
+            self.native_class_ui_last_tick = raw_tick;
+            self.native_class_ui_has_tick = true;
+            return false;
+        }
+        let delta = raw_tick.wrapping_sub(self.native_class_ui_last_tick);
+        if (0..2).contains(&delta) {
+            return false;
+        }
+        self.native_class_ui_last_tick = latch_tick;
+        self.native_class_ui_pulse = (self.native_class_ui_pulse + 1) & 3;
+        true
     }
 }
+
+#[cfg(test)]
+mod native_class_ui_lifecycle_test;

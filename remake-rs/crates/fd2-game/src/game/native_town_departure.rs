@@ -27,6 +27,24 @@ pub(crate) struct NativeTownDepartureJob {
 impl Game {
     /// Go：`native_town_departure.go:68`，`func (g *Game) stepNativeTownDeparture()`
     pub(crate) fn step_native_town_departure(&mut self) {
-        todo!("native_town_departure.go:stepNativeTownDeparture")
+        let Some(j) = self.native_town_departure.as_mut() else {
+            return;
+        };
+        if !j.drawn {
+            return;
+        }
+        j.step += 1;
+        j.drawn = false;
+        if j.step < j.frames.len() as i64 {
+            return;
+        }
+        let mut j = self.native_town_departure.take().unwrap();
+        self.native_map_dac.clear();
+        self.native_map_dac.extend_from_slice(&j.frames[j.frames.len() - 1].dac);
+        self.native_map_vga.fill(0);
+        self.native_town_load_pending = true;
+        if let Some(then) = j.then.take() {
+            then(self);
+        }
     }
 }

@@ -17,13 +17,23 @@ impl Game {
         source: Option<&fdtxt::Font>,
         capture: Option<&mut ModernHDIndexedText>,
     ) -> Option<fdtxt::Font> {
-        todo!("modern_hd_facility_text.go:modernHDFacilityFont")
+        if self.modern_hd_text.is_none() || self.font.is_none() || source.is_none() || capture.is_none() {
+            return source.cloned();
+        }
+        // Go 以 `source.WithNativePresenter` 換上記錄 HD 文字的 presenter：以 `sfnt.GlyphIndex` 檢查字形、
+        // 在繪字時把文字列寫回 `capture`。presenter 是 `Arc<dyn Fn>`，要寫回 `capture` 須改成共享擷取狀態，
+        // 屬於 HD 文字層。
+        todo!("R6: modern_hd_facility_text.go:modernHDFacilityFont（HD 文字擷取 presenter）")
     }
 
     /// Go：`modern_hd_facility_text.go:62`，`func (g *Game) beginModernHDFacilityText() (*modernHDIndexedText, func())`
     pub(crate) fn begin_modern_hd_facility_text(
         &mut self,
     ) -> (Option<ModernHDIndexedText>, Option<Box<dyn FnMut(&mut Game) + Send>>) {
-        todo!("modern_hd_facility_text.go:beginModernHDFacilityText")
+        if self.modern_hd_text.is_none() || self.font.is_none() || self.native_class_ui.is_none() {
+            return (None, Some(Box::new(|_: &mut Game| {})));
+        }
+        // Go 建立擷取、把 `nativeClassUI` 換成字型改用 `modernHDFacilityFont` 的複本，回傳換回的收尾。
+        todo!("R6: modern_hd_facility_text.go:beginModernHDFacilityText（HD 文字擷取）")
     }
 }

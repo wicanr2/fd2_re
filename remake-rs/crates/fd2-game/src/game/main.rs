@@ -4943,8 +4943,65 @@ impl Game {
     }
 
     /// Go：`main.go:4628`，`func (g *Game) setupPreparation(n *campaign.Node)`
+    ///
+    /// Go `for id := range g.partyRoster` 以隨機順序補上不在 JOIN 順序裡的成員；Rust 依 ID 排序
+    /// （KNOWN_DIFFERENCES `preparation-roster-map-order`）。
     pub(crate) fn setup_preparation(&mut self, n: Option<&campaign::Node>) {
-        todo!("main.go:setupPreparation")
+        // 0x318AD exposes [0x53BFB]-1 flags. sub_320FC maps flag i to
+        // persistent record i+1 and always leaves record zero in slot zero.
+        // The fixed leader therefore must not consume one of the 15/19 choices.
+        self.prep_ids.clear();
+        if self.party_join_order.len() > 1 {
+            self.prep_ids.extend_from_slice(&self.party_join_order[1..]);
+        }
+        let mut seen: BTreeSet<i64> = BTreeSet::new();
+        if let Some(&first) = self.party_join_order.first() {
+            seen.insert(first);
+        }
+        seen.extend(self.prep_ids.iter().copied());
+        for &id in self.party_roster.keys() {
+            if seen.insert(id) {
+                self.prep_ids.push(id);
+            }
+        }
+        self.prep_sel = 0;
+        self.prep_selecting = false;
+        self.prep_record_slots = false;
+        self.prep_record_slot_sel = 0;
+        self.prep_confirm = false;
+        self.prep_confirm_sel = 0;
+        self.prep_required_missing = None;
+        self.native_class_ui_job = None;
+        self.reset_native_class_ui_pulse();
+        self.prep_limit = 15;
+        if let Some(n) = n
+            && n.party_limit > 0
+        {
+            self.prep_limit = n.party_limit;
+        }
+        // Direct EXE evidence: 0x318ad uses 0x13 instead of 0x0f after the
+        // late-game chapter threshold. Keep this fallback editable via PartyLimit.
+        if self.prep_limit == 15
+            && let Some(camp) = self.camp.as_ref()
+            && (camp.cur.ends_with("28") || camp.cur.ends_with("29") || camp.cur.ends_with("30"))
+        {
+            self.prep_limit = 19;
+        }
+        // 0x318c7 calls memset(flags, 0, 30) on every entry. A previous battle's
+        // deployment and the remake save projection therefore cannot preselect
+        // this native selection pass.
+        self.party_deploy = BTreeMap::new();
+        if n.is_none_or(|n| n.cancel.is_empty()) {
+            // 0x2cc04 clears the complete VGA target before the standalone
+            // FDTXT 0x19a record prompt.
+            self.prep_prompt_source = vec![0u8; 320 * 200];
+            self.prep_town_source = None;
+        } else if self.prep_prompt_source.len() != 320 * 200 {
+            // A town-backed prompt must retain its actual town frame; never
+            // substitute a black or modern background for missing provenance.
+            self.prep_prompt_source = Vec::new();
+        }
+        self.begin_native_preparation_prompt_opening();
     }
 
     /// Go：`main.go:4807`，`func (g *Game) setupChurch()`
@@ -5042,8 +5099,132 @@ impl Game {
     /// campInput 處理 campaign 節點的輸入。回傳 true = 已攔截(擋掉戰場一般輸入)。
     ///
     /// Go：`main.go:5044`，`func (g *Game) campInput() bool`
+    ///
+    /// 輸入讀 `self.tick_input`（Go 的 `inpututil` 查詢）。Go 傳給 `handleNativeStoryInput` 的是 campaign
+    /// 節點指標；Rust 傳節點複本（B 組的函式只讀它）。
     pub(crate) fn camp_input(&mut self) -> bool {
-        todo!("main.go:campInput")
+        if self.camp.is_none() {
+            return false;
+        }
+        let input = self.tick_input.clone();
+        let just = |k: Key| input.is_just_pressed(k);
+        let enter = just(Key::Enter) || just(Key::Space);
+        let Some(mut n) = self.camp.as_ref().unwrap().node().cloned() else {
+            return true; // game over:鎖定
+        };
+        match n.r#type.as_str() {
+            "story" | "cutscene" => {
+                self.handle_native_story_input(Some(&mut n), NativeStoryInput { enter, escape: just(Key::Escape) })
+            }
+            "choice" | "town" => {
+                let native_town = n.r#type == "town" && n.native_town_variant.is_some();
+                if native_town {
+                    let (scan_code, ok) = pressed_native_town_secret_scan(&input);
+                    if ok && self.reveal_native_town_secret(scan_code) {
+                        return true;
+                    }
+                    if just(Key::ArrowRight) {
+                        self.move_native_town_selection(-1);
+                    }
+                    if just(Key::ArrowLeft) {
+                        self.move_native_town_selection(1);
+                    }
+                    if enter {
+                        let sel = self.camp_sel;
+                        if self.camp.as_mut().unwrap().confirm_native_town_secret(sel) {
+                            self.enter_node();
+                            return true;
+                        }
+                        if (0..5).contains(&self.camp_sel) {
+                            self.capture_native_town_caller();
+                            let outcome = format!("opt{}", self.camp_sel);
+                            self.camp.as_mut().unwrap().advance(&outcome);
+                            self.enter_node();
+                        }
+                    }
+                    return true;
+                }
+                if just(Key::ArrowUp) {
+                    self.step_campaign_menu(campaign::MENU_UP);
+                }
+                if just(Key::ArrowDown) {
+                    self.step_campaign_menu(campaign::MENU_DOWN);
+                }
+                let (mut selected, mut confirm) = self.step_campaign_menu(campaign::MENU_TICK);
+                if enter {
+                    (selected, confirm) = self.step_campaign_menu(campaign::MENU_CONFIRM);
+                }
+                if confirm {
+                    self.camp.as_mut().unwrap().advance(&format!("opt{selected}"));
+                    self.enter_node();
+                }
+                true
+            }
+            "preparation" | "church" => {
+                if n.r#type == "preparation" {
+                    return self.handle_native_preparation_input(NativePreparationInput {
+                        left: just(Key::ArrowLeft),
+                        right: just(Key::ArrowRight),
+                        up: just(Key::ArrowUp),
+                        down: just(Key::ArrowDown),
+                        enter,
+                        escape: just(Key::Escape),
+                    });
+                }
+                // Go `g.nativeChurchUIBlocksInput()`（`native_church_ui.go:244`，`r8`）是 `g.nativeChurchUIJob != nil`。
+                if self.native_class_ui_blocks_input() || self.native_church_ui_job.is_some() {
+                    return true;
+                }
+                todo!("R8: main.go:5121（教會選單、狀態、轉移、復活與轉職輸入：handleNativeChurch*Input）")
+            }
+            "shop" => {
+                todo!("R8: main.go:5251（商店輸入：handleNativeShopInput 與相容購買／販賣路徑）")
+            }
+            "hotel" => {
+                if !self.native_hotel_mode.is_empty() {
+                    return self.handle_native_hotel_input(current_native_hotel_input(&input, enter));
+                }
+                if just(Key::ArrowUp) && self.hotel_sel > 0 {
+                    self.hotel_sel -= 1;
+                }
+                if just(Key::ArrowDown) && self.hotel_sel < 3 {
+                    self.hotel_sel += 1;
+                }
+                if just(Key::Escape) {
+                    self.leave_hotel();
+                    return true;
+                }
+                if enter {
+                    self.apply_hotel_service_selection(self.hotel_sel as u8);
+                }
+                true
+            }
+            "ending" => true,
+            "battle" => {
+                if !self.result.is_empty() && enter {
+                    // 勝敗後 Enter → 依結果轉場(敗北可走敗北路線)
+                    return self.confirm_battle_result();
+                }
+                false // 戰鬥照常
+            }
+            _ => false,
+        }
+    }
+
+    /// stepCampaignMenu is the runtime seam for deterministic choice/town input
+    /// traces. It owns only cursor state; the runner still owns editable option
+    /// visibility and transition targets.
+    ///
+    /// Go：`main.go:5602`，`func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm bool)`
+    /// （`r8`，E 組隨 `campInput` 補移植）
+    pub(crate) fn step_campaign_menu(&mut self, event: campaign::MenuEvent) -> (i64, bool) {
+        let Some(camp) = self.camp.as_ref() else {
+            return (0, false);
+        };
+        let mut menu = campaign::MenuState { selection: self.camp_sel, count: camp.visible().len() as i64 };
+        let (selected, confirm) = menu.step(event);
+        self.camp_sel = menu.selection;
+        (selected, confirm)
     }
 
     /// confirmBattleResult consumes the already displayed battle result at the
@@ -5133,7 +5314,31 @@ impl Game {
     ///
     /// Go：`main.go:5588`，`func (g *Game) leaveHotel()`
     pub(crate) fn leave_hotel(&mut self) {
-        todo!("main.go:leaveHotel")
+        if !self.current_node_type_is("hotel") {
+            return;
+        }
+        self.native_hotel_mode.clear();
+        self.native_hotel_prompt_return = false;
+        self.camp.as_mut().unwrap().advance("");
+        self.native_town_hub_return = true;
+        self.enter_node();
+    }
+
+    /// applyHotelServiceSelection is deliberately raw: official 0x2fc85 proves
+    /// selector/resource/callee order, but not the high-level service names. It
+    /// records the route for an eventual indexed/UI consumer and never mutates
+    /// party, gold, or campaign state on its own.
+    ///
+    /// Go：`main.go:5575`，`func (g *Game) applyHotelServiceSelection(selector byte) bool`（`r8`，E 組隨
+    /// `campInput`、`handleNativeHotelInput` 補移植）
+    pub(crate) fn apply_hotel_service_selection(&mut self, selector: u8) -> bool {
+        let Some(route) = fdother::resolve_native_hotel_service_route(selector) else {
+            self.msg = format!("旅館 raw selector {selector} 無效");
+            return false;
+        };
+        (self.hotel_route, self.hotel_has_route) = (route, true);
+        self.msg = String::from("酒店介面素材不完整，保留目前狀態");
+        true
     }
 
     /// ringInput 暫定四向命令選單 + 法術選單輸入。回傳 true = 已攔截。
@@ -7138,7 +7343,7 @@ impl Game {
         self.step_native_system_end_turn();
         let now = self.game_now();
         self.step_native_class_ui_lifecycle(now);
-        if self.native_ending.is_none() && !native_modifier_held() && just(Key::F1) {
+        if self.native_ending.is_none() && !native_modifier_held(&input) && just(Key::F1) {
             self.help_visible = !self.help_visible;
         }
         if self.help_visible {
@@ -7170,7 +7375,7 @@ impl Game {
         let now = self.game_now();
         self.step_native_preparation_ui_lifecycle(now);
         self.poll_modern_theme_load(); // 背景載入完成時補做第一次 F2／F11
-        let global = self.native_ending.is_none() && !native_modifier_held();
+        let global = self.native_ending.is_none() && !native_modifier_held(&input);
         if global && (self.player_theme_requested || just(Key::F2)) {
             // 全域：忠實／現代主題
             todo!("R6: player_theme.go:cycleTheme（F2 美術主題切換）")
@@ -7447,11 +7652,11 @@ impl Game {
         if self.native_palette_pulse.is_some() {
             return Ok(());
         }
-        if !native_modifier_held() && just(Key::F5) {
+        if !native_modifier_held(&input) && just(Key::F5) {
             // 快速存檔:節點進度;戰鬥中可操作時附戰場快照(battle_snapshot.go)
             todo!("R8: save.go:saveGame（F5 快速存檔）")
         }
-        if !native_modifier_held() && just(Key::F9) {
+        if !native_modifier_held(&input) && just(Key::F9) {
             // 快速讀檔
             todo!("R8: save.go:loadGame（F9 快速讀檔）")
         }

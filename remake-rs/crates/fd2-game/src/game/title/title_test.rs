@@ -129,7 +129,6 @@ fn test_separated_title_publisher_fails_closed_without_pack() {
 
 /// Go：`title_menu_state_test.go:248` `TestSeparatedTitleFDOTHERMatchesFixedArchive`
 #[test]
-#[ignore = "等 E 合併（HD 選單凍結呼叫 modern_hd_native_text_color）"]
 fn test_separated_title_fdother_matches_fixed_archive() {
     let (Some(archive), Some(_)) =
         (test_support::input("FD2_FLAME2_DIR", "FDOTHER.DAT"), test_support::input("FD2_ASSET_PACK", "surfaces"))

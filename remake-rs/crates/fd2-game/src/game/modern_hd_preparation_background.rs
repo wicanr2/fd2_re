@@ -9,6 +9,6 @@ impl NativeTownFrameSource {
     /// Go：`modern_hd_preparation_background.go:11`，`func (d *nativeTownFrameSource) matches(source []byte) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn matches(&self, source: &[u8]) -> bool {
-        todo!("modern_hd_preparation_background.go:matches")
+        (0..3).contains(&self.variant) && self.indexed.len() == 64000 && source.len() == 64000 && self.indexed == source
     }
 }

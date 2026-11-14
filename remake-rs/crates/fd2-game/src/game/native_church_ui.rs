@@ -1,6 +1,8 @@
 //! Go 來源：`remake/cmd/fd2/native_church_ui.go`（283 行）。
 //!
 //! 骨架：Go 檔的 16 個函式中產生 5 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
+//! E 組另補移植 `stepNativeChurchUIPulseTick`（`r8`，`stepNativeChurchUILifecycle` 在教會主選單每幀呼叫）。
+//! `drawNativeChurchUIJob`（R5）不移植；`job.drawn` 由呈現回報設定。
 
 use super::*;
 
@@ -19,27 +21,116 @@ pub(crate) struct NativeChurchUIJob {
 
 impl Game {
     /// Go：`native_church_ui.go:97`，`func (g *Game) composeNativeChurchScene() ([]byte, bool)`
+    ///
+    /// Go 把 `a.strings`／`a.font`（可為 nil）直接交給 `campaign.ComposeNativeChurchScene`；Rust 的
+    /// campaign 函式收借用，所以 nil 時與 campaign 回錯誤一樣回 `false`。
     pub(crate) fn compose_native_church_scene(&self) -> (Vec<u8>, bool) {
-        todo!("native_church_ui.go:composeNativeChurchScene")
+        let Some(a) = self.native_class_ui.as_ref() else {
+            return (Vec::new(), false);
+        };
+        if a.entries.len() <= 16 || self.native_church_text_index < 0 {
+            return (Vec::new(), false);
+        }
+        let (Some(strings), Some(font)) = (a.strings.as_ref(), a.font.as_ref()) else {
+            return (Vec::new(), false);
+        };
+        match campaign::compose_native_church_scene(
+            &a.background,
+            &a.entries[1],
+            &a.dialogue,
+            &a.digits,
+            &a.portrait,
+            strings,
+            font,
+            self.gold,
+            self.native_church_text_index,
+        ) {
+            Ok(frame) => (frame, true),
+            Err(_) => (Vec::new(), false),
+        }
     }
 
     /// Go：`native_church_ui.go:120`，`func (g *Game) composeNativeChurchSourceFrame() ([]byte, bool)`
     pub(crate) fn compose_native_church_source_frame(&self) -> (Vec<u8>, bool) {
-        todo!("native_church_ui.go:composeNativeChurchSourceFrame")
+        let (scene, ok) = self.compose_native_church_scene();
+        if !ok {
+            return (Vec::new(), false);
+        }
+        match campaign::native_church_menu_base(&scene) {
+            Ok(frame) => (frame, true),
+            Err(_) => (Vec::new(), false),
+        }
     }
 
     /// Go：`native_church_ui.go:152`，`func (g *Game) beginNativeChurchMenuOpening() bool`
     pub(crate) fn begin_native_church_menu_opening(&mut self) -> bool {
-        todo!("native_church_ui.go:beginNativeChurchMenuOpening")
+        let (scene, ok) = self.compose_native_church_scene();
+        if !ok {
+            return false;
+        }
+        // `compose_native_church_scene` 成功表示 `native_class_ui` 存在。
+        let a = self.native_class_ui.as_ref().unwrap();
+        let frames = match campaign::native_church_menu_transition_frames(&scene, &a.entries, true) {
+            Ok(frames) if frames.len() == 4 => frames,
+            _ => return false,
+        };
+        self.reset_native_church_ui_pulse();
+        let mut job = NativeChurchUIJob { frames, ..Default::default() };
+        job.service_menu = self.bind_modern_facility_service_menu(None, Some(&job), false).map(Box::new);
+        self.native_church_ui_job = Some(job);
+        true
     }
 
     /// Go：`native_church_ui.go:191`，`func (g *Game) stepNativeChurchUILifecycle(now time.Time)`
     pub(crate) fn step_native_church_ui_lifecycle(&mut self, now: GameInstant) {
-        todo!("native_church_ui.go:stepNativeChurchUILifecycle")
+        if let Some(job) = self.native_church_ui_job.as_mut()
+            && job.drawn
+        {
+            job.drawn = false;
+            let frames = job.frames.len() as i64;
+            if job.frame < frames {
+                job.frame += 1;
+                if job.frame < frames || !job.restore.is_empty() {
+                    return;
+                }
+            }
+            if job.frame >= frames {
+                let mut job = self.native_church_ui_job.take().unwrap();
+                if let Some(after) = job.after.take() {
+                    after(self);
+                }
+            }
+        }
+        if self.native_church_ui_job.is_none() && self.church_mode == "menu" && !self.native_church_ui_shot_hold {
+            let tick = self.native_church_ui_clock.sample(now);
+            self.step_native_church_ui_pulse_tick(tick);
+        }
     }
 
     /// Go：`native_church_ui.go:248`，`func (g *Game) resetNativeChurchUIPulse()`
     pub(crate) fn reset_native_church_ui_pulse(&mut self) {
-        todo!("native_church_ui.go:resetNativeChurchUIPulse")
+        self.native_church_ui_clock.reset();
+        self.native_church_ui_pulse = 2;
+        self.native_church_ui_last_tick = 0;
+        self.native_church_ui_has_tick = false;
+    }
+
+    /// Go：`native_church_ui.go:255`，`func (g *Game) stepNativeChurchUIPulseTick(rawTick int)`（`r8`，E 組隨
+    /// `stepNativeChurchUILifecycle` 補移植）
+    pub(crate) fn step_native_church_ui_pulse_tick(&mut self, raw_tick: i64) {
+        if !self.native_church_ui_has_tick {
+            self.native_church_ui_last_tick = raw_tick;
+            self.native_church_ui_has_tick = true;
+            return;
+        }
+        let delta = (raw_tick as u16).wrapping_sub(self.native_church_ui_last_tick as u16) as i16;
+        if delta < 2 {
+            return;
+        }
+        self.native_church_ui_last_tick = raw_tick;
+        self.native_church_ui_pulse = (self.native_church_ui_pulse + 1) & 3;
     }
 }
+
+#[cfg(test)]
+mod native_church_ui_test;

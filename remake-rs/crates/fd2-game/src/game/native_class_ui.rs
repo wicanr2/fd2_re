@@ -26,5 +26,54 @@ pub(crate) struct NativeClassUIAssets {
 
 /// Go：`native_class_ui.go:34`，`func loadNativeClassUIAssets() (*nativeClassUIAssets, error)`
 pub(crate) fn load_native_class_ui_assets() -> Result<Option<NativeClassUIAssets>> {
-    todo!("native_class_ui.go:loadNativeClassUIAssets")
+    let church_assets = fdother::load_separated_church_ui_assets(separated_asset_path("ui"))?;
+    let mut background = vec![0u8; 320 * 200];
+    church_assets.background.blit_at(&mut background, 320, 0, -1)?;
+    let strings = fdtxt::load_separated_resource(separated_asset_path("text"), 0)?;
+    let font = fdtxt::load_separated_font(separated_asset_path("fonts"))?;
+    let shared_ui = fdother::load_separated_item_panel_entries(separated_asset_path("ui"))?;
+    let mut dialogue = Vec::with_capacity(20);
+    for index in 0..=19 {
+        let Some(cell) = shared_ui.raw.get(&index) else {
+            return Err(game_err!("native class UI: separated FDOTHER #5 dialogue is incomplete"));
+        };
+        dialogue.push(cell.clone());
+    }
+    let mut digits = Vec::with_capacity(10);
+    for digit in 0..10 {
+        let Some(frame) = shared_ui.frames.get(&(31 + digit)) else {
+            return Err(game_err!("native class UI: separated FDOTHER #5 digits are incomplete"));
+        };
+        digits.push(frame.clone());
+    }
+    let portraits = load_native_separated_portrait(131)?;
+    if portraits.is_empty() {
+        return Err(game_err!("native church UI: DATO#131 has no frames"));
+    }
+    let units = fdicon::load_separated_bank(separated_asset_path("sprites/fdicon"))?;
+    let choices = fdother::load_separated_action_cells(separated_asset_path("ui"))?;
+    let (palette_raw, mut palette) = load_native_battle_palette()?;
+    // Go `palette[0] = color.NRGBA{A: 0xff}`：不透明黑。
+    palette[0] = ColorRgba { r: 0, g: 0, b: 0, a: 0xff };
+    let panel = church_assets.entries[16].clone();
+    Ok(Some(NativeClassUIAssets {
+        background,
+        entries: church_assets.entries,
+        panel,
+        price_cell: church_assets.price_cell,
+        choices,
+        dialogue,
+        digits,
+        portrait: portraits[0].clone(),
+        portraits,
+        units: Some(units),
+        strings: Some(strings),
+        font: Some(font),
+        palette,
+        palette_dac: palette_raw,
+        revive_fx: church_assets.revive_fx,
+    }))
 }
+
+#[cfg(test)]
+mod native_class_ui_test;

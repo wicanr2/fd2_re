@@ -19,5 +19,13 @@ pub(crate) struct ModernPreparationNativeCursorUnit {}
 
 /// Go：`modern_hd_preparation_cursor.go:36`，`func preparationCursorPalette(palette color.Palette) ([]color.RGBA, bool)`
 pub(crate) fn preparation_cursor_palette(palette: &ColorPalette) -> (Vec<ColorRgba>, bool) {
-    todo!("modern_hd_preparation_cursor.go:preparationCursorPalette")
+    // Go 的 `color.Palette` 元素是介面值（nil 拒收），再經 `color.RGBAModel` 轉成預乘 RGBA；Rust 的
+    // `ColorPalette` 元素本來就是 `ColorRgba`，所以只剩長度與不透明檢查。
+    if palette.len() != 256 {
+        return (Vec::new(), false);
+    }
+    if palette.iter().any(|c| c.a != 255) {
+        return (Vec::new(), false);
+    }
+    (palette.clone(), true)
 }

@@ -273,6 +273,17 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 | D | `Game::build_native_transient_phases`、`build_native_transient_phases_typed` | `-> Result<(Option<battle::State>, …)>` | `-> Result<(battle::State, …)>` | 成功時候選一定存在 |
 | D | `Game::adopt_native_state_candidate` | `candidate: Option<&mut battle::State>` | `candidate: Option<battle::State>` | 換上候選狀態；對照表見「D 組：所有權」 |
 | D | `Game::preflight_modern_hd_transient_expiry` | `candidate: &mut battle::State, …, damage: &mut [..]` | `&battle::State`、`&[..]` | 只讀 |
+| E | `native_modifier_held`、`pressed_native_town_secret_scan` | `()` | `(input: &TickInput)` | Go 讀全域鍵盤；改讀本幀輸入。A 組呼叫端（`update_frame` 四處傳 `&input`、`player_poster_controls_allowed` 傳 `&self.tick_input`）只改呼叫那一行 |
+| E | `current_native_hotel_input`（`r8`，隨 `campInput` 補移植） | `(enter: bool)` | `(input: &TickInput, enter: bool)` | 同上 |
+| E | `Game::snapshot_native_town_source` | `(&mut self)` | `(&self)` | Go 不改寫 `g` |
+| E | `NativeTownFrameSource::compose` | `(&mut self, fill: Option<&u8>, cursor, font: &mut fdtxt::Font)` | `(&self, fill: Option<u8>, cursor, font: Option<&fdtxt::Font>)` | Go 先複製 `scene` 再改背景；`*byte` 只讀；`font` 可為 nil |
+| E | `Game::compose_native_town_frame`、`…_with_background`、`…_layers` | `(&mut self)`，`fill: &mut u8` | `(&self)`，`fill: Option<u8>` | 同上 |
+| E | `Game::native_shop_state` | `-> (Option<campaign::NativeShopAssets>, …)` | `-> (Option<&campaign::NativeShopAssets>, …)` | Go 回傳指向 `nativeShopUI` 的指標；每幀合成不複製整份商店素材 |
+| E | `Game::snapshot_native_preparation_transition` | `source: &mut [u8]` | `source: &[u8]` | 只讀、複製 |
+| E | `Game::bind_modern_facility_service_menu` | `Option<&mut NativeClassUIJob>`、`Option<&mut NativeChurchUIJob>` | `Option<&NativeClassUIJob>`、`Option<&NativeChurchUIJob>` | 只讀 `frames`／`restore` |
+| E | `NativeServiceMenuPresentation::compose` | `(&mut self)` | `(&self)` | 只讀接收者 |
+| E | `Game::capture_modern_facility_confirmation_source`、`Game::freeze_modern_facility_list_writer` | `compose: Option<Box<dyn FnMut(&mut Game) -> (Vec<u8>, bool) + Send>>` | `compose: &mut dyn FnMut(&mut Game) -> (Vec<u8>, bool)` | Go 的 `compose` 是讀 `g` 的方法值，只在本次呼叫內重複呼叫、不存起來 |
+| E | `capture_modern_facility_list_text`、`Game::compose_modern_shop_list_marker`、`Game::compose_modern_facility_marker` | `compose: &mut dyn FnMut() -> (Vec<u8>, bool)` | `compose: &mut dyn FnMut(&mut Game) -> (Vec<u8>, bool)` | `compose` 要讀 `Game`，而這些函式在呼叫期間換掉 `Game` 的素材欄位 |
 
 ## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
 
@@ -1008,3 +1019,191 @@ R5 測試清單（需要 `Draw`、GPU 圖片或畫面用的 `r8` 函式，不在
 ### D 組：fd2-rules／fd2-campaign 缺口
 
 沒有改那兩個 crate，也沒有發現缺少的函式。`battle::Unit`／`State`、`fdother::Frame` 有私有欄位，測試以 `build!` 巨集先 `default()` 再寫入。`Cargo.lock` 沒有變動。
+
+## R4 階段 2：E 組（城鎮、商店、教會與整備）
+
+2026-11-15，代號 `r4e`，合併基準 `57e34259`。範圍是 `PORTING.json` 裡 `group` 為 `E` 的 70 個函式（含 `main.go` 的
+`setupPreparation`、`campInput`、`leaveHotel`），另加主代理指派的 A 組 `draw_modern_battle_panel_ink`。
+
+### E 組：移植結果
+
+| 項目 | 數量 |
+|---|---|
+| E 組函式 | 70 個全部有本體；另隨呼叫端補移植 9 個 `r8` 小函式（下表） |
+| 整個本體是 `todo!()` 的 | 0 個 |
+| 分支停在 `todo!()` 的 | R8 12 處、R6 5 處（見下） |
+
+R8 的 `todo!` 都在第一章重播沒有執行到的分支（覆蓋率取自 `work/r4-stage0-20261114/cover.out` 的區塊計數），呼叫的 Go 函式在
+`PORTING.json` 標 `r8`：
+
+- `camp_input`：教會選單以下的全部輸入（`handleNativeChurch*Input`、`returnToNativeChurchMenu`，`main.go:5121`）與商店輸入
+  （`handleNativeShopInput` 與相容購買／販賣路徑，`main.go:5251`）。城鎮、劇情、選項、整備、酒店、結局與戰鬥分支照 Go 移植。
+- `handle_native_preparation_input`：獨立整備的記錄槽、必要角色提示、出擊名單確認、出發（`acceptTownDeparturePrompt` →
+  `finishNativePreparationDeparture`）、選人的 Enter 與獨立整備的 ESC，共 8 處。第一章執行到的城鎮出口提示（左右換選項、
+  ESC 或「否」收框回城鎮）與選人的方向鍵已移植。
+- `handle_native_hotel_input`：讀檔槽的 Enter（`confirmNativeHotelLoadSlot`）。
+- `step_native_shop_ui_lifecycle`：購買後的裝備面板（`stepNativeShopEquipPanelLifecycle`）。
+
+R6 的 `todo!` 都是 HD 文字擷取：`modern_hd_facility_font`（以 `WithNativePresenter` 換上記錄 HD 文字的 presenter）、
+`begin_modern_hd_facility_text`、`capture_modern_facility_list_text`、`begin_modern_hd_shop_digits`、`modern_hd_decimal_sprite`
+（`TextPlaceholder` 的繪字回呼）。Go 的 presenter 與佔位回呼在繪字時寫回 `g.font.indexedHD`，Rust 的 `fdtxt::NativePresenter`
+是 `Arc<dyn Fn>`、佔位回呼要 `'static`，要寫回 `Game` 須改成共享的擷取狀態，屬於 R6 的 HD 文字層設計。各函式在 `todo!` 之前照 Go
+移植退出條件（`modernHDText`、`font`、`nativeClassUI` 為 nil 等）。
+
+隨呼叫端補移植的 `r8` 函式（本體照 Go）：
+
+| Go | Rust | 呼叫端 |
+|---|---|---|
+| `native_town_secret_input.go:nativeBIOSFunctionScan` 與 `nativeFunction*` 常數 | `native_bios_function_scan`、`NATIVE_FUNCTION_*` | `pressed_native_town_secret_scan` |
+| `native_town_ui.go:captureNativeTownCaller`、`revealNativeTownSecret` | `Game::capture_native_town_caller`、`Game::reveal_native_town_secret` | `camp_input` 的城鎮分支 |
+| `native_shop_ui.go:stepNativeShopUIPulseTick` | `Game::step_native_shop_ui_pulse_tick` | `step_native_shop_ui_lifecycle` |
+| `native_church_ui.go:stepNativeChurchUIPulseTick` | `Game::step_native_church_ui_pulse_tick` | `step_native_church_ui_lifecycle` |
+| `native_preparation_ui.go:stepNativePreparationCycleTick` | `Game::step_native_preparation_cycle_tick` | `step_native_preparation_ui_lifecycle` |
+| `native_hotel_ui.go:currentNativeHotelInput` | `current_native_hotel_input`（改收 `&TickInput`） | `camp_input` 的酒店分支 |
+| `main.go:applyHotelServiceSelection`、`stepCampaignMenu` | `Game::apply_hotel_service_selection`、`Game::step_campaign_menu`（`main.rs`，緊鄰 `leave_hotel`／`camp_input`） | `camp_input`、`handle_native_hotel_input` |
+
+`native_church_ui.go:nativeChurchUIBlocksInput`（`r8`）只是 `g.nativeChurchUIJob != nil`，直接寫在 `camp_input`。Rust 新增、沒有 Go
+對應的項目：`native_preparation_input.rs` 的 `leave_preparation`（Go 的區域閉包）與 `Game::close_preparation_prompt_then`
+（Go 的區域閉包 `closeThen`）、`modern_hd_facility_dialogue.rs` 的 `facility_dialogue_key`。
+
+### E 組：虛擬時鐘、輸入與呈現回報
+
+- 城鎮、商店、教會、轉職／確認框與整備選人的脈衝都由 `NativeBIOSClock::sample(now)` 換算 BIOS tick，`now` 來自 A 組的
+  `game_now()`（虛擬時鐘）；城鎮的 tick 由 A 組 `update` 傳入 `step_native_town_ui_lifecycle`。E 組沒有讀牆鐘。
+- 輸入一律讀 `tick_input`：`camp_input` 開頭複製一份本幀輸入；`native_modifier_held`、`pressed_native_town_secret_scan`、
+  `current_native_hotel_input` 改收 `&TickInput`（見簽名變更紀錄）。
+- 下列旗標在 Go 由 `Draw` 設定，對應的 `step*` 等旗標才前進；Rust 的流程端不設，階段 3 的呈現回報要涵蓋：
+
+| 旗標 | Go 寫入端 | 等它的流程 |
+|---|---|---|
+| `NativeClassUIJob::drawn`（整備提示、轉職／復活確認、商店確認等共用工作） | `drawNativeClassUIJob`（`native_class_ui_lifecycle.go:179`） | `step_native_class_ui_lifecycle`：開框、收框每格一次回報，收框另要還原畫面一次回報才呼叫延續 |
+| `Game::native_shop_ui_job` 的 `drawn` | `drawNativeShopUIJob`（`native_shop_ui.go:1495`） | `step_native_shop_ui_lifecycle` |
+| `NativeChurchUIJob::drawn` | `drawNativeChurchUIJob`（`native_church_ui.go:214`） | `step_native_church_ui_lifecycle` |
+| `NativeTownDepartureJob::drawn` | `drawNativeTownDeparture`（`native_town_departure.go:86`） | `step_native_town_departure` |
+
+E 組的測試照 Go 測試直接寫 `drawn = true`，等同回報。
+
+### E 組：忠實模式下的 HD 預檢
+
+Go 的 `bindModernFacilityServiceMenu`（商店、教會服務選單的開框與收框）只看 `g.font.sf != nil`，與 HD 介面開關無關：載入 TTF 後，
+忠實模式也會預先建立 HD 描述，過程以 HD 文字擷取重組畫面（上面的 R6 函式）。這份描述只有 HD 繪製
+（`drawModernHDFacilityServiceMenu`，R6）與輸入稽核的 `lastDraw`（只由 HD 繪製寫入）讀取，不影響節點、交易或延續。Rust 照 Go 移植
+全部前置檢查，在 HD 介面關閉時於前置檢查之後回 `None`（KNOWN_DIFFERENCES `facility-hd-precompute-faithful-skip`），不進入要 TTF
+擷取的部分；HD 介面開啟時照 Go 往下做，停在 R6 的 `todo!`。要主代理確認這個作法；若要逐位元組保留 Go 的預檢，需要 R6 的擷取狀態。
+
+`snapshot_native_preparation_transition`（整備提示的 HD 配方）不需要 TTF，忠實模式照 Go 建立。
+
+### E 組：HD 面板文字的字級量測（主代理指派）
+
+C 組回報：`prepareNativePlayerMovement` 與物理演出在字型有 TTF、`localeEntities` 存在時收集 HD 面板文字，`renderBattlePanelText` 以
+`raster` 預檢（`modern_hd_battle_panel.go:114`），預檢失敗會讓流程回錯誤；`raster` 呼叫 `drawModernBattlePanelInk`。E 組把
+`draw_modern_battle_panel_ink`（A 組檔，本體原是 `todo!("R6")`）改成：
+
+- 照 Go `modern_hd_battle_panel.go:224` 逐行移植字級搜尋：`int(f.effectiveScale(maximum))` 向零截斷，從大到小試到 24，
+  `faceFor` 取不到 face 回 `modern HD panel: font unavailable`，找不到不超框（`Dx+2`、`Dy+2`）的字級回
+  `modern HD panel: text exceeds safe rectangle: %q`。
+- 量寬經 `Font::measure` 的 `bound_string`。Go 這裡用 `font.BoundString`（x/image v0.12.0 `font/font.go:245`）再取
+  `Floor`／`Ceil`，量測器的契約是 Ebiten `text.BoundString`（v2.6.6 `text/text.go:281`）。兩者對單行字串的聯集相同：
+  `fixed.Rectangle26_6.Union` 本身略過空矩形，x/image 另以 `!b.Empty()` 略過；只在字串含 `\n` 或全是空白字形時不同，面板字串
+  （名稱、`LV·`、`HP`、`MP` 與數字）都不是（強推論，依兩份原始碼）。
+- 找到字級之後的點陣化（陰影與前景兩次 `font.Drawer.DrawString`）是 R5。Rust 不畫字、直接回成功，不寫成 `todo!`，否則忠實模式照樣
+  停住；`raster` 的畫布與 `key` 因此沒有文字墨跡（KNOWN_DIFFERENCES `panel-ink-measure-only`，只有 HD 繪製讀它們）。
+- 沒有注入量測器卻有 TTF 時停在 `todo!("R5: …")`，與 A 組 `Font::width` 相同。
+
+### E 組：交易
+
+第一章重播只執行到城鎮選單、出口提示、商店與教會服務選單的開框，以及酒店選單；購買、販賣、裝備、轉移、復活與轉職的交易函式都標
+`r8`（`handleNativeShopInput`、`handleNativeChurch*Input` 等），R4 沒有移植，也沒有重寫規則層。R8 移植這些分支時呼叫 `fd2_campaign`
+既有的 `reserve_good`、`finalize_good`、`sell_slot`、`equip_item`、`recompute_equipment`、`revive_unit`、`native_class_change_target`。
+
+### E 組：共用變更需求
+
+本工作樹沒有改 `Game`、`support.rs` 或別組的型別。動到別組檔的地方（都只限必要的行）：
+
+| 檔 | 改動 | 原因 |
+|---|---|---|
+| `main.rs`（A 組 `update_frame`） | 四處 `native_modifier_held()` → `native_modifier_held(&input)` | 簽名改收本幀輸入 |
+| `player_poster_controls.rs`（A） | `native_modifier_held(&self.tick_input)` | 同上 |
+| `modern_hd_battle_panel.rs`（A） | `draw_modern_battle_panel_ink` 本體與檔尾 `mod modern_hd_battle_panel_ink_test;` | 主代理指派 |
+| `title/title_test.rs`、`main/main_a_test.rs` | 拿掉三個「等 E」的 ignore 屬性行 | `--ignored` 跑過通過 |
+| `save/save_test.rs` | 兩個「等 E」改標「等 D 合併（停在 cancel_native_command32_presentation）」 | 實際停點 |
+
+需要主代理決定：
+
+| 項目 | 原因 | 建議 |
+|---|---|---|
+| `facility-hd-precompute-faithful-skip` | 見「忠實模式下的 HD 預檢」 | 維持到 R6；R6 建立共享擷取狀態後拿掉 HD 開關的提前返回 |
+| `NativeServiceMenuPresentation::shop_job`／`church_job` | Go 存工作指標，HD 繪製以指標比對身分；Rust 的工作由 `Game` 擁有，欄位留 `None` | R6 改存工作的世代號或比對 `raw_frames` |
+
+### E 組：KNOWN_DIFFERENCES
+
+| 名稱 | 差異 | 影響 |
+|---|---|---|
+| `preparation-roster-map-order` | `setupPreparation` 以 `range g.partyRoster`（隨機）補上不在 JOIN 順序裡的成員；Rust 依 ID 排序 | 只在名冊有 JOIN 順序以外的成員時影響選人順序；Go 本身不可重現 |
+| `facility-hd-precompute-faithful-skip` | HD 介面關閉時不建立服務選單的 HD 描述 | 只給 HD 繪製讀 |
+| `panel-ink-measure-only` | HD 面板文字只量字級、不畫字 | 只給 HD 繪製讀；預檢的成敗與 Go 相同 |
+| `facility-dialogue-key-bytes` | `prepareModernHDFacilityDialogue` 的快取鍵是自訂位元組序列的 SHA-256，不是 Go `json.Marshal` 的 | 鍵只和自己比對 |
+| `facility-dialogue-font-identity` | Go 以 `h.font == g.font` 比字型指標，Rust 以 `same_panel_font` | 同 C 組 `panel-font-identity` |
+| `shop-assets-map-order` | `loadNativeShopUIAssets` 以 `range` map 載入三個變體，Rust 依變體排序 | 只在同時有多個缺件時回報的項目不同 |
+| `town-source-value-copies` | `nativeTownFrameSource` 的 `strings`／`font` 在 Go 是指標，Rust 存複本 | 素材載入後不再改寫 |
+
+`NORMALIZATIONS`：無（E 組沒有黃金差分）。
+
+### E 組：測試
+
+`tools/rust_game_test.sh`（`FD2_REQUIRE_ORIGINAL=1`，輸出沒有「略過」）：全 crate 234 通過、13 ignore（含 2 個由黃金腳本執行）。
+E 組新增 33 個測試（Go 移植 27、Rust 補充 6），31 通過、2 個 `ignore`；另外原本等 E 的 5 個：3 個通過、拿掉 ignore，2 個改標等 D。
+
+| 檔 | Go 來源 | 測試 |
+|---|---|---|
+| `native_class_ui_lifecycle/native_class_ui_lifecycle_test.rs` | `native_class_ui_lifecycle_test.go` 7 個 | 7 |
+| `native_preparation_ui/native_preparation_cycle_test.rs` | `native_preparation_cycle_test.go` 6 個 | 6 |
+| `native_town_ui/native_town_ui_test.rs` | `native_town_ui_test.go` 5 個 | 5 |
+| `native_church_ui/native_church_ui_test.rs` | `native_church_ui_test.go` 3 個 | 3 |
+| `native_shop_ui/native_shop_ui_test.rs` | `native_shop_ui_test.go:697`、`:1100` | 2 |
+| `native_class_ui/native_class_ui_test.rs` | `native_class_ui_test.go:202` | 1 |
+| `native_hotel_ui/native_hotel_ui_test.rs` | `hotel_trace_test.go:18` | 1（ignore） |
+| `native_town_secret_input/native_town_secret_input_test.rs` | `native_town_secret_input_test.go:5` | 1 個 Go、2 個補充（`TickInput` 修飾鍵與 F 鍵） |
+| `native_preparation_input/native_preparation_input_test.rs` | `preparation_test.go:95`（部分：中段的 `restartPreparationSelection` 是 `r8`） | 1 個 Go、2 個補充（`setup_preparation` 的順序與名額；城鎮 → 出口提示 → ESC 回城鎮整段，ignore） |
+| `modern_hd_battle_panel/modern_hd_battle_panel_ink_test.rs` | 無（Go 的面板測試都以真 TTF 繪字） | 2 個補充（假量測器驗字級搜尋與兩個錯誤） |
+
+| ignore | 等 | 停點 |
+|---|---|---|
+| `test_campaign_town_hotel_raw_route_return_trace`、`town_exit_prompt_escape_returns_to_same_town_selector` | D | `enter_node` 經 `reset_action_overlay_lifecycle` 停在 `cancel_native_command32_presentation`；本地把 D 的四個 `cancel_native_command3x_presentation` 暫改成「沒有工作就返回」後兩個都通過（只是驗證，已還原） |
+| `save_test.rs` 的 `campaign_save_load_restores_town_boundary_and_party`、`title_json_load_accepts_saved_zero_chapter_and_keeps_bytes` | D | 同上；同一個暫改下兩個都通過 |
+
+Go 以 `t.Setenv("FD2_ASSET_PACK", …)` 指向分離素材包的測試，Rust 沿用 `tools/rust_game_test.sh` 對整個測試行程設定的同一個變數；
+`FD2_ORIGINAL_*` 只影響 Go 的封存檔退路，Rust 的載入器只讀分離素材包，所以 Go 以「封存檔不存在」證明不讀封存檔的部分自然成立。
+
+R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 量寬／繪字，不在本階段移植）：
+
+| 測試 | Go 檔:行 | 原因 |
+|---|---|---|
+| `TestNativeTownDeparturePreflightAndPresentBoundary`、`TestNativeTownDepartureFromOracle` | `native_town_departure_test.go:22`、`:151` | 以 `Draw` 推進（另需 `r8` 的 `startNativeTownDeparture`；後者是原版對照） |
+| `TestDrawNativeClassListUsesPlayerOriginalAssets` | `native_class_ui_test.go:13` | 斷言 `Draw` 的畫面（另走轉職、復活的 `r8` 函式） |
+| `TestNativeChurchRuntimeUsesPlayerOriginalSceneAssets` | `native_church_ui_test.go:156` | `drawNativeChurchMenu` |
+| `TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList` | `native_shop_ui_test.go:20` | 以 `Draw` 推進（另走購買、販賣、裝備、轉移的 `r8` 函式） |
+| `TestOfficialShopItemNamesFitNativeSafeRectangle`、`TestOfficialCharacterNamesFitNativeRosterRectangle`、`TestOfficialBattleNamesFitNativePanelRectangle`、`TestOfficialCommandNamesFitNativeGridCell`、`TestOfficialClassNamesFitClassChangeTargetRectangle`、`TestOfficialShopMessagesFitNativeDialogueRectangle` | `native_shop_locale_test.go:10`、`:41`、`:74`、`:109`、`:141`、`:163` | 以真 TTF 量寬核對四語系譯名與商店訊息 |
+| `TestModernHDTextRequiresCompleteHDAndKeepsLogicalMetrics` | `modern_hd_text_test.go:10` | `Draw` |
+| `TestModernHDFacilityDialogueRuntimeGPU`、`TestModernHDServiceMenuSourceAndFallback` | `modern_hd_facility_dialogue_test.go:166`、`modern_hd_service_menu_transition_test.go:31` | GPU 圖片或 HD 繪製（R6） |
+| `TestModernHDPreparationTransitionRecipesMatchNativeFrames`、`TestModernHDPreparationBackgroundFrozenSourceAndFallback`、`TestModernHDPreparationTransitionInvalidRecipeKeepsNativeJob`、`TestModernHDPreparationTownBackgroundRuntimeGPU`、`TestModernHDPreparationDialogueRuntimeGPU`、`TestModernHDPreparationCursorRuntimeGPU` | `modern_hd_preparation_transition_test.go:19`、`:145`、`:619`、`:354`、`:361`、`modern_hd_preparation_cursor_test.go:266` | `Draw` 或 GPU（R6） |
+
+其他沒有移植的 E 組主題 Go 測試（不需要畫面，所以不列 R5）：
+
+- 受測函式是 `r8`：`native_town_ui_test.go:188`、`native_church_ui_test.go:14`、`native_shop_ui_test.go:785`、`:862`、`:940`、`:1027`
+  （截圖狀態）；`native_church_ui_test.go:189`（`handleNativeChurchMenuInput`）；`native_preparation_ui_test.go` 4 個（記錄槽、
+  `composeNativePreparationFrame`）；`preparation_test.go` 其餘 4 個（`acceptTownDeparturePrompt`、`restartPreparationSelection`、
+  `togglePreparationSelection`）；`hotel_trace_test.go:62`、`:89`、`:112`、`:140`（`confirmNativeHotelLoadSlot`）；
+  `modern_hd_facility_dialogue_test.go:83`、`modern_hd_preparation_transition_test.go:514`、`:576`、`modern_hd_preparation_cursor_test.go:273`
+  （HD 的 `r8` 函式）。
+- 別組主題或整段流程：`hotel_trace_test.go:172`（傳聞劇情）、`:209`（同源探針）、`native_shop_locale_test.go:248`（A 組語系目錄）、
+  `native_church_*_path_test.go`、`native_shop_*_path_test.go`、`town_shop_early_mid_late_e2_test.go`、`native_title_to_town_test.go` 等
+  走完整交易或章節的測試，在 R8 或階段 3 的重播移植。
+
+黃金差分：E 組沒有加。城鎮、轉職與教會的脈衝計數、選單換位都是小型純函式，Go 測試的期望值已逐條覆蓋（含有號 BIOS 字繞回）；開框、
+收框與延續要呈現回報才前進，適合在階段 3 以重播檢查點比對。
+
+### E 組：fd2-rules／fd2-campaign 缺口
+
+沒有改那兩個 crate。`campaign::compose_native_church_scene` 的 `strings`／`font` 收借用（Go 是可為 nil 的指標），Rust 在 nil 時回
+`false`，與 campaign 回錯誤相同。

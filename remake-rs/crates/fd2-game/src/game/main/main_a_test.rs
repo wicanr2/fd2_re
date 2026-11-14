@@ -264,7 +264,6 @@ fn materialize_native_map_runtime_gates_before_publishing() {
 
 /// Go：`native_continue_handoff_test.go:1117` `TestNativeNestedSystemExitPublishesEbitenTermination`
 #[test]
-#[ignore = "等 E 合併（Update 開頭的 player_poster_controls_allowed 呼叫 native_modifier_held）"]
 fn test_native_nested_system_exit_publishes_ebiten_termination() {
     let mut g = Game { native_system_exit_requested: true, ..Default::default() };
     let err = g.update().unwrap_err();
@@ -273,7 +272,6 @@ fn test_native_nested_system_exit_publishes_ebiten_termination() {
 
 /// `Update` 的 `defer` 在提早返回時照樣執行：F10 請求海報切換後，玩家面板請求旗標被清除。
 #[test]
-#[ignore = "等 E 合併（player_poster_controls_allowed 呼叫 native_modifier_held）"]
 fn update_runs_deferred_cleanup_on_early_return() {
     let mut g = Game { player_theme_requested: true, ..Default::default() };
     g.tick_input.pressed.insert(Key::F10);
