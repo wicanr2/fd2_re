@@ -11,5 +11,8 @@
 #![allow(unused, dead_code, unreachable_code, clippy::todo)]
 
 pub mod game;
+#[cfg(test)]
+#[allow(dead_code)]
+mod test_support;
 
 pub use game::Game;
