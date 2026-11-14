@@ -8,5 +8,25 @@ use super::*;
 ///
 /// Go：`player_battle_speed.go:6`，`func normalizeBattleAnimationSpeed(speed int) int`
 pub(crate) fn normalize_battle_animation_speed(speed: i64) -> i64 {
-    todo!("player_battle_speed.go:normalizeBattleAnimationSpeed")
+    if !(0..=4).contains(&speed) {
+        return 0;
+    }
+    speed
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Go `TestBattleSpeedSettingsPreserveOtherPreferencesAndOldDefaults`（`player_battle_speed_test.go`）
+    /// 的越界值部分；其餘部分經 `setBattleAnimationSpeed`／`chooseGeneralSpeed`（`r8`）。
+    #[test]
+    fn normalize_battle_animation_speed_rejects_out_of_range() {
+        for bad in [-1, 5, 100] {
+            assert_eq!(normalize_battle_animation_speed(bad), 0);
+        }
+        for ok in 0..=4 {
+            assert_eq!(normalize_battle_animation_speed(ok), ok);
+        }
+    }
 }

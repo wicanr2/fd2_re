@@ -10,5 +10,10 @@ use super::*;
 ///
 /// Go：`separated_asset_path_native.go:13`，`func separatedAssetPath(relative string) string`
 pub(crate) fn separated_asset_path(relative: &str) -> String {
-    todo!("separated_asset_path_native.go:separatedAssetPath")
+    if let Ok(root) = std::env::var("FD2_ASSET_PACK")
+        && !root.is_empty()
+    {
+        return join_path(&[&root, relative]);
+    }
+    asset_path(&join_path(&["assets", relative]).replace('\\', "/"))
 }

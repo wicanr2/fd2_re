@@ -153,6 +153,9 @@ pub struct TickInput {
     pub pressed: BTreeSet<Key>,
     pub released: BTreeSet<Key>,
     pub held: BTreeSet<Key>,
+    /// R4 A 組新增（共用變更需求）：Go `inpututil.KeyPressDuration(k)`，按住中的鍵已按住的邏輯幀數
+    /// （按下那一幀是 1）；沒列出的鍵是 0。`keyRepeat` 的連發節奏依這個值。
+    pub press_duration: std::collections::BTreeMap<Key, i64>,
 }
 
 impl TickInput {
@@ -169,6 +172,16 @@ impl TickInput {
     /// Go `ebiten.IsKeyPressed(k)`。
     pub fn is_pressed(&self, k: Key) -> bool {
         self.held.contains(&k)
+    }
+
+    /// Go `inpututil.KeyPressDuration(k)`（R4 A 組新增）。
+    pub fn key_press_duration(&self, k: Key) -> i64 {
+        self.press_duration.get(&k).copied().unwrap_or(0)
+    }
+
+    /// Go `len(inpututil.AppendJustPressedKeys(nil)) > 0`（R4 A 組新增）：本幀有任何鍵按下。
+    pub fn any_just_pressed(&self) -> bool {
+        !self.pressed.is_empty()
     }
 }
 
@@ -239,6 +252,11 @@ pub struct AudioVoice {
     pub playing: bool,
     /// Go 已呼叫 `Close()`。
     pub closed: bool,
+    /// R4 A 組新增（共用變更需求）：要播放的編碼後音訊位元組（分離素材包的 OGG 子資源、WAV 檔或
+    /// BGM 檔內容）。Go 把解碼後的 PCM 交給 `audio.NewPlayerFromBytes`；Rust 由外殼解碼。
+    pub encoded: Vec<u8>,
+    /// R4 A 組新增（共用變更需求）：Go `audio.NewInfiniteLoop`（BGM loop count 0）。
+    pub looping: bool,
 }
 
 impl AudioVoice {

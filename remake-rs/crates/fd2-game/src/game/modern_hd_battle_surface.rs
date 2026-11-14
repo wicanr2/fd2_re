@@ -38,7 +38,7 @@ pub(crate) fn modern_physical_scenery(
 
 /// Go：`modern_hd_battle_surface.go:223`，`func modernBattleBackdropGeometry(frame fdother.Frame) bool`
 pub(crate) fn modern_battle_backdrop_geometry(frame: &fdother::Frame) -> bool {
-    todo!("modern_hd_battle_surface.go:modernBattleBackdropGeometry")
+    (frame.width == 320 && (frame.height == 100 || frame.height == 101)) || (frame.width == 318 && frame.height == 100)
 }
 
 /// Go：`modern_hd_battle_surface.go:228`，`func modernPhysicalBackdropScenery(scene *nativePhysicalScene, background fdother.Frame, index byte, platform bool) ([]modernHDBattleSource, error)`

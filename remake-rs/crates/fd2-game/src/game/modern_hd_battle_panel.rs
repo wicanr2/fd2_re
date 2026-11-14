@@ -87,5 +87,6 @@ pub(crate) fn draw_modern_battle_panel_ink(
     maximum: i64,
     ink: ColorRgba,
 ) -> Result<()> {
-    todo!("modern_hd_battle_panel.go:drawModernBattlePanelInk")
+    // Go 以 `font.Drawer` 把 HD 面板文字畫進 RGBA 畫布（只在 HD 介面呼叫）。
+    todo!("R6: modern_hd_battle_panel.go:drawModernBattlePanelInk（HD 面板文字繪製）")
 }

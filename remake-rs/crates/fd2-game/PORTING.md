@@ -215,3 +215,218 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 ### 簽名變更紀錄
 
 階段 2 改動骨架簽名時，在這裡逐條記錄（函式、原簽名、新簽名、理由）。
+
+| 組 | 函式 | 原簽名 | 新簽名 | 理由 |
+|---|---|---|---|---|
+| A | `Game::start_fade_transition` | `action: Option<Box<dyn FnMut(&mut Game) + Send>>` | `Option<Box<dyn FnOnce(&mut Game) + Send>>` | Go 的 `action` 只呼叫一次 |
+| A | `Game::native_restored_party_units_for_load_ch` | `-> Result<Vec<UnitIdx>>` | `-> Result<Option<Vec<battle::Unit>>>` | 回傳的是 LOADCH 新建、不在 `st` 裡的單位；`None` 對應 Go 的 nil 結果 |
+| A | `Game::apply_load_ch` | `state: Option<&mut campaign::LoadCHState>` | `Option<&campaign::LoadCHState>` | Go 不改寫 `state` |
+| A | `Game::seed_persistent_party_from_load_ch` | `units: &[UnitIdx]` | `units: &[battle::Unit]` | 同上，單位不在 `st` 裡 |
+| A | `Game::interface_theme_for_art` | `-> Option<ModernStoryPortraitSet>` | `<'a>(&'a self, Option<&'a ModernStoryPortraitSet>) -> Option<&'a ModernStoryPortraitSet>` | Go 回傳指標；不複製整份主題 |
+| A | `Game::interface_asset_theme` | `(&mut self) -> Option<ModernStoryPortraitSet>` | `(&self) -> Option<&ModernStoryPortraitSet>` | 同上 |
+| A | `Game::locale_message` | `args: &[Option<OwnerToken>]` | `args: &[localization::FormatArg]` | Go 的 `...any` 是格式參數，不是擁有者比對 |
+| A | `Game::play_raw`、`Game::play_native_physical_sound` | `b: &mut [u8]` | `b: &[u8]` | 不改寫樣本；呼叫端傳 `&mut Vec<u8>` 仍可編譯 |
+| A | `key_repeat` | `fn key_repeat(k: Key) -> bool` | `fn key_repeat(input: &TickInput, k: Key) -> bool` | Go 讀全域 `inpututil.KeyPressDuration`；改讀本幀輸入 |
+| A | `title_menu_hd_seal` | `h: Option<&mut ModernHDTitleMenuItem>` | `h: Option<&ModernHDTitleMenuItem>` | 只讀 |
+| A | `freeze_modern_hd_title_menu_item` | `original: Option<&mut Picture>` | `original: Option<&Arc<Picture>>` | Go 以指標身分比對，存同一個 `Arc` |
+| A | `title_load_slots_hd_seal`、`freeze_modern_hd_title_load_slots` | `Option<&mut NativeLoadSlotsUIAssets>`（及 `Option<&mut ModernHDTitleLoadSlots>`） | `Option<&NativeLoadSlotsUIAssets>`（及 `Option<&ModernHDTitleLoadSlots>`） | 只讀；F 組的呼叫端改用 `.as_ref()` |
+| A（B 的函式，跨組介面） | `Game::step_battle_walk_segment` | `(&mut self, w: &mut WalkAnim, finish: &mut dyn FnMut(i64)) -> bool` | `(&mut self, finish: &mut dyn FnMut(&mut Game, i64)) -> bool` | 見「A 組：跨組介面」；本體仍是 B 的 `todo!()`，由主代理與 B 組定案 |
+| A | `Font`（型別，A 組專用檔） | — | 加欄位 `measure: TextMeasurer` | 量寬由外殼注入（見「A 組：字型」） |
+
+## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
+
+2026-11-14，代號 `r4a`，合併基準 `451620de`。範圍是 `PORTING.json` 裡 `group` 為 `A` 的 156 個函式（含 `main.go` 的 69 個），
+另加 Go `Layout`（`r8`，只回傳 640×400，照移）。
+
+### 移植結果
+
+| 項目 | 數量 |
+|---|---|
+| A 組函式 | 156 個全部有本體；另隨呼叫端補移植 7 個 `r8` 小函式（下表） |
+| 整個本體是 `todo!()` 的 | 3 個：`draw_battle_scene`（R5）、`load_hd_regional_fonts`（R6）、`draw_modern_battle_panel_ink`（R6） |
+| 部分是 `todo!()` 的 | `draw`（重設本幀旗標之後是 R5）、`record_input_audit_state`（環境變數閘門之後是 fd2-tools）、`update`（截圖模式設定是 fd2-tools；第一章沒有的分支是 R8）、`load_game`（HD 主題 R6；截圖與結局預覽的環境變數分支 R8）、`enter_node`（物品閘門／合成／原生結局節點 R8）、`title_update`／`apply_title_menu_event`（LOAD 讀檔槽、CONTINUE、戰敗後重新開始 R8）、`modern_hd_*` 與 `poll_modern_theme_load`（HD 開啟後的分支 R6）、`face_for`／`width`（沒有注入量測器時 R5）、`bind_command_learn`（設了測試觀察者時，共用變更） |
+| `todo!` 分類 | R5 5、R6 14、R8 35、fd2-tools 2、共用變更 1 |
+
+R8 的 `todo!` 都在第一章重播沒有執行到的分支上（呼叫的函式在 `PORTING.json` 標 `r8`）：F2～F12 的玩家設定鍵、F5／F9 快速存讀、
+敗北、結局、第二十章以後的章節演出、物品閘門與合成節點、ESC 輪選單位等。
+
+隨呼叫端補移植的 `r8` 函式（A 組函式需要它們，本體照 Go）：
+
+| Go | Rust | 呼叫端 |
+|---|---|---|
+| `audio.go:musicRenderPath` | `Game::music_render_path`（私有） | `play_bgm_count` |
+| `audio.go:playPCMVoice` | `Game::play_pcm_voice`（私有） | `play_raw`、`play_sfx` |
+| `title.go:titleLogoTransitionIndex` | `title_logo_transition_index` | `try_skip_title_cut_step` |
+| `run_log.go:runLogNode` | `Game::run_log_node`（私有） | `trace_run_log` |
+| `main.go:defaultChapterStoryScript` | `enter_node` 內的區域函式 | `enter_node` |
+| `main.go:(*atkAnim).beginCounterStage` | `AtkAnim::begin_counter_stage`（私有） | `step_attack_presentation_tick` |
+| `main.go:Layout` | `Game::layout` | Ebiten 主迴圈（外殼） |
+
+Rust 新增、沒有 Go 對應的工具（都在 A 組的檔，其他組可用）：`assets.rs` 的 `join_path`、`go_int_slice`、`color_palette_from_nrgba`、
+`nrgba_palette_from_color`、`picture_from_indexed`、`picture_from_paletted`、`indexed_frame`、`crop_picture`、`decode_png_picture`；
+`modern_hd_title_interface.rs` 的 `sha256_hex`；`font.rs` 的 `rect_dx`／`rect_dy`／`rect_empty`；`main.rs` 的 `ERR_TERMINATION`、
+`Game::update_frame`、`center_camera_on_cursor`、`shot_termination`、`tile_aligned_story_map`、`materialize_story_native_map_view`、
+`current_node_type_is`、`load_numbered_frames`、`scan_numbered_frame`。`main.rs` 新增的私有函式都緊鄰 A 組的函式，不動其他組的位置。
+
+### 虛擬時鐘
+
+Go 主迴圈的時間有兩層：Ebiten 以 `SetTPS(60 × speed)` 決定每秒呼叫幾次 `Update`（`main.go:13475`、`modern_hd_presentation.go:83`），
+`gameNow()` 再把牆鐘差乘 `speed`（`player_game_clock.go:17`）。穩態下每次 `Update` 的遊戲時間恰好前進 1/60 秒，速度只改變每秒跑幾次
+`Update`。Rust 照這個關係，牆鐘換成 `Game::virtual_now`：
+
+| 項目 | 規則 |
+|---|---|
+| 誰推進 | 驅動端持有 `VirtualFrameClock`（`player_game_clock.rs`），每個邏輯幀（每次 `update` 之前）呼叫一次 `Game::advance_virtual_frame` |
+| 每幀前進多少 | 虛擬牆鐘前進 `1e9 / (60 × speed)` 奈秒；除不盡的部分以 `1/(60 × speed)` 奈秒為單位累積，速度固定時每 `60 × speed` 幀牆鐘恰為 1 秒 |
+| 速度從哪裡來 | `normalize_player_speed(player_clock.speed)`，即 Go `syncPlayerClockSpeedAt` 寫入、`SetTPS` 讀的同一個值；越界照 Go 視為 1 |
+| 速度倍率怎麼套 | 照 Go 由 `PlayerGameClock::sample` 把牆鐘差乘 speed，所以每幀遊戲時間是 1/60 秒（逐幀誤差小於 speed 奈秒） |
+| 起點 | `VIRTUAL_CLOCK_ORIGIN` = 1 秒。Go 的 `time.Now()` 不會是零值，而 `playerGameClock.sample`、各演出工作的 `started.IsZero()` 都把零值當「尚未開始」 |
+| 讀取 | `game_now()` 讀 `virtual_now`；BIOS 時鐘（`NativeBIOSClock`）與所有收 `now` 參數的函式都從 `game_now()` 取值 |
+| 截圖決定性時鐘 | Go `FD2_SHOT_DETERMINISTIC=1` 的 `time.Unix(0, frame × 16666666)` 改成 `VIRTUAL_CLOCK_ORIGIN + frame × 16666666`，相鄰幀的差相同 |
+
+速度改變時，未滿 1 奈秒的累積餘數沿用新分母，誤差小於 1 奈秒。單元測試在 `player_game_clock/player_game_clock_test.rs`：起點非零、
+速度 1 時 60 幀恰為 1 秒、速度 1～4 每幀遊戲時間 1/60 秒且 `60 × speed` 幀恰為 `speed` 秒、越界速度、60 幀驅動 BIOS 時鐘跨 18 tick。
+
+### 輸入
+
+- `update`、`title_update` 等只讀 `self.tick_input`。`update` 開頭複製一份本幀輸入，整個函式用同一份（Go 每次查 `inpututil` 也是同一幀的值）。
+- `inpututil.AppendJustPressedKeys(nil)` 非空 → `TickInput::any_just_pressed`；`inpututil.KeyPressDuration` → `TickInput::key_press_duration`
+  （共用變更：`TickInput::press_duration`）。`key_repeat` 改收 `&TickInput`。
+- Go `inpututil.AppendJustPressedTouchIDs`（點格移動游標，`main.go:9087`）沒有移植：`TickInput` 沒有觸控，座標換算 `playerTouchCoordinates`
+  是 `r8`。列為共用變更需求，R5 接上。
+- Alt+Enter 的 `ebiten.SetFullscreen` 改設 `Game::fullscreen_toggle_requested`（共用變更），外殼讀取後清除。
+- `ebiten.Termination` 對應 `ERR_TERMINATION`；`update` 回傳 `Err(e)` 且 `e.is(&ERR_TERMINATION)` 表示正常結束。
+
+### `Update` 的 `defer`
+
+Go `Update` 開頭排了四個 `defer`：`syncBalanceState`、清除玩家面板請求旗標、`recordInputAuditState`、`traceRunLog`，在每條 return 路徑上依
+後進先出執行。Rust 把本體放在私有的 `update_frame`，`update` 在它回來後依 `traceRunLog` → `recordInputAuditState` → 清旗標 →
+`syncBalanceState` 的順序呼叫（Go 的 panic 路徑不移植）。
+
+### Draw 中改狀態的位置
+
+階段 3 要定義「呈現請求與回報」介面。下列是 Go `Draw`（`main.go:9355`..`10188`）與 A 組繪圖函式裡改寫流程狀態的地方。Rust 的 `draw` 只做
+第 1、3 項，其餘停在 `todo!("R5: …")`；表中屬於別組的旗標由該組的 `draw*` 函式設定。
+
+| # | Go 位置 | 改寫 | 階段 3 的對應 |
+|---|---|---|---|
+| 1 | `main.go:9356`..`9368` | 每幀開頭清 `nativeMapPresented`、`movementPanelDraw`、`nativeInterfaceHUDVisible`、`modernHDOverlay`、`modernHDScene`、三個 HD 名冊、`modernHDPanelPortraits`、`modernHDBattleVisible`、`modernHDWorldVisible`、`modernHDTimedDialogueVisible`；呼叫 `syncModernHDBattleOwner` | Rust `draw` 已移植；無畫面驅動端每幀也要做（或改成呈現回報的開頭） |
+| 2 | `main.go:9369`..`9371` | HD：`modernHDMapGPU.BannerName = ""` | R6 |
+| 3 | `main.go:9372` | `beginModernHDText`：清 `modernHDText`，HD 介面時把字型的 `hd` 指向本幀文字框 | 忠實模式只清欄位（已移植） |
+| 4 | `main.go:9386`..`9389`（defer） | `nativeTurnStaging.drawn = true`（非 indexed 的 flash 階段） | `stepNativeTurnStaging` 等這個旗標才前進，呈現回報要設 |
+| 5 | `main.go:9391`（defer） | 說明畫面時 `clearModernHDText` | HD 文字層，R6 |
+| 6 | `main.go:9409` 等約 30 處 | `captureShot`：截圖模式存 PNG 並設 `shotTaken`，下一次 `Update` 回傳 `Termination` | 截圖模式（fd2-tools） |
+| 7 | `main.go:9420`..`9706` | 各原生演出的 `draw*` 回傳 false 時呼叫 `failNative…Presentation`（ch20 天空之鑰、ch23、2189A、單位登場、ch28、24B4D、AI 指令修飾、指令 0～35、AI 物品） | 呈現失敗要回報給流程，否則演出不收尾 |
+| 8 | 各 `drawNative…Presentation`（B／C／D 組） | 演出工作的 `drawn`／`presented` 旗標（指令環、指令 0～35、補血、修飾、物理攻擊前奏 `preludeDrawn`、尾段 `leadDrawn`、24B4D 的 `transitionReveal.drawn`、spawn intro、索引轉場、調色盤漸變等） | 對應的 `step*` 等旗標才前進；這是 120「畫過才推進」的主體 |
+| 9 | `main.go:9768` | END 回收畫不出來時 `cancelNativeEndTurnRecovery` | 同 7 |
+| 10 | `main.go:9780`..`9783` | AI 閒置回收畫不出來時 `restoreNativeAIIdleRecoveryRange`、清 `nativeAIIdleRecovery`、寫 `loadErr`、`aiBusy = false` | 同 7 |
+| 11 | `main.go:9817` | 建立 `storyView` 離屏畫布（快取） | 畫面資源，R5 |
+| 12 | `main.go:9958` → `drawNativeMapFrame`（`main.go:12451`，C 組） | `composeNativeMapFrame`：取 `gameNow`、推進原生地圖 BIOS 時鐘與地形／單位相位、合成整幀並發布 `nativeMapVGA`；設 `nativeInterfaceHUDVisible`、`nativeMapPresented = true`；首次顯示回合橫幅時複製 `bannerFrame` | **影響流程計時**：原生地圖時鐘只在合成時推進（`advance_native_map_clock` 只從合成交易呼叫）。無畫面驅動端每幀要照 Go `Draw` 的條件執行合成 |
+| 13 | `main.go:10026`..`10027` | HD 對話框外框準備失敗寫 `loadErr` | R6 |
+| 14 | `main.go:10046` | 對話框漸層 `dlgGrad` 快取 | 畫面資源，R5 |
+| 15 | `main.go:10089` | HD：`modernHDOverlay` | R6 |
+| 16 | `main.go:10159` | 指令環已在原生整幀中時 `markActionOverlayDrawn`（否則在 `drawRing` 內設） | 指令環動畫等這個旗標前進 |
+| 17 | `main.go:11280`（`drawBattleScene`） | 物理攻擊面板畫不出來時寫 `loadErr` | 同 7 |
+
+### 音訊
+
+- `AudioVoice`（共用變更：加 `encoded`、`looping`）記錄播放請求：`source`（BGM 是檔案路徑，音效是 `"pcm"`）、`encoded`（編碼後位元組）、
+  `looping`（BGM loop count 0）、`playing`（建立時為 true，外殼播完設 false）、`closed`。
+- 音效庫與 `sfx*` 欄位保存**編碼後**的 OGG／WAV 位元組；Go 在載入時解碼成 PCM，Rust 的解碼在 R5（`fd2-app`）。
+- `title_ani1_voice`、`native_physical_voice` 改成 `Option<SfxVoice>`（共用變更，Go 介面值可為 nil）。
+- `step_sfx_voices` 丟棄 `!is_playing()` 的 voice；無畫面驅動端要回報播完，否則佇列會一直累積。
+
+### 字型
+
+`fd2-game` 沒有 TTF 解析器（不加依賴）。`Font` 新增 `measure: TextMeasurer`，外殼注入 `TextMeasure`（`ascent`、`bound_string`、`has_glyph`，
+對應 Go 的 opentype face、`text.BoundString`、`sfnt.GlyphIndex`）。沒有字型檔時 `width` 照 Go 回 0；有字型卻沒注入量測器時 `face_for`／`width`
+停在 `todo!("R5: …")`，不以猜測的寬度斷行。`load_font_sized` 只檢查 TTC／sfnt 檔頭；依家族名稱選區域字型（`hdFonts`）只給 HD 用，在 R6。
+`rune_breakable` 的 Han／Hiragana／Katakana／Hangul 範圍取自 Go 1.22.12 `unicode.Scripts`（Unicode 15.0.0），寫成資料表（Unicode Script 屬性
+資料，不是 Go 程式碼；若主代理認定屬於教訓 `rust-port-no-go-stdlib` 的例外範圍，需另徵同意）。
+
+### A 組：跨組介面
+
+`stepBattleWalk`（A）與 `stepBattleWalkSegment`（B）：Go 的 `w` 與 `g.walk` 是同一個指標，segment 內 `nativeCh12UpWalkFrame` 讀 `g.walk`、
+`beginNativeSystemGroupMarchFieldEvent` 比對 `g.walk != walk`、錯誤路徑寫 `g.walk = nil`，`finish` 閉包要 `&mut Game`。骨架的
+`(w: &mut WalkAnim, finish: &mut dyn FnMut(i64))` 無法同時滿足。A 組在本工作樹把 B 的骨架簽名改成
+`(&mut self, finish: &mut dyn FnMut(&mut Game, i64)) -> bool`：walk 留在 `self.walk`，segment 以 `self.walk.as_mut()` 存取，在 Go 呼叫
+`finish(pose)` 的地方呼叫 `finish(self, pose)`；`finish` 開頭把 walk 取出（呼叫當下 `g.walk == w`）。整合時與 B 組的實作對齊。
+
+`OFFICIAL_LOCALE_CONTRACT`（A）：Go `native_system_info_locale.go:14` 的 `init()` 在套件初始化時加入 68 個 `battle.info.*` 鍵，骨架沒有產生
+`init`。A 組在這個變數的初始式呼叫 `system_info_locale_contract()`（C 組，`todo!()`），C 組合併前載入官方語系會停在那裡。
+
+### 共用變更需求
+
+本工作樹已以最小改動先做（主代理整合時決定採用）：
+
+| 項目 | 原因 | 寫法 |
+|---|---|---|
+| `TickInput::press_duration` 與 `key_press_duration`、`any_just_pressed` | `keyRepeat` 讀 `KeyPressDuration`；多處「任意鍵」 | `support.rs`，`BTreeMap<Key, i64>` |
+| `AudioVoice::encoded`、`AudioVoice::looping` | 外殼要知道播什麼、BGM 是否循環 | `support.rs` |
+| `Game::title_ani1_voice`、`Game::native_physical_voice` 改 `Option<SfxVoice>` | Go 介面值可為 nil | `main.rs` 欄位型別 |
+| `Game::fullscreen_toggle_requested`（新欄位） | `SetFullscreen` 是外殼的事 | `main.rs` |
+| `MapData` derive `Deserialize` | `loadMap` 讀 `map.json` | `main.rs`，`[]byte` 欄位用 `battle::go_bytes` |
+| `step_battle_walk_segment` 簽名（B 的函式） | 見上節 | `main.rs` |
+
+未做、需要主代理決定：
+
+| 項目 | 原因 | 建議 |
+|---|---|---|
+| `TickInput` 加觸控（本幀點擊的邏輯座標） | Go 點格移動游標 | `touches: Vec<(f64, f64)>`，外殼先做 `playerTouchCoordinates` 的換算 |
+| `Game::growth_roll_observer` 改成 `State::native_growth_roll_observer` 的型別 | Go 把同一個 func 交給 `battle.State`；Rust 兩邊型別不同，`bind_command_learn` 有設定時停在 `todo!` | `Option<battle::Callback<dyn Fn(&battle::Unit, u16) -> u16 + Send + Sync>>` |
+| TTF 量測 | 斷行與名稱寬度影響對話分頁 | 由 `fd2-app` 注入 `TextMeasure`；無畫面重播若要與 Go 同寬，需要與 `golang.org/x/image/font/opentype` 同結果的量測 |
+| `fd2_campaign::go_filepath` 公開 | 路徑 Join 的詞法 Clean | 目前 `pub(crate)`；A 組改用 `std::path`（只略過空段），呼叫端只傳固定相對路徑 |
+
+### KNOWN_DIFFERENCES
+
+| 名稱 | 差異 | 影響 |
+|---|---|---|
+| `load-game-seed-no-wall-clock` | 沒有 `FD2_SEED` 時 Go 用 `time.Now().UnixNano()`，Rust 用 `VIRTUAL_CLOCK_ORIGIN` 的奈秒值 | 不讀主機時間；要不同種子的外殼設 `FD2_SEED` 或替換 `rng` |
+| `audio-decode-deferred` | Go 在載入時把 OGG／WAV 解成 PCM，解不開就拒收；Rust 只檢查編碼位元組非空 | 損壞音檔改在 R5 播放時才發現 |
+| `run-log-no-wall-timestamp` | Go `log.Printf` 帶主機時間前綴，Rust 不寫 | 只影響 run log 文字 |
+| `hd-title-seal-bytes` | HD 標題與讀檔槽的 `seal` 是 Rust 自訂位元組序列的 SHA-256，不是 Go `json.Marshal` 的 | `seal` 只和自己比對 |
+| `locale-contract-map-order`、`figani-delays-map-order`、`party-roster-map-order` | Go `range` map 隨機，Rust 依鍵排序 | 只在同時有多個錯誤或名冊 identity 重複時，回報的項目不同 |
+| `figani-meta-pair-length` | Go `[2]int` 接受長度不是 2 的 JSON 陣列，Rust 整份視為解碼失敗 | 正式匯出檔都是長度 2 |
+| `go-stdlib-error-text` | 讀檔、JSON、PNG 的錯誤文字是 Rust 的（教訓 `rust-port-no-go-stdlib`） | 接受與拒收相同 |
+| `story-walk-callback-view` | `stepStoryWalks` 迴圈中延續看到的 `story_walks` 是空的（Go 看到原長度）；延續推入的工作照 Go 在迴圈結尾被丟掉（`main.go:947`） | 目前沒有延續讀 `storyWalks` |
+| `asset-glob-subset` | `filepath.Glob` 只實作「最後一段含 `*`」 | 三個呼叫端的樣式都是這種 |
+| `map-json-key-case` | Go `json.Unmarshal` 的鍵比對不分大小寫，Rust 只認標籤上的寫法 | 正式匯出檔與標籤相同 |
+
+`NORMALIZATIONS`：無（A 組沒有黃金差分）。
+
+### A 組測試
+
+`tools/rust_game_test.sh`（`FD2_REQUIRE_ORIGINAL=1`，輸出沒有「略過」）：72 個測試，63 通過、9 個 `ignore`。
+
+| ignore | 等 | 原因 |
+|---|---|---|
+| `official_locales_satisfy_contract`、`locale_message_reports_missing_catalog_and_bad_keys` | C | `OFFICIAL_LOCALE_CONTRACT` 初始式呼叫 `system_info_locale_contract` |
+| `test_play_raw_retains_real_audio_player`、`test_fm_and_mt32_tracks_decode_and_switch_at_runtime`、`test_unknown_catalog_track_does_not_mutate_current_bgm` | C | `current_native_system_options` |
+| `test_separated_title_fdother_matches_fixed_archive` | E | HD 選單凍結呼叫 `modern_hd_native_text_color` |
+| `test_game_materializes_editable_native_map_runtime` | B | `sync_native_map_view` |
+| `test_native_nested_system_exit_publishes_ebiten_termination`、`update_runs_deferred_cleanup_on_early_return` | E | `update` 開頭的 `native_modifier_held` |
+
+移植範圍：測試檔名對應 A 組 Go 檔的測試（`player_game_clock`、`native_bios_clock`、`player_battle_speed`、`player_hd_quality`、`title_menu_state`、
+`audio_voice`、`separated_command_sound`、`separated_ui_assets`、`text_wrap_segments`、`font`、`font_scale`、`modern_hd_title_interface`），以及
+以 A 組 `main.go` 函式為主題的測試（`atk_animation_test.go`、`beatrunner_test.go` 的隊伍同步／排序／篩選、`persistent_native_command_test.go`、
+`native_map_presentation_test.go`、`native_continue_handoff_test.go` 的 Termination）。`Update`、`loadGame`、`enterNode`、`resetBattle` 被其他主題的
+Go 測試當驅動用（以函式名掃描，共 460 個 Go 測試直接引用 A 組函式），那些測試的主題屬於別組，由主題組或階段 3 移植。
+
+未移植的 A 組檔案測試：
+
+| 類別 | 測試 | 原因 |
+|---|---|---|
+| R5（畫面或真字型量寬） | `TestFontUserScaleChangesMeasuredWidth`（`font_scale_test.go:99`）、`TestLocalizedDialogueWrapKeepsEnglishWordsWhole`（`text_wrap_segments_test.go:71`）、`TestLocaleDialogueCorpusNeverSplitsWords`（`text_wrap_locale_corpus_test.go:19`）、`TestModernHDTitleInterfaceRuntimeGPU`（`modern_hd_title_interface_gpu_test.go:450`）、`TestModernHDTitleInterfacePrototype`（`modern_hd_title_interface_prototype_test.go:88`）、`TestHDTextureQualityBattleGeometryGPU`（`player_hd_quality_gpu_test.go:108`）、`TestHDTextureQualityKeepsSourceAndAlpha`（`player_hd_quality_test.go:12`）、`TestTitleScrollPalettePulseMatchesNativeRowWindows`、`TestTitlePublisherScheduleAndBrightness`（`title_menu_state_test.go:110`、`129`，繪圖用的 `r8` 函式）、`TestOriginalInterfaceKeepsHDPanelPortrait`、`TestInterfaceBattlePanelSelectionKeepsNativePixels`、`TestInterfaceSystemInfoWithOriginalArtwork`、`TestInterfaceStatusWithOriginalArtwork`（`player_interface_test.go:49`、`89`、`128`、`151`） | 量寬由外殼注入；或斷言畫面像素 |
+| R6（HD 切換） | `TestIndependentInterfaceFourModesKeepArtworkAndBattle`、`TestInterfaceRejectsBeforeChangingModeOrArtwork`、`TestInterfaceSettingsSurviveLocaleAndAudio`（`player_interface_test.go:12`、`36`、`62`）、`TestFirstThemeSwitchLoadsInBackgroundAndAppliesOnce`、`TestBackgroundThemeLoadFailureLeavesFaithfulMode`、`TestFirstInterfaceSwitchDefersWhileThemeLoads`（`player_theme_loader_test.go:38`、`74`、`89`）、`TestModernHDTitleInterfaceSources`、`TestModernHDTitleLoadSlotsChromeSource` 與 `TestModernHDTitleInterfaceRejectsSource` 的前半（`modern_hd_title_interface_test.go:25`、`173`、`98`）、`TestHDQualityRasterCoordinatesAndSceneryCache`、`TestHDTextureQualitySettingsAndToolbar`（`player_hd_quality_test.go:45`、`80`） | 經 `setInterfaceMode`／`cycleTheme`／HD 繪製 |
+| 改寫環境變數 | `separated_ui_assets_test.go` 的 3 個（`:133`、`:184`、`:193`）、`separated_command_sound_test.go:51`、`:79`、`assets_test.go` 的 3 個（`:39`、`:52`、`:71`）、`packaged_startup_test.go` 的 3 個（`:9`、`:38`、`:83`）、`title_menu_state_test.go:339`、`:387`、`:398`、`player_game_clock_test.go` `TestPlayerSpeedIsSeparateFromCampaign`、`player_battle_speed_test.go:32`、`input_audit_trace_test.go:12` | `t.Setenv`：Rust 2024 的 `std::env::set_var` 是 `unsafe`，工作區 `forbid(unsafe_code)`。對真實素材包的對應測試已另寫 |
+| `r8` 函式 | `player_battle_speed_test.go` 的 `:9`、`:57`、`:94`、`:101`、`font_scale_test.go:10`、`:64`、`title_menu_state_test.go:165`、`:194`（`decode…`；雜湊已併入 `test_separated_title_publisher_matches_fixed_archive`）、`:349`、`:453`、`audio_voice_test.go:59` | 受測函式第一章沒有執行到，骨架沒有產生 |
+| 別組主題 | `audio_voice_test.go` 的物理演出 7 個（`:129`..`:283`，D 組）、`TestPlayTitleStartThroughChapterOneToTown`（`native_title_to_town_test.go:689`，整合） | 主題屬於別組或階段 3 的重播 |
+| 逐句譯文核對 | `story_locale_test.go` 13 個（`TestReviewed…`、`TestAllRuntimeStoriesMatchCanonicalLineIdentities` 等） | 測的是受版控的譯文資料；`load_story_script_with_identity_at` 與 `localized_story_text` 的行為已有對應測試。逐句清單可交由較低成本的子代理照抄 |
+
+黃金差分：A 組沒有加。`title_update` 的開場排程、`step_attack_presentation_tick` 等收 `now` 的工作要等 B～E 合併後才跑得完整，適合在
+階段 3 以重播檢查點比對。
+
+### fd2-rules／fd2-campaign 缺口
+
+沒有改那兩個 crate。`battle::Unit`／`battle::State` 有私有欄位，結構字面值不能用 `..Default::default()`，改成先 `default()` 再逐欄寫入。
+`fd2_campaign::go_filepath` 是 `pub(crate)`，見共用變更需求。

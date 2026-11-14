@@ -2,8 +2,14 @@
 //!
 //! 骨架：Go 檔的 11 個函式中產生 4 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
 //! HD 檔：型別只保留第一章忠實模式執行到的欄位，其餘欄位與函式在 R6。
+//!
+//! 忠實模式下載入標題與讀檔槽素材時也會凍結 HD 資料（Go 在載入時就核對原版素材雜湊，失敗即整批
+//! 拒絕），所以這裡的核對要照 Go 完整移植。`seal` 只和自己比對（Go `valid()` 重算後比較），
+//! Rust 以自己的位元組序列計算 SHA-256，不重現 Go `json.Marshal` 的位元組
+//! （KNOWN_DIFFERENCES `hd-title-seal-bytes`）。
 
 use super::*;
+use sha2::{Digest, Sha256};
 
 /// Go：`modern_hd_title_interface.go:18`
 pub(crate) static MODERN_HD_TITLE_ITEM_HASHES: LazyLock<[String; 6]> = LazyLock::new(|| {
@@ -44,21 +50,128 @@ pub(crate) struct ModernHDTitleMenuItem {
     pub(crate) seal: [u8; 32],
 }
 
+/// Go `fmt.Sprintf("%x", sha256.Sum256(b))`。
+pub(crate) fn sha256_hex(b: &[u8]) -> String {
+    Sha256::digest(b).iter().map(|x| format!("{x:02x}")).collect()
+}
+
+fn hash_i64(h: &mut Sha256, v: i64) {
+    h.update(v.to_le_bytes());
+}
+
+fn hash_bytes(h: &mut Sha256, b: &[u8]) {
+    hash_i64(h, b.len() as i64);
+    h.update(b);
+}
+
+fn hash_colors(h: &mut Sha256, colors: &[ColorRgba]) {
+    hash_i64(h, colors.len() as i64);
+    for c in colors {
+        h.update([c.r, c.g, c.b, c.a]);
+    }
+}
+
 /// Go：`modern_hd_title_interface.go:42`，`func titleMenuHDSeal(h *modernHDTitleMenuItem) [32]byte`
-pub(crate) fn title_menu_hd_seal(h: Option<&mut ModernHDTitleMenuItem>) -> [u8; 32] {
-    todo!("modern_hd_title_interface.go:titleMenuHDSeal")
+/// Go 參數是 `*modernHDTitleMenuItem`，Rust 收唯讀借用（簽名變更見 `PORTING.md`）。
+pub(crate) fn title_menu_hd_seal(h: Option<&ModernHDTitleMenuItem>) -> [u8; 32] {
+    let Some(h) = h else {
+        return [0; 32];
+    };
+    let mut d = Sha256::new();
+    for v in [h.item, h.state, h.source.width, h.source.height] {
+        hash_i64(&mut d, v);
+    }
+    hash_bytes(&mut d, &h.source.indexed);
+    hash_bytes(&mut d, &h.source.mask);
+    hash_bytes(&mut d, &h.blank);
+    hash_colors(&mut d, &h.palette);
+    hash_colors(&mut d, &[h.foreground, h.shadow]);
+    d.finalize().into()
+}
+
+/// Go `color.Color.RGBA()` 的 16 位元預乘值（`ColorRgba` 已預乘，乘 0x101）。
+fn rgba16(c: ColorRgba) -> (u32, u32, u32, u32) {
+    (c.r as u32 * 0x101, c.g as u32 * 0x101, c.b as u32 * 0x101, c.a as u32 * 0x101)
 }
 
 /// Go：`modern_hd_title_interface.go:50`，`func freezeModernHDTitleMenuItem(source fdother.Frame, dac []byte, palette color.Palette, item, state int, original *ebiten.Image) (*modernHDTitleMenuItem, error)`
+/// `original` 收 `&Arc<Picture>`（Go 以指標身分比對，Rust 存同一個 `Arc`；簽名變更見 `PORTING.md`）。
 pub(crate) fn freeze_modern_hd_title_menu_item(
     source: &fdother::Frame,
     dac: &[u8],
     palette: &ColorPalette,
     item: i64,
     state: i64,
-    original: Option<&mut Picture>,
+    original: Option<&Arc<Picture>>,
 ) -> Result<Option<ModernHDTitleMenuItem>> {
-    todo!("modern_hd_title_interface.go:freezeModernHDTitleMenuItem")
+    let source_ok = (0..3).contains(&item)
+        && (0..2).contains(&state)
+        && original.is_some()
+        && !(item == 0 && source.width != 61)
+        && !(item != 0 && source.width != 62)
+        && !(item < 2 && source.height != 7)
+        && !(item == 2 && source.height != 8)
+        && source.indexed.len() as i64 == source.width * source.height
+        && source.mask.len() == source.indexed.len()
+        && palette.len() == 256;
+    if !source_ok
+        || sha256_hex(dac) != "435ff992367240d0f195f62983288741548fa9c9a6d0293ebd8735b69ad40b51"
+        || sha256_hex(&source.indexed) != MODERN_HD_TITLE_ITEM_HASHES[(item * 2 + state) as usize]
+        || sha256_hex(&source.mask) != MODERN_HD_TITLE_MASK_HASHES[item as usize]
+    {
+        return Err(GameError::new("modern HD title: original item source differs"));
+    }
+    let expected = color_palette_from_nrgba(&fdother::vga_palette_from_dac(dac)?);
+    if &expected != palette {
+        return Err(GameError::new("modern HD title: palette differs"));
+    }
+    let mut h = ModernHDTitleMenuItem {
+        item,
+        state,
+        source: source.clone(),
+        palette: palette.clone(),
+        original: original.cloned(),
+        blank: source.indexed.clone(),
+        ..Default::default()
+    };
+    // x0..6 and the last seven columns contain the selected jewels and shadows.
+    // The verified x7 background is uniform across the remaining non-letter area.
+    let mut brightest: i64 = -1;
+    let w = source.width;
+    for y in 0..source.height {
+        let bg = source.indexed[(y * w + 7) as usize];
+        let (r, _, b, _) = rgba16(palette[bg as usize]);
+        if b > r {
+            return Err(GameError::new("modern HD title: background sample differs"));
+        }
+        for x in 7..w - 7 {
+            let at = (y * w + x) as usize;
+            let index = source.indexed[at];
+            if index == bg {
+                continue;
+            }
+            let (r, g, b, _) = rgba16(palette[index as usize]);
+            if b <= r {
+                return Err(GameError::new("modern HD title: non-letter source in text region"));
+            }
+            let value = (r + g + b) as i64;
+            if value > brightest {
+                brightest = value;
+                h.foreground = modern_hd_native_text_color(palette, index);
+            }
+            h.blank[at] = bg;
+        }
+    }
+    if brightest < 0 {
+        return Err(GameError::new("modern HD title: text source missing"));
+    }
+    h.shadow = modern_hd_native_text_color(palette, 253);
+    let mut blank = h.source.clone();
+    blank.indexed = h.blank.clone();
+    h.picture = masked_rgba(&blank, palette);
+    h.picture_identity = h.picture.clone();
+    h.seal = title_menu_hd_seal(Some(&h));
+    Ok(Some(h))
 }
 
 /// Go：`modern_hd_title_interface.go:167`
@@ -75,17 +188,131 @@ pub(crate) struct ModernHDTitleLoadSlots {
 }
 
 /// Go：`modern_hd_title_interface.go:176`，`func titleLoadSlotsHDSeal(a *nativeLoadSlotsUIAssets, h *modernHDTitleLoadSlots) [32]byte`
+/// Rust 收唯讀借用（簽名變更見 `PORTING.md`）。
 pub(crate) fn title_load_slots_hd_seal(
-    a: Option<&mut NativeLoadSlotsUIAssets>,
-    h: Option<&mut ModernHDTitleLoadSlots>,
+    a: Option<&NativeLoadSlotsUIAssets>,
+    h: Option<&ModernHDTitleLoadSlots>,
 ) -> [u8; 32] {
-    todo!("modern_hd_title_interface.go:titleLoadSlotsHDSeal")
+    let (Some(a), Some(h)) = (a, h) else {
+        return [0; 32];
+    };
+    let Some(chrome) = h.chrome.as_ref() else {
+        return [0; 32];
+    };
+    let mut d = Sha256::new();
+    hash_i64(&mut d, a.dialogue_box.width);
+    hash_i64(&mut d, a.dialogue_box.height);
+    hash_bytes(&mut d, &a.dialogue_box.pixels);
+    hash_colors(&mut d, &a.palette);
+    hash_i64(&mut d, h.cells.len() as i64);
+    for cell in &h.cells {
+        hash_i64(&mut d, cell.width);
+        hash_i64(&mut d, cell.height);
+        hash_bytes(&mut d, &cell.pixels);
+    }
+    hash_colors(&mut d, &[chrome.background]);
+    for edge in &chrome.edges {
+        hash_colors(&mut d, edge);
+    }
+    for corner in &chrome.corners {
+        hash_colors(&mut d, corner);
+    }
+    d.finalize().into()
 }
 
 /// Go：`modern_hd_title_interface.go:184`，`func freezeModernHDTitleLoadSlots(a *nativeLoadSlotsUIAssets, dac []byte) (*modernHDTitleLoadSlots, error)`
+/// Rust 收唯讀借用（簽名變更見 `PORTING.md`）。
 pub(crate) fn freeze_modern_hd_title_load_slots(
-    a: Option<&mut NativeLoadSlotsUIAssets>,
+    a: Option<&NativeLoadSlotsUIAssets>,
     dac: &[u8],
 ) -> Result<Option<ModernHDTitleLoadSlots>> {
-    todo!("modern_hd_title_interface.go:freezeModernHDTitleLoadSlots")
+    let a = match a {
+        Some(a)
+            if a.dialogue_box.width == 310
+                && a.dialogue_box.height == 86
+                && sha256_hex(&a.dialogue_box.pixels)
+                    == "c009ad5ed72466295e3c60d4cb5117c3331444bcbe23d5d1befd2f413b15ac00"
+                && sha256_hex(dac) == "b89f66fd8cec0b38e9e8697cc72ee63095f0a61b14edcee10d6ea908fff429ae" =>
+        {
+            a
+        }
+        _ => return Err(GameError::new("modern HD title slots: original panel or palette differs")),
+    };
+    let mut expected = color_palette_from_nrgba(&fdother::vga_palette_from_dac(dac)?);
+    expected[0] = ColorRgba { a: 255, ..Default::default() };
+    if expected != a.palette {
+        return Err(GameError::new("modern HD title slots: palette differs"));
+    }
+    let shared = fdother::load_separated_item_panel_entries(separated_asset_path("ui"))?;
+    let mut h = ModernHDTitleLoadSlots { cells: Vec::with_capacity(20), ..Default::default() };
+    for i in 0..20 {
+        let Some(cell) = shared.raw.get(&i) else {
+            return Err(GameError::new("modern HD title slots: dialogue cells missing"));
+        };
+        h.cells.push(cell.clone());
+    }
+    let mut hash = Sha256::new();
+    for i in [1usize, 2, 3, 4, 9, 10, 11, 12, 13] {
+        let cell = &h.cells[i];
+        hash.update([i as u8, cell.width as u8, cell.height as u8]);
+        hash.update(&cell.pixels);
+    }
+    let digest: String = hash.finalize().iter().map(|x| format!("{x:02x}")).collect();
+    if digest != "3171adb1c2c47ddb7a8e3057460efdefdf42fc6176f12083687272f55700e22f" {
+        return Err(GameError::new("modern HD title slots: original dialogue cells differ"));
+    }
+    h.chrome = freeze_modern_hd_dialogue_chrome(&h.cells, &a.palette)?;
+    h.chrome_identity = h.chrome.clone();
+    let mut json_chrome = h.chrome.clone().unwrap_or_default();
+    json_chrome.background = ColorRgba::default();
+    json_chrome.gpu = None;
+    json_chrome.gold_gpu = BTreeMap::new();
+    h.json_chrome = Some(json_chrome.clone());
+    h.json_identity = Some(json_chrome);
+    h.seal = title_load_slots_hd_seal(Some(a), Some(&h));
+    Ok(Some(h))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::test_support;
+
+    /// Go：`modern_hd_title_interface_test.go:98` `TestModernHDTitleInterfaceRejectsSource` 的工廠部分
+    /// （五種來源錯誤在算顏色之前就拒收）。前半段經 `setInterfaceMode`／`drawModernHDTitleMenuItem`（R6）。
+    #[test]
+    fn freeze_modern_hd_title_menu_item_rejects_factory_faults() {
+        if test_support::input("FD2_ASSET_PACK", "surfaces").is_none() {
+            return;
+        }
+        let pack = std::env::var("FD2_ASSET_PACK").unwrap();
+        let source = fdother::load_separated_nested_single_frame(join_path(&[&pack, "surfaces"]), 7, 1).unwrap();
+        let (dac, palette) = fdother::load_separated_fdother_palette(join_path(&[&pack, "palette"]), 8).unwrap();
+        let palette = color_palette_from_nrgba(&palette);
+        let original = masked_rgba(&source, &palette).unwrap();
+        let mut bad_shape = source.clone();
+        (bad_shape.width, bad_shape.height) = (7, 61);
+        assert!(
+            freeze_modern_hd_title_menu_item(&bad_shape, &dac, &palette, 0, 0, Some(&original)).is_err(),
+            "same count wrong geometry admitted"
+        );
+        for field in ["pixels", "mask", "dac", "palette", "original"] {
+            let (mut s, mut d, mut p) = (source.clone(), dac.clone(), palette.clone());
+            let mut o = Some(&original);
+            match field {
+                "pixels" => s.indexed[0] ^= 1,
+                "mask" => s.mask[0] ^= 255,
+                "dac" => d[0] ^= 1,
+                "palette" => p[0] = ColorRgba { r: 1, a: 255, ..Default::default() },
+                _ => o = None,
+            }
+            let err = freeze_modern_hd_title_menu_item(&s, &d, &p, 0, 0, o).unwrap_err();
+            let want = if field == "palette" {
+                "modern HD title: palette differs"
+            } else {
+                "modern HD title: original item source differs"
+            };
+            assert_eq!(err.message(), want, "factory admitted {field}");
+        }
+    }
 }

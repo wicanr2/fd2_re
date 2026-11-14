@@ -43,5 +43,79 @@ pub(crate) fn freeze_modern_hd_confirmation(
     palette: &ColorPalette,
     font: Option<&mut Font>,
 ) -> Result<Option<ModernHDConfirmation>> {
-    todo!("modern_hd_confirmation.go:freezeModernHDConfirmation")
+    if cells.len() <= 52 || palette.len() != 256 {
+        return Err(GameError::new("modern HD confirmation: source unavailable"));
+    }
+    let mut result = ModernHDConfirmation::default();
+    for &index in MODERN_HD_CONFIRMATION_INDICES.iter() {
+        let cell = &cells[index as usize];
+        let height = if index == 16 || index == 17 { 20 } else { 16 };
+        if cell.width != 24 || cell.height != height || cell.pixels.len() as i64 != 24 * height {
+            return Err(game_err!("modern HD confirmation: cell{index} shape differs"));
+        }
+        let color_at = |x: usize, y: usize| -> Result<ColorRgba> {
+            let ink = palette[cell.pixels[y * 24 + x] as usize];
+            if ink.a != 255 {
+                return Err(GameError::new("modern HD confirmation: source color is not opaque"));
+            }
+            Ok(ColorRgba { r: ink.r, g: ink.g, b: ink.b, a: 255 })
+        };
+        let art = ModernHDConfirmationCell {
+            height,
+            background: color_at(3, 3)?,
+            ink: color_at(12, 0)?,
+            shadow: color_at(12, 1)?,
+        };
+        result.cells.insert(index, art);
+    }
+    let font = match font {
+        Some(font) if font.sf.is_some() => font,
+        _ => return Err(GameError::new("modern HD confirmation: font unavailable")),
+    };
+    for locale in ["zh-Hant", "zh-Hans", "en", "ja"] {
+        let Some(catalog) = load_official_locale(locale)? else {
+            return Err(GameError::new("modern HD confirmation: official locale unavailable"));
+        };
+        // Go：`font.hdFonts[locale]` 優先（HD 區域字型在 R6，忠實模式下 `hd_fonts` 是空的）。
+        let mut f = font.hd_fonts.get(locale).cloned().unwrap_or_else(|| font.clone());
+        let Some(sf) = f.sf.clone() else {
+            return Err(GameError::new("modern HD confirmation: regional font unavailable"));
+        };
+        let (face, _) = f.face_for(40);
+        let Some(face) = face else {
+            return Err(GameError::new("modern HD confirmation: font face unavailable"));
+        };
+        // face_for 成功代表已注入量測器（見 font.rs）。
+        let measure = f.measure.0.clone().expect("face_for 成功時已注入 TextMeasure");
+        let mut labels: [String; 2] = Default::default();
+        let mut bounds: [Rectangle; 2] = Default::default();
+        for (option, key) in ["common.yes", "common.no"].into_iter().enumerate() {
+            let label = match catalog.format(key, &[]) {
+                Ok(label) if !label.is_empty() => label,
+                _ => return Err(game_err!("modern HD confirmation: {locale}/{key} unavailable")),
+            };
+            if label.chars().any(|r| !measure.has_glyph(&sf, r)) {
+                return Err(GameError::new("modern HD confirmation: label glyph unavailable"));
+            }
+            bounds[option] = measure.bound_string(&face, &label);
+            // The smallest native cell is 24x16. Include a one-HD-pixel
+            // shadow and the selected six-HD-pixel downward pulse.
+            let b = &bounds[option];
+            let (left, top) = ((144 - rect_dx(b)) / 2, (96 - rect_dy(b)) / 2);
+            let ink = Rectangle {
+                min: Point { x: left, y: top },
+                max: Point { x: left + rect_dx(b) + 1, y: top + rect_dy(b) + 7 },
+            };
+            // Go `ink.In(image.Rect(12, 12, 132, 84))`（ink 不會是空矩形）。
+            let inside = ink.min.x >= 12 && ink.max.x <= 132 && ink.min.y >= 12 && ink.max.y <= 84;
+            if rect_empty(b) || !inside {
+                return Err(game_err!("modern HD confirmation: {locale} label exceeds text-safe area"));
+            }
+            labels[option] = label;
+        }
+        result.labels.insert(locale.to_string(), labels);
+        result.bounds.insert(locale.to_string(), bounds);
+        result.fonts.insert(locale.to_string(), f);
+    }
+    Ok(Some(result))
 }

@@ -16,8 +16,15 @@
 //! 可寫檔(存檔/設定)一律走 $XDG_DATA_HOME/fd2_re/,不再用 cwd(唯讀 mount 內無法寫入)。
 //!
 //! 骨架：Go 檔的 7 個函式中產生 6 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
+//!
+//! 路徑以 `std::path` 處理（教訓 `rust-port-no-go-stdlib`）：Go `filepath.Join` 會做詞法 Clean，
+//! 這裡只略過空的組成段，不消去 `..`；本檔的呼叫端只傳固定的相對路徑，結果相同。
+//!
+//! 本檔另有 Rust 新增的畫面轉換工具（`picture_from_*`、調色盤轉換、PNG 解碼），取代 Go 的
+//! `ebiten.NewImageFromImage` 與 `image.Decode`；A 組的載入函式與其他組都可以用。
 
 use super::*;
+use std::path::{Path, PathBuf};
 
 /// Go：`assets.go:29`
 ///
@@ -29,11 +36,34 @@ pub(crate) static EXE_DIR_CACHED: LazyLock<RwLock<String>> = LazyLock::new(|| Rw
 /// Go 會在執行期改寫這個套件層變數，Rust 以 `RwLock` 包住。
 pub(crate) static EXE_DIR_LOOKED: LazyLock<RwLock<bool>> = LazyLock::new(|| RwLock::new(Default::default()));
 
+/// Go `filepath.Join`（不做詞法 Clean，見模組文件）。
+pub(crate) fn join_path(parts: &[&str]) -> String {
+    let mut out = PathBuf::new();
+    for part in parts {
+        if !part.is_empty() {
+            out.push(part);
+        }
+    }
+    out.to_string_lossy().into_owned()
+}
+
 /// exeDir 回傳執行檔所在目錄(符號連結已解),取不到則回傳 ""。
 ///
 /// Go：`assets.go:33`，`func exeDir() string`
 pub(crate) fn exe_dir() -> String {
-    todo!("assets.go:exeDir")
+    if *EXE_DIR_LOOKED.read().unwrap() {
+        return EXE_DIR_CACHED.read().unwrap().clone();
+    }
+    *EXE_DIR_LOOKED.write().unwrap() = true;
+    let Ok(mut p) = std::env::current_exe() else {
+        return String::new();
+    };
+    if let Ok(rp) = std::fs::canonicalize(&p) {
+        p = rp;
+    }
+    let dir = p.parent().map(|d| d.to_string_lossy().into_owned()).unwrap_or_else(|| String::from("."));
+    *EXE_DIR_CACHED.write().unwrap() = dir.clone();
+    dir
 }
 
 /// Go：`assets.go:49`
@@ -45,19 +75,34 @@ pub(crate) static USER_DATA_DIR_CACHED: LazyLock<RwLock<String>> = LazyLock::new
 ///
 /// Go：`assets.go:52`，`func userDataDir() string`
 pub(crate) fn user_data_dir() -> String {
-    todo!("assets.go:userDataDir")
+    {
+        let cached = USER_DATA_DIR_CACHED.read().unwrap();
+        if !cached.is_empty() {
+            return cached.clone();
+        }
+    }
+    let mut base = std::env::var("XDG_DATA_HOME").unwrap_or_default();
+    if base.is_empty() {
+        // Go `os.UserHomeDir()`：Unix 讀 $HOME，失敗時退回 "."。
+        let home = std::env::var("HOME").ok().filter(|h| !h.is_empty()).unwrap_or_else(|| String::from("."));
+        base = join_path(&[&home, ".local", "share"]);
+    }
+    let dir = join_path(&[&base, "fd2_re"]);
+    let _ = std::fs::create_dir_all(&dir);
+    *USER_DATA_DIR_CACHED.write().unwrap() = dir.clone();
+    dir
 }
 
 /// userDataPath 回傳可寫檔的完整路徑(存檔/設定/編輯器輸出)。
 ///
 /// Go：`assets.go:71`，`func userDataPath(name string) string`
 pub(crate) fn user_data_path(name: &str) -> String {
-    todo!("assets.go:userDataPath")
+    join_path(&[&user_data_dir(), name])
 }
 
 /// Go：`assets.go:75`，`func fileExists(p string) bool`
 pub(crate) fn file_exists(p: &str) -> bool {
-    todo!("assets.go:fileExists")
+    std::fs::metadata(p).is_ok()
 }
 
 /// macBundleResourceDir 回傳標準 .app bundle 的 Resources 目錄候選。
@@ -65,7 +110,18 @@ pub(crate) fn file_exists(p: &str) -> bool {
 ///
 /// Go：`assets.go:82`，`func macBundleResourceDir() string`
 pub(crate) fn mac_bundle_resource_dir() -> String {
-    todo!("assets.go:macBundleResourceDir")
+    let d = exe_dir();
+    let d = Path::new(&d);
+    if d.as_os_str().is_empty() || d.file_name().is_none_or(|n| n != "MacOS") {
+        return String::new();
+    }
+    let Some(contents) = d.parent() else {
+        return String::new();
+    };
+    if contents.file_name().is_none_or(|n| n != "Contents") {
+        return String::new();
+    }
+    contents.join("Resources").to_string_lossy().into_owned()
 }
 
 /// assetPath 解析一個唯讀資產相對路徑(如 "assets/map.json" 或 "assets/maps/map3" 目錄)。
@@ -74,5 +130,168 @@ pub(crate) fn mac_bundle_resource_dir() -> String {
 ///
 /// Go：`assets.go:97`，`func assetPath(rel string) string`
 pub(crate) fn asset_path(rel: &str) -> String {
-    todo!("assets.go:assetPath")
+    if Path::new(rel).is_absolute() {
+        return rel.to_string();
+    }
+    let p = join_path(&[&user_data_dir(), rel]);
+    if file_exists(&p) {
+        return p;
+    }
+    if let Ok(appdir) = std::env::var("APPDIR")
+        && !appdir.is_empty()
+    {
+        let p = join_path(&[&appdir, rel]);
+        if file_exists(&p) {
+            return p;
+        }
+    }
+    let resources = mac_bundle_resource_dir();
+    if !resources.is_empty() {
+        let p = join_path(&[&resources, rel]);
+        if file_exists(&p) {
+            return p;
+        }
+    }
+    let d = exe_dir();
+    if !d.is_empty() {
+        let p = join_path(&[&d, rel]);
+        if file_exists(&p) {
+            return p;
+        }
+    }
+    if let Ok(cwd) = std::env::current_dir() {
+        let mut dir = cwd;
+        for _ in 0..5 {
+            let p = dir.join(rel).to_string_lossy().into_owned();
+            if file_exists(&p) {
+                return p;
+            }
+            match dir.parent() {
+                Some(parent) if parent != dir => dir = parent.to_path_buf(),
+                _ => break,
+            }
+        }
+    }
+    rel.to_string()
+}
+
+// ---------------- Rust 新增：格式化 ----------------
+
+/// Go `fmt.Sprintf("%v", []int{...})`：`[1 2 3]`。
+pub(crate) fn go_int_slice(v: &[i64]) -> String {
+    let parts: Vec<String> = v.iter().map(|x| x.to_string()).collect();
+    format!("[{}]", parts.join(" "))
+}
+
+// ---------------- Rust 新增：畫面轉換 ----------------
+
+/// `fdother::Palette`（Go `color.Palette` 的 `color.NRGBA` 元素）→ [`ColorPalette`]：照 Go
+/// `color.NRGBA.RGBA()` 預乘 alpha 後取高 8 位元（VGA 調色盤全是不透明色，值不變）。
+pub(crate) fn color_palette_from_nrgba(palette: &[fdother::Nrgba]) -> ColorPalette {
+    palette
+        .iter()
+        .map(|c| {
+            let (r, g, b, a) = c.rgba();
+            ColorRgba { r: (r >> 8) as u8, g: (g >> 8) as u8, b: (b >> 8) as u8, a: (a >> 8) as u8 }
+        })
+        .collect()
+}
+
+/// [`ColorPalette`] → `fdother::Palette`（解除預乘；不透明色原值）。
+pub(crate) fn nrgba_palette_from_color(palette: &[ColorRgba]) -> fdother::Palette {
+    palette
+        .iter()
+        .map(|c| {
+            let (r, g, b) = unpremultiply(*c);
+            fdother::Nrgba { r, g, b, a: c.a }
+        })
+        .collect()
+}
+
+fn unpremultiply(c: ColorRgba) -> (u8, u8, u8) {
+    match c.a {
+        0 => (0, 0, 0),
+        255 => (c.r, c.g, c.b),
+        a => {
+            let f = |v: u8| ((v as u32 * 255 + a as u32 / 2) / a as u32).min(255) as u8;
+            (f(c.r), f(c.g), f(c.b))
+        }
+    }
+}
+
+/// Go `ebiten.NewImageFromImage(*image.Paletted)`：每像素查調色盤，範圍外是透明黑。
+pub(crate) fn picture_from_indexed(frame: &IndexedFrame) -> Picture {
+    let mut pix = vec![0u8; frame.pix.len() * 4];
+    for (i, &index) in frame.pix.iter().enumerate() {
+        if let Some(&c) = frame.palette.get(index as usize) {
+            let (r, g, b) = unpremultiply(c);
+            pix[i * 4..i * 4 + 4].copy_from_slice(&[r, g, b, c.a]);
+        }
+    }
+    Picture { width: frame.width, height: frame.height, pix }
+}
+
+/// Go `ebiten.NewImageFromImage(*image.Paletted)`（`fdother::PalettedImage`）。
+pub(crate) fn picture_from_paletted(image: &fdother::PalettedImage) -> Picture {
+    let (w, h) = (image.width.max(0), image.height.max(0));
+    let mut pix = vec![0u8; (w * h * 4) as usize];
+    for y in 0..h {
+        for x in 0..w {
+            let index = image.color_index_at(x, y) as usize;
+            if let Some(c) = image.palette.get(index) {
+                let at = ((y * w + x) * 4) as usize;
+                pix[at..at + 4].copy_from_slice(&[c.r, c.g, c.b, c.a]);
+            }
+        }
+    }
+    Picture { width: w, height: h, pix }
+}
+
+/// Go `img.SubImage(image.Rect(x, y, x+w, y+h))`：與原圖相交的部分複製成新畫面（Go 共用像素，
+/// Rust 複製；`fd2-game` 不寫入圖塊）。
+pub(crate) fn crop_picture(src: &Picture, x: i64, y: i64, w: i64, h: i64) -> Picture {
+    let (x0, y0) = (x.max(0), y.max(0));
+    let (x1, y1) = ((x + w).min(src.width), (y + h).min(src.height));
+    if x1 <= x0 || y1 <= y0 {
+        return Picture::default();
+    }
+    let (cw, ch) = (x1 - x0, y1 - y0);
+    let mut pix = Vec::with_capacity((cw * ch * 4) as usize);
+    for row in y0..y1 {
+        let start = ((row * src.width + x0) * 4) as usize;
+        pix.extend_from_slice(&src.pix[start..start + (cw * 4) as usize]);
+    }
+    Picture { width: cw, height: ch, pix }
+}
+
+/// 以 320×200 等固定幾何建立 [`IndexedFrame`]（Go `image.NewPaletted` 後 `copy(Pix, pixels)`）。
+pub(crate) fn indexed_frame(width: i64, height: i64, pixels: &[u8], palette: ColorPalette) -> IndexedFrame {
+    let mut pix = vec![0u8; (width * height) as usize];
+    let n = pix.len().min(pixels.len());
+    pix[..n].copy_from_slice(&pixels[..n]);
+    IndexedFrame { width, height, pix, palette }
+}
+
+/// Go `image.Decode`＋`ebiten.NewImageFromImage`：PNG 解成不預乘的 RGBA8；失敗回 `None`
+/// （Go 呼叫端失敗時略過該檔）。
+pub(crate) fn decode_png_picture(data: &[u8]) -> Option<Picture> {
+    let mut decoder = png::Decoder::new(std::io::Cursor::new(data));
+    decoder.set_transformations(
+        png::Transformations::EXPAND | png::Transformations::STRIP_16 | png::Transformations::ALPHA,
+    );
+    let mut reader = decoder.read_info().ok()?;
+    let mut buf = vec![0u8; reader.output_buffer_size()?];
+    let info = reader.next_frame(&mut buf).ok()?;
+    let (w, h) = (info.width as usize, info.height as usize);
+    let mut pix = Vec::with_capacity(w * h * 4);
+    match info.color_type {
+        png::ColorType::Rgba => pix.extend_from_slice(&buf[..w * h * 4]),
+        png::ColorType::GrayscaleAlpha => {
+            for px in buf[..w * h * 2].as_chunks::<2>().0 {
+                pix.extend_from_slice(&[px[0], px[0], px[0], px[1]]);
+            }
+        }
+        _ => return None,
+    }
+    Some(Picture { width: w as i64, height: h as i64, pix })
 }

@@ -52,8 +52,15 @@ pub(crate) fn modern_hd_native_text_color(palette: &ColorPalette, index: u8) -> 
 
 impl Game {
     /// Go：`modern_hd_text.go:92`，`func (g *Game) beginModernHDText(screen *ebiten.Image) func()`
+    ///
+    /// 忠實模式（HD 介面關閉）只清掉 `modernHDText` 並回傳空的收尾；HD 分支把字型的 `hd` 指向
+    /// 本幀的文字框，屬於 HD 繪圖，在 R6。Rust 回傳 `Some(收尾)` 對應 Go 一律回傳 func。
     pub(crate) fn begin_modern_hd_text(&mut self, screen: &mut Picture) -> Option<Box<dyn FnMut(&mut Game) + Send>> {
-        todo!("modern_hd_text.go:beginModernHDText")
+        self.modern_hd_text = None;
+        if !self.modern_hd_interface_enabled() || self.font.is_none() {
+            return Some(Box::new(|_: &mut Game| {}));
+        }
+        todo!("R6: modern_hd_text.go:beginModernHDText（HD 文字框與字型綁定）")
     }
 
     /// Go：`modern_hd_text.go:166`，`func (g *Game) modernHDShopText() bool`

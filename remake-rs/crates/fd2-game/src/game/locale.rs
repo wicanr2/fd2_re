@@ -16,7 +16,7 @@ pub(crate) struct LocaleEntryContract {
 /// Go 會在執行期改寫這個套件層變數，Rust 以 `RwLock` 包住。
 pub(crate) static OFFICIAL_LOCALE_CONTRACT: LazyLock<RwLock<BTreeMap<String, LocaleEntryContract>>> =
     LazyLock::new(|| {
-        RwLock::new(BTreeMap::from([
+        let mut contract = BTreeMap::from([
             (
                 String::from("battle.status.expiry.attack"),
                 LocaleEntryContract { variables: Vec::new(), source_id: String::from("FDTXT_000/string_0481") },
@@ -817,29 +817,92 @@ pub(crate) static OFFICIAL_LOCALE_CONTRACT: LazyLock<RwLock<BTreeMap<String, Loc
                     source_id: String::from("legacy.go.remake.cmd.fd2.ending_preview.l819-c26"),
                 },
             ),
-        ]))
+        ]);
+        // Go `native_system_info_locale.go:14` 的 `init()` 在套件初始化時把 68 個 `battle.info.*`
+        // 鍵加進這張表；骨架沒有產生 `init`，由這個變數的擁有者（A 組）在初始式補上。
+        contract.extend(system_info_locale_contract());
+        RwLock::new(contract)
     });
 
 /// Go：`locale.go:142`，`func loadOfficialLocale(localeID string) (*localization.Catalog, error)`
+///
+/// Go 以 `range officialLocaleContract`（map，順序隨機）逐鍵核對；Rust 依鍵排序。只有同時缺多個鍵時
+/// 回報的是哪一個鍵會不同（KNOWN_DIFFERENCES `locale-contract-map-order`）。
 pub(crate) fn load_official_locale(locale_id: &str) -> Result<Option<localization::Catalog>> {
-    todo!("locale.go:loadOfficialLocale")
+    let root = asset_path("assets/locales");
+    let catalog = localization::load_official(&root, locale_id)?;
+    let contract = OFFICIAL_LOCALE_CONTRACT.read().unwrap();
+    if catalog.entries.len() != contract.len() {
+        return Err(game_err!(
+            "official locale {locale_id} has {} keys, want exact {}",
+            catalog.entries.len(),
+            contract.len()
+        ));
+    }
+    for (key, want) in contract.iter() {
+        let Some(entry) = catalog.entries.get(key) else {
+            return Err(game_err!("official locale {locale_id} is missing {key}"));
+        };
+        if entry.source_string_id != want.source_id {
+            return Err(game_err!("official locale {locale_id} has invalid provenance for {key}"));
+        }
+        if entry.variables != want.variables {
+            return Err(game_err!("official locale {locale_id} has invalid variables for {key}"));
+        }
+    }
+    if !is_clean_slash_path(&catalog.font.path) {
+        return Err(game_err!("official locale {locale_id} has a non-canonical font path"));
+    }
+    Ok(Some(catalog))
+}
+
+/// Go `filepath.Clean(p) == filepath.FromSlash(p)`（Unix）：`p` 已是詞法 Clean 的形狀——非空、
+/// 沒有空段、`.` 段、結尾斜線，`..` 只出現在相對路徑開頭（絕對路徑不得有 `..`）。單獨的 `.`、`/` 算乾淨。
+pub(crate) fn is_clean_slash_path(p: &str) -> bool {
+    if p == "." || p == "/" {
+        return true;
+    }
+    if p.is_empty() || p.ends_with('/') {
+        return false;
+    }
+    let absolute = p.starts_with('/');
+    let body = if absolute { &p[1..] } else { p };
+    let mut leading = true;
+    for segment in body.split('/') {
+        match segment {
+            "" | "." => return false,
+            ".." if absolute || !leading => return false,
+            ".." => {}
+            _ => leading = false,
+        }
+    }
+    true
 }
 
 /// Go：`locale.go:174`，`func loadOfficialLocaleContent(localeID string) (*localization.ContentCatalog, error)`
 pub(crate) fn load_official_locale_content(locale_id: &str) -> Result<Option<localization::ContentCatalog>> {
-    todo!("locale.go:loadOfficialLocaleContent")
+    Ok(Some(localization::load_official_content(&asset_path("assets/locales"), locale_id)?))
 }
 
 /// Go：`locale.go:178`，`func loadOfficialLocaleEntities(localeID string) (*localization.EntityCatalog, error)`
 pub(crate) fn load_official_locale_entities(locale_id: &str) -> Result<Option<localization::EntityCatalog>> {
-    todo!("locale.go:loadOfficialLocaleEntities")
+    Ok(Some(localization::load_official_entities(&asset_path("assets/locales"), locale_id)?))
 }
 
 impl Game {
     /// Go：`locale.go:182`，`func (g *Game) localizedStoryText(line campaign.Line) (string, error)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn localized_story_text(&self, line: &campaign::Line) -> Result<String> {
-        todo!("locale.go:localizedStoryText")
+        if line.line_id.is_empty() {
+            if self.locale_id == "zh-Hant" && !line.text.is_empty() {
+                return Ok(line.text.clone());
+            }
+            return Err(GameError::new("story line lacks canonical line_id"));
+        }
+        let Some(content) = self.locale_content.as_ref() else {
+            return Err(GameError::new("official locale content is unavailable"));
+        };
+        Ok(content.story_text(&line.line_id)?)
     }
 
     /// localeMessage formats a required official key. Callers must stop their
@@ -848,7 +911,22 @@ impl Game {
     ///
     /// Go：`locale.go:198`，`func (g *Game) localeMessage(key string, args ...any) (message string, ok bool)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
-    pub(crate) fn locale_message(&mut self, key: &str, args: &[Option<OwnerToken>]) -> (String, bool) {
-        todo!("locale.go:localeMessage")
+    /// Go 的 `...any` 是格式參數，Rust 收 `localization::FormatArg`（簽名變更見 `PORTING.md`）。
+    pub(crate) fn locale_message(&mut self, key: &str, args: &[localization::FormatArg]) -> (String, bool) {
+        let Some(catalog) = self.locale_catalog.as_ref() else {
+            self.load_err = String::from("locale message: official catalog is unavailable");
+            return (String::new(), false);
+        };
+        match catalog.format(key, args) {
+            Ok(message) => (message, true),
+            Err(err) => {
+                self.load_err = format!("locale message: {}", err.message());
+                (String::new(), false)
+            }
+        }
     }
 }
+
+#[cfg(test)]
+#[path = "locale/locale_test.rs"]
+mod locale_test;

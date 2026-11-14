@@ -54,7 +54,25 @@ pub(crate) struct TitleMenuState {
 impl TitleMenuState {
     /// Go：`title_menu_state.go:32`，`func (s *TitleMenuState) Step(event TitleMenuEvent) TitleMenuAction`
     pub(crate) fn step(&mut self, event: TitleMenuEvent) -> TitleMenuAction {
-        todo!("title_menu_state.go:TitleMenuState.Step")
+        match event {
+            TITLE_MENU_UP => self.selection = (self.selection + 2) % 3,
+            TITLE_MENU_DOWN => self.selection = (self.selection + 1) % 3,
+            TITLE_MENU_CONFIRM => self.flash_ticks = 24,
+            TITLE_MENU_TICK if self.flash_ticks > 0 => {
+                self.flash_ticks -= 1;
+                if self.flash_ticks == 0 {
+                    if self.selection == 1 {
+                        return TITLE_MENU_LOAD_SLOTS;
+                    }
+                    if self.selection == 2 {
+                        return TITLE_MENU_CONTINUE;
+                    }
+                    return TITLE_MENU_START;
+                }
+            }
+            _ => {}
+        }
+        TITLE_MENU_NO_ACTION
     }
 }
 

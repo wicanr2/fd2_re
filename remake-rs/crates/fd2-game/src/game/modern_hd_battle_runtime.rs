@@ -47,13 +47,35 @@ pub(crate) fn modern_hd_battle_body_sources(
 
 impl Game {
     /// Go：`modern_hd_battle_runtime.go:54`，`func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool`
+    ///
+    /// 忠實模式（沒有 HD 美術、HD 介面關閉）走到的分支照 Go 移植；HD 美術開啟後依主題素材判定的
+    /// 部分在 R6。
     pub(crate) fn modern_hd_battle_wanted(&self, scene: Option<&NativePhysicalScene>) -> bool {
-        todo!("modern_hd_battle_runtime.go:modernHDBattleWanted")
+        let Some(scene) = scene else {
+            return false;
+        };
+        if scene.body_resources.as_ref().is_none_or(|b| b.attack.is_none()) {
+            return false;
+        }
+        if self.modern_hd_interface_enabled() && !scene.hd_panel_text.is_empty() {
+            return true;
+        }
+        match self.modern_story_portraits.as_ref() {
+            Some(set) if set.has_hd => {
+                todo!("R6: modern_hd_battle_runtime.go:modernHDBattleWanted（HD 美術的背景、台座與動畫素材判定）")
+            }
+            _ => false,
+        }
     }
 
     /// Go：`modern_hd_battle_runtime.go:85`，`func (g *Game) syncModernHDBattleOwner()`
+    ///
+    /// `modernHDBattleGPU` 只在 HD 戰鬥畫面建立；忠實模式下是 nil，Go 直接返回。
     pub(crate) fn sync_modern_hd_battle_owner(&mut self) {
-        todo!("modern_hd_battle_runtime.go:syncModernHDBattleOwner")
+        if self.modern_hd_battle_gpu.is_none() {
+            return;
+        }
+        todo!("R6: modern_hd_battle_runtime.go:syncModernHDBattleOwner（HD 戰鬥 GPU 擁有者切換）")
     }
 
     /// Go：`modern_hd_battle_runtime.go:312`，`func (g *Game) drawModernHDBattlePrelude(screen *ebiten.Image, scene *nativePhysicalScene) (bool, error)`
@@ -62,7 +84,10 @@ impl Game {
         screen: &mut Picture,
         scene: &mut NativePhysicalScene,
     ) -> Result<bool> {
-        todo!("modern_hd_battle_runtime.go:drawModernHDBattlePrelude")
+        if !self.modern_hd_battle_wanted(Some(scene)) {
+            return Ok(false);
+        }
+        todo!("R6: modern_hd_battle_runtime.go:drawModernHDBattlePrelude（HD 戰鬥前奏繪製）")
     }
 
     /// Go：`modern_hd_battle_runtime.go:331`，`func (g *Game) drawModernHDBattleBody(screen *ebiten.Image, scene *nativePhysicalScene, job *nativePhysicalBodyJob) (bool, error)`
@@ -72,6 +97,9 @@ impl Game {
         scene: &mut NativePhysicalScene,
         job: &mut NativePhysicalBodyJob,
     ) -> Result<bool> {
-        todo!("modern_hd_battle_runtime.go:drawModernHDBattleBody")
+        if !self.modern_hd_battle_wanted(Some(scene)) || job.hd_sources.is_none() {
+            return Ok(false);
+        }
+        todo!("R6: modern_hd_battle_runtime.go:drawModernHDBattleBody（HD 戰鬥本體繪製）")
     }
 }

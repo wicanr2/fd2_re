@@ -24,6 +24,10 @@ pub(crate) struct BalanceEditor {
 impl Game {
     /// Go：`player_balance.go:252`，`func (g *Game) syncBalanceState()`
     pub(crate) fn sync_balance_state(&mut self) {
-        todo!("player_balance.go:syncBalanceState")
+        let balance = self.balance.clone();
+        if let Some(st) = self.st.as_mut() {
+            st.balance = balance;
+            st.apply_enemy_strength();
+        }
     }
 }

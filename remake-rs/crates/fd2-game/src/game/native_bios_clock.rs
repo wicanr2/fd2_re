@@ -24,15 +24,35 @@ pub(crate) struct NativeBIOSClock {
     pub(crate) elapsed_ticks: u64,
 }
 
+/// Go `int(int16(uint16(v)))`：取低 16 位元並視為有號數。
+fn signed_low_word(v: u64) -> i64 {
+    v as u16 as i16 as i64
+}
+
 impl NativeBIOSClock {
     /// Go：`native_bios_clock.go:20`，`func (c *nativeBIOSClock) Reset()`
     pub(crate) fn reset(&mut self) {
-        todo!("native_bios_clock.go:Reset")
+        *self = NativeBIOSClock::default();
     }
 
     /// Go：`native_bios_clock.go:48`，`func (c *nativeBIOSClock) Sample(now time.Time) int`
     pub(crate) fn sample(&mut self, now: GameInstant) -> i64 {
-        todo!("native_bios_clock.go:Sample")
+        if self.last.is_zero() {
+            self.last = now;
+            return signed_low_word(self.elapsed_ticks);
+        }
+        let elapsed = now - self.last;
+        if elapsed.0 < 0 {
+            return signed_low_word(self.elapsed_ticks);
+        }
+        self.last = now;
+        self.remainder = GoDuration(self.remainder.0.wrapping_add(elapsed.0));
+        let ticks = self.remainder.0 / NATIVE_BIOS_TICK_PERIOD.0;
+        if ticks > 0 {
+            self.elapsed_ticks = self.elapsed_ticks.wrapping_add(ticks as u64);
+            self.remainder = GoDuration(self.remainder.0.wrapping_sub(ticks.wrapping_mul(NATIVE_BIOS_TICK_PERIOD.0)));
+        }
+        signed_low_word(self.elapsed_ticks)
     }
 
     /// Current returns the last signed low word actually materialized by Sample.
@@ -43,7 +63,10 @@ impl NativeBIOSClock {
     /// Go：`native_bios_clock.go:70`，`func (c *nativeBIOSClock) Current() (int, bool)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn current(&self) -> (i64, bool) {
-        todo!("native_bios_clock.go:Current")
+        if self.last.is_zero() {
+            return (0, false);
+        }
+        (signed_low_word(self.elapsed_ticks), true)
     }
 }
 
@@ -57,6 +80,25 @@ impl Game {
     /// Go：`native_bios_clock.go:82`，`func (g *Game) advanceNativeMapClock(now time.Time) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn advance_native_map_clock(&mut self, now: GameInstant) -> bool {
-        todo!("native_bios_clock.go:advanceNativeMapClock")
+        match self.st.as_ref() {
+            Some(st)
+                if st.has_native_map_cycle_state
+                    && st.has_native_terrain_phase_state
+                    && st.has_native_map_binary_timing_state
+                    && st.has_native_map_view_state => {}
+            _ => return false,
+        }
+        let raw_tick = self.native_map_clock.sample(now);
+        let Some(st) = self.st.as_mut() else {
+            return false;
+        };
+        st.advance_native_map_presentation_cycles(raw_tick)
+            && st.advance_native_terrain_phase(raw_tick, -1)
+            && st.advance_native_terrain_flip(raw_tick)
+            && st.advance_native_unit_pixel_shift(raw_tick)
     }
 }
+
+#[cfg(test)]
+#[path = "native_bios_clock/native_bios_clock_test.rs"]
+mod native_bios_clock_test;
