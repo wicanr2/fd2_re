@@ -896,7 +896,8 @@ func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error) {
 		actor.NativeRecordByte5 |= 0x80
 		actor.HasNativeRecordByte5 = true
 		if command23 {
-			g.st.NativeExperienceAccumulator += relocation.AccumulatorDelta
+			// 0x2218A 已把 10 × L 加進 [0x53EC8]；玩家路徑接著 0x11959／0x1196D 發放。
+			g.awardNativePlayerCommandExperience(actor, relocation.AccumulatorDelta, nil, []*battle.Unit{target})
 		}
 		g.finishSuccessfulUnitAction(actor, func() {
 			g.resetNativeTargetField()

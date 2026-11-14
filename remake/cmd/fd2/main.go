@@ -7630,6 +7630,7 @@ func (g *Game) confirm() {
 				g.nativeRNGState = result.RNGState
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = "原始指令 32：完成 indexed command damage"
+				g.awardNativeCompoundCommand32Experience(actor, result)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7650,6 +7651,7 @@ func (g *Game) confirm() {
 				g.nativeRNGState = result.Restore.RNGState
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = "原始指令 33：完成 indexed 清除與回復"
+				g.awardNativeCompoundCommand33Experience(actor, result)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7670,6 +7672,7 @@ func (g *Game) confirm() {
 				g.nativeRNGState = result.RNGState
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = "原始指令 34：完成三段 indexed modifier"
+				g.awardNativeCompoundCommand34Experience(actor, result)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7690,6 +7693,7 @@ func (g *Game) confirm() {
 				g.nativeRNGState = result.RNGState
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = "原始指令 35：完成三段 indexed application"
+				g.awardNativeCompoundCommand35Experience(actor, result)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7725,6 +7729,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 %d：回復 %d", id, total)
+				g.awardNativeCommandHealExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7761,6 +7766,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 %d：完成 raw modifier (%d targets)", id, count)
+				g.awardNativeCommandModifierExperience(actor, result, targets)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7783,6 +7789,7 @@ func (g *Game) confirm() {
 				}
 				g.msg = fmt.Sprintf("原始指令 %d：完成palette與indexed尾段 (%d targets)", id, len(plan.Results))
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.awardNativeCommand2022Experience(actor, plan)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7809,6 +7816,7 @@ func (g *Game) confirm() {
 					g.msg = fmt.Sprintf("原始指令 %d：完成 palette 與 indexed 尾段 (%d targets)", id, len(plan.Results))
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.awardNativeCommand2022Experience(actor, plan)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7833,6 +7841,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 24：傷害 %d", total)
+				g.awardNativeCommandDerivedStrikeExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7848,6 +7857,7 @@ func (g *Game) confirm() {
 		message := ""
 		var err error
 		var damageTargets []*battle.Unit
+		var derivedStrikeResults []battle.NativeCommand24Damage
 		switch {
 		case id == 0:
 			actor := g.sel
@@ -7862,6 +7872,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 0：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7886,6 +7897,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 1：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7910,6 +7922,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 2：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7934,6 +7947,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 3：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7958,6 +7972,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 %d：命中 %d，傷害 %d", id, hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -7982,6 +7997,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 7：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -8006,6 +8022,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 8：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -8030,6 +8047,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 9：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -8054,6 +8072,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 %d：命中 %d，傷害 %d", id, hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -8078,6 +8097,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 6：命中 %d，傷害 %d", hit, total)
+				g.awardNativeCommandDamageExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -8101,6 +8121,7 @@ func (g *Game) confirm() {
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 %d：傷害 %d", id, total)
+				g.awardNativeCommandDerivedStrikeExperience(actor, results)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -8128,6 +8149,7 @@ func (g *Game) confirm() {
 		case id == 31:
 			results, e := g.st.ExecuteNativeCommandDerivedStrike(g.sel, tgt, id, g.rng)
 			err = e
+			derivedStrikeResults = results
 			total := 0
 			for _, result := range results {
 				total += result.Damage
@@ -8147,6 +8169,9 @@ func (g *Game) confirm() {
 		actor := g.sel
 		actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 		g.msg = message
+		if derivedStrikeResults != nil {
+			g.awardNativeCommandDerivedStrikeExperience(actor, derivedStrikeResults)
+		}
 		g.finishSuccessfulUnitAction(actor, func() {
 			g.resetNativeTargetField()
 			g.st.MaterializeNativeMapRangeMode(1)

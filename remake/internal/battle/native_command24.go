@@ -9,8 +9,10 @@ import (
 // command 24.  It is deliberately separate from NativeCommandDamage: this
 // route does not read the command's damage/hit bytes or class resistance.
 type NativeCommand24Damage struct {
-	Target                  *Unit
-	Amount                  int
+	Target *Unit
+	Amount int
+	// Rolled 是 0x1C81F 內的擲出值（截斷到 0 與剩餘 HP 之前），經驗公式用它。
+	Rolled                  int
 	Damage                  int
 	HPBefore                int
 	HPAfter                 int
@@ -203,7 +205,7 @@ func (s *State) planNativeCommandDerivedStrikeTargets(actor *Unit, targets []*Un
 			rawByte5After = 1
 		}
 		plan.Results = append(plan.Results, NativeCommand24Damage{
-			Target: target, Amount: amount, Damage: appliedDamage,
+			Target: target, Amount: amount, Rolled: damage, Damage: appliedDamage,
 			HPBefore: target.HP, HPAfter: hpAfter,
 			NativeRecordByte5Before: target.NativeRecordByte5,
 			NativeRecordByte5After:  rawByte5After,
@@ -399,7 +401,7 @@ func (s *State) PlanNativeCommand30(actor *Unit, savedCursor, confirmedCursor Ce
 			after = 1
 		}
 		// Damage keeps the existing ID30 state-only result's unclamped roll.
-		plan.Results = append(plan.Results, NativeCommand24Damage{Target: target, Amount: amount, Damage: damage, HPBefore: target.HP, HPAfter: target.HP - applied, NativeRecordByte5Before: target.NativeRecordByte5, NativeRecordByte5After: after, deathFlagBefore: target.nativeDeathFlagBefore, deathFlagValidBefore: target.nativeDeathFlagValid})
+		plan.Results = append(plan.Results, NativeCommand24Damage{Target: target, Amount: amount, Rolled: damage, Damage: damage, HPBefore: target.HP, HPAfter: target.HP - applied, NativeRecordByte5Before: target.NativeRecordByte5, NativeRecordByte5After: after, deathFlagBefore: target.nativeDeathFlagBefore, deathFlagValidBefore: target.nativeDeathFlagValid})
 	}
 	return plan, nil
 }
@@ -423,7 +425,7 @@ func (s *State) ExecuteNativeCommand30(actor *Unit, savedCursor, confirmedCursor
 			return nil, err
 		}
 		target.ApplyHPDamage(damage)
-		results = append(results, NativeCommand24Damage{Target: target, Amount: amount, Damage: damage})
+		results = append(results, NativeCommand24Damage{Target: target, Amount: amount, Rolled: damage, Damage: damage})
 	}
 	actor.Acted = true
 	return results, nil
