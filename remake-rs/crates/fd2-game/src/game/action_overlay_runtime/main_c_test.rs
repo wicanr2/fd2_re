@@ -278,7 +278,6 @@ fn opened(g: &Game, slot: i64) -> bool {
 
 /// Go：`treasure_test.go:9` `TestFinishSelectedWaitRestsThenClaimsTreasure`
 #[test]
-#[ignore = "等 D 合併（finish_successful_unit_action）"]
 fn test_finish_selected_wait_rests_then_claims_treasure() {
     let Some(catalog) = zh_hant_catalog() else { return };
     let mut st = treasure_state(
@@ -310,7 +309,6 @@ fn test_finish_selected_wait_rests_then_claims_treasure() {
 
 /// Go：`treasure_test.go:31` `TestFinishSelectedWaitAfterMoveDoesNotHealAndGoldUsesCampaignBank`
 #[test]
-#[ignore = "等 D 合併（finish_successful_unit_action）"]
 fn test_finish_selected_wait_after_move_does_not_heal_and_gold_uses_campaign_bank() {
     let mut st = treasure_state(
         battle::Cell { x: 3, y: 4 },
@@ -330,7 +328,6 @@ fn test_finish_selected_wait_after_move_does_not_heal_and_gold_uses_campaign_ban
 
 /// Go：`treasure_test.go:46` `TestFinishSelectedWaitExecutesEditableNativeTreasureEvent`
 #[test]
-#[ignore = "等 D 合併（finish_successful_unit_action）"]
 fn test_finish_selected_wait_executes_editable_native_treasure_event() {
     let Some(catalog) = zh_hant_catalog() else { return };
     let mut st = treasure_state(
@@ -362,7 +359,6 @@ fn test_finish_selected_wait_executes_editable_native_treasure_event() {
 
 /// Go：`treasure_test.go:71` `TestFinishSelectedWaitHonorsNativeRecoveryGatesAndFloor`
 #[test]
-#[ignore = "等 D 合併（finish_successful_unit_action）"]
 fn test_finish_selected_wait_honors_native_recovery_gates_and_floor() {
     for raw_index in [3, 4] {
         let mut u = own_unit(40, 100, 2, 3);

@@ -17,6 +17,13 @@ pub(crate) struct ModernBattlePresentationProfile {
 impl Game {
     /// Go：`modern_hd_battle_camera.go:107`，`func (g *Game) modernPhysicalImpactHoldMillis(impact bool) float64`
     pub(crate) fn modern_physical_impact_hold_millis(&self, impact: bool) -> f64 {
-        todo!("modern_hd_battle_camera.go:modernPhysicalImpactHoldMillis")
+        let Some(profile) = self.modern_story_portraits.as_ref().and_then(|set| set.battle_presentation.as_ref())
+        else {
+            return 0.0;
+        };
+        if !impact {
+            return 0.0;
+        }
+        profile.impact_hold_frames as f64 * 1000.0 / 60.0
     }
 }

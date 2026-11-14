@@ -39,5 +39,7 @@ pub(crate) fn new_modern_hd_compound_map_scene(
     palette: &ColorPalette,
     input_err: Option<&GameError>,
 ) -> Option<ModernHDCompoundMapScene> {
-    todo!("modern_hd_compound_map.go:newModernHDCompoundMapScene")
+    todo!(
+        "R6: modern_hd_compound_map.go:44 newModernHDCompoundMapScene（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+    )
 }

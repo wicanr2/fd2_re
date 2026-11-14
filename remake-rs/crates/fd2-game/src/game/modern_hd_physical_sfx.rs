@@ -9,6 +9,15 @@ impl Game {
     /// Go：`modern_hd_physical_sfx.go:90`，`func (g *Game) modernPhysicalSound(bank, cue int, original []byte) []byte`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn modern_physical_sound(&self, bank: i64, cue: i64, original: &[u8]) -> Vec<u8> {
-        todo!("modern_hd_physical_sfx.go:modernPhysicalSound")
+        let Some(set) = self.modern_story_portraits.as_ref() else {
+            return original.to_vec();
+        };
+        if original.is_empty() {
+            return original.to_vec();
+        }
+        match set.physical_sfx.get(&[bank, cue]) {
+            Some(pcm) if !pcm.is_empty() => pcm.clone(),
+            _ => original.to_vec(),
+        }
     }
 }

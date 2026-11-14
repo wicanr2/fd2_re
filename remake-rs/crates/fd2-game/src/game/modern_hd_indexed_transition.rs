@@ -15,5 +15,7 @@ pub(crate) struct ModernHDIndexedTransitionSource {}
 pub(crate) fn indexed_hd_input_identity(
     r#in: &indexedmap::NativeTransitionFrameInput<'_>,
 ) -> Result<Vec<Option<OwnerToken>>> {
-    todo!("modern_hd_indexed_transition.go:indexedHDInputIdentity")
+    todo!(
+        "R6: modern_hd_indexed_transition.go:25 indexedHDInputIdentity（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+    )
 }

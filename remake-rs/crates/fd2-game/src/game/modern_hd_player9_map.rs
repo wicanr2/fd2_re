@@ -17,6 +17,8 @@ impl Game {
     ///
     /// Go：`modern_hd_player9_map.go:22`，`func (g *Game) freezeNativeCommand9MapInput() (indexedmap.NativeFrameInput, error)`
     pub(crate) fn freeze_native_command9_map_input(&mut self) -> Result<indexedmap::NativeFrameInput<'static>> {
-        todo!("modern_hd_player9_map.go:freezeNativeCommand9MapInput")
+        todo!(
+            "R6: modern_hd_player9_map.go:22 freezeNativeCommand9MapInput（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+        )
     }
 }

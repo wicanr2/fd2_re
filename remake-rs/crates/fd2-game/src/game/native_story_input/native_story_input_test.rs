@@ -4,7 +4,7 @@ use super::*;
 
 /// Go：`native_story_input_test.go:15` `TestNativeStoryAdvanceAcceptsEscapeLikeEnter`
 #[test]
-#[ignore = "等 D 合併（cancel_native_command32_presentation）"]
+#[ignore = "停在 B 組 R8：dlg_page_count 的 dlgWrap（非原生對白的 TTF 斷行；D 已合併）"]
 fn test_native_story_advance_accepts_escape_like_enter() {
     let build = || {
         let line = |text: &str| campaign::Line { speaker: 0, text: text.to_string(), ..Default::default() };

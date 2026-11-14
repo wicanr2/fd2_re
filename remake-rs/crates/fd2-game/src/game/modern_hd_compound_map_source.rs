@@ -12,19 +12,25 @@ use super::*;
 pub(crate) fn freeze_compound_map_input(
     r#in: &indexedmap::NativeFrameInput<'_>,
 ) -> Result<indexedmap::NativeFrameInput<'static>> {
-    todo!("modern_hd_compound_map_source.go:freezeCompoundMapInput")
+    todo!(
+        "R6: modern_hd_compound_map_source.go:16 freezeCompoundMapInput（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+    )
 }
 
 impl ModernHDCompoundMapScene {
     /// Go：`modern_hd_compound_map_source.go:64`，`func (s *modernHDCompoundMapScene) digest() ([32]byte, error)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn digest(&mut self) -> Result<[u8; 32]> {
-        todo!("modern_hd_compound_map_source.go:modernHDCompoundMapScene.digest")
+        todo!(
+            "R6: modern_hd_compound_map_source.go:64 modernHDCompoundMapScene.digest（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+        )
     }
 
     /// Go：`modern_hd_compound_map_source.go:95`，`func (s *modernHDCompoundMapScene) seal()`
     pub(crate) fn seal(&mut self) {
-        todo!("modern_hd_compound_map_source.go:modernHDCompoundMapScene.seal")
+        todo!(
+            "R6: modern_hd_compound_map_source.go:95 modernHDCompoundMapScene.seal（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+        )
     }
 }
 
@@ -42,7 +48,9 @@ impl Game {
         palette: &ColorPalette,
         input_err: Option<&GameError>,
     ) -> Option<ModernHDCompoundMapScene> {
-        todo!("modern_hd_compound_map_source.go:newModernHDCompoundMapScene")
+        todo!(
+            "R6: modern_hd_compound_map_source.go:135 Game.newModernHDCompoundMapScene（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+        )
     }
 }
 
@@ -50,6 +58,8 @@ impl ModernHDCompoundMapScene {
     /// Go：`modern_hd_compound_map_source.go:155`，`func (s *modernHDCompoundMapScene) validate(g *Game) error`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn validate(&mut self, g: &Game) -> Result<()> {
-        todo!("modern_hd_compound_map_source.go:modernHDCompoundMapScene.validate")
+        todo!(
+            "R6: modern_hd_compound_map_source.go:155 modernHDCompoundMapScene.validate（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+        )
     }
 }

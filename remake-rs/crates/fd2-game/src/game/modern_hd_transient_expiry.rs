@@ -19,12 +19,27 @@ impl Game {
     /// Activation seals them again after the actual damage/death/focus sequence.
     ///
     /// Go：`modern_hd_transient_expiry.go:109`，`func (g *Game) preflightModernHDTransientExpiry(candidate *battle.State, expired []battle.NativeTransientExpiry, damage []battle.NativeTransientDamage) error`
+    ///
+    /// R4 D 組：只讀參數改成 `&`（簽名變更紀錄）。忠實模式（沒有 HD 呈現、沒有 HD 地圖人物）在第一行就返回；
+    /// HD 開啟時的預覽與到期框預檢在 R6。
     pub(crate) fn preflight_modern_hd_transient_expiry(
         &self,
-        candidate: &mut battle::State,
+        candidate: &battle::State,
         expired: &[battle::NativeTransientExpiry],
-        damage: &mut [battle::NativeTransientDamage],
+        damage: &[battle::NativeTransientDamage],
     ) -> Result<()> {
-        todo!("modern_hd_transient_expiry.go:preflightModernHDTransientExpiry")
+        // Go `hdPresentationEnabled()`（`player_interface.go:32`，`r8`）：介面 HD 或美術 HD。
+        let hd_presentation =
+            self.modern_hd_interface_enabled() || self.modern_story_portraits.as_ref().is_some_and(|set| set.has_hd);
+        if expired.is_empty()
+            || (!hd_presentation
+                && self.modern_story_portraits.as_ref().is_none_or(|set| set.map_sprites_hd.is_empty()))
+        {
+            return Ok(());
+        }
+        let _ = (candidate, damage);
+        todo!(
+            "R6: modern_hd_transient_expiry.go:113 HD 到期框預檢（nativeTransientDeathPreview、newNativeTransientExpiryPresentation）"
+        )
     }
 }

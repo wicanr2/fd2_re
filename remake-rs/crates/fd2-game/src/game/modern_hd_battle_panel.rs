@@ -31,11 +31,12 @@ impl Game {
     pub(crate) fn render_physical_battle_panel(
         &mut self,
         scene: &mut NativePhysicalScene,
-        record: &mut [u8],
+        record: &[u8],
         dst: &mut [u8],
         index: i64,
     ) -> Result<()> {
-        todo!("modern_hd_battle_panel.go:renderPhysicalBattlePanel")
+        let chapter = self.handler_chapter;
+        self.render_battle_panel_text(&scene.panel_assets, record, dst, index, chapter, Some(&mut scene.hd_panel_text))
     }
 
     /// Go：`modern_hd_battle_panel.go:60`，`func (g *Game) renderBattlePanelText(assets battle.NativeItemPanelDataAssets, record, dst []byte, index, chapter int, collected *[]*modernBattlePanelText) error`
@@ -134,19 +135,69 @@ impl Game {
 /// Partial scroll views inherit the explicit layer and clip from their producer.
 ///
 /// Go：`modern_hd_battle_panel.go:123`，`func bindModernPhysicalPanelText(scene *nativePhysicalScene, sources *modernHDBattleSources)`
+///
+/// R4 D 組：`scene` 只讀、`sources` 可為 nil（Go 的 `*modernHDBattleSources`），簽名變更紀錄。
 pub(crate) fn bind_modern_physical_panel_text(
-    scene: Option<&mut NativePhysicalScene>,
-    sources: &mut ModernHDBattleSources,
+    scene: Option<&NativePhysicalScene>,
+    sources: Option<&mut ModernHDBattleSources>,
 ) {
-    todo!("modern_hd_battle_panel.go:bindModernPhysicalPanelText")
+    if let Some(scene) = scene {
+        bind_modern_battle_panel_text(&scene.hd_panel_text, sources);
+    }
 }
 
 /// Go：`modern_hd_battle_panel.go:129`，`func bindModernBattlePanelText(panels []*modernBattlePanelText, sources *modernHDBattleSources)`
+///
+/// R4 D 組：`panels` 只讀（簽名變更紀錄）。Go 以指標相等（`layer.PanelText == p`）判斷面板是否已綁；
+/// Rust 的來源存複本，改以 [`same_panel_text`] 比對（`panel-text-identity`）。
 pub(crate) fn bind_modern_battle_panel_text(
-    panels: &mut [ModernBattlePanelText],
+    panels: &[ModernBattlePanelText],
     sources: Option<&mut ModernHDBattleSources>,
 ) {
-    todo!("modern_hd_battle_panel.go:bindModernBattlePanelText")
+    let Some(sources) = sources.filter(|s| s.base.len() == 64000) else {
+        return;
+    };
+    for p in panels {
+        let f = &p.native;
+        let mut matches = true;
+        for row in 0..f.height {
+            let src = ((f.y + row) * 320 + f.x) as usize;
+            if f.pixels[(row * f.width) as usize..((row + 1) * f.width) as usize]
+                != sources.base[src..src + f.width as usize]
+            {
+                matches = false;
+                break;
+            }
+        }
+        if !matches {
+            continue;
+        }
+        let found = sources.base_scenery.iter().chain(sources.layers.iter()).any(|layer| {
+            layer.panel_text.as_ref().is_some_and(|text| same_panel_text(text, p)) && layer.dx == 0 && layer.dy == 0
+        });
+        if !found {
+            // Go 第一次追加前先複製切片（`cloned`），避免改到別的來源共用的底層陣列；Rust 的 Vec 本來就各自擁有。
+            sources.base_scenery.push(ModernHDBattleSource {
+                frame: f.clone(),
+                resource: -1,
+                fill: -1,
+                panel_text: Some(p.clone()),
+                ..Default::default()
+            });
+        }
+    }
+}
+
+/// R4 D 組新增，沒有 Go 對應：Go 以 `*modernBattlePanelText` 指標相等辨認同一塊面板；Rust 存複本，比對
+/// `renderBattlePanelText` 去重時用的同一組欄位（原點、名稱、數值、外框、字型與原生像素），同一場景內兩者等價。
+pub(crate) fn same_panel_text(a: &ModernBattlePanelText, b: &ModernBattlePanelText) -> bool {
+    a.native.x == b.native.x
+        && a.native.y == b.native.y
+        && a.name == b.name
+        && a.values == b.values
+        && a.chrome == b.chrome
+        && same_panel_font(a.font.as_ref(), b.font.as_ref())
+        && a.native.pixels == b.native.pixels
 }
 
 impl ModernBattlePanelText {

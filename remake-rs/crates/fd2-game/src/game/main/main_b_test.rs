@@ -687,7 +687,6 @@ fn test_beat_delay_counts_down_then_advances() {
 
 /// Go：`beatrunner_test.go:733` `TestBeatSequenceEndTriggersNodeTransition`
 #[test]
-#[ignore = "等 D 合併（cancel_native_command32_presentation）"]
 fn test_beat_sequence_end_triggers_node_transition() {
     let mut g = new_beat_test_game(vec![
         campaign::Beat { track: String::from("FDMUS_999"), ..beat("bgm") }, // 非阻塞拍:應立即連呼下一拍

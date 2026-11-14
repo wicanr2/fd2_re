@@ -235,7 +235,6 @@ fn test_native_action_selectable_rejects_disabled_word_and_invalid_direction() {
 /// Rust 新增：`resetActionOverlayLifecycle` 清掉 END 對話與指令環的全部狀態；只有 END 對話存在時才順帶清
 /// `nativeClassUIJob`（`action_overlay_runtime.go:158`）。
 #[test]
-#[ignore = "等 D 合併（cancel_native_command32_presentation）"]
 fn reset_action_overlay_lifecycle_clears_end_turn_owner_and_ring() {
     let mut g = Game::default();
     g.begin_action_overlay_open(3);

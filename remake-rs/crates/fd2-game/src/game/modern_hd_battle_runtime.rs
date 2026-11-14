@@ -32,17 +32,38 @@ pub(crate) struct ModernHDBattleSources {
 
 /// Go：`modern_hd_battle_runtime.go:32`，`func modernHDBattleBodySources(base []byte, attack, idle figani.Frame, side byte, present battlepresent.NativePhysicalBodyPresent, attackResource, attackFrame, idleResource, idleFrame int) *modernHDBattleSources`
 pub(crate) fn modern_hd_battle_body_sources(
-    base: &mut [u8],
+    base: &[u8],
     attack: &figani::Frame,
     idle: &figani::Frame,
     side: u8,
-    present: battlepresent::NativePhysicalBodyPresent,
+    present: &battlepresent::NativePhysicalBodyPresent,
     attack_resource: i64,
     attack_frame: i64,
     idle_resource: i64,
     idle_frame: i64,
-) -> Option<ModernHDBattleSources> {
-    todo!("modern_hd_battle_runtime.go:modernHDBattleBodySources")
+) -> ModernHDBattleSources {
+    let a = ModernHDBattleSource {
+        frame: attack.clone(),
+        resource: attack_resource,
+        index: attack_frame,
+        fill: -1,
+        ..Default::default()
+    };
+    let b = ModernHDBattleSource {
+        frame: idle.clone(),
+        resource: idle_resource,
+        index: idle_frame,
+        dx: present.dx,
+        dy: present.dy,
+        fill: present.opaque_fill,
+        ..Default::default()
+    };
+    let layers = if (side == 0 && attack.raw_byte7 & 1 == 0) || (side != 0 && attack.raw_byte7 & 1 != 0) {
+        vec![a, b]
+    } else {
+        vec![b, a]
+    };
+    ModernHDBattleSources { base: base.to_vec(), layers, ..Default::default() }
 }
 
 impl Game {

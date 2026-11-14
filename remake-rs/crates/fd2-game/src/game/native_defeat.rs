@@ -28,6 +28,11 @@ pub(crate) struct NativeDefeatJob {
 impl Game {
     /// Go：`native_defeat.go:30`，`func (g *Game) beginNativeDefeatIfConfigured()`
     pub(crate) fn begin_native_defeat_if_configured(&mut self) {
-        todo!("native_defeat.go:beginNativeDefeatIfConfigured")
+        if self.result != "lose"
+            || self.camp.as_ref().and_then(|camp| camp.node()).is_none_or(|n| n.native_defeat_return_title.is_none())
+        {
+            return;
+        }
+        todo!("R8: native_defeat.go:34 startNativeDefeat（敗北返回標題；第一章重播沒有敗北）")
     }
 }

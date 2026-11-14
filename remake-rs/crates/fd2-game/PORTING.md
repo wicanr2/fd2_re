@@ -254,6 +254,25 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 | B | `Game::start_native_unit_death_present_mode` | `prelude: &mut dyn FnMut(&battle::State) -> Result<()>` | `prelude: &mut dyn FnMut(&mut battle::State) -> Result<()>` | Go 的 prelude 改寫候選狀態（清 +0x40） |
 | B | `NativeCh28PostPresentJob::retained_state`（B 組型別） | `Option<battle::State>` | `bool` | Go 存 `g.st` 指標本身；Rust 保留模式就是不替換 `g.st` |
 | B（D 的函式，跨組介面） | `Game::award_death_reward` | `killer: UnitIdx` | `killer: Option<UnitIdx>` | B 的 `completeTurn` 傳 nil killer（`main.go:13084`）；本體仍是 D 的 `todo!()` |
+| D | `Game::begin_native_action_death_presentation` | `after: Option<Box<dyn FnOnce(&mut Game) + Send>>` | `after: &SharedAfter` | Go 的 `after` 同時被 `finishSuccessfulUnitAction` 的五個續行閉包捕捉；`FnOnce` 只能交出一次，改放共用格子（見「D 組：所有權」） |
+| D | `capture_native_action_death_flags` | `(units: &[UnitIdx])` | `(st: &battle::State, units: &[Option<UnitIdx>])` | 要讀 HP 與 +5；Go 可傳 nil 單位 |
+| D | `native_death_flag_prelude` | `-> Option<Box<dyn FnMut(&mut Game, &battle::State) -> Result<()> + Send>>` | `-> impl FnMut(&mut battle::State) -> Result<()>` | 直接交給 B 組 `start_native_unit_death_present_mode` 的 `prelude` |
+| D | `Game::start_native_map_death_visual` | `flags: &mut BTreeMap<i64, u8>` | `flags: &BTreeMap<i64, u8>` | 只讀 |
+| D | `Game::preflight_native_transient_death`、`native_transient_death_preview`、`native_transient_focus_preview` | `(&self, candidate: &mut battle::State, …) -> Result<Option<Game>>` | `(&mut self, candidate: &battle::State, …) -> Result<NativeTransientPreviewSaved>`（preflight 回 `Result<()>`） | Go 淺複製整個 `Game`；Rust 就地預覽再還原（見「D 組：預覽」） |
+| D | `Game::grant_native_death_reward` | `killer: UnitIdx` | `killer: Option<UnitIdx>` | Go 可傳 nil（狀態致死、`deathProgramKiller` 為 nil） |
+| D | `Game::queue_native_level_up_dialogue` | `ups: &mut [battle::LevelUpEvent]` | `ups: &[battle::LevelUpEvent]` | 只讀 |
+| D | `expand_native_message_words`、`native_level_up_dialogue_lines`（另補 `native_message_pages`） | `strings: &fdtxt::Strings` | `strings: &dyn NativeMessageStrings` | Go 參數是匿名介面，測試傳假字串表 |
+| D | `Game::render_physical_battle_panel`、`native_physical_base` | `record: &mut [u8]`（及 `actor_record`、`target_record`） | `&[u8]` | 只讀 |
+| D | `bind_modern_physical_panel_text`、`bind_modern_battle_panel_text` | `(scene: Option<&mut NativePhysicalScene>, sources: &mut …)`、`panels: &mut [..]` | `(scene: Option<&NativePhysicalScene>, sources: Option<&mut ModernHDBattleSources>)`、`panels: &[..]` | 面板只讀；Go 的 `sources` 可為 nil |
+| D | `modern_hd_battle_body_sources` | `(base: &mut [u8], …, present: NativePhysicalBodyPresent, …) -> Option<ModernHDBattleSources>` | `(base: &[u8], …, present: &NativePhysicalBodyPresent, …) -> ModernHDBattleSources` | 只讀；Go 一定回傳非 nil |
+| D | `Game::prepare_native_physical_body_resources`、`prepare_native_physical_prelude` | `attack: &mut figani::Animation` | `attack: &figani::Animation` | 只讀 |
+| D | `Game::preflight_native_physical_map_return` | `(&self)` | `(&mut self)` | Go `probe := *g` 試合成；Rust 就地合成再還原 |
+| D | `NativePhysicalBodyResources::{main_sounds, counter_sounds}`、`NativePhysicalBodyJob::sounds`（D 組型別） | `BTreeMap<i64, Vec<u8>>` | `Arc<BTreeMap<i64, Vec<u8>>>` | Go 所有工作共用同一份 map |
+| D | `NativePhysicalScene::prelude_images`（D 組型別）、`native_command24_prelude_images` | `Vec<Option<Arc<Picture>>>`、`-> Result<Vec<Option<Arc<Picture>>>>` | `Vec<IndexedFrame>`、`-> Result<Vec<IndexedFrame>>` | 120：演出工作保存索引色畫格，GPU 貼圖在 R5 |
+| D | `NativeCommand29PresentationJob::actor_cues`（D 組型別） | `BTreeMap<i64, Vec<u8>>` | `Option<BTreeMap<i64, Vec<u8>>>` | Go 以 `actorCues == nil` 決定播 `sfxActor`（`native_command29_presentation.go:436`），空 map 分不出 nil |
+| D | `Game::build_native_transient_phases`、`build_native_transient_phases_typed` | `-> Result<(Option<battle::State>, …)>` | `-> Result<(battle::State, …)>` | 成功時候選一定存在 |
+| D | `Game::adopt_native_state_candidate` | `candidate: Option<&mut battle::State>` | `candidate: Option<battle::State>` | 換上候選狀態；對照表見「D 組：所有權」 |
+| D | `Game::preflight_modern_hd_transient_expiry` | `candidate: &mut battle::State, …, damage: &mut [..]` | `&battle::State`、`&[..]` | 只讀 |
 
 ## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
 
@@ -839,3 +858,153 @@ R5 測試清單（需要畫面或真字型量寬，不在本階段移植）：
   - A 組 `draw_modern_battle_panel_ink` 在忠實模式也會被呼叫（有 TTF 與 `locale_entities` 時預檢 HD 面板文字），第一章選取單位就會走到。R4 先移植「找得到不超框字級」的量測部分，像素繪製留 R5；交給第三波 E 組（`modern_hd_text`）。
   - `Game::native_map_frame_source` 只有 HD 程式讀，維持 `None` 到 R6。
   - 面板字型以 `same_panel_font` 比較，列為已知差異；要完全一致時再把 `font` 改成 `Arc<Font>`。
+
+## R4 階段 2：D 組（攻擊演出與動畫指令播放）
+
+2026-11-15，代號 `r4d`，合併基準 `57e34259`。範圍是 `PORTING.json` 裡 `group` 為 `D` 的 120 個函式（含 `main.go` 的 16 個）。
+`native_command*_presentation` 十七個檔的 step／cancel 由同組分身在獨立工作樹移植（`6f81b961`），再快轉併入。
+
+### 移植結果
+
+| 項目 | 數量 |
+|---|---|
+| D 組函式 | 120 個全部有本體；另隨呼叫端補移植 `r8` 函式（下表） |
+| 整個本體是 `todo!()` 的 | R5 2 個：`draw_native_physical_body`、`draw_native_physical_prelude`（純繪圖；旗標由呈現回報設）。R6 9 個：HD 凍結來源 `freeze_native_command9_map_input`、`new_modern_hd_compound_map_scene`（兩個同名，一個自由函式、一個 `Game` 方法）、`freeze_compound_map_input`、`ModernHDCompoundMapScene::{digest, seal, validate}`、`freeze_modern_hd_command_geometry`、`indexed_hd_input_identity`（見「D 組：HD 預凍結延後」） |
+| 分支停在 `todo!()` 的 | R8 15 處、R6 3 處（見下） |
+
+R8 的 `todo!` 都在第一章重播沒有執行到的分支（呼叫的函式在 `PORTING.json` 標 `r8`）：`check_result` 的原生章節結果（`beginNativeChapterResult`）、`ai_step` 的 mode 11、敵方法術與敵方指令／物品（`startNativeAIMode11`、`executeAISpell`、`executeNativeAIAction`）、物理攻擊 FIGANI header1 非零的出發與捲動（`prepareNativePhysicalDeparture`、`nativePhysicalScroll`、兩擊之間的回捲）、死亡程式的 `staging` 與 `clear_hp_from`、滿欄掉落的丟棄提示（`prepareNativeItemPanel` 之後）、敗北返回標題（`startNativeDefeat`）、暫時狀態到期提示（`composeNativeTransientExpiryFrame`）、command29 的 command28 分支、補血演出的 `validateModernHDHealSource` 與 `buildNativeCommandHealDigitFrames`。R6 是 HD 開啟時才走的分支：HD 素材預檢（`prepareBattleHDResources`）、HD 到期框預檢、HD 主題的獎勵訊息底圖（`prepareModernHDRewardWorld`）。
+
+隨呼叫端補移植的 `r8` 函式（本體照 Go，放在各自的 D 組檔）：
+
+| Go | Rust | 呼叫端 |
+|---|---|---|
+| `native_command{0,1,2,3,5,6,7,8,9_ai,9_player,10_12,24,29,32,33,34,35}_presentation.go` 的 `failNative…Presentation` | 同名 `fail_native_…_presentation` | 各自的 step；Go `Draw` 畫不出來時也呼叫 |
+| `modern_hd_heal_source.go:76` 的 rollback | `native_heal_rollback` | `step_native_command_heal_presentation` |
+| `native_command24_presentation.go` 的 `nativeCommand24RawFramesDelay` 與延遲表 | `native_command24_raw_frames_delay`、`NATIVE_COMMAND24_RAW_DELAYS` | `step_native_command24_presentation` |
+| `native_command24_presentation.go:109` `nativeFIGANIImages` | `native_figani_images`（`native_attack_assets.rs`） | `ensure_native_attack_presentation` |
+| `native_level_up_dialogue.go:104` `nativeMessagePages` | `native_message_pages` | `begin_native_transient_phases` |
+| `native_transient_presentation.go:187` `focusNativeTransientRecord`、`:205` `nativeTransientPresentationEvent` | 同名 | `begin_native_transient_phases` |
+| `modern_hd_battle_surface.go:192` `modernPhysicalTargetBGIndex` | `modern_physical_target_bg_index` | 物理攻擊 HD 來源 |
+| `player_interface.go:32` `hdPresentationEnabled` | 寫在 `preflight_modern_hd_transient_expiry` 內 | 同左 |
+
+Rust 新增、沒有 Go 對應的項目：`native_command0_presentation.rs` 的 `presentation_units`（演出工作與計畫的單位在 `g.st.Units`，`fd2_rules` 的發布函式另收單位切片）與各指令檔的 `publish_native_commandN_mp`；`main.rs` 的 `SharedAfter`、`take_shared_after`、`finish_successful_unit_action_then`、`Game::ai_step_act`、`ai_step_finish`、`ai_step_write_byte5`（`aiStep` 的三個閉包）；`native_action_death_present.rs` 的 `NativeTransientPreviewSaved`、`save_native_game_preview`、`restore_native_transient_preview`、`native_transient_focus_preview_slots`；`native_physical_body.rs` 的 `NativePhysicalBodyAssembly`、`append_native_physical_body_stage`；`native_death_program_runtime.rs` 的 `run_pending_death_program_step`；`native_transient_presentation.rs` 的 `NativeTransientRun`、`run_native_transient_damage`、`run_native_transient_expiry`；`native_transient_phase.rs` 的 `native_record_i16`；`native_level_up_dialogue.rs` 的 `NativeMessageStrings`；`modern_hd_battle_panel.rs` 的 `same_panel_text`；`modern_hd_dialogue_chrome.rs` 的 `MODERN_HD_GOLD_DIALOGUE_TILE_BYTES`。`main.rs` 新增的項目都緊鄰 D 組的函式。
+
+### D 組：所有權
+
+- **行動收尾的 `after`**：Go `finishSuccessfulUnitAction(actor, after)` 把同一個 `after` 交給五個續行閉包（死亡演出、掉落訊息、滿欄丟棄、死亡程式、升級對話），每個閉包都以同一個 `after` 重入自己；沒有被存起來的閉包就丟掉。`FnOnce` 只能交出一次，Rust 放進 `SharedAfter`（`Arc<Mutex<Option<Box<dyn FnOnce>>>>`），真正執行的那條路才取出。沒有開始的工作把閉包丟掉，`after` 仍留在格子裡，與 Go 相同。
+- **演出工作的單位**：計畫與工作的 Go `*battle.Unit` 都是 `st.units` 的 `UnitIdx`；`fd2_rules` 的發布、完成與中止函式收 `presentation_units(&mut self.st)`（`st` 為 `None` 時以 `expect` 對應 Go 解參考 nil）。
+- **AI 計畫**：Go 的 `act`、`finish` 閉包捕捉 `*battle.AIPlan`；Rust 以 `Arc<AIPlan>` 交給走行延續與演出收尾。
+- **暫時狀態的候選**：Go `adoptNativeStateCandidate` 把候選的單位內容寫回 `g.st` 原本的 `*Unit`，回傳「候選指標 → 原指標」讓握著舊指標的地方不失效；Rust 的單位一律是索引，候選與現況索引相同，直接換上候選狀態，對照永遠是空的（`resolve` 是恆等）。
+- **掉落訊息的 `message`**：Go 的開框、關框閉包捕捉 `message` 指標並把 `message.opening`／`closing` 指向 `g.nativeClassUIJob`。Rust 的閉包在執行時從 `native_system_end_turn_ui.reward_message` 取同一則訊息；`opening`／`closing` 只給 HD 繪製比對，Rust 不另存複本（R6）。
+- **物理攻擊的 HD 來源**：Go 的脈衝工作是前一個工作的值複製，與它共用同一個 `*modernHDBattleSources`，最後一輪以指標去重綁定一次；Rust 每個工作各有一份、逐份綁定。綁定對同一份來源是冪等的（清台座底層、補面板文字），結果相同。
+
+### D 組：預覽（Go `preview := *g`）
+
+`nativeTransientFocusPreview` 與 `preflightNativePhysicalMapReturn` 淺複製整個 `Game`，在副本上聚焦、合成或試建 0x1DB65 演出再丟掉。Rust 的 `Game` 有不能複製的延續與工作欄位，改在 `self` 上就地執行：先以 `save_native_game_preview` 保存預覽路徑實際寫入的欄位（`st`、`native_map_work`、`native_map_vga`、`native_ch28_post_present`、`load_err`、`cur_x/y`、`cam_x/y`、`native_ch23_state`、`native_interface_hud`、`native_map_clock`、`native_map_dac`、`native_fdother_palette_phase/tick`），結束時 `restore_native_transient_preview` 放回。欄位清單來自 `redraw_native_map_hud`、`native_cursor_step_hud`、`sync_native_map_view`、`compose_native_map_frame_*`、`start_native_unit_death_present_mode` 與它發布的第一幀在 Rust 的寫入端；單位視窗素材的延遲載入快取不還原（只是快取）。別組改動這些函式、多寫了欄位時，要同步這份清單。
+
+### D 組：HD 預凍結延後
+
+Go 在忠實模式也會凍結 HD 地圖場景（`freezeNativeCommand9MapInput`、`newModernHDCompoundMapScene` 等），結果只存進 `hdScene`／`hdInput` 一類欄位，只有 HD 繪製讀。這些函式需要擁有資源的 `indexedmap::NativeFrameInput`（Go 存指標，`fd2-campaign` 的型別借用資源）與 `json.Marshal` 摘要，Rust 留到 R6，本體是 `todo!("R6: …")`；D 組在忠實模式的呼叫端（`begin_native_death_reward_message`）不呼叫，`hd_scene` 是 `None`。`freeze_modern_hd_dialogue_chrome` 另外移植了：A 組 HD 標題選單以 `?` 呼叫它，錯誤會影響流程。它要的金色素材 `modern_hd_gold_dialogue.png`（310 位元組、由 SVG 產生，不是原版美術）寫成位元組常數，單元測試核對 SHA-256。
+
+物理攻擊的 HD 來源（`modern_hd_battle_{surface,scroll,runtime,panel}` 的 D 組函式）照 Go 移植：它們在忠實模式也跑，台座位置檢查等會讓整個演出失敗即關閉。
+
+### D 組：呈現回報
+
+Go 由 `Draw` 設下列旗標，對應的 `step*` 等旗標才前進；Rust 的流程端都不設，階段 3 的呈現回報介面要涵蓋（無畫面驅動端直接回報）。各 `draw*` 回傳 false 時 Go `Draw` 呼叫對應的 `fail*`／`cancel*`（`main.go:9502`..`9698`，A 組表第 7 項）。
+
+| 旗標 | Go 寫入端（檔:行） | 等它的流程 |
+|---|---|---|
+| `NativeCommand0PresentationJob::drawn` | `native_command0_presentation.go:537`、`544` | `step_native_command0_presentation` |
+| `NativeCommand1…8` 的 `drawn` | command1 `518`、`525`；command2 `580`、`587`；command3 `499`、`506`；command5 `568`、`575`；command6 `551`、`558`；command7 `502`、`509`；command8 `441`、`448` | 各自的 step |
+| `NativeCommand9AIPresentationJob::drawn`、`NativeCommand9PlayerJob::drawn` | `native_command9_ai_presentation.go:447`、`454`；`native_command9_player_presentation.go:262`、`298` | 各自的 step（player 的 hold 階段不等旗標） |
+| `NativeCommand1012Job::drawn` | `native_command10_12_presentation.go:321`、`344` | main 與 result 階段；prelude 階段等 `native2189_a` 結束 |
+| `NativeCommand24／29PresentationJob::drawn` | command24 `475`、`486`、`496`、`535`；command29 `519`、`530`、`541`、`583` | 各自的 step |
+| `NativeCommand32…35PresentationJob::drawn` | command32 `514`、`520`；command33 `479`、`485`；command34 `528`、`534`；command35 `545`、`551` | 各自的 step |
+| `NativeCommandHealPresentationJob::drawn`、`NativeCommandModifierPresentationJob::drawn` | `native_command_heal_presentation.go:474`、`493`；`native_command_modifier_presentation.go:127`、`136` | 各自的 step（補血只在畫格階段） |
+| `NativePhysicalScene::prelude_drawn` | `native_physical_scene.go:383`、`387` | A 組 `step_attack_presentation_tick` 的前奏 9 幀 |
+| `NativePhysicalScene::lead_drawn` | `native_physical_scene.go:404`、`408` | 同上，出發與捲動（第一章沒有） |
+| `NativePhysicalBodyPlayback::drawn` | `native_physical_body.go:430`、`452` | `step_native_physical_body_millis`：每個有畫面的工作要一次回報才累積等待時間 |
+| `drawNativePhysicalPrelude` 寫的 `loadErr` | `native_physical_scene.go:380`、`391`、`397`、`401`、`412` | HD 前奏／本體畫不出來；流程端要收到失敗才不卡住 |
+
+### D 組：虛擬時鐘與輸入
+
+- D 組沒有讀牆鐘也沒有讀鍵盤：物理演出以 A 組 `step_attack_presentation_tick` 傳入的顯示 tick 毫秒推進，指令演出依呈現回報逐格推進，`native_delay_ticks(500)` 的停留也是幀數。`battle_fpt` 讀環境變數 `FD2_BATTLE_FPT`（同 Go）。
+- 升級對話的推進鍵（`step_native_level_up_dialogue(advance)`）由呼叫端從 `tick_input` 組出。
+
+### D 組：共用變更需求
+
+本工作樹已以最小改動先做（主代理整合時決定採用）：
+
+| 項目 | 原因 | 寫法 |
+|---|---|---|
+| `main.rs` 尾端 `mod main_d_test;` 三行 | D 組 `main.go` 函式的測試 | 緊鄰 B 組的 `mod main_b_test;` |
+| 6 個原本「等 D 合併」的測試拿掉 `ignore`；`test_native_story_advance_accepts_escape_like_enter` 改標實際停點（B 組 R8 的 `dlgWrap`） | `--ignored` 跑過 | 只改屬性行 |
+
+需要主代理或別組決定：
+
+| 項目 | 原因 | 建議 |
+|---|---|---|
+| A 組 `step_attack_presentation_tick` 呼叫 `step_native_physical_body_millis` 前把 `native_scene` 取出 | 沒有原生地圖素材時本體直接 `finish_attack_presentation`；Go 那時看得到 scene（清 VGA、停物理音效），Rust 看不到。第一章有原生地圖素材，走 DAC 漸變路徑不受影響 | 把 step 改成讀寫 `self.atk.native_scene`（不收 `scene` 參數），或在 A 的呼叫端呼叫完再判斷收尾 |
+| `begin_native_transient_phases` 的 `selectors` 維持骨架的 `&mut [u8]` | 只讀，但 C 組兩個呼叫端傳 `&mut [..]`，改成 `&` 會讓 clippy 抓 `unnecessary_mut_passed` | 整合時一起改成 `&[u8]` |
+| `NativeTransientPreviewSaved` 的欄位清單 | 見「D 組：預覽」 | 別組改到預覽路徑的寫入端時同步 |
+| HD 凍結來源需要擁有資源的 `NativeFrameInput` | 見「D 組：HD 預凍結延後」 | R6 由 `fd2-game` 存資源本身、凍結時記下重組所需的小型描述（同 C 組 `native_map_frame_source` 的建議） |
+
+### D 組：KNOWN_DIFFERENCES
+
+| 名稱 | 差異 | 影響 |
+|---|---|---|
+| `death-flag-map-order` | Go `range` map 隨機，Rust 依鍵升冪（`nativeDeathFlagPrelude`、`freezeModernHDDialogueChrome` 的格子檢查） | 只在多筆同時不合法時回報的項目不同 |
+| `transient-preview-in-place` | 預覽在 `self` 上就地執行再還原，不複製 `Game` | 只要保存清單完整，結果相同；單位視窗素材快取會留下 |
+| `hd-preflight-scene-deferred` | Go 在忠實模式也凍結 HD 地圖場景，Rust 不凍結（R6） | 結果只給 HD 繪製讀；忠實模式流程不受影響 |
+| `panel-text-identity` | Go 以 `*modernBattlePanelText` 指標相等辨認同一塊面板，Rust 比對原點、名稱、數值、外框、字型與原生像素 | 同一場景內兩者等價 |
+| `mode5-audio-after-apply` | Go 在 `ApplyNativeAIMode5EventWithAudioCue` 的回呼裡直接 `playSFX`，Rust 套用完再依序播放 | 只在套用失敗時 Go 已先播了音效 |
+| `reward-message-owner-take` | 掉落訊息的關框延續在執行時才從 `nativeSystemEndTurnUI` 取出訊息（Go 捕捉指標） | 關框期間沒有別的寫入端替換這個欄位 |
+| `transient-candidate-deep-clone` | Go 的候選是淺複製 `State` 再逐筆複製單位，Rust 深複製整個 `State` | 只在 Go 經共用切片在失敗路徑改到 `g.st` 時不同；目前的寫入端都寫候選自己的單位與記錄 |
+| `shot-ai-log-text` | `FD2_SHOT_AI` 的診斷以 `eprintln!` 輸出，沒有時間前綴；`%v`／`%+v` 改成 Rust 的 `{:?}` | 只影響診斷輸出 |
+| `gold-tile-embedded-bytes` | Go `//go:embed` 的 PNG 在 Rust 是位元組常數 | SHA-256 由單元測試核對 |
+| 分身組的 `presentation-units-from-st`、`heal-rollback-by-index` | 見上；command0～9_ai 的 `fail*` 遇到 `None` 單位時略過（Go 解參考 nil 會 panic），command10_12、24、29、9_player 以 `expect` 對應 | 正式路徑的工作只在戰場上建立 |
+
+`NORMALIZATIONS`：無（D 組沒有黃金差分）。
+
+### D 組：測試
+
+`tools/rust_game_test.sh` 同樣的檢查（`FD2_REQUIRE_ORIGINAL=1`，輸出沒有「略過」）：整個 crate 266 通過、8 個 `ignore`（等 E 5 個、黃金腳本 2 個、B 組 R8 1 個）。D 組新增 60 個測試，全部通過：
+
+| 檔 | 測試 |
+|---|---|
+| `native_command{1,2,3,5,6,7,8,9_ai,9_player,10_12,33,34,35}_presentation/*_test.rs`（分身） | 31 個 Go 測試；共用夾具在 `native_command1_presentation_test.rs` |
+| `main/main_d_test.rs` | `atk_animation_test.go` 4 個（`:12`、`:38`、`:199`、`:257`）、`phase_banner_test.go:13` 的長度部分、`native_death_program_test.go:189`；補充 4 個（橫幅幀數與截圖模式、`awardDeathReward` 一次性與死亡程式登記、`battleFPT`／`figaniIndex`、`resetAllNativeMapPoses`） |
+| `native_level_up_dialogue/native_level_up_dialogue_test.rs` | `native_level_up_dialogue_test.go` 3 個、`native_transient_phase_test.go:311`；補充 2 個 |
+| `native_physical_scene/native_physical_scene_test.rs` | `native_physical_scene_test.go` 的 `:61`（真實分離素材包建第八章 BG55／TAI55 場景）、`:79`、`:100`、`:156` 與 `:183` 的 player 分支 |
+| `native_physical_body/native_physical_body_test.rs` | `native_physical_body_test.go:30`（多擊、反擊、狀態與暴擊脈衝、最後還原畫格）；補充 1 個（`step_native_physical_body_millis` 等回報與餘數） |
+| `native_attack_assets/native_attack_assets_test.rs` | `native_attack_assets_test.go:13`、`:101`（子行程換空素材包）；補充 1 個 |
+| `modern_hd_dialogue_chrome/modern_hd_dialogue_chrome_test.rs` | 嵌入素材 SHA-256、取色規則與拒收（`modern_hd_dialogue_chrome_test.go:174` 的來源拒收段） |
+
+改環境變數的 Go 測試（`FD2_BATTLE_FPT`、`FD2_ASSET_PACK`）以 F 組的 `f_child_env` 在子行程執行。
+
+原本等 D 的測試：`finishSelectedWait` 4 個、`reset_action_overlay_lifecycle_clears_end_turn_owner_and_ring`、`test_beat_sequence_end_triggers_node_transition` 通過，拿掉 ignore；`test_native_story_advance_accepts_escape_like_enter` 現在停在 B 組 `dlg_page_count` 的 R8 `dlgWrap`，改標那個停點。
+
+R5 測試清單（需要 `Draw`、GPU 圖片或畫面用的 `r8` 函式，不在本階段移植）：
+
+| 測試 | Go 檔:行 | 原因 |
+|---|---|---|
+| `TestPhaseBannerScheduleFollowsTheBiosTickContract` 的逐幀部分、`TestPhaseBannerHoldKeepsTheLastEnterStep` | `phase_banner_test.go:13`、`:86` | `phaseBannerStep`／`phaseBannerSlideOffset` 只給繪圖用（`r8`） |
+| `phase_banner_glyph_test.go` 5 個 | `:14`、`:93`、`:126`、`:161`、`:186` | `blitPhaseBannerGlyphs` 是繪圖（`r8`） |
+| `TestFIGANIFrameAtDisplayTickUsesNativeDelays`、`TestNativeImpactDACRequiresRawFrameAndDamageProvenance`、`TestBattleImpactHPCommitsPostHitValueAtImpactBoundary`、`TestNativeImpactDisplacementPreserves2939DPhaseAndDirection`、`TestAttackPresentationTickFollowsTheBiosTick`、`TestAttackPresentationTicksKeepsTheRemainder`、`TestAttackPresentationRunsBothStages` | `atk_animation_test.go:55`、`:69`、`:91`、`:104`、`:127`、`:149`、`:287` | 受測的是 A 組 `main.go` 的演出推進與繪圖輔助，由 A 組或階段 3 移植 |
+| `TestNativePhysicalBodyGPU`、`TestNativePhysicalReturnClearsVGA`、`TestNativePhysicalReturnWaitSixBIOSTicks` | `native_physical_body_test.go:349`、`:769`、`:818` | 以 `Draw` 推進 |
+| `TestNativePhysicalDepartureGPU`、`TestNativePhysicalPreludeGPU`、`TestNativePhysicalOwnerMapHandoffFromOracle` | `native_physical_scene_test.go:586`、`:723`、`native_physical_owner_test.go:27` | GPU 圖片或 `Draw` |
+| `TestNativeDeathRewardDiscardCommitsOnlyAfterItemPanelClose`、`TestNativeDefeatRequiresDrawAndFixedHolds`、`TestNativeDefeatChapter12ReturnsTitleAndStartResetsCampaign` | `native_death_reward_ui_test.go:155`、`native_defeat_test.go:53`、`:126` | 以 `Draw` 推進（另需 R8 的滿欄提示與敗北演出） |
+| HD 的 GPU 測試 | `modern_hd_battle_surface_test.go:142`、`:568`、`modern_hd_battle_camera_gpu_test.go:89`、`modern_hd_battle_scroll_test.go:350`、`:444`、`modern_hd_battle_scroll_lifecycle_test.go:20`、`modern_hd_battle_panel_test.go:238`、`:353`、`modern_hd_battle_panel_style_prototype_test.go:76`、`modern_hd_player9_map_gpu_test.go:287`、`:350`、`modern_hd_player9_stage_gpu_test.go:151`、`modern_hd_transient_expiry_test.go:117`、`:457`、`modern_hd_indexed_transition_gpu_test.go:277`、`modern_hd_commands10_12_map_gpu_test.go:208`、`modern_hd_dialogue_chrome_layer_test.go:152`、`modern_hd_gold_dialogue_test.go:287` | GPU 圖片（同時是 R6 的 HD） |
+| 分身組列的指令演出測試 | `native_command3_presentation_test.go:12`、`native_command6_presentation_test.go:163`、`:955`、`native_command29_presentation_test.go:13`、`native_command10_12_presentation_test.go:17`、`:69` | 以 `Draw` 推進（另需 `r8` 的 confirm 分支或 AI 執行路徑） |
+
+其他沒有移植的 D 組主題 Go 測試（不需要畫面，所以不列 R5）：
+
+- 受測或夾具是 `r8` 函式：`native_transient_phase_test.go` 的 `:14`..`:138`、`:151`、`:272`、`:290`、`:358`（夾具 `nativeCurrentSaveTestGame` 經 `buildNativeCurrentSaveStored`，受測的 `applyNativeTransientPhase(s)` 是 `r8`）；`native_command24_presentation_test.go` 8 個、`native_command29_presentation_test.go` 4 個、`TestStartNativeCommand33／34／35…`（start 函式是 `r8`）；`native_ai_physical_atomic_test.go` 2 個（mode 11、AI 指令 0）；`TestNativePhysicalSceneMissingBGStopsPlayerAndMode11BeforeSettlement`、`:156`／`:183` 的 mode11 分支、`TestNativePhysicalDepartureMissingLayerStopsBeforeSettlement`（`executeNativeAIMode11Physical`、出發段是 `r8`）；`native_death_reward_ui_test.go` 其餘 3 個（滿欄丟棄提示）；`native_defeat_test.go:18`、`:113`、`native_defeat_parity_test.go:62`（敗北演出）；`native_death_program_test.go:129`、`:165`（死亡程式的 `staging`）。
+- 原版 oracle 或整段流程（階段 3）：`native_physical_body_test.go` 的 `NormalOracle`／`MapReturnCompleteFrameFromOracle` 7 個與 `:107`、`native_physical_scene_test.go:356`、`:425`、`native_action_death_present_test.go` 7 個、`native_death_program_test.go:83`、`:228`、`TestPlayerPhysicalAttackPreflightsSeparatedPairBeforeMutation`、`…LoadsDynamicSeparatedPairWithoutArchive`（`native_attack_assets_test.go:36`、`:68`，經 `confirm` 走整段玩家攻擊並比對 Go 亂數序列）、`TestCompatiblePhysicalReturnKeepsOwnVGA`（`native_physical_body_test.go:806`，受測的 `finishAttackPresentation` 是 A 組）、`native_transient_phase_test.go:319`。
+- HD（R6）：`modern_hd_*_test.go` 其餘非 GPU 的測試（battle surface 5、physical sfx 4、battle camera 5、battle scroll 4、battle panel 4、compound map 2、player9 map 4、player9 stage 3、transient expiry 2、indexed transition 7、commands10_12 map 2、dialogue chrome 1、gold dialogue 2），都經 HD 主題、HD 凍結來源或 HD 繪製。
+
+黃金差分：D 組沒有加。可以逐幀比對的是指令演出與物理演出的 step，但它們要等呈現回報；適合在階段 3 以收 `drawn` 回報的驅動端或重播檢查點比對。
+
+### D 組：fd2-rules／fd2-campaign 缺口
+
+沒有改那兩個 crate，也沒有發現缺少的函式。`battle::Unit`／`State`、`fdother::Frame` 有私有欄位，測試以 `build!` 巨集先 `default()` 再寫入。`Cargo.lock` 沒有變動。

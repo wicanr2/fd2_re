@@ -18,5 +18,7 @@ pub(crate) struct ModernHDCommand1012Frames {}
 pub(crate) fn freeze_modern_hd_command_geometry(
     r#in: &indexedmap::NativeFrameInput<'_>,
 ) -> Result<indexedmap::NativeFrameInput<'static>> {
-    todo!("modern_hd_commands10_12_map.go:freezeModernHDCommandGeometry")
+    todo!(
+        "R6: modern_hd_commands10_12_map.go:23 freezeModernHDCommandGeometry（HD 凍結來源；Go 在忠實模式也執行，結果只給 HD 繪製讀。需要擁有資源的 NativeFrameInput，D 組的忠實模式呼叫端不呼叫，見 PORTING.md「D 組：HD 預凍結延後」）"
+    )
 }

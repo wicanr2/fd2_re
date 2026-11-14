@@ -35,6 +35,43 @@ impl Game {
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     /// Go 的 func 參數 `then` 會被存起來（工作結構的延續），Rust 收擁有的 `Box`。
     pub(crate) fn run_pending_native_death_rewards(&mut self, then: Option<Box<dyn FnOnce(&mut Game) + Send>>) -> bool {
-        todo!("native_death_reward_ui.go:runPendingNativeDeathRewards")
+        if self.native_death_reward_ui.is_some() || self.pending_native_death_rewards.is_empty() {
+            return false;
+        }
+        let pending = self.pending_native_death_rewards[0];
+        let st = self.st.as_ref().expect("Go：pending.killer 指向 g.st.Units");
+        let killer = pending.killer.map(|k| &st.units[k]);
+        let valid = killer.is_some_and(|k| {
+            k.inventory.len() == 8 && battle::validate_native_inventory_projection(Some(k)).is_ok() && k.has_battle_fig
+        });
+        if !valid
+            || pending.item < 0
+            || pending.item > 0xff
+            || self.native_preparation_ui.is_none()
+            || self.native_class_ui.is_none()
+        {
+            self.load_err = String::from("native death reward: full inventory or dialogue provenance unavailable");
+            return true;
+        }
+        let killer = killer.unwrap();
+        if killer.native_inventory_flags.iter().any(|&flag| flag & 0x80 != 0) {
+            self.load_err = String::from("native death reward: full raw inventory contains an empty slot");
+            return true;
+        }
+        match load_native_separated_portrait(killer.battle_fig) {
+            Ok(portraits) if portraits.len() > 3 => {}
+            _ => {
+                self.load_err = String::from("native death reward: killer portrait unavailable");
+                return true;
+            }
+        }
+        if let Err(err) = self.compose_native_map_frame() {
+            self.load_err = format!("native death reward: {}", err.message());
+            return true;
+        }
+        let _ = then;
+        todo!(
+            "R8: native_death_reward_ui.go:58 prepareNativeItemPanel 之後的滿欄丟棄提示（0x1AA56；第一章重播只走到開頭的早退）"
+        )
     }
 }
