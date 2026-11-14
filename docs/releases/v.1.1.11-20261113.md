@@ -26,7 +26,7 @@
 
 | 交付內容 | 位置 |
 |---|---|
-| Windows、macOS 通用版、Linux 本機完整版 | `dist-all/v.1.1.11-20261113/full-local/` |
+| Windows、macOS 通用版、Linux 本機完整版 | `dist-all/v.1.1.11-20261113/full-local/`（2026-11-14 由 [v.1.1.12](v.1.1.12-20261114.md) 取代後刪除，雜湊清單與 VALIDATION 保留） |
 | 三平台引擎包 | `dist-all/v.1.1.11-20261113/patch/` |
 | 推廣影片 | 沿用 `dist-all/v.1.1.10-20261112/promo/` |
 | 雜湊清單與驗收收據 | `dist-all/v.1.1.11-20261113/SHA256SUMS.json`、`smoke/` |
