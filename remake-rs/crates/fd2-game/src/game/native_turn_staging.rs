@@ -53,15 +53,6 @@ pub(crate) fn clone_native_turn_staging_state(source: Option<&battle::State>) ->
     Ok(Some(source.clone()))
 }
 
-/// Go `nativeDelayTicks(ms)`（`native_indexed_transition.go:55`，B 組的 `r8` 函式）：毫秒換成 60 Hz 幀數、
-/// 無條件進位。C 組另取名字，避免與 B 組補移植的同名函式衝突；整合時可合併成一個。
-pub(crate) fn native_delay_ticks_ms(ms: i64) -> i64 {
-    if ms <= 0 {
-        return 0;
-    }
-    (ms * 60 + 999) / 1000
-}
-
 impl Game {
     /// startNativeRawCamp0TurnEvents is the sub_1A813(0) owner. Scenarios opt in by
     /// supplying native_turn_events; once opted in, every matching live row must
@@ -152,7 +143,7 @@ impl Game {
                 }
                 let job = self.native_turn_staging.as_mut().unwrap();
                 (job.phase, job.ticks, job.drawn) =
-                    (NATIVE_TURN_STAGING_FLASH, native_delay_ticks_ms(job.event.staging.flash_hold_ms), false);
+                    (NATIVE_TURN_STAGING_FLASH, native_delay_ticks(job.event.staging.flash_hold_ms), false);
             }
             NATIVE_TURN_STAGING_FLASH => {
                 // Go 的 `drawn` 由 drawNativeTurnStaging（Draw）設；Rust 由呈現回報設（見 PORTING.md）。

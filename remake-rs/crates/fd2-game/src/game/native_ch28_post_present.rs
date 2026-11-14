@@ -55,12 +55,12 @@ impl Game {
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     ///
     /// R4 B 組：Go 暫時把 `g.st` 指向 `state` 取 HUD 輸入再換回；Rust 把 `state` 的內容換進 `self.st`、
-    /// 取完再換回呼叫端（不複製狀態）。素材庫缺席時回 `buildNativeMapFrameInput` 同一句錯誤（骨架的 C 組
-    /// 函式收非 `Option` 的素材庫）。
-    pub(crate) fn native_ch28_post_frame_input(
-        &mut self,
-        state: Option<&mut battle::State>,
-    ) -> Result<indexedmap::NativeFrameInput<'static>> {
+    /// 取完再換回呼叫端（不複製狀態）。回傳的輸入借用 `self` 的素材庫與 `state`（C 組
+    /// `build_native_map_frame_input` 的借用簽名，120「保存資源、每次重組輸入」）。
+    pub(crate) fn native_ch28_post_frame_input<'a>(
+        &'a mut self,
+        state: Option<&'a mut battle::State>,
+    ) -> Result<indexedmap::NativeFrameInput<'a>> {
         let Some(state) = state else {
             return Err(GameError::new("native ch28 post: state unavailable"));
         };
@@ -70,12 +70,11 @@ impl Game {
         if !ok {
             return Err(GameError::new("native ch28 post: HUD provenance unavailable"));
         }
-        let Some(assets) = self.native_map_assets.as_mut() else {
-            return Err(GameError::new("native map frame: incomplete assets, field, or battle state"));
-        };
+        let this: &'a Game = self;
+        let state: &'a battle::State = state;
         build_native_map_frame_input(
-            assets,
-            self.m.as_ref(),
+            this.native_map_assets.as_ref(),
+            this.m.as_ref(),
             Some(state),
             NativeMapFrameRuntime { hud, ..Default::default() },
         )

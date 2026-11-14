@@ -117,7 +117,7 @@ impl Game {
                 return;
             }
             j.frame = j.frames.len() as i64 - 1;
-            (j.holding, j.hold) = (true, native_delay_ticks_ms(500));
+            (j.holding, j.hold) = (true, native_delay_ticks(500));
         }
     }
 }

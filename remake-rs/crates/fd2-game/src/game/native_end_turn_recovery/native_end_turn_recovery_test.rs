@@ -31,7 +31,6 @@ fn unit0(g: &mut Game) -> &mut battle::Unit {
 
 /// Go：`native_end_turn_recovery_test.go:46` `TestNativeEndTurnRecoveryAutoENDUsesSameOwner`
 #[test]
-#[ignore = "等 B 合併（夾具合成整幀需要 native_map_hud_input）"]
 fn test_native_end_turn_recovery_auto_end_uses_same_owner() {
     if f_child_env(module_path!(), "test_native_end_turn_recovery_auto_end_uses_same_owner", mute_env).is_none() {
         return;
@@ -54,7 +53,6 @@ fn test_native_end_turn_recovery_auto_end_uses_same_owner() {
 
 /// Go：`native_end_turn_recovery_test.go:133` `TestNativeEndTurnRecoveryUsesOpaqueMaskAndRawRestore`
 #[test]
-#[ignore = "等 B 合併（夾具合成整幀需要 native_map_hud_input）"]
 fn test_native_end_turn_recovery_uses_opaque_mask_and_raw_restore() {
     if f_child_env(module_path!(), "test_native_end_turn_recovery_uses_opaque_mask_and_raw_restore", mute_env).is_none()
     {
@@ -85,7 +83,6 @@ fn test_native_end_turn_recovery_uses_opaque_mask_and_raw_restore() {
 
 /// Go：`native_end_turn_recovery_test.go:156` `TestNativeEndTurnRecoveryRejectsAssetsAndStalePlanWithoutWrites`
 #[test]
-#[ignore = "等 B 合併（夾具合成整幀需要 native_map_hud_input）"]
 fn test_native_end_turn_recovery_rejects_assets_and_stale_plan_without_writes() {
     if f_child_env(
         module_path!(),
@@ -127,7 +124,6 @@ fn test_native_end_turn_recovery_rejects_assets_and_stale_plan_without_writes() 
 
 /// Go：`native_end_turn_recovery_test.go:193` `TestNativeEndTurnRecoveryOffscreenAndNoCandidate`
 #[test]
-#[ignore = "等 B 合併（夾具合成整幀需要 native_map_hud_input）"]
 fn test_native_end_turn_recovery_offscreen_and_no_candidate() {
     if f_child_env(module_path!(), "test_native_end_turn_recovery_offscreen_and_no_candidate", mute_env).is_none() {
         return;
@@ -173,7 +169,6 @@ fn ai_idle_recovery_test_game() -> (Game, battle::NativeAIIdleRecoveryDecision) 
 
 /// Go：`native_ai_idle_recovery_test.go:34` `TestNativeAIIdleRecoveryInitialMaskAndRawRestore`
 #[test]
-#[ignore = "等 B 合併（夾具合成整幀需要 native_map_hud_input）"]
 fn test_native_ai_idle_recovery_initial_mask_and_raw_restore() {
     if f_child_env(module_path!(), "test_native_ai_idle_recovery_initial_mask_and_raw_restore", mute_env).is_none() {
         return;
@@ -218,7 +213,6 @@ fn test_native_ai_idle_recovery_initial_mask_and_raw_restore() {
 
 /// Go：`native_ai_idle_recovery_test.go:101` `TestNativeAIIdleRecoveryMissingAssetsAndInvalidTupleLeaveHP`
 #[test]
-#[ignore = "等 B 合併（夾具合成整幀需要 native_map_hud_input）"]
 fn test_native_ai_idle_recovery_missing_assets_and_invalid_tuple_leave_hp() {
     if f_child_env(module_path!(), "test_native_ai_idle_recovery_missing_assets_and_invalid_tuple_leave_hp", mute_env)
         .is_none()

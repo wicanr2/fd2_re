@@ -124,7 +124,6 @@ fn test_native_player_status_gates_and_failed_resources_do_not_select() {
 
 /// Go：`native_player_input_test.go:49` `TestNativePlayerFocusUsesRawBattleViewAndXFirstSafeBand`
 #[test]
-#[ignore = "等 B 合併（redraw_native_map_hud、sync_native_map_view、native_cursor_step_hud）"]
 fn test_native_player_focus_uses_raw_battle_view_and_x_first_safe_band() {
     let mut st = battle::State::default();
     (st.w, st.h) = (30, 30);
@@ -171,7 +170,6 @@ fn test_native_player_focus_uses_raw_battle_view_and_x_first_safe_band() {
 /// Go：`native_player_movement_test.go:44` `TestNativePlayerMovementCancelRestoresRawCursorBeforeSync`
 /// （受測的 `restorePlayerMovementCursor` 隨 `ringInput` 補移植）。
 #[test]
-#[ignore = "等 B 合併（sync_native_map_view）"]
 fn test_native_player_movement_cancel_restores_raw_cursor_before_sync() {
     let mut st = battle::State::default();
     (st.w, st.h) = (30, 30);

@@ -6723,7 +6723,7 @@ impl Game {
                 }
             };
             let attack_result = full_result.attack.clone();
-            self.award_death_reward(Some(tgt), sel);
+            self.award_death_reward(Some(tgt), Some(sel));
             let units = &self.st.as_ref().unwrap().units;
             let message = player_physical_attack_message(
                 self.locale_catalog.as_ref(),

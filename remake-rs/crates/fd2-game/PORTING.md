@@ -828,3 +828,14 @@ R5 測試清單（需要畫面或真字型量寬，不在本階段移植）：
 ### fd2-rules／fd2-campaign 缺口
 
 沒有改那兩個 crate。`battle::State::focus_native_map_cursor_steps` 的 callback 只收兩個視圖值，不能改寫呼叫端的 `Game`，B 組在 `Game` 這層重寫同一個迴圈（見「B 組：所有權」）；`indexedmap::NativeTransitionFrameInput` 借用資源，B 組以 `NativeTransitionFrameSource` 擁有資源。兩者都不需要改上游。
+
+### 整合紀錄（B＋C，2026-11-14）
+
+- C（`fb4b47dc`）與 B（`43176839`）合併；`main.rs` 自動合併，`PORTING.md` 以 C 版為底接上 B 段落，B 的 13 列簽名變更併入表格。
+- 跨組簽名對齊兩處：C 的 `award_death_reward(Some(tgt), sel)` 配合 B 改成 `Option<UnitIdx>` 的擊殺者；B 的 `native_ch28_post_frame_input` 改成借用 `self` 與候選狀態的 `<'a>` 簽名，配合 C 的 `build_native_map_frame_input`。
+- C 的 `native_delay_ticks_ms` 與 B 補移植的 `native_delay_ticks` 是同一個 Go `nativeDelayTicks`（`native_indexed_transition.go:55`），留 B 的一份，C 的三個呼叫端改用它。
+- 合併後 14 個互等的測試通過，拿掉 ignore；其餘 12 個依實際停點改標等 D（`finish_successful_unit_action`、`cancel_native_command32_presentation`）或等 E。`tools/rust_game_test.sh`：200 通過、14 ignore（含 2 個由黃金腳本執行）。
+- C 組提出、主代理的決定：
+  - A 組 `draw_modern_battle_panel_ink` 在忠實模式也會被呼叫（有 TTF 與 `locale_entities` 時預檢 HD 面板文字），第一章選取單位就會走到。R4 先移植「找得到不超框字級」的量測部分，像素繪製留 R5；交給第三波 E 組（`modern_hd_text`）。
+  - `Game::native_map_frame_source` 只有 HD 程式讀，維持 `None` 到 R6。
+  - 面板字型以 `same_panel_font` 比較，列為已知差異；要完全一致時再把 `font` 改成 `Arc<Font>`。

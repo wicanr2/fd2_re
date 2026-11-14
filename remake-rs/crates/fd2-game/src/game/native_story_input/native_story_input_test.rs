@@ -4,7 +4,7 @@ use super::*;
 
 /// Go：`native_story_input_test.go:15` `TestNativeStoryAdvanceAcceptsEscapeLikeEnter`
 #[test]
-#[ignore = "等 C 合併（enter_node 呼叫 reset_action_overlay_lifecycle）"]
+#[ignore = "等 D 合併（cancel_native_command32_presentation）"]
 fn test_native_story_advance_accepts_escape_like_enter() {
     let build = || {
         let line = |text: &str| campaign::Line { speaker: 0, text: text.to_string(), ..Default::default() };

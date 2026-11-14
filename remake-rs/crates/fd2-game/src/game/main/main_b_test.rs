@@ -101,7 +101,6 @@ fn map32_acting() -> Option<BTreeMap<i64, Vec<campaign::ActingFrame>>> {
 
 /// Go：`beatrunner_test.go:78` `TestBeatPaletteUpdatePresentsRecoveredFullDACWhiteFlash`
 #[test]
-#[ignore = "等 C 合併（palette_update 先查 native_map_assets_available）"]
 fn test_beat_palette_update_presents_recovered_full_dac_white_flash() {
     let pu = |start, end, delta| campaign::Beat {
         palette_start: start,
@@ -370,7 +369,6 @@ fn test_beat_acting_zero_special_preserves_original_three_tick_transition() {
 
 /// Go：`beatrunner_test.go:372` `TestBeatNativePaletteFadeOutFailsClosedWithoutIndexedInput`
 #[test]
-#[ignore = "等 C 合併（start_native_palette_ramp 查 native_map_assets_available）"]
 fn test_beat_native_palette_fade_out_fails_closed_without_indexed_input() {
     let mut g = new_beat_test_game(vec![campaign::Beat {
         native_palette_fade: Some(campaign::NativePaletteFadeOut { start: 0, end: 63, delay_ms: 2 }),
@@ -689,7 +687,7 @@ fn test_beat_delay_counts_down_then_advances() {
 
 /// Go：`beatrunner_test.go:733` `TestBeatSequenceEndTriggersNodeTransition`
 #[test]
-#[ignore = "等 C 合併（bgm 拍經 play_bgm 呼叫 current_native_system_options）"]
+#[ignore = "等 D 合併（cancel_native_command32_presentation）"]
 fn test_beat_sequence_end_triggers_node_transition() {
     let mut g = new_beat_test_game(vec![
         campaign::Beat { track: String::from("FDMUS_999"), ..beat("bgm") }, // 非阻塞拍:應立即連呼下一拍
@@ -1051,7 +1049,6 @@ fn walk_game(st: battle::State, from: (i64, i64), to: (i64, i64)) -> Game {
 /// Go 的單位不在 `g.st` 裡（`g.st` 為 nil）；Rust 的走行單位是 `st.units` 的索引，所以放進一個沒有視圖、
 /// 沒有格子事件的 `State`，`noteNativeFieldEventStep` 與 `followNativeMapCursorStep` 一樣不做事。
 #[test]
-#[ignore = "等 C 合併（走行每格呼叫 native_ch12_up_walk_frame，走完呼叫 begin_battle_action_overlay）"]
 fn test_battle_walk_preserves_native_seven_tick_record_lifecycle() {
     let mut st = battle::State::default();
     st.units = vec![presented_unit(2, 3)];
@@ -1094,7 +1091,6 @@ fn map25_walk(from: (i64, i64), dir: i64, to: (i64, i64)) -> Option<Game> {
 
 /// Go：`native_map_presentation_test.go:49` `TestBattleWalkNotesSelector0DuringWalkAndDispatchesAtActionEnd`
 #[test]
-#[ignore = "等 C 合併（走行每格呼叫 native_ch12_up_walk_frame，走完呼叫 begin_battle_action_overlay）"]
 fn test_battle_walk_notes_selector0_during_walk_and_dispatches_at_action_end() {
     let Some(mut g) = map25_walk((11, 36), 1, (10, 36)) else {
         return;
@@ -1121,7 +1117,6 @@ fn test_battle_walk_notes_selector0_during_walk_and_dispatches_at_action_end() {
 
 /// Go：`native_map_presentation_test.go:101` `TestBattleWalkRightStepAlsoNotesSelector0`
 #[test]
-#[ignore = "等 C 合併（走行每格呼叫 native_ch12_up_walk_frame，走完呼叫 begin_battle_action_overlay）"]
 fn test_battle_walk_right_step_also_notes_selector0() {
     let Some(mut g) = map25_walk((9, 36), 3, (10, 36)) else {
         return;

@@ -142,7 +142,7 @@ impl Game {
             j.frame = next - 1;
             j.holding = true;
             if !j.skip_hold {
-                j.hold = native_delay_ticks_ms(500);
+                j.hold = native_delay_ticks(500);
             }
             return;
         }

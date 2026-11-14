@@ -164,7 +164,6 @@ fn test_build_native_map_frame_input_rejects_control_drift_and_missing_raw_roste
 ///
 /// Go：`native_map_frame_input_test.go:419` `TestComposeNativeMapHUDUsesAdvancedCycle`
 #[test]
-#[ignore = "等 B 合併（native_map_hud_input、prepare_native_ch23_steady_stage）"]
 fn test_compose_native_map_hud_uses_advanced_cycle() {
     for steady_palette in [true, false] {
         let (mut a, m, mut st) = complete_native_map_frame_fixture();
