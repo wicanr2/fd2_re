@@ -367,16 +367,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 怎樣算做完：一般劇情進戰後於我方可操作狀態F5，新程序F9與標題LOAD回到同一回合、單位位置／HP／MP／狀態、敵軍、事件旗標、寶箱與鏡頭；繼續遊玩至戰後節點無分歧。演出、AI回合或對話中F5明示拒絕並有玩家可見提示。戰鬥選單存檔在正式包有可見結果。原版FD2.SAV章節槽不在戰鬥中寫入。既有節點存檔可照常讀取。
 
-### Rust改寫R4：fd2-game無畫面遊戲狀態機
-
-`rust-r4-game-state` · 工作 · [#310](https://github.com/wicanr2/fd2_re/issues/310) · 仍未完成 · 還沒出現
-
-把`cmd/fd2`的流程部分移成純Rust狀態機：標題、劇情、戰場操作、城鎮、整備、存讀檔，以固定邏輯幀推進。
-
-依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
-
-怎樣算做完：無畫面跑完標題到第一章戰鬥、城鎮與存讀檔，狀態軌跡與Go黃金軌跡相同；能讀Go版既有存檔。
-
 ### Rust改寫R5：Bevy外殼與原版美術
 
 `rust-r5-bevy-original` · 工作 · [#311](https://github.com/wicanr2/fd2_re/issues/311) · 仍未完成 · 要人判
@@ -420,6 +410,23 @@ F2／F11卡死已改為背景載入（ea7ef639），但載入仍一次解碼整�
 設定已存成HD的玩家，Go版在loadGame時同步載入整個HD主題包（main.go約11646行），啟動多等2～4分鐘，視窗出現前沒有進度。第一次F2／F11的同類問題已於ea7ef639改為背景載入。Go版已凍結，於Rust版實作。
 
 怎樣算做完：設定為HD時啟動不阻塞：先以原版素材顯示並有載入進度，HD包載入完成後再切換；以真實HD包量測啟動到可操作的時間。
+
+### Rust改寫：fd2-rules存檔子樹的JSON寫法與Go逐位元組相同
+
+`rust-rules-serde-go-bytes` · 工作 · [#319](https://github.com/wicanr2/fd2_re/issues/319) · 仍未完成 · 自承還在 tools/rust_parity_compare.py
+
+排程：R5 之前。R4 第一章無畫面重播的 `hotel-save.json` 與 Go 黃金位元組不同（Rust `baca933d…`、Go `190b9f8f…`），差異只在 `party_roster` 的 fd2-rules serde 子樹，套 `NORMALIZATIONS` 後內容相同；`checkpoints.jsonl` 與 `FD2.SAV` 已逐位元組相同。F 組存檔黃金另有 127 份存檔同樣只在這些子樹不同。
+
+差異清單見 `remake-rs/crates/fd2-game/PORTING.md`「fd2-rules 缺口（F 組發現）」：
+- `Unit` 的 `OffX`／`OffY`／`Exp`（`float64`）整數值，Go 寫 `0`，Rust 寫 `0.0`。
+- `Unit` 的 `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` 為 nil 時，Go 寫 `null`，Rust 的 `Vec` 寫 `[]`。
+- `StateSnapshot` 的 `flags`：Go 非 nil 空 map 寫 `{}`，Rust 空的寫 `null`。
+
+修正照 fd2-rules 的 Go 原檔，保留 nil 與空的區別、`float64` 以 Go `encoding/json` 的寫法輸出，並讓 `tools/rust_rules_test.sh` 通過。
+
+依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結並完整保留作對照規格，Rust程式在`remake-rs/`。
+
+怎樣算做完：F 組 191 份存檔由 Rust 讀回再寫出全部與 Go 逐位元組相同；`tools/rust_parity_ch01.sh` 的 `hotel-save.json` 與 Go 黃金逐位元組相同；拿掉 `golden_save_test.rs` 與 `tools/rust_parity_compare.py` 的 battle 子樹 `NORMALIZATIONS`。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

@@ -451,23 +451,6 @@
       "issue": 305
     },
     {
-      "id": "rust-r4-game-state",
-      "layer": "runtime",
-      "category": "工作",
-      "title": "Rust改寫R4：fd2-game無畫面遊戲狀態機",
-      "body": "把`cmd/fd2`的流程部分移成純Rust狀態機：標題、劇情、戰場操作、城鎮、整備、存讀檔，以固定邏輯幀推進。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
-      "acceptance": "無畫面跑完標題到第一章戰鬥、城鎮與存讀檔，狀態軌跡與Go黃金軌跡相同；能讀Go版既有存檔。",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
-        ],
-        "pattern": "R4 完成",
-        "note": "完成時在119的「進度」加上含「R4 完成」的小節與收據。"
-      },
-      "issue": 310
-    },
-    {
       "id": "rust-r5-bevy-original",
       "layer": "runtime",
       "category": "工作",
@@ -578,6 +561,24 @@
         "note": "需要以真實HD包量測啟動時間。"
       },
       "issue": 318
+    },
+    {
+      "id": "rust-rules-serde-go-bytes",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "Rust改寫：fd2-rules存檔子樹的JSON寫法與Go逐位元組相同",
+      "body": "排程：R5 之前。R4 第一章無畫面重播的 `hotel-save.json` 與 Go 黃金位元組不同（Rust `baca933d…`、Go `190b9f8f…`），差異只在 `party_roster` 的 fd2-rules serde 子樹，套 `NORMALIZATIONS` 後內容相同；`checkpoints.jsonl` 與 `FD2.SAV` 已逐位元組相同。F 組存檔黃金另有 127 份存檔同樣只在這些子樹不同。\n\n差異清單見 `remake-rs/crates/fd2-game/PORTING.md`「fd2-rules 缺口（F 組發現）」：\n- `Unit` 的 `OffX`／`OffY`／`Exp`（`float64`）整數值，Go 寫 `0`，Rust 寫 `0.0`。\n- `Unit` 的 `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` 為 nil 時，Go 寫 `null`，Rust 的 `Vec` 寫 `[]`。\n- `StateSnapshot` 的 `flags`：Go 非 nil 空 map 寫 `{}`，Rust 空的寫 `null`。\n\n修正照 fd2-rules 的 Go 原檔，保留 nil 與空的區別、`float64` 以 Go `encoding/json` 的寫法輸出，並讓 `tools/rust_rules_test.sh` 通過。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結並完整保留作對照規格，Rust程式在`remake-rs/`。",
+      "acceptance": "F 組 191 份存檔由 Rust 讀回再寫出全部與 Go 逐位元組相同；`tools/rust_parity_ch01.sh` 的 `hotel-save.json` 與 Go 黃金逐位元組相同；拿掉 `golden_save_test.rs` 與 `tools/rust_parity_compare.py` 的 battle 子樹 `NORMALIZATIONS`。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-game/src/game/save/golden_save_test.rs",
+          "tools/rust_parity_compare.py"
+        ],
+        "pattern": "battle 子樹：數字只比數值",
+        "note": "正規化規則還在就代表位元組仍不同；修好後兩處一起拿掉。"
+      },
+      "issue": 319
     }
   ]
 }
