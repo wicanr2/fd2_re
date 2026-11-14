@@ -8,7 +8,6 @@ use super::*;
 
 /// Go：`settings_test.go:99`
 #[test]
-#[ignore = "等 A 合併"]
 fn settings_round_trip_keeps_audio_and_locale_outside_save() {
     let name = "settings_round_trip_keeps_audio_and_locale_outside_save";
     let Some(root) = f_child_env(module_path!(), name, |d| vec![("XDG_DATA_HOME", d.into())]) else {
@@ -34,7 +33,6 @@ fn settings_round_trip_keeps_audio_and_locale_outside_save() {
 
 /// Go：`settings_test.go:146`
 #[test]
-#[ignore = "等 A 合併"]
 fn settings_reject_unsupported_locale() {
     let name = "settings_reject_unsupported_locale";
     let Some(root) = f_child_env(module_path!(), name, |d| vec![("XDG_DATA_HOME", d.into())]) else {

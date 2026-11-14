@@ -22,9 +22,12 @@ import (
 	"sort"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
@@ -373,6 +376,16 @@ func rustGoldenRandomSettings(r *rand.Rand) settings {
 	return s
 }
 
+// rustGoldenPinSnapshotTiming 讓戰中存檔可重現：BIOS 地圖時鐘與地形／單位相位隨牆鐘前進，兩次
+// 執行可能差一拍。存檔前把這些計時欄位整組固定成同一組值；只影響本黃金工具的輸入，不改遊戲行為。
+func rustGoldenPinSnapshotTiming(g *Game) {
+	g.nativeMapClock = nativeBIOSClock{last: time.Unix(1, 0), elapsedTicks: 1}
+	g.st.NativeTerrainFlipState = fdicon.NativeBinaryTickState{Value: 1, LastTimerTick: 1}
+	g.st.NativeUnitPixelShiftState = fdicon.NativeBinaryTickState{Value: 1, LastTimerTick: 1}
+	g.st.NativeMapCycleState = fdicon.NativeMapSpriteCycleState{Idle: 1, Moving: 1, LastTimerTick: 1}
+	g.st.NativeTerrainPhaseState = fdother.NativeTerrainPhaseState{Phase: 1, LastTimerTick: 1}
+}
+
 func TestRustGoldenSave(t *testing.T) {
 	outPath := os.Getenv("FD2_RUST_GOLDEN_SAVE_OUT")
 	if outPath == "" {
@@ -450,6 +463,7 @@ func TestRustGoldenSave(t *testing.T) {
 	userDataDirCached = battleDir
 	g := loadChapterOneStoryBattle(t)
 	userDataDirCached = battleDir
+	rustGoldenPinSnapshotTiming(g)
 	if err := g.saveGameToSlot(1); err != nil {
 		t.Fatal(err)
 	}
@@ -460,6 +474,7 @@ func TestRustGoldenSave(t *testing.T) {
 	add(rustGoldenSaveCase(t, "save-flow-ch01-battle-turn1", "go-flow", raw))
 	playOneOwnUnit(t, g)
 	userDataDirCached = battleDir
+	rustGoldenPinSnapshotTiming(g)
 	if err := g.saveGameToSlot(2); err != nil {
 		t.Fatal(err)
 	}

@@ -54,7 +54,6 @@ fn balance_native_sidecar_keeps_slots_independent_and_original_bytes() {
 
 /// Go：`balance_save_test.go:110`
 #[test]
-#[ignore = "等 A 合併"]
 fn balance_native_current_restores_enemy_baseline_without_scaling_twice() {
     let dir = crate::test_support::temp_dir("balance-current");
     let path = dir.join("FD2.SAV").to_string_lossy().into_owned();

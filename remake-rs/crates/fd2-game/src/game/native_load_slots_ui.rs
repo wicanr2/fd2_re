@@ -28,7 +28,7 @@ pub(crate) fn load_native_load_slots_ui_assets() -> Result<Option<NativeLoadSlot
         NativeLoadSlotsUIAssets { hd: None, dialogue_box, strings: Some(strings), font: Some(font), palette };
     // Older isolated native packs can omit the shared dialogue cells.
     // Native loading remains available; entering HD preflights this descriptor.
-    assets.hd = freeze_modern_hd_title_load_slots(Some(&mut assets), &dac).unwrap_or(None);
+    assets.hd = freeze_modern_hd_title_load_slots(Some(&assets), &dac).unwrap_or(None);
     Ok(Some(assets))
 }
 

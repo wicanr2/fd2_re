@@ -544,7 +544,7 @@ fn golden_save_matches_go() {
 /// `loadSettings` 正規化後的結果；正規化呼叫 A 組的 `normalizePlayerSpeed` 等函式。A 合併後在
 /// `tools/rust_golden_save.sh` 的測試清單加上它。
 #[test]
-#[ignore = "等 A 合併；黃金差分：由 tools/rust_golden_save.sh 執行"]
+#[ignore = "黃金差分：由 tools/rust_golden_save.sh 執行"]
 fn golden_save_settings_loaded_matches_go() {
     let Some(golden) = load_golden() else {
         return;

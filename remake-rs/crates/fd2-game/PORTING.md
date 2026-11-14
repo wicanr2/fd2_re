@@ -490,7 +490,7 @@ Go 測試當驅動用（以函式名掃描，共 460 個 Go 測試直接引用 A
 
 | 項目 | 內容 |
 |---|---|
-| 黃金檔 | `work/rust-build/golden/fd2-game-save-r4f-v1.json`，349 個案例，SHA-256 `48afbbf79107a64fe139b0d6171abb5a94455355ef57226c2ce04080a9212be4`（go1.22.12，Go 端連跑兩次相同） |
+| 黃金檔 | `work/rust-build/golden/fd2-game-save-r4f-v1.json`，349 個案例，SHA-256 `dab44975b1397534f88679fee5fdc490f1558f9725d9d7ee9138028ac1169faa`（go1.22.12，Go 端連跑兩次相同） |
 | 存檔 196 | Go 寫出的固定與固定種子隨機 `saveData` 164 份（含 JOIN 建構器建立的真實持續隊伍單位）、手寫讀取端輸入 23 份、第一章戰鬥中 F5 存檔 2 份（附戰場快照）、真實 Go 版存檔 7 份 |
 | 設定 80 | Go 寫出的 64 份、手寫 14 份、真實設定檔 2 份；比零值起點與 `loadSettings` 起點的解碼及重新寫出的位元組 |
 | 附檔 45、附檔鍵 28 | `readBalanceSidecar` 的接受／拒收與錯誤文字、讀回與重新寫出；`balanceSaveKey` 的鍵與錯誤 |
@@ -529,3 +529,9 @@ Go 寫出的存檔由 Rust 讀回再寫出時，位元組只在 fd2-rules 型別
 
 讀回的內容都相同（逐欄比對通過）。要讓整份存檔逐位元組相同，需要 fd2-rules 的 `Unit` 以 `Option<Vec<_>>` 或寫出端
 規則保留 nil、`float64` 欄位以整數值寫出，並讓 `StateSnapshot` 區分 nil 與空 map；由主代理決定是否在 fd2-rules 補。
+
+### 整合紀錄（A＋F，2026-11-14）
+
+- A（`2a714a36`）與 F（`e217df8b`）合併。兩組都把 `Game::locale_message` 的參數改成 `&[localization::FormatArg]`，保留 A 的本體；F 的簽名變更列併入上方表格。F 的呼叫端配合 A 的只讀簽名改成 `freeze_modern_hd_title_load_slots(Some(&assets), …)`。
+- 合併後 8 個原本「等 A 合併」的測試通過，拿掉 ignore；其餘依實際停點改標等 B／C／E。`tools/rust_game_test.sh`：82 通過、18 ignore。
+- 存檔黃金在主 checkout 重跑時，Go 端兩次輸出不同：第一章戰中 F5 存檔的快照含 BIOS 地圖時鐘、地形翻轉、單位位移、地圖循環與地形相位，隨牆鐘前進。黃金工具在兩次存檔前以 `rustGoldenPinSnapshotTiming` 把這些欄位固定成同一組值（只影響測試輸入）。修正後 Go 端連續四次輸出相同，SHA-256 `dab44975…`。

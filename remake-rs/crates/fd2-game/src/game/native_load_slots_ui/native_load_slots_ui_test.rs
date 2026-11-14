@@ -5,7 +5,6 @@ use super::*;
 
 /// Go：`native_load_slots_ui_test.go:12`
 #[test]
-#[ignore = "等 A 合併"]
 fn native_load_slot_metadata_preserves_empty_and_raw_chapter() {
     let name = "native_load_slot_metadata_preserves_empty_and_raw_chapter";
     let envs = |d: &std::path::Path| vec![("XDG_DATA_HOME", d.into()), ("FD2_NATIVE_SAVE", "".into())];
@@ -36,7 +35,6 @@ fn native_load_slot_metadata_preserves_empty_and_raw_chapter() {
 
 /// Go：`native_load_slots_ui_test.go:45`
 #[test]
-#[ignore = "等 A 合併"]
 fn native_load_slot_metadata_rejects_unmappable_json() {
     let name = "native_load_slot_metadata_rejects_unmappable_json";
     let envs = |d: &std::path::Path| vec![("XDG_DATA_HOME", d.into()), ("FD2_NATIVE_SAVE", "".into())];

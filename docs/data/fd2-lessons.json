@@ -5847,6 +5847,21 @@
         ],
         "pattern": "func \\(g \\*Game\\) pollModernThemeLoad"
       }
+    },
+    {
+      "id": "golden-live-capture-pin-wallclock",
+      "date": "2026-11-14",
+      "area": "改寫",
+      "rule": "Go 黃金工具若跑真實遊戲流程擷取狀態（例如戰中存檔、快照），擷取前要把所有隨牆鐘前進的欄位（BIOS 時鐘、各種 LastTimerTick 與由它推進的相位計數）固定成同一組值，並以 Go 端多次重跑的 SHA 驗證；只在單次重跑相同不足以證明可重現。",
+      "why": "R4 F 組的存檔黃金第一次在子代理環境兩次相同，主 checkout 重跑卻分歧：第一章戰中 F5 存檔的快照含地圖時鐘與地形／單位相位，隨主機速度差一拍；第二次修正又冒出地圖循環與地形相位兩組 LastTimerTick。",
+      "evidence": "remake/cmd/fd2/rust_golden_save_test.go、remake-rs/crates/fd2-game/PORTING.md",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-game/PORTING.md"
+        ],
+        "pattern": "rustGoldenPinSnapshotTiming"
+      }
     }
   ]
 }
