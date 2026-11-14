@@ -2672,6 +2672,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "fd2-campaign"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "fd2-formats",
+ "fd2-rules",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
 name = "fd2-formats"
 version = "0.1.0"
 dependencies = [
