@@ -1,0 +1,3140 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_rust_r4_stage0_coverage",
+ "date": "2026-11-14",
+ "plan": "docs/goal/120-goal-rust-r4-game-state-split-20261114.md",
+ "producer": "tools/rust_r4_ch01_coverage.sh",
+ "go_source_commit": "5747771c52a3b758ec9c70c84912e3b069845f02",
+ "inputs": {
+  "control_receipt": "docs/data/ui-traces/parity-ch01.json",
+  "slot_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+  "oracle_run": "work/ch01-flow-20261017/original-full-r4",
+  "entry": "start",
+  "capture_frames": 0
+ },
+ "golden_trajectory": {
+  "file": "checkpoints.jsonl",
+  "checkpoints": 40,
+  "sha256": "1c846f573434658cabb3cfa486edd5826b401673c3bff411e30cbdc3e18ac0cc",
+  "reproducibility": "兩次執行逐位元組相同，也與收據採用的 work/ch01-flow-20261017/remake-full-r10 相同"
+ },
+ "coverage": {
+  "statements": "15.2% of ./cmd/fd2",
+  "production_functions": 1922,
+  "executed_functions": 565,
+  "files_touched": 138,
+  "timing_note": "兩次執行只有 native_story_dialogue.go stepDialogueMouth 的覆蓋比例不同（71.4%／67.9%），執行到的函式集合相同；檢查點之間的幀數隨牆鐘變動"
+ },
+ "classification_method": "草稿：名稱以 draw 開頭或簽名含 *ebiten.Image／ebiten.FinalScreen 為畫面；本體呼叫 ebiten、inpututil、audio、text.Draw、vector 為混合；其餘為流程；modern_*、player_poster、player_toolbar 另列 HD／工具列。骨架階段逐函式核對。",
+ "class_counts": {
+  "流程": 462,
+  "混合": 21,
+  "畫面": 15,
+  "HD/工具列(流程)": 60,
+  "HD/工具列(畫面)": 6,
+  "HD/工具列(混合)": 1
+ },
+ "files": {
+  "action_overlay_runtime.go": [
+   {
+    "func": "beginActionOverlayOpen",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "beginActionOverlayClose",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "actionOverlayBlocksInput",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "actionOverlayRenderState",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "stepActionOverlayLifecycle",
+    "class": "流程",
+    "cover": 84.0
+   },
+   {
+    "func": "markActionOverlayDrawn",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "resetActionOverlayLifecycle",
+    "class": "流程",
+    "cover": 96.4
+   },
+   {
+    "func": "currentNativeSystemOptions",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeSystemEndTurn",
+    "class": "流程",
+    "cover": 5.0
+   },
+   {
+    "func": "applyNativeOverlayDirectionInput",
+    "class": "混合",
+    "cover": 66.7
+   },
+   {
+    "func": "beginBattleActionOverlay",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "assets.go": [
+   {
+    "func": "exeDir",
+    "class": "流程",
+    "cover": 90.0
+   },
+   {
+    "func": "userDataDir",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "userDataPath",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "fileExists",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "macBundleResourceDir",
+    "class": "流程",
+    "cover": 42.9
+   },
+   {
+    "func": "assetPath",
+    "class": "流程",
+    "cover": 71.4
+   }
+  ],
+  "assets_glob_native.go": [
+   {
+    "func": "assetGlob",
+    "class": "流程",
+    "cover": 57.9
+   }
+  ],
+  "audio.go": [
+   {
+    "func": "playBGM",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "playBGMCount",
+    "class": "混合",
+    "cover": 10.0
+   },
+   {
+    "func": "stopBGM",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "loadSFX",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "loadWav",
+    "class": "混合",
+    "cover": 66.7
+   },
+   {
+    "func": "loadSeparatedCommandSoundBanks",
+    "class": "流程",
+    "cover": 87.5
+   },
+   {
+    "func": "decodeSeparatedSoundBank",
+    "class": "混合",
+    "cover": 80.0
+   },
+   {
+    "func": "installSeparatedCommandSounds",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "playRaw",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "playSFX",
+    "class": "流程",
+    "cover": 33.3
+   },
+   {
+    "func": "playNativePhysicalSound",
+    "class": "混合",
+    "cover": 33.3
+   },
+   {
+    "func": "stopNativePhysicalSound",
+    "class": "流程",
+    "cover": 33.3
+   },
+   {
+    "func": "startTitleANI1Sound",
+    "class": "混合",
+    "cover": 50.0
+   },
+   {
+    "func": "stopTitleANI1Sound",
+    "class": "流程",
+    "cover": 33.3
+   },
+   {
+    "func": "stepSFXVoices",
+    "class": "流程",
+    "cover": 15.4
+   }
+  ],
+  "balance_save.go": [
+   {
+    "func": "balanceSaveKey",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "readBalanceSidecar",
+    "class": "流程",
+    "cover": 14.3
+   },
+   {
+    "func": "loadBalanceSavedState",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "replaceNativeSaveWithBalance",
+    "class": "流程",
+    "cover": 56.1
+   },
+   {
+    "func": "fileExistsBalance",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "battle_protection.go": [
+   {
+    "func": "protectedBattleUnitAlive",
+    "class": "流程",
+    "cover": 71.4
+   }
+  ],
+  "font.go": [
+   {
+    "func": "SetUserScale",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "effectiveScale",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "loadFont",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "loadFontSized",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "loadHDRegionalFonts",
+    "class": "流程",
+    "cover": 26.3
+   },
+   {
+    "func": "faceFor",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "Width",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "Wrap",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "runeBreakable",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "textSegments",
+    "class": "流程",
+    "cover": 58.8
+   },
+   {
+    "func": "wrapTextByWidth",
+    "class": "流程",
+    "cover": 52.9
+   }
+  ],
+  "input_audit_trace.go": [
+   {
+    "func": "recordInputAuditState",
+    "class": "混合",
+    "cover": 0.8
+   }
+  ],
+  "locale.go": [
+   {
+    "func": "loadOfficialLocale",
+    "class": "流程",
+    "cover": 65.0
+   },
+   {
+    "func": "loadOfficialLocaleContent",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "loadOfficialLocaleEntities",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "localizedStoryText",
+    "class": "流程",
+    "cover": 42.9
+   },
+   {
+    "func": "localeMessage",
+    "class": "流程",
+    "cover": 44.4
+   }
+  ],
+  "main.go": [
+   {
+    "func": "startFadeTransition",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "advanceStoryNode",
+    "class": "流程",
+    "cover": 40.0
+   },
+   {
+    "func": "stepStoryWalks",
+    "class": "流程",
+    "cover": 78.7
+   },
+   {
+    "func": "stepFade",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepTransitionReveal",
+    "class": "流程",
+    "cover": 14.3
+   },
+   {
+    "func": "syncStoryNativeMapPanView",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "syncStoryNativeMapScrollView",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "sgnInt",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "publishStoryNativeMapView",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "ch28HandlerNativeMapViewContinuity",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "syncStoryNativeMapFocusView",
+    "class": "流程",
+    "cover": 69.6
+   },
+   {
+    "func": "stepCamPan",
+    "class": "流程",
+    "cover": 81.6
+   },
+   {
+    "func": "nativeMapFocusVisibleSeed",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "stepFocusUnit",
+    "class": "流程",
+    "cover": 78.4
+   },
+   {
+    "func": "finishActJob",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "actingActor",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "handlerUnitCount",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "handlerRuntimeSlotCount",
+    "class": "流程",
+    "cover": 40.0
+   },
+   {
+    "func": "handlerUnitAt",
+    "class": "流程",
+    "cover": 44.4
+   },
+   {
+    "func": "beginActingFrame",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "actingDelta",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "nextActingFrame",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepOriginalActing",
+    "class": "流程",
+    "cover": 95.0
+   },
+   {
+    "func": "stepActJob",
+    "class": "流程",
+    "cover": 35.7
+   },
+   {
+    "func": "stepActJobAtUpdateRate",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "beatAdvance",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "figName",
+    "class": "流程",
+    "cover": 22.2
+   },
+   {
+    "func": "beatStart",
+    "class": "流程",
+    "cover": 26.7
+   },
+   {
+    "func": "resolveCampaignDialogLine",
+    "class": "流程",
+    "cover": 55.1
+   },
+   {
+    "func": "resolveNativeStoryDialogueSpeaker",
+    "class": "流程",
+    "cover": 81.0
+   },
+   {
+    "func": "resolveNativeStoryDialogueMotionTarget",
+    "class": "流程",
+    "cover": 90.0
+   },
+   {
+    "func": "materializeStoryGroup",
+    "class": "流程",
+    "cover": 60.9
+   },
+   {
+    "func": "loadCHPartyOrder",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "nativeRestoredPartyUnitsForLoadCH",
+    "class": "流程",
+    "cover": 6.7
+   },
+   {
+    "func": "applyLoadCH",
+    "class": "流程",
+    "cover": 68.4
+   },
+   {
+    "func": "equalIntOrder",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "dlgPageCount",
+    "class": "流程",
+    "cover": 37.5
+   },
+   {
+    "func": "dlgAdvance",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "stepDlgAnim",
+    "class": "流程",
+    "cover": 72.2
+   },
+   {
+    "func": "terrainAt",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "enterNode",
+    "class": "流程",
+    "cover": 61.2
+   },
+   {
+    "func": "materializeNativeMapRuntime",
+    "class": "流程",
+    "cover": 59.2
+   },
+   {
+    "func": "applyFieldOwnAttackRanges",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "captureNativeMapHUDPersistence",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "resetBattle",
+    "class": "流程",
+    "cover": 76.4
+   },
+   {
+    "func": "pruneHandlerMaterializedRoster",
+    "class": "流程",
+    "cover": 86.7
+   },
+   {
+    "func": "bindNativeCommandBook",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "bindNativeMovementCostRows",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "bindNativeCommandResistances",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "bindCommandLearn",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "applyPersistentParty",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "initializeEquipmentBases",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "seedPersistentPartyFromLoadCH",
+    "class": "流程",
+    "cover": 53.3
+   },
+   {
+    "func": "materializeNativeJoinPersistentUnit",
+    "class": "流程",
+    "cover": 28.6
+   },
+   {
+    "func": "nativeJoinResidualRecord",
+    "class": "流程",
+    "cover": 10.5
+   },
+   {
+    "func": "applyPersistentStats",
+    "class": "流程",
+    "cover": 96.8
+   },
+   {
+    "func": "syncPartyFromBattle",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "syncPartyFromBattleRecords",
+    "class": "流程",
+    "cover": 83.8
+   },
+   {
+    "func": "applyScenarioPartyJoins",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "filterScenarioParty",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "battlePartyMembers",
+    "class": "流程",
+    "cover": 22.2
+   },
+   {
+    "func": "setupPreparation",
+    "class": "流程",
+    "cover": 79.4
+   },
+   {
+    "func": "setupChurch",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "reorderScenarioParty",
+    "class": "流程",
+    "cover": 81.2
+   },
+   {
+    "func": "focusOnParty",
+    "class": "流程",
+    "cover": 90.0
+   },
+   {
+    "func": "campInput",
+    "class": "混合",
+    "cover": 7.3
+   },
+   {
+    "func": "confirmBattleResult",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "leaveChurch",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "leaveShop",
+    "class": "流程",
+    "cover": 90.9
+   },
+   {
+    "func": "leaveHotel",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "ringInput",
+    "class": "混合",
+    "cover": 6.7
+   },
+   {
+    "func": "resetNativeTargetField",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "finishSelectedWait",
+    "class": "流程",
+    "cover": 26.9
+   },
+   {
+    "func": "finishSuccessfulUnitAction",
+    "class": "流程",
+    "cover": 78.0
+   },
+   {
+    "func": "resetAllNativeMapPoses",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "autoEndPlayerPhase",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "awardDeathReward",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepBattleWalk",
+    "class": "流程",
+    "cover": 76.2
+   },
+   {
+    "func": "stepBattleWalkSegment",
+    "class": "流程",
+    "cover": 47.2
+   },
+   {
+    "func": "loadMap",
+    "class": "混合",
+    "cover": 69.6
+   },
+   {
+    "func": "battleFPT",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "newAtkAnim",
+    "class": "流程",
+    "cover": 78.9
+   },
+   {
+    "func": "newCounterStage",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "attachCounterPresentation",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeAttackPresentationAvailable",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "attackPresentationTickMillis",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "attackPresentationTicks",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepAttackPresentationTick",
+    "class": "流程",
+    "cover": 11.9
+   },
+   {
+    "func": "finishAttackPresentation",
+    "class": "混合",
+    "cover": 62.5
+   },
+   {
+    "func": "completeAttackPresentation",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "figaniIndex",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "loadSprites",
+    "class": "畫面",
+    "cover": 86.4
+   },
+   {
+    "func": "loadPortraits",
+    "class": "畫面",
+    "cover": 86.4
+   },
+   {
+    "func": "loadFIGANI",
+    "class": "畫面",
+    "cover": 86.4
+   },
+   {
+    "func": "loadFIGANIDelays",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "loadStoryScriptWithIdentityAt",
+    "class": "流程",
+    "cover": 68.4
+   },
+   {
+    "func": "handlerStoryPath",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "loadFigMeta",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "absInt",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "resolvePhysicalAttackFull",
+    "class": "流程",
+    "cover": 82.4
+   },
+   {
+    "func": "publishPhysicalAttackMessage",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "playerPhysicalAttackMessage",
+    "class": "流程",
+    "cover": 69.2
+   },
+   {
+    "func": "dirToward",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "confirm",
+    "class": "流程",
+    "cover": 11.9
+   },
+   {
+    "func": "checkResult",
+    "class": "流程",
+    "cover": 57.1
+   },
+   {
+    "func": "Update",
+    "class": "混合",
+    "cover": 37.8
+   },
+   {
+    "func": "syncNativeMapView",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeCursorStepHUD",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "redrawNativeMapHUD",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "moveMapCursor",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "focusNativeMapCursorOnUnit",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "aiFocusCursor",
+    "class": "流程",
+    "cover": 62.5
+   },
+   {
+    "func": "followNativeMapCursorStep",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "positionScreenshotCursor",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "keyRepeat",
+    "class": "混合",
+    "cover": 37.5
+   },
+   {
+    "func": "clamp",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "Draw",
+    "class": "畫面",
+    "cover": 13.3
+   },
+   {
+    "func": "usesModernBattleActionIcons",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "actionOverlayAvailability",
+    "class": "流程",
+    "cover": 79.2
+   },
+   {
+    "func": "hasNativeEquippedWeapon",
+    "class": "流程",
+    "cover": 44.4
+   },
+   {
+    "func": "nativeCommandAllowedAfterMove",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "hasNativeCommand",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "nativeCommandActionBlocked",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeActionSelectable",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeActionOverlayState",
+    "class": "流程",
+    "cover": 33.3
+   },
+   {
+    "func": "drawBattleScene",
+    "class": "畫面",
+    "cover": 3.7
+   },
+   {
+    "func": "loadNativeCommandLabels",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "loadGame",
+    "class": "混合",
+    "cover": 59.3
+   },
+   {
+    "func": "phaseBannerHoldMillis",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "phaseBannerTotalMillis",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "phaseBannerFrames",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "showBanner",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "nativeMapHUDInput",
+    "class": "流程",
+    "cover": 67.7
+   },
+   {
+    "func": "composeNativeMapFrame",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "composeNativeMapFrameForActionBackground",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "composeNativeMapFrameForPhysicalReturn",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "composeNativeMapFrameForCaller",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "composeNativeMapFrameAtWithPaletteCycle",
+    "class": "流程",
+    "cover": 55.3
+   },
+   {
+    "func": "endTurn",
+    "class": "流程",
+    "cover": 38.5
+   },
+   {
+    "func": "endTurnAfterSelector1Events",
+    "class": "流程",
+    "cover": 54.5
+   },
+   {
+    "func": "nativeTransientSweepAvailable",
+    "class": "流程",
+    "cover": 62.5
+   },
+   {
+    "func": "beginEnemyPhaseAfterTurnEvents",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "runEditableTurnEvents",
+    "class": "流程",
+    "cover": 72.7
+   },
+   {
+    "func": "beginEnemyPhase",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "startBattleEvent",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "advanceBattleEvent",
+    "class": "流程",
+    "cover": 57.6
+   },
+   {
+    "func": "stepBattleEventDelay",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "finishTurn",
+    "class": "流程",
+    "cover": 55.6
+   },
+   {
+    "func": "completeTurn",
+    "class": "流程",
+    "cover": 81.2
+   },
+   {
+    "func": "completeTurnPlayerPhase",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "finishNativeTransientPlayerPhase",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "finishNativeTransientPlayerPhaseInput",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "restoreNativeDisplayGateB",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "aiStep",
+    "class": "流程",
+    "cover": 60.3
+   }
+  ],
+  "modern_hd_battle_camera.go": [
+   {
+    "func": "modernPhysicalImpactHoldMillis",
+    "class": "HD/工具列(流程)",
+    "cover": 66.7
+   }
+  ],
+  "modern_hd_battle_gpu.go": [
+   {
+    "func": "modernHDBattlePalette",
+    "class": "HD/工具列(流程)",
+    "cover": 72.7
+   }
+  ],
+  "modern_hd_battle_panel.go": [
+   {
+    "func": "renderPhysicalBattlePanel",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "renderBattlePanelText",
+    "class": "HD/工具列(流程)",
+    "cover": 86.0
+   },
+   {
+    "func": "bindModernPhysicalPanelText",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "bindModernBattlePanelText",
+    "class": "HD/工具列(流程)",
+    "cover": 95.5
+   },
+   {
+    "func": "raster",
+    "class": "HD/工具列(流程)",
+    "cover": 76.3
+   },
+   {
+    "func": "drawModernBattlePanelInk",
+    "class": "HD/工具列(畫面)",
+    "cover": 83.3
+   }
+  ],
+  "modern_hd_battle_panel_chrome.go": [
+   {
+    "func": "freezeModernBattlePanelChrome",
+    "class": "HD/工具列(流程)",
+    "cover": 77.8
+   },
+   {
+    "func": "paint",
+    "class": "HD/工具列(流程)",
+    "cover": 96.8
+   }
+  ],
+  "modern_hd_battle_runtime.go": [
+   {
+    "func": "modernHDBattleBodySources",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "modernHDBattleWanted",
+    "class": "HD/工具列(流程)",
+    "cover": 29.4
+   },
+   {
+    "func": "syncModernHDBattleOwner",
+    "class": "HD/工具列(流程)",
+    "cover": 7.7
+   },
+   {
+    "func": "drawModernHDBattlePrelude",
+    "class": "HD/工具列(畫面)",
+    "cover": 16.7
+   },
+   {
+    "func": "drawModernHDBattleBody",
+    "class": "HD/工具列(畫面)",
+    "cover": 25.0
+   }
+  ],
+  "modern_hd_battle_scroll.go": [
+   {
+    "func": "modernHDBattleSurfaceFrame",
+    "class": "HD/工具列(流程)",
+    "cover": 77.8
+   }
+  ],
+  "modern_hd_battle_surface.go": [
+   {
+    "func": "modernPhysicalBaseScenery",
+    "class": "HD/工具列(流程)",
+    "cover": 66.7
+   },
+   {
+    "func": "modernPhysicalPlatformSource",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "modernBattlePlatformSource",
+    "class": "HD/工具列(流程)",
+    "cover": 75.0
+   },
+   {
+    "func": "modernPhysicalScenery",
+    "class": "HD/工具列(流程)",
+    "cover": 66.7
+   },
+   {
+    "func": "modernBattleBackdropGeometry",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "modernPhysicalBackdropScenery",
+    "class": "HD/工具列(流程)",
+    "cover": 76.9
+   },
+   {
+    "func": "bindModernPhysicalScenery",
+    "class": "HD/工具列(流程)",
+    "cover": 77.8
+   },
+   {
+    "func": "bindModernPhysicalBaseScenery",
+    "class": "HD/工具列(流程)",
+    "cover": 93.8
+   }
+  ],
+  "modern_hd_church_confirmation_transition.go": [
+   {
+    "func": "captureModernFacilityConfirmationSource",
+    "class": "HD/工具列(流程)",
+    "cover": 71.4
+   }
+  ],
+  "modern_hd_commands10_12_map.go": [
+   {
+    "func": "freezeModernHDCommandGeometry",
+    "class": "HD/工具列(流程)",
+    "cover": 72.7
+   }
+  ],
+  "modern_hd_compound_map.go": [
+   {
+    "func": "newModernHDCompoundMapScene",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   }
+  ],
+  "modern_hd_compound_map_source.go": [
+   {
+    "func": "freezeCompoundMapInput",
+    "class": "HD/工具列(流程)",
+    "cover": 29.0
+   },
+   {
+    "func": "digest",
+    "class": "HD/工具列(流程)",
+    "cover": 50.0
+   },
+   {
+    "func": "seal",
+    "class": "HD/工具列(流程)",
+    "cover": 75.0
+   },
+   {
+    "func": "newModernHDCompoundMapScene",
+    "class": "HD/工具列(流程)",
+    "cover": 61.5
+   },
+   {
+    "func": "validate",
+    "class": "HD/工具列(流程)",
+    "cover": 47.8
+   }
+  ],
+  "modern_hd_confirmation.go": [
+   {
+    "func": "freezeModernHDConfirmation",
+    "class": "HD/工具列(混合)",
+    "cover": 77.0
+   }
+  ],
+  "modern_hd_death_stage.go": [
+   {
+    "func": "seed",
+    "class": "HD/工具列(流程)",
+    "cover": 40.0
+   }
+  ],
+  "modern_hd_dialogue_chrome.go": [
+   {
+    "func": "freezeModernHDDialogueChrome",
+    "class": "HD/工具列(流程)",
+    "cover": 78.3
+   }
+  ],
+  "modern_hd_facility_dialogue.go": [
+   {
+    "func": "prepareModernHDFacilityDialogue",
+    "class": "HD/工具列(流程)",
+    "cover": 72.7
+   },
+   {
+    "func": "facilityDialogueBorderVisible",
+    "class": "HD/工具列(流程)",
+    "cover": 77.8
+   }
+  ],
+  "modern_hd_facility_list_transition.go": [
+   {
+    "func": "captureModernFacilityListText",
+    "class": "HD/工具列(流程)",
+    "cover": 93.8
+   },
+   {
+    "func": "composeModernShopListMarker",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "freezeModernFacilityListWriter",
+    "class": "HD/工具列(流程)",
+    "cover": 82.4
+   }
+  ],
+  "modern_hd_facility_scene_pair.go": [
+   {
+    "func": "composeModernFacilityMarker",
+    "class": "HD/工具列(流程)",
+    "cover": 50.0
+   }
+  ],
+  "modern_hd_facility_text.go": [
+   {
+    "func": "modernHDFacilityFont",
+    "class": "HD/工具列(流程)",
+    "cover": 80.8
+   },
+   {
+    "func": "beginModernHDFacilityText",
+    "class": "HD/工具列(流程)",
+    "cover": 88.9
+   }
+  ],
+  "modern_hd_indexed_transition.go": [
+   {
+    "func": "indexedHDInputIdentity",
+    "class": "HD/工具列(流程)",
+    "cover": 75.0
+   }
+  ],
+  "modern_hd_map_overlay_assets.go": [
+   {
+    "func": "hasModernHDDeathBank",
+    "class": "HD/工具列(流程)",
+    "cover": 28.6
+   }
+  ],
+  "modern_hd_movement_panel.go": [
+   {
+    "func": "movementPanelSourceSeal",
+    "class": "HD/工具列(流程)",
+    "cover": 83.3
+   },
+   {
+    "func": "freezeModernHDMovementPanel",
+    "class": "HD/工具列(畫面)",
+    "cover": 69.2
+   }
+  ],
+  "modern_hd_physical_sfx.go": [
+   {
+    "func": "modernPhysicalSound",
+    "class": "HD/工具列(流程)",
+    "cover": 40.0
+   }
+  ],
+  "modern_hd_player9_map.go": [
+   {
+    "func": "freezeNativeCommand9MapInput",
+    "class": "HD/工具列(流程)",
+    "cover": 50.0
+   }
+  ],
+  "modern_hd_preparation_background.go": [
+   {
+    "func": "matches",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   }
+  ],
+  "modern_hd_preparation_cursor.go": [
+   {
+    "func": "preparationCursorPalette",
+    "class": "HD/工具列(流程)",
+    "cover": 70.0
+   }
+  ],
+  "modern_hd_preparation_transition.go": [
+   {
+    "func": "snapshotNativePreparationTransition",
+    "class": "HD/工具列(流程)",
+    "cover": 54.5
+   }
+  ],
+  "modern_hd_service_menu_transition.go": [
+   {
+    "func": "bindModernFacilityServiceMenu",
+    "class": "HD/工具列(流程)",
+    "cover": 78.7
+   },
+   {
+    "func": "compose",
+    "class": "HD/工具列(流程)",
+    "cover": 73.1
+   }
+  ],
+  "modern_hd_shop_digits.go": [
+   {
+    "func": "beginModernHDShopDigits",
+    "class": "HD/工具列(流程)",
+    "cover": 91.7
+   },
+   {
+    "func": "modernHDDecimalFrames",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "modernHDDecimalSprite",
+    "class": "HD/工具列(流程)",
+    "cover": 88.9
+   }
+  ],
+  "modern_hd_text.go": [
+   {
+    "func": "modernHDNativeTextColor",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "beginModernHDText",
+    "class": "HD/工具列(畫面)",
+    "cover": 27.3
+   },
+   {
+    "func": "modernHDShopText",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   },
+   {
+    "func": "clearModernHDShopText",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   }
+  ],
+  "modern_hd_title_interface.go": [
+   {
+    "func": "titleMenuHDSeal",
+    "class": "HD/工具列(流程)",
+    "cover": 75.0
+   },
+   {
+    "func": "freezeModernHDTitleMenuItem",
+    "class": "HD/工具列(畫面)",
+    "cover": 85.0
+   },
+   {
+    "func": "titleLoadSlotsHDSeal",
+    "class": "HD/工具列(流程)",
+    "cover": 75.0
+   },
+   {
+    "func": "freezeModernHDTitleLoadSlots",
+    "class": "HD/工具列(流程)",
+    "cover": 81.1
+   }
+  ],
+  "modern_hd_transient_expiry.go": [
+   {
+    "func": "preflightModernHDTransientExpiry",
+    "class": "HD/工具列(流程)",
+    "cover": 8.7
+   }
+  ],
+  "native_action_death_present.go": [
+   {
+    "func": "captureNativeActionDeathFlags",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "queueNativeActionDeathPresentation",
+    "class": "流程",
+    "cover": 88.9
+   },
+   {
+    "func": "nativeDeathFlagPrelude",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "nativeMapDeathPlan",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "startNativeMapDeathVisual",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "nativeTransientDeathFlags",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "preflightNativeTransientDeath",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "nativeTransientDeathPreview",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "nativeTransientFocusPreview",
+    "class": "流程",
+    "cover": 19.5
+   },
+   {
+    "func": "beginNativeActionDeathPresentation",
+    "class": "流程",
+    "cover": 64.5
+   },
+   {
+    "func": "nativeActionDeathPresentationPending",
+    "class": "流程",
+    "cover": 75.0
+   }
+  ],
+  "native_ai_idle_recovery.go": [
+   {
+    "func": "beginNativeAIIdleRecovery",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "buildNativeAIIdleRecoveryFrames",
+    "class": "流程",
+    "cover": 63.4
+   },
+   {
+    "func": "nativeAIIdleRecoveryViewport",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "osMuteOrShot",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "unitIndex",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "stepNativeAIIdleRecovery",
+    "class": "流程",
+    "cover": 57.6
+   }
+  ],
+  "native_ai_item_presentation.go": [
+   {
+    "func": "cancelNativeAIItemPresentation",
+    "class": "流程",
+    "cover": 17.4
+   },
+   {
+    "func": "stepNativeAIItemPresentation",
+    "class": "流程",
+    "cover": 7.9
+   }
+  ],
+  "native_ai_modifier_presentation.go": [
+   {
+    "func": "cancelNativeAICommandModifierPresentation",
+    "class": "流程",
+    "cover": 30.0
+   },
+   {
+    "func": "stepNativeAICommandModifierPresentation",
+    "class": "流程",
+    "cover": 4.9
+   }
+  ],
+  "native_attack_assets.go": [
+   {
+    "func": "ensureNativeAttackPresentation",
+    "class": "混合",
+    "cover": 5.4
+   }
+  ],
+  "native_battle_name.go": [
+   {
+    "func": "loadNativeBattleNameAssets",
+    "class": "流程",
+    "cover": 76.2
+   },
+   {
+    "func": "nativePaletteColor",
+    "class": "流程",
+    "cover": 75.0
+   }
+  ],
+  "native_battle_panel_locale.go": [
+   {
+    "func": "renderLocalizedNativeBattlePanel",
+    "class": "流程",
+    "cover": 14.3
+   }
+  ],
+  "native_battle_staging_present.go": [
+   {
+    "func": "beginNativeFieldEvent80",
+    "class": "流程",
+    "cover": 50.0
+   }
+  ],
+  "native_bios_clock.go": [
+   {
+    "func": "Reset",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "Sample",
+    "class": "流程",
+    "cover": 91.7
+   },
+   {
+    "func": "Current",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "advanceNativeMapClock",
+    "class": "流程",
+    "cover": 75.0
+   }
+  ],
+  "native_ch22_post.go": [
+   {
+    "func": "nativeTransitionInput",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_ch23_post.go": [
+   {
+    "func": "prepareNativeCh23SteadyStage",
+    "class": "流程",
+    "cover": 11.8
+   }
+  ],
+  "native_ch28_post_present.go": [
+   {
+    "func": "cloneNativeCh28PostState",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeCh28PostFrameInput",
+    "class": "流程",
+    "cover": 77.8
+   },
+   {
+    "func": "startNativeUnitDeathPresentMode",
+    "class": "流程",
+    "cover": 59.7
+   },
+   {
+    "func": "publishNativeCh28PostFrame",
+    "class": "流程",
+    "cover": 78.6
+   },
+   {
+    "func": "stepNativeCh28PostPresent",
+    "class": "流程",
+    "cover": 94.4
+   }
+  ],
+  "native_chapter_slot_save.go": [
+   {
+    "func": "saveNativeChapterSlot",
+    "class": "流程",
+    "cover": 70.9
+   }
+  ],
+  "native_church_ui.go": [
+   {
+    "func": "composeNativeChurchScene",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "composeNativeChurchSourceFrame",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "beginNativeChurchMenuOpening",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "stepNativeChurchUILifecycle",
+    "class": "流程",
+    "cover": 21.4
+   },
+   {
+    "func": "resetNativeChurchUIPulse",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_class_ui.go": [
+   {
+    "func": "loadNativeClassUIAssets",
+    "class": "流程",
+    "cover": 69.8
+   }
+  ],
+  "native_class_ui_lifecycle.go": [
+   {
+    "func": "stepNativeClassUILifecycle",
+    "class": "流程",
+    "cover": 70.7
+   },
+   {
+    "func": "nativeClassUIBlocksInput",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "resetNativeClassUIPulse",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeClassUIPulseTick",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeClassUIPulseTicks",
+    "class": "流程",
+    "cover": 50.0
+   }
+  ],
+  "native_command0_presentation.go": [
+   {
+    "func": "stepNativeCommand0Presentation",
+    "class": "流程",
+    "cover": 5.6
+   }
+  ],
+  "native_command10_12_presentation.go": [
+   {
+    "func": "stepNativeCommand1012Presentation",
+    "class": "流程",
+    "cover": 6.4
+   }
+  ],
+  "native_command1_presentation.go": [
+   {
+    "func": "stepNativeCommand1Presentation",
+    "class": "流程",
+    "cover": 5.8
+   }
+  ],
+  "native_command24_presentation.go": [
+   {
+    "func": "nativeCommand24RuntimeUnitIndex",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "nativeCommand24PreludeImages",
+    "class": "畫面",
+    "cover": 76.9
+   },
+   {
+    "func": "stepNativeCommand24Presentation",
+    "class": "流程",
+    "cover": 5.5
+   }
+  ],
+  "native_command29_presentation.go": [
+   {
+    "func": "stepNativeCommand29Presentation",
+    "class": "流程",
+    "cover": 4.3
+   }
+  ],
+  "native_command2_presentation.go": [
+   {
+    "func": "stepNativeCommand2Presentation",
+    "class": "流程",
+    "cover": 5.4
+   }
+  ],
+  "native_command32_presentation.go": [
+   {
+    "func": "cancelNativeCommand32Presentation",
+    "class": "流程",
+    "cover": 37.5
+   },
+   {
+    "func": "stepNativeCommand32Presentation",
+    "class": "流程",
+    "cover": 7.0
+   }
+  ],
+  "native_command33_presentation.go": [
+   {
+    "func": "cancelNativeCommand33Presentation",
+    "class": "流程",
+    "cover": 37.5
+   },
+   {
+    "func": "stepNativeCommand33Presentation",
+    "class": "流程",
+    "cover": 7.1
+   }
+  ],
+  "native_command34_presentation.go": [
+   {
+    "func": "cancelNativeCommand34Presentation",
+    "class": "流程",
+    "cover": 37.5
+   },
+   {
+    "func": "stepNativeCommand34Presentation",
+    "class": "流程",
+    "cover": 5.8
+   }
+  ],
+  "native_command35_presentation.go": [
+   {
+    "func": "cancelNativeCommand35Presentation",
+    "class": "流程",
+    "cover": 37.5
+   },
+   {
+    "func": "stepNativeCommand35Presentation",
+    "class": "流程",
+    "cover": 5.8
+   }
+  ],
+  "native_command3_presentation.go": [
+   {
+    "func": "stepNativeCommand3Presentation",
+    "class": "流程",
+    "cover": 5.5
+   }
+  ],
+  "native_command5_presentation.go": [
+   {
+    "func": "stepNativeCommand5Presentation",
+    "class": "流程",
+    "cover": 4.9
+   }
+  ],
+  "native_command6_presentation.go": [
+   {
+    "func": "stepNativeCommand6Presentation",
+    "class": "流程",
+    "cover": 5.7
+   }
+  ],
+  "native_command7_presentation.go": [
+   {
+    "func": "stepNativeCommand7Presentation",
+    "class": "流程",
+    "cover": 5.5
+   }
+  ],
+  "native_command8_presentation.go": [
+   {
+    "func": "stepNativeCommand8Presentation",
+    "class": "流程",
+    "cover": 5.6
+   }
+  ],
+  "native_command9_ai_presentation.go": [
+   {
+    "func": "stepNativeCommand9AIPresentation",
+    "class": "流程",
+    "cover": 4.7
+   }
+  ],
+  "native_command9_player_presentation.go": [
+   {
+    "func": "stepNativeCommand9PlayerPresentation",
+    "class": "流程",
+    "cover": 7.0
+   }
+  ],
+  "native_command_heal_presentation.go": [
+   {
+    "func": "stepNativeCommandHealPresentation",
+    "class": "流程",
+    "cover": 4.2
+   }
+  ],
+  "native_command_locale.go": [
+   {
+    "func": "localizedSpellBook",
+    "class": "流程",
+    "cover": 83.3
+   }
+  ],
+  "native_command_modifier_presentation.go": [
+   {
+    "func": "stepNativeCommandModifierPresentation",
+    "class": "流程",
+    "cover": 20.0
+   }
+  ],
+  "native_confirmation_mouth.go": [
+   {
+    "func": "nativeConfirmationMouthWaitingOwner",
+    "class": "流程",
+    "cover": 57.1
+   },
+   {
+    "func": "sampleNativeConfirmationMouthRandom",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeConfirmationMouth",
+    "class": "流程",
+    "cover": 47.4
+   }
+  ],
+  "native_continue_handoff.go": [
+   {
+    "func": "consumeNativeContinueOpeningConfirm",
+    "class": "流程",
+    "cover": 28.6
+   }
+  ],
+  "native_current_save.go": [
+   {
+    "func": "nativeCurrentSavePath",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "replaceNativeCurrentSaveAtomic",
+    "class": "流程",
+    "cover": 70.0
+   }
+  ],
+  "native_death_program_runtime.go": [
+   {
+    "func": "bindNativeDeathPrograms",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "queueNativeDeathProgram",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeDeathProgramsPending",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "runPendingDeathPrograms",
+    "class": "流程",
+    "cover": 77.1
+   },
+   {
+    "func": "runNativeDeathOp",
+    "class": "流程",
+    "cover": 31.8
+   },
+   {
+    "func": "nativeKillerIsPlayer",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "grantNativeDeathReward",
+    "class": "流程",
+    "cover": 87.5
+   }
+  ],
+  "native_death_reward_message.go": [
+   {
+    "func": "runPendingNativeDeathRewardMessages",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "composeNativeMapFrameBeforeActed",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "beginNativeDeathRewardMessage",
+    "class": "流程",
+    "cover": 73.2
+   },
+   {
+    "func": "acknowledgeNativeDeathRewardMessage",
+    "class": "流程",
+    "cover": 82.4
+   },
+   {
+    "func": "nativeDeathRewardMessageAwaitingKey",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_death_reward_ui.go": [
+   {
+    "func": "runPendingNativeDeathRewards",
+    "class": "流程",
+    "cover": 2.9
+   }
+  ],
+  "native_defeat.go": [
+   {
+    "func": "beginNativeDefeatIfConfigured",
+    "class": "流程",
+    "cover": 40.0
+   }
+  ],
+  "native_end_turn_recovery.go": [
+   {
+    "func": "beginNativeEndTurnRecovery",
+    "class": "流程",
+    "cover": 73.3
+   },
+   {
+    "func": "stepNativeEndTurnRecovery",
+    "class": "流程",
+    "cover": 70.6
+   },
+   {
+    "func": "drawNativeEndTurnRecovery",
+    "class": "畫面",
+    "cover": 84.6
+   }
+  ],
+  "native_event_dialogue.go": [
+   {
+    "func": "nativeBattleDialogueAdvanceInput",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "startNativeEventDialogue",
+    "class": "流程",
+    "cover": 63.3
+   },
+   {
+    "func": "handleBattleEventDialogueInput",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "nativeBattleDialogueAvailable",
+    "class": "流程",
+    "cover": 75.0
+   }
+  ],
+  "native_field_event61.go": [
+   {
+    "func": "beginNativeFieldEvent61",
+    "class": "流程",
+    "cover": 12.1
+   }
+  ],
+  "native_field_event75.go": [
+   {
+    "func": "beginNativeFieldEvent75",
+    "class": "流程",
+    "cover": 12.9
+   }
+  ],
+  "native_field_event_pending.go": [
+   {
+    "func": "noteNativeFieldEventStep",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "dispatchNativeFieldEventPending",
+    "class": "流程",
+    "cover": 10.6
+   }
+  ],
+  "native_hotel_ui.go": [
+   {
+    "func": "loadNativeHotelUIAssets",
+    "class": "流程",
+    "cover": 65.0
+   },
+   {
+    "func": "setupNativeHotel",
+    "class": "流程",
+    "cover": 87.5
+   },
+   {
+    "func": "handleNativeHotelInput",
+    "class": "流程",
+    "cover": 54.3
+   }
+  ],
+  "native_indexed_transition.go": [
+   {
+    "func": "buildNativeIndexedTransitionInputForActors",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "buildNativeIndexedTransitionInputForState",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "stepNativeIndexedTransition",
+    "class": "流程",
+    "cover": 8.3
+   }
+  ],
+  "native_item_panel_ui.go": [
+   {
+    "func": "clearNativeItemPanel",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_level_up_dialogue.go": [
+   {
+    "func": "queueNativeLevelUpDialogue",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "runPendingNativeLevelUpDialogues",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "expandNativeMessageWords",
+    "class": "流程",
+    "cover": 78.6
+   },
+   {
+    "func": "nativeLevelUpDialogueLines",
+    "class": "流程",
+    "cover": 73.7
+   },
+   {
+    "func": "beginNativeLevelUpDialogue",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "beginNativeTimedMessageDialogue",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "nativeLevelUpDialogueAtWait",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeLevelUpDialogue",
+    "class": "流程",
+    "cover": 91.3
+   },
+   {
+    "func": "finishNativeLevelUpDialogue",
+    "class": "流程",
+    "cover": 83.3
+   }
+  ],
+  "native_load_slots_ui.go": [
+   {
+    "func": "loadNativeLoadSlotsUIAssets",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "nativeLoadSlotMetadata",
+    "class": "流程",
+    "cover": 13.3
+   },
+   {
+    "func": "nativeLoadSlotMetadataFromFD2SAV",
+    "class": "流程",
+    "cover": 81.2
+   },
+   {
+    "func": "nativeLoadSlotConfirmable",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "confirmTitleLoadSlot",
+    "class": "流程",
+    "cover": 38.9
+   },
+   {
+    "func": "loadNativeGameFromSlot",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "restoreNativeChapterSlot",
+    "class": "流程",
+    "cover": 70.7
+   }
+  ],
+  "native_map_assets.go": [
+   {
+    "func": "loadNativeMapAssets",
+    "class": "流程",
+    "cover": 58.1
+   },
+   {
+    "func": "nativeMapAssetsAvailable",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "nativeSpawnIntroAssetsAvailable",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "native_map_frame_input.go": [
+   {
+    "func": "buildNativeMapFrameInput",
+    "class": "流程",
+    "cover": 72.4
+   },
+   {
+    "func": "nativeCh12UpWalkFrame",
+    "class": "流程",
+    "cover": 33.3
+   }
+  ],
+  "native_map_unit_window.go": [
+   {
+    "func": "nativeMapSelectionOverlay",
+    "class": "流程",
+    "cover": 27.8
+   },
+   {
+    "func": "nativeMapActionOverlay",
+    "class": "流程",
+    "cover": 48.9
+   }
+  ],
+  "native_palette_pulse.go": [
+   {
+    "func": "stepNativePalettePulse",
+    "class": "流程",
+    "cover": 17.6
+   }
+  ],
+  "native_palette_ramp.go": [
+   {
+    "func": "buildInclusivePaletteDeltas",
+    "class": "流程",
+    "cover": 90.9
+   },
+   {
+    "func": "startNativePaletteRamp",
+    "class": "流程",
+    "cover": 57.1
+   },
+   {
+    "func": "startNativePaletteRampOnFrame",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "ensureNativePaletteFrame",
+    "class": "流程",
+    "cover": 11.1
+   },
+   {
+    "func": "applyCurrent",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "stepNativePaletteRamp",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "drawNativePaletteRamp",
+    "class": "畫面",
+    "cover": 52.6
+   },
+   {
+    "func": "nativeDACIsBlack",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "native_physical_body.go": [
+   {
+    "func": "prepareNativePhysicalBodyResources",
+    "class": "流程",
+    "cover": 56.5
+   },
+   {
+    "func": "nativePhysicalSoundBank",
+    "class": "流程",
+    "cover": 77.8
+   },
+   {
+    "func": "attachNativePhysicalBody",
+    "class": "流程",
+    "cover": 43.2
+   },
+   {
+    "func": "indexed",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "drawNativePhysicalBody",
+    "class": "畫面",
+    "cover": 74.2
+   },
+   {
+    "func": "stepNativePhysicalBodyMillis",
+    "class": "流程",
+    "cover": 83.0
+   }
+  ],
+  "native_physical_scene.go": [
+   {
+    "func": "nativePhysicalTerrainControl",
+    "class": "流程",
+    "cover": 62.5
+   },
+   {
+    "func": "nativePhysicalSurfaceRGBA",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "nativePhysicalSurfaceImage",
+    "class": "畫面",
+    "cover": 75.0
+   },
+   {
+    "func": "prepareNativePhysicalScene",
+    "class": "流程",
+    "cover": 64.3
+   },
+   {
+    "func": "preflightNativePhysicalMapReturn",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "nativePhysicalBase",
+    "class": "流程",
+    "cover": 72.7
+   },
+   {
+    "func": "prepareNativePhysicalPrelude",
+    "class": "流程",
+    "cover": 69.0
+   },
+   {
+    "func": "drawNativePhysicalPrelude",
+    "class": "畫面",
+    "cover": 42.1
+   }
+  ],
+  "native_player_input.go": [
+   {
+    "func": "beginNativePlayerFocus",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "stepNativePlayerFocus",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "inspectNativePlayerUnit",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "stepNativePlayerStatus",
+    "class": "流程",
+    "cover": 21.4
+   }
+  ],
+  "native_player_movement.go": [
+   {
+    "func": "prepareNativePlayerMovement",
+    "class": "混合",
+    "cover": 78.9
+   },
+   {
+    "func": "clearNativePlayerMovement",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "beginPlayerAttackTargeting",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativePhysicalAttackConfirmationAllowed",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "markNativePlayerAttackField",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "native_preparation_input.go": [
+   {
+    "func": "handleNativePreparationInput",
+    "class": "流程",
+    "cover": 22.3
+   }
+  ],
+  "native_preparation_ui.go": [
+   {
+    "func": "stepNativePreparationUILifecycle",
+    "class": "流程",
+    "cover": 25.0
+   },
+   {
+    "func": "loadNativePreparationUIAssets",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "nativePreparationPromptActive",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "composeNativePreparationPromptDialogue",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "composeNativePreparationPromptQuestion",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "beginNativePreparationPromptOpening",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "beginNativePreparationPromptClosing",
+    "class": "流程",
+    "cover": 69.2
+   }
+  ],
+  "native_shop_locale.go": [
+   {
+    "func": "localizedShopKey",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "composeLocalizedNativeShopStable",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "drawLocalizedShopMessage",
+    "class": "畫面",
+    "cover": 69.2
+   }
+  ],
+  "native_shop_transaction_ui.go": [
+   {
+    "func": "cloneNativeShopUnit",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_shop_ui.go": [
+   {
+    "func": "loadNativeShopUIAssets",
+    "class": "流程",
+    "cover": 70.8
+   },
+   {
+    "func": "setupNativeShop",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "nativeShopState",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "composeNativeShopStable",
+    "class": "流程",
+    "cover": 91.7
+   },
+   {
+    "func": "beginNativeShopServiceOpening",
+    "class": "流程",
+    "cover": 86.7
+   },
+   {
+    "func": "stepNativeShopUILifecycle",
+    "class": "流程",
+    "cover": 19.2
+   },
+   {
+    "func": "resetNativeShopUIPulse",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_spawn_intro.go": [
+   {
+    "func": "cloneStoryUnitPointers",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "cloneBattleUnitPointers",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "cloneNativeBattleSpawnState",
+    "class": "流程",
+    "cover": 87.5
+   },
+   {
+    "func": "bindNativeFutureItemRows",
+    "class": "流程",
+    "cover": 66.7
+   },
+   {
+    "func": "prepareNativeStorySpawn",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "buildNativeSpawnIntroJob",
+    "class": "流程",
+    "cover": 68.0
+   },
+   {
+    "func": "startNativeSpawnIntro",
+    "class": "流程",
+    "cover": 77.3
+   },
+   {
+    "func": "nativeBattleIntroCall",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "loadNativeBattleFollowingActing",
+    "class": "流程",
+    "cover": 70.6
+   },
+   {
+    "func": "startNativeBattleFollowingActing",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "startNativeBattleSpawnIntro",
+    "class": "流程",
+    "cover": 78.9
+   },
+   {
+    "func": "stepNativeSpawnIntro",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_staging_present.go": [
+   {
+    "func": "nativeFocusEndpoint",
+    "class": "流程",
+    "cover": 87.5
+   }
+  ],
+  "native_story_dialogue.go": [
+   {
+    "func": "startNativeDialogueFrames",
+    "class": "流程",
+    "cover": 82.0
+   },
+   {
+    "func": "prepareNativeDialogueFrames",
+    "class": "流程",
+    "cover": 71.1
+   },
+   {
+    "func": "loadNativeSeparatedPortrait",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeStoryDialogueProgress",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "beginNativeStoryDialogueClosing",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "resetNativeStoryDialogueMouth",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "nativeStoryDialogueAtInputWait",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepDialogueMouth",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "finishNativeStoryDialogueClosing",
+    "class": "流程",
+    "cover": 94.1
+   }
+  ],
+  "native_story_dialogue_locale.go": [
+   {
+    "func": "drawIndexedLocalizedText",
+    "class": "畫面",
+    "cover": 34.4
+   }
+  ],
+  "native_story_input.go": [
+   {
+    "func": "advance",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "handleNativeStoryInput",
+    "class": "流程",
+    "cover": 50.0
+   }
+  ],
+  "native_story_map.go": [
+   {
+    "func": "nativeCh12StoryFocus",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "nativeCh12StoryWorkHandoff",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "materializeNativeStoryMapState",
+    "class": "流程",
+    "cover": 82.9
+   },
+   {
+    "func": "appendNativeStoryMapActors",
+    "class": "流程",
+    "cover": 81.8
+   },
+   {
+    "func": "prepareNativeStoryMapSpawnState",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "composeNativeStoryMapFrame",
+    "class": "流程",
+    "cover": 86.7
+   }
+  ],
+  "native_system_info_locale.go": [
+   {
+    "func": "init",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "systemInfoLocaleContract",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_system_info_ui.go": [
+   {
+    "func": "loadNativeSystemInfoAssets",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "stepNativeSystemInfoUI",
+    "class": "流程",
+    "cover": 11.1
+   }
+  ],
+  "native_town_departure.go": [
+   {
+    "func": "stepNativeTownDeparture",
+    "class": "流程",
+    "cover": 25.0
+   }
+  ],
+  "native_town_secret_input.go": [
+   {
+    "func": "nativeModifierHeld",
+    "class": "混合",
+    "cover": 100.0
+   },
+   {
+    "func": "pressedNativeTownSecretScan",
+    "class": "混合",
+    "cover": 41.7
+   }
+  ],
+  "native_town_ui.go": [
+   {
+    "func": "snapshotNativeTownSource",
+    "class": "流程",
+    "cover": 72.7
+   },
+   {
+    "func": "compose",
+    "class": "流程",
+    "cover": 70.0
+   },
+   {
+    "func": "nativeTownMoveSelection",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "moveNativeTownSelection",
+    "class": "流程",
+    "cover": 80.0
+   },
+   {
+    "func": "loadNativeTownUIAssets",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "resetNativeTownUIPulse",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "stepNativeTownUIPulseTick",
+    "class": "流程",
+    "cover": 77.8
+   },
+   {
+    "func": "stepNativeTownUILifecycle",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "composeNativeTownFrame",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "composeNativeTownFrameWithBackground",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "composeNativeTownFrameLayers",
+    "class": "流程",
+    "cover": 75.0
+   }
+  ],
+  "native_transient_phase.go": [
+   {
+    "func": "buildNativeTransientPhases",
+    "class": "流程",
+    "cover": 5.8
+   },
+   {
+    "func": "adoptNativeStateCandidate",
+    "class": "流程",
+    "cover": 83.3
+   },
+   {
+    "func": "buildNativeTransientPhasesTyped",
+    "class": "流程",
+    "cover": 45.0
+   }
+  ],
+  "native_transient_presentation.go": [
+   {
+    "func": "beginNativeTransientPhases",
+    "class": "流程",
+    "cover": 40.8
+   },
+   {
+    "func": "nativeTransientPresentationActive",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "native_turn_event76.go": [
+   {
+    "func": "startNativeRawCamp2TurnEvents",
+    "class": "流程",
+    "cover": 6.1
+   }
+  ],
+  "native_turn_staging.go": [
+   {
+    "func": "cloneNativeTurnStagingState",
+    "class": "流程",
+    "cover": 90.0
+   },
+   {
+    "func": "startNativeRawCamp0TurnEvents",
+    "class": "流程",
+    "cover": 10.5
+   },
+   {
+    "func": "applyNativeRawCamp0PairEvent",
+    "class": "流程",
+    "cover": 11.1
+   },
+   {
+    "func": "stepNativeTurnStaging",
+    "class": "流程",
+    "cover": 6.4
+   }
+  ],
+  "packaged_startup.go": [
+   {
+    "func": "loadPlayerCampaign",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "player_balance.go": [
+   {
+    "func": "syncBalanceState",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "player_battle_speed.go": [
+   {
+    "func": "normalizeBattleAnimationSpeed",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "player_game_clock.go": [
+   {
+    "func": "normalizePlayerSpeed",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "sample",
+    "class": "流程",
+    "cover": 88.9
+   },
+   {
+    "func": "gameNow",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "player_hd_quality.go": [
+   {
+    "func": "parseHDTextureQuality",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "name",
+    "class": "流程",
+    "cover": 50.0
+   }
+  ],
+  "player_interface.go": [
+   {
+    "func": "modernHDInterfaceEnabled",
+    "class": "流程",
+    "cover": 50.0
+   },
+   {
+    "func": "interfaceThemeForArt",
+    "class": "流程",
+    "cover": 22.2
+   },
+   {
+    "func": "interfaceAssetTheme",
+    "class": "流程",
+    "cover": 100.0
+   }
+  ],
+  "player_poster_controls.go": [
+   {
+    "func": "playerPosterControlsAllowed",
+    "class": "HD/工具列(流程)",
+    "cover": 100.0
+   }
+  ],
+  "player_theme_loader.go": [
+   {
+    "func": "pollModernThemeLoad",
+    "class": "流程",
+    "cover": 20.0
+   }
+  ],
+  "run_log.go": [
+   {
+    "func": "traceRunLog",
+    "class": "流程",
+    "cover": 20.0
+   }
+  ],
+  "save.go": [
+   {
+    "func": "saveSlotPath",
+    "class": "流程",
+    "cover": 60.0
+   },
+   {
+    "func": "writeSaveFile",
+    "class": "流程",
+    "cover": 60.9
+   },
+   {
+    "func": "saveGameToSlot",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "saveGameToSlotFrom",
+    "class": "流程",
+    "cover": 60.5
+   },
+   {
+    "func": "clearShopTransientStateForLoad",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "clearChurchTransientStateForLoad",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "restoreNativeMapHUDGateA",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "separated_asset_path_native.go": [
+   {
+    "func": "separatedAssetPath",
+    "class": "流程",
+    "cover": 66.7
+   }
+  ],
+  "separated_ui_assets.go": [
+   {
+    "func": "loadNativeBattlePalette",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "loadNativeUIPalette",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "loadNativeActionCellsWithRaw",
+    "class": "畫面",
+    "cover": 75.0
+   }
+  ],
+  "settings.go": [
+   {
+    "func": "settingsPath",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "normalizeFontScale",
+    "class": "流程",
+    "cover": 85.7
+   },
+   {
+    "func": "loadSettings",
+    "class": "流程",
+    "cover": 73.7
+   },
+   {
+    "func": "applyFontScale",
+    "class": "流程",
+    "cover": 81.8
+   }
+  ],
+  "title.go": [
+   {
+    "func": "applyTitleMenuEvent",
+    "class": "流程",
+    "cover": 60.9
+   },
+   {
+    "func": "loadTitleAssets",
+    "class": "混合",
+    "cover": 78.6
+   },
+   {
+    "func": "loadSeparatedTitleFDOTHER",
+    "class": "混合",
+    "cover": 76.0
+   },
+   {
+    "func": "maskedRGBA",
+    "class": "流程",
+    "cover": 90.0
+   },
+   {
+    "func": "loadSeparatedTitlePublisher",
+    "class": "流程",
+    "cover": 71.4
+   },
+   {
+    "func": "nativeTitlePaletted",
+    "class": "流程",
+    "cover": 75.0
+   },
+   {
+    "func": "buildTitlePaletteTransitions",
+    "class": "流程",
+    "cover": 73.7
+   },
+   {
+    "func": "titlePalettePhase",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "loadCutClip",
+    "class": "畫面",
+    "cover": 77.8
+   },
+   {
+    "func": "enterTitleMenu",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "cutAdvance",
+    "class": "流程",
+    "cover": 100.0
+   },
+   {
+    "func": "trySkipTitleCutStep",
+    "class": "流程",
+    "cover": 18.2
+   },
+   {
+    "func": "titleUpdate",
+    "class": "混合",
+    "cover": 60.2
+   }
+  ],
+  "title_menu_state.go": [
+   {
+    "func": "Step",
+    "class": "流程",
+    "cover": 69.2
+   }
+  ]
+ }
+}
