@@ -13,6 +13,81 @@ impl Game {
     /// Go：`native_chapter_slot_save.go:17`，`func (g *Game) saveNativeChapterSlot(slot int) error`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn save_native_chapter_slot(&mut self, slot: i64) -> Result<()> {
-        todo!("native_chapter_slot_save.go:saveNativeChapterSlot")
+        if self.native_end_turn_recovery.is_some() {
+            return Err(game_err!("原版章節槽存檔：END 回復尚未發布完成"));
+        }
+        let path = native_current_save_path();
+        if path.is_empty() {
+            return Err(game_err!("原版章節槽存檔：找不到 FD2.SAV 路徑"));
+        }
+        if self.handler_chapter < 0
+            || self.handler_chapter > 0xfe
+            || self.gold < 0
+            || self.gold as u64 > u64::from(u32::MAX)
+        {
+            return Err(game_err!("原版章節槽存檔：章節或金幣超出 metadata 範圍"));
+        }
+        // READY：fd2_ch01_flow_20261017.json start_save_contract。START 不還原舊槽隊伍。
+        // 新名冊沿本引擎既有零基底；原版保留值的差異已逐筆揭露並經使用者確認。
+        // 只建立本地候選，磁碟取代成功前不發布基底。
+        let mut base_plain = self.native_chapter_slot_plain.clone();
+        let mut baseline = self.native_chapter_slot_baseline.clone();
+        if baseline.is_none() && self.native_chapter_slot_started {
+            let stored = std::fs::read(&path)
+                .map_err(|err| GameError::new(err.to_string()).wrap("原版章節槽存檔：讀取容器："))?;
+            base_plain = fdsave::decode(&stored).map_err(|err| GameError::from(err).wrap("原版章節槽存檔：容器："))?;
+            let old = fdsave_slot(slot)
+                .and_then(|s| fdsave::read_slot(&base_plain, s).map_err(GameError::from))
+                .map_err(|err| err.wrap("原版章節槽存檔：目標槽："))?;
+            let mut fresh = fdsave::ChapterSlotSnapshot {
+                slot: slot as usize,
+                verified: fdsave::VerifiedMetadata::default(),
+                metadata: [0; fdsave::METADATA_SIZE],
+                records: [fdsave::PersistentRecord::default(); fdsave::ROSTER_UNITS],
+                source_save_sha256: String::new(),
+            };
+            // Go `copy(fresh.Metadata[:], old.Metadata)`：複製兩者較短的長度。
+            let n = fresh.metadata.len().min(old.metadata.len());
+            fresh.metadata[..n].copy_from_slice(&old.metadata[..n]);
+            fresh.metadata[..10].fill(0);
+            let options = self.current_native_system_options();
+            options.validate().map_err(|err| GameError::from(err).wrap("原版章節槽存檔：系統選項："))?;
+            fresh.metadata[6] = options.raw_51aab;
+            fresh.metadata[7] = options.raw_53af9;
+            fresh.metadata[8] = options.raw_51e61;
+            fresh.metadata[9] = options.raw_51e62;
+            baseline = Some(fresh);
+        }
+        let Some(baseline) = baseline.filter(|_| base_plain.len() == fdsave::FILE_SIZE) else {
+            return Err(game_err!("原版章節槽存檔：缺少 START 或四槽 LOAD 的基底"));
+        };
+        let join_table =
+            campaign::load_native_join_constructor_table(&asset_path("assets/data/native_join_constructor.json"))
+                .map_err(|err| GameError::from(err).wrap("原版章節槽存檔：JOIN constructor："))?;
+        let item_rows =
+            battle::load_native_item_effect_row_prefix(&asset_path("assets/data/native_item_effect_rows.json"))
+                .map_err(|err| GameError::from(err).wrap("原版章節槽存檔：item rows："))?;
+        let built = campaign::build_native_chapter_slot(
+            &baseline,
+            &self.party_roster,
+            &self.party_join_order,
+            self.handler_chapter as u8,
+            self.gold as u32,
+            &join_table,
+            &item_rows,
+        )
+        .map_err(|err| GameError::from(err).wrap("原版章節槽存檔："))?;
+        let plain = fdsave_slot(slot)
+            .and_then(|s| fdsave::write_slot(&base_plain, s, &built).map_err(GameError::from))
+            .map_err(|err| err.wrap("原版章節槽存檔："))?;
+        let stored = fdsave::encode(&plain).map_err(|err| GameError::from(err).wrap("原版章節槽存檔："))?;
+        self.replace_native_save_with_balance(&path, &stored, slot)?;
+        let snapshot = fdsave_slot(slot)
+            .and_then(|s| fdsave::inspect_chapter_slot(&plain, s).map_err(GameError::from))
+            .map_err(|err| err.wrap("原版章節槽存檔：回讀："))?;
+        self.native_chapter_slot_plain = plain;
+        self.native_chapter_slot_baseline = Some(snapshot);
+        self.native_chapter_slot_started = false;
+        Ok(())
     }
 }

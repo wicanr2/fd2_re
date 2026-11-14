@@ -232,6 +232,8 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 | A | `title_load_slots_hd_seal`、`freeze_modern_hd_title_load_slots` | `Option<&mut NativeLoadSlotsUIAssets>`（及 `Option<&mut ModernHDTitleLoadSlots>`） | `Option<&NativeLoadSlotsUIAssets>`（及 `Option<&ModernHDTitleLoadSlots>`） | 只讀；F 組的呼叫端改用 `.as_ref()` |
 | A（B 的函式，跨組介面） | `Game::step_battle_walk_segment` | `(&mut self, w: &mut WalkAnim, finish: &mut dyn FnMut(i64)) -> bool` | `(&mut self, finish: &mut dyn FnMut(&mut Game, i64)) -> bool` | 見「A 組：跨組介面」；本體仍是 B 的 `todo!()`，由主代理與 B 組定案 |
 | A | `Font`（型別，A 組專用檔） | — | 加欄位 `measure: TextMeasurer` | 量寬由外殼注入（見「A 組：字型」） |
+| F | `PlayerPosterSettings`（A 組 `player_poster_assets.rs`） | 0 欄位、`Copy` | `set`、`edge`、`fade_ms` 三欄與 serde，去掉 `Copy` | `fd2_settings.json` 的 `poster` 要能讀回並照原樣寫出；另補 `default_player_posters`、`valid_poster_mode`、`normalize_player_posters`（原標 `r8`，`loadSettings` 呼叫） |
+| F | `BalanceSavedState`、`BalanceSidecar`、`Settings` | 沒有 serde | serde，欄位名與 `omitempty` 照 Go 標籤 | 附檔與設定檔的讀寫；`BalanceSidecar` 改手寫 `Default`（`version: 1`，Go 解碼前的起點） |
 
 ## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
 
@@ -430,3 +432,100 @@ Go 測試當驅動用（以函式名掃描，共 460 個 Go 測試直接引用 A
 
 沒有改那兩個 crate。`battle::Unit`／`battle::State` 有私有欄位，結構字面值不能用 `..Default::default()`，改成先 `default()` 再逐欄寫入。
 `fd2_campaign::go_filepath` 是 `pub(crate)`，見共用變更需求。
+
+## R4 階段 2 F 組：存讀檔與設定（2026-11-14）
+
+- `PORTING.json` 的 F 組 28 個函式全部移植，沒有剩下 F 組的 `todo!()`。同檔另外移植原標 `r8` 的
+  `savePath`、`validateSavePartyTopology`、`saveGame`、`loadGame`、`loadGameFromSlot`、`loadJSONGameFromSlot`、
+  `saveSettings`、`nativeHotelNodeForTown`、`restoreBalanceSavedState`：120 的 R4 完成條件要能讀 Go 版存檔，
+  `confirmTitleLoadSlot` 的 JSON 分支與 Go 測試都經過它們。`PORTING.json` 的狀態沒有改（不在 F 組可改的檔），
+  由主代理整合時更新。
+- 新型別：`SaveData`、`BattleSnapshot`（Go `battle_snapshot.go:20`；該檔沒有子模組，型別先放 `save.rs`）。
+  JSON 輔助：`go_json_marshal_indent`（Go `json.MarshalIndent(v, "", " ")`，serde_json `PrettyFormatter` 縮排一格）、
+  `go_json_unmarshal_zero`（零值起點的 `json.Unmarshal`：頂層 `null` 得零值、頂層陣列拒收）、
+  `go_json_int_key_map`（整數鍵 map 依十進位字串排序寫出）、`go_json_balance_options`（`BalanceOptions` 以 Go 的鍵順序寫出）、
+  `settings.rs` 的 `go_json_float64`（整數值的 `float64` 寫成 `1` 而不是 `1.0`）與 `go_json_unmarshal_settings`
+  （`loadSettings` 起點上的解碼：沒寫或寫 `null` 的欄位保留起點，重複鍵取最後一個）。都是 serde 的欄位層寫法，
+  沒有移植 `encoding/json`。
+- 停在 `todo!()` 的地方：
+  - 別組：A（`user_data_path`、`asset_path`、`separated_asset_path`、`locale_message`、`enter_node`、
+    `freeze_modern_hd_title_load_slots`、`load_native_battle_palette`、`normalize_player_speed` 等正規化、
+    `Font::set_user_scale`）、C（`current_native_system_options`、`clear_native_player_movement`、
+    `clear_native_item_panel`）、E（`reset_native_shop_ui_pulse`、`reset_native_church_ui_pulse`、
+    `reset_native_class_ui_pulse`）。
+  - R8：`saveGameToSlotFrom` 的戰鬥中分支（`captureBattleSnapshot`）、`loadJSONGameFromSlot` 讀到
+    `battle_snapshot` 時的 `validateBattleSnapshotNode`／`applyBattleSnapshot`。三個函式在 `battle_snapshot.go`，
+    第一章受控流程沒有執行到，骨架沒有子模組。存檔的 `battle_snapshot` 已能讀回、照原樣寫出（黃金涵蓋）。
+- Go 的 nil 與空：`saveData.items`、`flags` 沒有 `omitempty`，`SaveData` 用 `Option` 區分。從 `Game` 存檔時
+  `items` 空的寫 `null`（Go 版 `items` 只由讀檔設定，平常是 nil），`flags` 寫 `{}`（Go `NewRunner` 建立非 nil map）。
+- map 迭代順序：`validateSavePartyTopology`、`readBalanceSidecar` 與 `BalanceOptions.Validate` 在多筆違規時 Go 報哪一筆
+  隨 map 順序而定，Rust 依鍵升冪。黃金在 Go 端重跑 300 次收集所有可能的錯誤，Rust 的結果必須是其中之一。
+- `restoreNativeChapterSlot`：Go 讓 `g.partyRoster` 等欄位與 `nativeChapterRestore` 共用同一份 map；
+  `nativeChapterRestore` 之後只當旗標讀（`main.go:3044`、`3188`、`3930`），Rust 存複本。
+
+### 測試
+
+- 移植 Go 測試 21 個：`save_test.go` 12、`settings_test.go` 2、`font_scale_test.go` 1、`balance_save_test.go` 2、
+  `native_load_slots_ui_test.go` 4；另有 F 組補充測試 5 個（標「F 組補充」）與黃金差分 2 個，共 28 個。
+  `tools/rust_game_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 11 通過、17 ignore、沒有略過。ignore：等 A 10 個、
+  等 A、C 4 個、等 A～E 1 個（`campaign_save_load_restores_town_boundary_and_party`）、黃金差分 2 個（由
+  `tools/rust_golden_save.sh` 以 `--ignored` 執行，其中 `golden_save_settings_loaded_matches_go` 另等 A）。
+- 改環境變數的 Go 測試（`t.Setenv("XDG_DATA_HOME"|"FD2_NATIVE_SAVE")`）：工作區禁止 `unsafe`，`set_var` 不能用，
+  改由 `save/f_test_env.rs` 的 `f_child_env` 在子行程重跑該測試並傳入環境變數。
+- 不在這裡移植的 Go 測試（都不需要畫面，所以不列 R5）：
+  - `native_current_save_test.go` 的 3 個測試先呼叫 `buildNativeCurrentSaveStored`（`r8`），R8 移植。
+  - `settings_test.go:11` 測 A 組語系目錄；`balance_save_test.go` 前兩個測 A 組 `player_balance.go`；
+    `font_scale_test.go` 其餘 3 個測 A 組 `Font`、R8 的 `cycleFontScale` 與真字型量寬。
+  - `native_load_slots_ui_test.go:116` 測截圖模式的 `parseNativeLoadSlotShotState`（`r8`）。
+  - `native_chapter_slot_restore_test.go`、`native_continue_handoff_test.go` 與各章流程測試也經過 F 組函式，
+    但測的是整段讀檔流程（`enterNode`、CONTINUE、整備），屬於呼叫端各組與階段 3 的整合。
+- R5 測試清單：F 組沒有需要畫面的測試（`drawNativeLoadSlots` 是 `r8`，不在骨架）。
+
+### 黃金差分
+
+`tools/rust_golden_save.sh`：Go 端 `remake/cmd/fd2/rust_golden_save_test.go`（`TestRustGoldenSave`，只在
+`FD2_RUST_GOLDEN_SAVE_OUT` 設定時執行、只輸出資料）連跑兩次、SHA-256 必須相同；Rust 端
+`src/game/save/golden_save_test.rs`。`fd2-game` 的函式與型別是 `pub(crate)`，`tests/` 的整合測試看不到，所以
+黃金比對放在 crate 內的單元測試，以 `#[ignore]` 擋在一般 `cargo test --lib` 之外。
+
+| 項目 | 內容 |
+|---|---|
+| 黃金檔 | `work/rust-build/golden/fd2-game-save-r4f-v1.json`，349 個案例，SHA-256 `48afbbf79107a64fe139b0d6171abb5a94455355ef57226c2ce04080a9212be4`（go1.22.12，Go 端連跑兩次相同） |
+| 存檔 196 | Go 寫出的固定與固定種子隨機 `saveData` 164 份（含 JOIN 建構器建立的真實持續隊伍單位）、手寫讀取端輸入 23 份、第一章戰鬥中 F5 存檔 2 份（附戰場快照）、真實 Go 版存檔 7 份 |
+| 設定 80 | Go 寫出的 64 份、手寫 14 份、真實設定檔 2 份；比零值起點與 `loadSettings` 起點的解碼及重新寫出的位元組 |
+| 附檔 45、附檔鍵 28 | `readBalanceSidecar` 的接受／拒收與錯誤文字、讀回與重新寫出；`balanceSaveKey` 的鍵與錯誤 |
+| 存檔位元組 | 191 份接受的存檔裡 64 份 Rust 重新寫出逐位元組相同；127 份只在 battle 套件子樹（名冊單位、戰場快照）不同，以 `NORMALIZATIONS` 比對相同，拿掉這兩個子樹的外層位元組 191 份全部相同。設定與附檔逐位元組相同 |
+| 竄改反向檢查 | 測試內對七類比對各改一個欄位（讀回金幣、名冊 HP、外層位元組、設定位元組、設定讀回、附檔錯誤文字、附檔鍵），全部被抓到 |
+
+真實輸入（主工作區 `work/`，唯讀；大小與 SHA-256 寫進黃金檔）：
+
+| 檔 | 大小 | SHA-256 |
+|---|---|---|
+| `ch01-flow-20261017/remake-full-r10/hotel-save.json` | 14825 | `190b9f8f614c69a4…` |
+| `ch02-flow-20261017/remake-full-r4/hotel-save.json` | 17755 | `69d122a76091cb21…` |
+| `ch03-flow-20261017/remake-full-r2/hotel-save.json` | 20475 | `5e4388d33faf7912…` |
+| `hd1-feedback-20261104-r83/special-sources-r4/command30/fd2_save.json` | 88129 | `1363b356a9c411e5…` |
+| `hd1-performance-60fps-20261105-r89/candidate-gui/user-data/fd2_re/fd2_save.json` | 12982 | `089b077b8d334bab…` |
+| `hd1-performance-60fps-20261105-r89/candidate-gui/user-data/fd2_re/fd2_settings.json` | 146 | `8670d2eae96de202…` |
+| `hd1-performance-60fps-20261105-r89/quality-normal-gui/user-data/fd2_re/fd2_settings.json` | 181 | `a171535e1465913f…` |
+| `promo-v.1.0.0-20261017/r2/user-data/fd2_re/fd2_save.json` | 14864 | `e144fa57c6e4127f…` |
+| `r4-stage0-20261114/parity-out/hotel-save.json` | 14825 | `190b9f8f614c69a4…`（與 ch01 r10 相同） |
+
+`KNOWN_DIFFERENCES`（`save.rs` 的 `SAVE_JSON_KNOWN_DIFFERENCES`）：JSON 欄位名大小寫；battle 套件型別的純量 null；
+型別錯誤時的部分填入（設定檔）；字串的 HTML 與控制字元跳脫；整數鍵的非標準寫法；作業系統錯誤文字；非有限小數；
+巢狀結構欄位的陣列寫法；存檔與附檔 JSON 的重複鍵。`NORMALIZATIONS`（只用在 battle 子樹與 `party_join_order`）：
+null 與空陣列／空物件／空字串相同、數字只比數值、物件鍵順序、`party_join_order` 的 null 與 `[]`。
+
+### fd2-rules 缺口（F 組發現）
+
+Go 寫出的存檔由 Rust 讀回再寫出時，位元組只在 fd2-rules 型別的 serde 上不同（黃金統計，127 份存檔）：
+
+| 型別 | 欄位 | Go | fd2-rules |
+|---|---|---|---|
+| `Unit` | `OffX`、`OffY`、`Exp`（`float64`） | 整數值寫 `0` | `0.0` |
+| `Unit` | `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` | nil 寫 `null` | `Vec` 不分 nil，寫 `[]` |
+| `StateSnapshot` | `flags` | 非 nil 空 map 寫 `{}` | 空的寫 `null` |
+| `BalanceOptions` | `characters`、`skill_hit`（整數鍵） | 依鍵的字串排序 | 依整數排序（F 組寫出時改走 `go_json_balance_options`，已相同） |
+
+讀回的內容都相同（逐欄比對通過）。要讓整份存檔逐位元組相同，需要 fd2-rules 的 `Unit` 以 `Option<Vec<_>>` 或寫出端
+規則保留 nil、`float64` 欄位以整數值寫出，並讓 `StateSnapshot` 區分 nil 與空 map；由主代理決定是否在 fd2-rules 補。

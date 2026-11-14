@@ -12,6 +12,14 @@ impl Game {
     /// Go：`native_continue_handoff.go:379`，`func (g *Game) consumeNativeContinueOpeningConfirm() bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn consume_native_continue_opening_confirm(&mut self) -> bool {
-        todo!("native_continue_handoff.go:consumeNativeContinueOpeningConfirm")
+        if !self.native_continue_opening_confirm {
+            return false;
+        }
+        self.native_continue_opening_confirm = false;
+        let Some(st) = self.st.as_ref().filter(|st| st.has_native_map_view_state) else {
+            return false;
+        };
+        let view = &st.native_map_view_state;
+        self.cur_x == view.cursor_x && self.cur_y == view.cursor_y
     }
 }

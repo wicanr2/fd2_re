@@ -2796,7 +2796,10 @@ impl Game {
     /// Go：`main.go:3855`，`func (g *Game) captureNativeMapHUDPersistence()`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn capture_native_map_hud_persistence(&mut self) {
-        todo!("main.go:captureNativeMapHUDPersistence")
+        let Some(st) = self.st.as_ref().filter(|st| st.has_native_map_hud_state) else {
+            return;
+        };
+        self.native_map_hud_persistent.capture_native_map_hud(st.native_map_hud_state);
     }
 
     /// resetBattle 重開一場戰鬥(campaign battle 節點;敗北重試也走這裡)。
