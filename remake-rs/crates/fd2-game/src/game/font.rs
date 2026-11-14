@@ -217,81 +217,14 @@ impl Font {
     }
 }
 
-/// Go `unicode.Han`、`unicode.Hiragana`、`unicode.Katakana`、`unicode.Hangul`（Unicode 15.0.0，
-/// Go 1.22.12 的 `unicode.Scripts` 表）：`(lo, hi, stride)`，同 Go `unicode.Range16`／`Range32`。
-/// 2026-11-14 以 `fd2-go-test-local` 容器列印 `unicode.Scripts` 取得；這是 Unicode Script 屬性
-/// 資料，Rust 標準函式庫沒有對應。
-const CJK_SCRIPT_RANGES: &[(u32, u32, u32)] = &[
-    // Han
-    (0x2E80, 0x2E99, 1),
-    (0x2E9B, 0x2EF3, 1),
-    (0x2F00, 0x2FD5, 1),
-    (0x3005, 0x3007, 2),
-    (0x3021, 0x3029, 1),
-    (0x3038, 0x303B, 1),
-    (0x3400, 0x4DBF, 1),
-    (0x4E00, 0x9FFF, 1),
-    (0xF900, 0xFA6D, 1),
-    (0xFA70, 0xFAD9, 1),
-    (0x16FE2, 0x16FE3, 1),
-    (0x16FF0, 0x16FF1, 1),
-    (0x20000, 0x2A6DF, 1),
-    (0x2A700, 0x2B739, 1),
-    (0x2B740, 0x2B81D, 1),
-    (0x2B820, 0x2CEA1, 1),
-    (0x2CEB0, 0x2EBE0, 1),
-    (0x2F800, 0x2FA1D, 1),
-    (0x30000, 0x3134A, 1),
-    (0x31350, 0x323AF, 1),
-    // Hiragana
-    (0x3041, 0x3096, 1),
-    (0x309D, 0x309F, 1),
-    (0x1B001, 0x1B11F, 1),
-    (0x1B132, 0x1B150, 30),
-    (0x1B151, 0x1B152, 1),
-    (0x1F200, 0x1F200, 1),
-    // Katakana
-    (0x30A1, 0x30FA, 1),
-    (0x30FD, 0x30FF, 1),
-    (0x31F0, 0x31FF, 1),
-    (0x32D0, 0x32FE, 1),
-    (0x3300, 0x3357, 1),
-    (0xFF66, 0xFF6F, 1),
-    (0xFF71, 0xFF9D, 1),
-    (0x1AFF0, 0x1AFF3, 1),
-    (0x1AFF5, 0x1AFFB, 1),
-    (0x1AFFD, 0x1AFFE, 1),
-    (0x1B000, 0x1B120, 288),
-    (0x1B121, 0x1B122, 1),
-    (0x1B155, 0x1B164, 15),
-    (0x1B165, 0x1B167, 1),
-    // Hangul
-    (0x1100, 0x11FF, 1),
-    (0x302E, 0x302F, 1),
-    (0x3131, 0x318E, 1),
-    (0x3200, 0x321E, 1),
-    (0x3260, 0x327E, 1),
-    (0xA960, 0xA97C, 1),
-    (0xAC00, 0xD7A3, 1),
-    (0xD7B0, 0xD7C6, 1),
-    (0xD7CB, 0xD7FB, 1),
-    (0xFFA0, 0xFFBE, 1),
-    (0xFFC2, 0xFFC7, 1),
-    (0xFFCA, 0xFFCF, 1),
-    (0xFFD2, 0xFFD7, 1),
-    (0xFFDA, 0xFFDC, 1),
-];
-
 /// runeBreakable 判斷這個字元自己就能當一個斷行單位。中日韓文字與全形標點
 /// 每個字都可以斷，拉丁字母與數字不行——那會把英文單字切成兩半。
 ///
 /// Go：`font.go:214`，`func runeBreakable(r rune) bool`
 pub(crate) fn rune_breakable(r: i32) -> bool {
-    if r >= 0 {
-        let r = r as u32;
-        if CJK_SCRIPT_RANGES.iter().any(|&(lo, hi, stride)| r >= lo && r <= hi && (r - lo).is_multiple_of(stride)) {
-            return true;
-        }
+    use crate::go_unicode::{HAN, HANGUL, HIRAGANA, KATAKANA, is_in};
+    if is_in(r, &[HAN, HIRAGANA, KATAKANA, HANGUL]) {
+        return true;
     }
     // 全形標點；全形英數與半形片假名
     (0x3000..=0x303F).contains(&r) || (0xFF00..=0xFFEF).contains(&r)

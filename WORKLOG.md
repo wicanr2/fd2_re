@@ -5657,4 +5657,4 @@ figani（b536270c）、fdother B份（d3157892）、A份（2ca7cd59）、C份（
 
 ## 2026-11-15 勘誤：誤刪兩個 matching 備份 worktree
 
-R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的樣式篩選 `git worktree list`，誤中 `work/matching-copy-agent-20261008` 與 `work/matching-inventory-agent-20261008`，以 `git worktree remove --force` 刪除並刪掉分支 `backup/matching-copy-20261008-20261105`（7074338e）、`backup/matching-inventory-20261008-20261105`（a74c32f0）。兩個分支在遠端仍在且 SHA 相同，當場以原 SHA 重建分支與 worktree，受版控內容完整。兩個目錄在 2026-11-05 17:14／17:17 的備份提交之後若有新增、修改或被忽略的檔案，已隨 `--force` 刪除，無法回復或確認。教訓 `worktree-cleanup-exact-ids-only`。
+R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的樣式篩選 `git worktree list`，誤中 `work/matching-copy-agent-20261008` 與 `work/matching-inventory-agent-20261008`，以 `git worktree remove --force` 刪除並刪掉分支 `backup/matching-copy-20261008-20261105`（7074338e）、`backup/matching-inventory-20261008-20261105`（a74c32f0）。兩個分支在遠端仍在且 SHA 相同，當場以原 SHA 重建分支與 worktree，受版控內容完整。兩個目錄在 2026-11-05 17:14／17:17 的備份提交之後若有新增、修改或被忽略的檔案，已隨 `--force` 刪除，無法回復或確認。教訓 `worktree-cleanup-exact-ids-only`。2026-11-15 使用者決定放棄可能遺失的未提交內容，兩個 worktree 以備份提交現況為準。

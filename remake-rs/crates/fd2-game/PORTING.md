@@ -393,8 +393,9 @@ Go `Update` 開頭排了四個 `defer`：`syncBalanceState`、清除玩家面板
 `fd2-game` 沒有 TTF 解析器（不加依賴）。`Font` 新增 `measure: TextMeasurer`，外殼注入 `TextMeasure`（`ascent`、`bound_string`、`has_glyph`，
 對應 Go 的 opentype face、`text.BoundString`、`sfnt.GlyphIndex`）。沒有字型檔時 `width` 照 Go 回 0；有字型卻沒注入量測器時 `face_for`／`width`
 停在 `todo!("R5: …")`，不以猜測的寬度斷行。`load_font_sized` 只檢查 TTC／sfnt 檔頭；依家族名稱選區域字型（`hdFonts`）只給 HD 用，在 R6。
-`rune_breakable` 的 Han／Hiragana／Katakana／Hangul 範圍取自 Go 1.22.12 `unicode.Scripts`（Unicode 15.0.0），寫成資料表（Unicode Script 屬性
-資料，不是 Go 程式碼；若主代理認定屬於教訓 `rust-port-no-go-stdlib` 的例外範圍，需另徵同意）。
+`rune_breakable` 的 Han／Hiragana／Katakana／Hangul 判斷放在 `src/go_unicode.rs`，是教訓 `rust-port-no-go-stdlib` 的第四項具名例外
+（2026-11-15 使用者同意）：表格照 Go 1.22.12 `unicode.Scripts`（Unicode 15.0.0），`is`／`is_in` 對應 `unicode.Is`／`In`。2026-11-15 以
+`fd2-go-test-local` 容器列印 Go 的四張表，與 Rust 表逐列比對 54 列相同。
 
 ### A 組：跨組介面
 
