@@ -88,9 +88,11 @@ Go 版正式程式約 13.7 萬行，測試約 15 萬行（2026-11-13 以 `wc -l`
 | R5 Bevy 外殼（原版美術） | `fd2-app`：原版像素繪圖、對話框、選單、音訊、輸入 | 開場與第一章畫面和 Go 版同狀態截圖逐像素一致 |
 | R6 HD1 與工具列 | HD 主題、F2／F11、畫質、速度設定 | HD1 清冊全部素材可載入；切換與設定保存相容 |
 | R7 平台 | Windows、macOS、Linux、網頁、手機打包 | 三平台完整包可組裝；Windows 實機驗收 #303～#305 |
-| R8 切換 | 30 章受控流程對拍、正式發行 | 依 `111` 的章收據規則重跑；通過後 Rust 版成為正式主線，Go 版封存 |
+| R8 切換 | 每章先依該章重播的覆蓋率補移植第一章以外的流程程式，再跑 30 章受控流程對拍、正式發行 | 依 `111` 的章收據規則重跑；通過後 Rust 版成為正式主線，Go 版封存 |
 
 各階段工單：R0 [#306](https://github.com/wicanr2/fd2_re/issues/306)、R1 [#307](https://github.com/wicanr2/fd2_re/issues/307)、R2 [#308](https://github.com/wicanr2/fd2_re/issues/308)、R3 [#309](https://github.com/wicanr2/fd2_re/issues/309)、R4 [#310](https://github.com/wicanr2/fd2_re/issues/310)、R5 [#311](https://github.com/wicanr2/fd2_re/issues/311)、R6 [#312](https://github.com/wicanr2/fd2_re/issues/312)、R7 [#313](https://github.com/wicanr2/fd2_re/issues/313)、R8 [#314](https://github.com/wicanr2/fd2_re/issues/314)。R0～R4 各階段收尾時，在下方「進度」加一個標題寫明該階段已完成的小節（格式見 R0），工單的機器檢查以這個標題判定；其他段落不要寫出那個字串，以免誤判。
+
+R4 的流程與畫面拆分計畫見 [120](120-goal-rust-r4-game-state-split-20261114.md)。
 
 R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每個階段完成時更新 `56` 與 `58`，切換前 Go 版的發行包維持可用。
 
@@ -203,7 +205,7 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 完成條件「Go 的戰鬥決定性測試以相同種子產生相同結果」：Go 測試的固定種子期望值不改即全部通過；跨組黃金在 33 張地圖 × 3 個種子上跑敵我 AI 戰鬥（上限 24 回合），每一步的計畫、結果、單位變化與下一個亂數都和 Go 相同，結局 `StateSnapshot` 相同。
 - `tools/rust_rules_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 647 項單元測試通過，沒有 ignore 或略過；clippy `-D warnings` 乾淨。每份黃金都在子代理 worktree 與整合後的主 checkout 各產一次，SHA 相同，並做過竄改反向檢查。
 - 快照與 Go 雙向相容：Rust 讀 Go 寫的快照再寫出與 Go 相同，Rust 寫出的快照 Go 能讀回。
-- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的唯一具名例外（見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`）。
+- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的具名例外之一；2026-11-14 使用者另同意登記 `fd2-formats` 的 `go_math`（`math.Sin`／`Cos`）與 `fd2-campaign` 的 `go_filepath`（`filepath.Clean`／`Join`），清單見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`。
 - `serde_json` 開啟 `float_roundtrip`，讀小數與 Go 一樣正確捨入。
 - 跨組黃金抓到一處：Go `native_ai_action_runtime.go` 531 行以 `:=` 重新賦值了 `found`，診斷欄位 `NativeModeBlockedFound` 實際寫入「找到最近對立單位」。Rust 照 Go 的實際值寫入並在註解寫明。
 - 刻意不照做：Go 解 JSON 時欄位名不分大小寫，Rust 只認標籤原文；損壞輸入只比接受或拒收；Go map 迭代順序造成的平手與錯誤訊息選擇（`combat.go` reach 平手在重播中出現 0 次）；nil 接收者與不在 `State.Units` 裡的單位指標。各組清單在各黃金測試的 `KNOWN_DIFFERENCES`。

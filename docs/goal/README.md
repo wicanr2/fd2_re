@@ -15,6 +15,7 @@
 | [`117-goal-chest-hud-fixes-and-ch12-parity-20260918.md`](117-goal-chest-hud-fixes-and-ch12-parity-20260918.md) | 目前這一輪：先修玩家開箱與 HUD 地形描述子（#44／#43），再做第十二章（北山道，map 11）工作單元 |
 | [`118-goal-fd2-matching-decompilation-20261008.md`](118-goal-fd2-matching-decompilation-20261008.md) | 全檔位元組一致反編譯：遊戲邏輯還原成 C，原作組語與第三方函式庫可保留並分列覆蓋（2026-10-08 定案） |
 | [`119-goal-rust-bevy-rewrite-20261113.md`](119-goal-rust-bevy-rewrite-20261113.md) | 凍結 Go 版，以 Rust／Bevy 改寫重製引擎：架構、三層驗證、R0～R8 階段（2026-11-13 定案） |
+| [`120-goal-rust-r4-game-state-split-20261114.md`](120-goal-rust-r4-game-state-split-20261114.md) | R4 遊戲狀態機：`cmd/fd2` 的流程與畫面拆分、檢查點黃金軌跡、範圍盤點與分組 |
 
 每章做完，下一章的提示詞另開一個編號，舊的留著當紀錄；`00-index.md` 的
 「目前這一章的工作單元」列指向最新的一份。
