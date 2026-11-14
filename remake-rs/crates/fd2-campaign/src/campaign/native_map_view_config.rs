@@ -21,6 +21,50 @@ impl NativeMapViewConfig {
     ///
     /// Go：`native_map_view_config.go:24`，`func (c NativeMapViewConfig) Validate(width, height int) error`
     pub fn validate(self, width: i64, height: i64) -> Result<()> {
-        todo!("campaign/native_map_view_config.go:NativeMapViewConfig.Validate")
+        use fdother::{NATIVE_MAP_VIEWPORT_COLUMNS as COLS, NATIVE_MAP_VIEWPORT_ROWS as ROWS};
+        let c = self;
+        if width < COLS || height < ROWS {
+            return Err(campaign_err!("campaign: 場地 {width}x{height} 小於 {COLS}x{ROWS} 視窗"));
+        }
+        if c.camera_x < 0 || c.camera_x > width - COLS || c.camera_y < 0 || c.camera_y > height - ROWS {
+            return Err(campaign_err!(
+                "campaign: 入口鏡頭 ({},{}) 不在 0..{}／0..{}",
+                c.camera_x,
+                c.camera_y,
+                width - COLS,
+                height - ROWS
+            ));
+        }
+        if c.cursor_x < 0 || c.cursor_x >= width || c.cursor_y < 0 || c.cursor_y >= height {
+            return Err(campaign_err!(
+                "campaign: 入口游標 ({},{}) 不在 {width}x{height} 場地內",
+                c.cursor_x,
+                c.cursor_y
+            ));
+        }
+        if c.visible_cursor_x < 0 || c.visible_cursor_x >= COLS || c.visible_cursor_y < 0 || c.visible_cursor_y >= ROWS
+        {
+            return Err(campaign_err!(
+                "campaign: 入口可見游標 ({},{}) 不在 {COLS}x{ROWS} 視窗內",
+                c.visible_cursor_x,
+                c.visible_cursor_y
+            ));
+        }
+        if c.visible_cursor_x != c.cursor_x.wrapping_sub(c.camera_x)
+            || c.visible_cursor_y != c.cursor_y.wrapping_sub(c.camera_y)
+        {
+            return Err(campaign_err!(
+                "campaign: 入口可見游標 ({},{}) 與 cursor-camera ({},{}) 不一致",
+                c.visible_cursor_x,
+                c.visible_cursor_y,
+                c.cursor_x.wrapping_sub(c.camera_x),
+                c.cursor_y.wrapping_sub(c.camera_y)
+            ));
+        }
+        Ok(())
     }
 }
+
+// 測試：Go `remake/internal/campaign/native_map_view_config_test.go` 逐條移植。
+#[cfg(test)]
+mod native_map_view_config_test;

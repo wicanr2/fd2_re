@@ -33,6 +33,35 @@ impl MenuState {
     /// Go：`menu_state.go:22`，`func (s *MenuState) Step(event MenuEvent) (selected int, confirm bool)`
     /// Go 具名回傳值依序為：selected、confirm。
     pub fn step(&mut self, event: MenuEvent) -> (i64, bool) {
-        todo!("campaign/menu_state.go:MenuState.Step")
+        if self.count < 0 {
+            self.count = 0;
+        }
+        if self.selection < 0 {
+            self.selection = 0;
+        }
+        if self.count == 0 {
+            self.selection = 0;
+        } else if self.selection >= self.count {
+            self.selection = self.count - 1;
+        }
+        match event {
+            MENU_UP => {
+                if self.selection > 0 {
+                    self.selection -= 1;
+                }
+            }
+            MENU_DOWN => {
+                if self.selection + 1 < self.count {
+                    self.selection += 1;
+                }
+            }
+            MENU_CONFIRM if self.count > 0 => return (self.selection, true),
+            _ => {}
+        }
+        (self.selection, false)
     }
 }
+
+// 測試：Go `remake/internal/campaign/menu_state_test.go` 逐條移植。
+#[cfg(test)]
+mod menu_state_test;

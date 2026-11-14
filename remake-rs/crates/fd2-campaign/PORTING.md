@@ -334,3 +334,86 @@ Go 用到的具名項目都有公開的 Rust 對應（見 `ext_deps.rs`）。下
 - `fd2_rules::battle::BattleError` 沒有 `From<fd2_formats::figani::FiganiError>`；`battlepresent` 以模組內的
   `trait GoResult`（`.go()`、`.wrap(prefix)`，經 `to_string()`）轉換，文字與 Go 相同。
 - `fd2_formats::fdother::Frame` 的 `on_blit` 是私有欄位，測試只能用 `Frame::raw()` 建立。
+
+## campaign A 組完成紀錄（2026-11-14）
+
+劇本資料與處理器編譯：campaign 的 campaign、handler_compile、handler_binding、handler_script、story_index_map、
+native_map_view_config、ai_commands、menu_state、native_story_dialogue、native_story_hd_text、
+native_story_dialogue_coverage，與 editorcanonical 的 bundle、compile。開工於 `83a6c64a`。
+
+### 移植結果
+
+- 71 個函式全部有本體（67 個 `todo!()` 補齊，PORTING.json 對應項改 `ported`）。A 組檔案沒有剩下 `todo!()`。
+- A 組呼叫 B 組的 `blit_native_dialogue_portrait_at`（`native_church_scene.rs`）兩處：
+  `compose_native_story_dialogue_mouth_frame`、`compose_native_story_dialogue_base_frame`。本體照 Go 呼叫它，
+  B 合併前執行到這裡會停在 B 的 `todo!()`。
+- serde：A 組檔案裡帶 Go 標籤的結構 derive `Serialize`／`Deserialize`，欄位名照標籤、容器 `#[serde(default)]`；
+  字串、切片、map 欄位的 JSON `null` 以 `null_as_default` 讀成空值；`omitempty` 照欄位型別對應
+  `String::is_empty`、`Vec::is_empty`、`Option::is_none`、`go_is_zero` 等（以值保存的結構不省略，同 Go）。
+  editorcanonical 的型別另加 `deny_unknown_fields`（Go `DisallowUnknownFields`）。
+- `json.RawMessage`：`compile.rs` 直接用 `Box<serde_json::value::RawValue>`（模組根的 `GoRawMessage` 別名不歸本組改，
+  沿用為 `Summary.diagnostics` 等只看長度的欄位）。`next`／`on_win`／`on_lose`／`asset_ids` 是
+  `Option<RawMessage>`：缺席是 `None`，明寫 `null` 是 `Some("null")`，與 Go 的 `UnmarshalJSON("null")` 相同。
+  `CompileCampaignJSON` 的輸出與 Go `json.Marshal` 逐位元組相同：map 鍵依位元組排序，`RawMessage` 壓縮，
+  `<`、`>`、`&`、U+2028、U+2029 跳脫（`go_compact`、`go_json_string`、`go_marshal_object`）。
+- 手寫的 Go 行為輔助：`go_sscanf_opt`（`fmt.Sscanf(outcome, "opt%d")` 的實際接受範圍）、`go_any_int`
+  （`any` 數字的 `int`／`float64` 分支）、`go_join_dir`（`filepath.Join(filepath.Dir(p), rel)`，以 `std::path`）、
+  `bundle_relative_path`（bundle 逃逸檢查，以路徑元件計深度）、`go_plus_v_counts`（`%+v`）、`go_rect`／
+  `go_rect_union`（`image.Rect`／`Union`，自由函式，避免與其他組替 `go_image::Rectangle` 補的方法衝突）。
+- Go 的實際行為照做：`0x22253` 分支直接取 `RawArgs[4]`（少於五個引數時 panic，Rust 同樣以索引 panic）；
+  `Runner.Visible`／`ShopGoods` 對不存在的節點 panic；`native_any_of` 的 inactive-count 迴圈不 break。
+
+### 測試
+
+12 個 Go 測試檔、177 個測試函式全部逐條移植（`src/<套件>/<檔>/<t>_test.rs`）：
+
+| Go 測試檔 | 測試數 |
+|---|---|
+| `handler_compile_test.go` | 101 |
+| `campaign_test.go`／`story_asset_test.go` | 35／1 |
+| `native_story_dialogue_test.go`／`native_story_portrait_rect_test.go` | 22／1 |
+| `handler_script_test.go` | 4 |
+| `ai_commands_test.go`、`menu_state_test.go`、`native_map_view_config_test.go`、`story_index_map_test.go` | 2、1、2、2 |
+| `editorcanonical/bundle_test.go`／`compile_test.go` | 2／4 |
+
+`tools/rust_campaign_test.sh`（`FD2_REQUIRE_ORIGINAL=1`，fmt、clippy `-D warnings`、全部單元測試）：176 通過、
+1 個 `#[ignore = "等 B 合併"]`（`compose_native_story_dialogue_page_uses_original_indexed_assets`），沒有略過。
+`--include-ignored` 時它停在 `native_church_scene.rs:83` 的 B 組 `todo!("campaign/native_church_scene.go:blitNativeDialoguePortraitAt")`。
+期望值都照 Go；Go 以指標同一性比較 `*bool` 的兩三處改比值，`t.Run` 子測試改成同一測試內的迴圈。
+
+### 黃金差分 `campaign-a`
+
+`tools/rust_golden_campaign_a.sh`（`remake/cmd/fd2-golden-campaign-a`、`tests/golden_campaign_a.rs`）。Go 端讀全部
+`remake/assets` 劇本，不抽樣（素材在兩端都唯讀掛在 `/assets`，錯誤訊息裡的路徑字樣相同；在工作樹副本執行時
+`FD2_REMAKE_ASSETS` 指向主工作區，`bindings/generated-*` 等不入庫的產生檔也一併讀入）：
+
+- `scenarios/*.json` 32 份 `campaign.Load`（2 份戰役圖成功，30 份戰場腳本照 Go 回 `start 節點 "" 不存在`）；
+  成功者再對每個帶 beats 的節點跑 `ExpandNativeDialogueGroups`、每個原生對白版面每頁的逐字時鐘與四個進度的可見字形
+  （字形清單記 SHA-256），以及每個節點 × 18 個固定結果的 `Runner.Advance`、`Visible`、`ShopGoods`、城鎮暗門判定。
+- `cutscenes/handlers/**.json` 64 份 `LoadHandlerScript`，成功者以空 `HandlerBindings` 編譯。
+- `cutscenes/bindings/**.json` 368 份 `LoadHandlerBinding` 與 `CompileHandlerBinding`（含 5 個 `_diagnostics.json`
+  的拒收），編譯結果再展開並記逐字時鐘。
+- `cutscenes/acting/**.json` 12 份 `LoadActingResourceSet`；`dialogue-index` 的 `LoadStoryIndexMap` 與每個映射的
+  `Lookup`（含越界與錯誤腳本）。
+- `editor-canonical`：`ValidateBundle`、`CompileCampaignJSON`（輸出原文逐位元組比對）與 `Decode`；另有 14 份合成
+  canonical 文件（原文存在案例裡）驗 HTML 跳脫、壓縮、轉場解析、嚴格解碼與尾端 JSON。
+
+黃金檔 `campaign-a-v1.json`（11.8 MB）SHA-256 `5958f83f54936ac3dfe4960bfb81e74a038043db5d6a02daa31547550ca71c11`，
+492 個案例、545 個輸入檔（排序後的相對路徑、大小與 SHA-256 存進黃金檔，Rust 端先核對），比對 2905 項，全部相同。
+Go 端重跑兩次位元組相同（腳本以 `cmp` 檢查）。竄改反向檢查（`FD2_GOLDEN_TAMPER=<案例>|<JSON pointer>`）：戰役圖
+`start`、綁定編譯結果的 `beats[1].source`、真實與合成的 `compiled` 位元組、自有錯誤文字各一處，都精確報出該欄位並失敗。
+`KNOWN_DIFFERENCES` 與 `NORMALIZATIONS` 列在 `tests/golden_campaign_a.rs`。
+
+### 排序與 map 迭代
+
+- A 組正式程式的 map 迭代（`Decode` 的節點、`LoadHandlerBinding` 的 contexts／overrides／spawn groups、
+  `LoadActingResourceSet`、`CompileCampaignJSON` 的轉場欄位）在 Go 只影響「多項同時不合法時先報哪一項」或寫入不同鍵，
+  Rust 依鍵排序。黃金案例的錯誤都只有一個不合法項（合成文件刻意只留一個查不到的轉場），所以 Go 端重跑相同。
+- `sort.Slice` 沒有用到。
+
+### 缺口與給主代理的事項
+
+- `fd2-rules`／`fd2-formats` 沒有缺口；Cargo.lock 沒有變動。
+- 共用檔沒有改。模組根 `editorcanonical.rs` 的 `GoRawMessage` 仍是 `serde_json::Value` 別名（`compile.rs` 另用 `RawValue`）；
+  整合時若要統一成 `Box<RawValue>`，`bundle.rs` 的 `Summary` 要一併拿掉 `PartialEq`／`Eq`（`RawValue` 沒有實作）。三個模組根的骨架 `allow(unused, …)` 照計畫在整合時移除。
+- 延後測試：C 組 `native_chapter_slot_restore_test.go` 兩條要用 `campaign.Load` 讀戰役圖，A 組已可提供。

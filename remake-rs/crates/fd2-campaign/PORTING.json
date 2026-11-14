@@ -129,7 +129,7 @@
             {
               "name": "LoadAICommandSpellMap",
               "rust": "load_ai_command_spell_map",
-              "status": "todo",
+              "status": "ported",
               "go_line": 17
             }
           ],
@@ -355,37 +355,37 @@
             {
               "name": "NativeCh20SkyKeySequence.IsRecoveredContract",
               "rust": "NativeCh20SkyKeySequence::is_recovered_contract",
-              "status": "todo",
+              "status": "ported",
               "go_line": 321
             },
             {
               "name": "NativeCh28PostPresent.IsRecoveredContract",
               "rust": "NativeCh28PostPresent::is_recovered_contract",
-              "status": "todo",
+              "status": "ported",
               "go_line": 376
             },
             {
               "name": "NativeDefeatReturnTitleConfig.IsRecoveredContract",
               "rust": "NativeDefeatReturnTitleConfig::is_recovered_contract",
-              "status": "todo",
+              "status": "ported",
               "go_line": 527
             },
             {
               "name": "NativeEndingPrefixConfig.IsRecoveredPrefixContract",
               "rust": "NativeEndingPrefixConfig::is_recovered_prefix_contract",
-              "status": "todo",
+              "status": "ported",
               "go_line": 535
             },
             {
               "name": "ExpandNativeDialogueGroups",
               "rust": "expand_native_dialogue_groups",
-              "status": "todo",
+              "status": "ported",
               "go_line": 626
             },
             {
               "name": "Load",
               "rust": "load",
-              "status": "todo",
+              "status": "ported",
               "go_line": 672,
               "calls": [
                 "Decode"
@@ -394,7 +394,7 @@
             {
               "name": "Decode",
               "rust": "decode",
-              "status": "todo",
+              "status": "ported",
               "go_line": 683,
               "calls": [
                 "NativeDefeatReturnTitleConfig.IsRecoveredContract",
@@ -405,7 +405,7 @@
             {
               "name": "NewRunner",
               "rust": "new_runner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 888
             },
             {
@@ -423,7 +423,7 @@
             {
               "name": "Runner.Visible",
               "rust": "Runner::visible",
-              "status": "todo",
+              "status": "ported",
               "go_line": 906,
               "calls": [
                 "Runner.Node"
@@ -432,7 +432,7 @@
             {
               "name": "Runner.ShopGoods",
               "rust": "Runner::shop_goods",
-              "status": "todo",
+              "status": "ported",
               "go_line": 920,
               "calls": [
                 "Runner.Node"
@@ -441,7 +441,7 @@
             {
               "name": "Runner.MatchNativeTownSecret",
               "rust": "Runner::match_native_town_secret",
-              "status": "todo",
+              "status": "ported",
               "go_line": 932,
               "calls": [
                 "Runner.Node"
@@ -450,7 +450,7 @@
             {
               "name": "Runner.ConfirmNativeTownSecret",
               "rust": "Runner::confirm_native_town_secret",
-              "status": "todo",
+              "status": "ported",
               "go_line": 948,
               "calls": [
                 "Runner.Node"
@@ -459,7 +459,7 @@
             {
               "name": "Runner.Advance",
               "rust": "Runner::advance",
-              "status": "todo",
+              "status": "ported",
               "go_line": 961,
               "calls": [
                 "Runner.Node",
@@ -816,7 +816,7 @@
             {
               "name": "LoadHandlerBinding",
               "rust": "load_handler_binding",
-              "status": "todo",
+              "status": "ported",
               "go_line": 95,
               "calls": [
                 "HandlerRuntimeContext.MinimumSlotCount",
@@ -827,7 +827,7 @@
             {
               "name": "CompileHandlerBinding",
               "rust": "compile_handler_binding",
-              "status": "todo",
+              "status": "ported",
               "go_line": 193,
               "calls": [
                 "CompileHandlerScript",
@@ -840,13 +840,13 @@
             {
               "name": "cloneIntMap",
               "rust": "clone_int_map",
-              "status": "todo",
+              "status": "ported",
               "go_line": 219
             },
             {
               "name": "HandlerBinding.CompilerBindings",
               "rust": "HandlerBinding::compiler_bindings",
-              "status": "todo",
+              "status": "ported",
               "go_line": 232,
               "calls": [
                 "HandlerBinding.dialogueOverride",
@@ -856,13 +856,13 @@
             {
               "name": "LoadActingResourceSet",
               "rust": "load_acting_resource_set",
-              "status": "todo",
+              "status": "ported",
               "go_line": 330
             },
             {
               "name": "HandlerBinding.indexedDialog",
               "rust": "HandlerBinding::indexed_dialog",
-              "status": "todo",
+              "status": "ported",
               "go_line": 356,
               "calls": [
                 "StoryIndexMap.Lookup",
@@ -872,7 +872,7 @@
             {
               "name": "HandlerBinding.dialogueOverride",
               "rust": "HandlerBinding::dialogue_override",
-              "status": "todo",
+              "status": "ported",
               "go_line": 402,
               "calls": [
                 "handlerTextIndex"
@@ -881,7 +881,7 @@
             {
               "name": "handlerTextIndex",
               "rust": "handler_text_index",
-              "status": "todo",
+              "status": "ported",
               "go_line": 414
             }
           ],
@@ -978,7 +978,7 @@
             {
               "name": "nativeDialogueLineGlyphLimit",
               "rust": "native_dialogue_line_glyph_limit_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 76
             },
             {
@@ -993,7 +993,7 @@
             {
               "name": "NativeDialogueLayout.Validate",
               "rust": "NativeDialogueLayout::validate",
-              "status": "todo",
+              "status": "ported",
               "go_line": 95,
               "calls": [
                 "NativeDialogueLayout.glyphTokens",
@@ -1003,37 +1003,37 @@
             {
               "name": "NativeDialogueLayout.glyphTokens",
               "rust": "NativeDialogueLayout::glyph_tokens",
-              "status": "todo",
+              "status": "ported",
               "go_line": 157
             },
             {
               "name": "cloneNativeDialogueLayout",
               "rust": "clone_native_dialogue_layout",
-              "status": "todo",
+              "status": "ported",
               "go_line": 181
             },
             {
               "name": "HandlerRuntimeContext.MinimumSlotCount",
               "rust": "HandlerRuntimeContext::minimum_slot_count",
-              "status": "todo",
+              "status": "ported",
               "go_line": 253
             },
             {
               "name": "HandlerRuntimeContext.MaximumSlotCount",
               "rust": "HandlerRuntimeContext::maximum_slot_count",
-              "status": "todo",
+              "status": "ported",
               "go_line": 273
             },
             {
               "name": "HandlerRuntimeContext.AcceptsSlotCount",
               "rust": "HandlerRuntimeContext::accepts_slot_count",
-              "status": "todo",
+              "status": "ported",
               "go_line": 289
             },
             {
               "name": "CompileHandlerScript",
               "rust": "compile_handler_script",
-              "status": "todo",
+              "status": "ported",
               "go_line": 318,
               "calls": [
                 "HandlerRuntimeContext.MaximumSlotCount",
@@ -1044,7 +1044,7 @@
             {
               "name": "compileHandlerScript",
               "rust": "compile_handler_script_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 335,
               "calls": [
                 "HandlerRuntimeContext.AcceptsSlotCount",
@@ -1062,7 +1062,7 @@
             {
               "name": "attachNativeDialogueLayout",
               "rust": "attach_native_dialogue_layout",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1462,
               "calls": [
                 "NativeDialogueLayout.Validate",
@@ -1072,13 +1072,13 @@
             {
               "name": "immediateHandlerInt",
               "rust": "immediate_handler_int",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1477
             },
             {
               "name": "validateNativeCh23Loop",
               "rust": "validate_native_ch23_loop",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1493,
               "calls": [
                 "nativeCallMatches",
@@ -1088,7 +1088,7 @@
             {
               "name": "validateNative2189ALoop",
               "rust": "validate_native2189_a_loop",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1521,
               "calls": [
                 "immediateHandlerInt",
@@ -1099,13 +1099,13 @@
             {
               "name": "native2189aCallShape",
               "rust": "native2189a_call_shape",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1569
             },
             {
               "name": "immediateOrInvalid",
               "rust": "immediate_or_invalid",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1573,
               "calls": [
                 "immediateHandlerInt"
@@ -1114,7 +1114,7 @@
             {
               "name": "nativeCallMatches",
               "rust": "native_call_matches",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1581,
               "calls": [
                 "immediateHandlerInt"
@@ -1123,13 +1123,13 @@
             {
               "name": "nativeStageValues",
               "rust": "native_stage_values",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1607
             },
             {
               "name": "nativePaletteFadeRegisterSnapshot",
               "rust": "native_palette_fade_register_snapshot",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1619
             },
             {
@@ -1141,19 +1141,19 @@
             {
               "name": "handlerBranchChangesCompileContext",
               "rust": "handler_branch_changes_compile_context",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1637
             },
             {
               "name": "handlerBranchNeedsActiveLoadCH",
               "rust": "handler_branch_needs_active_load_ch",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1649
             },
             {
               "name": "actingUsesUnavailableSlot",
               "rust": "acting_uses_unavailable_slot",
-              "status": "todo",
+              "status": "ported",
               "go_line": 1667
             }
           ],
@@ -1228,7 +1228,7 @@
             {
               "name": "LoadHandlerScript",
               "rust": "load_handler_script",
-              "status": "todo",
+              "status": "ported",
               "go_line": 182,
               "calls": [
                 "validateHandlerBeats"
@@ -1237,7 +1237,7 @@
             {
               "name": "validateHandlerBeats",
               "rust": "validate_handler_beats",
-              "status": "todo",
+              "status": "ported",
               "go_line": 206
             }
           ],
@@ -1300,7 +1300,7 @@
             {
               "name": "MenuState.Step",
               "rust": "MenuState::step",
-              "status": "todo",
+              "status": "ported",
               "go_line": 22
             }
           ],
@@ -2944,7 +2944,7 @@
             {
               "name": "NativeMapViewConfig.Validate",
               "rust": "NativeMapViewConfig::validate",
-              "status": "todo",
+              "status": "ported",
               "go_line": 24
             }
           ],
@@ -3849,13 +3849,13 @@
             {
               "name": "NativeStoryDialoguePortraitRect",
               "rust": "native_story_dialogue_portrait_rect",
-              "status": "todo",
+              "status": "ported",
               "go_line": 15
             },
             {
               "name": "NativeStoryDialogueTextGeometry",
               "rust": "native_story_dialogue_text_geometry",
-              "status": "todo",
+              "status": "ported",
               "go_line": 43,
               "calls": [
                 "nativeDialogueLineGlyphLimit"
@@ -3864,7 +3864,7 @@
             {
               "name": "ComposeNativeStoryDialogueWaitArrow",
               "rust": "compose_native_story_dialogue_wait_arrow",
-              "status": "todo",
+              "status": "ported",
               "go_line": 61,
               "calls": [
                 "NativeDialogueLayout.Validate"
@@ -3873,7 +3873,7 @@
             {
               "name": "ComposeNativeStoryDialogueOpeningFrames",
               "rust": "compose_native_story_dialogue_opening_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 82,
               "calls": [
                 "NativeDialogueLayout.Validate"
@@ -3882,7 +3882,7 @@
             {
               "name": "ComposeNativeStoryDialogueClosingFrames",
               "rust": "compose_native_story_dialogue_closing_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 118,
               "calls": [
                 "NativeDialogueLayout.Validate"
@@ -3891,7 +3891,7 @@
             {
               "name": "ComposeNativeStoryDialoguePage",
               "rust": "compose_native_story_dialogue_page",
-              "status": "todo",
+              "status": "ported",
               "go_line": 180,
               "calls": [
                 "ComposeNativeStoryDialogueProgressiveFrames"
@@ -3900,7 +3900,7 @@
             {
               "name": "ComposeNativeStoryDialogueMouthFrame",
               "rust": "compose_native_story_dialogue_mouth_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 201,
               "calls": [
                 "NativeDialogueLayout.Validate",
@@ -3910,7 +3910,7 @@
             {
               "name": "NativeStoryDialogueGlyphSteps",
               "rust": "native_story_dialogue_glyph_steps",
-              "status": "todo",
+              "status": "ported",
               "go_line": 227,
               "calls": [
                 "NativeDialogueLayout.Validate",
@@ -3920,7 +3920,7 @@
             {
               "name": "ComposeNativeStoryDialogueProgressiveFrames",
               "rust": "compose_native_story_dialogue_progressive_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 254,
               "calls": [
                 "ComposeNativeStoryDialogueBaseFrame",
@@ -3933,7 +3933,7 @@
             {
               "name": "ComposeNativeStoryDialogueBaseFrame",
               "rust": "compose_native_story_dialogue_base_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 382,
               "calls": [
                 "NativeDialogueLayout.Validate",
@@ -3979,7 +3979,7 @@
             {
               "name": "NativeStoryDialogueFrameBounds",
               "rust": "native_story_dialogue_frame_bounds",
-              "status": "todo",
+              "status": "ported",
               "go_line": 14,
               "calls": [
                 "NativeStoryDialogueCoverage"
@@ -3988,7 +3988,7 @@
             {
               "name": "NativeStoryDialogueCoverage",
               "rust": "native_story_dialogue_coverage",
-              "status": "todo",
+              "status": "ported",
               "go_line": 43
             }
           ],
@@ -4014,7 +4014,7 @@
             {
               "name": "NativeStoryDialogueVisibleGlyphs",
               "rust": "native_story_dialogue_visible_glyphs",
-              "status": "todo",
+              "status": "ported",
               "go_line": 13,
               "calls": [
                 "NativeDialogueLayout.Validate",
@@ -4668,7 +4668,7 @@
             {
               "name": "LoadStoryIndexMap",
               "rust": "load_story_index_map",
-              "status": "todo",
+              "status": "ported",
               "go_line": 79,
               "calls": [
                 "validateStoryIndexMapping"
@@ -4677,13 +4677,13 @@
             {
               "name": "validateStoryIndexMapping",
               "rust": "validate_story_index_mapping",
-              "status": "todo",
+              "status": "ported",
               "go_line": 117
             },
             {
               "name": "StoryIndexMap.Lookup",
               "rust": "StoryIndexMap::lookup",
-              "status": "todo",
+              "status": "ported",
               "go_line": 159
             }
           ],
@@ -6511,13 +6511,13 @@
             {
               "name": "decodeStrict",
               "rust": "decode_strict",
-              "status": "todo",
+              "status": "ported",
               "go_line": 48
             },
             {
               "name": "ValidateBundle",
               "rust": "validate_bundle",
-              "status": "todo",
+              "status": "ported",
               "go_line": 70,
               "calls": [
                 "decodeStrict"
@@ -6562,7 +6562,7 @@
             {
               "name": "CompileCampaignJSON",
               "rust": "compile_campaign_json",
-              "status": "todo",
+              "status": "ported",
               "go_line": 56,
               "calls": [
                 "decodeStrict",
@@ -6572,7 +6572,7 @@
             {
               "name": "resolveNodeReference",
               "rust": "resolve_node_reference",
-              "status": "todo",
+              "status": "ported",
               "go_line": 136
             }
           ],
