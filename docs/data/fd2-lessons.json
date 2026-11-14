@@ -5832,6 +5832,21 @@
         ],
         "pattern": "AwardNativePlayerActionExperience"
       }
+    },
+    {
+      "id": "remake-no-sync-pack-load-in-update",
+      "date": "2026-11-14",
+      "area": "重製端",
+      "rule": "大型素材包（HD 主題等）不在 Ebiten Update 或任何單一邏輯幀內同步載入；改在背景執行，載入期間顯示進度，完成後再於主執行緒發布。載入函式要保持不碰 Game、不建立 GPU 圖片，才能移出主執行緒。",
+      "why": "v.1.1.11 第一次按 F2／F11 在 Update 內同步解碼約 1.1 萬個 PNG（3.6 GB），畫面停 160～243 秒，Windows 標為沒有回應，玩家回報為卡死。",
+      "evidence": "remake/cmd/fd2/player_theme_loader.go",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/player_theme_loader.go"
+        ],
+        "pattern": "func \\(g \\*Game\\) pollModernThemeLoad"
+      }
     }
   ]
 }

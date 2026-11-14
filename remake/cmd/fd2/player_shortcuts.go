@@ -16,19 +16,11 @@ func (g *Game) cycleTheme() {
 	}
 	previous := g.modernStoryPortraits
 	if previous == nil {
-		set := g.modernThemeCache
-		if set == nil {
-			packRoot := os.Getenv("FD2_MODERN_THEME_PACK")
-			if packRoot == "" {
-				packRoot = assetPath("assets/themes/modern")
-			}
-			var err error
-			set, err = loadModernStoryPortraitSet(assetPath("assets/themes/modern/catalog.json"), packRoot)
-			if err != nil {
-				g.msg = "現代主題不可用：" + err.Error()
-				return
-			}
+		// 第一次切到 HD 時在背景載入主題包，完成後由 pollModernThemeLoad 補做這次切換。
+		if g.requestModernThemeLoad(modernThemePendingArt) {
+			return
 		}
+		set := g.modernThemeCache
 		if err := g.applyTheme(set); err != nil {
 			g.msg = "現代主題不可用：" + err.Error()
 			return

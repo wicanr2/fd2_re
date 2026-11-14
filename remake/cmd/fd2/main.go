@@ -598,6 +598,8 @@ type Game struct {
 	sourceBattleEntities                *localization.EntityCatalog                 // protect 使用來源姓名，不受顯示語系影響
 	modernStoryPortraits                *modernStoryPortraitSet                     // 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
 	modernThemeCache                    *modernStoryPortraitSet                     // 同一程序內已通過預檢的完整素材
+	modernThemeLoading                  *modernThemeLoad                            // 第一次切到 HD 的背景載入；nil 表示沒有進行中的載入
+	modernThemeLoader                   func() (*modernStoryPortraitSet, error)     // 測試替換用；nil 時用 loadPlayerModernTheme
 	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
 	modernHDScene                       *modernFacilitySceneOverlay
@@ -8425,6 +8427,7 @@ func (g *Game) Update() error {
 	g.stepNativeShopUILifecycle(g.gameNow())
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(g.gameNow()))
 	g.stepNativePreparationUILifecycle(g.gameNow())
+	g.pollModernThemeLoad()                                                                                                     // 背景載入完成時補做第一次 F2／F11
 	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerThemeRequested || inpututil.IsKeyJustPressed(ebiten.KeyF2)) { // 全域：忠實／現代主題
 		g.cycleTheme()
 	}

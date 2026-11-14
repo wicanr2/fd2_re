@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -77,12 +78,9 @@ func (g *Game) setInterfaceMode(mode string) error {
 		if g.font == nil || g.font.sf == nil {
 			return fmt.Errorf("interface: HD font unavailable")
 		}
-		if candidate.interfaceAssetTheme() == nil {
-			set, err := loadPlayerModernTheme()
-			if err != nil {
-				return err
-			}
-			candidate.modernThemeCache = set
+		if candidate.interfaceAssetTheme() == nil && g.requestModernThemeLoad(modernThemePendingInterface) {
+			// 第一次切到 HD 時在背景載入主題包，完成後由 pollModernThemeLoad 補做這次切換。
+			return errModernThemeLoading
 		}
 	}
 	style := candidate.interfaceAssetTheme()
@@ -145,6 +143,9 @@ func (g *Game) cycleInterfaceMode() {
 		mode = playerInterfaceOriginal
 	}
 	if err := g.setInterfaceMode(mode); err != nil {
+		if errors.Is(err, errModernThemeLoading) {
+			return // 訊息已由 requestModernThemeLoad 設定
+		}
 		g.msg = "介面切換失敗：" + err.Error()
 		return
 	}
