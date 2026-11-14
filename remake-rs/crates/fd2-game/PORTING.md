@@ -241,6 +241,19 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 | C | `Game::freeze_modern_hd_movement_panel` | `plan: Option<&mut NativePlayerMovement>, source: Option<&mut Picture>, panels: &mut [ModernBattlePanelText]` | `plan: Option<&NativePlayerMovement>, source: Option<&Arc<Picture>>, panels: &[ModernBattlePanelText]` | 只讀；Go 以指標存進 HD 狀態，Rust 存同一個 `Arc` 與複本 |
 | C | `movement_panel_source_seal` | `h: Option<&mut ModernHDMovementPanel>` | `h: Option<&ModernHDMovementPanel>` | 只讀 |
 | C | `clone_native_turn_staging_state` | `source: Option<&mut battle::State>` | `source: Option<&battle::State>` | 只讀；`State::clone` 已是深複製 |
+| B | `Game::acting_actor` | `(&self, target: campaign::ActingUnit) -> Option<UnitIdx>` | `(&self, target: &campaign::ActingUnit) -> Option<HandlerUnitRef>` | Go 的 `*battle.Unit` 可能指向 `g.storyActors`，`UnitIdx` 只能指 `st.units`；新列舉 `HandlerUnitRef` 見「B 組：所有權」 |
+| B | `Game::handler_unit_at` | `-> Option<UnitIdx>` | `-> Option<HandlerUnitRef>` | 同上 |
+| B | `Game::begin_acting_frame` | `(&self, j: &mut ActPoseJob)` | `(&mut self, j: &mut ActPoseJob)` | Go 經單位指標改寫姿態 |
+| B | `Game::finish_act_job` | `j: &ActPoseJob` | `j: &mut ActPoseJob` | 延續要 `take()` 出來 |
+| B | `Game::resolve_campaign_dialog_line` | `upper_override: Option<&mut bool>, native_override: &mut campaign::NativeDialogueLayout` | `upper_override: Option<bool>, native_override: Option<&campaign::NativeDialogueLayout>` | Go 只讀兩者，`nativeOverride` 可為 nil |
+| B | `Game::prepare_native_story_map_spawn_state` | `actors: &[battle::Unit]` | `actors: &mut [battle::Unit]` | Go 的 `view.storyActors = actors` 共用底層陣列，selector slot 寫回呼叫端 |
+| B | `clone_story_unit_pointers`、`clone_battle_unit_pointers` | `(&[battle::Unit]) -> Vec<UnitIdx>`、`(&[UnitIdx]) -> Vec<UnitIdx>` | 都是 `(&[battle::Unit]) -> Vec<battle::Unit>` | Go 複製單位值；`UnitIdx` 指不到新陣列。C 組 `native_turn_staging`、D 組 `native_unit_present` 的呼叫端照新簽名 |
+| B | `Game::build_native_indexed_transition_input_for_actors`、`…_for_state` | `(&mut self, …) -> Result<indexedmap::NativeTransitionFrameInput<'static>>`，`state: Option<&mut battle::State>` | `(&self, …) -> Result<NativeTransitionFrameSource>`，`state: Option<&battle::State>` | 借用的輸入不能回傳（`for_actors` 的載體是區域變數）；呼叫端以 `source.input(assets)` 組出借用輸入。D 組（補血、單位登場）照用 |
+| B | `NativeIndexedTransitionJob::input`（B 組型別） | `indexedmap::NativeTransitionFrameInput<'static>` | `NativeTransitionFrameSource` | 同上 |
+| B | `native_transition_input` | `-> NativeTransitionFrameInput<'static>` | `<'a>(&NativeFrameInput<'a>) -> NativeTransitionFrameInput<'a>` | 只是轉換欄位，借用照傳 |
+| B | `Game::start_native_unit_death_present_mode` | `prelude: &mut dyn FnMut(&battle::State) -> Result<()>` | `prelude: &mut dyn FnMut(&mut battle::State) -> Result<()>` | Go 的 prelude 改寫候選狀態（清 +0x40） |
+| B | `NativeCh28PostPresentJob::retained_state`（B 組型別） | `Option<battle::State>` | `bool` | Go 存 `g.st` 指標本身；Rust 保留模式就是不替換 `g.st` |
+| B（D 的函式，跨組介面） | `Game::award_death_reward` | `killer: UnitIdx` | `killer: Option<UnitIdx>` | B 的 `completeTurn` 傳 nil killer（`main.go:13084`）；本體仍是 D 的 `todo!()` |
 
 ## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
 
@@ -669,3 +682,149 @@ R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 繪字，不在本階段�
 ### C 組：敵方回合與亂數
 
 `native_ai_*`、`native_end_turn_recovery` 只呼叫 `fd2_rules` 的計畫、驗證、提交與取消函式，亂數狀態沿用 `Game::native_rng_state`（Go `nativeRNGState`）與各計畫自帶的 `rng_state`，沒有另造亂數來源。單位一律以 `UnitIdx` 指向 `st.units`；Go 以指標相等找單位的 `unitIndex` 改成檢查索引範圍。
+
+## R4 階段 2：B 組（劇情對話與事件演出）
+
+2026-11-14，代號 `r4b`，合併基準 `1310436e`。範圍是 `PORTING.json` 裡 `group` 為 `B` 的 108 個函式（含 `main.go` 的 43 個）。
+
+### 移植結果
+
+| 項目 | 數量 |
+|---|---|
+| B 組函式 | 108 個全部有本體；另隨呼叫端補移植 6 個 `r8` 小函式（下表） |
+| 整個本體是 `todo!()` 的 | 2 個，都是 R5：`draw_native_palette_ramp`（繪圖；`drawn` 由呈現回報設定）、`draw_indexed_localized_text`（非繁中語系的 TTF 點陣化） |
+| 部分是 `todo!()` 的 | `beat_start`（第一章沒有的原語）、`resolve_campaign_dialog_line`／`prepare_native_dialogue_frames`（非繁中語系、HD 介面、第 28 章視圖繼承）、`dlg_page_count`（非原生對白）、`step_battle_walk_segment`（全軍移動的格子事件）、`advance_battle_event`／`finish_battle_event_with_error`（ch20 系 staging、章節結果失敗）、`handle_native_story_input`（近似戰後）、`begin_native_field_event61`／`75`、`start_native_raw_camp2_turn_events`（命中之後的對白與演出）、`start_native_unit_death_present_mode`（map 23 舞台、HD 死亡素材） |
+| `todo!` 分類 | R5 2、R6 4、R8 30 |
+
+R8 的 `todo!` 都在第一章重播沒有執行到的分支上：分支呼叫的 Go 函式在 `PORTING.json` 標 `r8`（例如 `startNativeCh20SkyKeySequence`、`startNativeCh23Loop`、`startNative2189A`、`startNativeUnitPresent`、`evalBeatCondition`、`grantItemToParty`、`event61DialogueActions`、`preflightNativeEvent76Final`）。進 `todo!` 之前的 payload 檢查與 `loadErr` 照 Go 移植，失敗即關閉的訊息與 Go 相同。
+
+隨呼叫端補移植的 `r8` 函式：
+
+| Go | Rust | 呼叫端 |
+|---|---|---|
+| `main.go:finishBattleEventWithError` | `Game::finish_battle_event_with_error` | `advance_battle_event`、`handle_battle_event_dialogue_input` |
+| `native_indexed_transition.go:nativeDelayTicks` | `native_delay_ticks` | `step_native_indexed_transition` |
+| `native_indexed_transition.go:applyNativeIndexedTransitionPalette` | `Game::apply_native_indexed_transition_palette` | 同上 |
+| `native_indexed_transition.go:buildNativeIndexedTransitionInput` | `Game::build_native_indexed_transition_input` | `ensure_native_palette_frame` |
+| `native_palette_pulse.go:(*nativePalettePulseJob).applyCurrent` | `NativePalettePulseJob::apply_current` | `step_native_palette_pulse` |
+| `native_ch23_post.go:(*nativeCh23AdapterState).rotateRows` | `NativeCh23AdapterState::rotate_rows` | `prepare_native_ch23_steady_stage` |
+
+`cloneNativeCh23AdapterState`（`r8`）就是 `Clone`，`itoa`（`r8`）對整數與 `to_string()` 相同，兩者直接寫在呼叫處。
+
+Rust 新增、沒有 Go 對應的項目：`main.rs` 的 `HandlerUnitRef`、`Game::handler_unit`／`handler_unit_mut`、`Game::focus_native_map_cursor_steps_with_hud`、`redraw_native_map_hud_state`、`Game::walk_unit`／`walk_unit_mut`、`beat_advance_then`、`go_int_ptr`；`native_story_map.rs` 的 `Game::sync_story_native_map_units`、`append_native_story_map_actors_into`、`go_native_map_view_plus_v`；`native_indexed_transition.rs` 的 `NativeTransitionFrameSource`；`native_story_dialogue.rs` 的 `STORY_MOUTH_RNG_SEED`、`Game::story_mouth_intn30`；`native_confirmation_mouth.rs` 的 `CONFIRMATION_MOUTH_RNG_SEED`、`NATIVE_CONFIRMATION_OWNER_END_TURN`、`confirmation_owner_token`。`main.rs` 新增的項目都緊鄰 B 組的函式。
+
+### B 組：所有權
+
+- **處理器單位參照**：Go 的 `actingActor`、`handlerUnitAt` 回傳 `*battle.Unit`，戰場上指 `g.st.Units[slot]`，劇情場景指 `&g.storyActors[slot]`。Rust 回傳 `HandlerUnitRef::{Battle(UnitIdx), Story(usize)}`，再以 `handler_unit(_mut)` 取用。
+- **演出工作**：`step_act_job` 先把 job 從 `self.act_job` 取出再推進，沒有收尾才放回；收尾時延續可能裝上新 job（`beat_advance` → 下一個 `act` 拍），所以不放回舊 job。`step_focus_unit` 反過來把 job 留在 `self.focus_job` 原地改寫，因為 A 組的 `sync_story_native_map_focus_view` 在步進途中讀 `focus_job.native_view`（Go `main.go:1150`）。其他演出工作（索引轉場、調色盤漸變／脈衝、出場、0x1DB65）也原地推進，收尾時 `take()` 出來再呼叫延續。
+- **走行**：照 A 組定的跨組介面，`step_battle_walk_segment` 一律讀寫 `self.walk`，走行單位是 `st.units` 的索引（Go 的 `w.u` 為 nil 時解參考 panic，Rust 以 `expect` 對應）。
+- **游標聚焦**：Go 把會改寫 `Game` 的 `nativeCursorStepHUD` 當 callback 交給 `battle.State.FocusNativeMapCursorSteps`；借用 `st` 時不能再借用 `Game`，所以 `focus_native_map_cursor_steps_with_hud` 在 `Game` 這層照 fd2-rules 的迴圈重寫（含追蹤 hook 呼叫），三個呼叫端（`focus_native_map_cursor_on_unit`、`ai_focus_cursor`、`position_screenshot_cursor`）共用。
+- **劇情地圖載體**：Go 的 `storyNativeMapState.Units[i]` 是 `&g.storyActors[i]`。Rust 的載體擁有單位複本，建立與 SPAWN 時與 `story_actors` 等長，`compose_native_story_map_frame` 合成前以 `sync_story_native_map_units` 重新對齊。**別組讀 `story_native_map_state.units` 之前要先呼叫它**（Go 讀這份指標的還有 `native_24b4d.go`、`modern_hd_story_map.go`、`evalBeatCondition`，都是 R6／R8）。
+- **0x24618 輸入**：`indexedmap::NativeTransitionFrameInput<'a>` 借用素材庫與選擇器快取。`build_native_indexed_transition_input_for_*` 回傳擁有資源的 `NativeTransitionFrameSource`（選擇器快取、格子、單位層等複本與 LUT 索引），合成前以 `source.input(assets)` 組出借用輸入（120「fd2-game 保存資源本身，每幀組出借用的輸入」）。`fd2-campaign` 沒有改。
+- **0x1DB65 的狀態快照**：非保留模式時 Go 讓 `g.st` 指向 job 的逐幀快照，Rust 每次發布複製快照；保留模式不換 `g.st`，只在最後一幀同步 HUD 狀態，rollback 同理。`hd_inputs` 只給 HD（map 23 舞台、HD 死亡素材），忠實模式不填。
+
+### 虛擬時鐘與輸入
+
+- 對白的逐字（`step_native_story_dialogue_progress`）、開框／收框（`native_dialogue_closing_t`）、翻頁捲動（`dlg_scroll_t`）、嘴型（`step_dialogue_mouth` 看 `self.frame` 的奇偶）與等鍵箭頭（`native_dialogue_arrow_ticks`）都按邏輯幀推進，一幀一步，不讀牆鐘也不讀 `virtual_now`。驅動端照 A 組「虛擬時鐘」每幀呼叫一次 `update` 即可。
+- B 組沒有直接讀鍵盤：推進鍵由呼叫端組成 `NativeStoryInput`（Enter／ESC）或 `native_battle_dialogue_advance_input` 的參數，都來自 `tick_input`（A 組 `update`）。
+- 演出工作的 `drawn` 旗標（索引轉場、調色盤漸變／脈衝、出場、0x1DB65）在 Go 由 `draw*` 設定；Rust 的流程端不設，等階段 3 的呈現回報。沒有回報時這些工作停在第一幀不前進（與 Go 不呼叫 `Draw` 時相同）。
+
+### 亂數
+
+Go `stepDialogueMouth` 呼叫套件層 `rand.Intn(30)`（全域來源，每次啟動不同種子），`sampleNativeConfirmationMouthRandom` 以 `rand.Int63()` 當私有來源的種子。兩者都只影響嘴型，不碰 `g.rng` 與存檔。Rust 不用全域狀態：故事對白嘴型新增 `Game::story_mouth_rng`（共用變更），確認嘴型沿用 `native_confirmation_mouth_rng`，都以固定種子惰性建立（`VIRTUAL_CLOCK_ORIGIN` 的奈秒值加 1、加 2，與遊戲亂數的預設種子錯開）。同一輸入序列的嘴型因此可以重現；Go 本來就不可重現，所以這不改變任何可比對的輸出。
+
+### TTF 量測的影響
+
+對白的量寬與斷行只在兩種情況用到 TTF（A 組由外殼注入的 `TextMeasurer`）：
+
+| 函式 | 用到 TTF 的分支 | 無畫面時目前的行為 |
+|---|---|---|
+| `dlg_page_count` | 非原生對白（沒有 `native_dialogue`）以 `dlgWrap` 依字寬斷行算頁數 | 停在 `todo!("R8: main.go:dlgWrap")` |
+| `resolve_campaign_dialog_line` | 非繁中語系以 `localizedNativeDialogueLayout` 依字寬重排原生頁 | 停在 `todo!("R8: …")` |
+| `prepare_native_dialogue_frames` | 非繁中語系以 `composeLocalizedNativeDialogueProgressiveFrames` 逐字合成 | 停在 `todo!("R8: …")` |
+| `draw_indexed_localized_text` | TTF 點陣化進索引色畫格 | `todo!("R5: …")` |
+
+忠實模式繁中的原生對白用 FDTXT 點陣字與編譯好的頁面（`NativeDialogueLayout.pages`／`glyph_ids`），完全不經 TTF，結果決定性。第一章重播的對白都是原生繁中（`dlgWrap` 在階段 0 覆蓋率是 0），所以階段 3 的檢查點重播不受 TTF 量測影響；改跑其他語系或含一般對白的章節時，`dlgWrap` 與在地化重排要先有與 Go 相同的量寬。
+
+### 共用變更需求
+
+本工作樹已以最小改動先做（主代理整合時決定採用）：
+
+| 項目 | 原因 | 寫法 |
+|---|---|---|
+| `Game::story_mouth_rng: Option<battle::GoMathRand>`（新欄位） | 故事對白嘴型的亂數不能用全域狀態，也不能借用遊戲亂數 `rng` | `main.rs` 的 `Game`，緊鄰 `native_confirmation_mouth_rng` |
+| `Game::award_death_reward` 的 `killer` 改 `Option<UnitIdx>`（D 組函式的簽名） | `completeTurn` 傳 nil killer | `main.rs`，本體仍是 D 的 `todo!()`；D 組呼叫端傳 `Some(..)` |
+| `HandlerUnitRef` 與 `Game::handler_unit(_mut)`（新型別，放在共用的 `main.rs`） | 處理器單位可能在 `st.units` 或 `story_actors` | 緊鄰 `acting_actor` |
+| `main.rs` 尾端 `mod main_b_test;` 一行 | B 組 `main.go` 函式的測試 | 緊鄰 A 組的 `mod main_a_test;` |
+| A 組測試 `test_game_materializes_editable_native_map_runtime` 拿掉 ignore | `sync_native_map_view` 已移植，`--ignored` 跑過通過 | 只刪那一行屬性 |
+
+需要主代理或別組決定：
+
+| 項目 | 原因 | 建議 |
+|---|---|---|
+| C 組 `build_native_map_frame_input` 的回傳生命週期 | 骨架是 `(&mut NativeMapAssets, …) -> NativeFrameInput<'static>`；B 組 `native_ch28_post_frame_input` 照這個簽名轉回。C 組改成借用素材庫的 `NativeFrameInput<'a>` 時，`native_ch28_post_frame_input` 要跟著加生命週期，`start_native_unit_death_present_mode` 逐幀用完即丟，不受影響 | 整合時一起改 |
+| D 組讀 `NativeTransitionFrameSource` | `build_native_indexed_transition_input_for_state` 的 D 組呼叫端（補血演出、單位登場）照新回傳型別 | 呼叫端改用 `source.input(assets)` |
+| 別組讀 `story_native_map_state.units` | Rust 存複本，見「B 組：所有權」 | 讀之前呼叫 `sync_story_native_map_units` |
+
+### KNOWN_DIFFERENCES
+
+| 名稱 | 差異 | 影響 |
+|---|---|---|
+| `cosmetic-mouth-rng-fixed-seed` | 嘴型亂數用固定種子（見「亂數」） | Go 本來就不可重現；不影響戰況與存檔 |
+| `confirmation-mouth-owner-token` | Go 的擁有者是 `any`（結束回合介面指標或字串），Rust 對應成 `OwnerToken`：結束回合介面是固定標記，字串是 FNV-1a 雜湊。前後兩個結束回合介面在 Go 是不同擁有者 | 兩個介面之間一定經過沒有擁有者的幀，嘴型照樣重來 |
+| `go-int-pointer-format` | Go 錯誤訊息以 `%v` 印 `*int`，非 nil 時是記憶體位址；Rust 印值（nil 都是 `<nil>`） | 只影響 `loadErr` 文字 |
+| `story-roster-nil-vs-empty` | Go 以 `g.storyRoster != nil`、`g.storySpawned == nil`、`g.nativeBattleGlyphs == nil` 區分 nil 與空，Rust 的容器不分 | 只在 LOADCH 給出空的非 nil 名冊時走不同分支；正式資料沒有 |
+| `handler-story-path-no-clean` | Go `filepath.Join` 會詞法整理路徑，Rust 用 `join_path` | StoryIndexMap 的 script 都是單純相對檔名 |
+| `story-native-map-units-copy` | Go 載體的單位是指向 `storyActors` 的指標，Rust 存複本、讀前同步 | B 組讀取處都先同步；別組見共用變更需求 |
+| `battle-event-run-pointer` | Go `advanceBattleEvent` 持有 `run` 指標逐項推進；若某個動作中途換掉 `g.battleEvent`，Go 繼續舊的，Rust 繼續 `self.battle_event` | 目前沒有動作在迴圈內換掉 `battle_event` |
+| `native-dialogue-bounds-error-order` | Go 以 map 字面值（順序隨機）逐 phase 算對白框範圍，Rust 依 opening、steady、closing 的順序 | 只在多個 phase 同時算不出範圍時，回報的錯誤不同 |
+| `cutscene-log-no-timestamp` | Go `log.Printf` 帶主機時間前綴，Rust `eprintln!` 不帶 | 只影響 `FD2_CUTSCENE_LOG` 的除錯輸出 |
+| `ch28-post-hd-inputs-unrecorded` | 0x1DB65 的 `hd_inputs` 不填 | 只給 HD 與 map 23（R6／R8） |
+
+`NORMALIZATIONS`：無（B 組沒有黃金差分）。
+
+### B 組測試
+
+`tools/rust_game_test.sh`（`FD2_REQUIRE_ORIGINAL=1`，輸出沒有「略過」）：全 crate 133 通過、24 ignore。B 組 57 個測試，50 通過、7 個 `ignore`；其中 Go 測試 51 個、B 組補充 6 個。
+
+| 檔 | Go 來源 | 測試 |
+|---|---|---|
+| `main/main_b_test.rs` | `beatrunner_test.go` 30 個、`native_map_presentation_test.go` 6 個、`native_hud_redraw_test.go` 4 個、`battleevent_test.go` 1 個 | 41 個 Go 測試、4 個補充 |
+| `native_story_dialogue/native_story_dialogue_test.rs` | `native_story_dialogue_progress_test.go` 7 個 | 7 個 Go 測試、1 個補充（嘴型亂數可重現且不碰 `rng`） |
+| `native_palette_ramp/native_palette_ramp_test.rs` | `native_palette_ramp_test.go:200` | 1 個 Go 測試、1 個補充 |
+| `native_story_input/native_story_input_test.rs` | `native_story_input_test.go` 1 個 | 1 |
+| `native_event_dialogue/native_event_dialogue_test.rs` | `native_event_dialogue_input_test.go` 1 個 | 1 |
+
+| ignore | 等 | 原因 |
+|---|---|---|
+| `test_beat_palette_update_presents_recovered_full_dac_white_flash`、`test_beat_native_palette_fade_out_fails_closed_without_indexed_input` | C | `native_map_assets_available` |
+| `test_beat_sequence_end_triggers_node_transition` | C | `bgm` 拍經 `play_bgm` 呼叫 `current_native_system_options` |
+| `test_native_story_advance_accepts_escape_like_enter` | C | `enter_node` 呼叫 `reset_action_overlay_lifecycle` |
+| `test_battle_walk_preserves_native_seven_tick_record_lifecycle`、`test_battle_walk_notes_selector0_during_walk_and_dispatches_at_action_end`、`test_battle_walk_right_step_also_notes_selector0` | C | 走行每格呼叫 `native_ch12_up_walk_frame`，走完呼叫 `begin_battle_action_overlay` |
+
+測試寫法的調整：Go 的 `newBeatTestGame` 呼叫 `attachOfficialLocale`，這些測試的 `campLines` 沒有 `line_id`，`localizedStoryText` 在 `zh-Hant` 下直接回傳原文，Rust 的 helper 只設 `locale_id`（官方語系目錄要等 C 組的語系契約）。Go 以 `assetPath("assets/…")` 讀受版控素材，Rust 改用 `test_support::remake_asset`（同一個檔）。Go 走行測試的單位不在 `g.st` 裡，Rust 的走行單位是 `st.units` 的索引，所以放進一個沒有視圖、沒有格子事件的 `State`。
+
+R5 測試清單（需要畫面或真字型量寬，不在本階段移植）：
+
+| 測試 | Go 檔:行 | 原因 |
+|---|---|---|
+| `TestDlgPaginationPreservesText`、`TestDlgShortLineSinglePage`、`TestDlgPaginationStartsSmoothScrollAndBlocksSkip` | `dlg_test.go:12`、`:40`、`:47` | 非原生對白的頁數經 `dlgWrap`（TTF 量寬） |
+| `TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder` | `native_story_dialogue_progress_test.go:176` | 受測的 `nativeStoryOpeningFrameIndex` 只給 `drawNativeStoryDialogue` 用（`r8`） |
+| `TestNativePaletteRampDrawAcknowledgesIndexedFrame` | `native_palette_ramp_test.go:53` | 斷言 `drawNativePaletteRamp` 的畫面 |
+| `TestDrawIndexedLocalizedLineUsesNativePaletteAndRejectsMissingGlyph`、`TestAllHandlerNativeDialoguesCompileForThreeTranslatedLocales`（另 `:14`、`:53` 測 `r8` 的在地化重排） | `native_story_dialogue_locale_test.go:97`、`:123` | 非繁中語系以 TTF 點陣化、重排與逐字合成 |
+| `TestNativeDeathStageUsesSnapshotSeed` | `modern_hd_death_stage_test.go:165` | HD 死亡舞台的畫面（R6） |
+
+未移植的其他 Go 測試（不需要畫面，但不屬於這一階段能單獨跑的範圍）：
+
+| 類別 | 測試 | 原因 |
+|---|---|---|
+| 依賴 C 組測試 fixture | `native_palette_ramp_test.go:14`、`native_indexed_transition_test.go:150`、`native_story_map_spawn_test.go:23`、`:59`、`native_ch28_post_present_test.go:49`、`:89` | 都先以 `completeNativeMapFrameFixture`（`native_map_frame_input_test.go`）建素材庫，並經 `native_map_assets_available`；C 組合併後連同 fixture 移植 |
+| `r8` 函式或其他章 | `beatrunner_test.go` 的條件分支（`TestBeatAnyUnitInactive…` 3 個、`TestBeatRosterHas…`、`TestBeatNativeEventState…`、`TestBeatNativeInactiveCount…`、`TestBeatNativeCh15Raw…`、`TestBeatChapter22Raw…`、`TestBeatNativeAnyOf…`，共 9 個）、`TestBeatGrantItem…`、`TestBeatNativePalettePulseFailsClosed…`、`TestBeatNativeStagingPresentFailsClosed…`、`TestBeatNativeCh23LoopFailsClosed…`；`native_palette_pulse_test.go` 的 `:18`、`:58`；`native_field_event61_test.go` 5 個、`native_field_event75_test.go` 2 個、`native_turn_event76_test.go` 1 個 | 受測分支呼叫 `r8` 函式（`evalBeatCondition`、`grantItemToParty`、`startNativePalettePulse`、`startNativePaletteUpdate`、`event61DialogueActions` 等），在 R8 對應章移植 |
+| 整段流程（階段 3） | `beatrunner_test.go` 其餘（`TestChapter1PostRuntimeContext…`、`TestCh00…`、`TestChapter1PreLoadCH…`、`TestPostSpawnJoinTail…`、`TestBeatSyncParty…`、`TestCampaignPersistence…`、`TestMap0Acting…`、`TestBeatSpawnCarriesRawPlacementGate…`、`TestBeatSpawnIntroWithoutNativeAssets…`、`TestFastForwardShotCampaign…`、`TestChapter2StoryPreserves…`）、`battleevent_test.go` 其餘 19 個、`ch*_flow_test.go`、`native_dialogue_parity_test.go`、`storybg_dialogue_parity_test.go` 等 | 以真實章節腳本、地圖與戰役圖跑整段（經 `enter_node`、`load_game`、`assetPath` 解析），屬於別組函式或階段 3 的重播；`fastForwardShotCampaign` 是 `r8` |
+| 別組主題 | `native_confirmation_mouth_test.go` 3 個（整備確認與結束回合介面，E／C）、`native_action_death_present_test.go`、`native_unit_present_test.go`、`native_turn_staging_test.go` 等呼叫 B 組函式的演出測試 | 主題屬於 C／D／E，由主題組移植 |
+
+黃金差分：B 組沒有加。可以逐幀比對的是對白逐字與 0x1DB65 等演出的 `step*`，但它們需要 C 組的素材庫（`native_map_assets_available`）與呈現回報；適合在階段 3 以重播檢查點或收 `drawn` 回報的單元黃金比對。
+
+### fd2-rules／fd2-campaign 缺口
+
+沒有改那兩個 crate。`battle::State::focus_native_map_cursor_steps` 的 callback 只收兩個視圖值，不能改寫呼叫端的 `Game`，B 組在 `Game` 這層重寫同一個迴圈（見「B 組：所有權」）；`indexedmap::NativeTransitionFrameInput` 借用資源，B 組以 `NativeTransitionFrameSource` 擁有資源。兩者都不需要改上游。

@@ -17,5 +17,7 @@ pub(crate) fn draw_indexed_localized_text(
     foreground: u8,
     shadow: u8,
 ) -> Result<()> {
-    todo!("native_story_dialogue_locale.go:drawIndexedLocalizedText")
+    // R4 B 組：非繁中語系把 TTF 字形點陣化寫進索引色畫格（`font.Drawer`、`sfnt.GlyphIndex`、HD 文字層），
+    // 屬於 R5 的字型繪製；忠實模式繁中走 FDTXT 點陣字，不經過這裡。
+    todo!("R5: native_story_dialogue_locale.go:drawIndexedLocalizedText（TTF 點陣化）")
 }

@@ -34,6 +34,33 @@ impl Game {
         actor: Option<UnitIdx>,
         after: Option<Box<dyn FnOnce(&mut Game) + Send>>,
     ) -> bool {
-        todo!("native_field_event61.go:beginNativeFieldEvent61")
+        // R4 B 組：事件 61 確實命中之後的兩條路徑都先呼叫 `event61DialogueActions`（`r8`，第一章沒有
+        // 第 26 章地圖），停在 `todo!`；第一章只走「格子沒有事件 61」的早退。
+        let (Some(st), Some(actor)) = (self.st.as_ref(), actor) else {
+            return false;
+        };
+        if self.native_field_event61.is_some() {
+            return false;
+        }
+        let (x, y) = (st.units[actor].x, st.units[actor].y);
+        let (event_id, bound) = battle::native_field_event_id_at(Some(st), x, y, 1);
+        if !bound || event_id != 61 {
+            return false;
+        }
+        let plan = match battle::plan_native_field_event61(Some(st), Some(actor), x, y) {
+            Ok(plan) => plan,
+            Err(err) => {
+                self.load_err = err.to_string();
+                self.msg = String::from("事件 61 的原版證據不完整，已停止事件寫入");
+                if let Some(after) = after {
+                    after(self);
+                }
+                return true;
+            }
+        };
+        let _ = plan;
+        todo!(
+            "R8: native_field_event61.go:event61DialogueActions／beginNativeFieldEvent61Presentation（第一章沒有執行到）"
+        )
     }
 }

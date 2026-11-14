@@ -915,6 +915,10 @@ pub struct Game {
     pub(crate) native_confirmation_mouth: dato::ConfirmationMouthState,
     pub(crate) native_confirmation_mouth_owner: Option<OwnerToken>,
     pub(crate) native_confirmation_mouth_rng: Option<battle::GoMathRand>,
+    /// R4 B 組新增（共用變更需求，沒有 Go 欄位）：故事對白嘴型的亂數。Go `stepDialogueMouth` 呼叫套件層
+    /// `rand.Intn(30)`（全域來源，每次啟動不同種子）；Rust 不用全域狀態，改由這個欄位以固定種子
+    /// `STORY_MOUTH_RNG_SEED` 惰性建立（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`）。
+    pub(crate) story_mouth_rng: Option<battle::GoMathRand>,
     /// Rust 新增（沒有 Go 對應）：本邏輯幀的輸入。取代 Go 直接查詢 `inpututil.IsKeyJustPressed`、
     /// `ebiten.IsKeyPressed`；驅動端（無畫面重播或 `fd2-app`）在每次 `update` 前設定。
     pub(crate) tick_input: TickInput,
@@ -1703,7 +1707,16 @@ impl Game {
 ///
 /// Go：`main.go:1248`，`func nativeMapFocusVisibleSeed(x, y int) (int, int)`
 pub(crate) fn native_map_focus_visible_seed(x: i64, y: i64) -> (i64, i64) {
-    todo!("main.go:nativeMapFocusVisibleSeed")
+    let clamp = |v: i64, limit: i64| -> i64 {
+        if v < 0 {
+            return 0;
+        }
+        if v >= limit {
+            return limit - 1;
+        }
+        v
+    };
+    (clamp(x, 13), clamp(y, 8))
 }
 
 impl Game {
@@ -1712,15 +1725,151 @@ impl Game {
     /// screen cursor 不動並移動 map origin，碰地圖邊界時才讓 screen cursor 靠邊。
     ///
     /// Go：`main.go:1264`，`func (g *Game) stepFocusUnit()`
+    ///
+    /// R4 B 組：job 留在 `self.focus_job` 裡逐步改寫，不先取出。Go 的 `syncStoryNativeMapFocusView`
+    /// 在步進途中讀 `g.focusJob.nativeView`（`main.go:1150`），取出會讓它看到空的 job。
     pub(crate) fn step_focus_unit(&mut self) {
-        todo!("main.go:stepFocusUnit")
+        let Some(j) = self.focus_job.as_ref() else {
+            return;
+        };
+        let (tile_w, tile_h, map_w, map_h) = match self.m.as_ref() {
+            Some(m) if m.tile_w > 0 && m.tile_h > 0 => (m.tile_w, m.tile_h, m.w, m.h),
+            _ => return,
+        };
+        let (target_x, target_y, native_view, started) = (j.target_x, j.target_y, j.native_view, j.started);
+        // 戰場視圖上的聚焦（0x13FD4 原地回復的 0x12D7B 等）與 AI 聚焦是同一支 0x12CEA：開頭重繪
+        // 一次，逐步照游標鍵處理器的重繪規則；故事視圖另有自己的 HUD，不動戰場的 anchor。
+        let battle_view = native_view
+            && !self.has_story_native_map_view
+            && self.st.as_ref().is_some_and(|st| st.has_native_map_view_state);
+        let story_view = native_view && self.native_ch12_story_focus();
+        if !started {
+            if let Some(j) = self.focus_job.as_mut() {
+                j.started = true;
+            }
+            if battle_view {
+                let hook = battle::NATIVE_FOCUS_TRACE_HOOK.read().unwrap_or_else(|e| e.into_inner()).clone();
+                if let Some(hook) = hook {
+                    hook(target_x, target_y, self.st.as_ref().unwrap().native_map_view_state);
+                }
+                self.redraw_native_map_hud();
+            }
+            if story_view && let Err(err) = self.compose_native_story_map_frame() {
+                self.load_err = format!("native story focus: {err}");
+                self.focus_job = None;
+                return;
+            }
+        }
+        let mut step_before = battle::NativeMapViewState::default();
+        if battle_view {
+            step_before = self.st.as_ref().unwrap().native_map_view_state;
+        } else if story_view {
+            step_before = self.story_native_map_view;
+        }
+        fn finish(g: &mut Game) {
+            let then = g.focus_job.take().and_then(|mut j| j.then.take());
+            if let Some(then) = then {
+                then(g);
+                // 有明確 continuation 的 native wrapper 自行接管下一階段。
+            } else if g.camp.is_some() {
+                // 一般 focus beat 由 campaign 擁有者接下一拍；direct-entry
+                // renderer／證據測試不會因此偽造戰役進度。
+                g.beat_advance();
+            }
+        }
+        let (mut origin_x, mut origin_y) = (self.cam_x as i64 / tile_w, self.cam_y as i64 / tile_h);
+        // 可見游標一律沿用已追蹤的值。原版沒有任何一處由 cursor - camera 重算它
+        // （寫入端清單見 docs/data/ida/fd2_visible_cursor_writers_ida.txt），鏡頭
+        // 一旦捲過游標，減法就會給出負值，而那是視窗外的無效格。
+        let (mut screen_x, mut screen_y) =
+            native_map_focus_visible_seed(self.cur_x.wrapping_sub(origin_x), self.cur_y.wrapping_sub(origin_y));
+        if self.has_story_native_map_view {
+            (screen_x, screen_y) =
+                (self.story_native_map_view.visible_cursor_x, self.story_native_map_view.visible_cursor_y);
+        } else if let Some(st) = self.st.as_ref().filter(|st| st.has_native_map_view_state) {
+            (screen_x, screen_y) =
+                (st.native_map_view_state.visible_cursor_x, st.native_map_view_state.visible_cursor_y);
+        }
+        if self.cur_x == target_x && self.cur_y == target_y {
+            if !self.sync_story_native_map_focus_view(screen_x, screen_y) {
+                self.focus_job = None;
+                return;
+            }
+            finish(self);
+            return;
+        }
+        let (mut max_origin_x, mut max_origin_y) = (map_w - 13, map_h - 8);
+        if max_origin_x < 0 {
+            max_origin_x = 0;
+        }
+        if max_origin_y < 0 {
+            max_origin_y = 0;
+        }
+        if self.cur_x > target_x {
+            self.cur_x -= 1;
+            if screen_x < 2 && origin_x > 0 {
+                origin_x -= 1;
+            } else {
+                screen_x -= 1;
+            }
+        } else if self.cur_x < target_x {
+            self.cur_x += 1;
+            if screen_x > 10 && origin_x < max_origin_x {
+                origin_x += 1;
+            } else {
+                screen_x += 1;
+            }
+        } else if self.cur_y > target_y {
+            self.cur_y -= 1;
+            if screen_y < 2 && origin_y > 0 {
+                origin_y -= 1;
+            } else {
+                screen_y -= 1;
+            }
+        } else if self.cur_y < target_y {
+            self.cur_y += 1;
+            if screen_y > 5 && origin_y < max_origin_y {
+                origin_y += 1;
+            } else {
+                screen_y += 1;
+            }
+        }
+        (self.cam_x, self.cam_y) = ((origin_x * tile_w) as f64, (origin_y * tile_h) as f64);
+        if !self.sync_story_native_map_focus_view(screen_x, screen_y) {
+            self.focus_job = None;
+            return;
+        }
+        if battle_view {
+            let after = self.st.as_ref().unwrap().native_map_view_state;
+            self.native_cursor_step_hud(step_before, after);
+        }
+        if story_view
+            && self
+                .story_native_map_state
+                .as_ref()
+                .is_some_and(|s| s.native_map_cursor_step_redraws(step_before, self.story_native_map_view))
+            && let Err(err) = self.compose_native_story_map_frame()
+        {
+            self.load_err = format!("native story focus step: {err}");
+            self.focus_job = None;
+            return;
+        }
+        if self.cur_x == target_x && self.cur_y == target_y {
+            finish(self);
+        }
     }
 
     /// finishActJob 清除 acting job 後接下一個 beat。
     ///
     /// Go：`main.go:1382`，`func (g *Game) finishActJob(j *actPoseJob)`
-    pub(crate) fn finish_act_job(&mut self, j: &ActPoseJob) {
-        todo!("main.go:finishActJob")
+    ///
+    /// R4 B 組：`j` 改收 `&mut`，延續要 `take()` 出來才能以 `&mut self` 呼叫。呼叫端先把 job 從
+    /// `self.act_job` 取出（Go 的 `j` 與 `g.actJob` 是同一個指標）。
+    pub(crate) fn finish_act_job(&mut self, j: &mut ActPoseJob) {
+        self.act_job = None;
+        if let Some(then) = j.then.take() {
+            then(self);
+        }
     }
 
     /// actingActor resolves decoded acting against the original FDFIELD roster
@@ -1729,9 +1878,52 @@ impl Game {
     /// original bytecode targeted a different same-Fig guard.
     ///
     /// Go：`main.go:1393`，`func (g *Game) actingActor(target campaign.ActingUnit) *battle.Unit`
-    pub(crate) fn acting_actor(&self, target: campaign::ActingUnit) -> Option<UnitIdx> {
-        todo!("main.go:actingActor")
+    ///
+    /// R4 B 組：Go 回傳的 `*battle.Unit` 可能指向 `g.st.Units` 或 `g.storyActors`，`UnitIdx` 只能指前者，
+    /// 改回傳 [`HandlerUnitRef`]；`target` 改收借用。
+    pub(crate) fn acting_actor(&self, target: &campaign::ActingUnit) -> Option<HandlerUnitRef> {
+        if let Some(slot) = target.slot {
+            if let Some(st) = self.st.as_ref() {
+                if slot >= 0 && (slot as usize) < st.units.len() {
+                    return Some(HandlerUnitRef::Battle(slot as UnitIdx));
+                }
+                return None;
+            }
+            if slot >= 0 && (slot as usize) < self.story_actors.len() {
+                return Some(HandlerUnitRef::Story(slot as usize));
+            }
+            return None;
+        }
+        let fig = target.fig;
+        self.story_actors.iter().position(|a| a.fig == fig).map(HandlerUnitRef::Story)
     }
+
+    /// R4 B 組新增：取 [`HandlerUnitRef`] 指的單位（Go 直接解參考 `*battle.Unit`）。
+    pub(crate) fn handler_unit(&self, r: HandlerUnitRef) -> &battle::Unit {
+        match r {
+            HandlerUnitRef::Battle(i) => &self.st.as_ref().expect("HandlerUnitRef::Battle 需要 st").units[i],
+            HandlerUnitRef::Story(i) => &self.story_actors[i],
+        }
+    }
+
+    /// R4 B 組新增：[`Game::handler_unit`] 的可寫版本。
+    pub(crate) fn handler_unit_mut(&mut self, r: HandlerUnitRef) -> &mut battle::Unit {
+        match r {
+            HandlerUnitRef::Battle(i) => &mut self.st.as_mut().expect("HandlerUnitRef::Battle 需要 st").units[i],
+            HandlerUnitRef::Story(i) => &mut self.story_actors[i],
+        }
+    }
+}
+
+/// R4 B 組新增：處理器（handler）的單位參照。Go 的 `actingActor`／`handlerUnitAt` 回傳
+/// `*battle.Unit`，戰場上指向 `g.st.Units[slot]`，劇情場景指向 `&g.storyActors[slot]`；Rust 以
+/// 表別加索引表示，取用經 [`Game::handler_unit`]／[`Game::handler_unit_mut`]。
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum HandlerUnitRef {
+    /// `st.units[i]`
+    Battle(UnitIdx),
+    /// `story_actors[i]`
+    Story(usize),
 }
 
 /// nativeRuntimeRecordCapacity 是原版 runtime 記錄表的配置筆數（[0x53A45] 之後 96×0x50
@@ -1741,7 +1933,10 @@ pub(crate) const NATIVE_RUNTIME_RECORD_CAPACITY: i64 = 96;
 impl Game {
     /// Go：`main.go:1420`，`func (g *Game) handlerUnitCount() int`
     pub(crate) fn handler_unit_count(&self) -> i64 {
-        todo!("main.go:handlerUnitCount")
+        if let Some(st) = self.st.as_ref() {
+            return st.units.len() as i64;
+        }
+        self.story_actors.len() as i64
     }
 
     /// handlerRuntimeSlotCount preserves LOADCH's raw FDFIELD count before later
@@ -1751,45 +1946,178 @@ impl Game {
     ///
     /// Go：`main.go:1431`，`func (g *Game) handlerRuntimeSlotCount() int`
     pub(crate) fn handler_runtime_slot_count(&self) -> i64 {
-        todo!("main.go:handlerRuntimeSlotCount")
+        if let Some(st) = self.st.as_ref() {
+            return st.units.len() as i64;
+        }
+        // Go 比較 `g.storyRoster != nil`；Rust 的 Vec 不分 nil 與空（KNOWN_DIFFERENCES `story-roster-nil-vs-empty`）。
+        if !self.story_roster.is_empty() {
+            return self.story_roster.len() as i64;
+        }
+        self.story_actors.len() as i64
     }
 
     /// Go：`main.go:1441`，`func (g *Game) handlerUnitAt(slot int) *battle.Unit`
-    pub(crate) fn handler_unit_at(&self, slot: i64) -> Option<UnitIdx> {
-        todo!("main.go:handlerUnitAt")
+    ///
+    /// R4 B 組：回傳 [`HandlerUnitRef`]（理由同 `acting_actor`）。
+    pub(crate) fn handler_unit_at(&self, slot: i64) -> Option<HandlerUnitRef> {
+        if slot < 0 {
+            return None;
+        }
+        if let Some(st) = self.st.as_ref() {
+            if (slot as usize) < st.units.len() {
+                return Some(HandlerUnitRef::Battle(slot as UnitIdx));
+            }
+            return None;
+        }
+        if (slot as usize) < self.story_actors.len() {
+            return Some(HandlerUnitRef::Story(slot as usize));
+        }
+        None
     }
 
     /// beginActingFrame 設定目前 frame 的姿態。呼叫端保證 j.frame 有效。
     ///
     /// Go：`main.go:1458`，`func (g *Game) beginActingFrame(j *actPoseJob)`
-    pub(crate) fn begin_acting_frame(&self, j: &mut ActPoseJob) {
-        todo!("main.go:beginActingFrame")
+    ///
+    /// R4 B 組：接收者改 `&mut self`（Go 經單位指標改寫姿態）。
+    pub(crate) fn begin_acting_frame(&mut self, j: &mut ActPoseJob) {
+        (j.beat, j.tick) = (0, 0);
+        for au in &j.acting[j.frame as usize].units {
+            if let Some(u) = self.acting_actor(au) {
+                self.handler_unit_mut(u).set_map_pose(au.pose);
+            }
+        }
     }
 }
 
 /// Go：`main.go:1467`，`func actingDelta(pose int) (int, int)`
 pub(crate) fn acting_delta(pose: i64) -> (i64, i64) {
-    todo!("main.go:actingDelta")
+    match pose {
+        0 => (0, 1),
+        1 => (-1, 0),
+        2 => (0, -1),
+        3 => (1, 0),
+        _ => (0, 0),
+    }
 }
 
 impl Game {
     /// Go：`main.go:1482`，`func (g *Game) nextActingFrame(j *actPoseJob)`
     pub(crate) fn next_acting_frame(&mut self, j: &mut ActPoseJob) {
-        todo!("main.go:nextActingFrame")
+        j.frame += 1;
+        if j.frame >= j.acting.len() as i64 {
+            self.finish_act_job(j);
+            return;
+        }
+        self.begin_acting_frame(j);
     }
 
     /// stepOriginalActing 精確承接已破解的 acting frame 行為(doc50 §1.2)。
     ///
     /// Go：`main.go:1492`，`func (g *Game) stepOriginalActing(j *actPoseJob)`
     pub(crate) fn step_original_acting(&mut self, j: &mut ActPoseJob) {
-        todo!("main.go:stepOriginalActing")
+        let f = j.acting[j.frame as usize].clone();
+        if f.special && f.beats == 0 {
+            // Original bit7=1/low7=0 is not an empty terminator. 0x136d9..
+            // 0x137c5 performs a terrain/unit composite bracketed by delay(1) and
+            // delay(2), then redraws. Ebiten redraws continuously, so retain its
+            // three-tick hold before advancing to preserve handler timing.
+            // The native loop writes pose (+3) before every redraw even for this
+            // zero-duration special frame.  Re-apply it here so a concurrent
+            // actor update cannot leave the frame with a stale direction.
+            for au in &f.units {
+                if let Some(u) = self.acting_actor(au) {
+                    self.handler_unit_mut(u).set_map_pose(au.pose);
+                }
+            }
+            j.tick += 1;
+            if j.tick >= 3 {
+                self.next_acting_frame(j);
+            }
+            return;
+        }
+        if f.beats <= 0 {
+            self.next_acting_frame(j);
+            return;
+        }
+        if f.special {
+            // bit7=1：原地姿態，beat 為顯示節奏
+            j.tick += 1;
+            if j.tick >= f.beats {
+                self.next_acting_frame(j);
+            }
+            return;
+        }
+
+        // bit7=0：原版對每一格跑 tick=1..6，再在第 7 tick 寫入 X/Y。
+        j.tick += 1;
+        let frac = j.tick as f64 / 7.0;
+        let (tile_w, tile_h) = {
+            let m = self.m.as_ref().expect("Go：g.m 為 nil 時解參考 panic");
+            (m.tile_w, m.tile_h)
+        };
+        for au in &f.units {
+            if let Some(r) = self.acting_actor(au) {
+                let (dx, dy) = acting_delta(au.pose);
+                let u = self.handler_unit_mut(r);
+                u.off_x = dx as f64 * tile_w as f64 * frac;
+                u.off_y = dy as f64 * tile_h as f64 * frac;
+                if j.tick < 7 {
+                    u.set_native_map_grid_motion(au.pose, j.tick);
+                }
+            }
+        }
+        if j.tick < 7 {
+            return;
+        }
+        for au in &f.units {
+            if let Some(r) = self.acting_actor(au) {
+                let (dx, dy) = acting_delta(au.pose);
+                let u = self.handler_unit_mut(r);
+                let (x, y) = (u.x + dx, u.y + dy);
+                if !u.finish_native_map_grid_step(au.pose, x, y) {
+                    (u.x, u.y) = (x, y);
+                    (u.off_x, u.off_y) = (0.0, 0.0);
+                    u.set_map_pose(au.pose);
+                }
+            }
+        }
+        j.tick = 0;
+        j.beat += 1;
+        if j.beat >= f.beats {
+            self.next_acting_frame(j);
+        }
     }
 
     /// stepActJob 逐幀推進原版 acting frame 或舊版姿態近似。
     ///
     /// Go：`main.go:1560`，`func (g *Game) stepActJob()`
+    ///
+    /// R4 B 組：job 先從 `self.act_job` 取出再推進（`step_original_acting` 等收 `&mut ActPoseJob`）；
+    /// 沒有收尾就放回。收尾時 `finish_act_job` 已呼叫延續，延續可能裝上新的 job，所以不放回。
     pub(crate) fn step_act_job(&mut self) {
-        todo!("main.go:stepActJob")
+        let Some(mut j) = self.act_job.take() else {
+            return;
+        };
+        if !j.acting.is_empty() {
+            self.step_original_acting(&mut j);
+            if j.frame < j.acting.len() as i64 {
+                self.act_job = Some(j);
+            }
+            return;
+        }
+        let pose = j.poses[j.idx as usize];
+        self.story_actors[j.actor as usize].set_map_pose(pose);
+        j.t += 1;
+        if j.t >= j.frames {
+            j.t = 0;
+            j.idx += 1;
+            if j.idx >= j.poses.len() as i64 {
+                self.finish_act_job(&mut j);
+                return;
+            }
+        }
+        self.act_job = Some(j);
     }
 
     /// Go：`main.go:1581`，`func (g *Game) stepActJobAtUpdateRate()`
@@ -1810,7 +2138,16 @@ impl Game {
     ///
     /// Go：`main.go:1601`，`func (g *Game) beatAdvance()`
     pub(crate) fn beat_advance(&mut self) {
-        todo!("main.go:beatAdvance")
+        self.beat_idx += 1;
+        if self.beat_idx >= self.beats.len() as i64 {
+            self.follow_walk = false; // 走位跟焦只在 walk 拍內有效,收尾(ExitWalk/淡出)一律鏡頭固定
+            if let Some(n) = self.camp.as_ref().and_then(|c| c.node().cloned()) {
+                self.advance_story_node(&n);
+            }
+            return;
+        }
+        let b = self.beats[self.beat_idx as usize].clone();
+        self.beat_start(&b);
     }
 }
 
@@ -1836,18 +2173,980 @@ pub(crate) fn fig_name(fig: i64) -> String {
 
 impl Game {
     /// Go：`main.go:1836`，`func (g *Game) beatStart(b campaign.Beat)`
+    ///
+    /// R4 B 組：`then: g.beatAdvance` 一律寫成 [`beat_advance_then`]。呼叫第一章沒有執行到的 `r8` 函式的
+    /// 分支（ch20 天空之鑰、ch22／ch23／ch28 演出、`if`、物品給予等）先照 Go 做完 payload 檢查，呼叫處停在
+    /// `todo!("R8: …")`。Go `%v` 印 `*int` 是記憶體位址，Rust 印值（KNOWN_DIFFERENCES `go-int-pointer-format`）。
     pub(crate) fn beat_start(&mut self, b: &campaign::Beat) {
-        todo!("main.go:beatStart")
+        if self.cutscene_log {
+            // FD2_CUTSCENE_LOG:印每一拍(op+參數),對原版 handler beat 序列比對
+            eprintln!(
+                "[cutscene] beat op={} source={} fig={} x={} y={} frames={} line={} count={} script={} scene={} scene_index={} loadch={:?}",
+                b.op,
+                b.source,
+                b.fig,
+                b.x,
+                b.y,
+                b.frames,
+                b.line,
+                b.count,
+                b.script,
+                b.scene,
+                go_int_ptr(b.scene_index),
+                b.load_ch
+            );
+        }
+        if b.op != "walk" && b.op != "scroll_step" {
+            // 兩種格線走位拍才啟用跟焦
+            self.follow_walk = false;
+        }
+        let find_actor =
+            |g: &Game, fig: i64| -> i64 { g.story_actors.iter().position(|a| a.fig == fig).map_or(-1, |i| i as i64) };
+        match b.op.as_str() {
+            "runtime_context" => {
+                let Some(rc) = b.runtime_context.as_ref().filter(|rc| rc.minimum_slot_count() > 0) else {
+                    self.load_err = String::from("beat runtime_context:缺少有效 slot_count/slot_counts");
+                    return;
+                };
+                if !rc.accepts_slot_count(self.handler_runtime_slot_count()) {
+                    // Compiler metadata is emitted before LOADCH, while the previous
+                    // battle state may still be installed (or the scene array may be
+                    // empty). Validate the declared LOADCH record count here instead of
+                    // comparing unrelated prior-battle slots; applyLoadCH then validates
+                    // the actual roster bytes before replacing the scene state.
+                    let next = self.beats.get((self.beat_idx + 1) as usize);
+                    let next_load_ch = next
+                        .filter(|n| self.beat_idx + 1 < self.beats.len() as i64 && n.op == "loadch")
+                        .and_then(|n| n.load_ch.as_ref());
+                    if !next_load_ch.is_some_and(|l| rc.accepts_slot_count(l.slot_count)) {
+                        self.load_err = format!(
+                            "beat runtime_context: runtime slots={}, want exact {} or one of {}",
+                            self.handler_runtime_slot_count(),
+                            rc.slot_count,
+                            go_int_slice(&rc.slot_counts)
+                        );
+                        return;
+                    }
+                }
+                if rc.story_viewport {
+                    self.story_bg = true;
+                    if self.has_handler_inherited_map_view {
+                        self.story_native_map_view = self.handler_inherited_map_view;
+                        self.has_story_native_map_view = true;
+                        if let Some(m) = self.m.as_ref().filter(|m| m.tile_w > 0 && m.tile_h > 0) {
+                            self.cam_x = (self.story_native_map_view.camera_x * m.tile_w) as f64;
+                            self.cam_y = (self.story_native_map_view.camera_y * m.tile_h) as f64;
+                            (self.cur_x, self.cur_y) =
+                                (self.story_native_map_view.cursor_x, self.story_native_map_view.cursor_y);
+                        }
+                    }
+                }
+                self.beat_advance();
+            }
+            "unit_present" => {
+                // Legacy metadata described only the six-frame 0x22547 tail and did
+                // not identify a proven caller.  The separate native_unit_present op
+                // owns the recovered 0x25535 battle-state path; keep this legacy shape
+                // closed instead of silently treating it as that caller.
+                if b.unit_present.is_none() {
+                    self.load_err = String::from("beat unit_present:缺少 placement payload");
+                    return;
+                }
+                self.load_err = String::from("beat unit_present: legacy payload未綁定已證實的0x22253 caller");
+            }
+            "native_unit_present" => {
+                if !b.native_unit_present.as_ref().is_some_and(|p| p.last_runtime_slot) || b.source != "0x25535" {
+                    self.load_err = String::from("beat native_unit_present:缺少原版 0x25535 payload");
+                    return;
+                }
+                todo!("R8: native_unit_present.go:startNativeUnitPresent（第一章沒有執行到）")
+            }
+            "native_ch28_post_present" => {
+                if b.native_ch28_post_present.as_ref().is_none_or(|p| !p.is_recovered_contract())
+                    || b.source != "0x254c0"
+                {
+                    self.load_err = String::from("beat native_ch28_post_present:缺少原版 0x254c0 payload");
+                    return;
+                }
+                todo!("R8: native_ch28_post_present.go:startNativeCh28PostPresent（第一章沒有執行到）")
+            }
+            "indexed_transition" => {
+                if b.indexed_transition.is_none() {
+                    self.load_err = String::from("beat indexed_transition:缺少 transition payload");
+                    return;
+                }
+                todo!("R8: native_indexed_transition.go:startNativeIndexedTransition（第一章沒有執行到）")
+            }
+            "native_ch20_sky_key_sequence" => {
+                if b.source != "0x242c9" || b.native_ch20_sky_key.as_ref().is_none_or(|s| !s.is_recovered_contract()) {
+                    self.load_err = String::from("beat native_ch20_sky_key_sequence:缺少原版 0x242c9 payload");
+                    return;
+                }
+                todo!("R8: native_ch20_sky_key.go:startNativeCh20SkyKeySequence（第一章沒有執行到）")
+            }
+            "native_palette_fade_out" => {
+                if !b.native_palette_fade.as_ref().is_some_and(|f| f.start == 0 && f.end == 63 && f.delay_ms == 2) {
+                    self.load_err = String::from("beat native_palette_fade_out:缺少原版 64-step DAC payload");
+                    return;
+                }
+                if let Err(err) = self.start_native_palette_ramp(0, 63, 2, beat_advance_then()) {
+                    self.load_err = format!("beat native_palette_fade_out: {err}");
+                }
+            }
+            "native_palette_fade_in" => {
+                if !b.native_palette_fade_in.as_ref().is_some_and(|f| f.start == 64 && f.end == 0 && f.delay_ms == 2) {
+                    self.load_err = String::from("beat native_palette_fade_in:缺少原版 65-step DAC payload");
+                    return;
+                }
+                if let Err(err) = self.start_native_palette_ramp(64, 0, 2, beat_advance_then()) {
+                    self.load_err = format!("beat native_palette_fade_in: {err}");
+                }
+            }
+            "native_palette_pulse" => {
+                let valid = b.native_palette_pulse.as_ref().is_some_and(|p| {
+                    p.rise_start == 0
+                        && p.rise_end == 63
+                        && p.rise_delay_ms == 8
+                        && p.hold_ms == 400
+                        && p.fall_start == 62
+                        && p.fall_end == 0
+                        && p.fall_delay_ms == 8
+                });
+                if !valid {
+                    self.load_err = String::from("beat native_palette_pulse:缺少原版 DAC pulse payload");
+                    return;
+                }
+                todo!("R8: native_palette_pulse.go:startNativePalettePulse（第一章沒有執行到）")
+            }
+            "native_palette_blackout" => {
+                let Some(blackout) = b.native_palette_blackout.as_ref().filter(|bo| {
+                    bo.start == 0
+                        && bo.end == 255
+                        && bo.delta == 64
+                        && bo.clear_bytes == 0xFA00
+                        && b.source == "0x23599"
+                }) else {
+                    self.load_err = String::from("beat native_palette_blackout:缺少原版全色盤與畫面清除 payload");
+                    return;
+                };
+                // Every baseline DAC component is at most 63, so the exact native
+                // subtraction clamps all 256 entries to zero.  The adjacent memset
+                // clears the complete 320x200 framebuffer.  A full-surface black cover
+                // is therefore exact for this one call site without inventing an
+                // indexed-palette approximation for other 0x11d40 callers.
+                if !self.native_map_vga.is_empty() {
+                    if (self.native_map_vga.len() as i64) < blackout.clear_bytes {
+                        self.load_err = format!(
+                            "beat native_palette_blackout: indexed framebuffer={}, want at least {}",
+                            self.native_map_vga.len(),
+                            blackout.clear_bytes
+                        );
+                        return;
+                    }
+                    self.native_map_vga[..blackout.clear_bytes as usize].fill(0);
+                }
+                self.native_full_dac_black = true;
+                self.beat_advance();
+            }
+            "native_staging_present" => {
+                if !b.native_staging_present.as_ref().is_some_and(|p| p.slot >= 0 && p.x >= 0 && p.y >= 0) {
+                    self.load_err = String::from("beat native_staging_present:缺少原版 wrapper ABI payload");
+                    return;
+                }
+                todo!("R8: native_staging_present.go:startNativeStagingPresent（第一章沒有執行到）")
+            }
+            "native_ch23_loop" => {
+                if b.native_ch23_loop.is_none() {
+                    self.load_err = String::from("beat native_ch23_loop:缺少原始兩段 loop payload");
+                    return;
+                }
+                todo!("R8: native_ch23_post.go:startNativeCh23Loop（第一章沒有執行到）")
+            }
+            "native_2189a_loop" => {
+                if b.native2189_a_loop.is_none() {
+                    self.load_err = String::from("beat native_2189a_loop:缺少原始十次 loop payload");
+                    return;
+                }
+                todo!("R8: native_ch22_post.go:startNative2189A（第一章沒有執行到）")
+            }
+            "layout_units" => {
+                let Some(layout) = b.layout.as_ref().filter(|l| !l.units.is_empty()) else {
+                    self.load_err = String::from("beat layout_units:缺少可編輯的 runtime layout");
+                    return;
+                };
+                // 0x247B4 calls 0x233C6: 0x23465..0x23493 resets all six
+                // view globals, not only the pixel camera. Both postbattle carriers
+                // represent those same globals (Issue #140).
+                let mut layout_view: Option<battle::NativeMapViewState> = None;
+                if b.source == "0x247b4" || b.source == "0x257b4" {
+                    let Some(m) = self.m.as_ref().filter(|m| {
+                        m.tile_w > 0 && m.tile_h > 0 && layout.cam_x % m.tile_w == 0 && layout.cam_y % m.tile_h == 0
+                    }) else {
+                        self.load_err = String::from("beat layout_units: native reset camera is unavailable");
+                        return;
+                    };
+                    let (x, y) = (layout.cam_x / m.tile_w, layout.cam_y / m.tile_h);
+                    let view = battle::NativeMapViewState {
+                        camera_x: x,
+                        camera_y: y,
+                        cursor_x: x,
+                        cursor_y: y,
+                        ..Default::default()
+                    };
+                    let mut carrier = battle::State::default();
+                    (carrier.w, carrier.h) = (m.w, m.h);
+                    if let Err(err) = carrier.materialize_native_map_view_state(view) {
+                        self.load_err = format!("beat layout_units: {err}");
+                        return;
+                    }
+                    layout_view = Some(view);
+                }
+                for placement in &layout.units {
+                    if self.handler_unit_at(placement.slot).is_none() || placement.pose < 0 || placement.pose > 3 {
+                        self.load_err =
+                            format!("beat layout_units: slot{}/pose{} unavailable", placement.slot, placement.pose);
+                        return;
+                    }
+                }
+                for placement in &layout.units {
+                    let unit = self.handler_unit_at(placement.slot).unwrap();
+                    self.handler_unit_mut(unit).set_map_placement(placement.x, placement.y, placement.pose);
+                }
+                (self.cam_x, self.cam_y) = (layout.cam_x as f64, layout.cam_y as f64);
+                if let Some(view) = layout_view {
+                    (self.cur_x, self.cur_y) = (view.cursor_x, view.cursor_y);
+                    (self.story_native_map_view, self.has_story_native_map_view) = (view, true);
+                    if let Some(st) = self.st.as_mut() {
+                        (st.native_map_view_state, st.has_native_map_view_state) = (view, true);
+                        st.materialize_native_map_range_mode(0);
+                    }
+                }
+                self.beat_advance();
+            }
+            "direct_record_patch" => {
+                if (b.source != "0x2362d" && b.source != "0x23ec4" && b.source != "0x33346" && b.source != "0x25116")
+                    || b.direct_record_patch.is_none()
+                {
+                    self.load_err = String::from("beat direct_record_patch:缺少原版來源或 sparse payload");
+                    return;
+                }
+                todo!("R8: native_palette_ramp.go:applyHandlerDirectRecordPatch（第一章沒有執行到）")
+            }
+            "if" => todo!("R8: main.go:evalBeatCondition／spliceBeatsAfterCurrent（第一章沒有執行到）"),
+            "loadch" => {
+                if b.load_ch.is_none() {
+                    self.load_err = String::from("beat loadch:缺少完整狀態映射");
+                    return; // compiler should prevent this; never turn it into a no-op.
+                }
+                if let Err(err) = self.apply_load_ch(b.load_ch.as_ref()) {
+                    self.load_err = format!("beat loadch: {err}");
+                    return; // fail closed rather than continuing on the old map/roster.
+                }
+                if self.native_town_load_pending {
+                    let source = self.story_native_map_source.clone();
+                    if let Err(err) = self.materialize_native_story_map_state(source.as_ref()) {
+                        self.load_err = format!("town LOADCH state: {err}");
+                        return;
+                    }
+                    if let Err(err) = self.compose_native_story_map_frame() {
+                        self.load_err = format!("town LOADCH frame: {err}");
+                        return;
+                    }
+                    if let Err(err) = self.start_native_palette_ramp(64, 0, 2, beat_advance_then()) {
+                        self.load_err = format!("town LOADCH fade-in: {err}");
+                        return;
+                    }
+                    self.native_town_load_pending = false;
+                    return;
+                }
+                self.beat_advance();
+            }
+            "ending_handoff" => {
+                let node_ok = self.camp.as_ref().and_then(|c| c.node()).is_some_and(|n| !n.next.is_empty());
+                if b.source != "0x25970" || !node_ok || self.beat_idx != self.beats.len() as i64 - 1 {
+                    self.load_err = String::from("ending handoff: recovered final edge unavailable");
+                    return;
+                }
+                // 25970直接呼叫2BCE5，不額外排入一般故事節點的淡出。
+                self.camp.as_mut().unwrap().advance("");
+                self.enter_node();
+                if self.camp.as_ref().and_then(|c| c.node()).is_none_or(|n| n.r#type != "ending") {
+                    self.load_err = String::from("ending handoff: final edge is not an ending");
+                }
+            }
+            "pan" => {
+                let mut frames = b.frames;
+                if frames == 0 {
+                    frames = 30;
+                }
+                self.cam_pan = Some(CamPanJob {
+                    from_x: self.cam_x,
+                    from_y: self.cam_y,
+                    to_x: b.x as f64,
+                    to_y: b.y as f64,
+                    frames,
+                    tile_step: b.tile_step,
+                    then: beat_advance_then(),
+                    ..Default::default()
+                });
+            }
+            "walk" => {
+                let idx = find_actor(self, b.fig);
+                if idx < 0 {
+                    self.load_err = format!("beat walk:找不到 fig={}", b.fig);
+                    self.beat_advance();
+                    return;
+                }
+                let u = &self.story_actors[idx as usize];
+                let (mut from_x, mut from_y) = (b.from_x, b.from_y);
+                if from_x == 0 && from_y == 0 {
+                    // 未指定起點:沿用角色目前座標(接續上一拍)
+                    (from_x, from_y) = (u.x, u.y);
+                }
+                let mut frames = b.frames;
+                if frames == 0 {
+                    frames = 60;
+                }
+                self.follow_walk = b.follow;
+                // beat walk 面向:預設保留走位末向(如索爾往上走完仍面上);b.Dir 指定則走完面向它
+                let bdir = b.dir.unwrap_or(-1);
+                self.story_walks.push(StoryWalkJob {
+                    actor: idx,
+                    from_x,
+                    from_y,
+                    to_x: b.x,
+                    to_y: b.y,
+                    frames,
+                    final_dir: bdir,
+                    then: beat_advance_then(),
+                    ..Default::default()
+                });
+            }
+            "scroll_step" => {
+                let Some(idx) = b.slot.filter(|&s| s >= 0 && (s as usize) < self.story_actors.len() && b.steps > 0)
+                else {
+                    self.load_err = format!(
+                        "beat scroll_step: runtime slot {}/steps={} unavailable (materialized={})",
+                        go_int_ptr(b.slot),
+                        b.steps,
+                        self.story_actors.len()
+                    );
+                    return;
+                };
+                let (ux, uy) = (self.story_actors[idx as usize].x, self.story_actors[idx as usize].y);
+                let mut frames = b.frames;
+                if frames <= 0 {
+                    frames = b.steps * 7;
+                }
+                // 0x13185 does not center on the actor. It lets the actor reach screen
+                // row 1, then scrolls one tile (smoothly over the same seven ticks) per
+                // further upward step. Preserve the current map-origin boundary.
+                self.follow_walk = false;
+                let origin_y = self.cam_y as i64 / self.m.as_ref().expect("Go：g.m 為 nil 時解參考 panic").tile_h;
+                let mut free = uy - origin_y - 1;
+                if free < 0 {
+                    free = 0;
+                }
+                if origin_y == 0 {
+                    free = b.steps;
+                }
+                self.story_walks.push(StoryWalkJob {
+                    actor: idx,
+                    from_x: ux,
+                    from_y: uy,
+                    to_x: ux,
+                    to_y: uy - b.steps,
+                    frames,
+                    final_dir: 2,
+                    scroll_follow: true,
+                    from_cam_y: self.cam_y,
+                    scroll_free: free,
+                    then: beat_advance_then(),
+                    ..Default::default()
+                });
+            }
+            "dialog" => {
+                let mut lines = self.camp_lines.clone();
+                if !b.script.is_empty() {
+                    // A compiled handler carries an explicit editable-story context.  Do
+                    // not fall back to the enclosing Node's lines here: that could play a
+                    // valid index from the wrong FDTXT/loadch segment.
+                    match load_story_script_with_identity_at(
+                        &handler_story_path(&b.script),
+                        &b.scene,
+                        b.scene_index.as_ref(),
+                    ) {
+                        Ok(l) => lines = l,
+                        Err(err) => {
+                            self.load_err = format!(
+                                "beat dialog:無法載入 script={} scene={} scene_index={}: {err}",
+                                battle::go_quote(&b.script),
+                                battle::go_quote(&b.scene),
+                                go_int_ptr(b.scene_index)
+                            );
+                            self.beat_advance();
+                            return;
+                        }
+                    }
+                }
+                let mut n = b.count;
+                if n <= 0 {
+                    n = 1;
+                }
+                if !b.native_dialogues.is_empty() && b.native_dialogues.len() as i64 != n {
+                    self.load_err =
+                        format!("beat dialog: native_dialogues={} want count={}", b.native_dialogues.len(), n);
+                    return;
+                }
+                if b.native_dialogue.is_some() && !b.native_dialogues.is_empty() {
+                    self.load_err = String::from("beat dialog: native_dialogue 與 native_dialogues 不可混用");
+                    return;
+                }
+                let mut end = b.line + n;
+                if end > lines.len() as i64 {
+                    end = lines.len() as i64;
+                }
+                self.dialog = Vec::new();
+                self.dlg_page = 0; // 新對白從第一頁起
+                let mut i = end - 1;
+                while i >= b.line && i >= 0 {
+                    // 反序堆疊(同 enterNode story 分支慣例)
+                    let ln = &lines[i as usize];
+                    let native = if b.native_dialogues.is_empty() {
+                        b.native_dialogue.as_ref()
+                    } else {
+                        Some(&b.native_dialogues[(i - b.line) as usize])
+                    };
+                    match self.resolve_campaign_dialog_line(ln, b.upper, native) {
+                        Ok(dialog_line) => self.dialog.push(dialog_line),
+                        Err(err) => {
+                            self.dialog = Vec::new();
+                            self.load_err = format!("beat dialog:{err}");
+                            return;
+                        }
+                    }
+                    i -= 1;
+                }
+                if self.dialog.is_empty() {
+                    // line/count 對不到資料:跳拍避免卡死
+                    self.load_err =
+                        format!("beat dialog:line={} count={} 對不到 script lines(len={})", b.line, n, lines.len());
+                    self.beat_advance();
+                    return;
+                }
+                if let Err(err) = self.start_native_dialogue_frames() {
+                    self.dialog = Vec::new();
+                    self.load_err = format!("beat dialog:{err}");
+                }
+            }
+            "act" => {
+                if !b.acting.is_empty() {
+                    // Decoded acting refers to the current materialized unit array. A slot
+                    // beyond the materialized count but inside the native 96-record
+                    // allocation is what the original also hits: 0x1366A writes the pose
+                    // into a record nothing draws. 第六章 ch05_post 的 ACTING 27 指 slot 34，
+                    // 原版當時只有 34 筆（r3 seq 1508–1528，記錄 33 的 +3 全程是 0），畫面沒有
+                    // 任何單位動——重製端同樣略過那一筆，不當成錯誤。超出 96 筆才是資料錯。
+                    for frame in &b.acting {
+                        for target in &frame.units {
+                            if let Some(slot) = target.slot {
+                                if !(0..NATIVE_RUNTIME_RECORD_CAPACITY).contains(&slot) {
+                                    self.load_err = format!(
+                                        "beat act {}: original runtime slot {} outside the {}-record allocation",
+                                        b.source, slot, NATIVE_RUNTIME_RECORD_CAPACITY
+                                    );
+                                    return;
+                                }
+                                if slot >= self.handler_unit_count() && self.cutscene_log {
+                                    eprintln!(
+                                        "[cutscene] act {} slot {} beyond materialized {}: original writes an unmaterialized record, no visible effect",
+                                        b.source,
+                                        slot,
+                                        self.handler_unit_count()
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    let mut job =
+                        ActPoseJob { acting: b.acting.clone(), then: beat_advance_then(), ..Default::default() };
+                    self.begin_acting_frame(&mut job);
+                    self.act_job = Some(job);
+                    return;
+                }
+                let idx = find_actor(self, b.fig);
+                if idx < 0 || b.poses.is_empty() {
+                    self.beat_advance();
+                    return;
+                }
+                let mut frames = b.pose_frames;
+                if frames == 0 {
+                    frames = 30;
+                }
+                self.act_job = Some(ActPoseJob {
+                    actor: idx,
+                    poses: b.poses.clone(),
+                    frames,
+                    then: beat_advance_then(),
+                    ..Default::default()
+                });
+            }
+            "spawn" => {
+                // Original 0x10b4e scans the FDFIELD records for this group and calls
+                // the unit constructor once per match.  That constructor writes at the
+                // current unit_count and increments it: this is append, not toggling an
+                // already slot-stable full roster.  Keep the legacy activation fallback
+                // for authored scene beats that have no LOADCH roster.
+                let materialized;
+                if let Some(st) = self.st.as_mut() {
+                    if let Some(gate) = b.raw_placement_gate {
+                        match st.append_group_with_native_placement(b.group, gate as u8) {
+                            Ok(n) => materialized = n,
+                            Err(err) => {
+                                self.load_err = format!("beat spawn {}: {err}", b.source);
+                                return;
+                            }
+                        }
+                    } else {
+                        materialized = st.append_group(b.group);
+                    }
+                } else {
+                    materialized = self.materialize_story_group(b.group);
+                }
+                if materialized == 0 && (!b.source.is_empty() || b.count > 0) {
+                    self.load_err = format!("beat spawn {}: group {} unavailable in runtime roster", b.source, b.group);
+                    return;
+                }
+                if b.count > 0 && materialized != b.count {
+                    self.load_err = format!(
+                        "beat spawn {}: group {} materialized={} want={}",
+                        b.source, b.group, materialized, b.count
+                    );
+                    return;
+                }
+                self.beat_advance();
+            }
+            "spawn_intro" => {
+                if !b.source.is_empty() {
+                    let Some(gate) = b.raw_placement_gate else {
+                        self.load_err = format!("beat spawn_intro {}: raw placement gate unavailable", b.source);
+                        return;
+                    };
+                    if let Err(err) = self.start_native_spawn_intro(b.group, gate as u8, beat_advance_then()) {
+                        self.load_err = format!("beat spawn_intro {}: {err}", b.source);
+                    }
+                    return;
+                }
+                if let (Some(st), Some(gate)) = (self.st.as_mut(), b.raw_placement_gate) {
+                    if let Err(err) = st.append_group_with_native_placement(b.group, gate as u8) {
+                        self.load_err = format!("beat spawn_intro {}: {err}", b.source);
+                        return;
+                    }
+                } else {
+                    self.materialize_story_group(b.group);
+                }
+                let mut frames = b.frames;
+                if frames <= 0 {
+                    frames = 12;
+                }
+                self.beat_delay = frames;
+            }
+            "deactivate_unit" => {
+                let Some(r) = b.slot.and_then(|s| self.handler_unit_at(s)) else {
+                    self.load_err = format!(
+                        "beat deactivate_unit: runtime slot {} unavailable (materialized={})",
+                        go_int_ptr(b.slot),
+                        self.handler_unit_count()
+                    );
+                    return;
+                };
+                let u = self.handler_unit_mut(r);
+                u.on_field = false;
+                if u.has_native_record_byte5 {
+                    // 0x32975 overwrites the complete byte with 1; do not OR only bit0.
+                    u.native_record_byte5 = 1;
+                }
+                self.beat_advance();
+            }
+            "reactivate_nonzero_hp" => {
+                let mut known_loop = b.source == "0x33cea" && b.dir.is_none();
+                if b.source == "0x336ed" {
+                    known_loop = b.count == 16 && b.dir == Some(2);
+                }
+                if !known_loop || b.count <= 0 {
+                    self.load_err = String::from("beat reactivate_nonzero_hp:缺少已證實的 counted-loop 來源");
+                    return;
+                }
+                // Preflight the whole raw loop before changing any record.  The native
+                // +0x40 word is the already-closed current-HP field represented by Unit.HP;
+                // byte +5 remains explicit provenance and is never inferred from HP.
+                for slot in 0..b.count {
+                    let ok = self.handler_unit_at(slot).is_some_and(|r| {
+                        let u = self.handler_unit(r);
+                        u.camp == battle::OWN && u.has_native_record_byte5
+                    });
+                    if !ok {
+                        self.load_err =
+                            format!("beat reactivate_nonzero_hp: slot{slot} lacks player/raw byte+5 provenance");
+                        return;
+                    }
+                }
+                for slot in 0..b.count {
+                    let r = self.handler_unit_at(slot).unwrap();
+                    let u = self.handler_unit_mut(r);
+                    if u.hp != 0 {
+                        u.on_field = true;
+                        u.native_record_byte5 = 0;
+                        if let Some(dir) = b.dir {
+                            u.set_map_pose(dir);
+                        }
+                    }
+                }
+                self.beat_advance();
+            }
+            "reset_pose" => {
+                if let Some(st) = self.st.as_mut() {
+                    for unit in &mut st.units {
+                        unit.set_map_pose(0);
+                    }
+                } else {
+                    for a in &mut self.story_actors {
+                        a.set_map_pose(0);
+                    }
+                }
+                self.beat_delay = 1; // original 20ms at a 60Hz remake clock
+            }
+            "redraw" => {
+                if (b.source == "0x236ee" || b.source == "0x23f69")
+                    && let Err(err) = self.compose_native_map_frame()
+                {
+                    self.load_err = format!("beat redraw: native {}: {err}", b.source);
+                    return;
+                }
+                // Ebiten presents the current state once after this Update.  Blocking
+                // one frame preserves the standalone original 0x11cac(0) boundary.
+                self.beat_delay = 1;
+            }
+            "focus_unit" => {
+                let Some(slot) = b.slot.filter(|&s| s >= 0 && (s as usize) < self.story_actors.len()) else {
+                    self.load_err = format!(
+                        "beat focus_unit: runtime slot {} unavailable (materialized={})",
+                        go_int_ptr(b.slot),
+                        self.story_actors.len()
+                    );
+                    return;
+                };
+                let u = &self.story_actors[slot as usize];
+                self.focus_job = Some(FocusUnitJob { target_x: u.x, target_y: u.y, ..Default::default() });
+                if self.camp.as_ref().is_some_and(|c| c.node_id() == "story_ch24") {
+                    // 0x33142 的尾端聚焦延續對白留下的六個全域，不能改回章節常數。
+                    if !self.has_story_native_map_view {
+                        self.load_err = String::from("beat focus_unit:原生視圖交接缺失");
+                        self.focus_job = None;
+                        return;
+                    }
+                    (self.cur_x, self.cur_y) =
+                        (self.story_native_map_view.cursor_x, self.story_native_map_view.cursor_y);
+                    self.focus_job.as_mut().unwrap().native_view = true;
+                }
+            }
+            "join" => {
+                if !campaign::joinable_character_id(b.char_id) {
+                    self.load_err = format!("beat join:非法 player char_id={}", b.char_id);
+                    return;
+                }
+                if !b.source.is_empty() && !self.party_roster.contains_key(&b.char_id) {
+                    let mut base: Option<battle::Unit> = None;
+                    if let Some(st) = self.st.as_ref() {
+                        let mut matches = 0;
+                        for unit in &st.units {
+                            if unit.has_native_record_byte8 && unit.native_record_byte8 as i64 == b.char_id {
+                                base = Some(unit.clone());
+                                matches += 1;
+                            }
+                        }
+                        if matches > 1 {
+                            self.load_err =
+                                format!("beat join:char_id={} 有 {} 筆 raw +8 runtime records", b.char_id, matches);
+                            return;
+                        }
+                    }
+                    if base.is_none() {
+                        let mut matches = 0;
+                        for unit in &self.story_actors {
+                            if unit.has_native_record_byte8 && unit.native_record_byte8 as i64 == b.char_id {
+                                base = Some(unit.clone());
+                                matches += 1;
+                            }
+                        }
+                        if matches > 1 {
+                            self.load_err =
+                                format!("beat join:char_id={} 有 {} 筆 raw +8 story records", b.char_id, matches);
+                            return;
+                        }
+                    }
+                    let base = match base {
+                        Some(base) => base,
+                        None => {
+                            // Native sub_112A5 appends a new persistent record from its
+                            // character-data helpers; it does not require the character to
+                            // already occupy the current field array.  Only an explicit,
+                            // evidence-labelled base roster may bridge that boundary.
+                            if !self.has_native_join_bases {
+                                let join_path = asset_path("assets/data/native_join_base_units.json");
+                                match campaign::load_native_join_base_table(&join_path) {
+                                    Ok(table) => {
+                                        self.native_join_bases = table;
+                                        self.has_native_join_bases = true;
+                                    }
+                                    Err(err) => {
+                                        self.load_err = format!(
+                                            "beat join:char_id={} 缺少 raw +8 runtime record 且 base table 無法載入: {err}",
+                                            b.char_id
+                                        );
+                                        return;
+                                    }
+                                }
+                            }
+                            match self.native_join_bases.load_base_unit(b.char_id) {
+                                Ok(fallback) => fallback,
+                                Err(err) => {
+                                    self.load_err = format!("beat join: {err}");
+                                    return;
+                                }
+                            }
+                        }
+                    };
+                    let materialized = match self.materialize_native_join_persistent_unit(b.char_id, &base) {
+                        Ok(u) => u,
+                        Err(err) => {
+                            self.load_err = format!("beat join: {err}");
+                            return;
+                        }
+                    };
+                    self.party_roster.insert(b.char_id, clone_native_shop_unit(&materialized));
+                }
+                if !self.party_members.get(&b.char_id).copied().unwrap_or(false) {
+                    self.party_members.insert(b.char_id, true);
+                    self.party_join_order.push(b.char_id);
+                }
+                self.beat_advance();
+            }
+            "sync_party" => {
+                if let Err(err) = self.sync_party_from_battle() {
+                    self.load_err = format!("beat sync_party: {err}");
+                    return;
+                }
+                self.beat_advance();
+            }
+            "clear_native_record_bit7" => {
+                let Some(st) = self.st.as_mut().filter(|st| !st.units.is_empty()) else {
+                    self.load_err = String::from("beat clear_native_record_bit7:缺少 runtime battle records");
+                    return;
+                };
+                if let Some(i) = st.units.iter().position(|u| !u.has_native_record_byte5) {
+                    self.load_err = format!("beat clear_native_record_bit7: slot{i} lacks raw byte+5 provenance");
+                    return;
+                }
+                for unit in &mut st.units {
+                    unit.native_record_byte5 &= 0x7f;
+                }
+                self.beat_advance();
+            }
+            "reset_persistent_roster_state" => {
+                todo!("R8: main.go:resetPersistentRosterState（第一章沒有執行到）")
+            }
+            "set_chapter" => {
+                let Some(chapter) = b.chapter.filter(|&c| c >= 0) else {
+                    self.load_err = String::from("beat set_chapter:缺少有效章節");
+                    return;
+                };
+                self.handler_chapter = chapter;
+                self.beat_advance();
+            }
+            "grant_item" => {
+                if !b.item_id.is_some_and(|id| (0..=0xff).contains(&id)) {
+                    self.load_err = String::from("beat grant_item:缺少有效 item_id");
+                    return;
+                }
+                if self.st.is_none() {
+                    self.load_err = String::from("beat grant_item:缺少 runtime battle state");
+                    return;
+                }
+                todo!("R8: main.go:grantItemToParty（第一章沒有執行到）")
+            }
+            "bgm" => {
+                self.play_bgm(&b.track);
+                self.beat_advance();
+            }
+            "bgm_stop" => {
+                self.stop_bgm();
+                self.beat_advance();
+            }
+            "fade" => {
+                let mut frames = b.frames;
+                if frames == 0 {
+                    frames = STORY_FADE_FRAMES;
+                }
+                self.fade =
+                    Some(StoryFade { out: b.out, total: frames, then: beat_advance_then(), ..Default::default() });
+            }
+            "transition_reveal" => {
+                if b.reveal_frames <= 0 {
+                    self.load_err = String::from("beat transition_reveal:缺少正確 frame count");
+                    return;
+                }
+                todo!("R8: native_24b4d.go:startNative24B4D（第一章沒有執行到）")
+            }
+            "load_res" => {
+                let Some(resource_id) = b.resource_id.filter(|&id| id >= 0) else {
+                    self.load_err = String::from("beat load_res:缺少 resource_id");
+                    return;
+                };
+                if b.source == "0x24a4b" || b.source == "0x24a65" || b.source == "0x24a7f" {
+                    todo!("R8: native_ch22_reload.go:stageNativeCh22Resource（第一章沒有執行到）")
+                } else {
+                    self.handler_resource = resource_id;
+                }
+                self.beat_advance();
+            }
+            "native_ch22_reset_grid" => {
+                todo!("R8: native_ch22_reload.go:resetNativeCh22ReloadGrid（第一章沒有執行到）")
+            }
+            "native_ch22_prepare_aux" => {
+                todo!("R8: native_ch22_reload.go:prepareNativeCh22Aux（第一章沒有執行到）")
+            }
+            "play_sfx" => {
+                if b.resource_id != Some(88) || !(b.sfx_index == Some(1) || b.sfx_index == Some(-1)) {
+                    self.load_err = format!(
+                        "beat play_sfx:未映射 resource={} index={}",
+                        go_int_ptr(b.resource_id),
+                        go_int_ptr(b.sfx_index)
+                    );
+                    return;
+                }
+                if self.handler_resource != 88 {
+                    self.load_err = format!("beat play_sfx:resource handle={} want 88", self.handler_resource);
+                    return;
+                }
+                if b.sfx_index == Some(1) {
+                    let sfx = self.sfx_transition.clone();
+                    self.play_raw(&sfx);
+                }
+                self.beat_advance();
+            }
+            "release_res" => {
+                if b.resource_id != Some(self.handler_resource) {
+                    self.load_err = format!(
+                        "beat release_res:resource={} handle={}",
+                        go_int_ptr(b.resource_id),
+                        self.handler_resource
+                    );
+                    return;
+                }
+                self.handler_resource = 0;
+                self.beat_advance();
+            }
+            "palette_update" => {
+                if b.palette_start == 0
+                    && b.palette_end == 255
+                    && b.palette_delta >= 0
+                    && b.palette_delta <= 63
+                    && native_map_assets_available(self.native_map_assets.as_ref())
+                {
+                    todo!("R8: native_palette_pulse.go:startNativePaletteUpdate（第一章沒有執行到）")
+                }
+                // Full range delta=255 is independent of source RGB: every six-bit
+                // component saturates to white. This exact operation can cover legacy
+                // scene presentation without inventing a general RGB approximation.
+                // Legacy scenes without an indexed frame retain their white/restore path.
+                if b.palette_start == 0 && b.palette_end == 255 && b.palette_delta == 255 {
+                    self.native_full_dac_white = true;
+                } else if b.palette_delta == 0 {
+                    self.native_full_dac_white = false;
+                } else {
+                    self.load_err = format!(
+                        "beat palette_update: range {}..{} delta {} requires indexed palette renderer",
+                        b.palette_start, b.palette_end, b.palette_delta
+                    );
+                    return;
+                }
+                self.beat_advance();
+            }
+            "delay" => {
+                let mut frames = b.frames;
+                if frames == 0 && b.ms > 0 {
+                    frames = b.ms * 60 / 1000;
+                }
+                if frames <= 0 {
+                    frames = 1;
+                }
+                self.beat_delay = frames;
+            }
+            _ => {
+                self.load_err = format!("beat:未知原語 {}", b.op);
+                self.beat_advance();
+            }
+        }
     }
 
     /// Go：`main.go:2625`，`func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool, nativeOverride *campaign.NativeDialogueLayout) (battle.DialogLine, error)`
+    ///
+    /// R4 B 組：`upperOverride *bool` 改收值（Go 只讀、再存進 `DialogLine.Upper`），`nativeOverride` 改收
+    /// `Option<&_>`（Go 可傳 nil）。非繁中語系的 `localizedNativeDialogueLayout` 是 `r8`。
     pub(crate) fn resolve_campaign_dialog_line(
         &mut self,
         line: &campaign::Line,
-        upper_override: Option<&mut bool>,
-        native_override: &mut campaign::NativeDialogueLayout,
+        upper_override: Option<bool>,
+        native_override: Option<&campaign::NativeDialogueLayout>,
     ) -> Result<battle::DialogLine> {
-        todo!("main.go:resolveCampaignDialogLine")
+        let text = self.localized_story_text(line)?;
+        let mut speaker = line.speaker;
+        if let Some(slot) = line.speaker_slot {
+            let unit = if let Some(st) = self.st.as_ref() {
+                if slot < 0 || slot as usize >= st.units.len() {
+                    return Err(game_err!("speaker_slot {} unavailable (battle units={})", slot, st.units.len()));
+                }
+                &st.units[slot as usize]
+            } else {
+                if slot < 0 || slot as usize >= self.story_actors.len() {
+                    return Err(game_err!(
+                        "speaker_slot {} unavailable (cutscene units={})",
+                        slot,
+                        self.story_actors.len()
+                    ));
+                }
+                &self.story_actors[slot as usize]
+            };
+            speaker = unit.portrait;
+        }
+        let mut upper = line.upper;
+        if upper_override.is_some() {
+            upper = upper_override;
+        }
+        let mut native: Option<battle::NativeDialogueLayout> = None;
+        let layout = native_override;
+        if layout.is_some() && self.locale_id != "zh-Hant" {
+            todo!("R8: native_story_dialogue_locale.go:localizedNativeDialogueLayout（第一章只跑繁中）")
+        }
+        if let Some(layout) = layout {
+            let resolved_speaker = self.resolve_native_story_dialogue_speaker(layout)?;
+            let motion_target_y = self.resolve_native_story_dialogue_motion_target(layout)?;
+            speaker = resolved_speaker;
+            native = Some(battle::NativeDialogueLayout {
+                source_dat: layout.source_dat.clone(),
+                string_index: layout.string_index,
+                utterance: layout.utterance,
+                control: layout.control.clone(),
+                operand: layout.operand,
+                pages: layout.pages.clone(),
+                glyph_ids: layout.glyph_ids.clone(),
+                glyph_pages: layout.glyph_pages.clone(),
+                motion_target_y,
+                has_motion_target_y: true,
+            });
+        }
+        Ok(battle::DialogLine { speaker, text, upper, native_dialogue: native })
     }
 
     /// resolveNativeStoryDialogueSpeaker 重播 sub_15F84 的 DATO selector owner。
@@ -1856,7 +3155,51 @@ impl Game {
     ///
     /// Go：`main.go:2704`，`func (g *Game) resolveNativeStoryDialogueSpeaker(layout *campaign.NativeDialogueLayout) (int, error)`
     pub(crate) fn resolve_native_story_dialogue_speaker(&self, layout: &campaign::NativeDialogueLayout) -> Result<i64> {
-        todo!("main.go:resolveNativeStoryDialogueSpeaker")
+        let units: &[battle::Unit] = match self.st.as_ref() {
+            Some(st) => &st.units,
+            None => &self.story_actors,
+        };
+        match layout.control.as_str() {
+            "FFED" | "FFEC" => {
+                let op = layout.operand;
+                if op < 0 || op as usize >= units.len() || !units[op as usize].has_battle_fig {
+                    return Err(game_err!(
+                        "native story dialogue: runtime speaker slot {} lacks raw +7 provenance",
+                        layout.operand
+                    ));
+                }
+                return Ok(units[op as usize].battle_fig);
+            }
+            "FFEF" | "FFEE" => {}
+            _ => {
+                return Err(game_err!(
+                    "native story dialogue: unsupported speaker control {}",
+                    battle::go_quote(&layout.control)
+                ));
+            }
+        }
+        for (index, unit) in units.iter().enumerate() {
+            if !unit.has_native_record_byte5 || (!unit.has_native_record_byte8 && !unit.has_native_identity) {
+                return Err(game_err!(
+                    "native story dialogue: scene unit {} lacks speaker raw +8/+5 provenance",
+                    index
+                ));
+            }
+            let mut raw_identity = unit.native_identity;
+            if unit.has_native_record_byte8 {
+                raw_identity = unit.native_record_byte8 as i64;
+            }
+            if raw_identity == layout.operand && unit.native_record_byte5 & 1 == 0 {
+                if !unit.has_battle_fig {
+                    return Err(game_err!(
+                        "native story dialogue: matched identity {} lacks raw +7 provenance",
+                        layout.operand
+                    ));
+                }
+                return Ok(unit.battle_fig);
+            }
+        }
+        Ok(layout.operand)
     }
 
     /// resolveNativeStoryDialogueMotionTarget 重播 sub_15F84 的 var_20 writer。
@@ -1868,14 +3211,96 @@ impl Game {
         &self,
         layout: &campaign::NativeDialogueLayout,
     ) -> Result<i64> {
-        todo!("main.go:resolveNativeStoryDialogueMotionTarget")
+        match layout.control.as_str() {
+            "FFED" => return Ok(2),
+            "FFEC" => return Ok(112),
+            "FFEF" | "FFEE" => {}
+            _ => {
+                return Err(game_err!(
+                    "native story dialogue: unsupported motion control {}",
+                    battle::go_quote(&layout.control)
+                ));
+            }
+        }
+        let units: &[battle::Unit] = match self.st.as_ref() {
+            Some(st) => &st.units,
+            None => &self.story_actors,
+        };
+        for (index, unit) in units.iter().enumerate() {
+            if !unit.has_native_record_byte5 || (!unit.has_native_record_byte8 && !unit.has_native_identity) {
+                return Err(game_err!(
+                    "native story dialogue: scene unit {} lacks 0x12C60 raw +8/+5 provenance",
+                    index
+                ));
+            }
+            let mut raw_identity = unit.native_identity;
+            if unit.has_native_record_byte8 {
+                raw_identity = unit.native_record_byte8 as i64;
+            }
+            if raw_identity == layout.operand && unit.native_record_byte5 & 1 == 0 {
+                if layout.control == "FFEF" {
+                    return Ok(2);
+                }
+                return Ok(112);
+            }
+        }
+        Ok(0)
     }
 
     /// Go：`main.go:2981`，`func (g *Game) materializeStoryGroup(group int) int`
     pub(crate) fn materialize_story_group(&mut self, group: i64) -> i64 {
-        todo!("main.go:materializeStoryGroup")
+        // Go 比較 `g.storyRoster != nil`（KNOWN_DIFFERENCES `story-roster-nil-vs-empty`）。
+        if !self.story_roster.is_empty() {
+            if self.story_spawned.get(&group).copied().unwrap_or(false) {
+                return 0;
+            }
+            let mut materialized = 0;
+            let start = self.story_actors.len() as i64;
+            for actor in &self.story_roster {
+                if actor.group == group {
+                    let mut actor = actor.clone();
+                    actor.on_field = true;
+                    self.story_actors.push(actor);
+                    materialized += 1;
+                }
+            }
+            if materialized > 0 {
+                if self.story_native_map_state.is_some()
+                    && let Err(err) = self.append_native_story_map_actors(start)
+                {
+                    self.load_err = format!("story SPAWN native map state: {err}");
+                    return 0;
+                }
+                self.story_spawned.insert(group, true);
+            }
+            return materialized;
+        }
+        let mut materialized = 0;
+        for a in &mut self.story_actors {
+            if a.group == group {
+                a.on_field = true;
+                materialized += 1;
+            }
+        }
+        materialized
     }
+}
 
+/// R4 B 組新增：Go 以方法值 `g.beatAdvance` 當延續傳給演出工作；Rust 每次建立一個新的閉包。
+fn beat_advance_then() -> Option<Box<dyn FnOnce(&mut Game) + Send>> {
+    Some(Box::new(|g: &mut Game| g.beat_advance()))
+}
+
+/// R4 B 組新增：Go 錯誤訊息裡 `%v` 印 `*int`。Go 印 nil 為 `<nil>`、非 nil 為記憶體位址；Rust 印值
+/// （KNOWN_DIFFERENCES `go-int-pointer-format`）。
+fn go_int_ptr(v: Option<i64>) -> String {
+    match v {
+        None => String::from("<nil>"),
+        Some(v) => v.to_string(),
+    }
+}
+
+impl Game {
     /// loadCHPartyOrder projects the permanent JOIN chronology through the current
     /// preparation selection.  The original LOADCH constructs the deployed party
     /// first, so a late-game cutscene must not silently resurrect every joined
@@ -2225,8 +3650,16 @@ pub(crate) fn equal_int_order(a: &[i64], b: &[i64]) -> bool {
 /// dlgPageCount 該句對白的FFFD總頁數；FFFE只形成頁內邏輯列與三列窗口捲動。
 ///
 /// Go：`main.go:3356`，`func dlgPageCount(dl battle.DialogLine) int`
+///
+/// R4 B 組：非原生對白的頁數由 `dlgWrap`（`r8`，依 TTF 量寬斷行）決定，第一章只有原生對白，停在 `todo!`。
 pub(crate) fn dlg_page_count(dl: &battle::DialogLine) -> i64 {
-    todo!("main.go:dlgPageCount")
+    if let Some(native) = dl.native_dialogue.as_ref() {
+        if !native.pages.is_empty() {
+            return native.pages.len() as i64;
+        }
+        return 1;
+    }
+    todo!("R8: main.go:dlgWrap（非原生對白依 TTF 量寬斷行；第一章沒有執行到）")
 }
 
 impl Game {
@@ -2235,7 +3668,47 @@ impl Game {
     ///
     /// Go：`main.go:3372`，`func (g *Game) dlgAdvance() bool`
     pub(crate) fn dlg_advance(&mut self) -> bool {
-        todo!("main.go:dlgAdvance")
+        if self.dlg_scroll_t > 0 {
+            // 捲動尚未完成時，Enter 不得跳過下一頁
+            return false;
+        }
+        if self.dialog.last().is_some_and(|d| d.native_dialogue.is_some()) {
+            let page = self.dlg_page;
+            if page < 0
+                || page >= self.native_dialogue_progressive.len() as i64
+                || self.native_dialogue_progressive[page as usize].is_empty()
+            {
+                // 已宣告原生 caller 卻缺正式幀時，不得退回可玩但未證實的換頁路徑。
+                return false;
+            }
+            if self.native_dialogue_progress < self.native_dialogue_progressive[page as usize].len() as i64 - 1 {
+                // 原版 0x15F84 尚在逐字寫入時不會回到外層輸入 owner。
+                return false;
+            }
+        }
+        if let Some(last) = self.dialog.last()
+            && self.dlg_page + 1 < dlg_page_count(last)
+        {
+            let native = last.native_dialogue.is_some();
+            self.dlg_scroll_from = self.dlg_page;
+            self.dlg_page += 1;
+            self.native_dialogue_progress = -1;
+            self.native_dialogue_speaking_frame = 0;
+            self.reset_native_story_dialogue_mouth();
+            self.dlg_scroll_t = DLG_SCROLL_FRAMES;
+            if self.locale_id == "zh-Hant" && native {
+                // 原生後頁本身已含三行窗口捲動，不再先插入空頁翻頁延遲。
+                self.dlg_scroll_t = 0;
+            }
+            return false;
+        }
+        self.dialog.pop();
+        self.dlg_page = 0;
+        self.dlg_scroll_t = 0;
+        self.dlg_scroll_from = 0;
+        self.native_dialogue_progress = -1;
+        self.reset_native_story_dialogue_mouth();
+        true
     }
 }
 
@@ -4093,7 +5566,10 @@ impl Game {
     /// 順序執行。每個死亡 transition 只處理一次。
     ///
     /// Go：`main.go:6410`，`func (g *Game) awardDeathReward(dead, killer *battle.Unit)`
-    pub(crate) fn award_death_reward(&mut self, dead: Option<UnitIdx>, killer: UnitIdx) {
+    ///
+    /// R4 B 組（跨組介面，本體仍歸 D 組）：`killer` 改 `Option<UnitIdx>`。B 組的 `completeTurn` 以
+    /// `g.awardDeathReward(u, nil)` 處理狀態異常致死，骨架的 `UnitIdx` 傳不出 nil。
+    pub(crate) fn award_death_reward(&mut self, dead: Option<UnitIdx>, killer: Option<UnitIdx>) {
         todo!("main.go:awardDeathReward")
     }
 }
@@ -4182,8 +5658,113 @@ impl Game {
     /// 錯誤路徑寫 `g.walk = nil`；`finish` 也要 `&mut Game`。骨架的 `(w: &mut WalkAnim, finish: &mut dyn FnMut(i64))`
     /// 無法同時滿足，A 組先改成 walk 留在 `self.walk`、`finish` 收 `&mut Game`：segment 以
     /// `self.walk.as_mut()` 存取 Go 的 `w`，在 Go 呼叫 `finish(pose)` 的地方呼叫 `finish(self, pose)`。
+    ///
+    /// R4 B 組照上面的介面實作：Go 的 `w` 一律讀寫 `self.walk`，單位 `w.u` 是 `st.units` 的索引。
+    /// `self.walk` 為空時（Go 不會發生：呼叫端剛取過 `g.walk`）直接回 false。
     pub(crate) fn step_battle_walk_segment(&mut self, finish: &mut dyn FnMut(&mut Game, i64)) -> bool {
-        todo!("main.go:stepBattleWalkSegment")
+        let Some(w) = self.walk.as_ref() else {
+            return false;
+        };
+        let u = w.u;
+        if w.path.len() < 2 || w.seg >= w.path.len() as i64 - 1 {
+            // 沒有實際走過任何一格：保留目前姿態，不憑空補一次寫入。
+            let mut pose = self.walk_unit(u).dir;
+            if !(0..=3).contains(&pose) {
+                pose = 0;
+            }
+            finish(self, pose);
+            return false;
+        }
+        let (a, b) = (w.path[w.seg as usize], w.path[w.seg as usize + 1]);
+        let pose = dir_toward(a.x, a.y, b.x, b.y);
+        let (tile_w, tile_h) = {
+            let m = self.m.as_ref().expect("Go：g.m 為 nil 時解參考 panic");
+            (m.tile_w, m.tile_h)
+        };
+        let w = self.walk.as_mut().unwrap();
+        w.tick += 1;
+        let tick = w.tick;
+        if tick <= NATIVE_MAP_GRID_MOTION_FRAMES {
+            let unit = self.walk_unit_mut(u);
+            (unit.x, unit.y) = (a.x, a.y);
+            unit.set_map_pose(pose);
+            unit.off_x = (b.x - a.x) as f64 * tile_w as f64 * tick as f64 / NATIVE_MAP_GRID_MOTION_FRAMES as f64;
+            unit.off_y = (b.y - a.y) as f64 * tile_h as f64 * tick as f64 / NATIVE_MAP_GRID_MOTION_FRAMES as f64;
+            unit.set_native_map_grid_motion(pose, tick);
+            // 13185 redraws each motion before committing the next grid position.
+            // Keep the work writer even when Update runs without a subsequent Draw.
+            let (_, _, ok) = self.native_ch12_up_walk_frame();
+            if ok && let Err(err) = self.compose_native_map_frame() {
+                self.load_err = format!("native up-step redraw: {err}");
+                self.walk = None;
+            }
+            return false;
+        }
+        {
+            let unit = self.walk_unit_mut(u);
+            if !unit.finish_native_map_grid_step(pose, b.x, b.y) {
+                unit.set_map_placement(b.x, b.y, pose);
+            }
+        }
+        // 走行步進家族在格邊界也搬視圖：絕對游標跟著單位走一格，可見游標或鏡頭
+        // 二選一。只有玩家自己的走行才跟；AI 與劇情走位由各自的 owner 決定。
+        let w = self.walk.as_ref().unwrap();
+        if w.then.is_none() || w.follow_view {
+            self.follow_native_map_cursor_step(a.x, a.y, b.x - a.x, b.y - a.y);
+        }
+        // 0x1300D 每提交一格就以新座標呼叫 0x13A44(x, y, selector0)，把格子事件 id 記進
+        // [0x51A8F]，行動收尾才分派（第七章 r2：直線向上走進 (12,15) 也觸發 event 26）。
+        // 全軍移動（selector 1）另有預演過的 owner，走原本的分段路徑。
+        let Some(w) = self.walk.as_ref() else {
+            // Go 的 `w` 仍指向原 job；`followNativeMapCursorStep` 不會清 `g.walk`，這裡只防禦。
+            return false;
+        };
+        let selector = w.native_event_selector.unwrap_or(0);
+        if selector == 0 {
+            self.note_native_field_event_step(u, b.x, b.y);
+        } else if b.x == a.x - 1 && b.y == a.y {
+            let (event_id, bound) = battle::native_field_event_id_at(self.st.as_ref(), b.x, b.y, selector);
+            let w = self.walk.as_ref().unwrap();
+            let next_event = w.native_group_march_events.get(w.native_group_march_event as usize);
+            let planned = w.native_group_march_event < w.native_group_march_events.len() as i64
+                && next_event.is_some_and(|e| e.path_index == w.seg + 1);
+            if bound != planned || (planned && next_event.is_some_and(|e| e.event_id != event_id)) {
+                self.load_err = String::from("native system group-march event changed after atomic preflight");
+                self.walk = None;
+                self.native_system_group_march = None;
+                return false;
+            }
+            if planned {
+                let w = self.walk.as_mut().unwrap();
+                w.seg += 1;
+                w.tick = 0;
+                w.native_group_march_paused = true;
+                todo!("R8: action_overlay_runtime.go:beginNativeSystemGroupMarchFieldEvent（第一章沒有執行到）")
+            }
+        }
+        let w = self.walk.as_mut().unwrap();
+        w.seg += 1;
+        w.tick = 0;
+        if w.seg >= w.path.len() as i64 - 1 {
+            // 原版在整段移動抵達時把 raw +3 姿態重設為 0、+4 動作重設為 0，
+            // 不停在最後一格的行走方向。dosgolem 原版收據（10 萬指令粒度）：
+            // 走第一格 pose=2／motion 1..6、第二格 pose=2／motion 重設後 1..6、
+            // 抵達時 pose=0／motion=0 並保持到玩家下指令。
+            finish(self, NATIVE_MAP_REST_POSE);
+            return false;
+        }
+        // 還有下一段：原版跨格那一幀就是下一段的 `+4 = 1`，不會停在 0。
+        true
+    }
+
+    /// R4 B 組新增：Go `w.u`（`*battle.Unit`）。走行單位一律在 `st.units` 裡；Go 在 `u` 為 nil 時解參考 panic。
+    fn walk_unit(&self, u: Option<UnitIdx>) -> &battle::Unit {
+        &self.st.as_ref().expect("Go：walk 單位在 g.st.Units").units[u.expect("Go：w.u 為 nil 時解參考 panic")]
+    }
+
+    /// R4 B 組新增：[`Game::walk_unit`] 的可寫版本。
+    fn walk_unit_mut(&mut self, u: Option<UnitIdx>) -> &mut battle::Unit {
+        &mut self.st.as_mut().expect("Go：walk 單位在 g.st.Units").units[u.expect("Go：w.u 為 nil 時解參考 panic")]
     }
 }
 
@@ -4817,8 +6398,15 @@ pub(crate) fn load_story_script_with_identity_at(
 /// may already carry assets/... or an absolute path, which stays untouched.
 ///
 /// Go：`main.go:7240`，`func handlerStoryPath(script string) string`
+///
+/// R4 B 組：`filepath.Join` 會詞法整理（Clean）路徑，Rust 用 A 組的 `join_path`（只略過空段）；
+/// StoryIndexMap 的 script 都是單純相對檔名（KNOWN_DIFFERENCES `handler-story-path-no-clean`）。
 pub(crate) fn handler_story_path(script: &str) -> String {
-    todo!("main.go:handlerStoryPath")
+    // Go 在 linux 上 `filepath.ToSlash` 不改字串、`filepath.IsAbs` 看開頭的 `/`。
+    if script.starts_with('/') || script.starts_with("assets/") {
+        return script.to_string();
+    }
+    join_path(&["assets", "story", script])
 }
 
 /// loadFigMeta 載入 FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(assets/figani/meta.json;doc06:
@@ -4846,7 +6434,10 @@ pub(crate) fn load_fig_meta() -> BTreeMap<i64, Vec<[i64; 2]>> {
 
 /// Go：`main.go:7293`，`func absInt(v int) int`
 pub(crate) fn abs_int(v: i64) -> i64 {
-    todo!("main.go:absInt")
+    if v < 0 {
+        return v.wrapping_neg();
+    }
+    v
 }
 
 impl Game {
@@ -4925,7 +6516,17 @@ pub(crate) fn player_physical_attack_message(
 ///
 /// Go：`main.go:7407`，`func dirToward(ax, ay, tx, ty int) int`
 pub(crate) fn dir_toward(ax: i64, ay: i64, tx: i64, ty: i64) -> i64 {
-    todo!("main.go:dirToward")
+    let (dx, dy) = (tx.wrapping_sub(ax), ty.wrapping_sub(ay));
+    if abs_int(dx) > abs_int(dy) {
+        if dx > 0 {
+            return 3;
+        }
+        return 1;
+    }
+    if dy > 0 {
+        return 0;
+    }
+    2
 }
 
 impl Game {
@@ -5714,7 +7315,17 @@ impl Game {
     /// Go：`main.go:9179`，`func (g *Game) syncNativeMapView() bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn sync_native_map_view(&mut self) -> bool {
-        todo!("main.go:syncNativeMapView")
+        let (Some(m), Some(st)) = (self.m.as_ref(), self.st.as_ref()) else {
+            return false;
+        };
+        if !st.has_native_map_view_state {
+            return false;
+        }
+        let view = st.native_map_view_state;
+        (self.cur_x, self.cur_y) = (view.cursor_x, view.cursor_y);
+        self.cam_x = (view.camera_x * m.tile_w) as f64;
+        self.cam_y = (view.camera_y * m.tile_h) as f64;
+        true
     }
 
     /// nativeCursorStepHUD 在一格游標步之後照 0x11C59 家族的重繪規則更新 HUD anchor：
@@ -5727,7 +7338,74 @@ impl Game {
         before: battle::NativeMapViewState,
         after: battle::NativeMapViewState,
     ) {
-        todo!("main.go:nativeCursorStepHUD")
+        if !self.st.as_ref().is_some_and(|st| st.native_map_cursor_step_redraws(before, after)) {
+            return;
+        }
+        self.redraw_native_map_hud();
+        // 第十二章的 mode3 會保留前一鏡頭底色；11CAC 不只更新 HUD。
+        // 已證實 caller／literal writer 見 terrain review 的 battle_cursor_redraw。
+        if self.camp.as_ref().is_some_and(|c| c.node_id() == "battle_ch12")
+            && self.native_map_assets.as_ref().is_some_and(|a| a.map_index == 11)
+            && !self.has_story_native_map_view
+            && self.st.as_ref().is_some_and(|st| st.has_native_map_view_state)
+            && let Err(err) = self.compose_native_map_frame()
+        {
+            self.load_err = format!("native cursor redraw: {err}");
+        }
+    }
+
+    /// R4 B 組新增：`battle.State.FocusNativeMapCursorSteps(x, y, g.nativeCursorStepHUD)`。
+    ///
+    /// Go 把會改寫 `Game`（HUD anchor、第十二章重繪）的 `nativeCursorStepHUD` 交給 `st` 的方法當 callback；
+    /// Rust 在借用 `st` 時不能再借用 `Game`，所以逐行照 fd2-rules `State::focus_native_map_cursor_steps`
+    /// （Go `native_map_view.go:264`）在 `Game` 這層重寫迴圈，每走一格呼叫 `native_cursor_step_hud`。
+    fn focus_native_map_cursor_steps_with_hud(&mut self, x: i64, y: i64) -> bool {
+        let Some(st) = self.st.as_ref() else {
+            return false;
+        };
+        if !st.has_native_map_view_state {
+            return false;
+        }
+        // 先取出 callback 再呼叫，避免呼叫期間持有鎖。
+        let hook = battle::NATIVE_FOCUS_TRACE_HOOK.read().unwrap_or_else(|e| e.into_inner()).clone();
+        if let Some(hook) = hook {
+            hook(x, y, st.native_map_view_state);
+        }
+        if !st.native_map_view_state.cursor_in_field(st.w, st.h) || x < 0 || x >= st.w || y < 0 || y >= st.h {
+            return false;
+        }
+        let step_once = |g: &mut Game, dx: i64, dy: i64| -> bool {
+            let st = g.st.as_mut().unwrap();
+            let before = st.native_map_view_state;
+            let (_, ok) = st.move_native_map_cursor(dx, dy);
+            if !ok {
+                return false;
+            }
+            let after = st.native_map_view_state;
+            g.native_cursor_step_hud(before, after);
+            true
+        };
+        loop {
+            let cursor_x = self.st.as_ref().unwrap().native_map_view_state.cursor_x;
+            if cursor_x == x {
+                break;
+            }
+            let step = if cursor_x > x { -1 } else { 1 };
+            if !step_once(self, step, 0) {
+                return false;
+            }
+        }
+        loop {
+            let cursor_y = self.st.as_ref().unwrap().native_map_view_state.cursor_y;
+            if cursor_y == y {
+                break;
+            }
+            let step = if cursor_y > y { -1 } else { 1 };
+            if !step_once(self, 0, step) {
+                return false;
+            }
+        }
+        true
     }
 
     /// redrawNativeMapHUD 是一次原版 0x11CAC 重繪裡 0x1ACF3→0x1AD2A 的 HUD anchor 評估：閘 A／閘 B
@@ -5738,12 +7416,25 @@ impl Game {
     /// Go：`main.go:9212`，`func (g *Game) redrawNativeMapHUD()`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn redraw_native_map_hud(&mut self) {
-        todo!("main.go:redrawNativeMapHUD")
+        if let Some(st) = self.st.as_mut() {
+            redraw_native_map_hud_state(st);
+        }
     }
 
     /// Go：`main.go:9220`，`func (g *Game) moveMapCursor(dx, dy int)`
     pub(crate) fn move_map_cursor(&mut self, dx: i64, dy: i64) {
-        todo!("main.go:moveMapCursor")
+        if let Some(st) = self.st.as_mut().filter(|st| st.has_native_map_view_state) {
+            let before = st.native_map_view_state;
+            let (_, ok) = st.move_native_map_cursor(dx, dy);
+            if ok {
+                let after = st.native_map_view_state;
+                self.native_cursor_step_hud(before, after);
+                self.sync_native_map_view();
+            }
+            return;
+        }
+        self.cur_x += dx;
+        self.cur_y += dy;
     }
 
     /// focusNativeMapCursorOnUnit 重現 0x12D7B→0x12CEA：讀單位記錄的 x/y，再把游標
@@ -5753,7 +7444,18 @@ impl Game {
     /// Go：`main.go:9236`，`func (g *Game) focusNativeMapCursorOnUnit(u *battle.Unit)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn focus_native_map_cursor_on_unit(&mut self, u: Option<UnitIdx>) {
-        todo!("main.go:focusNativeMapCursorOnUnit")
+        let Some(u) = u else {
+            return;
+        };
+        let Some(st) = self.st.as_ref().filter(|st| st.has_native_map_view_state) else {
+            return;
+        };
+        let (x, y) = (st.units[u].x, st.units[u].y);
+        self.redraw_native_map_hud(); // 0x12D01：0x12CEA 開頭的 0x11CAC(0)
+        if !self.focus_native_map_cursor_steps_with_hud(x, y) {
+            return;
+        }
+        self.sync_native_map_view();
     }
 
     /// aiFocusCursor 是敵方回合裡的 0x12D7B／0x12CEA：游標先 X 後 Y 逐格走到 (x,y)，
@@ -5766,7 +7468,18 @@ impl Game {
     /// Go：`main.go:9253`，`func (g *Game) aiFocusCursor(x, y int)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn ai_focus_cursor(&mut self, x: i64, y: i64) {
-        todo!("main.go:aiFocusCursor")
+        let Some(st) = self.st.as_ref().filter(|st| st.has_native_map_view_state) else {
+            return;
+        };
+        let hook = battle::NATIVE_FOCUS_TRACE_HOOK.read().unwrap_or_else(|e| e.into_inner()).clone();
+        if let Some(hook) = hook {
+            hook(x, y, st.native_map_view_state);
+        }
+        self.redraw_native_map_hud(); // 0x12D01：0x12CEA 開頭的 0x11CAC(0)
+        if !self.focus_native_map_cursor_steps_with_hud(x, y) {
+            return;
+        }
+        self.sync_native_map_view();
     }
 
     /// followNativeMapCursorStep 讓視圖跟著走行的單位走一格。判準是單位自己的
@@ -5776,7 +7489,16 @@ impl Game {
     /// Go：`main.go:9270`，`func (g *Game) followNativeMapCursorStep(fromX, fromY, dx, dy int)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn follow_native_map_cursor_step(&mut self, from_x: i64, from_y: i64, dx: i64, dy: i64) {
-        todo!("main.go:followNativeMapCursorStep")
+        let Some(st) = self.st.as_mut().filter(|st| st.has_native_map_view_state) else {
+            return;
+        };
+        if !st.advance_native_map_walk_step_view(from_x, from_y, dx, dy) {
+            return;
+        }
+        // 走行步進不推 HUD anchor：0x12EAA／0x1300D／0x13185／0x13315 只呼叫 0x1297D 局部重繪與
+        // 0x11EB0／0x11EEE 拷貝，不經過 0x11CAC，所以不會進 0x1ACF3。第八章 c2 seq 1667 單位走過
+        // 可見游標 (2,6)，原版小窗沒翻邊。
+        self.sync_native_map_view();
     }
 
     /// positionScreenshotCursor drives the same recovered cursor/camera state
@@ -5787,8 +7509,41 @@ impl Game {
     /// Go：`main.go:9287`，`func (g *Game) positionScreenshotCursor(x, y int) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn position_screenshot_cursor(&mut self, x: i64, y: i64) -> bool {
-        todo!("main.go:positionScreenshotCursor")
+        let Some(st) = self.st.as_ref() else {
+            return false;
+        };
+        if x < 0 || y < 0 || x >= st.w || y >= st.h {
+            return false;
+        }
+        if !st.has_native_map_view_state {
+            (self.cur_x, self.cur_y) = (x, y);
+            return true;
+        }
+        // 與玩家確認移動同一條路（0x12CEA：先 X 後 Y，逐格走鍵盤處理器），
+        // 所以截圖與正式路徑產生的視圖狀態一致。
+        // 原版逐格重繪會留下 mode3 後續消費的底色。只合成終點會漏掉
+        // 中間鏡頭的 literal writer；#52 主證據的 cursor_helper 記錄此契約。
+        if !self.focus_native_map_cursor_steps_with_hud(x, y) {
+            return false;
+        }
+        let st = self.st.as_mut().unwrap();
+        if st.has_native_map_hud_state {
+            let view = st.native_map_view_state;
+            st.advance_native_map_hud_anchor(view.visible_cursor_x, view.visible_cursor_y);
+        }
+        self.sync_native_map_view();
+        self.cur_x == x && self.cur_y == y
     }
+}
+
+/// R4 B 組新增：`redrawNativeMapHUD` 對 `battle.State` 的部分。Go `startNativeUnitDeathPresentMode`
+/// 以 `Game{st: candidate}.redrawNativeMapHUD()` 對私有候選狀態做同一件事，兩處共用。
+pub(crate) fn redraw_native_map_hud_state(st: &mut battle::State) {
+    if !st.has_native_map_hud_state || !st.has_native_map_view_state {
+        return;
+    }
+    let v = st.native_map_view_state;
+    st.advance_native_map_hud_anchor(v.visible_cursor_x, v.visible_cursor_y);
 }
 
 /// keyRepeat 方向鍵按住持續觸發(playfix #1):首次按下立即動一格,按住 12 tick 後
@@ -6583,12 +8338,104 @@ impl Game {
     ///
     /// Go：`main.go:12356`，`func (g *Game) nativeMapHUDInput() (indexedmap.NativeMapHUDInput, bool)`
     pub(crate) fn native_map_hud_input(&mut self) -> (indexedmap::NativeMapHUDInput, bool) {
-        todo!("main.go:nativeMapHUDInput")
+        let a = self.native_map_assets.as_ref();
+        let (Some(m), Some(st)) = (self.m.as_ref(), self.st.as_ref()) else {
+            self.native_map_hud_input_reason =
+                String::from("資產、HUD／cycle 狀態、selector cache 或游標界線其一不成立");
+            return (indexedmap::NativeMapHUDInput::default(), false);
+        };
+        if !native_map_assets_available(a)
+            || !st.has_native_map_hud_state
+            || !st.has_native_map_cycle_state
+            || st.native_map_selector_cache.is_none()
+            || self.cur_x < 0
+            || self.cur_y < 0
+            || self.cur_x >= m.w
+            || self.cur_y >= m.h
+        {
+            self.native_map_hud_input_reason =
+                String::from("資產、HUD／cycle 狀態、selector cache 或游標界線其一不成立");
+            return (indexedmap::NativeMapHUDInput::default(), false);
+        }
+        let a = a.unwrap();
+        let tile = if st.has_native_map_event_grid {
+            let (t, ok) = st.native_map_tile_at(self.cur_x, self.cur_y);
+            if !ok {
+                self.native_map_hud_input_reason = String::from("原生可變地圖緩衝損壞");
+                return (indexedmap::NativeMapHUDInput::default(), false);
+            }
+            t
+        } else {
+            let index = self.cur_y * m.w + self.cur_x;
+            if index >= m.tiles.len() as i64 {
+                self.native_map_hud_input_reason = String::from("初始地圖圖塊資料不足");
+                return (indexedmap::NativeMapHUDInput::default(), false);
+            }
+            m.tiles[index as usize]
+        };
+        let descriptors = a.controls.len() as i64 / 4;
+        if tile < 0 || tile >= descriptors || tile > 0x3ff {
+            self.native_map_hud_input_reason = format!("terrain descriptor {} outside 0..{}", tile, descriptors - 1);
+            return (indexedmap::NativeMapHUDInput::default(), false);
+        }
+        let control = a.controls[(tile * 4 + 1) as usize];
+        let raw_hud = st.native_map_hud_state;
+        let mut r#in = indexedmap::NativeMapHUDInput {
+            display_gate_a: raw_hud.display_gate_a != 0,
+            display_gate_b: raw_hud.display_gate_b != 0,
+            anchor_x: raw_hud.anchor_x,
+            terrain_descriptor: tile,
+            terrain_control: control,
+            optional_unit: None,
+        };
+        // 與 BlitNativeMapHUD 的原版顯示閘門一致；故事隱藏 HUD 時不消費
+        // 游標下角色的血量／職業資料，不能因此拒絕整張背景。
+        if !r#in.display_gate_a || !r#in.display_gate_b {
+            return (r#in, true);
+        }
+        if let Some(ui) = st.unit_at(self.cur_x, self.cur_y) {
+            let u = &st.units[ui];
+            if !u.has_map_selector_slot
+                || !u.has_battle_fig
+                || u.battle_fig < 0
+                || u.battle_fig > 0xff
+                || !u.has_native_record_race
+                || !u.has_native_record_byte6
+                || !u.has_native_record_word42
+                || u.hp < 0
+                || u.hp > 0xffff
+            {
+                self.native_map_hud_input_reason = format!(
+                    "游標下單位缺少 raw 出處：slot={} fig={}({}) race={} byte6={} word42={} hp={}",
+                    u.has_map_selector_slot,
+                    u.has_battle_fig,
+                    u.battle_fig,
+                    u.has_native_record_race,
+                    u.has_native_record_byte6,
+                    u.has_native_record_word42,
+                    u.hp
+                );
+                return (indexedmap::NativeMapHUDInput::default(), false);
+            }
+            if indexedmap::native_map_hud_optional_unit_eligible(
+                u.battle_fig as u8,
+                u.native_record_race,
+                u.native_record_byte6,
+            ) {
+                r#in.optional_unit = Some(indexedmap::NativeMapHUDOptionalUnit {
+                    selector_slot: u.map_selector_slot,
+                    raw_state: st.native_map_cycle_state.idle,
+                    current: u.hp as u16,
+                    maximum: u.native_record_word42,
+                });
+            }
+        }
+        (r#in, true)
     }
 
     /// Go：`main.go:12527`，`func (g *Game) composeNativeMapFrame() error`
     pub(crate) fn compose_native_map_frame(&mut self) -> Result<()> {
-        todo!("main.go:composeNativeMapFrame")
+        self.compose_native_map_frame_for_action_background(false)
     }
 
     /// composeNativeMapFrameForActionBackground 的 closedAction 投影只供 0x190AC
@@ -6597,7 +8444,7 @@ impl Game {
     ///
     /// Go：`main.go:12534`，`func (g *Game) composeNativeMapFrameForActionBackground(closedAction bool) error`
     pub(crate) fn compose_native_map_frame_for_action_background(&mut self, closed_action: bool) -> Result<()> {
-        todo!("main.go:composeNativeMapFrameForActionBackground")
+        self.compose_native_map_frame_for_caller(closed_action, true)
     }
 
     /// 正常物理返回呼叫11CAC(1)，只略過4DFCC；其他地圖層及時鐘照常。
@@ -7007,12 +8854,185 @@ impl Game {
         actions: &mut [battle::Action],
         then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
     ) {
-        todo!("main.go:startBattleEvent")
+        if actions.is_empty() {
+            if let Some(then) = then {
+                then(self);
+            }
+            return;
+        }
+        self.battle_event = Some(BattleEventRun { actions: actions.to_vec(), index: -1, then });
+        self.advance_battle_event();
+    }
+
+    /// R4 B 組隨呼叫端補移植（原標 `r8`）：Go `main.go:12892`，`func (g *Game) finishBattleEventWithError(message string)`。
+    /// 戰鬥事件的錯誤路徑；`failNativeChapterResult` 是 `r8`，有原生章節結果時停在 `todo!`。
+    pub(crate) fn finish_battle_event_with_error(&mut self, message: &str) {
+        self.load_err = format!("battle event: {message}");
+        if self.native_chapter_result.is_some() {
+            todo!("R8: native_chapter_result.go:failNativeChapterResult（第一章沒有執行到）")
+        }
+        (self.battle_event, self.battle_event_delay, self.cam_pan) = (None, 0, None);
     }
 
     /// Go：`main.go:12900`，`func (g *Game) advanceBattleEvent()`
+    ///
+    /// R4 B 組：Go 持有 `run := g.battleEvent` 指標逐項推進；Rust 每一輪重新借用 `self.battle_event`，
+    /// 收尾時取出再呼叫延續。動作先 `clone()` 出來再執行（執行期間會借用 `Game`）。
     pub(crate) fn advance_battle_event(&mut self) {
-        todo!("main.go:advanceBattleEvent")
+        if self.battle_event.is_none() {
+            return;
+        }
+        loop {
+            let Some(run) = self.battle_event.as_mut() else {
+                return;
+            };
+            run.index += 1;
+            if run.index >= run.actions.len() as i64 {
+                let mut run = self.battle_event.take().unwrap();
+                if let Some(then) = run.then.take() {
+                    then(self);
+                }
+                return;
+            }
+            let action = run.actions[run.index as usize].clone();
+            if let Some(when) = action.native_when.as_ref() {
+                match when.r#match(self.st.as_ref()) {
+                    Err(err) => {
+                        self.finish_battle_event_with_error(&err.to_string());
+                        return;
+                    }
+                    Ok(false) => continue,
+                    Ok(true) => {}
+                }
+            }
+            if action.r#type == "dialogue" && action.native_dialogue_ref.is_some() {
+                if let Err(err) = self.start_native_event_dialogue(&action) {
+                    self.finish_battle_event_with_error(err.message());
+                }
+                return;
+            }
+            match action.r#type.as_str() {
+                "native_death_op" => {
+                    if self.run_native_death_op(&action) {
+                        return;
+                    }
+                    continue;
+                }
+                "reset_pose" => {
+                    let Some(st) = self.st.as_mut() else {
+                        self.finish_battle_event_with_error("重設姿態缺少戰場");
+                        return;
+                    };
+                    for unit in &mut st.units {
+                        unit.set_map_pose(0);
+                    }
+                    self.battle_event_delay = 1;
+                    return;
+                }
+                "redraw" => {
+                    self.native_map_vga = Vec::new();
+                    if let Err(err) = self.compose_native_map_frame() {
+                        self.finish_battle_event_with_error(err.message());
+                        return;
+                    }
+                    self.battle_event_delay = 1;
+                    return;
+                }
+                "native_staging_present" => {
+                    if action.native_event_id != Some(82) || action.native_source.is_empty() {
+                        self.finish_battle_event_with_error("staging 缺少已證實caller");
+                        return;
+                    }
+                    todo!("R8: native_battle_staging_present.go:startNativeBattleStagingPresent（第一章沒有執行到）")
+                }
+                "native_range_zero" | "native_range_one" => {
+                    if self.st.is_none() || action.native_source.is_empty() {
+                        self.finish_battle_event_with_error("range 寫入缺少來源");
+                        return;
+                    }
+                    let value = if action.r#type == "native_range_one" { 1 } else { 0 };
+                    let st = self.st.as_mut().unwrap();
+                    (st.native_map_range_mode, st.has_native_map_range_mode_state) = (value, true);
+                }
+                "pan" => {
+                    let (Some(grid), Some(m)) = (action.grid, self.m.as_ref().filter(|m| m.tile_w > 0 && m.tile_h > 0))
+                    else {
+                        self.finish_battle_event_with_error("pan 缺少有效 grid/map");
+                        return;
+                    };
+                    self.cam_pan = Some(CamPanJob {
+                        from_x: self.cam_x,
+                        from_y: self.cam_y,
+                        to_x: (grid[0] * m.tile_w) as f64,
+                        to_y: (grid[1] * m.tile_h) as f64,
+                        tile_step: true,
+                        then: Some(Box::new(|g: &mut Game| g.advance_battle_event())),
+                        ..Default::default()
+                    });
+                    return;
+                }
+                "delay" => {
+                    let mut frames = action.ms * 60 / 1000;
+                    if frames <= 0 {
+                        frames = 1;
+                    }
+                    self.battle_event_delay = frames;
+                    return;
+                }
+                "native_acting" => {
+                    let Some(unit_count) = self.st.as_ref().map(|st| st.units.len() as i64) else {
+                        self.finish_battle_event_with_error("native acting 缺少 runtime battle state");
+                        return;
+                    };
+                    match self.load_native_battle_following_acting(action.native_acting.as_ref(), unit_count) {
+                        Ok(mut frames) => self.start_native_battle_following_acting(
+                            &mut frames,
+                            Some(Box::new(|g: &mut Game| g.advance_battle_event())),
+                        ),
+                        Err(err) => self.finish_battle_event_with_error(err.message()),
+                    }
+                    return;
+                }
+                _ => {
+                    let (call, is_native_intro) = match native_battle_intro_call(&action) {
+                        Ok(v) => v,
+                        Err(err) => {
+                            self.finish_battle_event_with_error(err.message());
+                            return;
+                        }
+                    };
+                    if is_native_intro {
+                        if let Err(err) = self.start_native_battle_spawn_intro(
+                            &action,
+                            &call,
+                            Some(Box::new(|g: &mut Game| g.advance_battle_event())),
+                        ) {
+                            self.finish_battle_event_with_error(err.message());
+                        }
+                        return;
+                    }
+                    let sc = self.sc.as_mut().expect("Go：g.sc 為 nil 時解參考 panic");
+                    let (dialogue, is_dialogue) = match sc.execute_action_checked(self.st.as_mut(), &action) {
+                        Ok(v) => v,
+                        Err(err) => {
+                            self.finish_battle_event_with_error(&err.to_string());
+                            return;
+                        }
+                    };
+                    self.apply_scenario_party_joins();
+                    if !self.load_err.is_empty() {
+                        let message = self.load_err.clone();
+                        self.finish_battle_event_with_error(&message);
+                        return;
+                    }
+                    if is_dialogue {
+                        self.dialog = vec![dialogue];
+                        self.dlg_page = 0;
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     /// Go：`main.go:13040`，`func (g *Game) stepBattleEventDelay()`
@@ -7031,27 +9051,98 @@ impl Game {
     ///
     /// Go：`main.go:13052`，`func (g *Game) finishTurn()`
     pub(crate) fn finish_turn(&mut self) {
-        todo!("main.go:finishTurn")
+        if self.battle_event.is_some() {
+            return;
+        }
+        if let Some(sc) = self.sc.as_mut() {
+            // 帶 phase selector 的事件已在 endTurn／敵方 AI 前／下一回合玩家輸入前
+            // 各自觸發；這裡只剩沒有 selector 的手寫事件。
+            let mut accept = |e: &battle::Event| e.native_turn_phase_selector() == -1;
+            let mut actions = sc.trigger_actions_where(self.st.as_ref(), "on_turn_end", "", Some(&mut accept));
+            if !actions.is_empty() {
+                self.start_battle_event(&mut actions, Some(Box::new(|g: &mut Game| g.complete_turn())));
+                return;
+            }
+        }
+        self.complete_turn();
     }
 
     /// Go：`main.go:13070`，`func (g *Game) completeTurn()`
     pub(crate) fn complete_turn(&mut self) {
-        todo!("main.go:completeTurn")
+        let st = self.st.as_mut().expect("Go：g.st 為 nil 時解參考 panic");
+        st.turn += 1;
+        // Keep the executable [0x53bef] counter only for states that entered with
+        // explicit native provenance; hand-authored tests/legacy states remain
+        // unproven (zero) and therefore fail closed for native round predicates.
+        if st.native_round_counter > 0 {
+            st.native_round_counter += 1;
+        }
+        let count = st.units.len();
+        for i in 0..count {
+            let st = self.st.as_mut().unwrap();
+            let has_view = st.has_native_map_view_state;
+            let u = &mut st.units[i];
+            u.acted = false;
+            if has_view && u.has_native_record_byte5 {
+                u.native_record_byte5 &= 0x7f;
+            }
+            u.tick_status(); // buff/封咒/中毒/麻痺回合遞減+中毒扣血(doc02 §6.4)
+            self.award_death_reward(Some(i), None); // poison/status death shares the same once-only reward path
+        }
+        match self.start_native_raw_camp2_turn_events(Some(Box::new(|g: &mut Game| g.complete_turn_player_phase()))) {
+            Err(err) => {
+                self.load_err = format!("native raw camp2 phase: {err}");
+            }
+            Ok(true) => {}
+            Ok(false) => self.complete_turn_player_phase(),
+        }
     }
 
     /// Go：`main.go:13097`，`func (g *Game) completeTurnPlayerPhase()`
     pub(crate) fn complete_turn_player_phase(&mut self) {
-        todo!("main.go:completeTurnPlayerPhase")
+        // 0x1A78B→0x1A797 passes selector 2 after the phase presentation and
+        // immediately before range mode 1/player input. Keep the raw selector;
+        // do not substitute normalized Camp.
+        if self.native_transient_sweep_available() {
+            if let Err(err) = self.begin_native_transient_phases(
+                &mut [2],
+                Some(Box::new(|g: &mut Game| g.finish_native_transient_player_phase())),
+            ) {
+                self.load_err = err.message().to_string();
+            }
+            return;
+        }
+        self.finish_native_transient_player_phase();
     }
 
     /// Go：`main.go:13110`，`func (g *Game) finishNativeTransientPlayerPhase()`
     pub(crate) fn finish_native_transient_player_phase(&mut self) {
-        todo!("main.go:finishNativeTransientPlayerPhase")
+        if self.result.is_empty() {
+            self.show_banner("PLAYER PHASE");
+        }
+        // 0x1A78B→0x1A797：phase 演出之後、玩家輸入之前的 selector 2 回合事件，
+        // 此時回合數已加一，所以 when.turn 對的是新回合。
+        self.run_editable_turn_events(2, Some(Box::new(|g: &mut Game| g.finish_native_transient_player_phase_input())));
     }
 
     /// Go：`main.go:13119`，`func (g *Game) finishNativeTransientPlayerPhaseInput()`
     pub(crate) fn finish_native_transient_player_phase_input(&mut self) {
-        todo!("main.go:finishNativeTransientPlayerPhaseInput")
+        (self.sel, self.reach, self.moved) = (None, BTreeMap::new(), false);
+        // 0x1A79F [0x51A83]=1 → 0x1A7AB 0x12D7B(0) 聚焦記錄 0 都還在 0x1A30B 裡，閘 B 仍是 0，
+        // 逐格重繪不評估 HUD anchor；0x1A30B 返回後 0x17277／0x135D4 才寫回 1（第九章 r1 seq 814：
+        // 聚焦途中可見游標 (2,6)，原版小窗沒翻到右側）。
+        if let Some(st) = self.st.as_mut().filter(|st| st.has_native_map_view_state && !st.units.is_empty()) {
+            // 0x1A79F：聚焦前 [0x51A83]=1，逐格都重繪（閘 B 仍是 0，anchor 不動）。
+            st.materialize_native_map_range_mode(1);
+            self.native_next_player_index = 0;
+            if self.begin_native_player_focus(Some(0)) {
+                self.native_gate_b_after_focus = true;
+                self.check_result();
+                return;
+            }
+        }
+        self.restore_native_display_gate_b();
+        self.check_result();
     }
 
     /// restoreNativeDisplayGateB 是 0x1A30B 返回後的 0x17277／0x135D4 閘 B 寫回；輸入迴圈接著的
@@ -7059,7 +9150,12 @@ impl Game {
     ///
     /// Go：`main.go:13140`，`func (g *Game) restoreNativeDisplayGateB()`
     pub(crate) fn restore_native_display_gate_b(&mut self) {
-        todo!("main.go:restoreNativeDisplayGateB")
+        self.native_gate_b_after_focus = false;
+        let Some(st) = self.st.as_mut().filter(|st| st.has_native_map_hud_state) else {
+            return;
+        };
+        st.native_map_hud_state.display_gate_b = 1;
+        self.redraw_native_map_hud();
     }
 
     /// aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
@@ -7075,3 +9171,7 @@ impl Game {
 #[cfg(test)]
 #[path = "main/main_a_test.rs"]
 mod main_a_test;
+
+#[cfg(test)]
+#[path = "main/main_b_test.rs"]
+mod main_b_test;

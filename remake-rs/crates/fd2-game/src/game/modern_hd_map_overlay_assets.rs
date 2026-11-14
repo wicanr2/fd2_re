@@ -21,6 +21,11 @@ pub(crate) struct ModernMapOverlayHDResource {
 }
 
 /// Go：`modern_hd_map_overlay_assets.go:106`，`func hasModernHDDeathBank(set *modernStoryPortraitSet) bool`
+///
+/// R4 B 組：Go `frames[index] != nil` 查 map 的值；Rust 的 `frames` 只放有圖的項目，以 `contains_key` 判斷。
 pub(crate) fn has_modern_hd_death_bank(set: Option<&ModernStoryPortraitSet>) -> bool {
-    todo!("modern_hd_map_overlay_assets.go:hasModernHDDeathBank")
+    let Some(overlays) = set.and_then(|s| s.map_overlays.as_ref()) else {
+        return false;
+    };
+    (68..=79).any(|index| overlays.native.contains_key(&index) || overlays.frames.contains_key(&index))
 }

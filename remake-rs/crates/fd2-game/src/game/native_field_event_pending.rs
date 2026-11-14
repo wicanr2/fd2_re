@@ -27,7 +27,14 @@ impl Game {
     /// Go：`native_field_event_pending.go:19`，`func (g *Game) noteNativeFieldEventStep(trigger *battle.Unit, x, y int)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn note_native_field_event_step(&mut self, trigger: Option<UnitIdx>, x: i64, y: i64) {
-        todo!("native_field_event_pending.go:noteNativeFieldEventStep")
+        if self.st.is_none() || trigger.is_none() {
+            return;
+        }
+        let (event_id, ok) = battle::native_field_event_id_at(self.st.as_ref(), x, y, 0);
+        if !ok {
+            return;
+        }
+        self.native_field_event_pending = Some(NativeFieldEventPending { event_id, x, y, trigger });
     }
 
     /// dispatchNativeFieldEventPending 是行動收尾的 `cmp [0x51A8F],0xff / call [0x51B91+id*4]`：
@@ -36,7 +43,111 @@ impl Game {
     ///
     /// Go：`native_field_event_pending.go:33`，`func (g *Game) dispatchNativeFieldEventPending(actor *battle.Unit) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    ///
+    /// R4 B 組：Go `pending.trigger != actor` 比較單位指標，Rust 比較 `st.units` 的索引。`itoa`（`r8`）
+    /// 對整數的輸出與 `to_string()` 相同。
     pub(crate) fn dispatch_native_field_event_pending(&mut self, actor: Option<UnitIdx>) -> bool {
-        todo!("native_field_event_pending.go:dispatchNativeFieldEventPending")
+        let pending = self.native_field_event_pending.take();
+        let Some(pending) = pending else {
+            return false;
+        };
+        let Some(actor) = actor.filter(|_| self.st.is_some()) else {
+            return false;
+        };
+        if pending.trigger != Some(actor) {
+            return false;
+        }
+        if pending.event_id == 62 {
+            if let Err(err) =
+                battle::apply_native_field_turn_activation_event(self.st.as_mut(), pending.x, pending.y, 0)
+            {
+                self.load_err = format!("battle field event62: {err}");
+            }
+            return !self.load_err.is_empty();
+        }
+        if pending.event_id == 65 || pending.event_id == 69 {
+            if let Err(err) = battle::apply_native_chapter28_field_turn_activation(
+                self.st.as_mut(),
+                Some(actor),
+                pending.x,
+                pending.y,
+                0,
+            ) {
+                self.load_err = format!("battle field event: {err}");
+            }
+            return !self.load_err.is_empty();
+        }
+        let (_, applied) =
+            battle::apply_native_field_mode_event(self.st.as_mut(), Some(actor), pending.x, pending.y, 0);
+        if applied {
+            return false;
+        }
+        let st = self.st.as_ref().unwrap();
+        for rule in &st.native_field_event_rules {
+            if rule.event_id == pending.event_id as i64 && rule.selector == 0 {
+                // 規則存在但閘門沒過（例如 event 26 要求觸發單位 raw +6 != 0）：原版處理器
+                // 自己回傳，不是錯誤。
+                return false;
+            }
+        }
+        // selector0與死亡型態2呼叫同一張0x51B91全域表。歷史欄位2:id保存handler
+        // 本體，這裡不加入死亡caller的200ms delay，也不建立死亡／擊殺者暫態。
+        let program = self
+            .sc
+            .as_ref()
+            .and_then(|sc| sc.native_death_programs.get(&format!("2:{}", pending.event_id)))
+            .filter(|actions| !actions.is_empty())
+            .cloned();
+        if let Some(mut actions) = program {
+            if self.battle_event.is_some() {
+                self.load_err = String::from("battle field event: event owner is already active");
+                return true;
+            }
+            for action in &actions {
+                if action.native_source.is_empty() || action.native_event_id != Some(pending.event_id as i64) {
+                    self.load_err = String::from("battle field event: global program provenance mismatch");
+                    return true;
+                }
+                // Go `(*NativeActionWhen)(nil).Match` 回 true。
+                let active = match action.native_when.as_ref() {
+                    None => true,
+                    Some(when) => match when.r#match(self.st.as_ref()) {
+                        Ok(active) => active,
+                        Err(err) => {
+                            self.load_err = format!("battle field event: {err}");
+                            return true;
+                        }
+                    },
+                };
+                if let Some(op) = action.native_death_op.as_ref().filter(|op| active && op.op == "ai_mode_range") {
+                    let st = self.st.as_ref().unwrap();
+                    let mut index = op.first;
+                    while index <= op.last && index < st.units.len() as i64 {
+                        if index < 0 || !st.units[index as usize].has_native_record_byte34 {
+                            self.load_err = String::from("battle field event: raw +0x34 provenance is absent");
+                            return true;
+                        }
+                        index += 1;
+                    }
+                }
+            }
+            if self.st.as_ref().unwrap().has_native_map_view_state
+                && let Err(err) = self.compose_native_map_frame()
+            {
+                self.load_err = format!("battle field event redraw: {err}");
+                return true;
+            }
+            self.start_battle_event(
+                &mut actions,
+                Some(Box::new(move |g: &mut Game| {
+                    if !g.begin_native_field_event61(Some(actor), None) {
+                        g.begin_native_field_event75(Some(actor), None);
+                    }
+                })),
+            );
+            return true;
+        }
+        self.load_err = format!("battle field event: selector 0 event {} has no transcribed owner", pending.event_id);
+        true
     }
 }

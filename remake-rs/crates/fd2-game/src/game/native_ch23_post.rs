@@ -45,6 +45,47 @@ impl Game {
     ///
     /// Go：`native_ch23_post.go:63`，`func (g *Game) prepareNativeCh23SteadyStage(rawTick int) (*nativeCh23AdapterState, error)`
     pub(crate) fn prepare_native_ch23_steady_stage(&self, raw_tick: i64) -> Result<Option<NativeCh23AdapterState>> {
-        todo!("native_ch23_post.go:prepareNativeCh23SteadyStage")
+        if !self.native_map_assets.as_ref().is_some_and(|a| a.map_index == 23) || self.native_ch23_loop.is_some() {
+            return Ok(None);
+        }
+        // Go `cloneNativeCh23AdapterState`（`r8`）：nil 回 nil，否則連 staging 一起複製；Rust 的 clone 相同。
+        let state = match self.native_ch23_state.clone() {
+            None => {
+                let frame = fdother::load_separated_native_ch23_stage(separated_asset_path("surfaces"))
+                    .map_err(|err| game_err!("FDOTHER #42: {err}"))?;
+                let mut state = NativeCh23AdapterState {
+                    staging: vec![
+                        0u8;
+                        (fdother::NATIVE_CH23_STAGE_STRIDE * fdother::NATIVE_CH23_STAGE_HEIGHT) as usize
+                    ],
+                    latch: 1,
+                    tick_snapshot: raw_tick,
+                    ..Default::default()
+                };
+                fdother::blit_native_ch23_stage(&frame, &mut state.staging)?;
+                // 0x10842 的 loader 尾端先執行一次 sub_24D22(0)。
+                let latch = state.latch;
+                state.rotate_rows(latch)?;
+                state
+            }
+            Some(mut state) => {
+                if state.tick_snapshot != raw_tick {
+                    let latch = state.latch;
+                    state.rotate_rows(latch)?;
+                    state.tick_snapshot = raw_tick;
+                }
+                state
+            }
+        };
+        Ok(Some(state))
+    }
+}
+
+impl NativeCh23AdapterState {
+    /// R4 B 組隨呼叫端補移植（原標 `r8`）：Go `native_ch23_post.go:44`，`func (s *nativeCh23AdapterState) rotateRows(latch int) error`。
+    pub(crate) fn rotate_rows(&mut self, latch: i64) -> Result<()> {
+        fdother::rotate_native_ch23_rows(&mut self.staging, latch)?;
+        self.row_shift = (self.row_shift + latch) % 192;
+        Ok(())
     }
 }

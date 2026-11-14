@@ -17,6 +17,32 @@ impl Game {
         actor: Option<UnitIdx>,
         after: Option<Box<dyn FnOnce(&mut Game) + Send>>,
     ) -> bool {
-        todo!("native_field_event75.go:beginNativeFieldEvent75")
+        // R4 B 組：要播對白時呼叫 `event75DialogueActions`（`r8`，第 29 章），停在 `todo!`。
+        let (Some(st), Some(actor)) = (self.st.as_ref(), actor) else {
+            return false;
+        };
+        let (x, y) = (st.units[actor].x, st.units[actor].y);
+        let (event_id, bound) = battle::native_field_event_id_at(Some(st), x, y, 1);
+        if !bound || event_id != 75 {
+            return false;
+        }
+        let plan = match battle::plan_native_field_event75(Some(st), Some(actor), x, y) {
+            Ok(plan) => plan,
+            Err(err) => {
+                self.load_err = err.to_string();
+                self.msg = String::from("事件 75 的原版證據不完整，已停止事件寫入");
+                if let Some(after) = after {
+                    after(self);
+                }
+                return true;
+            }
+        };
+        if plan.noop {
+            if let Some(after) = after {
+                after(self);
+            }
+            return true;
+        }
+        todo!("R8: native_field_event75.go:event75DialogueActions（第一章沒有執行到）")
     }
 }

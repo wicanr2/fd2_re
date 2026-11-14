@@ -24,7 +24,12 @@ pub(crate) struct ModernHDDeathStageSource {
 impl ModernHDDeathStageSource {
     /// Go：`modern_hd_death_stage.go:24`，`func (s *modernHDDeathStageSource) seed(work []byte) error`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    ///
+    /// R4 B 組：Go 對 nil 接收者回 nil；Rust 的呼叫端以 `Option` 判斷，`None` 不呼叫（同樣不做事）。
     pub(crate) fn seed(&self, work: &mut [u8]) -> Result<()> {
-        todo!("modern_hd_death_stage.go:seed")
+        let Some(stage) = self.stage.as_ref() else {
+            return Err(GameError::new("native death: same-compose stage unavailable"));
+        };
+        Ok(indexedmap::seed_native_ch23_staging(work, &stage.staging)?)
     }
 }

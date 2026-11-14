@@ -28,7 +28,20 @@ pub(crate) struct NativePaletteRampJob {
 
 /// Go：`native_palette_ramp.go:33`，`func buildInclusivePaletteDeltas(start, end int) ([]int, error)`
 pub(crate) fn build_inclusive_palette_deltas(start: i64, end: i64) -> Result<Vec<i64>> {
-    todo!("native_palette_ramp.go:buildInclusivePaletteDeltas")
+    if !(0..=255).contains(&start) || !(0..=255).contains(&end) {
+        return Err(GameError::new("palette delta endpoint outside byte range"));
+    }
+    let step = if start > end { -1 } else { 1 };
+    let mut deltas = Vec::with_capacity((abs_int(start - end) + 1) as usize);
+    let mut value = start;
+    loop {
+        deltas.push(value);
+        if value == end {
+            break;
+        }
+        value += step;
+    }
+    Ok(deltas)
 }
 
 impl Game {
@@ -41,7 +54,15 @@ impl Game {
         delay_ms: i64,
         then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
     ) -> Result<()> {
-        todo!("native_palette_ramp.go:startNativePaletteRamp")
+        if self.native_palette_ramp.is_some() {
+            return Err(GameError::new("native palette ramp already active"));
+        }
+        if delay_ms != 2 || !native_map_assets_available(self.native_map_assets.as_ref()) {
+            return Err(GameError::new("native indexed framebuffer or DAC baseline unavailable"));
+        }
+        self.ensure_native_palette_frame()?;
+        let vga = self.native_map_vga.clone();
+        self.start_native_palette_ramp_on_frame(&vga, start, end, delay_ms, then)
     }
 
     /// startNativePaletteRampOnFrame accepts the caller's current indexed VGA.
@@ -58,7 +79,23 @@ impl Game {
         delay_ms: i64,
         then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
     ) -> Result<()> {
-        todo!("native_palette_ramp.go:startNativePaletteRampOnFrame")
+        if self.native_palette_ramp.is_some() || vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE {
+            return Err(GameError::new("native palette ramp owner or indexed frame unavailable"));
+        }
+        if delay_ms != 2 || !native_map_assets_available(self.native_map_assets.as_ref()) {
+            return Err(GameError::new("native indexed framebuffer or DAC baseline unavailable"));
+        }
+        let deltas = build_inclusive_palette_deltas(start, end)?;
+        let baseline = self.native_map_assets.as_ref().unwrap().palette_dac.clone();
+        let mut dac = baseline.clone();
+        if self.native_map_dac.len() == baseline.len() {
+            dac.copy_from_slice(&self.native_map_dac);
+        }
+        let mut job =
+            NativePaletteRampJob { deltas, delay_ms, vga: vga.to_vec(), dac, baseline, then, ..Default::default() };
+        job.apply_current()?;
+        self.native_palette_ramp = Some(job);
+        Ok(())
     }
 
     /// ensureNativePaletteFrame uses the already published steady battle frame
@@ -70,7 +107,27 @@ impl Game {
     ///
     /// Go：`native_palette_ramp.go:101`，`func (g *Game) ensureNativePaletteFrame() error`
     pub(crate) fn ensure_native_palette_frame(&mut self) -> Result<()> {
-        todo!("native_palette_ramp.go:ensureNativePaletteFrame")
+        if self.native_map_vga.len() as i64 == indexedmap::NATIVE_MAP_VGA_SIZE {
+            return Ok(());
+        }
+        if self.story_actors.is_empty() {
+            return Err(GameError::new("native indexed framebuffer unavailable"));
+        }
+        let source =
+            self.build_native_indexed_transition_input().map_err(|err| game_err!("native handler frame: {err}"))?;
+        let a = self.native_map_assets.as_ref().expect("buildNativeIndexedTransitionInput 已檢查素材庫");
+        let r#in = source.input(a);
+        let mut work = vec![0u8; indexedmap::NATIVE_UNIT_PRESENT_WORK_SIZE as usize];
+        let mut vga = vec![0u8; indexedmap::NATIVE_MAP_VGA_SIZE as usize];
+        indexedmap::compose_native_unit_present_terrain_snapshot(&mut work, &r#in)
+            .map_err(|err| game_err!("native handler terrain: {err}"))?;
+        indexedmap::redraw_native_unit_present_objects(&mut work, &r#in)
+            .map_err(|err| game_err!("native handler objects: {err}"))?;
+        indexedmap::copy_native_unit_present_viewport(&mut vga, &work)
+            .map_err(|err| game_err!("native handler viewport: {err}"))?;
+        self.native_map_work = work;
+        self.native_map_vga = vga;
+        Ok(())
     }
 }
 
@@ -78,23 +135,57 @@ impl NativePaletteRampJob {
     /// Go：`native_palette_ramp.go:128`，`func (j *nativePaletteRampJob) applyCurrent() error`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn apply_current(&mut self) -> Result<()> {
-        todo!("native_palette_ramp.go:applyCurrent")
+        if self.step < 0 || self.step >= self.deltas.len() as i64 || self.delay_ms != 2 {
+            return Err(GameError::new("native palette ramp step unavailable"));
+        }
+        fdother::apply_vga_palette_subtraction(&mut self.dac, &self.baseline, 0, 255, self.deltas[self.step as usize])?;
+        let palette = fdother::vga_palette_from_dac(&self.dac)?;
+        (self.palette, self.drawn) = (color_palette_from_nrgba(&palette), false);
+        Ok(())
     }
 }
 
 impl Game {
     /// Go：`native_palette_ramp.go:143`，`func (g *Game) stepNativePaletteRamp()`
+    ///
+    /// R4 B 組：`drawn` 由呈現回報設定（Go 在 `drawNativePaletteRamp` 設），沒有回報就不前進。
     pub(crate) fn step_native_palette_ramp(&mut self) {
-        todo!("native_palette_ramp.go:stepNativePaletteRamp")
+        let Some(j) = self.native_palette_ramp.as_mut().filter(|j| j.drawn) else {
+            return;
+        };
+        j.step += 1;
+        if j.step >= j.deltas.len() as i64 {
+            let mut j = self.native_palette_ramp.take().unwrap();
+            let then = j.then.take();
+            self.native_map_dac.clear();
+            self.native_map_dac.extend_from_slice(&j.dac);
+            if let Some(then) = then {
+                then(self);
+            }
+            return;
+        }
+        if let Err(err) = j.apply_current() {
+            self.load_err = format!("native palette ramp: {err}");
+            self.native_palette_ramp = None;
+        }
     }
 
     /// Go：`native_palette_ramp.go:164`，`func (g *Game) drawNativePaletteRamp(screen *ebiten.Image) bool`
+    ///
+    /// R4 B 組：純繪圖（R5）。Go 在這裡設 `j.drawn = true`，Rust 改由呈現回報設定；HD 實體戰鬥回場的
+    /// `publishModernHDBattle` 是 R6。
     pub(crate) fn draw_native_palette_ramp(&mut self, screen: &mut Picture) -> bool {
-        todo!("native_palette_ramp.go:drawNativePaletteRamp")
+        todo!("R5: native_palette_ramp.go:drawNativePaletteRamp（繪圖；drawn 由呈現回報設定）")
     }
 }
 
 /// Go：`native_palette_ramp.go:190`，`func nativeDACIsBlack(dac []byte) bool`
 pub(crate) fn native_dacis_black(dac: &[u8]) -> bool {
-    todo!("native_palette_ramp.go:nativeDACIsBlack")
+    if dac.len() != 256 * 3 {
+        return false;
+    }
+    dac.iter().all(|&c| c == 0)
 }
+
+#[cfg(test)]
+mod native_palette_ramp_test;

@@ -25,7 +25,7 @@ impl NativeStoryInput {
     /// Go：`native_story_input.go:18`，`func (i nativeStoryInput) advance() bool`
     /// Go 值接收者：本體對接收者的改寫只影響副本。
     pub(crate) fn advance(&self) -> bool {
-        todo!("native_story_input.go:advance")
+        self.enter || self.escape
     }
 }
 
@@ -40,6 +40,61 @@ impl Game {
         n: Option<&mut campaign::Node>,
         input: NativeStoryInput,
     ) -> bool {
-        todo!("native_story_input.go:handleNativeStoryInput")
+        let Some(n) = n else {
+            return false;
+        };
+        if self.camp.is_none() {
+            return false;
+        }
+        let advance = input.advance();
+        match n.r#type.as_str() {
+            "story" => {
+                if advance
+                    && self.fade.is_none()
+                    && self.story_walks.is_empty()
+                    && self.dlg_advance()
+                    && self.dialog.is_empty()
+                {
+                    self.advance_story_node(n);
+                }
+                true
+            }
+            "cutscene" => {
+                if self.approximate_postbattle {
+                    if advance {
+                        todo!("R8: main.go:continueApproximatePostbattle（第一章沒有執行到）")
+                    }
+                    return true;
+                }
+                if advance && !self.dialog.is_empty() && self.native_dialogue_closing_live {
+                    return true;
+                }
+                if advance && let Some(current) = self.dialog.last() {
+                    let page = self.dlg_page;
+                    if current.native_dialogue.is_some()
+                        && page + 1 >= dlg_page_count(current)
+                        && page >= 0
+                        && page < self.native_dialogue_progressive.len() as i64
+                        && !self.native_dialogue_progressive[page as usize].is_empty()
+                        && self.native_dialogue_progress
+                            >= self.native_dialogue_progressive[page as usize].len() as i64 - 1
+                    {
+                        if !self.begin_native_story_dialogue_closing() {
+                            self.load_err =
+                                String::from("native story dialogue: verified closing frames are unavailable");
+                        }
+                        return true;
+                    }
+                    if self.dlg_advance() && self.dialog.is_empty() {
+                        self.beat_advance();
+                    }
+                }
+                true
+            }
+            _ => false,
+        }
     }
 }
+
+#[cfg(test)]
+mod native_story_input_test;

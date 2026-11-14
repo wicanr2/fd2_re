@@ -34,8 +34,32 @@ pub(crate) struct Native2189AJob {
 }
 
 /// Go：`native_ch22_post.go:39`，`func nativeTransitionInput(in indexedmap.NativeFrameInput) indexedmap.NativeTransitionFrameInput`
-pub(crate) fn native_transition_input(
-    r#in: &indexedmap::NativeFrameInput<'_>,
-) -> indexedmap::NativeTransitionFrameInput<'static> {
-    todo!("native_ch22_post.go:nativeTransitionInput")
+///
+/// R4 B 組：回傳值借用 `in` 的素材（生命週期 `'a`），骨架的 `'static` 做不到。
+pub(crate) fn native_transition_input<'a>(
+    r#in: &indexedmap::NativeFrameInput<'a>,
+) -> indexedmap::NativeTransitionFrameInput<'a> {
+    let f = &r#in.frame;
+    indexedmap::NativeTransitionFrameInput {
+        parallax: f.parallax,
+        parallax_scroll_x: f.parallax_scroll_x,
+        parallax_scroll_y: f.parallax_scroll_y,
+        terrain_bank: f.terrain_bank,
+        unit_bank: f.unit_bank,
+        foreground_bank: f.foreground_bank,
+        selector_cache: f.selector_cache,
+        cells: f.cells.clone(),
+        controls: f.controls,
+        terrain_lut: f.lut,
+        map_width: f.map_width,
+        camera_x: f.camera_x,
+        camera_y: f.camera_y,
+        flip: f.flip,
+        terrain_cycle: f.terrain_cycle,
+        idle_cycle: f.idle_cycle,
+        moving_cycle: f.moving_cycle,
+        pixel_shift: f.pixel_shift,
+        units: f.units.clone(),
+        foreground_units: f.foreground_units.clone(),
+    }
 }

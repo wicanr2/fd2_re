@@ -216,7 +216,6 @@ fn test_filter_scenario_party_uses_join_membership() {
 
 /// Go：`native_map_presentation_test.go:267` `TestGameMaterializesEditableNativeMapRuntime`
 #[test]
-#[ignore = "等 B 合併（materialize_native_map_runtime 呼叫 sync_native_map_view）"]
 fn test_game_materializes_editable_native_map_runtime() {
     let mut st = battle::State::default();
     (st.w, st.h) = (24, 24);
