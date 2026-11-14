@@ -5869,11 +5869,7 @@
       "area": "紀律",
       "rule": "清理子代理 worktree 時只用本輪記下的確切路徑或代理 ID 逐一移除，不以「路徑含 agent-」之類的樣式從 git worktree list 篩選；git worktree remove --force 會連同未提交與被忽略的檔案一起刪掉，誤選就無法回復。移除前先 git -C <路徑> status --short 並確認分支名是 worktree-agent-<本輪 ID>。",
       "why": "R4 階段 2 收尾以 awk '/^worktree .*agent-/' 篩選，誤中 work/matching-copy-agent-20261008 與 work/matching-inventory-agent-20261008 兩個 11-05 的 matching 備份 worktree 並刪掉分支；分支已推送遠端，當場以原 SHA 7074338e／a74c32f0 重建分支與 worktree，但目錄內若有提交後新增或被忽略的檔案已無法確認。",
-      "evidence": "WORKLOG.md 2026-11-15",
-      "guard": {
-        "kind": "manual",
-        "note": "操作紀律，沒有機器訊號。"
-      }
+      "evidence": "WORKLOG.md 2026-11-15"
     }
   ]
 }
