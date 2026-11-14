@@ -451,23 +451,6 @@
       "issue": 305
     },
     {
-      "id": "rust-r3-campaign",
-      "layer": "runtime",
-      "category": "工作",
-      "title": "Rust改寫R3：fd2-campaign移植戰役與內容層",
-      "body": "移植`campaign` `indexedmap` `battlepresent` `ending` `editorcanonical` `localization` `musiccatalog`（約2.4萬行）。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。",
-      "acceptance": "讀入全部`remake/assets`劇本與語系，結果與Go黃金資料相同；相關Go測試全部移植通過。",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/goal/119-goal-rust-bevy-rewrite-20261113.md"
-        ],
-        "pattern": "R3 完成",
-        "note": "完成時在119的「進度」加上含「R3 完成」的小節與收據。"
-      },
-      "issue": 309
-    },
-    {
       "id": "rust-r4-game-state",
       "layer": "runtime",
       "category": "工作",

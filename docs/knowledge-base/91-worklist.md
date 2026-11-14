@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 35 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 34 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -358,16 +358,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 使用者2026-11-12定案：戰中完整還原，採重製自有JSON戰場快照，不走原版FD2.SAV current snapshot。原版FD2.SAV寫入端0x30012只由整備與酒店呼叫，戰鬥中不得寫原版章節槽。規格先於`56`立READY契約再實作。
 
 怎樣算做完：一般劇情進戰後於我方可操作狀態F5，新程序F9與標題LOAD回到同一回合、單位位置／HP／MP／狀態、敵軍、事件旗標、寶箱與鏡頭；繼續遊玩至戰後節點無分歧。演出、AI回合或對話中F5明示拒絕並有玩家可見提示。戰鬥選單存檔在正式包有可見結果。原版FD2.SAV章節槽不在戰鬥中寫入。既有節點存檔可照常讀取。
-
-### Rust改寫R3：fd2-campaign移植戰役與內容層
-
-`rust-r3-campaign` · 工作 · [#309](https://github.com/wicanr2/fd2_re/issues/309) · 仍未完成 · 還沒出現
-
-移植`campaign` `indexedmap` `battlepresent` `ending` `editorcanonical` `localization` `musiccatalog`（約2.4萬行）。
-
-依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
-
-怎樣算做完：讀入全部`remake/assets`劇本與語系，結果與Go黃金資料相同；相關Go測試全部移植通過。
 
 ### Rust改寫R4：fd2-game無畫面遊戲狀態機
 
