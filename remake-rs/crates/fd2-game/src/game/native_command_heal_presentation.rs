@@ -81,6 +81,141 @@ pub(crate) struct NativeCommandHealPresentationJob {
 impl Game {
     /// Go：`native_command_heal_presentation.go:341`，`func (g *Game) stepNativeCommandHealPresentation()`
     pub(crate) fn step_native_command_heal_presentation(&mut self) {
-        todo!("native_command_heal_presentation.go:stepNativeCommandHealPresentation")
+        let Some(j) = self.native_heal_presentation.as_mut() else {
+            return;
+        };
+        match j.phase {
+            NATIVE_COMMAND_HEAL_FRAMES => {
+                if !j.drawn {
+                    return;
+                }
+                if j.frame + 1 == j.front_schedule.mid_frame {
+                    (j.phase, j.hold) =
+                        (NATIVE_COMMAND_HEAL_MID_HOLD, native_delay_ticks(j.front_schedule.mid_delay_ms));
+                    return;
+                }
+                if j.frame + 1 >= j.front_frames.len() as i64 {
+                    (j.phase, j.hold, j.drawn) =
+                        (NATIVE_COMMAND_HEAL_FRONT_HOLD, native_delay_ticks(j.front_schedule.tail_delay_ms), false);
+                    return;
+                }
+                j.frame += 1;
+                j.drawn = false;
+            }
+            NATIVE_COMMAND_HEAL_MID_HOLD => {
+                if j.hold > 0 {
+                    j.hold -= 1;
+                    return;
+                }
+                (j.frame, j.phase, j.drawn) = (j.front_schedule.mid_frame, NATIVE_COMMAND_HEAL_FRAMES, false);
+            }
+            NATIVE_COMMAND_HEAL_FRONT_HOLD => {
+                if j.hold > 0 {
+                    j.hold -= 1;
+                    return;
+                }
+                (j.frame, j.phase, j.drawn) = (0, NATIVE_COMMAND_HEAL_EFFECT_FRAMES, false);
+                let sample = j.tail_schedule.effect_sample;
+                self.play_sfx(sample);
+            }
+            NATIVE_COMMAND_HEAL_EFFECT_FRAMES => {
+                if !j.drawn {
+                    return;
+                }
+                if j.frame + 1 < j.effect_frames.len() as i64 {
+                    j.frame += 1;
+                    j.drawn = false;
+                    return;
+                }
+                (j.frame, j.phase, j.drawn) = (0, NATIVE_COMMAND_HEAL_MASK_FRAMES, false);
+                let sample = j.tail_schedule.mask_sample;
+                self.play_sfx(sample);
+            }
+            NATIVE_COMMAND_HEAL_MASK_FRAMES => {
+                if !j.drawn {
+                    return;
+                }
+                if j.frame < j.tail_schedule.mask_pairs * 2 {
+                    j.frame += 1;
+                    j.drawn = false;
+                    return;
+                }
+                if j.hd_input_err.is_none() {
+                    // Go 在忠實模式也會走到（`hdInputErr` 由 start 的 `freezeModernHDCommandGeometry` 決定）。
+                    todo!(
+                        "R8: modern_hd_heal_source.go:validateModernHDHealSource（與 r8 的 startNativeCommandHealPresentation 一起移植）"
+                    );
+                }
+                let rollback = self.native_heal_rollback();
+                let mut transaction =
+                    self.native_heal_presentation.as_mut().expect("Go：j 仍是同一個工作").transaction.take();
+                // Go `j.transaction()`：nil func 解參考 panic。
+                let results = (transaction.as_mut().expect("Go：j.transaction 為 nil 時呼叫 panic"))(self);
+                if let Some(j) = self.native_heal_presentation.as_mut() {
+                    j.transaction = transaction;
+                }
+                let results = match results {
+                    Ok(results) => results,
+                    Err(err) => {
+                        rollback(self);
+                        self.load_err = format!("native command heal post-presentation transaction: {}", err.message());
+                        self.native_heal_presentation = None;
+                        return;
+                    }
+                };
+                let _ = results;
+                todo!(
+                    "R8: native_command_heal_presentation.go:buildNativeCommandHealDigitFrames（r8；含 HD 幾何凍結，與 start 一起移植）"
+                );
+            }
+            NATIVE_COMMAND_HEAL_DIGIT_FRAMES => {
+                if !j.drawn {
+                    return;
+                }
+                if j.frame + 1 < j.digit_frames.len() as i64 {
+                    j.frame += 1;
+                    j.drawn = false;
+                    return;
+                }
+                (j.phase, j.hold, j.drawn) =
+                    (NATIVE_COMMAND_HEAL_DIGIT_HOLD, native_delay_ticks(j.tail_schedule.digit_hold_ms), false);
+            }
+            NATIVE_COMMAND_HEAL_DIGIT_HOLD => {
+                if j.hold > 0 {
+                    j.hold -= 1;
+                    return;
+                }
+                let mut j = self.native_heal_presentation.take().expect("Go：j 仍是同一個工作");
+                let (then, results) = (j.then.take(), std::mem::take(&mut j.results));
+                self.native_map_vga = j.baseline_vga;
+                self.native_map_work = j.baseline_work;
+                if let Some(then) = then {
+                    then(self, results);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    /// Both production callbacks are the native player/AI heal transactions.
+    /// They write unit scalar/array fields and the native RNG, then defer action
+    /// cleanup to the continuation. Keep unit pointers stable on a failed redraw.
+    ///
+    /// Go：`modern_hd_heal_source.go:76`，`func (g *Game) nativeHealRollback() func()`（`r8`，隨呼叫端
+    /// `stepNativeCommandHealPresentation` 補移植）。Go 以單位指標為鍵存值複本；Rust 依 `st.units` 的索引。
+    pub(crate) fn native_heal_rollback(&self) -> Box<dyn FnOnce(&mut Game) + Send> {
+        let units = self.st.as_ref().expect("Go：g.st 為 nil 時解參考 panic").units.clone();
+        let rng = self.native_rng_state;
+        let (work, vga) = (self.native_map_work.clone(), self.native_map_vga.clone());
+        Box::new(move |g: &mut Game| {
+            let current = presentation_units(&mut g.st);
+            for (index, before) in units.into_iter().enumerate() {
+                if let Some(unit) = current.get_mut(index) {
+                    *unit = before;
+                }
+            }
+            g.native_rng_state = rng;
+            (g.native_map_work, g.native_map_vga) = (work, vga);
+        })
     }
 }

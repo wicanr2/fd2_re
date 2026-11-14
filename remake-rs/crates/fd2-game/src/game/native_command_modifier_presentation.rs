@@ -23,6 +23,29 @@ pub(crate) struct NativeCommandModifierPresentationJob {
 impl Game {
     /// Go：`native_command_modifier_presentation.go:95`，`func (g *Game) stepNativeCommandModifierPresentation()`
     pub(crate) fn step_native_command_modifier_presentation(&mut self) {
-        todo!("native_command_modifier_presentation.go:stepNativeCommandModifierPresentation")
+        let Some(j) = self.native_modifier_presentation.as_mut() else {
+            return;
+        };
+        if !j.drawn {
+            return;
+        }
+        j.drawn = false;
+        j.phase += 1;
+        if j.phase < j.palettes.len() as i64 {
+            return;
+        }
+        // Go 在工作仍掛在 `g.nativeModifierPresentation` 時呼叫交易，之後才清掉；nil func 解參考 panic。
+        // Go 的 `then := j.then` 讀的是同一個工作，交易改不到它，所以先取出等價。
+        let mut transaction = j.transaction.take().expect("Go：j.transaction 為 nil 時呼叫 panic");
+        let then = j.then.take();
+        let err = transaction(self);
+        self.native_modifier_presentation = None;
+        if let Err(err) = err {
+            self.msg = format!("原始指令 modifier transaction 失敗: {}", err.message());
+            return;
+        }
+        if let Some(then) = then {
+            then(self);
+        }
     }
 }

@@ -80,7 +80,8 @@ impl Game {
                 return;
             }
             let mut j = self.native_cmd32_presentation.take().expect("Go：j 仍是同一個工作");
-            let (then, result) = (j.then.take(), j.plan.take().expect("Go：CompleteNativeCompoundCommand32 已檢查 plan").result);
+            let (then, result) =
+                (j.then.take(), j.plan.take().expect("Go：CompleteNativeCompoundCommand32 已檢查 plan").result);
             if let Some(then) = then {
                 then(self, result);
             }

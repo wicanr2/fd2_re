@@ -57,6 +57,134 @@ pub(crate) struct NativeCommand8PresentationJob {
 impl Game {
     /// Go：`native_command8_presentation.go:327`，`func (g *Game) stepNativeCommand8Presentation()`
     pub(crate) fn step_native_command8_presentation(&mut self) {
-        todo!("native_command8_presentation.go:stepNativeCommand8Presentation")
+        let Some(j) = self.native_cmd8_presentation.as_mut() else {
+            return;
+        };
+        if !j.drawn {
+            return;
+        }
+        j.drawn = false;
+        match j.phase {
+            NATIVE_COMMAND8_COMMON_PRELUDE => {
+                j.frame += 1;
+                if j.frame >= j.prelude.len() as i64 {
+                    (j.phase, j.frame) = (NATIVE_COMMAND8_ACTOR, 0);
+                }
+            }
+            NATIVE_COMMAND8_ACTOR => {
+                let spec = &j.actor_specs[j.frame as usize];
+                let (spec_pulse, spec_publish_mp) = (spec.pulse, spec.publish_mp);
+                if spec_pulse && !j.pulse_black {
+                    if spec_publish_mp && !j.mp_published {
+                        if let Err(err) = self.publish_native_command8_mp() {
+                            self.fail_native_command8_presentation(&err);
+                            return;
+                        }
+                        let sfx = self.sfx_command8_actor.clone();
+                        self.play_raw(&sfx);
+                    }
+                    let j = self.native_cmd8_presentation.as_mut().expect("Go：j 仍是同一個工作");
+                    j.pulse_black = true;
+                    return;
+                }
+                if spec_publish_mp && !j.mp_published {
+                    if let Err(err) = self.publish_native_command8_mp() {
+                        self.fail_native_command8_presentation(&err);
+                        return;
+                    }
+                    let sfx = self.sfx_command8_actor.clone();
+                    self.play_raw(&sfx);
+                }
+                let j = self.native_cmd8_presentation.as_mut().expect("Go：j 仍是同一個工作");
+                j.pulse_black = false;
+                j.frame += 1;
+                if j.frame >= j.actor_black.len() as i64 {
+                    if !j.mp_published {
+                        self.fail_native_command8_presentation(&game_err!("actor MP marker was not presented"));
+                        return;
+                    }
+                    (j.phase, j.frame) = (NATIVE_COMMAND8_HANDLER, 0);
+                }
+            }
+            NATIVE_COMMAND8_HANDLER => {
+                let frame = &j.handler[j.frame as usize];
+                let hp_stage = frame.hp_stage;
+                let (play1, play2) = (frame.play_sub1, frame.play_sub2);
+                if hp_stage != 0 {
+                    let units = presentation_units(&mut self.st);
+                    let j = self.native_cmd8_presentation.as_mut().expect("Go：j 仍是同一個工作");
+                    if let Err(err) = battle::apply_native_command_damage_stage(units, j.plan.as_mut(), 0, hp_stage) {
+                        self.fail_native_command8_presentation(&err.into());
+                        return;
+                    }
+                }
+                if play1 {
+                    let sfx = self.sfx_command8_sub1.clone();
+                    self.play_raw(&sfx);
+                }
+                if play2 {
+                    let sfx = self.sfx_command8_sub2.clone();
+                    self.play_raw(&sfx);
+                }
+                let j = self.native_cmd8_presentation.as_mut().expect("Go：j 仍是同一個工作");
+                j.frame += 1;
+                if j.frame >= j.handler.len() as i64 {
+                    (j.phase, j.frame) = (NATIVE_COMMAND8_COMMON_TAIL, 0);
+                }
+            }
+            NATIVE_COMMAND8_COMMON_TAIL => {
+                j.frame += 1;
+                if j.frame < j.tail.len() as i64 {
+                    return;
+                }
+                let units = presentation_units(&mut self.st);
+                let j = self.native_cmd8_presentation.as_mut().expect("Go：j 仍是同一個工作");
+                if let Err(err) = battle::complete_native_command_damage(units, j.plan.as_mut()) {
+                    self.fail_native_command8_presentation(&err.into());
+                    return;
+                }
+                let plan = j.plan.as_ref().expect("Go：CompleteNativeCommandDamage 已檢查 plan");
+                self.native_rng_state = plan.rng_after;
+                let results = plan.results.clone();
+                let then = j.then.take();
+                self.native_cmd8_presentation = None;
+                if let Some(then) = then {
+                    then(self, results);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    /// Go `stepNativeCommand8Presentation` 兩處相同的 MP 發布：`ApplyNativeCommandDamageMP` 成功後設 `mpPublished`。
+    fn publish_native_command8_mp(&mut self) -> Result<()> {
+        let units = presentation_units(&mut self.st);
+        let j = self.native_cmd8_presentation.as_mut().expect("Go：j 仍是同一個工作");
+        battle::apply_native_command_damage_mp(units, j.plan.as_mut())?;
+        j.mp_published = true;
+        Ok(())
+    }
+
+    /// Go：`native_command8_presentation.go:314`，`func (g *Game) failNativeCommand8Presentation(err error)`
+    /// （`r8`，隨呼叫端 `stepNativeCommand8Presentation` 補移植）。
+    pub(crate) fn fail_native_command8_presentation(&mut self, err: &GameError) {
+        let Some(j) = self.native_cmd8_presentation.take() else {
+            return;
+        };
+        let units = presentation_units(&mut self.st);
+        if let Some(actor) = j.actor {
+            (units[actor].mp, units[actor].acted) = (j.actor_mp_before, j.actor_acted_before);
+        }
+        if let Some(plan) = j.plan.as_ref()
+            && plan.results.len() == 1
+            && let Some(target) = plan.results[0].target
+        {
+            units[target].hp = j.target_hp_before;
+        }
+        self.load_err = format!("native command8 presentation: {}", err.message());
     }
 }
+
+#[cfg(test)]
+#[path = "native_command8_presentation/native_command8_presentation_test.rs"]
+mod native_command8_presentation_test;
