@@ -129,13 +129,13 @@ pub mod go_bytes {
 }
 
 /// Go `fmt` 的 `%#x`：負數寫成 `-0x..`（Rust 的 `{:#x}` 對負數輸出二補數）。
-pub(crate) fn go_sharp_x(v: i64) -> String {
+pub fn go_sharp_x(v: i64) -> String {
     if v < 0 { format!("-{:#x}", v.unsigned_abs()) } else { format!("{v:#x}") }
 }
 
 /// Go `fmt` 的 `%q`（`strconv.Quote`）：雙引號包住，跳脫 `"`、`\` 與控制字元，可列印的 Unicode
 /// 原樣保留。只涵蓋 `battle` 錯誤訊息用到的字串；Go 對不可列印 Unicode 的判定表不移植。
-pub(crate) fn go_quote(s: &str) -> String {
+pub fn go_quote(s: &str) -> String {
     let mut out = String::with_capacity(s.len() + 2);
     out.push('"');
     for c in s.chars() {
@@ -159,17 +159,17 @@ pub(crate) fn go_quote(s: &str) -> String {
 
 /// Go `os.ReadFile`。錯誤文字不與 Go 逐字相同（`os` 錯誤屬 Go 標準函式庫，見 `KNOWN_DIFFERENCES`），
 /// 呼叫端只看成功或失敗。
-pub(crate) fn read_file(path: &str) -> Result<Vec<u8>> {
+pub fn read_file(path: &str) -> Result<Vec<u8>> {
     std::fs::read(path).map_err(|e| BattleError::new(format!("open {path}: {e}")))
 }
 
 /// Go `json.Unmarshal`（以 serde_json 實作）。錯誤文字不與 Go 逐字相同，只比接受或拒收。
-pub(crate) fn decode_json<T: serde::de::DeserializeOwned>(raw: &[u8]) -> Result<T> {
+pub fn decode_json<T: serde::de::DeserializeOwned>(raw: &[u8]) -> Result<T> {
     serde_json::from_slice(raw).map_err(|e| BattleError::new(e.to_string()))
 }
 
 /// Go `hex.DecodeString` 的成功值：大小寫十六進位都接受，奇數長度或非十六進位字元回 `None`。
-pub(crate) fn decode_hex(s: &str) -> Option<Vec<u8>> {
+pub fn decode_hex(s: &str) -> Option<Vec<u8>> {
     let b = s.as_bytes();
     if !b.len().is_multiple_of(2) {
         return None;

@@ -22,5 +22,8 @@ fd2-rules = { path = "../fd2-rules" }
 # serde_json 開 float_roundtrip，讀小數與 Go strconv 一樣正確捨入。
 base64 = "=0.23.1"
 serde = { version = "=1.0.229", features = ["derive"] }
-serde_json = { version = "=1.0.154", features = ["float_roundtrip"] }
+# raw_value：Go json.RawMessage 的對應（campaign 編譯輸出保留原始 JSON 片段）。
+serde_json = { version = "=1.0.154", features = ["float_roundtrip", "raw_value"] }
+# 分離素材的 indexed 與灰階 PNG（separated_shop_assets.go）；版本同 fd2-formats。
+png = "=0.18.1"
 sha2 = "=0.10.9"
