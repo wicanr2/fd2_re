@@ -1,0 +1,29 @@
+[package]
+name = "fd2-game"
+description = "FD2 remake game state machine (port of the flow part of the frozen Go cmd/fd2)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[lib]
+# 函式 doc 逐字保留 Go 註解，其中縮排行在 rustdoc 會被當成 Rust 程式碼；不跑 doctest。
+doctest = false
+
+[dependencies]
+fd2-campaign = { path = "../fd2-campaign" }
+fd2-formats = { path = "../fd2-formats" }
+fd2-rules = { path = "../fd2-rules" }
+# 版本與 feature 照 fd2-campaign：釘在工作區 Cargo.lock 既有版本，不新增套件版本。
+# serde／serde_json：存檔、設定與執行期 JSON（save.go、settings.go）；base64：[]byte 欄位；
+# sha2：Go 的 crypto/sha256（素材與輸入雜湊）；png：Go 的 image/png（分離素材）。
+base64 = "=0.23.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = { version = "=1.0.154", features = ["float_roundtrip", "raw_value"] }
+png = "=0.18.1"
+sha2 = "=0.10.9"

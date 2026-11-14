@@ -2695,6 +2695,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "fd2-game"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "fd2-campaign",
+ "fd2-formats",
+ "fd2-rules",
+ "png",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
 name = "fd2-rules"
 version = "0.1.0"
 dependencies = [
