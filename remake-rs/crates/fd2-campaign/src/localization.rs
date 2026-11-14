@@ -11,7 +11,7 @@
 //!   屬標準函式庫，Rust 只保留本套件自己的前綴（例如 `decode locale pack "<路徑>": `）。
 //! - Go 的 `regexp` 樣式改成逐字元比對的函式（`patterns.rs`），每個函式的 doc 寫出原本的樣式；
 //!   樣式都是錨定的整串比對，沒有需要回溯的分支。
-//! - `filepath.Join` 會做 `filepath.Clean`；錯誤訊息裡的路徑照 Go 的字面清理結果（[`go_join`]）。
+//! - `filepath.Join` 會做 `filepath.Clean`；錯誤訊息裡的路徑照 Go 的字面清理結果（[`crate::go_filepath`]）。
 //! - Go `map` → `BTreeMap`。`entities.json` 的驗證在 Go 以 map 的隨機順序走訪，有多筆不合法時回報哪一筆
 //!   由順序決定；Rust 依字串鍵排序走訪，只是 Go 可能結果之一。
 //! - `Catalog.Format(key, args ...any)` 的參數改成 [`FormatArg`] 切片；`fmt.Sprintf` 只實作語系文字會用到
@@ -38,41 +38,6 @@ fn err(message: impl Into<String>) -> Error {
 
 /// Go `strconv.Quote`（`%q`）：共用 `fd2-rules` 的實作。
 pub(crate) use fd2_rules::battle::go_quote;
-
-/// Go `filepath.Clean` 的字面清理（以 `/` 為分隔；Go 在 Windows 也得到相同的接受／拒收結果）：去掉
-/// 空段與 `.`，`..` 吃掉前一個非 `..` 段，根目錄之上的 `..` 丟掉，空結果是 `.`。
-pub(crate) fn go_clean(path: &str) -> String {
-    let rooted = path.starts_with('/');
-    let mut parts: Vec<&str> = Vec::new();
-    for seg in path.split('/') {
-        match seg {
-            "" | "." => {}
-            ".." => match parts.last() {
-                Some(&last) if last != ".." => {
-                    parts.pop();
-                }
-                _ if rooted => {}
-                _ => parts.push(".."),
-            },
-            seg => parts.push(seg),
-        }
-    }
-    let joined = parts.join("/");
-    match (rooted, joined.is_empty()) {
-        (true, _) => format!("/{joined}"),
-        (false, true) => ".".to_string(),
-        (false, false) => joined,
-    }
-}
-
-/// Go `filepath.Join`：略過空字串，以 `/` 接起來再 [`go_clean`]；全部是空字串時回空字串。
-pub(crate) fn go_join(parts: &[&str]) -> String {
-    let parts: Vec<&str> = parts.iter().copied().filter(|p| !p.is_empty()).collect();
-    if parts.is_empty() {
-        return String::new();
-    }
-    go_clean(&parts.join("/"))
-}
 
 /// 嚴格 JSON 解碼的失敗種類（Go `json.Decoder` 配 `DisallowUnknownFields`，再讀一次確認沒有第二個值）。
 pub(crate) enum StrictDecodeError {

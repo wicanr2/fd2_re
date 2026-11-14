@@ -9,7 +9,8 @@
 //! - Go `map` → `BTreeMap`；`Load` 只以固定的 profile 名稱查 map，不走訪，順序不影響結果。
 //! - 錯誤用 `fd2_rules::battle::BattleError`（`Display` 與 Go `err.Error()` 逐字相同）。
 
-use crate::localization::{StrictDecodeError, decode_strict, go_join, go_quote};
+use crate::go_filepath;
+use crate::localization::{StrictDecodeError, decode_strict, go_quote};
 use fd2_rules::battle::null_as_default;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -124,8 +125,8 @@ pub struct Catalog {
 
 /// Go：`catalog.go:66`。讀檔錯誤的內層文字是 Rust `std::io` 的（見模組文件）。
 pub fn load(assets_root: &str) -> Result<Catalog> {
-    let raw =
-        std::fs::read(go_join(&[assets_root, "music_catalog.json"])).map_err(|e| err(format!("music catalog: {e}")))?;
+    let raw = std::fs::read(go_filepath::join(&[assets_root, "music_catalog.json"]))
+        .map_err(|e| err(format!("music catalog: {e}")))?;
     let mut catalog: Catalog = decode_strict(&raw).map_err(|e| match e {
         StrictDecodeError::Decode(detail) => err(format!("music catalog decode: {detail}")),
         StrictDecodeError::Trailing | StrictDecodeError::TrailingInvalid(_) => err("music catalog trailing data"),
@@ -202,7 +203,7 @@ pub fn load(assets_root: &str) -> Result<Catalog> {
                     go_quote(&render.path)
                 )));
             }
-            validate_render(&go_join(&[assets_root, &render.path]), render).map_err(|e| {
+            validate_render(&go_filepath::join(&[assets_root, &render.path]), render).map_err(|e| {
                 e.wrap(format!("music catalog track {} profile {profile}: ", go_quote(&track.track_id)))
             })?;
         }
@@ -223,7 +224,7 @@ impl Catalog {
         };
         // Go 以零值 Render 查不存在的 profile；Load 已保證兩個 profile 都在。
         let path = track.renders.get(profile).map(|r| r.path.as_str()).unwrap_or_default();
-        Ok(go_join(&[&self.root, path]))
+        Ok(go_filepath::join(&[&self.root, path]))
     }
 }
 

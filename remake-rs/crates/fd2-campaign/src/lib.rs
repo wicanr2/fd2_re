@@ -7,6 +7,7 @@ pub mod battlepresent;
 pub mod campaign;
 pub mod editorcanonical;
 pub mod ending;
+mod go_filepath;
 pub mod indexedmap;
 pub mod localization;
 pub mod musiccatalog;

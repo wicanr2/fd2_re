@@ -1,7 +1,8 @@
 //! 移植自 Go `localization/entities.go`。
 
 use super::patterns::locale_pattern;
-use super::{Result, SCHEMA_VERSION, decode_strict, err, go_join, go_quote, strict_decode_error};
+use super::{Result, SCHEMA_VERSION, decode_strict, err, go_quote, strict_decode_error};
+use crate::go_filepath;
 use fd2_rules::battle::null_as_default;
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -80,7 +81,7 @@ pub fn load_official_entities(root: &str, locale: &str) -> Result<EntityCatalog>
     if !locale_pattern(locale) {
         return Err(err(format!("invalid locale {}", go_quote(locale))));
     }
-    let path = go_join(&[root, locale, "entities.json"]);
+    let path = go_filepath::join(&[root, locale, "entities.json"]);
     let qpath = go_quote(&path);
     let raw = std::fs::read(&path).map_err(|e| err(format!("read locale entities {qpath}: {e}")))?;
     let pack: EntityPack =

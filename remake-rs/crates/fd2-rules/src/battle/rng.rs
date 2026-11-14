@@ -6,7 +6,8 @@
 //! `math/rand` 的 `rngSource`（607 項加法延遲費氏產生器）與 `Intn`／`Int31n`／`Int63n`／`Int31`
 //! 的取樣方式。`Cargo.lock` 裡的 `rand` crate 演算法不同，不能直接拿來用。
 //!
-//! 這是 `rust-port-no-go-stdlib` 教訓唯一具名的例外，範圍見 `PORTING.md`「開工前的決定」第 1 點。
+//! 這是 `rust-port-no-go-stdlib` 教訓的具名例外之一（另兩項是 `fd2_formats::go_math` 與
+//! `fd2_campaign` 的 `go_filepath`），範圍見 `PORTING.md`「開工前的決定」第 1 點。
 //! `rngCooked` 表由 `tools/rust_gen_gorand_cooked.sh` 從容器內 Go 的 `$GOROOT/src/math/rand/rng.go`
 //! 機械轉出到 `rng/cooked.rs`，該檔頭保留 Go 的 BSD 授權聲明。本檔的演算法對照同一份
 //! `rng.go`（`seedrand`、`rngSource.Seed`、`Uint64`）與 `rand.go`（`Int63n`、`Int31n`、`Intn`），

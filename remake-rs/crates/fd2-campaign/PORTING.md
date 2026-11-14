@@ -260,8 +260,8 @@ Go 用到的具名項目都有公開的 Rust 對應（見 `ext_deps.rs`）。下
   Go 讀 `null` 或缺欄位時留零值，Rust 每個欄位 `default` 加 `null_as_default`。「解碼後再讀一次要求 EOF」以
   `serde_json` 的 `StreamDeserializer` 實作，區分 Go 的 `trailing JSON` 與 `trailing JSON: <err>`。
 - **regexp**：Go 的五個錨定樣式與 `FindAllString` 改成逐字元比對（`src/localization/patterns.rs`），每個函式的
-  doc 寫出原樣式；字元類別互不重疊，不需要回溯。`filepath.Join`／`Clean` 以 `/` 做字面清理（`go_join`、
-  `go_clean`），錯誤訊息裡的路徑與 Go 相同。
+  doc 寫出原樣式；字元類別互不重疊，不需要回溯。`filepath.Join`／`Clean` 以 `/` 做字面清理（具名例外模組 `go_filepath`
+  的 `join`、`clean`），錯誤訊息裡的路徑與 Go 相同。
 - **`Catalog.Format(key, args ...any)`**：參數改成 `&[FormatArg]`（`Int`、`Str`、`Float`）。`fmt.Sprintf` 只實作
   語系文字可能用到的子集（`go_sprintf`）：`%d %v %x %X %c`（整數）、`%s %v %q %x %X`（字串）、`%f %F`（浮點數），
   旗標 `+ - # 空格 0`、寬度、精度，行為照 Go 1.22（例如 `0` 旗標對字串也補零、`%#06x` 的前綴不算寬度、

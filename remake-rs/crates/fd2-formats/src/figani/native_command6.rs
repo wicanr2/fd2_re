@@ -1,6 +1,7 @@
 //! 指令 6（`0x26E39`）的五通道軌道、目標序列與 caller 顯示狀態。移植自 Go `native_command6.go`。
 
 use super::{Animation, FiganiError, Resolver, RngWalkError, fail, frame_shape_ok, msg};
+use crate::go_math;
 use crate::native_rng::native_rng_step;
 
 pub const NATIVE_COMMAND6_EFFECT_FRAME_COUNT: i64 = 10;
@@ -72,99 +73,6 @@ pub struct NativeCommand6PresentationSchedule {
     pub byte_table: [u8; NATIVE_COMMAND6_CHANNEL_COUNT],
 }
 
-// ---- Go math.Sin／math.Cos（純 Go 的 Cephes 實作，amd64 不用組語）逐行移植 ----
-
-// 常數照抄 Go 原始碼的十進位字面值（同樣四捨五入到最近的 f64）。
-#[allow(clippy::excessive_precision)]
-const PI4A: f64 = 7.85398125648498535156e-1;
-#[allow(clippy::excessive_precision)]
-const PI4B: f64 = 3.77489470793079817668e-8;
-#[allow(clippy::excessive_precision)]
-const PI4C: f64 = 2.69515142907905952645e-15;
-#[allow(clippy::excessive_precision)]
-const SIN: [f64; 6] = [
-    1.58962301576546568060e-10,
-    -2.50507477628578072866e-8,
-    2.75573136213857245213e-6,
-    -1.98412698295895385996e-4,
-    8.33333333332211858878e-3,
-    -1.66666666666666307295e-1,
-];
-#[allow(clippy::excessive_precision)]
-const COS: [f64; 6] = [
-    -1.13585365213876817300e-11,
-    2.08757008419747316778e-9,
-    -2.75573141792967388112e-7,
-    2.48015872888517045348e-5,
-    -1.38888888888730564116e-3,
-    4.16666666666665929218e-2,
-];
-
-/// 只處理 |x| < 2^29 的情況；更大的引數在 Go 走 Payne-Hanek（本套件的角度只到 288°，不會用到）。
-fn go_reduce(x: f64) -> (u64, f64) {
-    // Go 的 `4 / Pi` 是精確常數再捨入；2/π 的 f64 常數乘 2 是精確運算，得到同一個值。
-    let mut j = (x * (2.0 * std::f64::consts::FRAC_2_PI)) as u64;
-    let mut y = j as f64;
-    if j & 1 == 1 {
-        j += 1;
-        y += 1.0;
-    }
-    j &= 7;
-    (j, ((x - y * PI4A) - y * PI4B) - y * PI4C)
-}
-
-fn go_cos(x: f64) -> f64 {
-    if x.is_nan() || x.is_infinite() {
-        return f64::NAN;
-    }
-    let mut sign = false;
-    let x = x.abs();
-    let (mut j, z) = go_reduce(x);
-    if j > 3 {
-        j -= 4;
-        sign = !sign;
-    }
-    if j > 1 {
-        sign = !sign;
-    }
-    let zz = z * z;
-    let y = if j == 1 || j == 2 {
-        z + z * zz * ((((((SIN[0] * zz) + SIN[1]) * zz + SIN[2]) * zz + SIN[3]) * zz + SIN[4]) * zz + SIN[5])
-    } else {
-        1.0 - 0.5 * zz
-            + zz * zz * ((((((COS[0] * zz) + COS[1]) * zz + COS[2]) * zz + COS[3]) * zz + COS[4]) * zz + COS[5])
-    };
-    if sign { -y } else { y }
-}
-
-fn go_sin(x: f64) -> f64 {
-    if x == 0.0 || x.is_nan() {
-        return x;
-    }
-    if x.is_infinite() {
-        return f64::NAN;
-    }
-    let mut sign = false;
-    let mut x = x;
-    if x < 0.0 {
-        x = -x;
-        sign = true;
-    }
-    let (mut j, z) = go_reduce(x);
-    if j > 3 {
-        sign = !sign;
-        j -= 4;
-    }
-    let zz = z * z;
-    let y = if j == 1 || j == 2 {
-        1.0 - 0.5 * zz
-            + zz * zz * ((((((COS[0] * zz) + COS[1]) * zz + COS[2]) * zz + COS[3]) * zz + COS[4]) * zz + COS[5])
-    } else {
-        z + z * zz * ((((((SIN[0] * zz) + SIN[1]) * zz + SIN[2]) * zz + SIN[3]) * zz + SIN[4]) * zz + SIN[5])
-    };
-    if sign { -y } else { y }
-}
-
 /// Go 在 amd64 把超出 int64 範圍或 NaN 的浮點轉整數得到 `0x8000000000000000`（CVTTSD2SI）；
 /// Rust 的 `as` 會飽和，所以另外處理。
 fn go_f64_to_int(v: f64) -> i64 {
@@ -173,7 +81,7 @@ fn go_f64_to_int(v: f64) -> i64 {
 
 /// 重現 `0x26F99..0x2704C`。角度換算沿用原版單精度常數；`__CHP` 控制字 helper（`0x377A4`）在
 /// fistp 之前向零截斷。證據：`fd2_ch24_command6_work_bounds_20261004.json`、issue162。
-/// 三角函數逐行移植 Go 的純 Go 實作，避免平台 libm 末位差異改變截斷結果。
+/// 三角函數用 [`go_math`]（Go `math.Sin`／`math.Cos` 的逐行移植），避免平台 libm 末位差異改變截斷結果。
 pub fn native_command6_coordinates(radius: i64, base_byte: u8) -> [NativeCommand6Point; NATIVE_COMMAND6_CHANNEL_COUNT] {
     // 照抄 Go 的 `float64(float32(0.017453292519943295))`。
     #[allow(clippy::excessive_precision)]
@@ -182,8 +90,8 @@ pub fn native_command6_coordinates(radius: i64, base_byte: u8) -> [NativeCommand
     for (channel, point) in points.iter_mut().enumerate() {
         let angle = (channel as i64 * 72) as f64 * degree;
         *point = NativeCommand6Point {
-            x: go_f64_to_int(go_cos(angle) * radius as f64 + base_byte as f64),
-            y: go_f64_to_int(go_sin(angle) * radius as f64 * 1.2 + 30.0),
+            x: go_f64_to_int(go_math::cos(angle) * radius as f64 + base_byte as f64),
+            y: go_f64_to_int(go_math::sin(angle) * radius as f64 * 1.2 + 30.0),
         };
     }
     points

@@ -1,7 +1,8 @@
 //! 移植自 Go `localization/locale.go`。
 
 use super::patterns::{font_path_pattern, key_pattern, locale_pattern, pack_id_pattern};
-use super::{Result, decode_strict, err, go_clean, go_join, go_quote, strict_decode_error};
+use super::{Result, decode_strict, err, go_quote, strict_decode_error};
+use crate::go_filepath;
 use fd2_rules::battle::null_as_default;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -92,7 +93,7 @@ pub fn load_official(root: &str, locale: &str) -> Result<Catalog> {
     if !locale_pattern(locale) {
         return Err(err(format!("invalid locale {}", go_quote(locale))));
     }
-    let catalog = load(&go_join(&[root, locale, "pack.json"]))?;
+    let catalog = load(&go_filepath::join(&[root, locale, "pack.json"]))?;
     if catalog.kind != "official" || catalog.locale != locale {
         return Err(err(format!(
             "pack identity mismatch: kind={} locale={}, want official/{}",
@@ -230,7 +231,7 @@ fn validate_relative_path(path: &str) -> Result<()> {
     {
         return Err(err("must be a non-empty relative slash path"));
     }
-    let clean = go_clean(path);
+    let clean = go_filepath::clean(path);
     if clean == "." || clean == ".." || clean.starts_with("../") {
         return Err(err("path escapes pack root"));
     }

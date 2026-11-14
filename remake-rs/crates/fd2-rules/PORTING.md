@@ -84,7 +84,7 @@
 
 ## 開工前的決定（2026-11-14）
 
-1. **Go `math/rand` 相容序列：移植，放在 `src/battle/rng.rs`，由 A 組實作。** 119 的 R2 完成條件是「Go 的戰鬥決定性測試以相同種子產生相同結果」，約 90 處 Go 測試的期望值綁在 `rand.NewSource(seed)` 的序列上，只有重現序列才能不改期望值。這是 `rust-port-no-go-stdlib` 教訓唯一具名的例外，範圍限定為：
+1. **Go `math/rand` 相容序列：移植，放在 `src/battle/rng.rs`，由 A 組實作。** 119 的 R2 完成條件是「Go 的戰鬥決定性測試以相同種子產生相同結果」，約 90 處 Go 測試的期望值綁在 `rand.NewSource(seed)` 的序列上，只有重現序列才能不改期望值。這是 `rust-port-no-go-stdlib` 教訓的具名例外之一（2026-11-14 另登記 `fd2-formats` 的 `go_math` 與 `fd2-campaign` 的 `go_filepath`），範圍限定為：
    - `GoSource`：Go `rngSource` 的種子化（`seedrand`）、607 項加法延遲費氏產生器與 `Int63`／`Uint64`，以及 `rngCooked` 表。表格由容器內 Go 1.22.12 的 `$GOROOT/src/math/rand/rng.go` 機械轉出，不手抄；檔頭保留 Go 的 BSD 授權聲明。
    - `GoRandImpl`（名稱由 A 組定）：Go `(*rand.Rand).Intn`、`Int31n`、`Int63n`、`Int31` 的取樣，實作 `GoRand`。`battle` 只用 `Intn`，其他方法不移植。
    - 黃金差分：`remake/cmd/fd2-golden-gorand` 輸出多個種子（含負數、0、`seed` 迴圈用到的 0～999）在不同 `n`（含 2 的冪、1、`1<<31` 以上）的 `Intn` 序列，Rust 逐值比對。

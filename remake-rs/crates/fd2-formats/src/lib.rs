@@ -10,6 +10,7 @@ pub mod fdicon;
 pub mod fdother;
 pub mod fdtxt;
 pub mod figani;
+pub mod go_math;
 pub mod keyboard;
 pub mod native_rng;
 pub mod save;

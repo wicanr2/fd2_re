@@ -1,7 +1,8 @@
 //! 移植自 Go `localization/content.go`。
 
 use super::patterns::{content_placeholder_matches, locale_pattern, sha256_pattern};
-use super::{Result, SCHEMA_VERSION, decode_strict, err, go_join, go_quote, strict_decode_error};
+use super::{Result, SCHEMA_VERSION, decode_strict, err, go_quote, strict_decode_error};
+use crate::go_filepath;
 use fd2_rules::battle::null_as_default;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -77,7 +78,7 @@ pub fn load_official_content(root: &str, locale: &str) -> Result<ContentCatalog>
     if !locale_pattern(locale) {
         return Err(err(format!("invalid locale {}", go_quote(locale))));
     }
-    let path = go_join(&[root, locale, "content.json"]);
+    let path = go_filepath::join(&[root, locale, "content.json"]);
     let raw = std::fs::read(&path).map_err(|e| err(format!("read locale content {}: {e}", go_quote(&path))))?;
     let pack: ContentPack = decode_strict(&raw)
         .map_err(|e| strict_decode_error(&format!("decode locale content {}", go_quote(&path)), e))?;
