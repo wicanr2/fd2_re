@@ -72,7 +72,7 @@ Go 的 `cmd/fd2` 是 `package main`，別的程式無法 import，所以 Go 側�
 | 2. 分組移植 | 依階段 0 的相依關係分組，各組在自己的 worktree 平行移植並移植測試 | 各組測試與單元層黃金通過 |
 | 3. 整合 | 無畫面重播驅動端；Go 黃金軌跡比對；`verify_chapter_parity.py`；讀 Go 版存檔 | 119「進度」的 R4 收尾小節與收據 |
 
-分組在階段 0 之後才定。目前預估的組別是：啟動與標題開場、劇情對話、戰場操作與指令環、攻擊演出與動畫指令播放、敵方回合銜接、城鎮商店教會整備、存讀檔與設定。
+分組已在階段 1 定案為六組，見「階段 1 結果」。
 
 ## 階段 0 結果（2026-11-14）
 
@@ -117,6 +117,38 @@ Go 的 `cmd/fd2` 是 `package main`，別的程式無法 import，所以 Go 側�
 | `error` | `GameError`（同 `BattleError` 形狀，`Display` 與 Go 逐字相同） |
 
 骨架由受版控的產生器（`tools/rust_r4_skeleton/`）以 Go `go/types` 分析 `cmd/fd2` 產生，可以重跑；R2、R3 的產生器沒有進版控。
+
+## 階段 1 結果（2026-11-14）
+
+骨架提交 `b8dbcfc3`，由 [`tools/rust_r4_skeleton.sh`](../../tools/rust_r4_skeleton.sh) 產生；在主 checkout 重跑，191 個輸出檔的總雜湊 `c076fdd5…` 相同。逐項落地與偏離見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)。
+
+| 項目 | 結果 |
+|---|---|
+| 規模 | 186 個 Go 檔各一個子模組；型別 221 個（HD 87 個只留第一章用到的欄位）、常數 143、套件層變數 19；565 個函式有簽名與 `todo!()`，其餘 1357 個在 `PORTING.json` 標 `r8` |
+| `Game` | 538 個 Go 欄位全部保留，另加 `tick_input` 與 `virtual_now` |
+| 檢查 | `tools/rust_game_test.sh` 的 fmt、clippy `-D warnings` 通過；`fd2-rules` 653 項、`fd2-campaign` 530 項照舊通過；`Cargo.lock` 沒有新外部套件 |
+
+和上面對應規則不同的地方：
+
+- 會重複呼叫的 func 欄位（觀察者、交易、時鐘注入，共 9 個）用 `FnMut`；只呼叫一次的延續照規則用 `FnOnce`。
+- 會被存進工作結構的 func 參數（30 個）收 `Option<Box<dyn FnOnce..>>`，借用的閉包存不進 `Game`。
+- `*ebiten.Image` 參數依用途分成要畫上去的 `&mut Picture` 與只讀的 `&Arc<Picture>`。
+- Go `any` 只用來比對擁有者是否相同，對應成 `Option<OwnerToken>`。
+- 常數與變數只產生 565 個函式用到的；`go:embed` 的一個素材初始式暫留 `todo!()`。
+- `fd2_campaign::indexedmap::NativeFrameInput` 與 `NativeTransitionFrameInput` 借用呼叫端資源，Go 卻把它們存在 `Game` 與演出工作裡。定案：`fd2-game` 保存資源本身，每幀再組出借用的輸入，`fd2-campaign` 不改；骨架暫寫 `<'static>` 只為了編譯，階段 2 由負責的組改掉。
+
+階段 2 分六組，`main.go` 的函式依呼叫關係分給各組，各組只改自己函式的本體；`Game` 結構與共用型別要調整時交主代理整合。
+
+| 組 | 主題 | 函式數 |
+|---|---|---|
+| A | 主迴圈、啟動、標題與開場（含 `Update`、`Draw`、`Layout`） | 156 |
+| B | 劇情對話與事件演出 | 108 |
+| C | 戰場操作、指令環與敵方回合 | 83 |
+| D | 攻擊演出與動畫指令播放 | 120 |
+| E | 城鎮、商店、教會與整備 | 70 |
+| F | 存讀檔與設定 | 28 |
+
+組間呼叫有循環，沒有一組完全獨立；同一波平行移植，跨組的測試照 R3 標 `ignore` 等待。原本預估的「敵方回合」只有 13 個函式，併入 C。
 
 ## 其他章的流程（使用者 2026-11-14 定案）
 
