@@ -38,8 +38,6 @@
 #![allow(clippy::doc_lazy_continuation, clippy::doc_overindented_list_items)]
 // 簽名逐一對應 Go 版：參數個數與 callback 型別照 Go 保留（同 fd2-rules 的 crate 層設定）。
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
-// 骨架專用：函式本體是 todo!()，參數與匯入尚未使用。階段 2 全部移植後移除。
-#![allow(unused, dead_code, unreachable_code, clippy::todo)]
 
 mod error;
 mod ext_deps;
@@ -49,11 +47,10 @@ pub use error::*;
 pub use go_image::*;
 
 pub(crate) use error::campaign_err;
-pub(crate) use fd2_formats::{afm, dato, fdicon, fdother, fdtxt, figani, save};
-pub(crate) use fd2_rules::battle::{self, Callback, GoRand, Unit, UnitIdx};
+pub(crate) use fd2_formats::{dato, fdicon, fdother, fdtxt, save};
+pub(crate) use fd2_rules::battle::{self, Callback, GoRand, Unit};
 pub(crate) use std::collections::{BTreeMap, BTreeSet};
-pub(crate) use std::fmt;
-pub(crate) use std::sync::{LazyLock, RwLock};
+pub(crate) use std::sync::LazyLock;
 
 // ---- 每個 Go 檔一個子模組（自動產生；新增 Go 對應檔時依字母順序插入）----
 mod ai_commands;
@@ -132,7 +129,6 @@ pub use native_gold_debit::*;
 pub use native_join_base::*;
 pub use native_join_constructor::*;
 pub use native_load_slots::*;
-pub use native_map_view_config::*;
 pub use native_persistent_party::*;
 pub use native_roster_list::*;
 pub use native_shop_equipment_recipient::*;

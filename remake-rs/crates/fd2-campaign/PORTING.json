@@ -1367,7 +1367,7 @@
             {
               "name": "LoadNativeIntermissionGateTable",
               "rust": "load_native_intermission_gate_table",
-              "status": "todo",
+              "status": "ported",
               "go_line": 51,
               "calls": [
                 "NativeIntermissionGateTable.validate"
@@ -1376,13 +1376,13 @@
             {
               "name": "NativeIntermissionGateTable.validate",
               "rust": "NativeIntermissionGateTable::validate",
-              "status": "todo",
+              "status": "ported",
               "go_line": 68
             },
             {
               "name": "BuildNativeChapterSlotRestorePlan",
               "rust": "build_native_chapter_slot_restore_plan",
-              "status": "todo",
+              "status": "ported",
               "go_line": 138,
               "calls": [
                 "MaterializeNativePersistentPartyRecord",
@@ -1423,13 +1423,13 @@
             {
               "name": "EncodeNativePersistentRecord",
               "rust": "encode_native_persistent_record",
-              "status": "todo",
+              "status": "ported",
               "go_line": 23
             },
             {
               "name": "BuildNativeChapterSlot",
               "rust": "build_native_chapter_slot",
-              "status": "todo",
+              "status": "ported",
               "go_line": 90,
               "calls": [
                 "EncodeNativePersistentRecord",
@@ -2357,7 +2357,7 @@
             {
               "name": "MaterializeNativeContinueFieldBoundary",
               "rust": "materialize_native_continue_field_boundary",
-              "status": "todo",
+              "status": "ported",
               "go_line": 17
             }
           ],
@@ -2375,13 +2375,13 @@
             {
               "name": "MaterializeNativeContinueInteractiveBoundary",
               "rust": "materialize_native_continue_interactive_boundary",
-              "status": "todo",
+              "status": "ported",
               "go_line": 15
             },
             {
               "name": "ValidateNativeContinueBattleHandoff",
               "rust": "validate_native_continue_battle_handoff",
-              "status": "todo",
+              "status": "ported",
               "go_line": 53
             }
           ],
@@ -2421,7 +2421,7 @@
             {
               "name": "MaterializeNativeContinueMapTiming",
               "rust": "materialize_native_continue_map_timing",
-              "status": "todo",
+              "status": "ported",
               "go_line": 18
             }
           ],
@@ -2460,7 +2460,7 @@
             {
               "name": "MaterializeNativeContinuePendingGroups",
               "rust": "materialize_native_continue_pending_groups",
-              "status": "todo",
+              "status": "ported",
               "go_line": 27,
               "calls": [
                 "cloneNativeContinueFutureUnit",
@@ -2471,19 +2471,19 @@
             {
               "name": "nativeContinueSpawnSchedule",
               "rust": "native_continue_spawn_schedule",
-              "status": "todo",
+              "status": "ported",
               "go_line": 214
             },
             {
               "name": "nativeContinueFieldSpawnRuleIsLive",
               "rust": "native_continue_field_spawn_rule_is_live",
-              "status": "todo",
+              "status": "ported",
               "go_line": 259
             },
             {
               "name": "cloneNativeContinueFutureUnit",
               "rust": "clone_native_continue_future_unit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 289
             }
           ],
@@ -2519,7 +2519,7 @@
             {
               "name": "MaterializeNativeContinueRuntimeUnits",
               "rust": "materialize_native_continue_runtime_units",
-              "status": "todo",
+              "status": "ported",
               "go_line": 22,
               "calls": [
                 "NativeCharacterCatalog.validate",
@@ -2529,7 +2529,7 @@
             {
               "name": "materializeNativeContinueRuntimeUnit",
               "rust": "materialize_native_continue_runtime_unit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 94
             }
           ],
@@ -2565,13 +2565,13 @@
             {
               "name": "BuildNativeCurrentRuntimeRecords",
               "rust": "build_native_current_runtime_records",
-              "status": "todo",
+              "status": "ported",
               "go_line": 15
             },
             {
               "name": "BuildNativeCurrentPersistentRecords",
               "rust": "build_native_current_persistent_records",
-              "status": "todo",
+              "status": "ported",
               "go_line": 80,
               "calls": [
                 "NativeJoinConstructorTable.MaterializePersistentRecordOn"
@@ -2695,7 +2695,7 @@
             {
               "name": "LoadNativeJoinBaseTable",
               "rust": "load_native_join_base_table",
-              "status": "todo",
+              "status": "ported",
               "go_line": 32,
               "calls": [
                 "JoinableCharacterID"
@@ -2704,7 +2704,7 @@
             {
               "name": "NativeJoinBaseTable.LoadBaseUnit",
               "rust": "NativeJoinBaseTable::load_base_unit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 72
             }
           ],
@@ -2764,7 +2764,7 @@
             {
               "name": "LoadNativeJoinConstructorTable",
               "rust": "load_native_join_constructor_table",
-              "status": "todo",
+              "status": "ported",
               "go_line": 36,
               "calls": [
                 "parseNativeJoinOffset"
@@ -2773,13 +2773,13 @@
             {
               "name": "parseNativeJoinOffset",
               "rust": "parse_native_join_offset",
-              "status": "todo",
+              "status": "ported",
               "go_line": 95
             },
             {
               "name": "nativeJoinWord",
               "rust": "native_join_word",
-              "status": "todo",
+              "status": "ported",
               "go_line": 100
             },
             {
@@ -2794,7 +2794,7 @@
             {
               "name": "NativeJoinConstructorTable.MaterializePersistentUnitOn",
               "rust": "NativeJoinConstructorTable::materialize_persistent_unit_on",
-              "status": "todo",
+              "status": "ported",
               "go_line": 120,
               "calls": [
                 "NativeJoinConstructorTable.MaterializePersistentRecordOn",
@@ -2813,7 +2813,7 @@
             {
               "name": "NativeJoinConstructorTable.MaterializePersistentRecordOn",
               "rust": "NativeJoinConstructorTable::materialize_persistent_record_on",
-              "status": "todo",
+              "status": "ported",
               "go_line": 220,
               "calls": [
                 "nativeJoinWord"
@@ -3009,7 +3009,7 @@
             {
               "name": "LoadNativeCharacterCatalog",
               "rust": "load_native_character_catalog",
-              "status": "todo",
+              "status": "ported",
               "go_line": 44,
               "calls": [
                 "NativeCharacterCatalog.validate"
@@ -3018,13 +3018,13 @@
             {
               "name": "NativeCharacterCatalog.validate",
               "rust": "NativeCharacterCatalog::validate",
-              "status": "todo",
+              "status": "ported",
               "go_line": 59
             },
             {
               "name": "MaterializeNativePersistentPartyRecord",
               "rust": "materialize_native_persistent_party_record",
-              "status": "todo",
+              "status": "ported",
               "go_line": 113,
               "calls": [
                 "NativeCharacterCatalog.validate"
@@ -4783,7 +4783,7 @@
             {
               "name": "IndexedCompositor.RGBA",
               "rust": "IndexedCompositor::rgba",
-              "status": "todo",
+              "status": "ported",
               "go_line": 31,
               "calls": [
                 "IndexedCompositor.RGBAFrame"
@@ -4792,13 +4792,13 @@
             {
               "name": "IndexedCompositor.RGBAFrame",
               "rust": "IndexedCompositor::rgba_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 38
             },
             {
               "name": "ANIPlayer.Advance",
               "rust": "ANIPlayer::advance",
-              "status": "todo",
+              "status": "ported",
               "go_line": 59,
               "calls": [
                 "IndexedCompositor.PresentANIFrame"
@@ -4807,7 +4807,7 @@
             {
               "name": "IndexedCompositor.RunRecoveredPrefix",
               "rust": "IndexedCompositor::run_recovered_prefix",
-              "status": "todo",
+              "status": "ported",
               "go_line": 90,
               "calls": [
                 "IndexedCompositor.Blit",
@@ -4818,19 +4818,19 @@
             {
               "name": "NewIndexedCompositor",
               "rust": "new_indexed_compositor",
-              "status": "todo",
+              "status": "ported",
               "go_line": 132
             },
             {
               "name": "CopyRect",
               "rust": "copy_rect",
-              "status": "todo",
+              "status": "ported",
               "go_line": 136
             },
             {
               "name": "IndexedCompositor.Composite40",
               "rust": "IndexedCompositor::composite40",
-              "status": "todo",
+              "status": "ported",
               "go_line": 151,
               "calls": [
                 "CopyRect"
@@ -4839,13 +4839,13 @@
             {
               "name": "IndexedCompositor.CopyToVGA",
               "rust": "IndexedCompositor::copy_to_vga",
-              "status": "todo",
+              "status": "ported",
               "go_line": 172
             },
             {
               "name": "IndexedCompositor.PresentANI",
               "rust": "IndexedCompositor::present_ani",
-              "status": "todo",
+              "status": "ported",
               "go_line": 182
             },
             {
@@ -4857,13 +4857,13 @@
             {
               "name": "IndexedCompositor.SetBaselineDelta",
               "rust": "IndexedCompositor::set_baseline_delta",
-              "status": "todo",
+              "status": "ported",
               "go_line": 195
             },
             {
               "name": "IndexedCompositor.Composite200",
               "rust": "IndexedCompositor::composite200",
-              "status": "todo",
+              "status": "ported",
               "go_line": 210,
               "calls": [
                 "IndexedCompositor.CopyToVGA",
@@ -4873,7 +4873,7 @@
             {
               "name": "IndexedCompositor.PresentANIFrame",
               "rust": "IndexedCompositor::present_ani_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 230,
               "calls": [
                 "IndexedCompositor.PresentANI"
@@ -4882,13 +4882,13 @@
             {
               "name": "IndexedCompositor.Blit",
               "rust": "IndexedCompositor::blit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 237
             },
             {
               "name": "IndexedCompositor.PaletteDelta",
               "rust": "IndexedCompositor::palette_delta",
-              "status": "todo",
+              "status": "ported",
               "go_line": 243
             }
           ],
@@ -4908,7 +4908,7 @@
             {
               "name": "RenderDATOFrameAt",
               "rust": "render_dato_frame_at",
-              "status": "todo",
+              "status": "ported",
               "go_line": 12
             }
           ],
@@ -4928,7 +4928,7 @@
             {
               "name": "RenderDialogueFrameGrid",
               "rust": "render_dialogue_frame_grid",
-              "status": "todo",
+              "status": "ported",
               "go_line": 12,
               "calls": [
                 "Montage.PlanDialogueFrameGrid"
@@ -4937,7 +4937,7 @@
             {
               "name": "RenderDialogueFrameGridResource",
               "rust": "render_dialogue_frame_grid_resource",
-              "status": "todo",
+              "status": "ported",
               "go_line": 34,
               "calls": [
                 "Montage.PlanDialogueFrameGrid",
@@ -4947,7 +4947,7 @@
             {
               "name": "RenderDialogueFrameGridSeparated",
               "rust": "render_dialogue_frame_grid_separated",
-              "status": "todo",
+              "status": "ported",
               "go_line": 64,
               "calls": [
                 "Montage.PlanDialogueFrameGrid",
@@ -4972,13 +4972,13 @@
             {
               "name": "isTransparentTAI003",
               "rust": "is_transparent_tai003",
-              "status": "todo",
+              "status": "ported",
               "go_line": 10
             },
             {
               "name": "RenderFigureFadePass",
               "rust": "render_figure_fade_pass",
-              "status": "todo",
+              "status": "ported",
               "go_line": 27,
               "calls": [
                 "CopyRect",
@@ -4989,7 +4989,7 @@
             {
               "name": "RenderMirrorFigureFadePass",
               "rust": "render_mirror_figure_fade_pass",
-              "status": "todo",
+              "status": "ported",
               "go_line": 49,
               "calls": [
                 "CopyRect",
@@ -5060,7 +5060,7 @@
             {
               "name": "LoadFinalePhase",
               "rust": "load_finale_phase",
-              "status": "todo",
+              "status": "ported",
               "go_line": 47
             },
             {
@@ -5072,7 +5072,7 @@
             {
               "name": "FinalePhase.ComposePhase0Text",
               "rust": "FinalePhase::compose_phase0_text",
-              "status": "todo",
+              "status": "ported",
               "go_line": 78,
               "calls": [
                 "FinalePhase.ComposePhase0TextTyped",
@@ -5082,7 +5082,7 @@
             {
               "name": "FinalePhase.ComposePhase0TextTyped",
               "rust": "FinalePhase::compose_phase0_text_typed",
-              "status": "todo",
+              "status": "ported",
               "go_line": 95,
               "calls": [
                 "FinalePhase.Ready"
@@ -5091,7 +5091,7 @@
             {
               "name": "NewPhase0PlayerFromAssets",
               "rust": "new_phase0_player_from_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 146,
               "calls": [
                 "FinalePhase.ComposePhase0TextTyped",
@@ -5101,7 +5101,7 @@
             {
               "name": "NewPhase0Player",
               "rust": "new_phase0_player",
-              "status": "todo",
+              "status": "ported",
               "go_line": 170,
               "calls": [
                 "FinalePhase.Ready"
@@ -5110,7 +5110,7 @@
             {
               "name": "Phase0Player.Advance",
               "rust": "Phase0Player::advance",
-              "status": "todo",
+              "status": "ported",
               "go_line": 180,
               "calls": [
                 "CopyRect",
@@ -5261,37 +5261,37 @@
             {
               "name": "LoadMontage",
               "rust": "load_montage",
-              "status": "todo",
+              "status": "ported",
               "go_line": 191
             },
             {
               "name": "Montage.PlanPortraitText",
               "rust": "Montage::plan_portrait_text",
-              "status": "todo",
+              "status": "ported",
               "go_line": 225
             },
             {
               "name": "Montage.PlanDialogueFrameGrid",
               "rust": "Montage::plan_dialogue_frame_grid",
-              "status": "todo",
+              "status": "ported",
               "go_line": 247
             },
             {
               "name": "Montage.PlanFigureFade",
               "rust": "Montage::plan_figure_fade",
-              "status": "todo",
+              "status": "ported",
               "go_line": 274
             },
             {
               "name": "Montage.PlanMirrorFigureFade",
               "rust": "Montage::plan_mirror_figure_fade",
-              "status": "todo",
+              "status": "ported",
               "go_line": 301
             },
             {
               "name": "Montage.PlanPartyCycle",
               "rust": "Montage::plan_party_cycle",
-              "status": "todo",
+              "status": "ported",
               "go_line": 333
             }
           ],
@@ -5387,7 +5387,7 @@
             {
               "name": "LoadMontageCycleAssets",
               "rust": "load_montage_cycle_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 43,
               "calls": [
                 "RenderDialogueFrameGridSeparated",
@@ -5397,7 +5397,7 @@
             {
               "name": "NewMontageCycle",
               "rust": "new_montage_cycle",
-              "status": "todo",
+              "status": "ported",
               "go_line": 155,
               "calls": [
                 "IndexedCompositor.BaselineKnown",
@@ -5409,7 +5409,7 @@
             {
               "name": "MontageCycle.preparePlan",
               "rust": "MontageCycle::prepare_plan",
-              "status": "todo",
+              "status": "ported",
               "go_line": 197,
               "calls": [
                 "MontageCycle.renderBackdrop"
@@ -5418,13 +5418,13 @@
             {
               "name": "MontageCycle.renderBackdrop",
               "rust": "MontageCycle::render_backdrop",
-              "status": "todo",
+              "status": "ported",
               "go_line": 214
             },
             {
               "name": "MontageCycle.Step",
               "rust": "MontageCycle::step",
-              "status": "todo",
+              "status": "ported",
               "go_line": 226,
               "calls": [
                 "ComposeMontagePortraitFrame",
@@ -5444,19 +5444,19 @@
             {
               "name": "MontageCycle.NeedsRandomByte",
               "rust": "MontageCycle::needs_random_byte",
-              "status": "todo",
+              "status": "ported",
               "go_line": 375
             },
             {
               "name": "MontageCycle.ObserveInputChange",
               "rust": "MontageCycle::observe_input_change",
-              "status": "todo",
+              "status": "ported",
               "go_line": 383
             },
             {
               "name": "MontageCycle.renderFIGANI",
               "rust": "MontageCycle::render_figani",
-              "status": "todo",
+              "status": "ported",
               "go_line": 393,
               "calls": [
                 "IndexedCompositor.CopyToVGA"
@@ -5525,19 +5525,19 @@
             {
               "name": "MontagePortraitState.Step",
               "rust": "MontagePortraitState::step",
-              "status": "todo",
+              "status": "ported",
               "go_line": 30
             },
             {
               "name": "NativeMontagePortraitIterations",
               "rust": "native_montage_portrait_iterations",
-              "status": "todo",
+              "status": "ported",
               "go_line": 49
             },
             {
               "name": "ComposeMontagePortraitFrame",
               "rust": "compose_montage_portrait_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 64,
               "calls": [
                 "Montage.PlanPortraitText",
@@ -5548,7 +5548,7 @@
             {
               "name": "renderMontageText",
               "rust": "render_montage_text",
-              "status": "todo",
+              "status": "ported",
               "go_line": 122
             }
           ],
@@ -5698,19 +5698,19 @@
             {
               "name": "MontageTailLoaderBaseline.RuntimeRecord",
               "rust": "MontageTailLoaderBaseline::runtime_record",
-              "status": "todo",
+              "status": "ported",
               "go_line": 151
             },
             {
               "name": "MontageTailLoaderBaseline.FirstPair",
               "rust": "MontageTailLoaderBaseline::first_pair",
-              "status": "todo",
+              "status": "ported",
               "go_line": 161
             },
             {
               "name": "BuildMontageTailLoaderBaseline",
               "rust": "build_montage_tail_loader_baseline",
-              "status": "todo",
+              "status": "ported",
               "go_line": 175,
               "calls": [
                 "MontageTail.validateNativeContract",
@@ -5721,13 +5721,13 @@
             {
               "name": "validateMontageTailLoaderField",
               "rust": "validate_montage_tail_loader_field",
-              "status": "todo",
+              "status": "ported",
               "go_line": 253
             },
             {
               "name": "LoadMontageTailVisualSets",
               "rust": "load_montage_tail_visual_sets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 324,
               "calls": [
                 "MontageTail.PlanVisualResources",
@@ -5737,13 +5737,13 @@
             {
               "name": "validateMontageTailVisualFrame",
               "rust": "validate_montage_tail_visual_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 388
             },
             {
               "name": "LoadMontageTailAssetsArchive",
               "rust": "load_montage_tail_assets_archive",
-              "status": "todo",
+              "status": "ported",
               "go_line": 401,
               "calls": [
                 "MontageTail.Plan"
@@ -5752,7 +5752,7 @@
             {
               "name": "LoadMontageTailAssets",
               "rust": "load_montage_tail_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 462,
               "calls": [
                 "MontageTail.Plan"
@@ -5761,7 +5761,7 @@
             {
               "name": "MontageTailAssets.PresentFinal",
               "rust": "MontageTailAssets::present_final",
-              "status": "todo",
+              "status": "ported",
               "go_line": 524,
               "calls": [
                 "IndexedCompositor.BaselineKnown"
@@ -5770,7 +5770,7 @@
             {
               "name": "LoadMontageTail",
               "rust": "load_montage_tail",
-              "status": "todo",
+              "status": "ported",
               "go_line": 539,
               "calls": [
                 "MontageTail.validateNativeContract"
@@ -5779,13 +5779,13 @@
             {
               "name": "MontageTail.validateNativeContract",
               "rust": "MontageTail::validate_native_contract",
-              "status": "todo",
+              "status": "ported",
               "go_line": 554
             },
             {
               "name": "MontageTail.Plan",
               "rust": "MontageTail::plan",
-              "status": "todo",
+              "status": "ported",
               "go_line": 596,
               "calls": [
                 "tailRecordByte6"
@@ -5794,7 +5794,7 @@
             {
               "name": "MontageTail.PlanVisualResources",
               "rust": "MontageTail::plan_visual_resources",
-              "status": "todo",
+              "status": "ported",
               "go_line": 622,
               "calls": [
                 "MontageTail.Plan"
@@ -5803,7 +5803,7 @@
             {
               "name": "tailRecordByte6",
               "rust": "tail_record_byte6",
-              "status": "todo",
+              "status": "ported",
               "go_line": 646
             }
           ],
@@ -5908,7 +5908,7 @@
             {
               "name": "NewMontageTailPlayer",
               "rust": "new_montage_tail_player",
-              "status": "todo",
+              "status": "ported",
               "go_line": 58,
               "calls": [
                 "MontageTail.Plan",
@@ -5918,7 +5918,7 @@
             {
               "name": "validateMontageTailPlayerAnimation",
               "rust": "validate_montage_tail_player_animation",
-              "status": "todo",
+              "status": "ported",
               "go_line": 112
             },
             {
@@ -5930,7 +5930,7 @@
             {
               "name": "MontageTailPlayer.Step",
               "rust": "MontageTailPlayer::step",
-              "status": "todo",
+              "status": "ported",
               "go_line": 135,
               "calls": [
                 "MontageTailAssets.PresentFinal",
@@ -5943,19 +5943,19 @@
             {
               "name": "MontageTailPlayer.resetPairState",
               "rust": "MontageTailPlayer::reset_pair_state",
-              "status": "todo",
+              "status": "ported",
               "go_line": 216
             },
             {
               "name": "MontageTailPlayer.currentSet",
               "rust": "MontageTailPlayer::current_set",
-              "status": "todo",
+              "status": "ported",
               "go_line": 225
             },
             {
               "name": "MontageTailPlayer.stepNativePair",
               "rust": "MontageTailPlayer::step_native_pair",
-              "status": "todo",
+              "status": "ported",
               "go_line": 232,
               "calls": [
                 "MontageTailPlayer.advanceBaseScheduler",
@@ -5965,13 +5965,13 @@
             {
               "name": "MontageTailPlayer.advanceBaseScheduler",
               "rust": "MontageTailPlayer::advance_base_scheduler",
-              "status": "todo",
+              "status": "ported",
               "go_line": 286
             },
             {
               "name": "MontageTailPlayer.renderSourceBoundPair",
               "rust": "MontageTailPlayer::render_source_bound_pair",
-              "status": "todo",
+              "status": "ported",
               "go_line": 300
             }
           ],
@@ -6094,7 +6094,7 @@
             {
               "name": "ComposeNativeDialogueBase",
               "rust": "compose_native_dialogue_base",
-              "status": "todo",
+              "status": "ported",
               "go_line": 25
             },
             {
@@ -6106,37 +6106,37 @@
             {
               "name": "ComposeNativeDialogueProgressiveFrames",
               "rust": "compose_native_dialogue_progressive_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 52
             },
             {
               "name": "ComposeNativeDialogueMouthFrame",
               "rust": "compose_native_dialogue_mouth_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 84
             },
             {
               "name": "ComposeNativeDialogueClosingFrames",
               "rust": "compose_native_dialogue_closing_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 96
             },
             {
               "name": "NativeDialoguePhase.String",
               "rust": "<NativeDialoguePhase as fmt::Display>::fmt",
-              "status": "todo",
+              "status": "ported",
               "go_line": 126
             },
             {
               "name": "NewNativeDialoguePlayback",
               "rust": "new_native_dialogue_playback",
-              "status": "todo",
+              "status": "ported",
               "go_line": 151
             },
             {
               "name": "NativeDialoguePlayback.CurrentFrame",
               "rust": "NativeDialoguePlayback::current_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 183
             },
             {
@@ -6154,7 +6154,7 @@
             {
               "name": "NativeDialoguePlayback.Step",
               "rust": "NativeDialoguePlayback::step",
-              "status": "todo",
+              "status": "ported",
               "go_line": 215,
               "calls": [
                 "NativeDialoguePlayback.Done",
@@ -6164,7 +6164,7 @@
             {
               "name": "NativeDialoguePlayback.Confirm",
               "rust": "NativeDialoguePlayback::confirm",
-              "status": "todo",
+              "status": "ported",
               "go_line": 250,
               "calls": [
                 "NativeDialoguePlayback.Waiting"
@@ -6206,7 +6206,7 @@
             {
               "name": "Player.EnableRecoveredPhase0",
               "rust": "Player::enable_recovered_phase0",
-              "status": "todo",
+              "status": "ported",
               "go_line": 43,
               "calls": [
                 "FinalePhase.Ready"
@@ -6215,31 +6215,31 @@
             {
               "name": "NewPlayer",
               "rust": "new_player",
-              "status": "todo",
+              "status": "ported",
               "go_line": 63
             },
             {
               "name": "Player.VerifiedAudioCues",
               "rust": "Player::verified_audio_cues",
-              "status": "todo",
+              "status": "ported",
               "go_line": 104
             },
             {
               "name": "Player.AudioCueForRuntimeStage",
               "rust": "Player::audio_cue_for_runtime_stage",
-              "status": "todo",
+              "status": "ported",
               "go_line": 113
             },
             {
               "name": "Player.AudioCueAtBlockedBoundary",
               "rust": "Player::audio_cue_at_blocked_boundary",
-              "status": "todo",
+              "status": "ported",
               "go_line": 128
             },
             {
               "name": "Player.Advance",
               "rust": "Player::advance",
-              "status": "todo",
+              "status": "ported",
               "go_line": 143,
               "calls": [
                 "ANIPlayer.Advance",
@@ -6256,7 +6256,7 @@
             {
               "name": "Player.blit",
               "rust": "Player::blit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 326,
               "calls": [
                 "IndexedCompositor.Blit"
@@ -6265,13 +6265,13 @@
             {
               "name": "Player.BlockedDialogue",
               "rust": "Player::blocked_dialogue",
-              "status": "todo",
+              "status": "ported",
               "go_line": 345
             },
             {
               "name": "Player.ResumeBlockedDialogue",
               "rust": "Player::resume_blocked_dialogue",
-              "status": "todo",
+              "status": "ported",
               "go_line": 362
             }
           ],
@@ -6351,13 +6351,13 @@
             {
               "name": "hashBytes",
               "rust": "hash_bytes",
-              "status": "todo",
+              "status": "ported",
               "go_line": 59
             },
             {
               "name": "loadSeparatedFDFIELDSelector30",
               "rust": "load_separated_fdfield_selector30",
-              "status": "todo",
+              "status": "ported",
               "go_line": 64,
               "calls": [
                 "hashBytes"
@@ -6442,7 +6442,7 @@
             {
               "name": "LoadTimeline",
               "rust": "load_timeline",
-              "status": "todo",
+              "status": "ported",
               "go_line": 110
             },
             {

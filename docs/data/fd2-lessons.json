@@ -5802,6 +5802,21 @@
         ],
         "pattern": "float_roundtrip"
       }
+    },
+    {
+      "id": "rust-go-untyped-const-exact",
+      "date": "2026-11-14",
+      "area": "改寫",
+      "rule": "Go無型別常數的運算在編譯期以任意精度完成、最後才捨入一次；Rust以f64逐步計算可能差1 ulp。移植這類浮點常數時寫入Go捨入後的值並在註解保留原式，由黃金差分核對。",
+      "why": "R3 present組的PhaseBannerStepMillis在Rust以f64除法算出的值與Go差1 ulp，黃金差分抓到後改寫Go實際的54.925409453960306。",
+      "evidence": "remake-rs/crates/fd2-campaign/src/indexedmap/mosaic.rs",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-campaign/src/indexedmap/mosaic.rs"
+        ],
+        "pattern": "54\\.925409453960306"
+      }
     }
   ]
 }

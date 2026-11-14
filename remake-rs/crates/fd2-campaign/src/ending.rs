@@ -30,8 +30,6 @@
 #![allow(clippy::doc_lazy_continuation, clippy::doc_overindented_list_items)]
 // 簽名逐一對應 Go 版：參數個數與 callback 型別照 Go 保留（同 fd2-rules 的 crate 層設定）。
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
-// 骨架專用：函式本體是 todo!()，參數與匯入尚未使用。階段 2 全部移植後移除。
-#![allow(unused, dead_code, unreachable_code, clippy::todo)]
 
 mod ext_deps;
 
@@ -40,7 +38,6 @@ pub(crate) use fd2_formats::{afm, dato, fdicon, fdother, fdtxt, figani, save};
 pub(crate) use fd2_rules::battle;
 pub(crate) use std::collections::{BTreeMap, BTreeSet};
 pub(crate) use std::fmt;
-pub(crate) use std::sync::{LazyLock, RwLock};
 
 /// 多個播放器共用、可改寫的合成器（見模組文件「合成器的共享」）。
 pub type SharedCompositor = std::sync::Arc<std::sync::Mutex<IndexedCompositor>>;
@@ -73,5 +70,5 @@ pub use montage_tail::*;
 pub use montage_tail_player::*;
 pub use native_dialogue::*;
 pub use player::*;
-pub use separated_fdfield::*;
+pub(crate) use separated_fdfield::*;
 pub use timeline::*;

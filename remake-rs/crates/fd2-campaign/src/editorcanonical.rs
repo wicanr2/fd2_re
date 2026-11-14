@@ -9,20 +9,13 @@
 //! # `json.RawMessage`
 //!
 //! Go `json.RawMessage` 保存原始 JSON 位元組：解碼時原樣保留，編碼時只做 `Compact`，物件鍵順序與
-//! 數字字面值都不變。本 crate 的 `serde_json` 沒有開 `raw_value`（`RawValue`）與 `preserve_order`
-//! 功能，`serde_json::Value` 會把物件鍵排序、把數字正規化，和 Go 的輸出位元組不同。骨架先以
-//! [`GoRawMessage`] 別名指向 `serde_json::Value`，簽名都經由這個別名；階段 2 若要逐位元組對照
-//! `CompileCampaignJSON` 的輸出，需由主代理決定是否在 `Cargo.toml` 開 `raw_value`（不改 Cargo.lock
-//! 的套件版本），再把別名換成 `Box<serde_json::value::RawValue>`。見 `PORTING.md`「Go 寫法難對應處」。
-
-// 骨架專用：函式本體是 todo!()，參數與匯入尚未使用。階段 2 全部移植後移除。
-#![allow(unused, dead_code, unreachable_code, clippy::todo)]
+//! 數字字面值都不變。`CompileCampaignJSON` 的輸出以 `serde_json` 的 `raw_value`（`RawValue`）重現，與
+//! Go `json.Marshal` 逐位元組相同；其餘只在解碼後使用的欄位仍經由 [`GoRawMessage`]（`serde_json::Value`）。
 
 mod ext_deps;
 
 pub(crate) use crate::campaign::{CampaignError, Result, campaign_err};
 pub(crate) use std::collections::{BTreeMap, BTreeSet};
-pub(crate) use std::fmt;
 
 /// Go `encoding/json.RawMessage` 的骨架對應（見模組文件）。
 pub type GoRawMessage = serde_json::Value;

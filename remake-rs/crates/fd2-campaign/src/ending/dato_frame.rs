@@ -8,5 +8,10 @@ use super::*;
 ///
 /// Go：`dato_frame.go:12`，`func RenderDATOFrameAt(dst []byte, frame dato.Frame, stride, destinationOffset int) error`
 pub fn render_dato_frame_at(dst: &mut [u8], frame: &dato::Frame, stride: i64, destination_offset: i64) -> Result<()> {
-    todo!("ending/dato_frame.go:RenderDATOFrameAt")
+    if dst.len() as i64 != BYTES {
+        return Err(campaign_err!("ending: DATO destination must be {BYTES} bytes"));
+    }
+    frame.blit_at_offset(dst, stride, destination_offset).map_err(|err| {
+        CampaignError::from(err).wrap(format!("ending: DATO frame at {}: ", battle::go_sharp_x(destination_offset)))
+    })
 }

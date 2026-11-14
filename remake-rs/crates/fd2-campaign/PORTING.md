@@ -483,3 +483,53 @@ B 組 26 個 Go 檔（`church`、`class_change_table`、`equipment`、`shop`、`
 |---|---|---|
 | 測試以結構字面值建 `battle.Unit` | `Unit` 的 `native_constructor_pending`、`native_death_flag_before`、`native_death_flag_valid` 是私有欄位，外部 crate 不能用 `..Default::default()` | 測試用 `unit!` 巨集逐欄指定；正式程式不受影響 |
 | Go `image.Rectangle` 的 `In`／`Overlaps` | `go_image.rs` 只有欄位（共用檔，B 組不改） | 只有測試用到，在 `native_town_scene_test.rs` 寫兩個區域函式 |
+
+## campaign C 組完成紀錄（2026-11-14）
+
+範圍：campaign 的 `native_chapter_slot_{restore,save}`、`native_continue_{field_boundary,handoff,map_timing,pending_groups,runtime_units}`、
+`native_current_snapshot`、`native_join_{base,constructor}`、`native_persistent_party`，以及 ending 全部 14 檔。
+
+- **函式**：C 組 25 檔共 126 個函式全部移植（階段 1 已直接移植 11 個，本輪補 115 個），C 組檔案沒有 `todo!()`；
+  `PORTING.json` 的 C 組函式改為 `ported`（階段 2 分組表的統計數字是規劃快照，未改）。
+- **測試**：C 組 Go 測試 112 個函式逐條移植，109 個通過、3 個依「延後的測試」標 `ignore`：
+  `native_chapter_slot_restore_test` 的兩個停在 A 組 `campaign.go:Load`，`ending/native_dialogue_test` 的
+  `TestNativeDialogueUsesSixBandOpeningAndFiveBandClosingRestore` 停在 B 組 `NativeClassListOpeningFrames`（以
+  `--include-ignored` 確認）。`tools/rust_campaign_test.sh`（`FD2_REQUIRE_ORIGINAL=1`）沒有略過。
+- **測試移植的對應**：Go 的 `FD2_NATIVE_SAVE_FIXTURE`（使用者原版 FD2.SAV）改讀 `FD2_FLAME2_DIR/FD2.SAV`，即知識庫 `56`
+  記載的同一份快照，期望值不變；`TestMaterializeNativeContinueFieldBoundaryRejectsBeforeMutation` 的
+  "unvalidated input" 子測試無法建構（`ContinueRuntimeInput` 的 `validated` 欄位私有、沒有 `Default`），同一道閘門由
+  "tampered validated input" 覆蓋；`TestRecoveredPrefixStopsAtNativeOnlyGate` 改核對錯誤訊息指向第 2 段（Rust 的
+  `Result` 不帶停下的段索引）。`battle::Unit`／`State`、`fdother::Frame` 有私有欄位、`afm::Clip`／
+  `save::ChapterSlotSnapshot` 沒有 `Default`，測試一律從零值逐欄設定。
+- **所有權**：CONTINUE 轉接器照 Go「先在副本試算、成功才 `*state = candidate`」用 `State::clone()`；JOIN 與持續隊伍的
+  `Unit` 是擁有的值。結局的 `Player`、`Phase0Player`、`MontageCycle`、`MontageTailPlayer` 共用 `SharedCompositor`，
+  每個步驟只在步驟內持有鎖；`Player` 呼叫 `Phase0Player::advance` 前不持鎖（兩者共用同一個合成器）。Go 把
+  `c.Work`／`c.Offscreen` 當參數傳回同一個合成器的地方（`MontageCycle` 的人物淡入），Rust 先把 `work` 移出、事後放回，
+  三塊緩衝互不重疊，結果相同。
+- **簽名修正**：`MontageTailPlayer::render_source_bound_pair` 的 `opaque_fill` 由骨架的 `&u8` 改為 `Option<u8>`
+  （Go `*byte` 可為 nil）。其餘簽名照骨架。
+- **map 迭代順序**：`BuildNativeChapterSlot` 建 `byIdentity` 與 `MaterializeNativeContinuePendingGroups` 走 schedule 時，
+  多個成員或多列同時不合法時 Go 報哪一個不固定；Rust 是遞增順序。黃金工具對失敗的呼叫重做 64 次，偵測到文字不一致就記為
+  `map-order`，Rust 端只比拒收（607 個案例中 4 個）。其餘 map 迭代只影響錯誤選擇，黃金輸入不觸發。
+- **黃金差分**：`tools/rust_golden_campaign_c.sh`（`remake/cmd/fd2-golden-campaign-c`、`tests/golden_campaign_c.rs`）。
+  真實輸入：`remake/assets` 的 data／maps／scenarios／endings、`docs/data/glyph_map.json`、原版 FD2.SAV／FDOTHER.DAT／
+  ANI.DAT 與分離素材包，共 7735 個檔案，排序後連同大小與 SHA-256 寫進黃金檔。以固定種子產生 607 個案例：合成存檔槽的
+  `BuildNativeChapterSlotRestorePlan`（80，含真實存檔目前名冊組出的槽）、`BuildNativeChapterSlot`（70）與
+  `EncodeNativePersistentRecord`（65）、JOIN 基底（35）與建構（全部 32 個角色加越界值、殘值與三種物品表，各 90）、
+  持續紀錄投影（60）、CONTINUE 五段物化（60：真實存檔與變體、map25 的 event61；每段記 State 摘要，最後加
+  `BuildNativeCurrentRuntimeRecords`／`BuildNativeCurrentPersistentRecords`）、四個結局資料的解碼與計畫、終章
+  `Player`（真實 FDOTHER#54／ANI#2 到 0x2c548，346 步）、兩輪 0x2c548 蒙太奇（含輸入跳過，2437／1469 步）、原版與分離素材
+  兩份 0x2c194 片尾（各 987 步）、片尾載入基準、頭像文字框、終章對話框與 0x2c405 第 0 段；每步記 VGA 與調色盤的
+  SHA-256。黃金檔 `campaign-c-v1.json` SHA-256 `9004ce7198fcf75f72153b6c022c77ce0c5dea1d384ff2fa653ed91b0ba79064`，
+  Go 端重跑兩次相同；竄改片尾第 400 步的 VGA 雜湊、存檔槽 roster 的一個位元組、handoff 後 `Units[1].HP`，差分都精確報出該欄位
+  並失敗。`KNOWN_DIFFERENCES`：JSON 欄位名大小寫、純量欄位的 null、handoff 的 nil roster／pending groups、錯誤時的附帶
+  回傳值、未驗證的 `ContinueRuntimeInput` 零值；`NORMALIZATIONS`：null 與空值相同、數字只比數值、缺席的鍵與 null 相同、
+  map 順序決定的錯誤只比拒收。終章對話框的開收框轉場呼叫 B 組，黃金不涵蓋（由 B 組的職業清單轉場黃金負責）。
+
+## 整合紀錄（2026-11-14）
+
+- present、campaign A／B／C 四組合併後沒有剩下的 `todo!()`；PORTING.json 的 354 個函式全部 `ported`（present 組四個套件沒有列在 PORTING.json，函式全部移植）。
+- 延後測試全部拿掉 `#[ignore]`：`tools/rust_campaign_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 528 項通過、0 ignore、0 略過，與 Go 七個套件的 528 個測試函式數相同。
+- 三個模組根的骨架 allow 已移除，clippy `-D warnings` 乾淨。浮出的未使用匯入刪除；`separated_fdfield` 只有 crate 內部使用者，glob 改成 `pub(crate) use`；`montage_tail` 的兩個資源常數在 Go 也沒有使用者，照移植保留並標 `allow(dead_code)`。
+- `localization` 原本自寫的 `go_quote` 改用 `fd2_rules::battle::go_quote`（兩份實作相同）。
+- 七份黃金差分（present-loc、present-map、present-bp、campaign-a、campaign-b、campaign-c）在整合後的主 checkout 全部重跑通過，SHA 與各組回報相同；`fd2-rules` 647 項、`fd2-formats` 421 項照舊通過。

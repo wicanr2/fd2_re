@@ -33,7 +33,18 @@ impl MontagePortraitState {
     /// Go：`montage_portrait.go:30`，`func (s *MontagePortraitState) Step(randomByte byte) (int, error)`
     /// Go 版先檢查 nil 接收者；Rust 的 `self` 不會是 null，該分支不移植。
     pub fn step(&mut self, random_byte: u8) -> Result<i64> {
-        todo!("ending/montage_portrait.go:MontagePortraitState.Step")
+        if self.countdown < 0 || self.countdown > 0x47 {
+            return Err(campaign_err!("ending: invalid montage portrait countdown"));
+        }
+        if self.countdown == 0 {
+            self.countdown = i64::from(random_byte & 0x1f) + 0x28;
+        } else {
+            self.countdown -= 1;
+        }
+        if self.countdown < 2 {
+            return Ok(NATIVE_MONTAGE_PORTRAIT_MOUTH_FRAME);
+        }
+        Ok(NATIVE_MONTAGE_PORTRAIT_NORMAL_FRAME)
     }
 }
 
@@ -44,7 +55,13 @@ impl MontagePortraitState {
 ///
 /// Go：`montage_portrait.go:49`，`func NativeMontagePortraitIterations(loopIndex int) (int, error)`
 pub fn native_montage_portrait_iterations(loop_index: i64) -> Result<i64> {
-    todo!("ending/montage_portrait.go:NativeMontagePortraitIterations")
+    if loop_index < 0 {
+        return Err(campaign_err!("ending: invalid montage party loop index"));
+    }
+    if loop_index == 0 {
+        return Ok(NATIVE_MONTAGE_PORTRAIT_FINAL_TICKS);
+    }
+    Ok(NATIVE_MONTAGE_PORTRAIT_REGULAR_TICKS)
 }
 
 /// ComposeMontagePortraitFrame executes the recovered static portion of one
@@ -65,7 +82,43 @@ pub fn compose_montage_portrait_frame(
     permanent: Option<&fdtxt::Strings>,
     font: Option<&fdtxt::Font>,
 ) -> Result<Vec<u8>> {
-    todo!("ending/montage_portrait.go:ComposeMontagePortraitFrame")
+    let cycle = &m.party_cycle.portrait_text.cycle;
+    let (Some(current), Some(permanent), Some(font)) = (current, permanent, font) else {
+        return Err(campaign_err!("ending: invalid montage portrait assets"));
+    };
+    if restore.len() as i64 != BYTES || dato_frame < 0 || dato_frame >= portrait_frames.len() as i64 {
+        return Err(campaign_err!("ending: invalid montage portrait assets"));
+    }
+    if cycle.destination != NATIVE_MONTAGE_PORTRAIT_OFFSET {
+        return Err(campaign_err!("ending: unsupported montage portrait destination"));
+    }
+    let plan = m.plan_portrait_text(unit, edi)?;
+    let mut frame = restore.to_vec();
+    render_dato_frame_at(&mut frame, &portrait_frames[dato_frame as usize], WIDTH, cycle.destination)?;
+    let fields = [
+        (&plan.name_label, 0),
+        (&plan.character_name, 0),
+        (&plan.class_label, 0),
+        (&plan.class_name, 0),
+        (&plan.epilogue, 20),
+    ];
+    for (placement, lines) in fields {
+        let table = match placement.table.as_str() {
+            "permanent" => permanent,
+            "current" => current,
+            _ => return Err(campaign_err!("ending: invalid montage text table")),
+        };
+        let words = table.words(placement.index)?;
+        render_montage_text(
+            &mut frame,
+            font,
+            &words,
+            placement.destination,
+            lines,
+            m.party_cycle.portrait_text.glyph_style,
+        )?;
+    }
+    Ok(frame)
 }
 
 /// Go：`montage_portrait.go:122`，`func renderMontageText( frame []byte, font *fdtxt.Font, words []uint16, origin, lineAdvanceRows int, style MontageGlyphStyle, ) error`
@@ -77,5 +130,39 @@ pub(crate) fn render_montage_text(
     line_advance_rows: i64,
     style: MontageGlyphStyle,
 ) -> Result<()> {
-    todo!("ending/montage_portrait.go:renderMontageText")
+    if style != (MontageGlyphStyle { stride: WIDTH, foreground: 0xcd, shadow: 0x4c, background: 0 }) {
+        return Err(campaign_err!("ending: unsupported montage glyph style"));
+    }
+    let (mut base, mut line, mut column) = (origin, 0, 0);
+    for &word in words {
+        if word == 0xfffe {
+            if line_advance_rows <= 0 {
+                return Err(campaign_err!("ending: unexpected montage line break"));
+            }
+            line += 1;
+            column = 0;
+            base = origin + line * line_advance_rows * style.stride;
+            continue;
+        }
+        if word >= fdtxt::CONTROL_MIN {
+            return Err(campaign_err!(
+                "ending: unsupported montage text control {}",
+                battle::go_sharp_x(i64::from(word))
+            ));
+        }
+        let offset = base + column * fdtxt::GLYPH_WIDTH as i64;
+        font.blit_native_glyph(
+            frame,
+            style.stride,
+            offset,
+            i64::from(word),
+            fdtxt::NativeGlyphStyle {
+                foreground: style.foreground as u8,
+                shadow: style.shadow as u8,
+                background: style.background as u8,
+            },
+        )?;
+        column += 1;
+    }
+    Ok(())
 }

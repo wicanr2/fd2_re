@@ -210,3 +210,23 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 跨組重播的我方每回合直接結束回合，並省略死亡程式、格子事件、帶演出的出場與部分原生指令效果，這些路徑由各組單元測試與黃金涵蓋；完整流程的狀態軌跡留給 R4。
 - 只證明 Rust 與凍結 Go 版一致，沒有新增原版對拍；`58` 的證據分層沒有變動。
 
+### 2026-11-14 R3 完成：戰役與內容層
+
+`fd2-campaign` 已涵蓋 Go 戰役與內容層的七個套件（`campaign`、`ending`、`editorcanonical`、`localization`、`musiccatalog`、`indexedmap`、`battlepresent`），每個套件一個同名模組。`campaign`／`ending`／`editorcanonical` 比照 R2 先建骨架再分三組平行補本體；其餘四個套件由一組直接移植。分組、決定與各組紀錄在 `remake-rs/crates/fd2-campaign/PORTING.md`。
+
+| 組 | 內容 | Go 測試移植 | 黃金案例 | 黃金檔 SHA-256 |
+|---|---|---|---|---|
+| present | 語系與音樂清冊 | 20 | 2744 | `e446bb6b…` |
+| present | indexedmap 地圖繪製 | 55 | 1196 | `a9aa1288…` |
+| present | battlepresent 戰鬥演出 | 70 | 174 | `b5bdb374…` |
+| A | 劇本資料與處理器編譯 | 177 | 492 案例、2905 項比對 | `5958f83f…` |
+| B | 設施畫面與城鎮／商店／教會規則 | 94 | 2573 | `b4fc7f00…` |
+| C | 存檔、CONTINUE、JOIN 與結局 | 112 | 607 | `9004ce71…` |
+
+- 完成條件「讀入全部 `remake/assets` 劇本與語系，結果與 Go 黃金資料相同」：campaign-a 讀入全部劇本資料（scenarios 32、handlers 64、bindings 368、acting 12、dialogue-index 1 與 editor-canonical，共 545 個輸入檔），`CompileCampaignJSON` 輸出與 Go `json.Marshal` 逐位元組相同；present-loc 讀入四個語系的 pack、content、entities 與音樂清冊。
+- `tools/rust_campaign_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 528 項單元測試通過，與 Go 七個套件的測試函式數相同，沒有 ignore 或略過；clippy `-D warnings` 乾淨。每份黃金都在子代理 worktree 與整合後的主 checkout 各產一次，SHA 相同，並做過竄改反向檢查。
+- 依賴：`fd2-campaign` 使用工作區已鎖定的 `png 0.18.1`（分離素材的 indexed 與灰階 PNG）與 `serde_json` 的 `raw_value`；`fd2-rules` 的 `go_quote` 等五個 Go 格式化輔助改為公開共用。`Cargo.lock` 沒有新套件或新版本。
+- 對齊 Go 實際行為的地方：`PhaseBannerStepMillis` 直接寫 Go 無型別常數在編譯期捨入後的值，Rust 以 f64 執行期除法會差 1 ulp；`localization` 的 `Format` 依 Go 1.22 實測對齊官方語系用到的動詞。
+- 刻意不照做：Go 解 JSON 時欄位名不分大小寫與重複鍵；Go map 迭代順序決定的「多項不合法時先報哪一項」與 `ClassChangeCandidates` 不在 order 裡的 id 的附加順序（黃金改比集合）；`%#v`、`%v` 印指標等診斷文字。各組清單在各黃金測試的 `KNOWN_DIFFERENCES`。
+- 只證明 Rust 與凍結 Go 版一致，沒有新增原版對拍；`58` 的證據分層沒有變動。
+

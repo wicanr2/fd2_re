@@ -36,29 +36,8 @@ fn err(message: impl Into<String>) -> Error {
     Error::new(message)
 }
 
-/// Go `strconv.Quote`（`%q`）：雙引號包住，跳脫 `"`、`\` 與控制字元，其餘 Unicode 原樣保留。
-/// Go 對不可列印 Unicode 的判定表不移植；語系路徑與鍵名都是可列印字元。
-pub(crate) fn go_quote(s: &str) -> String {
-    let mut out = String::with_capacity(s.len() + 2);
-    out.push('"');
-    for c in s.chars() {
-        match c {
-            '"' => out.push_str("\\\""),
-            '\\' => out.push_str("\\\\"),
-            '\x07' => out.push_str("\\a"),
-            '\x08' => out.push_str("\\b"),
-            '\x0c' => out.push_str("\\f"),
-            '\n' => out.push_str("\\n"),
-            '\r' => out.push_str("\\r"),
-            '\t' => out.push_str("\\t"),
-            '\x0b' => out.push_str("\\v"),
-            c if (c as u32) < 0x20 || c as u32 == 0x7f => out.push_str(&format!("\\x{:02x}", c as u32)),
-            c => out.push(c),
-        }
-    }
-    out.push('"');
-    out
-}
+/// Go `strconv.Quote`（`%q`）：共用 `fd2-rules` 的實作。
+pub(crate) use fd2_rules::battle::go_quote;
 
 /// Go `filepath.Clean` 的字面清理（以 `/` 為分隔；Go 在 Windows 也得到相同的接受／拒收結果）：去掉
 /// 空段與 `.`，`..` 吃掉前一個非 `..` 段，根目錄之上的 `..` 丟掉，空結果是 `.`。

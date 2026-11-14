@@ -7,7 +7,8 @@ use super::*;
 /// montage, so it cannot make the finale generally playable.
 ///
 /// Go：`finale.go:14`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct FinalePhase {
     /// Go 標籤：`json:"schema_version"`
     pub schema_version: i64,
@@ -22,7 +23,8 @@ pub struct FinalePhase {
 }
 
 /// Go：`finale.go:22`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct FinalePhaseSpec {
     /// Go 標籤：`json:"source"`
     pub source: String,
@@ -61,7 +63,8 @@ pub struct FinalePhaseSpec {
 }
 
 /// Go：`finale.go:42`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct FinalePhaseGate {
     /// Go 標籤：`json:"source"`
     pub source: String,
@@ -71,7 +74,35 @@ pub struct FinalePhaseGate {
 
 /// Go：`finale.go:47`，`func LoadFinalePhase(path string) (*FinalePhase, error)`
 pub fn load_finale_phase(path: &str) -> Result<FinalePhase> {
-    todo!("ending/finale.go:LoadFinalePhase")
+    let raw = battle::read_file(path)?;
+    let phase: FinalePhase = battle::decode_json(&raw)?;
+    let p = &phase.phase;
+    if phase.schema_version != 1
+        || phase.native_handler != "0x2c405"
+        || phase.status != "recovered_phase0_bridge_fail_closed"
+        || p.source != "0x2c469"
+        || p.source_dat != "FDTXT_031"
+        || p.string_index != 44
+        || p.script != "ch32.json"
+        || p.scene_index != 0
+        || p.line != 0
+        || p.count != 1
+        || p.staging_bytes != 0x36b00
+        || p.text_offset != 0x12c30
+        || p.stride != WIDTH
+        || p.line_advance_rows != 25
+        || p.viewport_rows != HEIGHT
+        || p.iterations != 500
+        || p.delay_ms != 1
+        || p.baseline_palette_initial_delta != 40
+        || p.fade_out_through_iteration != 300
+        || p.palette_step_cadence != 5
+        || phase.gate.source != "0x2c548"
+        || phase.gate.reason.is_empty()
+    {
+        return Err(campaign_err!("ending finale phase {} is incomplete or unsupported", battle::go_quote(path)));
+    }
+    Ok(phase)
 }
 
 impl FinalePhase {
@@ -93,7 +124,12 @@ impl FinalePhase {
     ///
     /// Go：`finale.go:78`，`func (p FinalePhase) ComposePhase0Text(staging, textResource, fontResource []byte) (int, error)`
     pub fn compose_phase0_text(&self, staging: &mut [u8], text_resource: &[u8], font_resource: &[u8]) -> Result<i64> {
-        todo!("ending/finale.go:FinalePhase.ComposePhase0Text")
+        if self.ready() || staging.len() as i64 != self.phase.staging_bytes {
+            return Err(campaign_err!("ending: invalid phase-0 staging surface"));
+        }
+        let strings = fdtxt::parse(text_resource)?;
+        let font = fdtxt::parse_font(font_resource)?;
+        self.compose_phase0_text_typed(staging, Some(&strings), Some(&font))
     }
 
     /// ComposePhase0TextTyped consumes the separated FDTXT/font contract. The raw
@@ -106,7 +142,37 @@ impl FinalePhase {
         strings: Option<&fdtxt::Strings>,
         font: Option<&fdtxt::Font>,
     ) -> Result<i64> {
-        todo!("ending/finale.go:FinalePhase.ComposePhase0TextTyped")
+        let (Some(strings), Some(font)) = (strings, font) else {
+            return Err(campaign_err!("ending: invalid phase-0 typed text assets"));
+        };
+        if self.ready() || staging.len() as i64 != self.phase.staging_bytes {
+            return Err(campaign_err!("ending: invalid phase-0 typed text assets"));
+        }
+        let words = strings.words(self.phase.string_index)?;
+        let mut base = self.phase.text_offset;
+        let mut line = 0;
+        for word in words {
+            if word == 0xfffe {
+                line += 1;
+                base = self.phase.text_offset + line * self.phase.line_advance_rows * self.phase.stride;
+                continue;
+            }
+            if word >= fdtxt::CONTROL_MIN {
+                return Err(campaign_err!(
+                    "ending: phase-0 string has unsupported control {}",
+                    battle::go_sharp_x(i64::from(word))
+                ));
+            }
+            font.blit_native_glyph(
+                staging,
+                self.phase.stride,
+                base,
+                i64::from(word),
+                fdtxt::NativeGlyphStyle { foreground: 0xcd, shadow: 0x4c, background: 0 },
+            )?;
+            base += fdtxt::GLYPH_WIDTH as i64;
+        }
+        Ok(base)
     }
 }
 
@@ -158,7 +224,22 @@ pub fn new_phase0_player_from_assets(
     assets: &Phase0Assets,
     compositor: Option<SharedCompositor>,
 ) -> Result<Phase0Player> {
-    todo!("ending/finale.go:NewPhase0PlayerFromAssets")
+    let Some(compositor) = compositor else {
+        return Err(campaign_err!("ending: nil phase-0 compositor"));
+    };
+    // Go `make([]byte, StagingBytes)`：負值會 panic；載入時已固定為 0x36b00。
+    let mut staging = vec![0u8; phase.phase.staging_bytes.max(0) as usize];
+    let parsed;
+    let (strings, font) = match (assets.strings.as_ref(), assets.font.as_ref()) {
+        (Some(strings), Some(font)) => (strings, font),
+        _ => {
+            parsed = (fdtxt::parse(&assets.text_resource)?, fdtxt::parse_font(&assets.font_resource)?);
+            (&parsed.0, &parsed.1)
+        }
+    };
+    phase.compose_phase0_text_typed(&mut staging, Some(strings), Some(font))?;
+    lock_compositor(&compositor).baseline.copy_from_slice(&assets.baseline);
+    new_phase0_player(phase, &staging, Some(compositor))
 }
 
 /// Go：`finale.go:170`，`func NewPhase0Player(phase FinalePhase, staging []byte, compositor *IndexedCompositor) (*Phase0Player, error)`
@@ -167,7 +248,16 @@ pub fn new_phase0_player(
     staging: &[u8],
     compositor: Option<SharedCompositor>,
 ) -> Result<Phase0Player> {
-    todo!("ending/finale.go:NewPhase0Player")
+    match compositor {
+        Some(compositor) if !phase.ready() && staging.len() as i64 == phase.phase.staging_bytes => Ok(Phase0Player {
+            phase: phase.clone(),
+            staging: staging.to_vec(),
+            compositor: Some(compositor),
+            palette_delta: phase.phase.baseline_palette_initial_delta,
+            ..Default::default()
+        }),
+        _ => Err(campaign_err!("ending: invalid phase-0 player")),
+    }
 }
 
 impl Phase0Player {
@@ -178,6 +268,70 @@ impl Phase0Player {
     /// Go：`finale.go:180`，`func (p *Phase0Player) Advance(elapsedMS int) (done bool, err error)`
     /// Go 具名回傳值依序為：done、err。
     pub fn advance(&mut self, elapsed_ms: i64) -> Result<bool> {
-        todo!("ending/finale.go:Phase0Player.Advance")
+        let mut elapsed_ms = elapsed_ms;
+        if elapsed_ms < 0 {
+            return Err(campaign_err!("ending: negative phase-0 elapsed time"));
+        }
+        if self.done {
+            return Ok(true);
+        }
+        let Some(shared) = self.compositor.clone() else {
+            return Err(campaign_err!("ending: invalid phase-0 player"));
+        };
+        loop {
+            if self.wait_ms > 0 {
+                if elapsed_ms < self.wait_ms {
+                    self.wait_ms -= elapsed_ms;
+                    return Ok(false);
+                }
+                elapsed_ms -= self.wait_ms;
+                self.wait_ms = 0;
+                self.iteration += 1;
+            }
+            if self.iteration >= self.phase.phase.iterations {
+                self.done = true;
+                return Ok(true);
+            }
+            {
+                let mut compositor = lock_compositor(&shared);
+                compositor.set_baseline_delta(0, 255, self.palette_delta)?;
+                let offset = (self.iteration * self.phase.phase.stride) as usize;
+                // Go `p.staging[offset:]`：offset 超出長度會 panic；Rust 以空切片交給 CopyRect 拒絕。
+                let source = self.staging.get(offset..).unwrap_or(&[]);
+                copy_rect(
+                    &mut compositor.vga,
+                    WIDTH,
+                    source,
+                    self.phase.phase.stride,
+                    WIDTH,
+                    self.phase.phase.viewport_rows,
+                    0,
+                )?;
+            }
+            // 0x2c4f9: the fade-out branch is entered only for i<200; its
+            // decrement follows the current frame's palette/copy work.
+            let cadence = self.phase.phase.palette_step_cadence;
+            if self.iteration < 200 && self.palette_delta > 0 && self.iteration % cadence == 0 {
+                self.palette_delta -= 1;
+            }
+            // 0x2c51b: fade-in starts strictly after i=300, also after the
+            // current frame has been presented.
+            if self.iteration > self.phase.phase.fade_out_through_iteration && self.iteration % cadence == 0 {
+                self.palette_delta += 1;
+            }
+            self.wait_ms = self.phase.phase.delay_ms;
+            if elapsed_ms == 0 {
+                return Ok(false);
+            }
+        }
     }
 }
+
+/// 取得共享合成器的鎖。Go 的合成器沒有鎖；同一執行緒內的持有者依序使用，鎖中毒只會出現在
+/// 另一個持有者 panic 之後，這裡沿用其內容（與 Go 繼續使用同一塊記憶體相同）。
+pub(crate) fn lock_compositor(shared: &SharedCompositor) -> std::sync::MutexGuard<'_, IndexedCompositor> {
+    shared.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
+#[cfg(test)]
+mod finale_test;

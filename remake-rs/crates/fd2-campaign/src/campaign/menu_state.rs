@@ -1,7 +1,5 @@
 //! Go 來源：`remake/internal/campaign/menu_state.go`（49 行）。
 
-use super::*;
-
 /// MenuEvent is the input vocabulary shared by editable choice/town nodes.
 /// It intentionally describes navigation only; option labels and their
 /// transition targets remain campaign data.
