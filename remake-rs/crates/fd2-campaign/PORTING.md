@@ -221,3 +221,116 @@ Go 用到的具名項目都有公開的 Rust 對應（見 `ext_deps.rs`）。下
 | `json.RawMessage` 逐位元組保留 | 工作區 `serde_json` 沒開 `raw_value`、`preserve_order` | 骨架用 `GoRawMessage = serde_json::Value`；若要逐位元組比對 `CompileCampaignJSON`，在 `fd2-campaign/Cargo.toml` 開 `raw_value`（功能旗標不改 Cargo.lock 的版本），別名改成 `Box<RawValue>` |
 | `fdtxt::Font` 沒有 `Default`、`PartialEq`；`fdother::Frame` 沒有 `PartialEq`；`NativeItemPanelDataAssets` 只有 `Clone`、`Default` | 同 R2 | 含這些欄位的結構只 derive 做得到的 trait（骨架已依掃描結果自動決定），測試以欄位或雜湊比較 |
 | `fdother::read_resource` 的索引是 `usize` | 同 R2 | Go 負索引在呼叫端先擋下 |
+
+## present 組（2026-11-14）
+
+### 範圍
+
+凍結 Go 版 `remake/internal/` 的四個套件，各自移植成同名模組；每個 Go 檔一個子模組，Go 測試檔逐條移植到
+`src/<模組>/<檔>/<t>_test.rs`。
+
+| Go 套件 | Go 正式檔 | Rust 模組 | Go 測試函式 | Rust 測試 |
+|---|---|---|---|---|
+| `localization` | `content.go`、`entities.go`、`locale.go` | `src/localization.rs`、`src/localization/`（另有 `patterns.rs`） | 16 | 16 |
+| `musiccatalog` | `catalog.go` | `src/musiccatalog.rs`、`src/musiccatalog/` | 4 | 4 |
+| `indexedmap` | `frame.go`、`hud.go`、`mosaic.go`、`native_command10_12.go`、`native_command_heal_tail.go`、`spawn_intro.go` | `src/indexedmap.rs`、`src/indexedmap/` | 55 | 55 |
+| `battlepresent` | 21 檔 | `src/battlepresent.rs`、`src/battlepresent/`（Go 70 個函式全移植，另有 7 個內部小工具） | 70 | 70 |
+
+沒有剩下的 `todo!()`，也沒有 `#[ignore]`：四個套件只依賴格式層與 `fd2_rules::battle`，全部測試現在就能跑。
+
+### 決定
+
+- **錯誤型別**：四個模組都用 `fd2_rules::battle::BattleError`（只保存訊息，`Display` 與 Go `err.Error()` 逐字
+  相同），模組裡 `pub use … as Error`。`%w` 包裝格式層錯誤時以 `BattleError::from` 加 `wrap` 串接前綴。
+- **輸入結構的所有權**（`indexedmap`）：Go 的 `*fdicon.Bank`、`*NativeSelectorCache`、表面指標是呼叫端擁有的
+  資源，Rust 用 `Option<&'a T>` 借用，nil 檢查照 Go 保留；`[]byte` 輸入用 `&'a [u8]`；單位層、前景層與格子用
+  `Vec`。Go `ComposeFrame` 成功時把 mode 6 改寫的格子寫回呼叫端共用的 `Cells` 陣列，Rust 的
+  `compose_frame`／`compose_native_frame` 收 `&mut` 輸入，寫回 `in_.cells`。
+- **callback**：Go func 參數 → `Option<&mut dyn FnMut(..)>`；`FrameInput.SelectionOverlay` 這種結構欄位 →
+  `Option<&'a dyn Fn(..)>`。`RunNativeUnitPresentStripBridge` 的逐列延遲 callback 另外收目前的 VGA（唯讀），
+  因為 Go 的閉包可以同時讀呼叫端緩衝、Rust 不能；同 `fdother::NativeUnitPresentTick` 的做法。
+- **共用陣列的切片**：Go `ComposeNativeUnitPresentStripBridge` 把 `frame[0x8088:]` 交給
+  `fdother.ApplyIndexedTransitionPass`，中段重繪閉包改寫整個 `frame`。`fdother` 只公開收單一切片的
+  `apply_indexed_transition_pass`（`apply_indexed_transition_pass_at` 是 `pub(super)`），所以 Rust 把 `0x8088`
+  之前的位元組另存，重繪時接成完整緩衝再拆回，結果與共用陣列相同（黃金差分逐位元組核對）。
+- **Go 常數運算**：`PhaseBannerStepMillis = 1000.0 / PhaseBannerStepTickHz` 是無型別常數，Go 以任意精度
+  算出精確商才捨入；Rust 的 `f64` 除法差 1 ulp，所以寫成 Go 捨入後的字面值 `54.925409453960306`。黃金差分
+  逐位元核對。
+- **JSON**（`localization`、`musiccatalog`）：`DisallowUnknownFields` → `deny_unknown_fields`（巢狀結構也拒收）；
+  Go 讀 `null` 或缺欄位時留零值，Rust 每個欄位 `default` 加 `null_as_default`。「解碼後再讀一次要求 EOF」以
+  `serde_json` 的 `StreamDeserializer` 實作，區分 Go 的 `trailing JSON` 與 `trailing JSON: <err>`。
+- **regexp**：Go 的五個錨定樣式與 `FindAllString` 改成逐字元比對（`src/localization/patterns.rs`），每個函式的
+  doc 寫出原樣式；字元類別互不重疊，不需要回溯。`filepath.Join`／`Clean` 以 `/` 做字面清理（`go_join`、
+  `go_clean`），錯誤訊息裡的路徑與 Go 相同。
+- **`Catalog.Format(key, args ...any)`**：參數改成 `&[FormatArg]`（`Int`、`Str`、`Float`）。`fmt.Sprintf` 只實作
+  語系文字可能用到的子集（`go_sprintf`）：`%d %v %x %X %c`（整數）、`%s %v %q %x %X`（字串）、`%f %F`（浮點數），
+  旗標 `+ - # 空格 0`、寬度、精度，行為照 Go 1.22（例如 `0` 旗標對字串也補零、`%#06x` 的前綴不算寬度、
+  `%#.0f` 保留小數點、精度 0 的 0 什麼都不寫）。不支援的組合輸出 `%!`，`Format` 回「incompatible argument
+  types」。目前全部官方語系只用到 `%s`、`%d`、`%.0f`、`%02X`。
+- **nil 接收者**：Go 對 nil `*Catalog`／`*ContentCatalog`／`*EntityCatalog`／`*musiccatalog.Catalog` 呼叫方法時回錯；
+  Rust 的 `self` 不會是 null，那些分支不移植。
+- **battlepresent 的輸入**：Go 的 `*figani.Animation`、`*fdother.Frame` → `Option<&T>`，以值傳入的 Frame → `&Frame`；
+  輸入結構帶生命週期，底圖是 `&'a [u8]`，每目標多張底圖是 `Vec<Vec<&'a [u8]>>`，`[]*Animation` 是
+  `Vec<Option<&'a Animation>>`。來源紀錄的 `Base` 存一份 `Vec<u8>` 複本（Go 與輸入共用切片，內容相同）。
+  指令 5 的 `ResolveTarget` callback → `Option<&'a mut dyn FnMut(i64, u16) -> Result<(u16, bool)>>`，所以
+  `build_native_command5_effect_sequence` 收值，其他序列建構函式收 `&input`。指令 32 與 AI type21 尾段的
+  內部 `build_native1_cac7_tail_frames` 把 8 個純量參數收成私有結構 `TailContract`，值與順序不變。
+- **musiccatalog 的 Go 怪癖**：`inspectVorbis` 以 `append([]byte(nil), packet...)` 存識別封包，空封包得到 nil，
+  所以空的第一個封包不算、由下一個封包當識別封包；Rust 照做。sample rate 為 0 時 Go 整數除以零 panic，
+  Rust 同樣 panic。
+
+### map 走訪順序
+
+- `localization/entities.go` 以 map 的隨機順序走訪五張表：多筆不合法時回報哪一筆、兩個鍵字串轉成同一個 ID
+  （例如 `"7"` 與 `"07"`）時留下哪個名稱由順序決定。Rust 依 JSON 鍵字串排序走訪，只是 Go 可能結果之一。
+- `localization/locale.go` 的 `validatePack` 以 map 順序走訪 `entries`，多筆不合法時同上。
+- `indexedmap/native_command_heal_tail.go` 的 `byRecord` map 只做查詢，與順序無關。
+- `battlepresent/native_command32_tail.go` 以 map 偵測重複目標，Rust 用 `BTreeSet`，只查成員，與順序無關。
+- 四個套件都沒有用到 `sort.Slice`。
+
+### 測試
+
+`tools/rust_campaign_test.sh -- --nocapture`（`FD2_REQUIRE_ORIGINAL=1`，掛齊原版、分離素材包與
+`remake/assets`）：fmt、clippy `-D warnings` 通過；本組 145 個單元測試全過（Go 測試函式 16＋4＋55＋70＝145），0 ignore，輸出沒有「略過」。
+`musiccatalog` 的 render 不入庫，在工作樹副本執行時 `FD2_REMAKE_ASSETS` 指向主工作區的 `remake/assets`。
+
+### 黃金差分
+
+| 黃金 | Go 工具 | Rust 測試 | 腳本 | 案例 | SHA-256 |
+|---|---|---|---|---|---|
+| `present-loc-v1.json` | `remake/cmd/fd2-golden-present-loc` | `tests/golden_present_loc.rs` | `tools/rust_golden_present_loc.sh` | 2744 | `e446bb6b9d8d6487bfe7651a9a6e1d7533f28eb27393c28b3cfaa51f87207759` |
+| `present-map-v1.json` | `remake/cmd/fd2-golden-present-map` | `tests/golden_present_map.rs` | `tools/rust_golden_present_map.sh` | 1196 | `a9aa1288129989508359e37954c217fdea94fb4fd57734443c6f8c7a8fce9030` |
+| `present-bp-v1.json` | `remake/cmd/fd2-golden-present-bp` | `tests/golden_present_bp.rs` | `tools/rust_golden_present_bp.sh` | 174 | `b5bdb374863f8cf225aeb50e7e4f80b3c0cd5bd1c0de2fd9682ddb064238cf75` |
+
+- **present-loc**：四個語系的 `pack.json`、`content.json`、`entities.json` 與 `music_catalog.json`、30 個 OGG
+  render（清單排序並記大小與 SHA-256）。官方語系的 `LoadOfficial` 結果與每個鍵的 `Format`（含型別錯誤與個數
+  錯誤）、`LoadOfficialContent` 每筆 `StoryText`、`LoadOfficialEntities` 各 ID 範圍的查詢；pack／content／entities／
+  music 的變造輸入（以 JSON 路徑操作描述，兩邊對同一棵樹套用）；OGG 位元組變造；locale 樣式與兩種佔位符掃描
+  （佔位符清單由 Go 工具逐字複製的掃描函式算出、以真實 `Load` 驗證，Rust 以「Load 成立且多一個變數就失敗」
+  確認相等）；`Format` 的動詞與旗標組合 1200 個。比對 2420 案例，`Format` 不支援的組合跳過 324 個（Go 成功、
+  Rust 不支援，列在 `KNOWN_DIFFERENCES`）。
+- **present-map**：33 張真實地圖（`maps/mapN/map.json`）與分離素材包的 FDSHAP、FDICON、範圍圖示、LUT、HUD、
+  spawn-intro、指令尾段 LMI、章節輔助表面與山景。每張地圖 3 個固定種子局面，各跑整幀（含 HUD 與觀察者各階段）、
+  走行、上行走行、轉場、單位登場全流程、指令 10～12 取樣、補血尾段四種、spawn-intro 12 步、HUD 原語；另有馬賽克、
+  ch23 staging 與純量函式。初始緩衝以 xorshift32 由 salt 產生，比工作緩衝與 VGA 的 SHA-256、各階段 SHA-256、
+  回傳值與錯誤文字。1196 案例全過。
+- **present-bp**：分離素材包 `animations/` 的 FIGANI 與 FDOTHER 動畫、固定種子挑出的 20 個 FIGANI、各指令的
+  effect bank（共 1190 個檔，排序並記大小與 SHA-256）。19 種 op 涵蓋每個指令與入口（指令 0／1／2／3／5／6／7／8／9、
+  24 背景與前奏、32 尾段、複合指令、物理攻擊本體），其中約 23 個是刻意的拒收案例，逐字比錯誤文字。底圖、工作緩衝、
+  合成 RLE 幀與 LMI1 項目由 JSON 記下的種子經同一條 LCG 重建；畫格比 SHA-256，序列比每一步的來源層、HP 段、
+  音效旗標與下一個 idle 狀態。174 案例全過。
+- Go 端各跑兩次，SHA-256 相同。竄改反向檢查：present-loc 改一個錯誤文字、present-map 改一個 VGA 雜湊、present-bp
+  把一個目標的 HP 段改成 4，Rust 測試都在該案例失敗。
+- `KNOWN_DIFFERENCES`：present-loc 的 Format 不支援組合、JSON 欄位名大小寫與重複欄位、entities.json 的 map 走訪
+  順序；present-map 的逐列延遲 callback 多一個 VGA 參數；present-bp 的 nil 指標參數只以 `Option` 表示、指令 5
+  `ResolveTarget` 的錯誤路徑不在黃金案例內。`NORMALIZATIONS`：暫存目錄前綴、標準函式庫錯誤只比本套件前綴、官方對白
+  比雜湊、null 與空陣列相同；present-map 的緩衝與格子比雜湊；present-bp 的 null 與空陣列相同。
+
+### 格式層與規則層缺口
+
+- `fd2_formats::fdother::apply_indexed_transition_pass_at` 是 `pub(super)`；`indexedmap` 以前綴另存重組代替
+  （見「決定」）。若之後公開，可改成直接呼叫。
+- `fd2_rules::battle` 的 `go_quote`、`read_file` 是 `pub(crate)`；`localization` 自己寫了一份 `go_quote`。
+- `fd2_rules::battle::BattleError` 沒有 `From<fd2_formats::figani::FiganiError>`；`battlepresent` 以模組內的
+  `trait GoResult`（`.go()`、`.wrap(prefix)`，經 `to_string()`）轉換，文字與 Go 相同。
+- `fd2_formats::fdother::Frame` 的 `on_blit` 是私有欄位，測試只能用 `Frame::raw()` 建立。
