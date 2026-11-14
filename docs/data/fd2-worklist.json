@@ -518,6 +518,66 @@
         "note": "切換需使用者確認。"
       },
       "issue": 314
+    },
+    {
+      "id": "ai-item-command-exp-award",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "P2 敵方施法與物品使用路徑的經驗發放",
+      "body": "玩家指令的經驗發放已於1892614b補上（凍結例外）。敵方行動路徑0x1546A清零、0x1566A發給[0x53C4B]，AI施法累加的[0x53EC8]在重製端沒有發放；物品使用（0x20C6F呼叫的寫入端）也沒有接發放。證據與寫入端清單見docs/data/ida/fd2_command_experience_writers_20261114.json。Go版已凍結，於Rust版（fd2-rules／fd2-game）實作並驗收。",
+      "acceptance": "AI施法與物品使用依原版寫入端累加並由正確單位收下經驗；單元測試涵蓋兩條路徑，並以原版oracle抽驗至少一次AI施法與一次物品使用的經驗變化。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "remake-rs/crates/fd2-rules/src/battle/native_command_experience.rs"
+        ],
+        "pattern": "award_native_ai_action_experience",
+        "note": "Rust版尚無AI路徑的發放函式。"
+      },
+      "issue": 315
+    },
+    {
+      "id": "exp-writer-1ecc7-semantics",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "P2 經驗累計寫入端0x1ECC7的語意",
+      "body": "IDA 9.4列出[0x53EC8]的直接寫入端時，函式0x1ECC7（由0x1E856呼叫）在0x1F024／0x1F03C以mov覆寫累計，不是累加。呼叫情境與覆寫值的來源未查。證據見docs/data/ida/fd2_command_experience_writers_20261114.json的not_resolved。",
+      "acceptance": "以IDA直接指令與caller閉合0x1ECC7覆寫的情境與數值來源，寫入證據檔並登記58；若屬玩家可達路徑，重製端依規格接線。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_command_experience_writers_20261114.json"
+        ],
+        "pattern": "0x1F024／0x1F03C（函式 0x1ECC7",
+        "note": "證據檔的not_resolved仍列這一項。"
+      },
+      "issue": 316
+    },
+    {
+      "id": "hd-theme-memory-peak",
+      "layer": "runtime",
+      "category": "工作",
+      "title": "P2 降低HD主題載入的記憶體高峰（戰鬥動畫幀延遲解碼）",
+      "body": "F2／F11卡死已改為背景載入（ea7ef639），但載入仍一次解碼整個HD包，heap高峰2～3.4 GiB；剖析顯示戰鬥HD動畫幀佔載入時間69%。4 GB記憶體的機器可能換頁或被終止。Go版已凍結，於Rust版R6實作。",
+      "acceptance": "戰鬥HD動畫幀改為用到時才解碼或分批載入；同一份HD包的載入高峰與首次切換時間有量測收據，且低於現況（2～3.4 GiB、約3～4分鐘）。",
+      "verify": {
+        "kind": "manual",
+        "note": "需要以真實HD包量測記憶體與時間。"
+      },
+      "issue": 317
+    },
+    {
+      "id": "hd-theme-startup-sync-load",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "P2 設定為HD時啟動同步載入主題包2～4分鐘",
+      "body": "設定已存成HD的玩家，Go版在loadGame時同步載入整個HD主題包（main.go約11646行），啟動多等2～4分鐘，視窗出現前沒有進度。第一次F2／F11的同類問題已於ea7ef639改為背景載入。Go版已凍結，於Rust版實作。",
+      "acceptance": "設定為HD時啟動不阻塞：先以原版素材顯示並有載入進度，HD包載入完成後再切換；以真實HD包量測啟動到可操作的時間。",
+      "verify": {
+        "kind": "manual",
+        "note": "需要以真實HD包量測啟動時間。"
+      },
+      "issue": 318
     }
   ]
 }

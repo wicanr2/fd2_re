@@ -5643,3 +5643,14 @@ R1由子代理在各自worktree平行移植。第一批子代理為了讓損壞�
 figani（b536270c）、fdother B份（d3157892）、A份（2ca7cd59）、C份（7bcbb928）相繼合併，Go格式層七個套件全部移植。每份在主checkout重產黃金檔，SHA與子代理回報相同；fdother C份改動共用檔後，A、B份黃金SHA不變。
 
 收尾時發現主checkout的完整測試把fdicon的環境變數打成FD2_FDICON_REAL_FLAME（實際是FD2_FDICON_REAL_FLAME2），而fdicon與afm在變數缺席時退回相對路徑且不檢查FD2_REQUIRE_ORIGINAL，原版檔測試因此默默跳過。新增src/test_support.rs統一四個變數並一律在要求旗標下失敗；以--nocapture確認421項沒有任何略過，反向拿掉變數時fdicon與afm確實失敗。教訓兩條：測試環境變數統一且失敗即關閉、不逐行移植Go標準函式庫。
+
+## 2026-11-14 v.1.1.12 修正版（Go 凍結例外）
+
+玩家回報 v.1.1.11 悠妮以法術攻擊拿不到經驗，以及過場、戰鬥、選單中按 F2 或 F11 會卡死。使用者同意以凍結例外修 Go 並重新打包三平台。
+
+- 經驗：IDA 9.4 確認經驗累計 `[0x53EC8]` 的九個指令效果寫入端與 `0x117E7` 的發放；Go 移植時只做狀態變更，所有玩家指令都拿不到經驗。修正提交 `1892614b`，證據 `docs/data/ida/fd2_command_experience_writers_20261114.json`，58 已登記。Rust `fd2-rules` 跟進於 `416dde65`，`rules-d` 黃金重生為 `2b18867c…`。
+- F2／F11：第一次切到 HD 時在 Update 內同步解碼約 1.1 萬個 PNG，畫面停 160～243 秒。改為背景載入（`ea7ef639`）；真實 HD 包量測按下即返回，F2 約 226 秒、F11 約 165 秒後自動切換。
+- `cmd/fd2` 全套失敗名單與修正前相同（22 項，皆為測試環境缺 HD 素材）。
+- 版號 `v.1.1.12-20261114`，引擎來源提交 `5747771c`，本機 Docker 建置（macOS 為 osxcross，static-verified）。完整版 Windows 3748407676 位元組／`4fce7905…`、macOS 3757098492／`6c2284e8…`、Linux 3236534776／`a6ab84d5…`；三包各 54577 份素材通過，素材清單與 v.1.1.11 逐位元組相同；Linux 與 Wine 完整包自檢及受控截圖通過，截圖與 v.1.1.11 相同。`finalize --promo-version v.1.1.10-20261112` 為 PASS-SCOPED。
+- 核對後刪除本輪組裝樹 163824 檔、11690355039 位元組，保留 `work/full-local-v.1.1.12-20261114` 的清冊與 staging.json，以及 `work/local-release-v.1.1.12-20261114` 的建置紀錄。v.1.1.11 的三個完整包（約 10.7 GB）已由本版取代，未刪除，留給使用者決定。
+- 未處理項開成 #315～#318。

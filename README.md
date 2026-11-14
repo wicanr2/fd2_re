@@ -61,9 +61,9 @@ HD介面採古典明體、加重英數與立體血條，保留原版多層框線
 
 蓋亞的原版／HD攻擊鏡頭已重新錄製，HD採目前的原版像素手繪與B厚重命中音。上圖為同份首章來源經正常LOAD及普通攻擊取得的成片縮圖拼排；原版指重製引擎的原版美術與介面。[來源與驗證範圍](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片蓋亞原版鏡頭修正)另列。
 
-三平台本機完整版位於`dist-all/v.1.1.11-20261113/`，包含Windows、macOS通用版與Linux版本。本版加入戰鬥中F5保存整個戰場與`fd2-run.log`執行紀錄，素材除四份語系檔外與v.1.1.9相同。三平台引擎在本機Docker建置，macOS以osxcross交叉建置；三包內容已逐檔核對，Linux與Wine下的Windows完整包另驗自檢與受控畫面，macOS只做靜態檢查。Windows／macOS實機操作及Windows 60fps仍待驗。[v.1.1.11修正說明](docs/releases/v.1.1.11-20261113.md)與[本機建置方式](docs/knowledge-base/41-packaging.md#44-本機-osxcross-建置使用者2026-11-13定案)另列。
+三平台本機完整版位於`dist-all/v.1.1.12-20261114/`，包含Windows、macOS通用版與Linux版本。本版修正法術與其他指令拿不到經驗值，以及第一次按F2或F11時畫面停住數分鐘；這是Go版凍結後經使用者同意的一次修正版，素材與v.1.1.11逐檔相同。三平台引擎在本機Docker建置，macOS以osxcross交叉建置；三包內容已逐檔核對，Linux與Wine下的Windows完整包另驗自檢與受控畫面，macOS只做靜態檢查。Windows／macOS實機操作及Windows 60fps仍待驗。[v.1.1.12修正說明](docs/releases/v.1.1.12-20261114.md)與[本機建置方式](docs/knowledge-base/41-packaging.md#44-本機-osxcross-建置使用者2026-11-13定案)另列。
 
-最新推廣片位於`dist-all/v.1.1.10-20261112/promo/`，約4分54秒，已補錄原版金字浮雕HD操作按鈕。README的操作按鈕圖片也已同步；其餘42幕、36段已核准旁白與原速音軌保持。[v.1.1.10修正說明](docs/releases/v.1.1.10-20261112.md)與[按鈕修訂驗證](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)另列。影片沿用至v.1.1.11。完整素材包與影片限本機保存，公開下載版維持前述正式第一版。
+最新推廣片位於`dist-all/v.1.1.10-20261112/promo/`，約4分54秒，已補錄原版金字浮雕HD操作按鈕。README的操作按鈕圖片也已同步；其餘42幕、36段已核准旁白與原速音軌保持。[v.1.1.10修正說明](docs/releases/v.1.1.10-20261112.md)與[按鈕修訂驗證](docs/knowledge-base/61-modern-theme-runtime-spec.md#推廣片操作按鈕與readme同步)另列。影片沿用至v.1.1.12。完整素材包與影片限本機保存，公開下載版維持前述正式第一版。
 
 ![開始選單、皇城原版與HD、第一關及六段戰鬥的最新實錄](docs/figures/hd1-promo-rerecord-overview.png)
 

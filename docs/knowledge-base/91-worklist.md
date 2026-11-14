@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 34 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 38 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -61,6 +61,14 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 怎樣算做完：確認該組合的原生裝備／射程與可達範圍，補齊固定雜湊、原始位址及caller／consumer證據；依READY規格實作必要背景預載或修正錯誤測試來源，同狀態與普通玩家抽樣通過，缺件仍在結算前拒收。不能只刪守衛或改成無反擊。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P2 經驗累計寫入端0x1ECC7的語意
+
+`exp-writer-1ecc7-semantics` · RE待解 · [#316](https://github.com/wicanr2/fd2_re/issues/316) · 仍未完成 · 自承還在 docs/data/ida/fd2_command_experience_writers_20261114.json
+
+IDA 9.4列出[0x53EC8]的直接寫入端時，函式0x1ECC7（由0x1E856呼叫）在0x1F024／0x1F03C以mov覆寫累計，不是累加。呼叫情境與覆寫值的來源未查。證據見docs/data/ida/fd2_command_experience_writers_20261114.json的not_resolved。
+
+怎樣算做完：以IDA直接指令與caller閉合0x1ECC7覆寫的情境與數值來源，寫入證據檔並登記58；若屬玩家可達路徑，重製端依規格接線。
 
 ## data — 可編輯資料還沒就緒
 
@@ -388,6 +396,30 @@ HD主題、F2／F11切換、畫質與速度設定、浮出工具列，沿用私�
 依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結於v.1.1.11並完整保留作對照規格，Rust程式在`remake-rs/`。每個移植單位都要過三層：Go測試逐條移植、凍結Go版黃金差分、原版oracle；前兩層只證明兩版一致。
 
 怎樣算做完：HD1清冊全部素材可載入；美術／介面切換與設定保存和Go版相容。
+
+### P2 敵方施法與物品使用路徑的經驗發放
+
+`ai-item-command-exp-award` · 缺陷 · [#315](https://github.com/wicanr2/fd2_re/issues/315) · 仍未完成 · 還沒出現
+
+玩家指令的經驗發放已於1892614b補上（凍結例外）。敵方行動路徑0x1546A清零、0x1566A發給[0x53C4B]，AI施法累加的[0x53EC8]在重製端沒有發放；物品使用（0x20C6F呼叫的寫入端）也沒有接發放。證據與寫入端清單見docs/data/ida/fd2_command_experience_writers_20261114.json。Go版已凍結，於Rust版（fd2-rules／fd2-game）實作並驗收。
+
+怎樣算做完：AI施法與物品使用依原版寫入端累加並由正確單位收下經驗；單元測試涵蓋兩條路徑，並以原版oracle抽驗至少一次AI施法與一次物品使用的經驗變化。
+
+### P2 降低HD主題載入的記憶體高峰（戰鬥動畫幀延遲解碼）
+
+`hd-theme-memory-peak` · 工作 · [#317](https://github.com/wicanr2/fd2_re/issues/317) · 仍未完成 · 要人判
+
+F2／F11卡死已改為背景載入（ea7ef639），但載入仍一次解碼整個HD包，heap高峰2～3.4 GiB；剖析顯示戰鬥HD動畫幀佔載入時間69%。4 GB記憶體的機器可能換頁或被終止。Go版已凍結，於Rust版R6實作。
+
+怎樣算做完：戰鬥HD動畫幀改為用到時才解碼或分批載入；同一份HD包的載入高峰與首次切換時間有量測收據，且低於現況（2～3.4 GiB、約3～4分鐘）。
+
+### P2 設定為HD時啟動同步載入主題包2～4分鐘
+
+`hd-theme-startup-sync-load` · 缺陷 · [#318](https://github.com/wicanr2/fd2_re/issues/318) · 仍未完成 · 要人判
+
+設定已存成HD的玩家，Go版在loadGame時同步載入整個HD主題包（main.go約11646行），啟動多等2～4分鐘，視窗出現前沒有進度。第一次F2／F11的同類問題已於ea7ef639改為背景載入。Go版已凍結，於Rust版實作。
+
+怎樣算做完：設定為HD時啟動不阻塞：先以原版素材顯示並有載入進度，HD包載入完成後再切換；以真實HD包量測啟動到可操作的時間。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
