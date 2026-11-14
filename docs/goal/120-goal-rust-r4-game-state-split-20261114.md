@@ -97,6 +97,27 @@ Go 的 `cmd/fd2` 是 `package main`，別的程式無法 import，所以 Go 側�
 
 盤點方式：解析 `cmd/fd2` 正式程式的結構宣告與第一章執行到的函式本體（2026-11-14）。
 
+## 階段 1 骨架的對應規則（2026-11-14）
+
+型別與所有權沿用 R2、R3（`fd2-rules`、`fd2-campaign` 的 `PORTING.md`）。`cmd/fd2` 特有的部分如下。
+
+| Go | `fd2-game` |
+|---|---|
+| `package main`（單一套件） | crate `fd2-game` 的模組 `game`；每個 Go 檔一個子模組 `game/<檔名>.rs`，各自寫 `impl Game` |
+| 函式範圍 | 只產生[階段 0 清單](../data/rust-r4-ch01-coverage-20261114.json)的 565 個函式；同檔其餘函式在 `PORTING.json` 標 `r8`，不產生 |
+| 型別範圍 | `Game` 欄位與上述函式簽名可達的全部型別 |
+| `*ebiten.Image` | `Option<Arc<Picture>>`；`Picture` 是 RGBA 像素（寬、高、位元組），索引色畫面用 `IndexedFrame`。GPU 貼圖由 `fd2-app` 建立 |
+| `inpututil`、`ebiten.IsKeyPressed` | 每個邏輯幀的 `TickInput`（本幀按下、放開、按住的 `Key` 集合）；`Key` 只列 Go 用到的鍵 |
+| `time.Time`、`gameNow()` | `GameInstant`（虛擬時鐘的奈秒）；`time.Duration` 是 `GoDuration`（`i64` 奈秒） |
+| `drawn`／`presented` 旗標 | 欄位照留；由無畫面驅動端或 `fd2-app` 回報「已呈現」時設定 |
+| `audio.Player` | `AudioVoice`（播放請求與狀態）；實際播放由 `fd2-app` |
+| `func()` 欄位 | `Option<Box<dyn FnOnce(&mut Game) + Send>>`；函式參數 `func` 是 `&mut dyn FnMut` |
+| `*battle.Unit` 欄位 | `Option<UnitIdx>`，指向 `st.units` |
+| HD（`modern_*`、海報、工具列）型別 | 保留型別名；欄位只留忠實模式下第一章會執行到的，其餘 R6 |
+| `error` | `GameError`（同 `BattleError` 形狀，`Display` 與 Go 逐字相同） |
+
+骨架由受版控的產生器（`tools/rust_r4_skeleton/`）以 Go `go/types` 分析 `cmd/fd2` 產生，可以重跑；R2、R3 的產生器沒有進版控。
+
 ## 其他章的流程（使用者 2026-11-14 定案）
 
 第一章沒有執行到的流程程式（其他章的處理器、結局等）放進 R8。R8 每一章先以該章重播的覆蓋率補移植缺少的函式，再跑該章對拍。R4 的範圍表裡「第一章沒有執行到的流程」一列依此處理。
