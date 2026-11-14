@@ -218,3 +218,18 @@
   - 每一步比計畫投影、執行結果、單位 JSON 的變化、戰場摘要、下一個 `Int63`（不消耗）與原版 RNG；戰鬥結束比完整 `StateSnapshot`。黃金檔 `rules-int-v1.json` 34 MB，SHA-256 `32d0fd192482658cc3191fd462a2369fec8eb08e93c248be4c8b60df928b5d54`，Go 端重跑兩次相同。竄改反向檢查（攻擊傷害、初始單位 HP、步驟內的單位欄位各一處）都精確報出該欄位並失敗。
   - 統計：36552 步、計畫 27747 個（其中 mode 8 備援跳過 4885）、物理攻擊 1616、走路 5157、0x13FD4 回復 140、mode 5 事件 50、指令 13～16 回復 21、沒有重播的原生指令與道具 597；勝負為 63 場敗、36 場未分（含 12 場因原版來源失敗即關閉而停止：mode 3 找不到 +0x08 目標 6 場、mode 目的地不可達 3 場、補齊規則不足以產生道具面板記錄 3 場）。normalized 規劃器在 `combat.go` reach 迴圈上的平手 0 次。系統群行軍 396 案（300 案成功）。
   - 結果：初版只有一處不一致，23 場戰鬥在第一個走到 0x13E9C（以最近對立單位為目的地）的 mode 備援計畫分歧。`native_ai_action_runtime.go` 531 行 `nearest, found, err := SelectNativeNearestOppositeCoordinate(...)` 與 487 行的 `found` 在同一作用域，`:=` 重新賦值了 `found`，所以 558 行寫進 `NativeModeBlockedFound` 的是「找到最近對立單位」（此處恆為真）。這一欄只供 `FD2_SHOT_AI` 診斷；主代理讓 Rust 照 Go 的實際值寫入（`found_nearest`，註解寫明），之後 99 場、36552 步全部逐步相同，結局快照也相同，`golden_rules_int` 通過。
+
+## 凍結例外修正（2026-11-14）
+
+使用者回報 Go v.1.1.11 悠妮的法術攻擊沒有經驗值，並同意以凍結例外修 Go。根因是 Go 移植 `0x1C81F`、`0x1C916` 等指令效果時沒有接上經驗累計 `[0x53EC8]` 的發放；證據見 `docs/data/ida/fd2_command_experience_writers_20261114.json`。
+
+| 項目 | 內容 |
+|---|---|
+| 新增 Go 檔 | `native_command_experience.go`（13 個函式）→ `native_command_experience.rs`；6 項 Go 測試移植到 `native_command_experience/native_command_experience_test.rs` |
+| 修改 | `NativeCommand24Damage` 加 `Rolled`（Go 與 Rust 三個建構點都設），`tests/golden_rules_d.rs` 序列化加 `Rolled` |
+| 簽名 | 加總函式多一個 `units: &[Unit]`，結果只存 `state.units` 的索引（同簽名變更紀錄 B 組做法）；`NativeDamageExperience` 收 `&Unit`，`NativeRestoreExperience` 收 `Option<&Unit>` |
+| 黃金 | `rules-d` 重生為 `2b18867c…`（原 `0bd44fb5…`，差異只在 `Rolled` 欄位），Rust 比對通過；`rules-int` 照舊通過 |
+| 測試 | `tools/rust_rules_test.sh` 653 項通過（原 647 項） |
+
+`cmd/fd2` 的發放（各指令家族在行動收尾呼叫 `AwardNativePlayerActionExperience`）屬於 R4 的 `fd2-game` 範圍，移植時一併處理。
+

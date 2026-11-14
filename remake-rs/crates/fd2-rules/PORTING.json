@@ -6548,6 +6548,107 @@
       "stage2_group": "B"
     },
     {
+      "go": "remake/internal/battle/native_command_experience.go",
+      "rust": "remake-rs/crates/fd2-rules/src/battle/native_command_experience.rs",
+      "go_lines": 246,
+      "tests": [
+        {
+          "file": "remake/internal/battle/native_command_experience_test.go",
+          "lines": 196,
+          "test_funcs": 6
+        }
+      ],
+      "test_lines": 196,
+      "items": [],
+      "functions": [
+        {
+          "name": "nativeExperienceLevel",
+          "rust": "native_experience_level",
+          "status": "ported",
+          "go_line": 23
+        },
+        {
+          "name": "nativeHighClassExperienceRow9",
+          "rust": "native_high_class_experience_row9",
+          "status": "ported",
+          "go_line": 33
+        },
+        {
+          "name": "NativeDamageExperience",
+          "rust": "native_damage_experience",
+          "status": "ported",
+          "go_line": 52
+        },
+        {
+          "name": "NativeRestoreExperience",
+          "rust": "native_restore_experience",
+          "status": "ported",
+          "go_line": 73
+        },
+        {
+          "name": "NativeCommandDamageExperience",
+          "rust": "native_command_damage_experience",
+          "status": "ported",
+          "go_line": 82
+        },
+        {
+          "name": "NativeCommandHealExperience",
+          "rust": "native_command_heal_experience",
+          "status": "ported",
+          "go_line": 98
+        },
+        {
+          "name": "NativeCommandDerivedStrikeExperience",
+          "rust": "native_command_derived_strike_experience",
+          "status": "ported",
+          "go_line": 108
+        },
+        {
+          "name": "NativeCommand2022Experience",
+          "rust": "native_command2022_experience",
+          "status": "ported",
+          "go_line": 128
+        },
+        {
+          "name": "NativeCompoundCommand32Experience",
+          "rust": "native_compound_command32_experience",
+          "status": "ported",
+          "go_line": 162
+        },
+        {
+          "name": "NativeCompoundCommand33Experience",
+          "rust": "native_compound_command33_experience",
+          "status": "ported",
+          "go_line": 179
+        },
+        {
+          "name": "NativeCompoundCommand34Experience",
+          "rust": "native_compound_command34_experience",
+          "status": "ported",
+          "go_line": 189
+        },
+        {
+          "name": "NativeCompoundCommand35Experience",
+          "rust": "native_compound_command35_experience",
+          "status": "ported",
+          "go_line": 199
+        },
+        {
+          "name": "State.AwardNativePlayerActionExperience",
+          "rust": "State::award_native_player_action_experience",
+          "status": "ported",
+          "go_line": 230
+        }
+      ],
+      "depends_on": [
+        "growth.go",
+        "model.go",
+        "native_death_program.go"
+      ],
+      "stage2_group": "凍結例外 2026-11-14",
+      "note": "凍結後經使用者同意的 Go 缺陷修正（玩家指令沒有經驗），見 PORTING.md「凍結例外修正」"
+    },
+    {
       "go": "remake/internal/battle/native_command_grid.go",
       "rust": "remake-rs/crates/fd2-rules/src/battle/native_command_grid.rs",
       "go_lines": 66,

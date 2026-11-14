@@ -11,6 +11,8 @@ use super::*;
 pub struct NativeCommand24Damage {
     pub target: Option<UnitIdx>,
     pub amount: i64,
+    /// Go：Rolled 是 0x1C81F 內的擲出值（截斷到 0 與剩餘 HP 之前），經驗公式用它。
+    pub rolled: i64,
     pub damage: i64,
     pub hp_before: i64,
     pub hp_after: i64,
@@ -290,6 +292,7 @@ impl State {
             plan.results.push(NativeCommand24Damage {
                 target: Some(target_idx),
                 amount,
+                rolled: damage,
                 damage: applied_damage,
                 hp_before: target.hp,
                 hp_after,
@@ -569,6 +572,7 @@ impl State {
             plan.results.push(NativeCommand24Damage {
                 target: Some(target_idx),
                 amount,
+                rolled: damage,
                 damage,
                 hp_before: target.hp,
                 hp_after: target.hp - applied,
@@ -606,7 +610,13 @@ impl State {
             let (amount, damage) =
                 resolve_native_command_derived_strike_damage(actor_ap, target_dp, 18, Some(&mut *rng))?;
             self.units[target_idx].apply_hp_damage(damage);
-            results.push(NativeCommand24Damage { target: Some(target_idx), amount, damage, ..Default::default() });
+            results.push(NativeCommand24Damage {
+                target: Some(target_idx),
+                amount,
+                rolled: damage,
+                damage,
+                ..Default::default()
+            });
         }
         self.units[actor_idx].acted = true;
         Ok(results)

@@ -315,7 +315,7 @@ fn cue_val(c: &NativeAIMode5AudioCue) -> Value {
 }
 
 fn damage24_val(d: &NativeCommand24Damage) -> Value {
-    json!({"Target": idx(d.target), "Amount": d.amount, "Damage": d.damage, "HPBefore": d.hp_before,
+    json!({"Target": idx(d.target), "Amount": d.amount, "Rolled": d.rolled, "Damage": d.damage, "HPBefore": d.hp_before,
         "HPAfter": d.hp_after, "NativeRecordByte5Before": d.native_record_byte5_before,
         "NativeRecordByte5After": d.native_record_byte5_after})
 }
