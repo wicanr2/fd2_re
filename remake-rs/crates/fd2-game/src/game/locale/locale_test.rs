@@ -9,7 +9,6 @@ const LOCALE_IDS: [&str; 4] = ["zh-Hant", "zh-Hans", "ja", "en"];
 
 /// 受版控的四個官方語系都通過 `loadOfficialLocale` 的契約核對（Go `packageSelfCheck` 的語系段）。
 #[test]
-#[ignore = "等 C 合併（OFFICIAL_LOCALE_CONTRACT 的初始式呼叫 system_info_locale_contract）"]
 fn official_locales_satisfy_contract() {
     if test_support::remake_asset("locales/en/pack.json").is_none() {
         return;
@@ -42,7 +41,6 @@ fn localized_story_text_fails_closed_without_identity() {
 }
 
 #[test]
-#[ignore = "等 C 合併（OFFICIAL_LOCALE_CONTRACT 的初始式呼叫 system_info_locale_contract）"]
 fn locale_message_reports_missing_catalog_and_bad_keys() {
     let mut g = Game::default();
     assert_eq!(g.locale_message("any", &[]), (String::new(), false));

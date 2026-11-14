@@ -46,7 +46,6 @@ fn write_save_slot(slot: i64, raw: &[u8]) {
 
 /// Go：`save_test.go:17`
 #[test]
-#[ignore = "等 C 合併"]
 fn start_native_slot_preserves_container_and_rejects_missing_provenance() {
     let name = "start_native_slot_preserves_container_and_rejects_missing_provenance";
     let Some(dir) = f_child_env(module_path!(), name, |d| vec![("FD2_NATIVE_SAVE", d.join("FD2.SAV").into())]) else {
@@ -185,7 +184,6 @@ fn save_slots_are_bounded_and_distinct() {
 
 /// Go：`save_test.go:125`
 #[test]
-#[ignore = "等 C 合併（官方語系契約或系統選項）"]
 fn save_rejects_post_battle_handler_without_serializable_runtime_context() {
     let mut post = node("cutscene");
     post.handler_binding = "assets/cutscenes/bindings/ch01_post.json".to_string();
@@ -204,7 +202,6 @@ fn save_rejects_post_battle_handler_without_serializable_runtime_context() {
 
 /// Go：`save_test.go:141`
 #[test]
-#[ignore = "等 C 合併（官方語系契約或系統選項）"]
 fn save_rejects_unbound_postbattle_boundary() {
     let mut post = node("cutscene");
     post.next = "town_ch05".to_string();
@@ -239,7 +236,7 @@ fn write_save_file_replaces_complete_json_atomically() {
 
 /// Go：`save_test.go:184`
 #[test]
-#[ignore = "等 B、C、D、E 合併"]
+#[ignore = "等 E 合併（停在 reset_native_class_ui_pulse；之後可能還要 B、D）"]
 fn campaign_save_load_restores_town_boundary_and_party() {
     let name = "campaign_save_load_restores_town_boundary_and_party";
     if f_child_env(module_path!(), name, |d| vec![("XDG_DATA_HOME", d.into())]).is_none() {
@@ -387,7 +384,6 @@ fn campaign_save_load_restores_town_boundary_and_party() {
 
 /// Go：`save_test.go:268`
 #[test]
-#[ignore = "等 C 合併"]
 fn campaign_load_rejects_out_of_range_native_hud_gate_without_mutation() {
     let name = "campaign_load_rejects_out_of_range_native_hud_gate_without_mutation";
     if f_child_env(module_path!(), name, |d| vec![("XDG_DATA_HOME", d.into())]).is_none() {
@@ -419,7 +415,6 @@ fn campaign_load_rejects_out_of_range_native_hud_gate_without_mutation() {
 
 /// Go：`save_test.go:297`
 #[test]
-#[ignore = "等 C 合併"]
 fn campaign_load_rejects_out_of_range_native_system_option_without_mutation() {
     let name = "campaign_load_rejects_out_of_range_native_system_option_without_mutation";
     if f_child_env(module_path!(), name, |d| vec![("XDG_DATA_HOME", d.into())]).is_none() {
@@ -514,7 +509,7 @@ fn campaign_load_rejects_broken_persistent_party_topology_without_mutation() {
 
 /// Go：`save_test.go:370`
 #[test]
-#[ignore = "等 C 合併"]
+#[ignore = "等 E 合併（停在 reset_native_class_ui_pulse）"]
 fn title_json_load_accepts_saved_zero_chapter_and_keeps_bytes() {
     let name = "title_json_load_accepts_saved_zero_chapter_and_keeps_bytes";
     let envs = |d: &std::path::Path| vec![("XDG_DATA_HOME", d.into()), ("FD2_NATIVE_SAVE", "".into())];

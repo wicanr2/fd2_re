@@ -234,6 +234,13 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 | A | `Font`（型別，A 組專用檔） | — | 加欄位 `measure: TextMeasurer` | 量寬由外殼注入（見「A 組：字型」） |
 | F | `PlayerPosterSettings`（A 組 `player_poster_assets.rs`） | 0 欄位、`Copy` | `set`、`edge`、`fade_ms` 三欄與 serde，去掉 `Copy` | `fd2_settings.json` 的 `poster` 要能讀回並照原樣寫出；另補 `default_player_posters`、`valid_poster_mode`、`normalize_player_posters`（原標 `r8`，`loadSettings` 呼叫） |
 | F | `BalanceSavedState`、`BalanceSidecar`、`Settings` | 沒有 serde | serde，欄位名與 `omitempty` 照 Go 標籤 | 附檔與設定檔的讀寫；`BalanceSidecar` 改手寫 `Default`（`version: 1`，Go 解碼前的起點） |
+| C | `build_native_map_frame_input` | `(assets: &mut NativeMapAssets, field: Option<&MapData>, state: Option<&mut battle::State>, ..) -> Result<NativeFrameInput<'static>>` | `<'a>(assets: Option<&'a NativeMapAssets>, field: Option<&MapData>, state: Option<&'a battle::State>, ..) -> Result<NativeFrameInput<'a>>` | 120 定案：`fd2-game` 保存資源本身，每次呼叫重組借用的輸入；Go 三個指標都檢查 nil、都不改寫。D 組十幾個呼叫端照這個簽名傳 `self.native_map_assets.as_ref()`／`self.st.as_ref()` |
+| C | `Game::native_map_selection_overlay` | `(state: Option<&mut battle::State>) -> Result<Option<Box<dyn FnMut(&mut Game, Vec<u8>, i64, i64) -> Result<()>>>>` | `(state: Option<&battle::State>) -> Result<Option<NativeMapSelectionOverlay>>` | `indexedmap::SelectionOverlay` 是借用的 `&dyn Fn(&mut [u8], i64, i64)`；Rust 回傳記下 Go 閉包捕捉值的 enum，合成時以 `render(&Game, &State, ..)` 組成借用的閉包 |
+| C | `Game::native_map_action_overlay` | `(state: &mut battle::State) -> Option<Box<dyn FnMut(..)>>` | `(state: &battle::State) -> NativeMapSelectionOverlay` | 同上；Go 在建立時就失敗的閉包是 `NativeMapSelectionOverlay::Failed` |
+| C | `Game::render_battle_panel_text` | `record: &mut [u8]` | `record: &[u8]` | 只讀；`&mut Vec<u8>` 的呼叫端照樣可編譯 |
+| C | `Game::freeze_modern_hd_movement_panel` | `plan: Option<&mut NativePlayerMovement>, source: Option<&mut Picture>, panels: &mut [ModernBattlePanelText]` | `plan: Option<&NativePlayerMovement>, source: Option<&Arc<Picture>>, panels: &[ModernBattlePanelText]` | 只讀；Go 以指標存進 HD 狀態，Rust 存同一個 `Arc` 與複本 |
+| C | `movement_panel_source_seal` | `h: Option<&mut ModernHDMovementPanel>` | `h: Option<&ModernHDMovementPanel>` | 只讀 |
+| C | `clone_native_turn_staging_state` | `source: Option<&mut battle::State>` | `source: Option<&battle::State>` | 只讀；`State::clone` 已是深複製 |
 
 ## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
 
@@ -535,3 +542,130 @@ Go 寫出的存檔由 Rust 讀回再寫出時，位元組只在 fd2-rules 型別
 - A（`2a714a36`）與 F（`e217df8b`）合併。兩組都把 `Game::locale_message` 的參數改成 `&[localization::FormatArg]`，保留 A 的本體；F 的簽名變更列併入上方表格。F 的呼叫端配合 A 的只讀簽名改成 `freeze_modern_hd_title_load_slots(Some(&assets), …)`。
 - 合併後 8 個原本「等 A 合併」的測試通過，拿掉 ignore；其餘依實際停點改標等 B／C／E。`tools/rust_game_test.sh`：82 通過、18 ignore。
 - 存檔黃金在主 checkout 重跑時，Go 端兩次輸出不同：第一章戰中 F5 存檔的快照含 BIOS 地圖時鐘、地形翻轉、單位位移、地圖循環與地形相位，隨牆鐘前進。黃金工具在兩次存檔前以 `rustGoldenPinSnapshotTiming` 把這些欄位固定成同一組值（只影響測試輸入）。修正後 Go 端連續四次輸出相同，SHA-256 `dab44975…`。
+
+## R4 階段 2 C 組：戰場操作、指令環與敵方回合（2026-11-14）
+
+代號 `r4c`，合併基準 `1310436e`。範圍是 `PORTING.json` 裡 `group` 為 `C` 的 83 個函式（含 `main.go` 的 22 個）。
+
+### 移植結果
+
+| 項目 | 數量 |
+|---|---|
+| C 組函式 | 83 個全部有本體 |
+| 整個本體是 `todo!()` 的 | 1 個：`draw_native_end_turn_recovery`（R5，純繪圖；`job.drawn` 由呈現回報設） |
+| 分支停在 `todo!()` 的 | R8 21 處、R6 4 處（見下） |
+| 隨呼叫端補移植的 `r8` 函式 | 12 個（下表） |
+
+R8 的 `todo!` 都在第一章重播沒有執行到的分支（呼叫的函式在 `PORTING.json` 標 `r8`，或整段是 `r8` 的演出）：`ring_input` 的 END 確認、系統設定、巢狀系統選單、系統游標選單、物品面板、原始指令格；`confirm` 的施法、物品目標、物品／傳送術目的地與原始指令 0..35 目標確認（含 2026-11-14 修正的 `awardNative*Experience` 經驗發放，R8 移植這些分支時照 v.1.1.12 的 Go 現行版本）；`finish_selected_wait` 的原版取寶提示；`inspect_native_player_unit` 的狀態頁；`native_action_overlay_state` 的巢狀選單；`step_native_system_end_turn` 收合延續的取寶、死亡獎勵與全軍移動；`start_native_raw_camp0_turn_events` 的 `beginNativeStagingJob` 與 `step_native_turn_staging` 的第二次呼叫。R6 是 HD：`compose_native_map_frame_buffers` 的 HD 地圖合成與 HD 介面 HUD、END 收合的 `bindModernHDFullReward`／`bindModernHDSystemConfirmation`（忠實模式下 `hd` 是 nil，不會進入）。
+
+隨呼叫端補移植的 `r8` 函式（本體照 Go，放在各自的 C 組檔）：
+
+| Go | Rust | 呼叫端 |
+|---|---|---|
+| `action_overlay_runtime.go:nativeSystemOverlayReady` | `Game::native_system_overlay_ready` | `confirm` |
+| `modern_hd_full_reward.go:bindModernHDFullReward`、`modern_hd_system_confirmation.go:bindModernHDSystemConfirmation` | `Game::bind_native_system_end_turn_hd`（私有，忠實模式無動作，HD 分支 R6） | `step_native_system_end_turn` |
+| `modern_hd_battle_panel_chrome.go:preserveNativePanelMarker` | `ModernBattlePanelText::preserve_native_panel_marker`（私有） | `raster` |
+| `native_player_movement.go:restorePlayerMovementCursor` | `Game::restore_player_movement_cursor` | `ring_input` 的 ESC |
+| `native_turn_staging.go:failNativeTurnStaging` | `Game::fail_native_turn_staging`（私有） | `step_native_turn_staging` |
+| `native_indexed_transition.go:nativeDelayTicks`（B 組檔） | `native_delay_ticks_ms`（`native_turn_staging.rs`） | 回合演出、AI 物品／修飾演出的 500 ms 停留；另取名字避免與 B 組補移植的同名函式衝突，整合時可合併 |
+| `native_end_turn_recovery.go:cancelNativeEndTurnRecovery` | `Game::cancel_native_end_turn_recovery` | `step_native_end_turn_recovery`；Go `Draw` 在 END 回收畫不出來時也呼叫 |
+| `native_ai_idle_recovery.go:restoreNativeAIIdleRecoveryRange` | 併入 `Game::fail_native_ai_idle_recovery_commit`（私有） | `step_native_ai_idle_recovery` |
+| `native_ai_item_presentation.go:failNativeAIItemPresentation` | `Game::fail_native_ai_item_presentation` | `step_native_ai_item_presentation`（Go `Draw` 也呼叫） |
+| `native_ai_modifier_presentation.go:failNativeAICommandModifierPresentation` | `Game::fail_native_ai_command_modifier_presentation` | `step_native_ai_command_modifier_presentation` |
+| `native_item_panel_ui.go:nativeItemRuntimeRecords`、`syncNativeItemRuntimeRecord`、`commitNativeAIItemTransaction` | 同名 | AI 物品演出的發布與取消 |
+
+Rust 新增、沒有 Go 對應的工具：`native_player_movement.rs` 的 `go_copy`（Go 內建 `copy`）；`modern_hd_battle_panel_chrome.rs` 的 `rgba_rect`、`new_rgba_canvas`；`modern_hd_battle_panel.rs` 的 `same_panel_font`、`picture_from_rgba`；`native_map_unit_window.rs` 的 `NativeMapSelectionOverlay`、`NativeMapActionOverlay`；`main.rs` 的私有 `compose_native_map_frame_buffers`（緊鄰 `compose_native_map_frame_at_with_palette_cycle`）。
+
+### C 組：呈現回報
+
+Go 由 `Draw` 設下列旗標，對應的 `step*` 等旗標才前進；Rust 的流程端都不設，階段 3 的呈現回報介面要涵蓋（無畫面驅動端直接回報）：
+
+| 旗標 | Go 寫入端 | 等它的流程 | 備註 |
+|---|---|---|---|
+| `action_overlay_drawn`（經 `mark_action_overlay_drawn`） | `main.go:10159`（指令環已在原生整幀中）、`drawRing`（`main.go:10240`、`10302`）、HD 的 `modern_hd_action_icon.go:74`、`modern_hd_map_gpu.go:581`、`588` | `step_action_overlay_lifecycle`：開合各四幀，每幀要一次回報 | `mark_action_overlay_drawn` 已移植，只在開合中（`action_overlay_blocks_input`）生效；回報就是呼叫它 |
+| `NativeTurnStagingJob::drawn` | `drawNativeTurnStaging`（`native_turn_staging.go:503`）與 `Draw` 的 defer（`main.go:9386`） | `step_native_turn_staging` 的白閃 | `drawNativeTurnStaging` 在 PAN 階段**先合成整幀**再複製到 `job.vga`（`native_turn_staging.go:491`），影響流程，無畫面驅動端也要做 |
+| `NativePlayerStatusState::drawn` | `drawNativePlayerStatus`（`native_player_input.go:220`..`236`） | `step_native_player_status` | |
+| `NativeSystemInfoUIState::drawn` | `drawNativeSystemInfoUI`（`native_system_info_ui.go:231`） | `step_native_system_info_ui`（開合十二幀、穩態調色盤循環） | |
+| `NativeAIIdleRecoveryJob::drawn` | `drawNativeAIIdleRecovery`（`native_ai_idle_recovery.go:348`） | `step_native_ai_idle_recovery`：三張畫面後才提交 HP | 畫不出來時 `Draw` 復原 range、清 job、寫 `loadErr`、`aiBusy = false`（A 組表第 10 項） |
+| `NativeEndTurnRecoveryJob::drawn` | `drawNativeEndTurnRecovery`（`native_end_turn_recovery.go:177`） | `step_native_end_turn_recovery` | 畫不出來時 `Draw` 呼叫 `cancel_native_end_turn_recovery`（A 組表第 9 項） |
+| `NativeAIItemPresentationJob::drawn` | `drawNativeAIItemPresentation`（`native_ai_item_presentation.go:634`、`644`） | `step_native_ai_item_presentation` | HD 圖源缺件時 `Draw` 呼叫 `fail_native_ai_item_presentation` |
+| `NativeAICommandModifierPresentationJob::drawn` | `drawNativeAICommandModifierPresentation`（`native_ai_modifier_presentation.go:596`、`602`） | `step_native_ai_command_modifier_presentation` | |
+
+C 組的測試照 Go 測試直接呼叫 `mark_action_overlay_drawn` 或寫 `drawn = true`，等同回報。
+
+### C 組：原生地圖整幀
+
+- `compose_native_map_frame_at_with_palette_cycle` 照 Go 的交易：候選狀態與候選時鐘推進、DAC 循環、組輸入、合成，全部成功才發布。Go 另建 `candidateGame := Game{st, nativeMapClock}` 推進時鐘；`advance_native_map_clock` 只讀寫這兩個欄位，Rust 暫時把候選值換進 `self` 再換回。
+- Go 的 `work`／`vga` 與 `g.nativeMapWork`／`g.nativeMapVGA` 共用記憶體（長度正確、沒有 ch23 暫存也沒有 HD 合成時），合成到一半失敗時已寫入的像素留在 `g` 上。Rust 照樣：就地寫入的緩衝失敗時也放回。
+- 選取覆蓋層：Go 在輸入建好之後才呼叫 `nativeMapSelectionOverlay`（它延遲載入單位視窗素材）。Rust 的覆蓋層要 `&mut self`、輸入借用 `self`，所以先建覆蓋層、把它的錯誤留到同一個位置才回報；先建只多做一次素材快取，輸入建不成時 Go 不會載入這份素材。
+- `nativeMapFrameSource`：Go 在不走行、沒有回合橫幅時把這一幀的輸入發布到 `g.nativeMapFrameSource`。它借用素材與戰場狀態，Rust 不保存，`Game::native_map_frame_source` 一律是 `None`；讀它的都是 HD（`modern_hd_ch23`、`modern_hd_sky_key`、`modern_hd_player9_map`、`modern_hd_story_motion`、`player_interface` 的 F11 切換、`player_poster`），R6 由那些呼叫端以同一組資源重組。見共用變更需求。
+
+### C 組：共用變更需求
+
+本工作樹沒有改 `Game`、`support.rs` 或別組的型別。下列需要主代理決定：
+
+| 項目 | 原因 | 建議 |
+|---|---|---|
+| `draw_modern_battle_panel_ink`（A 組，`todo!("R6")`）在忠實模式也會被呼叫 | Go `prepareNativePlayerMovement`（與 D 組的物理演出）在字型有 TTF、`localeEntities` 存在時就收集 HD 面板文字，`renderBattlePanelText` 以 `raster` 預檢，`raster` 呼叫 `drawModernBattlePanelInk`；第一章重播的選取單位就會走到。只要字型載入了 TTF，`prepare_native_player_movement` 會停在這個 `todo!` | 把 `drawModernBattlePanelInk` 的「找得到不超框的字級」檢查（`faceFor` 與 `font.BoundString`，經 `Font::measure`）在 R4 移植，像素繪製留 R5；或在 R5 前讓無畫面驅動端不載入 TTF（`font.sf` 為 `None` 時不收集，與 Go 相同） |
+| `Game::native_map_frame_source` 的型別 | `NativeFrameInput<'static>` 存不進借用的輸入（見上） | 改存重組所需的小型描述（`NativeMapFrameRuntime`、`range_mode`、覆蓋層描述與「已發布」旗標），或維持 `None` 到 R6 |
+| `ModernBattlePanelText::font` 的比較 | Go 以 `previous.font == p.font` 比 `*Font` 指標；Rust 存複本。現以 `same_panel_font`（同一份 `sf` 的 `Arc`、基準尺寸與字級倍率相同）比較 | 若要與 Go 完全相同，`font` 改成共用的 `Arc<Font>` 再以 `Arc::ptr_eq` 比較 |
+| `native_delay_ticks_ms` 與 B 組的 `native_delay_ticks` | 同一個 `nativeDelayTicks`，B 組的檔 | 整合時留一個 |
+
+### C 組：KNOWN_DIFFERENCES
+
+| 名稱 | 差異 | 影響 |
+|---|---|---|
+| `reach-nil-vs-empty` | Go `g.reach == nil` 與空 map 不同；Rust 的 `reach` 是 `BTreeMap`，nil 與空都是空，`native_map_selection_overlay` 以 `is_empty()` 代替 `== nil` | Go 只有在可達集合非 nil 卻是空的時候才不同；`PlanNativePlayerMovement` 的可達集合至少含原地 |
+| `panel-font-identity` | 見上表 `same_panel_font` | 同一次面板收集裡 Go 的指標都是 `g.font` 或同一個區域字型，兩種比法結果相同 |
+| `selection-overlay-asset-cache-order` | 輸入建不成時 Rust 已載入單位視窗素材（Go 不載入） | 只是快取，下一幀照樣使用 |
+| `movement-seal-bytes` | `movementPanelSourceSeal` 以 serde_json 寫出與 Go `json.Marshal` 同形狀的陣列再取 SHA-256；位元組不保證與 Go 相同 | `seal` 只和自己比對 |
+| `end-recovery-log-text` | Go `FD2_SHOT_AI` 時以 `log.Printf` 記 END 回收；Rust 以 `eprintln!`，沒有時間前綴 | 只影響診斷輸出 |
+| `native-system-end-turn-state-take` | Go 的收合延續捕捉 `state` 指標，Rust 在延續執行時才從 `Game::native_system_end_turn_ui` 取出 | 收合期間沒有別的寫入端替換這個欄位 |
+
+`NORMALIZATIONS`：無（C 組沒有黃金差分）。
+
+### C 組：測試
+
+`tools/rust_game_test.sh`（`FD2_REQUIRE_ORIGINAL=1`，輸出沒有「略過」）整個 crate：135 通過、22 ignore。C 組新增 57 個測試（Go 移植 45、Rust 新增 12），43 通過、14 ignore：
+
+| ignore | 等 | 停點 |
+|---|---|---|
+| END 回收 4 個、AI 閒置回收 2 個、`test_compose_native_map_hud_uses_advanced_cycle` | B | 夾具或受測函式合成整幀，停在 `native_map_hud_input` |
+| `test_native_player_focus_uses_raw_battle_view_and_x_first_safe_band`、`test_native_player_movement_cancel_restores_raw_cursor_before_sync` | B | `redraw_native_map_hud`、`sync_native_map_view` |
+| `treasure_test.go` 4 個（`finishSelectedWait`） | D | `finish_successful_unit_action` |
+| `reset_action_overlay_lifecycle_clears_end_turn_owner_and_ring`（Rust 新增） | D | `cancel_native_command32_presentation` |
+
+Go 以 `t.Setenv("FD2_MUTE", "1")` 的 END／AI 回收夾具，在子行程設這個變數（F 組的 `f_child_env`）。
+
+原本等 C 的 A、F 組測試：10 個通過、拿掉 ignore（`audio_test.rs` 3、`locale_test.rs` 2、`save_test.rs` 5）；`save_test.rs` 的 `title_json_load_accepts_saved_zero_chapter_and_keeps_bytes` 與 `campaign_save_load_restores_town_boundary_and_party` 改標實際停點「等 E」（`reset_native_class_ui_pulse`）。只改了屬性行。
+
+R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 繪字，不在本階段移植）：
+
+| 測試 | Go 檔:行 | 原因 |
+|---|---|---|
+| `TestNativeEndTurnRecoveryDrawCommitAndCallbackOrder` | `native_end_turn_recovery_test.go:87` | 以 `g.Draw` 與 `g.Update` 推進 |
+| `TestNativeAIIdleRecoveryThreeDrawsBeforeHPCommit` | `native_ai_idle_recovery_test.go:74` | 同上 |
+| `TestModernBattlePanelTextFrozenSources`、`TestModernBattlePanelChromeNativeSpans`、`TestModernBattlePanelChromeFrozenPaletteAndReject` | `modern_hd_battle_panel_test.go:19`、`124`、`192` | `raster` 經 `drawModernBattlePanelInk` 以真 TTF 繪字（另經 D 組 `renderPhysicalBattlePanel`）；外框與調色盤部分改由 Rust 新增測試驗 |
+| `TestModernBattlePanelTextGPU`、`TestModernBattlePanelTextFourLocalePreview` | `modern_hd_battle_panel_test.go:238`、`353` | GPU 圖片 |
+| `TestExecuteNativeAIItemRestoreUsesOriginalIndexedTail`、`…Damage…1CD17Tail`、`…Type21…1CAC7Tail` | `native_ai_item_presentation_test.go:14`、`108`、`347` | 以 `Draw` 推進演出 |
+| `TestExecuteNativeAICommand17UsesOriginalIndexedTail` | `native_ai_modifier_presentation_test.go:13` | 同上 |
+| `TestEvent63RunsBeforeEnemyAIWithTwoAtomicStagingCalls` | `native_turn_staging_test.go:210` | 以 `Draw` 推進白閃（另需 R8 的 `beginNativeStagingJob`） |
+| `TestNativeAIIdleRecoverySameSourceProbe`、`TestNativeEndTurnRecoverySameSourceProbe` | `native_ai_idle_recovery_probe_test.go:25`、`native_end_turn_recovery_probe_test.go:24` | 以環境變數啟用的同源探針，輸出畫面（fd2-tools） |
+| `TestModernHDMovementPanelLegacyNativeAndClear`、`TestModernHDMovementPanelSources`、`TestModernHDMovementPanelRejectsChangedSource` | `modern_hd_movement_panel_test.go:201`、`79`、`134` | 需要 `FD2_HD_MOVEMENT_PANEL_SAVE` 外部存檔與 `drawNativeMovementPanel` |
+
+其他沒有移植的 C 組主題 Go 測試（不需要畫面，所以不列 R5）：
+
+- 受測函式是 `r8`：`TestSystemOptionsOverlayUsesExactCellsAndReturnsAfterFourClosePresents`（`nativeSystemOptionsReady`、`toggleNativeSystemOption`）、`TestNativeCommandTargetFieldMaterializeAndReset`（`materializeNativeCommandTargetField`）、`TestNativePlayerStatusTwoPagesWaitForDrawAndRestore`（`advanceNativePlayerStatus`）、`TestNativeAIItemPresentationLateCancelRollsBack`（`planNativeAITargetItem`）、`TestPrepareNativeSystemInfoUIRunsTwelveOpenWaitTwelveClose`（`prepareNativeSystemInfoUI`；改以 Rust 新增測試直接建立狀態）、`native_system_info_locale_test.go` 3 個（`localizeSystemInfo`）、`native_battle_name_test.go` 其餘 3 個（`renderNativeBattleNameIndexed` 與兩個原點常數，都是 `r8`）、`TestNativeEndTurnRecoveryCommittedFieldsRoundTripCurrentSave`（`buildNativeCurrentSaveStored`）。
+- 走到本組 R8 分支：`native_action_overlay_test.go` 的原始指令 0／13／17／25..27／32..35 確認 8 個（`confirm` 的原始指令目標確認）、`native_turn_staging_test.go` 的 event52／63／72／74／76／79 9 個（`beginNativeStagingJob`，第二十三章以後）。
+- 部分移植：`TestNativePlayerStatusGatesAndFailedResourcesDoNotSelect` 只移前兩段；第三段要 `t.Setenv("FD2_ASSET_PACK", 空目錄)` 並走 `r8` 的 `beginNativePlayerStatus`。`TestBundledNativeBattleNameAssetsCoverImpactFixture` 只移載入部分；後半的 `nativeBattleNameImage` 是 `r8` 的畫面轉換。
+- 別組主題、以 C 組函式當驅動：`native_continue_handoff_test.go`、`battleevent_test.go`、`native_physical_scene_test.go`、`native_command*_presentation_test.go`、各章流程測試等，由主題組或階段 3 移植。
+
+黃金差分：C 組沒有加。指令環生命週期、availability 與 END 回收是決定性的狀態機，已以 Go 測試的期望值覆蓋；合成整幀要等 B 合併才跑得完整，適合在階段 3 以重播檢查點比對。
+
+### C 組：fd2-rules／fd2-campaign 缺口
+
+沒有改那兩個 crate。測試發現：`fd2_formats::fdother::FdotherError` 沒有 `PartialEq`（測試改比 `ok()`）；`battle::Unit` 有私有欄位，不能用結構更新語法建立。
+
+### C 組：敵方回合與亂數
+
+`native_ai_*`、`native_end_turn_recovery` 只呼叫 `fd2_rules` 的計畫、驗證、提交與取消函式，亂數狀態沿用 `Game::native_rng_state`（Go `nativeRNGState`）與各計畫自帶的 `rng_state`，沒有另造亂數來源。單位一律以 `UnitIdx` 指向 `st.units`；Go 以指標相等找單位的 `unitIndex` 改成檢查索引範圍。

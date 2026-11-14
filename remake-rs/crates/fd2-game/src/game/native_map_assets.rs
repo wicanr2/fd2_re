@@ -42,15 +42,100 @@ pub(crate) struct NativeMapAssets {
 
 /// Go：`native_map_assets.go:45`，`func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error)`
 pub(crate) fn load_native_map_assets(map_dir: &str) -> Result<Option<NativeMapAssets>> {
-    todo!("native_map_assets.go:loadNativeMapAssets")
+    let map_index = fdother::map_index_from_asset_path(map_dir)?;
+    let frames = indexedmap::load_separated_native_map_hud_frames(separated_asset_path("ui"))?;
+    let (terrain, controls) = fdicon::load_separated_fdshap_bank(separated_asset_path("tilesets/fdshap"), map_index)?;
+    let units = fdicon::load_separated_bank(separated_asset_path("sprites/fdicon"))?;
+    let range_bank =
+        fdother::load_separated_range_overlay_bank(separated_asset_path("sprites/fdother_001_range_overlay"))?;
+    let luts = fdother::load_separated_lut_bank(separated_asset_path("palette"))?;
+    if luts.len() <= 9 {
+        return Err(game_err!("native map assets: FDOTHER#3 LUT bank lacks transition entries 1..9"));
+    }
+    let (palette_raw, palette) = load_native_battle_palette()?;
+    let spawn_intro = fdother::load_separated_lmi1_bank(
+        separated_asset_path("animations/fdother_009_spawn_intro"),
+        fdother::NATIVE_SPAWN_INTRO_FRAME_RESOURCE,
+    )?;
+    let command_heal_digits = fdother::load_separated_lmi1_bank(
+        separated_asset_path("ui/fdother_005_lmi1_opaque"),
+        fdother::NATIVE_COMMAND_HEAL_TAIL_DIGIT_RESOURCE,
+    )?;
+    let fdother6 = fdother::load_separated_lmi1_bank(
+        separated_asset_path("effects/fdother_006_lmi1_opaque"),
+        fdother::NATIVE_COMMAND_HEAL_TAIL_EFFECT_RESOURCE,
+    )?;
+    let mut chapter_aux = None;
+    if let Some(contract) = fdother::native_chapter_aux_surface_for(map_index) {
+        chapter_aux =
+            Some(fdother::load_separated_chapter_aux_surface_resource(separated_asset_path("surfaces"), &contract)?);
+    }
+    let mut parallax = None;
+    if map_index == 17 {
+        parallax = Some(fdother::load_separated_native_map_parallax(separated_asset_path("surfaces"))?);
+    }
+    Ok(Some(NativeMapAssets {
+        map_index,
+        frames,
+        terrain: Some(terrain),
+        range: Some(range_bank),
+        units: Some(units),
+        controls,
+        luts,
+        palette,
+        palette_dac: palette_raw,
+        spawn_intro,
+        command_heal_digits,
+        fdother6,
+        chapter_aux,
+        parallax,
+    }))
 }
 
 /// Go：`native_map_assets.go:125`，`func nativeMapAssetsAvailable(a *nativeMapAssets) bool`
 pub(crate) fn native_map_assets_available(a: Option<&NativeMapAssets>) -> bool {
-    todo!("native_map_assets.go:nativeMapAssetsAvailable")
+    let Some(a) = a else {
+        return false;
+    };
+    if a.terrain.is_none()
+        || a.range.is_none()
+        || a.units.is_none()
+        || a.controls.is_empty()
+        || a.luts.len() <= 9
+        || a.palette.len() != 256
+        || a.palette_dac.len() != 256 * 3
+    {
+        return false;
+    }
+    for i in 1..=9 {
+        if a.luts[i].len() != 256 {
+            return false;
+        }
+    }
+    if fdother::native_chapter_aux_surface_for(a.map_index).is_some()
+        && !a.chapter_aux.as_ref().is_some_and(|aux| aux.pixels.len() == 320 * 200)
+    {
+        return false;
+    }
+    if a.map_index == 17
+        && !a.parallax.as_ref().is_some_and(|p| {
+            p.pixels.len() as i64 == fdother::NATIVE_MAP_PARALLAX_WIDTH * fdother::NATIVE_MAP_PARALLAX_HEIGHT
+        })
+    {
+        return false;
+    }
+    true
 }
 
 /// Go：`native_map_assets.go:145`，`func nativeSpawnIntroAssetsAvailable(a *nativeMapAssets) bool`
 pub(crate) fn native_spawn_intro_assets_available(a: &NativeMapAssets) -> bool {
-    todo!("native_map_assets.go:nativeSpawnIntroAssetsAvailable")
+    if !native_map_assets_available(Some(a)) || a.spawn_intro.len() as i64 != fdother::NATIVE_SPAWN_INTRO_PASS_COUNT {
+        return false;
+    }
+    for entry in &a.spawn_intro {
+        if entry.width <= 0 || entry.height <= 0 || entry.pixels.len() as i64 != entry.width * entry.height {
+            return false;
+        }
+    }
+    true
 }

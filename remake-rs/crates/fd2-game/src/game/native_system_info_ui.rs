@@ -23,12 +23,49 @@ pub(crate) struct NativeSystemInfoUIState {
 
 /// Go：`native_system_info_ui.go:30`，`func loadNativeSystemInfoAssets() (*campaign.NativeSystemInfoAssets, error)`
 pub(crate) fn load_native_system_info_assets() -> Result<Option<campaign::NativeSystemInfoAssets>> {
-    todo!("native_system_info_ui.go:loadNativeSystemInfoAssets")
+    let panels = fdother::load_separated_system_info_panels(separated_asset_path("ui"))?;
+    let numbers = battle::load_native_item_panel_data_assets(&separated_asset_path(""))?;
+    let font = numbers.font.clone();
+    Ok(Some(campaign::NativeSystemInfoAssets { panels, numbers, font }))
 }
 
 impl Game {
     /// Go：`native_system_info_ui.go:140`，`func (g *Game) stepNativeSystemInfoUI()`
     pub(crate) fn step_native_system_info_ui(&mut self) {
-        todo!("native_system_info_ui.go:stepNativeSystemInfoUI")
+        let Some(state) = self.native_system_info_ui.as_mut() else {
+            return;
+        };
+        if !state.drawn {
+            return;
+        }
+        state.drawn = false;
+        if state.phase == "steady" {
+            self.native_fdother_palette_phase = (self.native_fdother_palette_phase + 1) & 15;
+            if let Err(err) =
+                fdother::apply_native_dac_palette_cycle_e0ef(&mut state.dac, self.native_fdother_palette_phase)
+            {
+                self.load_err = format!("native system info palette cycle: {err}");
+                self.native_system_info_ui = None;
+                return;
+            }
+            match fdother::vga_palette_from_dac(&state.dac) {
+                Ok(palette) => state.palette = color_palette_from_nrgba(&palette),
+                Err(err) => {
+                    self.load_err = format!("native system info palette: {err}");
+                    self.native_system_info_ui = None;
+                }
+            }
+            return;
+        }
+        state.frame += 1;
+        let frames = if state.phase == "closing" { &state.closing } else { &state.opening };
+        if state.frame < frames.len() as i64 {
+            return;
+        }
+        if state.phase == "opening" {
+            (state.phase, state.frame) = (String::from("steady"), 0);
+            return;
+        }
+        self.native_system_info_ui = None;
     }
 }

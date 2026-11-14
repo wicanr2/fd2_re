@@ -21,6 +21,41 @@ impl Game {
         unit_index: i64,
         raw_chapter: i64,
     ) -> Result<()> {
-        todo!("native_battle_panel_locale.go:renderLocalizedNativeBattlePanel")
+        if record.len() <= 8 {
+            return Err(game_err!("localized native battle panel inputs are invalid"));
+        }
+        if self.locale_id == "zh-Hant" {
+            return Ok(battle::render_native_battle_panel(assets, record, dst, unit_index, raw_chapter)?);
+        }
+        let (Some(entities), Some(_)) = (self.locale_entities.as_ref(), self.font.as_ref()) else {
+            return Err(game_err!("localized native battle panel catalog or font is unavailable"));
+        };
+        let name = entities.battle_name(i64::from(record[8]))?;
+        if self.font.as_mut().unwrap().width(&name, LOCALIZED_BATTLE_PANEL_NAME_SCALE)
+            > LOCALIZED_BATTLE_PANEL_NAME_WIDTH as f64
+        {
+            return Err(game_err!(
+                "localized battle name {} {} exceeds panel rectangle",
+                record[8],
+                battle::go_quote(&name)
+            ));
+        }
+        let mut staged = dst.to_vec();
+        battle::render_native_battle_panel_without_name(assets, record, &mut staged, unit_index, raw_chapter)?;
+        let (x, y) = battle::native_battle_panel_origin(record, unit_index, raw_chapter)?;
+        draw_indexed_localized_text(
+            &mut staged,
+            self.font.as_mut(),
+            &name,
+            x + 5,
+            y + 4,
+            LOCALIZED_BATTLE_PANEL_NAME_WIDTH,
+            LOCALIZED_BATTLE_PANEL_NAME_HEIGHT,
+            LOCALIZED_BATTLE_PANEL_NAME_SCALE,
+            0xcd,
+            0x4c,
+        )?;
+        dst.copy_from_slice(&staged);
+        Ok(())
     }
 }

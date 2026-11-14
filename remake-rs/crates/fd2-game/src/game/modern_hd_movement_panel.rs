@@ -38,8 +38,44 @@ pub(crate) struct ModernHDMovementPanelDraw {
 }
 
 /// Go：`modern_hd_movement_panel.go:39`，`func movementPanelSourceSeal(h *modernHDMovementPanel) [32]byte`
-pub(crate) fn movement_panel_source_seal(h: Option<&mut ModernHDMovementPanel>) -> [u8; 32] {
-    todo!("modern_hd_movement_panel.go:movementPanelSourceSeal")
+///
+/// Go 以 `json.Marshal` 序列化一個異質陣列後取 SHA-256；Rust 以 serde_json 寫出同形狀的陣列（`[]byte` 用
+/// base64、`[2]byte` 是數字陣列、`NativeBattlePanelValues` 是沒有 JSON 標籤的欄位名）。這個值只和自己比對。
+pub(crate) fn movement_panel_source_seal(h: Option<&ModernHDMovementPanel>) -> [u8; 32] {
+    let Some(h) = h else {
+        return [0; 32];
+    };
+    let Some(p) = h.recipe.as_ref() else {
+        return [0; 32];
+    };
+    use base64::Engine;
+    let b64 = |b: &[u8]| serde_json::Value::from(base64::engine::general_purpose::STANDARD.encode(b));
+    let c = &p.chrome;
+    let v = &p.values;
+    let raw = serde_json::json!([
+        b64(&h.record),
+        b64(&h.raw),
+        b64(&h.palette),
+        h.x,
+        h.locale,
+        p.native.x,
+        p.native.y,
+        p.native.width,
+        p.native.height,
+        b64(&p.native.pixels),
+        b64(&p.native.mask),
+        p.name,
+        {"Level": v.level, "HP": v.hp, "MaxHP": v.max_hp, "MP": v.mp, "MaxMP": v.max_mp},
+        p.background,
+        p.digit_ink,
+        c.ready,
+        c.border,
+        c.track,
+        c.ink,
+        c.width,
+    ]);
+    use sha2::Digest;
+    sha2::Sha256::digest(serde_json::to_vec(&raw).unwrap()).into()
 }
 
 impl Game {
@@ -47,13 +83,57 @@ impl Game {
     pub(crate) fn freeze_modern_hd_movement_panel(
         &mut self,
         actor: Option<UnitIdx>,
-        plan: Option<&mut battle::NativePlayerMovement>,
-        source: Option<&mut Picture>,
+        plan: Option<&battle::NativePlayerMovement>,
+        source: Option<&Arc<Picture>>,
         record: &[u8],
         raw: &[u8],
         x: i64,
-        panels: &mut [ModernBattlePanelText],
+        panels: &[ModernBattlePanelText],
     ) -> Result<Option<ModernHDMovementPanel>> {
-        todo!("modern_hd_movement_panel.go:freezeModernHDMovementPanel")
+        if panels.is_empty() {
+            return Ok(None);
+        } // Legacy native-only owners have no verified font/name collector.
+        let font_ok = self.font.as_ref().is_some_and(|f| f.sf.is_some());
+        let (Some(actor), Some(plan), Some(source)) = (actor, plan, source) else {
+            return Err(game_err!("modern HD movement panel: source unavailable"));
+        };
+        if panels.len() != 1
+            || record.len() < 0x48
+            || source.width != 149
+            || source.height != 42
+            || (x != 9 && x != 160)
+            || !font_ok
+        {
+            return Err(game_err!("modern HD movement panel: source unavailable"));
+        }
+        let p = &panels[0];
+        if !p.font.as_ref().is_some_and(|f| f.sf.is_some())
+            || p.native.width != 149
+            || p.native.height != 42
+            || raw.len() != 149 * 42
+            || raw != p.native.pixels.as_slice()
+        {
+            return Err(game_err!("modern HD movement panel: source crop differs"));
+        }
+        let palette = modern_hd_battle_palette(&self.native_ui_palette)?;
+        let primary = self.font.clone().unwrap();
+        let mut h = ModernHDMovementPanel {
+            actor: Some(actor),
+            plan: Some(plan.clone()),
+            source_image: Some(Arc::clone(source)),
+            record: record.to_vec(),
+            raw: raw.to_vec(),
+            palette,
+            x,
+            locale: self.locale_id.clone(),
+            primary_sf: primary.sf.clone(),
+            primary: Some(primary),
+            font_sf: p.font.as_ref().unwrap().sf.clone(),
+            font: p.font.clone(),
+            recipe: Some(p.clone()),
+            seal: [0; 32],
+        };
+        h.seal = movement_panel_source_seal(Some(&h));
+        Ok(Some(h))
     }
 }

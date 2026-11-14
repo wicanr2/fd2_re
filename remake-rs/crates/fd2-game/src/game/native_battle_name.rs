@@ -10,10 +10,35 @@ use super::*;
 ///
 /// Go：`native_battle_name.go:22`，`func loadNativeBattleNameAssets() (*fdtxt.Font, map[string]int, error)`
 pub(crate) fn load_native_battle_name_assets() -> Result<(Option<fdtxt::Font>, BTreeMap<String, i64>)> {
-    todo!("native_battle_name.go:loadNativeBattleNameAssets")
+    let font = fdtxt::load_separated_font(separated_asset_path("fonts"))?;
+    let path = asset_path("assets/fonts/unicode_to_glyph.json");
+    let index_raw = std::fs::read(&path).map_err(|e| game_err!("open {path}: {e}"))?;
+    let encoded: BTreeMap<String, serde_json::Value> =
+        serde_json::from_slice(&index_raw).map_err(|e| game_err!("{e}"))?;
+    let mut index = BTreeMap::new();
+    for (key, value) in encoded {
+        if key == "_comment" {
+            continue;
+        }
+        // Go `json.Unmarshal(value, &glyph)`（`int`）：只接受整數值。
+        let glyph = value.as_i64().ok_or_else(|| {
+            game_err!("native battle name glyph {}: {}", battle::go_quote(&key), "json: cannot unmarshal")
+        })?;
+        index.insert(key, glyph);
+    }
+    for (key, &glyph) in &index {
+        if glyph < 0 || glyph >= font.glyph_count() as i64 {
+            return Err(game_err!("native battle name glyph {}={glyph} is outside font", battle::go_quote(key)));
+        }
+    }
+    Ok((Some(font), index))
 }
 
 /// Go：`native_battle_name.go:87`，`func nativePaletteColor(palette color.Palette, index byte, fallback color.RGBA) color.RGBA`
 pub(crate) fn native_palette_color(palette: &ColorPalette, index: u8, fallback: ColorRgba) -> ColorRgba {
-    todo!("native_battle_name.go:nativePaletteColor")
+    if index as usize >= palette.len() {
+        return fallback;
+    }
+    // Go `palette[index].RGBA()` 是 16 位元預乘值，`>> 8` 即 `color.RGBA` 的原位元組。
+    palette[index as usize]
 }

@@ -34,7 +34,6 @@ fn test_step_sfx_voices_eventually_releases_all_voices() {
 
 /// Go：`audio_voice_test.go:71` `TestPlayRawRetainsRealAudioPlayer`
 #[test]
-#[ignore = "等 C 合併（play_raw 呼叫 current_native_system_options）"]
 fn test_play_raw_retains_real_audio_player() {
     if test_support::input("FD2_ASSET_PACK", "sfx/FDOTHER_031/resource.json").is_none() {
         return;
@@ -50,7 +49,6 @@ fn test_play_raw_retains_real_audio_player() {
 
 /// Go：`audio_voice_test.go:95` `TestFMAndMT32TracksDecodeAndSwitchAtRuntime`
 #[test]
-#[ignore = "等 C 合併（play_bgm_count 呼叫 current_native_system_options）"]
 fn test_fm_and_mt32_tracks_decode_and_switch_at_runtime() {
     if !file_exists(&asset_path("assets/music_fm/FDMUS_001.ogg")) {
         test_support::skip("assets/music_fm/FDMUS_001.ogg（分離音樂 render）");
@@ -71,7 +69,6 @@ fn test_fm_and_mt32_tracks_decode_and_switch_at_runtime() {
 
 /// Go：`audio_voice_test.go:120` `TestUnknownCatalogTrackDoesNotMutateCurrentBGM`
 #[test]
-#[ignore = "等 C 合併（play_bgm_count 呼叫 current_native_system_options）"]
 fn test_unknown_catalog_track_does_not_mutate_current_bgm() {
     let mut g = Game { bgm_source: String::from("fm"), bgm_cur: String::from("FDMUS_004"), ..Default::default() };
     g.play_bgm_count("FDMUS_999", 0);

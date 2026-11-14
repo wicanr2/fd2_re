@@ -9,5 +9,16 @@ pub(crate) fn localized_spell_book(
     entities: Option<&localization::EntityCatalog>,
     source: &[battle::Spell],
 ) -> Result<Vec<battle::Spell>> {
-    todo!("native_command_locale.go:localizedSpellBook")
+    let Some(entities) = entities.filter(|_| source.len() == 36) else {
+        return Err(game_err!("localized command catalog or spell table is unavailable"));
+    };
+    let mut result = source.to_vec();
+    for spell in result.iter_mut() {
+        if spell.id == 31 {
+            spell.name = String::new();
+            continue;
+        }
+        spell.name = entities.command_name(spell.id)?;
+    }
+    Ok(result)
 }

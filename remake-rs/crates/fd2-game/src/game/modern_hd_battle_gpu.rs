@@ -19,6 +19,19 @@ pub(crate) struct ModernHDBattleGPU {
 }
 
 /// Go：`modern_hd_battle_gpu.go:202`，`func modernHDBattlePalette(palette color.Palette) ([]byte, error)`
+///
+/// Go 的元素是 `color.Color` 介面，`value == nil` 的分支在 Rust 不會出現（元素是 [`ColorRgba`]）。
+/// `color.RGBA.RGBA()` 回傳 16 位元的預乘值（`v * 0x101`），`>> 8` 即原位元組；`a != 0xffff` 即 `a != 255`。
 pub(crate) fn modern_hd_battle_palette(palette: &ColorPalette) -> Result<Vec<u8>> {
-    todo!("modern_hd_battle_gpu.go:modernHDBattlePalette")
+    if palette.len() != 256 {
+        return Err(game_err!("modern HD battle: palette unavailable"));
+    }
+    let mut raw = vec![0u8; 1024];
+    for (i, value) in palette.iter().enumerate() {
+        if value.a != 255 {
+            return Err(game_err!("modern HD battle: native palette must be opaque"));
+        }
+        raw[i * 4..i * 4 + 4].copy_from_slice(&[value.r, value.g, value.b, 255]);
+    }
+    Ok(raw)
 }
