@@ -1,0 +1,32 @@
+//! R4 階段 3：章重播的無畫面驅動端（只在測試編譯）。
+//!
+//! 對應凍結 Go 版 `remake/cmd/fd2` 的章重播測試：`chapter_parity_replay_test.go`（`TestChapterParityReplay`
+//! 與 `parityReplay`）、`chapter_parity_start_test.go`（START 入口與酒店保存冷讀）、
+//! `chapter_parity_hp_lock_test.go`（`parityUpdateGame`）、`chapter_parity_legacy_end_test.go`、
+//! `native_chapter_one_play_test.go`（`pump`、`closeRing`、`ackPresents`）與 `native_title_to_town_test.go`
+//! （`journeyTrace`、`driveStory`）。每個 Go 測試檔一個子模組，函式逐一對照。
+//!
+//! 只移植第一章（`FD2_PARITY_CHAPTER=1`、`FD2_PARITY_ENTRY=start`）38 個動作會走到的分支；其他章與其他
+//! 動作種類停在 `todo!("R8: …")`。
+//!
+//! 和 Go 的差異：
+//! - Go 每次 `g.Update()` 讀牆鐘；這裡每次 `update` 之前以 [`VirtualFrameClock`] 推進一個邏輯幀
+//!   （A 組「虛擬時鐘」）。
+//! - Go 呼叫 `g.Draw(screen)` 的地方改呼叫 [`Game::acknowledge_present`]（`present.rs`），不畫像素。
+//! - Go 以 `t.Setenv` 設的環境變數由父測試以子行程傳入（F 組 `f_child_env` 的做法），工作區禁用 `unsafe`。
+
+use super::*;
+
+mod chapter_parity_hp_lock_test;
+mod chapter_parity_legacy_end_test;
+mod chapter_parity_replay_test;
+mod chapter_parity_start_test;
+mod native_chapter_one_play_test;
+mod native_title_to_town_test;
+
+pub(crate) use chapter_parity_hp_lock_test::*;
+pub(crate) use chapter_parity_legacy_end_test::*;
+pub(crate) use chapter_parity_replay_test::*;
+pub(crate) use chapter_parity_start_test::*;
+pub(crate) use native_chapter_one_play_test::*;
+pub(crate) use native_title_to_town_test::*;

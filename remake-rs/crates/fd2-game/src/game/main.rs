@@ -362,7 +362,7 @@ pub struct Game {
     pub(crate) native_turn_pair_rng_input:
         Option<Box<dyn FnMut(&mut Game, battle::NativeTurnEvent, u16) -> Result<u16> + Send>>,
     /// 對拍測試用：每次升級成長擲骰（0x1E54A）前對齊 RNG
-    pub(crate) growth_roll_observer: Option<Box<dyn FnMut(&mut Game, UnitIdx, u16) -> u16 + Send>>,
+    pub(crate) growth_roll_observer: Option<battle::Callback<dyn Fn(&battle::Unit, u16) -> u16 + Send + Sync>>,
     pub(crate) native_cmd0_presentation: Option<NativeCommand0PresentationJob>,
     pub(crate) native_cmd1_presentation: Option<NativeCommand1PresentationJob>,
     pub(crate) native_cmd2_presentation: Option<NativeCommand2PresentationJob>,
@@ -4514,8 +4514,8 @@ impl Game {
     /// Go：`main.go:4075`，`func (g *Game) bindCommandLearn(st *battle.State)`
     ///
     /// Go 以 nil map 表示「沒有載入」；Rust 的 `Game` 欄位是非 `Option` 的 map，空 map 視同 nil
-    /// （正式匯出檔不會是空表）。`growthRollObserver` 是測試觀察者：`Game` 的型別收 `&mut Game`，
-    /// 與 `State` 的 `Callback<dyn Fn(&Unit, u16) -> u16>` 不同，有設定時停在 todo（共用變更需求）。
+    /// （正式匯出檔不會是空表）。`growthRollObserver` 是測試觀察者，與 `State::native_growth_roll_observer`
+    /// 同型（R4 階段 3），照 Go 交給戰場狀態。
     pub(crate) fn bind_command_learn(&self, st: Option<&mut battle::State>) {
         let Some(st) = st else {
             return;
@@ -4528,10 +4528,8 @@ impl Game {
         if !self.native_growth_rows.is_empty() {
             st.native_growth_rows = Some(self.native_growth_rows.clone());
         }
-        if self.growth_roll_observer.is_some() {
-            todo!("共用變更：Game::growth_roll_observer 的型別要與 State::native_growth_roll_observer 相同")
-        }
-        st.native_growth_roll_observer = None;
+        // R4 階段 3：`growth_roll_observer` 改成與 `State::native_growth_roll_observer` 同型，照 Go 直接交給戰場狀態。
+        st.native_growth_roll_observer = self.growth_roll_observer.clone();
     }
 
     /// applyPersistentParty overlays the post-battle roster snapshot on freshly

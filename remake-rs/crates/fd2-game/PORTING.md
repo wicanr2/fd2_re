@@ -284,6 +284,7 @@ tools/rust_r4_skeleton.sh          # 在工作樹副本中執行時加 FD2_GOCAC
 | E | `NativeServiceMenuPresentation::compose` | `(&mut self)` | `(&self)` | 只讀接收者 |
 | E | `Game::capture_modern_facility_confirmation_source`、`Game::freeze_modern_facility_list_writer` | `compose: Option<Box<dyn FnMut(&mut Game) -> (Vec<u8>, bool) + Send>>` | `compose: &mut dyn FnMut(&mut Game) -> (Vec<u8>, bool)` | Go 的 `compose` 是讀 `g` 的方法值，只在本次呼叫內重複呼叫、不存起來 |
 | E | `capture_modern_facility_list_text`、`Game::compose_modern_shop_list_marker`、`Game::compose_modern_facility_marker` | `compose: &mut dyn FnMut() -> (Vec<u8>, bool)` | `compose: &mut dyn FnMut(&mut Game) -> (Vec<u8>, bool)` | `compose` 要讀 `Game`，而這些函式在呼叫期間換掉 `Game` 的素材欄位 |
+| 階段 3 | `Game::growth_roll_observer`（欄位） | `Option<Box<dyn FnMut(&mut Game, UnitIdx, u16) -> u16 + Send>>` | `Option<battle::Callback<dyn Fn(&battle::Unit, u16) -> u16 + Send + Sync>>` | Go 把同一個 func 交給 `st.NativeGrowthRollObserver`（`main.go:4088`）；見「R4 階段 3 整合紀錄」 |
 
 ## R4 階段 2：A 組（主迴圈、啟動、標題與開場）
 
@@ -1219,3 +1220,116 @@ R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 量寬／繪字，不在�
   - E 組 `draw_modern_battle_panel_ink` 只量字級、不畫字，回成功（`panel-ink-measure-only`），接受；忠實模式流程與 Go 相同。
   - E 組服務選單的 HD 預先描述在 HD 介面關閉時跳過（`facility-hd-precompute-faithful-skip`），接受；只有 HD 繪製與輸入稽核讀它。
   - D 組待決留給階段 3：A 的 `step_attack_presentation_tick` 先取出 `native_scene` 的時機（沒有原生地圖素材時與 Go 不同，第一章有素材不受影響）；`begin_native_transient_phases` 的參數可變性；`NativeTransientPreviewSaved` 的還原清單要隨別組新增欄位同步。
+
+## R4 階段 3：呈現回報與第一章無畫面重播（2026-11-15）
+
+代號 `r4i`，合併基準 `92bb5116`。
+
+### 呈現回報介面
+
+`src/game/present.rs`（Rust 新增，沒有單一 Go 檔對應）。契約寫在模組文件：
+
+- `Game::acknowledge_present() -> PresentOwner`：外殼（`fd2-app`，R5）每畫完一幀呼叫一次；無畫面驅動端在 Go 呼叫
+  `g.Draw(screen)` 的地方直接呼叫。它照 Go `Draw` 的分支優先序選出本幀的呈現擁有者，做那個擁有者的 `draw*` 函式裡的
+  狀態改寫，回傳擁有者讓外殼畫對應的畫面。不畫像素。
+- 前置條件只看狀態（幀索引、緩衝長度、調色盤長度），與 Go `draw*` 的 `return false` 條件逐條相同；不成立時走 Go `Draw`
+  的失敗路徑。
+- 唯一建立的畫面是 `NativePhysicalBodyPlayback::image`：Go 把它快取在演出工作裡，`stepNativePhysicalBodyMillis` 以「有沒有
+  快取」決定換幀（`native_physical_body.go:433`、`:484`），所以照 Go 以 `picture_from_indexed` 建立同一份畫面。
+- `begin_present_frame` 是 Go `Draw` 開頭的重設，可單獨呼叫；`Game::draw`（A 組，R5）的開頭與它相同，R5 改成呼叫它。
+
+| A 組表 | Go 位置 | Rust |
+|---|---|---|
+| 1 | `main.go:9356`..`9368` 每幀重設 | `begin_present_frame` |
+| 2 | `main.go:9369` HD 橫幅名稱 | R6（`modern_hd_map_gpu` 存在時 `todo!`） |
+| 3 | `main.go:9372` `beginModernHDText` | `begin_present_frame` 清 `modern_hd_text`；HD 介面 R6 |
+| 4 | `main.go:9386`..`9388` 白閃 defer | `finish_present_frame`，每條 return 路徑都執行 |
+| 5 | `main.go:9390` 說明畫面清 HD 文字 | R6 |
+| 6 | `captureShot` | fd2-tools，不移植 |
+| 7 | 各 `fail*` | END 回收、AI 閒置回收已移植；其他擁有者的 `fail*` 還是 `r8`，見下表 |
+| 8 | 演出工作的 `drawn` | 見下表 |
+| 9 | `main.go:9768` | `cancel_native_end_turn_recovery("native END recovery: Draw unavailable")` |
+| 10 | `main.go:9779`..`9783` | 復原 range、清 job、`loadErr`、`ai_busy = false`（與 Go 同一則訊息） |
+| 11、14 | `storyView`、`dlgGrad` 快取 | 畫面資源，R5 |
+| 12、16、17 | 地圖整幀、指令環 `markActionOverlayDrawn`、物理面板失敗 | Go `Draw` 尾段（`main.go:9804`..`10188`），R5 `todo!` |
+| 13、15 | HD 對話框外框、HD 覆蓋層 | R6 |
+
+逐分支（Go `Draw` 的 if 鏈）：
+
+| 擁有者 | Go draw 函式 | Rust |
+|---|---|---|
+| `startupBlocked`、`m == nil` | — | 直接回傳 |
+| `nativeDefeat` | `native_defeat.go:160` | `drawn`，有斜坡時 `ramp.drawn` |
+| `titlePhase` | `title.go:716` | 沒有流程旗標；HD 文字與截圖不在流程 |
+| `indexedTransition` | `native_indexed_transition.go:331` | 非 HD：vga 與 256 色齊全才 `drawn`；HD R6 |
+| `nativeTownDeparture` | `native_town_departure.go:86` | 非 HD 一律 `drawn`（越界照 Go panic）；HD 介面開啟時 R6 |
+| `nativePaletteRamp` | `native_palette_ramp.go:164` | vga 與調色盤齊全才 `drawn`；HD 物理返回 R6 |
+| `nativePalettePulse` | `native_palette_pulse.go:158` | 同上 |
+| `spawnIntroTransition` | `native_spawn_intro.go:360` | 同上 |
+| `nativeEndTurnRecovery` | `native_end_turn_recovery.go:162` | 幀索引、VGA 長度、768 位元組 DAC 與調色盤可解才 `drawn`；否則取消 |
+| `nativeAIIdleRecovery` | `native_ai_idle_recovery.go:328` | 幀索引、素材調色盤 256、VGA 長度；否則失敗收尾 |
+| `atk`（有原生場景） | `main.go:11231` → `native_physical_scene.go:372`、`native_physical_body.go:414` | 前奏 `prelude_drawn`、出發與捲動 `lead_drawn`、本體 `p.drawn` 與 `p.image`；cue-only 項目不設；本體錯誤寫 `loadErr`。前奏與本體之後、沒有原生場景的近似畫面 R5；HD R6 |
+| 結局、ch20／ch23／2189A／單位登場／ch28／24B4D、補血、修飾、AI 修飾、指令 0～35、AI 物品、indexed 回合演出、事件 61 | 見 `present.rs` 各 `todo!` 的 Go 行號 | R8：對應的 `fail*` 還沒移植，`drawn` 條件各自不同（例如補血的 FrontHold／DigitHold 不設 `drawn`、`drawn` 先於長度檢查），第一章重播沒有執行到 |
+
+涵蓋：開頭重設、結尾 defer 兩項加 12 個分支已移植；`todo!` 共 26 個（R5 3、R6 9、R8 14）。單元測試
+`present/present_test.rs` 5 個（重設、斜坡前置條件、END 回收取消、白閃 defer、成長觀察者交給戰場狀態）。
+
+### 無畫面重播驅動端
+
+`src/game/parity_replay.rs`（`#[cfg(test)]`）與子模組 `parity_replay/`，一個 Go 測試檔一個：
+
+| Rust | Go | 函式 |
+|---|---|---|
+| `chapter_parity_replay_test.rs` | `chapter_parity_replay_test.go` | `TestChapterParityReplay` 與 `parityReplay` 的方法、輔助函式，共 40 個 |
+| `chapter_parity_start_test.rs` | `chapter_parity_start_test.go` | `verifyParityStartSource`、`startFromNormalTitle`、`verifyChapterSlotSave` |
+| `chapter_parity_hp_lock_test.rs` | `chapter_parity_hp_lock_test.go` | `parityUpdateGame`；`parityPreservesEnemy` 只有無鎖血政策的分支 |
+| `chapter_parity_legacy_end_test.rs` | `chapter_parity_legacy_end_test.go` | `recoverParityLegacyENDSources` 只有「沒有缺 `before_seq`」的分支 |
+| `native_chapter_one_play_test.rs` | `native_chapter_one_play_test.go` | `pump`、`closeRing`、`ackPresents`、`answerNativeTreasurePrompt`、`ch01Blockers`、`pendingOwn` |
+| `native_title_to_town_test.rs` | `native_title_to_town_test.go` | `journeyTrace` 與 `observe`、`milestone`、`press`、`storyEnterReady`、`storySignature`、`progressSignature`、`driveStory`、`resultInputReachable`、`writeJourney` 等 12 個 |
+
+共 64 個函式；`todo!` 16 個（R5 2：畫面擷取；R8 14：其他章、LOAD 入口、鎖血、#115 拒收攻擊、舊 oracle 的 `before_seq`、
+第一章沒有的 mark 與動作種類、寶物提示的 `confirmNativeSystemEndTurn`、第二十四章舞台）。
+
+- `Driver` 持有 `Game` 與 `VirtualFrameClock`；Go 每次 `g.Update()` 讀的牆鐘改成在 `update` 前以 `advance_virtual_frame`
+  推進一個邏輯幀。
+- `ackPresents` 逐項照 Go：Go 呼叫 `g.Draw` 的三處（城鎮出發、有原生場景的攻擊演出、END 回收）改呼叫 `acknowledge_present`，
+  其餘照 Go 只設 `drawn`；地圖快取失效時照 Go 呼叫 `compose_native_map_frame`。
+- Go `t.Setenv` 的八個變數（`FD2_TITLE`、`FD2_SEED`、`FD2_MUTE`、`FD2_CAMPAIGN`、`FD2_SHOT_AI`、`FD2_NATIVE_SAVE`、
+  `FD2_CUTSCENE_LOG`、`XDG_DATA_HOME`）以 F 組的 `f_child_env` 在子行程設定；父行程先把建構槽複製成 `<out>/FD2.SAV`。
+- AI 與升級成長觀察者以 `Arc<Mutex<…>>` 共用游標；AI 觀察者分岔時寫 `ai_order` checkpoint，所以 `checkpoints.jsonl` 的
+  寫入端也共用。
+- `checkpoints.jsonl` 照 Go `encoding/json` 的欄位順序、`omitempty` 與 HTML 跳脫手寫序列化；`replay-settings.json` 與
+  `start-entry.json` 照 `json.MarshalIndent`（兩格與一格縮排、map 鍵排序）。
+- 驅動端的 `KNOWN_DIFFERENCES`（都不影響這次的輸出檔）：`journey-known-unit-index`（Go 以 `*battle.Unit` 指標記已見單位，
+  Rust 記 `st.units` 索引並在節點改變時清空；只影響援軍紀錄 `spawns`，章重播的 `start-entry.json` 在第一戰取得操作權時就寫出）、
+  `ch01-blockers-no-reflection`（失敗訊息只列流程欄位）、`debug-ai-log`（Go `battle.DebugAI = log.Printf` 只是記錄，沒有移植）、
+  `ai-diagnostics-subset`（`FD2_PARITY_AI_DIAGNOSTICS` 只印入口與亂數）。
+
+### 比對（`tools/rust_parity_ch01.sh`）
+
+`tools/rust_parity_ch01.sh <輸出目錄>`：在 `fd2-rust:1.99.1-r3` 以 `--release` 跑重播（建構槽、原版輸出、Go 黃金唯讀掛載），
+以 `tools/rust_parity_compare.py` 比對，再以 `tools/verify_chapter_parity.py`（`--frame-policy advisory --save-policy
+ch01-start-residual-20261017 --oracle-save state-full-r4/FD2.SAV`）各判 Rust 與 Go 輸出一次，收據寫到
+`work/rust-build/golden/r4i-<輸出目錄名>-{rust,go}.json`。在工作樹副本中執行時設 `FD2_WORK=<主工作區>/work`。
+
+| 輸出 | 結果 |
+|---|---|
+| `checkpoints.jsonl` | 40 筆，與 Go 黃金逐位元組相同，SHA-256 `1c846f573434658cabb3cfa486edd5826b401673c3bff411e30cbdc3e18ac0cc` |
+| `FD2.SAV` | 逐位元組相同，SHA-256 `f3942ff2288a76d1c736a3a6f6ff8b7661efea0fc9870c323bc49da8805f1860` |
+| `start-entry.json`、`replay-settings.json` | 逐位元組相同（不是要求項目，順帶核對） |
+| `hotel-save.json` | 位元組不同（Rust `baca933d…`、Go `190b9f8f…`）；只在 `party_roster` 的 fd2-rules serde 子樹，套 F 組 `NORMALIZATIONS` 後相同。差異是 F 組已列的兩類：`OffX`／`OffY`／`Exp` 的整數值 `float64`（Go `0`、Rust `0.0`）與 `Spells` 的 nil（Go `null`、Rust `[]`），各 5 個單位 |
+| `verify_chapter_parity.py` | 兩份都是 `status=passed`、behavior／nodes／transaction 通過、frames 依政策不要求、保存 `accepted_disclosed_difference`，結論相同 |
+
+竄改反向檢查：把 Rust `checkpoints.jsonl` 第 12 筆的 `rng_word` 改一個值，比對工具列出該筆該欄並以結束碼 1 失敗。
+
+### R4 階段 3 整合紀錄
+
+| 症狀 | 真因 | Go 行號 | 修正 |
+|---|---|---|---|
+| 設了升級成長觀察者時 `bind_command_learn` 停在 `todo!` | `Game::growth_roll_observer` 的型別（收 `&mut Game` 的 `FnMut`）與 `State::native_growth_roll_observer` 不同，無法照 Go 交給戰場狀態（A 組共用變更需求） | `main.go:4087`..`4088` | 欄位改成 `Option<battle::Callback<dyn Fn(&battle::Unit, u16) -> u16 + Send + Sync>>`，`bind_command_learn` 直接 `clone` 給 `st`；回歸測試 `growth_roll_observer_reaches_battle_state` |
+
+除此之外，第一次完整重播就與 Go 黃金逐位元組相同，沒有其他移植錯誤要修；`fd2-rules`、`fd2-campaign` 沒有改動。
+檢查點層的 `KNOWN_DIFFERENCES`：無。
+
+crate 層 `allow(unused, dead_code, unreachable_code, clippy::todo)` 仍保留：驅動端只在測試編譯，正式建置仍沒有呼叫 `update` 的
+公開入口。2026-11-15 試算拿掉後 `cargo clippy --all-targets` 有 882 則警告（lib 819、lib test 另 63 則不重複）。
