@@ -52,7 +52,6 @@ fn present_until_done(g: &mut Game, limit: usize) -> usize {
 }
 
 #[test]
-#[ignore = "等 D 合併（enter_node 經 reset_action_overlay_lifecycle 停在 cancel_native_command32_presentation）"]
 fn town_exit_prompt_escape_returns_to_same_town_selector() {
     if test_support::input("FD2_ASSET_PACK", "ui/fdother_010_town_label/resource.json").is_none() {
         return;

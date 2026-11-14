@@ -7,7 +7,6 @@ use super::*;
 
 /// Go：`hotel_trace_test.go:18` `TestCampaignTownHotelRawRouteReturnTrace`
 #[test]
-#[ignore = "等 D 合併（enter_node 經 reset_action_overlay_lifecycle 停在 cancel_native_command32_presentation）"]
 fn test_campaign_town_hotel_raw_route_return_trace() {
     let c = campaign::Campaign {
         start: String::from("town_ch02"),

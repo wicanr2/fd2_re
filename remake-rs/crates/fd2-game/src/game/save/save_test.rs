@@ -236,7 +236,6 @@ fn write_save_file_replaces_complete_json_atomically() {
 
 /// Go：`save_test.go:184`
 #[test]
-#[ignore = "等 D 合併（停在 cancel_native_command32_presentation）"]
 fn campaign_save_load_restores_town_boundary_and_party() {
     let name = "campaign_save_load_restores_town_boundary_and_party";
     if f_child_env(module_path!(), name, |d| vec![("XDG_DATA_HOME", d.into())]).is_none() {
@@ -509,7 +508,6 @@ fn campaign_load_rejects_broken_persistent_party_topology_without_mutation() {
 
 /// Go：`save_test.go:370`
 #[test]
-#[ignore = "等 D 合併（停在 cancel_native_command32_presentation）"]
 fn title_json_load_accepts_saved_zero_chapter_and_keeps_bytes() {
     let name = "title_json_load_accepts_saved_zero_chapter_and_keeps_bytes";
     let envs = |d: &std::path::Path| vec![("XDG_DATA_HOME", d.into()), ("FD2_NATIVE_SAVE", "".into())];

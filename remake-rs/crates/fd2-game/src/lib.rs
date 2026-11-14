@@ -7,7 +7,8 @@
 #![allow(clippy::doc_lazy_continuation, clippy::doc_overindented_list_items)]
 // 簽名逐一對應 Go 版：參數個數與 callback 型別照 Go 保留（同 fd2-rules 的 crate 層設定）。
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
-// 骨架專用（R4 階段 1）：函式本體是 todo!()，參數、欄位與匯入尚未使用。階段 2 全部移植後移除。
+// R4 階段 2 已移植完骨架範圍；`Game::update` 還沒有公開入口呼叫，R8 範圍的函式與欄位也尚未接上，
+// 拿掉會出現約 900 個未使用警告（2026-11-15 試算）。階段 3 接上無畫面驅動端後再逐項清理並移除。
 #![allow(unused, dead_code, unreachable_code, clippy::todo)]
 
 pub mod game;

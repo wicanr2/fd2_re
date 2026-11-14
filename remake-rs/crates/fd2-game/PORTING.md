@@ -1207,3 +1207,14 @@ R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 量寬／繪字，不在�
 
 沒有改那兩個 crate。`campaign::compose_native_church_scene` 的 `strings`／`font` 收借用（Go 是可為 nil 的指標），Rust 在 nil 時回
 `false`，與 campaign 回錯誤相同。
+
+### 整合紀錄（D＋E，階段 2 收尾，2026-11-15）
+
+- D（`8ff1e1eb`、`3c12fbfe`、`dd99b7cc`）與 E（`3341a052`）合併；只有 `PORTING.md` 衝突，以 D 版為底接上 E 段落，E 的 11 列簽名變更併入表格。程式自動合併後直接通過。
+- 4 個「等 D」測試通過並拿掉 ignore。`tools/rust_game_test.sh`：304 通過、3 ignore（2 個存檔黃金由腳本執行；`test_native_story_advance_accepts_escape_like_enter` 停在 B 組 R8 的 `dlgWrap`，第一章不會走到）。
+- `PORTING.json` 函式狀態依本體重新判定：骨架範圍 565 個中 553 個 `ported`、2 個 `r5`、10 個 `r6`；另 78 個原標 `r8` 的函式隨呼叫端移植為 `ported`。全套 1922 個：ported 631、r5 2、r6 17、r8 1272。
+- crate 層的骨架 allow 暫留：`Game::update` 還沒有公開入口，拿掉會出現約 900 個未使用警告。階段 3 接上無畫面驅動端後清理。
+- 主代理的決定：
+  - E 組 `draw_modern_battle_panel_ink` 只量字級、不畫字，回成功（`panel-ink-measure-only`），接受；忠實模式流程與 Go 相同。
+  - E 組服務選單的 HD 預先描述在 HD 介面關閉時跳過（`facility-hd-precompute-faithful-skip`），接受；只有 HD 繪製與輸入稽核讀它。
+  - D 組待決留給階段 3：A 的 `step_attack_presentation_tick` 先取出 `native_scene` 的時機（沒有原生地圖素材時與 Go 不同，第一章有素材不受影響）；`begin_native_transient_phases` 的參數可變性；`NativeTransientPreviewSaved` 的還原清單要隨別組新增欄位同步。
