@@ -32,7 +32,9 @@ pub fn compose_native_church_scene(
     gold: i64,
     text_index: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_scene.go:ComposeNativeChurchScene")
+    let mut frame =
+        compose_native_church_scene_base(background, decoration, dialogue_cells, digit_frames, portrait, gold)?;
+    render_native_church_text(&mut frame, strings, font, text_index)
 }
 
 /// ComposeNativeChurchSceneBase builds 0x3072f's stable scene before FDTXT585
@@ -47,7 +49,27 @@ pub fn compose_native_church_scene_base(
     portrait: &dato::Frame,
     gold: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_scene.go:ComposeNativeChurchSceneBase")
+    if background.len() != 320 * 200
+        || dialogue_cells.len() <= 17
+        || digit_frames.len() != 10
+        || !(0..=99_999_999).contains(&gold)
+    {
+        return Err(campaign_err!("campaign: native church scene assets/state are invalid"));
+    }
+    let mut frame = compose_native_church_dialogue_overlay(background, dialogue_cells, portrait)?;
+    decoration.blit_opaque_at(
+        &mut frame,
+        320,
+        NATIVE_CHURCH_DECORATION_OFFSET % 320,
+        NATIVE_CHURCH_DECORATION_OFFSET / 320,
+        false,
+    )?;
+    let digits = format!("{gold:08}");
+    for (i, d) in digits.bytes().take(8).enumerate() {
+        let index = (d - b'0') as usize;
+        digit_frames[index].blit_at(&mut frame, 320, NATIVE_CHURCH_GOLD_OFFSET + 6 * i as i64, -1)?;
+    }
+    Ok(frame)
 }
 
 /// ComposeNativeChurchDialogueOverlay reproduces sub_1956b's stable target:
@@ -75,12 +97,28 @@ pub fn compose_native_church_dialogue_overlay_at(
     portrait: &dato::Frame,
     portrait_offset: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_scene.go:ComposeNativeChurchDialogueOverlayAt")
+    if background.len() != 320 * 200 || dialogue_cells.len() <= 17 {
+        return Err(campaign_err!("campaign: native church dialogue overlay assets are invalid"));
+    }
+    let mut frame = background.to_vec();
+    let placements = fdother::plan_native_dialogue_frame_grid(320, 5, 112, 19, 5)?;
+    for placement in placements {
+        dialogue_cells[placement.resource_index as usize].blit_opaque_at_offset(
+            &mut frame,
+            320,
+            placement.destination_byte,
+        )?;
+    }
+    blit_native_dialogue_portrait_at(&mut frame, portrait, portrait_offset)?;
+    Ok(frame)
 }
 
 /// Go：`native_church_scene.go:122`，`func blitNativeDialoguePortraitAt(frame []byte, portrait dato.Frame, offset int) error`
 pub(crate) fn blit_native_dialogue_portrait_at(frame: &mut [u8], portrait: &dato::Frame, offset: i64) -> Result<()> {
-    todo!("campaign/native_church_scene.go:blitNativeDialoguePortraitAt")
+    if offset == NATIVE_LOWER_PORTRAIT_RIGHT_EDGE {
+        return Ok(portrait.blit_right_to_left_at_offset(frame, 320, offset)?);
+    }
+    Ok(portrait.blit_at_offset(frame, 320, offset)?)
 }
 
 /// Go：`native_church_scene.go:129`，`func renderNativeChurchText( frame []byte, strings *fdtxt.Strings, font *fdtxt.Font, textIndex int, ) ([]byte, error)`
@@ -104,7 +142,8 @@ pub fn compose_native_church_text_at(
     text_index: i64,
     base_offset: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_scene.go:ComposeNativeChurchTextAt")
+    let words = strings.words(text_index)?;
+    compose_native_church_words_at(frame, font, &words, base_offset)
 }
 
 /// ComposeNativeChurchTextWithNameAt expands the proven FFFC actor-name
@@ -119,7 +158,17 @@ pub fn compose_native_church_text_with_name_at(
     name_text_index: i64,
     base_offset: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_scene.go:ComposeNativeChurchTextWithNameAt")
+    let words = strings.words(text_index)?;
+    let name = strings.words(name_text_index)?;
+    let mut expanded = Vec::with_capacity(words.len() + name.len());
+    for &word in &words {
+        if word == 0xfffc {
+            expanded.extend_from_slice(&name);
+            continue;
+        }
+        expanded.push(word);
+    }
+    compose_native_church_words_at(frame, font, &expanded, base_offset)
 }
 
 /// Go：`native_church_scene.go:182`，`func composeNativeChurchWordsAt( frame []byte, font *fdtxt.Font, words []uint16, baseOffset int, ) ([]byte, error)`
@@ -129,5 +178,26 @@ pub(crate) fn compose_native_church_words_at(
     words: &[u16],
     base_offset: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_scene.go:composeNativeChurchWordsAt")
+    let (mut line, mut column) = (0i64, 0i64);
+    let style = fdtxt::NativeGlyphStyle { foreground: 205, shadow: 76, background: 74 };
+    for &word in words {
+        if word == 0xfffe {
+            line += 1;
+            column = 0;
+            continue;
+        }
+        if word >= fdtxt::CONTROL_MIN {
+            return Err(campaign_err!("campaign: unsupported church text control {}", battle::go_sharp_x(word as i64)));
+        }
+        let offset = base_offset
+            .wrapping_add(line.wrapping_mul(19 * 320))
+            .wrapping_add(column.wrapping_mul(fdtxt::GLYPH_WIDTH as i64));
+        font.blit_native_glyph(frame, 320, offset, word as i64, style)?;
+        column += 1;
+    }
+    // Go 就地改寫 frame 後回傳同一切片；Rust 改寫呼叫端的 frame 並回傳複本。
+    Ok(frame.to_vec())
 }
+
+#[cfg(test)]
+pub(crate) mod native_church_scene_test;

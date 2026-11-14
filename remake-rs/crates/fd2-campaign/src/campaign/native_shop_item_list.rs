@@ -70,5 +70,17 @@ pub(crate) fn compose_native_shop_item_list_frame_inner(
     price_mode: battle::NativeFacilityPriceMode,
     render_names: bool,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_item_list.go:composeNativeShopItemListFrame")
+    let shop = match shop {
+        Some(s) if stable.len() as i64 == NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT => s,
+        _ => return Err(campaign_err!("campaign: native shop item-list state is invalid")),
+    };
+    let mut frame = stable.to_vec();
+    shop.panel.blit_opaque_at(&mut frame, NATIVE_SHOP_WIDTH, 5, 112, false)?;
+    let render = if render_names {
+        battle::render_native_facility_item_rows
+    } else {
+        battle::render_native_facility_item_rows_without_names
+    };
+    render(item_assets, &shop.price_cell, item_ids, start, selected, effect_rows, price_mode, &mut frame)?;
+    Ok(frame)
 }

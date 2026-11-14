@@ -17,5 +17,11 @@ pub fn compose_native_shop_consumable_recipient_frame(
     strings: Option<&fdtxt::Strings>,
     font: Option<&fdtxt::Font>,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_recipient.go:ComposeNativeShopConsumableRecipientFrame")
+    let shop = match shop {
+        Some(s) if item_type >= 0x20 => s,
+        _ => {
+            return Err(campaign_err!("campaign: native shop two-column recipient list requires item type >= 0x20"));
+        }
+    };
+    compose_native_roster_frame(stable, &shop.panel, rows, selected, strings, font)
 }

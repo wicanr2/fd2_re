@@ -15,7 +15,16 @@ pub(crate) static NATIVE_CHURCH_MENU_OFFSETS: [i64; 4] = [-39, -13, 13, 39];
 ///
 /// Go：`native_church_menu.go:18`，`func NativeChurchMenuBase(background []byte) ([]byte, error)`
 pub fn native_church_menu_base(background: &[u8]) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_menu.go:NativeChurchMenuBase")
+    if background.len() as i64 != NATIVE_CHURCH_MENU_STRIDE * 200 {
+        return Err(campaign_err!("campaign: native church menu background must be 320x200"));
+    }
+    let mut frame = background.to_vec();
+    for y in 169..189 {
+        for x in 201..305 {
+            frame[(y * NATIVE_CHURCH_MENU_STRIDE + x) as usize] = 0x4a;
+        }
+    }
+    Ok(frame)
 }
 
 /// NativeChurchMenuTransitionFrames reproduces 0x2d669's four independent
@@ -28,7 +37,20 @@ pub fn native_church_menu_transition_frames(
     entries: &[fdother::LMI1Entry],
     opening: bool,
 ) -> Result<Vec<Vec<u8>>> {
-    todo!("campaign/native_church_menu.go:NativeChurchMenuTransitionFrames")
+    let base = native_church_menu_base(background)?;
+    if entries.len() <= 10 {
+        return Err(campaign_err!("campaign: FDOTHER#14 lacks church menu cells"));
+    }
+    let mut frames = Vec::with_capacity(4);
+    for pass in 0..4 {
+        let divisor = if opening { 4 - pass } else { pass + 1 };
+        let mut frame = base.clone();
+        for (option, &offset) in NATIVE_CHURCH_MENU_OFFSETS.iter().enumerate() {
+            blit_native_church_menu_cell(&mut frame, &entries[2 * option + 3], offset / divisor)?;
+        }
+        frames.push(frame);
+    }
+    Ok(frames)
 }
 
 /// ComposeNativeChurchMenuFrame reproduces 0x2d85f mode zero after its initial
@@ -41,10 +63,31 @@ pub fn compose_native_church_menu_frame(
     selected: i64,
     pulse: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_church_menu.go:ComposeNativeChurchMenuFrame")
+    let mut frame = native_church_menu_base(background)?;
+    if entries.len() <= 10 || !(0..=3).contains(&selected) || !(0..=1).contains(&pulse) {
+        return Err(campaign_err!("campaign: invalid native church menu state"));
+    }
+    for (option, &offset) in NATIVE_CHURCH_MENU_OFFSETS.iter().enumerate() {
+        let mut index = 2 * option + 3;
+        if option as i64 == selected {
+            index += pulse as usize;
+        }
+        blit_native_church_menu_cell(&mut frame, &entries[index], offset)?;
+    }
+    Ok(frame)
 }
 
 /// Go：`native_church_menu.go:89`，`func blitNativeChurchMenuCell(frame []byte, cell fdother.LMI1Entry, offset int) error`
 pub(crate) fn blit_native_church_menu_cell(frame: &mut [u8], cell: &fdother::LMI1Entry, offset: i64) -> Result<()> {
-    todo!("campaign/native_church_menu.go:blitNativeChurchMenuCell")
+    let origin = NATIVE_CHURCH_MENU_BASE + offset;
+    Ok(cell.blit_at(
+        frame,
+        NATIVE_CHURCH_MENU_STRIDE,
+        origin % NATIVE_CHURCH_MENU_STRIDE,
+        origin / NATIVE_CHURCH_MENU_STRIDE,
+        false,
+    )?)
 }
+
+#[cfg(test)]
+pub(crate) mod native_church_menu_test;

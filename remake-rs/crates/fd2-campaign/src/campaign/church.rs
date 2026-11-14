@@ -43,7 +43,22 @@ pub(crate) static CLASS_NAMES: &[&str] = &[
 ///
 /// Go：`church.go:19`，`func AdvanceNativeChurchServiceSelection(current, delta int) int`
 pub fn advance_native_church_service_selection(current: i64, delta: i64) -> i64 {
-    todo!("campaign/church.go:AdvanceNativeChurchServiceSelection")
+    let mut current = current;
+    if !(0..=3).contains(&current) {
+        current = 0;
+    }
+    let delta = match delta.signum() {
+        0 => return current,
+        d => d,
+    };
+    current += delta;
+    if current < 0 {
+        return 3;
+    }
+    if current > 3 {
+        return 0;
+    }
+    current
 }
 
 /// AdvanceNativeClassConfirmation mirrors 0x19953's two-choice prompt:
@@ -51,7 +66,17 @@ pub fn advance_native_church_service_selection(current: i64, delta: i64) -> i64 
 ///
 /// Go：`church.go:42`，`func AdvanceNativeClassConfirmation(current, horizontal int) int`
 pub fn advance_native_class_confirmation(current: i64, horizontal: i64) -> i64 {
-    todo!("campaign/church.go:AdvanceNativeClassConfirmation")
+    let mut current = current;
+    if current != 0 && current != 1 {
+        current = 0;
+    }
+    if horizontal < 0 {
+        return 0;
+    }
+    if horizontal > 0 {
+        return 1;
+    }
+    current
 }
 
 /// NativeClassCandidateWindow mirrors 0x311DC's three-row viewport. The
@@ -61,7 +86,12 @@ pub fn advance_native_class_confirmation(current: i64, horizontal: i64) -> i64 {
 /// Go：`church.go:58`，`func NativeClassCandidateWindow(count, selected int) (start, visible int)`
 /// Go 具名回傳值依序為：start、visible。
 pub fn native_class_candidate_window(count: i64, selected: i64) -> (i64, i64) {
-    todo!("campaign/church.go:NativeClassCandidateWindow")
+    if count <= 0 || selected < 0 || selected >= count {
+        return (0, 0);
+    }
+    let start = (selected - 2).max(0);
+    let visible = (count - start).min(3);
+    (start, visible)
 }
 
 /// NativeThreeRowWindow mirrors the stateful vertical viewport shared by
@@ -71,7 +101,19 @@ pub fn native_class_candidate_window(count: i64, selected: i64) -> (i64, i64) {
 /// Go：`church.go:76`，`func NativeThreeRowWindow(count, selected, start int) (nextStart, visible int)`
 /// Go 具名回傳值依序為：nextStart、visible。
 pub fn native_three_row_window(count: i64, selected: i64, start: i64) -> (i64, i64) {
-    todo!("campaign/church.go:NativeThreeRowWindow")
+    if count <= 0 || selected < 0 || selected >= count || start < 0 {
+        return (0, 0);
+    }
+    let max_start = (count - 3).max(0);
+    let mut start = start.min(max_start);
+    while selected < start && start > 0 {
+        start -= 1;
+    }
+    while selected >= start + 3 && start < max_start {
+        start += 1;
+    }
+    let visible = (count - start).min(3);
+    (start, visible)
 }
 
 /// AdvanceNativeTwoColumnSelection mirrors the bounded list movement used by
@@ -80,14 +122,33 @@ pub fn native_three_row_window(count: i64, selected: i64, start: i64) -> (i64, i
 ///
 /// Go：`church.go:103`，`func AdvanceNativeTwoColumnSelection(current, count, delta int) int`
 pub fn advance_native_two_column_selection(current: i64, count: i64, delta: i64) -> i64 {
-    todo!("campaign/church.go:AdvanceNativeTwoColumnSelection")
+    if count <= 0 {
+        return 0;
+    }
+    if current < 0 {
+        return 0;
+    }
+    if current >= count {
+        return count - 1;
+    }
+    if !matches!(delta, -2 | -1 | 1 | 2) {
+        return current;
+    }
+    let next = current + delta;
+    if next < 0 || next >= count {
+        return current;
+    }
+    next
 }
 
 /// ClassName is the EXE mechanical class-name table used by target class IDs.
 ///
 /// Go：`church.go:124`，`func ClassName(classID int) string`
 pub fn class_name(class_id: i64) -> String {
-    todo!("campaign/church.go:ClassName")
+    if class_id >= 0 && (class_id as usize) < CLASS_NAMES.len() {
+        return CLASS_NAMES[class_id as usize].to_string();
+    }
+    format!("職業{class_id}")
 }
 
 /// ClassChangeGrowth is one 11-byte EXE growth row (0x4e4d1).  The five
@@ -104,8 +165,18 @@ pub struct ClassChangeGrowth {
 }
 
 /// Go：`church.go:137`，`func rollClassChangeRange(r [2]int, rng *rand.Rand) (int, error)`
-pub(crate) fn roll_class_change_range(r: [i64; 2], rng: Option<&mut dyn GoRand>) -> Result<i64> {
-    todo!("campaign/church.go:rollClassChangeRange")
+/// Rust 收 `&mut Option<..>`：同一個 rng 要連續借給五次擲骰。
+pub(crate) fn roll_class_change_range(r: [i64; 2], rng: &mut Option<&mut dyn GoRand>) -> Result<i64> {
+    if r[1] < r[0] {
+        return Err(campaign_err!("class change: invalid range [{},{})", r[0], r[1]));
+    }
+    if r[1] == r[0] {
+        return Ok(r[0]);
+    }
+    let Some(rng) = rng.as_deref_mut() else {
+        return Err(campaign_err!("class change: missing rng"));
+    };
+    Ok(r[0].wrapping_add(rng.intn(r[1].wrapping_sub(r[0]))))
 }
 
 /// ApplyClassChange mirrors the proven 0x31602 state writes.  0x1e529 adds the
@@ -126,13 +197,55 @@ pub fn apply_class_change(
     rng: Option<&mut dyn GoRand>,
     remove_item_index: i64,
 ) -> Result<()> {
-    todo!("campaign/church.go:ApplyClassChange")
+    let Some(u) = u else {
+        return Err(campaign_err!("class change: missing unit"));
+    };
+    if !(0..=0xff).contains(&target_portrait) || !(0..=0xff).contains(&class_id) || !(0..=0xff).contains(&growth_group)
+    {
+        return Err(campaign_err!("class change: invalid target/class/group"));
+    }
+    if remove_item_index >= u.inventory.len() as i64 || remove_item_index < -1 {
+        return Err(campaign_err!("class change: invalid item index"));
+    }
+    let mut rng = rng;
+    let ap = roll_class_change_range(row.ap, &mut rng)?;
+    let dp = roll_class_change_range(row.dp, &mut rng)?;
+    let dx = roll_class_change_range(row.dx, &mut rng)?;
+    let hp = roll_class_change_range(row.hp, &mut rng)?;
+    let mp = roll_class_change_range(row.mp, &mut rng)?;
+    if remove_item_index >= 0 && !u.remove_inventory_index(remove_item_index) {
+        return Err(campaign_err!("class change: item removal failed"));
+    }
+    u.ap = u.ap.wrapping_add(ap);
+    u.dp = u.dp.wrapping_add(dp);
+    u.dx = u.dx.wrapping_add(dx);
+    u.max_hp = u.max_hp.wrapping_add(hp);
+    u.max_mp = u.max_mp.wrapping_add(mp);
+    u.hp = u.max_hp;
+    u.mp = u.max_mp;
+    // The second byte returned by 0x4e48d is the class mobility increment;
+    // native unit+0x3b is the movement budget used by pathfinding.
+    u.mv = u.mv.wrapping_add(growth_group);
+    u.exp = 0.0;
+    (u.portrait, u.class_id) = (target_portrait, class_id);
+    // 0x31571..0x3157a rewrites raw +0x20 and +7, but not +0x1f.
+    (u.native_record_class, u.has_native_record_class) = (class_id as u8, true);
+    // Native class-change flow 0x31576..0x3157a writes the resolved target
+    // byte to live unit+7. For player construction that byte is both the
+    // FIGANI selector and the next 0x11019 raw map key; stable Fig remains the
+    // JOIN/+8 identity. A previous cache slot belongs to the old key.
+    u.battle_fig = target_portrait;
+    (u.map_selector_key, u.has_map_selector_key) = (target_portrait, true);
+    (u.map_selector_slot, u.has_map_selector_slot) = (0, false);
+    (u.native_map_presentation, u.has_native_map_presentation) = (battle::NativeMapPresentationState::default(), false);
+    Ok(())
 }
 
 /// Go：`church.go:215`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, serde::Deserialize)]
 pub(crate) struct ReviveFeeTable {
     /// Go 標籤：`json:"rates"`
+    #[serde(default, deserialize_with = "battle::null_as_default")]
     pub rates: Vec<i64>,
 }
 
@@ -141,7 +254,12 @@ pub(crate) struct ReviveFeeTable {
 ///
 /// Go：`church.go:221`，`func LoadReviveFeeRates(path string) ([]int, error)`
 pub fn load_revive_fee_rates(path: &str) -> Result<Vec<i64>> {
-    todo!("campaign/church.go:LoadReviveFeeRates")
+    let raw = battle::read_file(path)?;
+    let table: ReviveFeeTable = battle::decode_json(&raw)?;
+    if table.rates.is_empty() {
+        return Err(campaign_err!("revive fee table is empty"));
+    }
+    Ok(table.rates)
 }
 
 /// CanChangeClass is the proven 0x31793 candidate predicate. The native
@@ -157,7 +275,23 @@ pub fn can_change_class(u: Option<&Unit>) -> bool {
 ///
 /// Go：`church.go:244`，`func ClassChangeCandidates(roster map[int]battle.Unit, order []int) []int`
 pub fn class_change_candidates(roster: &BTreeMap<i64, Unit>, order: &[i64]) -> Vec<i64> {
-    todo!("campaign/church.go:ClassChangeCandidates")
+    let mut out = Vec::new();
+    let mut seen = BTreeSet::new();
+    for &id in order {
+        if !seen.insert(id) {
+            continue;
+        }
+        if roster.get(&id).is_some_and(|u| can_change_class(Some(u))) {
+            out.push(id);
+        }
+    }
+    // Go `church.go:257` 依 map 迭代順序附加不在 order 裡的 id（順序不固定）；BTreeMap 依遞增順序。
+    for (&id, u) in roster {
+        if !seen.contains(&id) && can_change_class(Some(u)) {
+            out.push(id);
+        }
+    }
+    out
 }
 
 /// CanRevive reproduces 0x309ff -> 0x3453e: the roster record is a candidate
@@ -174,6 +308,32 @@ pub fn can_revive(u: Option<&Unit>) -> bool {
 /// exported. Native cost is feeRate * unit level, checked before any mutation.
 ///
 /// Go：`church.go:275`，`func ReviveUnit(gold int, u *battle.Unit, feeRate int) (int, int, error)`
-pub fn revive_unit(gold: i64, u: Option<&mut Unit>, fee_rate: i64) -> Result<(i64, i64)> {
-    todo!("campaign/church.go:ReviveUnit")
+/// Rust 回傳 `(gold, cost, Result)`：Go 失敗時仍回傳有意義的 `cost`（金幣不足時是應付金額），
+/// 包成 `Result<(i64, i64)>` 會丟掉它。
+pub fn revive_unit(gold: i64, u: Option<&mut Unit>, fee_rate: i64) -> (i64, i64, Result<()>) {
+    let Some(u) = u else {
+        return (gold, 0, Err(campaign_err!("revive: missing unit")));
+    };
+    if !can_revive(Some(u)) {
+        return (gold, 0, Err(campaign_err!("revive: unit is not a candidate")));
+    }
+    if fee_rate < 0 {
+        return (gold, 0, Err(campaign_err!("revive: invalid fee rate")));
+    }
+    if u.lv < 0 {
+        return (gold, 0, Err(campaign_err!("revive: invalid level")));
+    }
+    let cost = fee_rate.wrapping_mul(u.lv);
+    if gold < cost {
+        return (gold, cost, Err(campaign_err!("revive: insufficient gold")));
+    }
+    let gold = gold - cost;
+    // 0x30f9c clears the raw death/inactive bit; 0x30fa0 copies max HP to
+    // current HP. OnField is retained as the remake projection.
+    u.restore_native_hp();
+    u.on_field = true;
+    (gold, cost, Ok(()))
 }
+
+#[cfg(test)]
+pub(crate) mod church_test;

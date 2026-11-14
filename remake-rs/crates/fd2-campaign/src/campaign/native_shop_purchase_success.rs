@@ -23,7 +23,45 @@ pub struct NativeShopPurchaseSuccessPlan {
 ///
 /// Go：`native_shop_purchase_success.go:25`，`func PlanNativeShopPurchaseSuccess( hubVariant int, ) (NativeShopPurchaseSuccessPlan, error)`
 pub fn plan_native_shop_purchase_success(hub_variant: i64) -> Result<NativeShopPurchaseSuccessPlan> {
-    todo!("campaign/native_shop_purchase_success.go:PlanNativeShopPurchaseSuccess")
+    match hub_variant {
+        1 => Ok(NativeShopPurchaseSuccessPlan {
+            hub_variant: 1,
+            resource_id: 12,
+            frame_count: 5,
+            effect_offset: 45 * NATIVE_SHOP_WIDTH + 169,
+            per_frame_delay_bios_ticks: 2,
+            restore_portrait_mode0: true,
+            optional_equip_before: true,
+            debit_after_presentation: true,
+            return_to_product_loop: true,
+            ..Default::default()
+        }),
+        3 => Ok(NativeShopPurchaseSuccessPlan {
+            hub_variant: 3,
+            resource_id: 29,
+            frame_count: 1,
+            effect_offset: 39 * NATIVE_SHOP_WIDTH + 148,
+            pre_delay_bios_ticks: 1,
+            post_delay_bios_ticks: 8,
+            restore_portrait_mode0: true,
+            optional_equip_before: true,
+            debit_after_presentation: true,
+            return_to_product_loop: true,
+            ..Default::default()
+        }),
+        5 => Ok(NativeShopPurchaseSuccessPlan {
+            hub_variant: 5,
+            resource_id: 63,
+            frame_count: 7,
+            effect_offset: 28 * NATIVE_SHOP_WIDTH + 131,
+            per_frame_delay_bios_ticks: 2,
+            optional_equip_before: true,
+            debit_after_presentation: true,
+            return_to_product_loop: true,
+            ..Default::default()
+        }),
+        _ => Err(campaign_err!("campaign: unsupported native shop success variant")),
+    }
 }
 
 /// ComposeNativeShopPurchaseSuccessFrames applies resource entries 23 onward
@@ -39,5 +77,26 @@ pub fn compose_native_shop_purchase_success_frames(
     portrait_id: i64,
     hub_variant: i64,
 ) -> Result<(Vec<Vec<u8>>, Vec<u8>)> {
-    todo!("campaign/native_shop_purchase_success.go:ComposeNativeShopPurchaseSuccessFrames")
+    let plan = plan_native_shop_purchase_success(hub_variant)?;
+    let shop = match shop {
+        Some(s)
+            if background.len() as i64 == NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT
+                && s.resource_id == plan.resource_id
+                && s.success_frames.len() as i64 == plan.frame_count =>
+        {
+            s
+        }
+        _ => return Err(campaign_err!("campaign: native shop success assets do not match the hub variant")),
+    };
+    let mut staged = background.to_vec();
+    let mut animation = Vec::with_capacity(shop.success_frames.len());
+    for effect in &shop.success_frames {
+        effect.blit_at(&mut staged, NATIVE_SHOP_WIDTH, plan.effect_offset, -1)?;
+        animation.push(staged.clone());
+    }
+    let mut last = staged;
+    if plan.restore_portrait_mode0 {
+        portrait.blit_at_offset(&mut last, NATIVE_SHOP_WIDTH, native_facility_portrait_offset_inner(portrait_id))?;
+    }
+    Ok((animation, last))
 }

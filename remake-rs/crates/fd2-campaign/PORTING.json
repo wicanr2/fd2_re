@@ -522,49 +522,49 @@
             {
               "name": "AdvanceNativeChurchServiceSelection",
               "rust": "advance_native_church_service_selection",
-              "status": "todo",
+              "status": "ported",
               "go_line": 19
             },
             {
               "name": "AdvanceNativeClassConfirmation",
               "rust": "advance_native_class_confirmation",
-              "status": "todo",
+              "status": "ported",
               "go_line": 42
             },
             {
               "name": "NativeClassCandidateWindow",
               "rust": "native_class_candidate_window",
-              "status": "todo",
+              "status": "ported",
               "go_line": 58
             },
             {
               "name": "NativeThreeRowWindow",
               "rust": "native_three_row_window",
-              "status": "todo",
+              "status": "ported",
               "go_line": 76
             },
             {
               "name": "AdvanceNativeTwoColumnSelection",
               "rust": "advance_native_two_column_selection",
-              "status": "todo",
+              "status": "ported",
               "go_line": 103
             },
             {
               "name": "ClassName",
               "rust": "class_name",
-              "status": "todo",
+              "status": "ported",
               "go_line": 124
             },
             {
               "name": "rollClassChangeRange",
               "rust": "roll_class_change_range",
-              "status": "todo",
+              "status": "ported",
               "go_line": 137
             },
             {
               "name": "ApplyClassChange",
               "rust": "apply_class_change",
-              "status": "todo",
+              "status": "ported",
               "go_line": 157,
               "calls": [
                 "rollClassChangeRange"
@@ -573,7 +573,7 @@
             {
               "name": "LoadReviveFeeRates",
               "rust": "load_revive_fee_rates",
-              "status": "todo",
+              "status": "ported",
               "go_line": 221
             },
             {
@@ -585,7 +585,7 @@
             {
               "name": "ClassChangeCandidates",
               "rust": "class_change_candidates",
-              "status": "todo",
+              "status": "ported",
               "go_line": 244,
               "calls": [
                 "CanChangeClass"
@@ -600,7 +600,7 @@
             {
               "name": "ReviveUnit",
               "rust": "revive_unit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 275,
               "calls": [
                 "CanRevive"
@@ -656,19 +656,19 @@
             {
               "name": "LoadClassChangeTable",
               "rust": "load_class_change_table",
-              "status": "todo",
+              "status": "ported",
               "go_line": 45
             },
             {
               "name": "inventoryIndex",
               "rust": "inventory_index",
-              "status": "todo",
+              "status": "ported",
               "go_line": 88
             },
             {
               "name": "NativeClassChangeTarget",
               "rust": "native_class_change_target",
-              "status": "todo",
+              "status": "ported",
               "go_line": 105,
               "calls": [
                 "inventoryIndex"
@@ -677,7 +677,7 @@
             {
               "name": "LoadClassChangeGrowth",
               "rust": "load_class_change_growth",
-              "status": "todo",
+              "status": "ported",
               "go_line": 148
             }
           ],
@@ -719,25 +719,25 @@
             {
               "name": "LoadItemStats",
               "rust": "load_item_stats",
-              "status": "todo",
+              "status": "ported",
               "go_line": 23
             },
             {
               "name": "RecomputeEquipment",
               "rust": "recompute_equipment",
-              "status": "todo",
+              "status": "ported",
               "go_line": 51
             },
             {
               "name": "ApplyEquippedAttackRange",
               "rust": "apply_equipped_attack_range",
-              "status": "todo",
+              "status": "ported",
               "go_line": 92
             },
             {
               "name": "RecomputeAfterClassChange",
               "rust": "recompute_after_class_change",
-              "status": "todo",
+              "status": "ported",
               "go_line": 119,
               "calls": [
                 "RecomputeEquipment"
@@ -746,7 +746,7 @@
             {
               "name": "InitializeEquipmentBase",
               "rust": "initialize_equipment_base",
-              "status": "todo",
+              "status": "ported",
               "go_line": 154,
               "calls": [
                 "RecomputeEquipment"
@@ -755,7 +755,7 @@
             {
               "name": "EquipItem",
               "rust": "equip_item",
-              "status": "todo",
+              "status": "ported",
               "go_line": 180,
               "calls": [
                 "RecomputeEquipment"
@@ -764,7 +764,7 @@
             {
               "name": "EquipNativeCompactSlot",
               "rust": "equip_native_compact_slot",
-              "status": "todo",
+              "status": "ported",
               "go_line": 220,
               "calls": [
                 "EquipItem"
@@ -1482,13 +1482,13 @@
             {
               "name": "NativeChurchMenuBase",
               "rust": "native_church_menu_base",
-              "status": "todo",
+              "status": "ported",
               "go_line": 18
             },
             {
               "name": "NativeChurchMenuTransitionFrames",
               "rust": "native_church_menu_transition_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 34,
               "calls": [
                 "NativeChurchMenuBase",
@@ -1498,7 +1498,7 @@
             {
               "name": "ComposeNativeChurchMenuFrame",
               "rust": "compose_native_church_menu_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 65,
               "calls": [
                 "NativeChurchMenuBase",
@@ -1508,7 +1508,7 @@
             {
               "name": "blitNativeChurchMenuCell",
               "rust": "blit_native_church_menu_cell",
-              "status": "todo",
+              "status": "ported",
               "go_line": 89
             }
           ],
@@ -1550,13 +1550,13 @@
             {
               "name": "PlanNativeChurchReviveSuccess",
               "rust": "plan_native_church_revive_success",
-              "status": "todo",
+              "status": "ported",
               "go_line": 27
             },
             {
               "name": "ComposeNativeChurchReviveSuccessFrames",
               "rust": "compose_native_church_revive_success_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 54
             }
           ],
@@ -1614,7 +1614,7 @@
             {
               "name": "ComposeNativeChurchScene",
               "rust": "compose_native_church_scene",
-              "status": "todo",
+              "status": "ported",
               "go_line": 23,
               "calls": [
                 "ComposeNativeChurchSceneBase",
@@ -1624,7 +1624,7 @@
             {
               "name": "ComposeNativeChurchSceneBase",
               "rust": "compose_native_church_scene_base",
-              "status": "todo",
+              "status": "ported",
               "go_line": 44,
               "calls": [
                 "ComposeNativeChurchDialogueOverlay"
@@ -1642,7 +1642,7 @@
             {
               "name": "ComposeNativeChurchDialogueOverlayAt",
               "rust": "compose_native_church_dialogue_overlay_at",
-              "status": "todo",
+              "status": "ported",
               "go_line": 95,
               "calls": [
                 "blitNativeDialoguePortraitAt"
@@ -1651,7 +1651,7 @@
             {
               "name": "blitNativeDialoguePortraitAt",
               "rust": "blit_native_dialogue_portrait_at",
-              "status": "todo",
+              "status": "ported",
               "go_line": 122
             },
             {
@@ -1666,7 +1666,7 @@
             {
               "name": "ComposeNativeChurchTextAt",
               "rust": "compose_native_church_text_at",
-              "status": "todo",
+              "status": "ported",
               "go_line": 142,
               "calls": [
                 "composeNativeChurchWordsAt"
@@ -1675,7 +1675,7 @@
             {
               "name": "ComposeNativeChurchTextWithNameAt",
               "rust": "compose_native_church_text_with_name_at",
-              "status": "todo",
+              "status": "ported",
               "go_line": 157,
               "calls": [
                 "composeNativeChurchWordsAt"
@@ -1684,7 +1684,7 @@
             {
               "name": "composeNativeChurchWordsAt",
               "rust": "compose_native_church_words_at",
-              "status": "todo",
+              "status": "ported",
               "go_line": 182
             }
           ],
@@ -1868,7 +1868,7 @@
             {
               "name": "NativePreparationPortraitLayout",
               "rust": "native_preparation_portrait_layout",
-              "status": "todo",
+              "status": "ported",
               "go_line": 16,
               "calls": [
                 "nativeFacilityPortraitOffset"
@@ -1931,7 +1931,7 @@
             {
               "name": "NativeDeathRewardAbandonResponseFrames",
               "rust": "native_death_reward_abandon_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 122,
               "calls": [
                 "nativeBattleResponseWordFrames",
@@ -1941,7 +1941,7 @@
             {
               "name": "ComposeNativeDeathRewardSelectorCancel",
               "rust": "compose_native_death_reward_selector_cancel",
-              "status": "todo",
+              "status": "ported",
               "go_line": 135,
               "calls": [
                 "blitNativeDialoguePortraitAt",
@@ -1953,13 +1953,13 @@
             {
               "name": "nativeDeathRewardAbandonWords",
               "rust": "native_death_reward_abandon_words",
-              "status": "todo",
+              "status": "ported",
               "go_line": 157
             },
             {
               "name": "composeNativeBattleSystemQuestion",
               "rust": "compose_native_battle_system_question",
-              "status": "todo",
+              "status": "ported",
               "go_line": 180,
               "calls": [
                 "ComposeNativeChurchTextAt",
@@ -1970,7 +1970,7 @@
             {
               "name": "ComposeNativeBattleEndTurnResponse",
               "rust": "compose_native_battle_end_turn_response",
-              "status": "todo",
+              "status": "ported",
               "go_line": 200,
               "calls": [
                 "NativeBattleEndTurnResponseFrames"
@@ -1979,7 +1979,7 @@
             {
               "name": "NativeBattleEndTurnResponseFrames",
               "rust": "native_battle_end_turn_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 212,
               "calls": [
                 "nativeBattleSystemResponseFrames"
@@ -1988,7 +1988,7 @@
             {
               "name": "NativeBattleExitResponseFrames",
               "rust": "native_battle_exit_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 224,
               "calls": [
                 "nativeBattleSystemResponseFrames"
@@ -1997,7 +1997,7 @@
             {
               "name": "NativeBattleCurrentSaveResponseFrames",
               "rust": "native_battle_current_save_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 236,
               "calls": [
                 "nativeBattleSystemResponseFrames"
@@ -2006,7 +2006,7 @@
             {
               "name": "NativeBattleCurrentLoadResponseFrames",
               "rust": "native_battle_current_load_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 248,
               "calls": [
                 "nativeBattleSystemResponseFrames"
@@ -2015,7 +2015,7 @@
             {
               "name": "NativeBattleGroupMarchResponseFrames",
               "rust": "native_battle_group_march_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 260,
               "calls": [
                 "nativeBattleSystemResponseFrames"
@@ -2024,7 +2024,7 @@
             {
               "name": "nativeBattleSystemResponseFrames",
               "rust": "native_battle_system_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 270,
               "calls": [
                 "nativeBattleResponseWordFrames"
@@ -2033,7 +2033,7 @@
             {
               "name": "ComposeNativeTreasureItemQuestion",
               "rust": "compose_native_treasure_item_question",
-              "status": "todo",
+              "status": "ported",
               "go_line": 284,
               "calls": [
                 "composeNativeBattleSystemQuestion"
@@ -2042,7 +2042,7 @@
             {
               "name": "NativeTreasureItemResponseFrames",
               "rust": "native_treasure_item_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 293,
               "calls": [
                 "nativeBattleResponseWordFrames"
@@ -2051,7 +2051,7 @@
             {
               "name": "NativeTreasureGoldResponseFrames",
               "rust": "native_treasure_gold_response_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 323,
               "calls": [
                 "nativeBattleResponseWordFrames"
@@ -2060,13 +2060,13 @@
             {
               "name": "nativeBattleResponseWordFrames",
               "rust": "native_battle_response_word_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 353
             },
             {
               "name": "NativeClassConfirmationOpeningFrames",
               "rust": "native_class_confirmation_opening_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 383,
               "calls": [
                 "validateNativeClassConfirmationAssets"
@@ -2075,7 +2075,7 @@
             {
               "name": "NativeClassConfirmationClosingFrames",
               "rust": "native_class_confirmation_closing_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 403,
               "calls": [
                 "validateNativeClassConfirmationAssets"
@@ -2084,7 +2084,7 @@
             {
               "name": "ComposeNativeClassConfirmationFrame",
               "rust": "compose_native_class_confirmation_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 424,
               "calls": [
                 "ComposeNativeClassConfirmationQuestion",
@@ -2095,7 +2095,7 @@
             {
               "name": "ComposeNativeConfirmationChoices",
               "rust": "compose_native_confirmation_choices",
-              "status": "todo",
+              "status": "ported",
               "go_line": 446,
               "calls": [
                 "validateNativeClassConfirmationAssets"
@@ -2131,7 +2131,7 @@
             {
               "name": "ComposeNativePreparationRequiredMessage",
               "rust": "compose_native_preparation_required_message",
-              "status": "todo",
+              "status": "ported",
               "go_line": 519,
               "calls": [
                 "ComposeNativePreparationConfirmationDialogue",
@@ -2142,7 +2142,7 @@
             {
               "name": "composeNativePreparationQuestion",
               "rust": "compose_native_preparation_question",
-              "status": "todo",
+              "status": "ported",
               "go_line": 561,
               "calls": [
                 "ComposeNativePreparationConfirmationDialogue",
@@ -2163,7 +2163,7 @@
             {
               "name": "ComposeNativeConfirmationPortrait",
               "rust": "compose_native_confirmation_portrait",
-              "status": "todo",
+              "status": "ported",
               "go_line": 619,
               "calls": [
                 "blitNativeDialoguePortraitAt",
@@ -2173,7 +2173,7 @@
             {
               "name": "ComposeNativePreparationConfirmationFrame",
               "rust": "compose_native_preparation_confirmation_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 633,
               "calls": [
                 "ComposeNativeConfirmationChoices",
@@ -2183,7 +2183,7 @@
             {
               "name": "NativePreparationConfirmationOpeningFrames",
               "rust": "native_preparation_confirmation_opening_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 654,
               "calls": [
                 "NativeClassConfirmationOpeningFrames",
@@ -2193,7 +2193,7 @@
             {
               "name": "NativePreparationConfirmationClosingFrames",
               "rust": "native_preparation_confirmation_closing_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 672,
               "calls": [
                 "NativeClassConfirmationClosingFrames",
@@ -2203,19 +2203,19 @@
             {
               "name": "ComposeNativeReviveConfirmationQuestion",
               "rust": "compose_native_revive_confirmation_question",
-              "status": "todo",
+              "status": "ported",
               "go_line": 689
             },
             {
               "name": "ComposeNativeClassConfirmationQuestion",
               "rust": "compose_native_class_confirmation_question",
-              "status": "todo",
+              "status": "ported",
               "go_line": 752
             },
             {
               "name": "validateNativeClassConfirmationAssets",
               "rust": "validate_native_class_confirmation_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 793
             }
           ],
@@ -2297,7 +2297,7 @@
             {
               "name": "RenderNativeClassListRows",
               "rust": "render_native_class_list_rows",
-              "status": "todo",
+              "status": "ported",
               "go_line": 36,
               "calls": [
                 "blitNativeClassListText"
@@ -2306,7 +2306,7 @@
             {
               "name": "ComposeNativeClassListFrame",
               "rust": "compose_native_class_list_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 83,
               "calls": [
                 "RenderNativeClassListRows"
@@ -2315,19 +2315,19 @@
             {
               "name": "NativeClassListOpeningFrames",
               "rust": "native_class_list_opening_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 110
             },
             {
               "name": "NativeClassListClosingFrames",
               "rust": "native_class_list_closing_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 135
             },
             {
               "name": "blitNativeClassListText",
               "rust": "blit_native_class_list_text",
-              "status": "todo",
+              "status": "ported",
               "go_line": 158
             }
           ],
@@ -2619,19 +2619,19 @@
             {
               "name": "PlanNativeGoldRoll",
               "rust": "plan_native_gold_roll",
-              "status": "todo",
+              "status": "ported",
               "go_line": 20
             },
             {
               "name": "composeNativeGoldRoll",
               "rust": "compose_native_gold_roll",
-              "status": "todo",
+              "status": "ported",
               "go_line": 70
             },
             {
               "name": "ComposeNativeGoldCreditFrames",
               "rust": "compose_native_gold_credit_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 95,
               "calls": [
                 "PlanNativeGoldRoll",
@@ -2641,7 +2641,7 @@
             {
               "name": "ComposeNativeGoldDebitFrames",
               "rust": "compose_native_gold_debit_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 119,
               "calls": [
                 "PlanNativeGoldRoll",
@@ -2902,7 +2902,7 @@
             {
               "name": "ComposeNativeLoadSlotsFrame",
               "rust": "compose_native_load_slots_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 37,
               "calls": [
                 "renderNativeLoadText"
@@ -2911,7 +2911,7 @@
             {
               "name": "renderNativeLoadText",
               "rust": "render_native_load_text",
-              "status": "todo",
+              "status": "ported",
               "go_line": 106
             }
           ],
@@ -3072,7 +3072,7 @@
             {
               "name": "NativeTwoColumnWindow",
               "rust": "native_two_column_window",
-              "status": "todo",
+              "status": "ported",
               "go_line": 26
             },
             {
@@ -3096,7 +3096,7 @@
             {
               "name": "renderNativeRosterRows",
               "rust": "render_native_roster_rows_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 74,
               "calls": [
                 "blitNativeClassListText"
@@ -3105,7 +3105,7 @@
             {
               "name": "ComposeNativeRosterFrame",
               "rust": "compose_native_roster_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 118,
               "calls": [
                 "RenderNativeRosterRows"
@@ -3114,7 +3114,7 @@
             {
               "name": "ComposeNativeRosterFrameWithoutNames",
               "rust": "compose_native_roster_frame_without_names",
-              "status": "todo",
+              "status": "ported",
               "go_line": 144,
               "calls": [
                 "RenderNativeRosterRowsWithoutNames"
@@ -3148,13 +3148,13 @@
             {
               "name": "NativeShopEquipmentRecordForUnit",
               "rust": "native_shop_equipment_record_for_unit",
-              "status": "todo",
+              "status": "ported",
               "go_line": 25
             },
             {
               "name": "NativeShopEquipmentCandidateStats",
               "rust": "native_shop_equipment_candidate_stats",
-              "status": "todo",
+              "status": "ported",
               "go_line": 45,
               "calls": [
                 "nativeShopEffectRow",
@@ -3164,7 +3164,7 @@
             {
               "name": "NativeShopEquipmentCurrentStats",
               "rust": "native_shop_equipment_current_stats",
-              "status": "todo",
+              "status": "ported",
               "go_line": 87
             },
             {
@@ -3188,7 +3188,7 @@
             {
               "name": "composeNativeShopEquipmentRecipientFrame",
               "rust": "compose_native_shop_equipment_recipient_frame_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 124,
               "calls": [
                 "blitNativeClassListText",
@@ -3198,19 +3198,19 @@
             {
               "name": "nativeShopComparisonColor",
               "rust": "native_shop_comparison_color",
-              "status": "todo",
+              "status": "ported",
               "go_line": 204
             },
             {
               "name": "nativeShopEffectRow",
               "rust": "native_shop_effect_row",
-              "status": "todo",
+              "status": "ported",
               "go_line": 215
             },
             {
               "name": "nativeShopSignedWord",
               "rust": "native_shop_signed_word",
-              "status": "todo",
+              "status": "ported",
               "go_line": 226
             }
           ],
@@ -3249,7 +3249,7 @@
             {
               "name": "composeNativeShopItemListFrame",
               "rust": "compose_native_shop_item_list_frame_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 43
             }
           ],
@@ -3305,13 +3305,13 @@
             {
               "name": "NativeShopPurchaseTextIndex",
               "rust": "native_shop_purchase_text_index",
-              "status": "todo",
+              "status": "ported",
               "go_line": 36
             },
             {
               "name": "ComposeNativeShopPurchaseMessage",
               "rust": "compose_native_shop_purchase_message",
-              "status": "todo",
+              "status": "ported",
               "go_line": 50,
               "calls": [
                 "NativeShopPurchaseTextIndex",
@@ -3321,7 +3321,7 @@
             {
               "name": "composeNativeShopItemPriceMessage",
               "rust": "compose_native_shop_item_price_message",
-              "status": "todo",
+              "status": "ported",
               "go_line": 80,
               "calls": [
                 "ComposeNativeChurchDialogueOverlayAt",
@@ -3332,7 +3332,7 @@
             {
               "name": "ComposeNativeShopPurchaseInsufficientGold",
               "rust": "compose_native_shop_purchase_insufficient_gold",
-              "status": "todo",
+              "status": "ported",
               "go_line": 142,
               "calls": [
                 "ComposeNativeChurchTextAt",
@@ -3342,7 +3342,7 @@
             {
               "name": "ComposeNativeShopPurchaseRecipientFull",
               "rust": "compose_native_shop_purchase_recipient_full",
-              "status": "todo",
+              "status": "ported",
               "go_line": 171,
               "calls": [
                 "ComposeNativeChurchDialogueOverlayAt",
@@ -3353,7 +3353,7 @@
             {
               "name": "ComposeNativeShopPurchaseConfirmation",
               "rust": "compose_native_shop_purchase_confirmation",
-              "status": "todo",
+              "status": "ported",
               "go_line": 203,
               "calls": [
                 "ComposeNativeConfirmationChoices",
@@ -3385,13 +3385,13 @@
             {
               "name": "PlanNativeShopPurchaseSuccess",
               "rust": "plan_native_shop_purchase_success",
-              "status": "todo",
+              "status": "ported",
               "go_line": 25
             },
             {
               "name": "ComposeNativeShopPurchaseSuccessFrames",
               "rust": "compose_native_shop_purchase_success_frames",
-              "status": "todo",
+              "status": "ported",
               "go_line": 64,
               "calls": [
                 "PlanNativeShopPurchaseSuccess",
@@ -3415,7 +3415,7 @@
             {
               "name": "ComposeNativeShopConsumableRecipientFrame",
               "rust": "compose_native_shop_consumable_recipient_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 13,
               "calls": [
                 "ComposeNativeRosterFrame"
@@ -3523,7 +3523,7 @@
             {
               "name": "nativeFacilityPortraitOffset",
               "rust": "native_facility_portrait_offset_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 30
             },
             {
@@ -3538,7 +3538,7 @@
             {
               "name": "DecodeNativeShopAssets",
               "rust": "decode_native_shop_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 67,
               "calls": [
                 "nativeShopEntries"
@@ -3547,13 +3547,13 @@
             {
               "name": "nativeShopEntries",
               "rust": "native_shop_entries",
-              "status": "todo",
+              "status": "ported",
               "go_line": 164
             },
             {
               "name": "ComposeNativeShopScene",
               "rust": "compose_native_shop_scene",
-              "status": "todo",
+              "status": "ported",
               "go_line": 228,
               "calls": [
                 "ComposeNativeChurchTextAt",
@@ -3563,7 +3563,7 @@
             {
               "name": "ComposeNativeShopSceneWithoutText",
               "rust": "compose_native_shop_scene_without_text",
-              "status": "todo",
+              "status": "ported",
               "go_line": 254,
               "calls": [
                 "ComposeNativeChurchDialogueOverlayAt",
@@ -3573,7 +3573,7 @@
             {
               "name": "ComposeNativeShopBareScene",
               "rust": "compose_native_shop_bare_scene",
-              "status": "todo",
+              "status": "ported",
               "go_line": 300
             }
           ],
@@ -3604,7 +3604,7 @@
             {
               "name": "ComposeNativeShopSellQuestion",
               "rust": "compose_native_shop_sell_question",
-              "status": "todo",
+              "status": "ported",
               "go_line": 14,
               "calls": [
                 "ComposeNativeConfirmationChoices",
@@ -3614,7 +3614,7 @@
             {
               "name": "ComposeNativeShopSellQuestionBase",
               "rust": "compose_native_shop_sell_question_base",
-              "status": "todo",
+              "status": "ported",
               "go_line": 39,
               "calls": [
                 "composeNativeShopItemPriceMessage"
@@ -3623,7 +3623,7 @@
             {
               "name": "ComposeNativeShopSellEmpty",
               "rust": "compose_native_shop_sell_empty",
-              "status": "todo",
+              "status": "ported",
               "go_line": 57,
               "calls": [
                 "ComposeNativeChurchDialogueOverlayAt",
@@ -3662,19 +3662,19 @@
             {
               "name": "ComposeNativeShopServiceOpeningFrame",
               "rust": "compose_native_shop_service_opening_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 13
             },
             {
               "name": "ComposeNativeShopServiceClosingFrame",
               "rust": "compose_native_shop_service_closing_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 40
             },
             {
               "name": "ComposeNativeShopServiceSteadyFrame",
               "rust": "compose_native_shop_service_steady_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 67
             }
           ],
@@ -3720,7 +3720,7 @@
             {
               "name": "ComposeNativeShopTransferMessage",
               "rust": "compose_native_shop_transfer_message",
-              "status": "todo",
+              "status": "ported",
               "go_line": 24,
               "calls": [
                 "ComposeNativeChurchDialogueOverlayAt",
@@ -4065,19 +4065,19 @@
             {
               "name": "NativeSystemInfoCampCounts",
               "rust": "native_system_info_camp_counts",
-              "status": "todo",
+              "status": "ported",
               "go_line": 31
             },
             {
               "name": "blitNativeSystemInfoLine",
               "rust": "blit_native_system_info_line",
-              "status": "todo",
+              "status": "ported",
               "go_line": 49
             },
             {
               "name": "ComposeNativeSystemInfoSurface",
               "rust": "compose_native_system_info_surface",
-              "status": "todo",
+              "status": "ported",
               "go_line": 84,
               "calls": [
                 "blitNativeSystemInfoLine"
@@ -4117,13 +4117,13 @@
             {
               "name": "NativeTownDepartureGeometryFor",
               "rust": "native_town_departure_geometry_for",
-              "status": "todo",
+              "status": "ported",
               "go_line": 14
             },
             {
               "name": "ComposeNativeTownDepartureFrame",
               "rust": "compose_native_town_departure_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 28,
               "calls": [
                 "NativeTownDepartureGeometryFor"
@@ -4265,13 +4265,13 @@
             {
               "name": "NativeTownCursorGeometryFor",
               "rust": "native_town_cursor_geometry_for",
-              "status": "todo",
+              "status": "ported",
               "go_line": 51
             },
             {
               "name": "DecodeNativeTownAssetsArchive",
               "rust": "decode_native_town_assets_archive",
-              "status": "todo",
+              "status": "ported",
               "go_line": 77,
               "calls": [
                 "decodeNativeTownAssets"
@@ -4280,7 +4280,7 @@
             {
               "name": "LoadNativeTownAssets",
               "rust": "load_native_town_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 112,
               "calls": [
                 "readSeparatedIndexed"
@@ -4289,7 +4289,7 @@
             {
               "name": "decodeNativeTownAssets",
               "rust": "decode_native_town_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 159
             },
             {
@@ -4313,7 +4313,7 @@
             {
               "name": "composeNativeTownFrame",
               "rust": "compose_native_town_frame_inner",
-              "status": "todo",
+              "status": "ported",
               "go_line": 218,
               "calls": [
                 "ComposeNativeChurchTextAt"
@@ -4389,7 +4389,7 @@
             {
               "name": "ComposeNativeTransientExpiryFrame",
               "rust": "compose_native_transient_expiry_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 22,
               "calls": [
                 "ComposeNativeChurchTextAt",
@@ -4408,7 +4408,7 @@
             {
               "name": "ComposeNativeDeathRewardMessageFrame",
               "rust": "compose_native_death_reward_message_frame",
-              "status": "todo",
+              "status": "ported",
               "go_line": 63,
               "calls": [
                 "composeNativeChurchWordsAt"
@@ -4476,19 +4476,19 @@
             {
               "name": "readSeparatedIndexed",
               "rust": "read_separated_indexed",
-              "status": "todo",
+              "status": "ported",
               "go_line": 61
             },
             {
               "name": "readSeparatedBinaryMask",
               "rust": "read_separated_binary_mask",
-              "status": "todo",
+              "status": "ported",
               "go_line": 78
             },
             {
               "name": "LoadSeparatedNativeShopAssets",
               "rust": "load_separated_native_shop_assets",
-              "status": "todo",
+              "status": "ported",
               "go_line": 103,
               "calls": [
                 "readSeparatedBinaryMask",
@@ -4545,25 +4545,25 @@
             {
               "name": "LoadShopEligibility",
               "rust": "load_shop_eligibility",
-              "status": "todo",
+              "status": "ported",
               "go_line": 21
             },
             {
               "name": "LoadItemPrices",
               "rust": "load_item_prices",
-              "status": "todo",
+              "status": "ported",
               "go_line": 56
             },
             {
               "name": "CanEquip",
               "rust": "can_equip",
-              "status": "todo",
+              "status": "ported",
               "go_line": 80
             },
             {
               "name": "BuyGood",
               "rust": "buy_good",
-              "status": "todo",
+              "status": "ported",
               "go_line": 93,
               "calls": [
                 "ReserveGood"
@@ -4572,7 +4572,7 @@
             {
               "name": "ReserveGood",
               "rust": "reserve_good",
-              "status": "todo",
+              "status": "ported",
               "go_line": 103
             },
             {
@@ -4584,7 +4584,7 @@
             {
               "name": "SellGood",
               "rust": "sell_good",
-              "status": "todo",
+              "status": "ported",
               "go_line": 129,
               "calls": [
                 "SellSlot"
@@ -4593,13 +4593,13 @@
             {
               "name": "SellSlot",
               "rust": "sell_slot",
-              "status": "todo",
+              "status": "ported",
               "go_line": 146
             },
             {
               "name": "SellNativeSlot",
               "rust": "sell_native_slot",
-              "status": "todo",
+              "status": "ported",
               "go_line": 160,
               "calls": [
                 "RecomputeEquipment"

@@ -31,5 +31,35 @@ pub fn compose_native_shop_transfer_message(
     message: NativeShopTransferMessage,
     name_text_index: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_transfer_message.go:ComposeNativeShopTransferMessage")
+    let (strings, font) = match (strings, font) {
+        (Some(s), Some(f))
+            if source.len() as i64 == NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT
+                && dialogue_cells.len() > 17
+                && (message.0 as usize) < NATIVE_SHOP_TRANSFER_TEXT.len() =>
+        {
+            (s, f)
+        }
+        _ => return Err(campaign_err!("campaign: native shop transfer message state is invalid")),
+    };
+    let mut frame = compose_native_church_dialogue_overlay_at(
+        source,
+        dialogue_cells,
+        portrait,
+        native_facility_portrait_offset_inner(portrait_id),
+    )?;
+    let text = NATIVE_SHOP_TRANSFER_TEXT[message.0 as usize];
+    if message == NATIVE_SHOP_TRANSFER_EMPTY_SOURCE {
+        if name_text_index < 0 {
+            return Err(campaign_err!("campaign: native shop transfer source name is invalid"));
+        }
+        return compose_native_church_text_with_name_at(
+            &mut frame,
+            strings,
+            font,
+            text,
+            name_text_index,
+            NATIVE_SHOP_TEXT_OFFSET,
+        );
+    }
+    compose_native_church_text_at(&mut frame, strings, font, text, NATIVE_SHOP_TEXT_OFFSET)
 }

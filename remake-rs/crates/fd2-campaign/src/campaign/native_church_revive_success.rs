@@ -25,7 +25,19 @@ pub struct NativeChurchReviveSuccessPlan {
 
 /// Go：`native_church_revive_success.go:27`，`func PlanNativeChurchReviveSuccess() NativeChurchReviveSuccessPlan`
 pub fn plan_native_church_revive_success() -> NativeChurchReviveSuccessPlan {
-    todo!("campaign/native_church_revive_success.go:PlanNativeChurchReviveSuccess")
+    let rise: Vec<i64> = (0..64).step_by(2).collect();
+    let fall: Vec<i64> = (0..=62).rev().step_by(2).collect();
+    NativeChurchReviveSuccessPlan {
+        start_music_track: 17,
+        return_music_track: 11,
+        music_loop_count: 1,
+        animation_delay_bios_ticks: 2,
+        rise_palette_deltas: rise,
+        palette_delay_ms: 4,
+        rise_latch_bios_ticks: 10,
+        fall_palette_deltas: fall,
+        fall_latch_bios_ticks: 5,
+    }
 }
 
 /// ComposeNativeChurchReviveSuccessFrames reproduces the nine sequential
@@ -41,5 +53,19 @@ pub fn compose_native_church_revive_success_frames(
     effect_frames: &[fdother::Frame],
     portrait: &dato::Frame,
 ) -> Result<(Vec<Vec<u8>>, Vec<u8>)> {
-    todo!("campaign/native_church_revive_success.go:ComposeNativeChurchReviveSuccessFrames")
+    if background.len() != 320 * 200 || effect_frames.len() != 9 {
+        return Err(campaign_err!("campaign: native revive success assets are invalid"));
+    }
+    let mut staged = background.to_vec();
+    let mut animation = Vec::with_capacity(effect_frames.len());
+    for effect in effect_frames {
+        effect.blit_at(&mut staged, 320, NATIVE_CHURCH_REVIVE_EFFECT_OFFSET, -1)?;
+        animation.push(staged.clone());
+    }
+    let mut last = staged;
+    portrait.blit_at_offset(&mut last, 320, 4 * 320 + 118)?;
+    Ok((animation, last))
 }
+
+#[cfg(test)]
+pub(crate) mod native_church_revive_success_test;

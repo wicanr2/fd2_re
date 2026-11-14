@@ -23,7 +23,22 @@ pub struct NativeRosterRow {
 /// Go：`native_roster_list.go:26`，`func NativeTwoColumnWindow(count, selected, start int) (nextStart, visible int)`
 /// Go 具名回傳值依序為：nextStart、visible。
 pub fn native_two_column_window(count: i64, selected: i64, start: i64) -> (i64, i64) {
-    todo!("campaign/native_roster_list.go:NativeTwoColumnWindow")
+    if count <= 0 || selected < 0 || selected >= count || start < 0 || start % 2 != 0 {
+        return (0, 0);
+    }
+    let mut max_start = (count - NATIVE_ROSTER_VISIBLE).max(0);
+    if max_start % 2 != 0 {
+        max_start += 1;
+    }
+    let mut start = start.min(max_start);
+    while selected < start && start >= 2 {
+        start -= 2;
+    }
+    while selected >= start + NATIVE_ROSTER_VISIBLE && start < max_start {
+        start += 2;
+    }
+    let visible = (count - start).min(NATIVE_ROSTER_VISIBLE);
+    (start, visible)
 }
 
 /// RenderNativeRosterRows reproduces 0x2ea90's two-column, six-entry draw.
@@ -56,7 +71,40 @@ pub(crate) fn render_native_roster_rows_inner(
     font: Option<&fdtxt::Font>,
     render_names: bool,
 ) -> Result<()> {
-    todo!("campaign/native_roster_list.go:renderNativeRosterRows")
+    if dst.len() as i64 != NATIVE_CLASS_LIST_STRIDE * NATIVE_CLASS_LIST_HEIGHT {
+        return Err(campaign_err!("campaign: native roster requires a 320x200 indexed frame"));
+    }
+    if rows.is_empty() || rows.len() as i64 > NATIVE_ROSTER_VISIBLE || selected < 0 || selected >= rows.len() as i64 {
+        return Err(campaign_err!("campaign: invalid native roster rows or selection"));
+    }
+    let text = match (strings, font) {
+        (Some(s), Some(f)) => Some((s, f)),
+        _ if render_names => return Err(campaign_err!("campaign: native roster text assets are unavailable")),
+        _ => None,
+    };
+    let mut staged = dst.to_vec();
+    for (i, row) in rows.iter().enumerate() {
+        let i = i as i64;
+        let (column, line) = (i % 2, i / 2);
+        row.sprite
+            .blit_at(&mut staged, NATIVE_CLASS_LIST_STRIDE, 14 + 132 * column, 117 + 26 * line)
+            .map_err(|e| CampaignError::from(e).wrap(format!("campaign: native roster row {i} sprite: ")))?;
+        let foreground: u8 = if i == selected { 201 } else { 205 };
+        if render_names && let Some((strings, font)) = text {
+            blit_native_class_list_text(
+                &mut staged,
+                strings,
+                font,
+                40 + 132 * column,
+                121 + 26 * line,
+                row.name_text_index,
+                foreground,
+            )
+            .map_err(|e| e.wrap(format!("campaign: native roster row {i} name: ")))?;
+        }
+    }
+    dst.copy_from_slice(&staged);
+    Ok(())
 }
 
 /// ComposeNativeRosterFrame applies FDOTHER#14 entry16 and then 0x2ea90.
@@ -70,7 +118,9 @@ pub fn compose_native_roster_frame(
     strings: Option<&fdtxt::Strings>,
     font: Option<&fdtxt::Font>,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_roster_list.go:ComposeNativeRosterFrame")
+    let mut frame = native_roster_panel_frame(background, panel)?;
+    render_native_roster_rows(&mut frame, rows, selected, strings, font)?;
+    Ok(frame)
 }
 
 /// Go：`native_roster_list.go:144`，`func ComposeNativeRosterFrameWithoutNames( background []byte, panel fdother.LMI1Entry, rows []NativeRosterRow, selected int, ) ([]byte, error)`
@@ -80,5 +130,27 @@ pub fn compose_native_roster_frame_without_names(
     rows: &[NativeRosterRow],
     selected: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_roster_list.go:ComposeNativeRosterFrameWithoutNames")
+    let mut frame = native_roster_panel_frame(background, panel)?;
+    render_native_roster_rows_without_names(&mut frame, rows, selected)?;
+    Ok(frame)
 }
+
+/// `ComposeNativeRosterFrame` 與 `ComposeNativeRosterFrameWithoutNames` 共用的前半段
+/// （`native_roster_list.go:121`、`:146` 各寫一份）：檢查背景與面板尺寸，複製背景後貼 FDOTHER#14
+/// entry16。
+fn native_roster_panel_frame(background: &[u8], panel: &fdother::LMI1Entry) -> Result<Vec<u8>> {
+    if background.len() as i64 != NATIVE_CLASS_LIST_STRIDE * NATIVE_CLASS_LIST_HEIGHT {
+        return Err(campaign_err!("campaign: native roster background requires a 320x200 indexed frame"));
+    }
+    if panel.width != NATIVE_CLASS_PANEL_W || panel.height != NATIVE_CLASS_PANEL_H {
+        return Err(campaign_err!("campaign: native roster panel is {}x{}, want 310x86", panel.width, panel.height));
+    }
+    let mut frame = background.to_vec();
+    panel
+        .blit_opaque_at(&mut frame, NATIVE_CLASS_LIST_STRIDE, NATIVE_CLASS_PANEL_X, NATIVE_CLASS_PANEL_Y, false)
+        .map_err(|e| CampaignError::from(e).wrap("campaign: native roster panel: "))?;
+    Ok(frame)
+}
+
+#[cfg(test)]
+pub(crate) mod native_roster_list_test;

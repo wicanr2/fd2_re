@@ -417,3 +417,69 @@ Go 端重跑兩次位元組相同（腳本以 `cmp` 檢查）。竄改反向檢�
 - 共用檔沒有改。模組根 `editorcanonical.rs` 的 `GoRawMessage` 仍是 `serde_json::Value` 別名（`compile.rs` 另用 `RawValue`）；
   整合時若要統一成 `Box<RawValue>`，`bundle.rs` 的 `Summary` 要一併拿掉 `PartialEq`／`Eq`（`RawValue` 沒有實作）。三個模組根的骨架 `allow(unused, …)` 照計畫在整合時移除。
 - 延後測試：C 組 `native_chapter_slot_restore_test.go` 兩條要用 `campaign.Load` 讀戰役圖，A 組已可提供。
+
+## campaign B 組完成紀錄（2026-11-14）
+
+B 組 26 個 Go 檔（`church`、`class_change_table`、`equipment`、`shop`、`native_church_*`、`native_class_*`、
+`native_gold_debit`、`native_load_slots`、`native_roster_list`、`native_shop_*`、`native_system_info`、
+`native_town_*`、`native_transient_expiry`、`separated_shop_assets`）的 157 個函式全部移植（骨架的 132 個 `todo!()`
+補上本體，另 25 個骨架時已直接移植），PORTING.json 對應項目改為 `ported`。B 組不依賴其他組，沒有 ignore 的測試。
+
+### 簽名與寫法的調整
+
+- `ReviveUnit` 改回傳 `(gold, cost, Result<()>)`：Go 失敗時仍回傳有意義的 `cost`（金幣不足時是應付金額），
+  `Result<(i64, i64)>` 會丟掉它。其他 Go 失敗時另回傳的值都可由輸入推得（`BuyGood`／`SellGood`／`SellSlot`／
+  `SellNativeSlot` 回原 gold、`ReserveGood` 回 -1、`ComposeNativeGold*Frames` 回 oldGold），維持 `Result`，
+  測試與黃金依 Go 規則補回。
+- `rollClassChangeRange` 的 rng 改收 `&mut Option<&mut dyn GoRand>`：同一個 rng 要連續借給五次擲骰。
+- Go 就地改寫 `frame` 再回傳同一切片的函式（`ComposeNativeChurchTextAt` 等）：Rust 改寫呼叫端的 `&mut [u8]`，
+  回傳複本。`ComposeNativeShopPurchaseInsufficientGold` 照 Go 改寫呼叫端的 `postChoiceClose`。
+- `ComposeNativeTransientExpiryFrame` 的 strings／font 收 `Option`：Go 對 nil 接收者回 `fdtxt: string index N out of
+  range` 與 `fdtxt: invalid native glyph blit`，Rust 直接回同樣的 `FdtxtError`（Go 的字型錯誤要畫到第一個字才出現；
+  FDTXT 481..486 都不是空字串，結果相同）。
+- `NativeSystemInfoCampCounts` 收 `&[Unit]`，Go 的 nil 元素分支不移植。
+- Go 在兩、三個函式各寫一份的相同迴圈合併成私有輔助函式（註解寫明 Go 行號）：`native_class_list_slice_frame`、
+  `native_roster_panel_frame`、`blit_native_shop_decoration_and_gold`、`native_shop_service_frame`、
+  `native_confirmation_spread_frame`，以及 FFFC／十進位展開的 `expand_fffc`、`go_decimal_words`。
+- serde：`ReviveFeeTable`、`ClassChangeCurrent`／`ClassChangeTarget`（也 Serialize，omitempty 用 `go_is_zero`）、
+  `ShopItemRow`／`ShopEquipRow`、分離素材的三個 JSON 文件型別加 derive；Go 匿名 wire 結構在函式內定義。成長表的
+  `AP` 等沒有標籤，Rust 認檔案實際的小寫鍵與 Go 欄位名原文兩種。
+- PNG（決定 1）：`separated_shop_assets.rs` 的 `decode_separated_png` 以 `png =0.18.1` 解碼，色彩型態 3 對應 Go
+  `*image.Paletted`、灰階 1～8 位元對應 `*image.Gray`（低位元深度依 Go 放大成 0～255），其他型態拒收。
+- Go 的 map 順序：`church.go:257` `ClassChangeCandidates` 附加不在 order 的 id 時，Rust 依遞增順序（註解寫明）。
+  單元測試的期望值只有一個候選，不受影響。
+
+### 測試
+
+- 19 個 Go 測試檔共 94 個測試函式逐條移植（`separated_town_assets_test.go` 歸 `native_town_scene`），期望值不改；
+  `tools/rust_campaign_test.sh`（`FD2_REQUIRE_ORIGINAL=1`、原版與素材包都掛上）94 個全部通過，沒有 ignore、
+  沒有略過。
+- `fd2_rules::battle::Unit` 有三個私有欄位，外部 crate 不能用 `..Default::default()`；測試以
+  `church_test.rs` 的 `unit!` 巨集（先取零值再逐欄指定）表達 Go 的 `battle.Unit{...}` 字面值。
+- 共用的測試輔助（`native_class_list_strings`／`font`、原版教會素材載入等）放在各自測試模組，以 `pub(crate) mod`
+  供其他 B 組測試引用。
+
+### 黃金差分 campaign-b
+
+- `remake/cmd/fd2-golden-campaign-b`、`tests/golden_campaign_b.rs`、`tools/rust_golden_campaign_b.sh`。
+- 真實輸入：原版 FLAME2 四檔、`remake/assets/data` 與 `docs/data/exe_tables` 九個表（各記大小與 SHA-256），分離
+  素材包 `fonts`、`shop`、`sprites/fdicon`、`surfaces`、`text`、`ui` 六個目錄（記排序後的檔案數與清單雜湊）。
+  Rust 端先核對全部雜湊。
+- 2573 個案例：教會、商店（分離包與原版封存兩種來源、四個資源）、城鎮（兩種來源 × 3 變體 × 6 選項 × 4 脈衝、
+  離城縮放）、職業清單與名冊、確認框、整備與戰鬥系統問句／回覆、讀檔欄、系統資訊、金額捲動等畫面（每格畫面
+  SHA-256），以及游標視窗、表格載入、`BuyGood`／`ReserveGood`／`SellGood`／`SellSlot`／`SellNativeSlot`／
+  `EquipItem`／`EquipNativeCompactSlot`／裝備重算／`ReviveUnit`／`ApplyClassChange`（`GoMathRand` 種子另記）／
+  `ClassChangeCandidates`／裝備比較等規則（PCG 固定種子產生單位）。1075 個案例是 Go 回錯誤的路徑，錯誤文字逐字比對。
+- 2026-11-14 的黃金檔 SHA-256 `b4fc7f005a72efae3c69a96c1d443792dd36c0fe91e4d91753d9bb9fbcc20759`（2,979,426 位元組）；
+  Go 端重跑三次 SHA-256 相同，Rust 端 2573 案例全部相同。竄改反向檢查：改一格城鎮畫面的 SHA-256、改一個購買後
+  單位的 HP，Rust 端都在該案例失敗。
+- `KNOWN_DIFFERENCES`：`ClassChangeCandidates` 不在 order 的 id 的附加順序（order 不齊全的 5 個案例改比「order 部分
+  的前綴＋集合」）、JSON 欄位名大小寫、標準函式庫錯誤文字（只比接受或拒收）、nil 切片元素。
+  `NORMALIZATIONS`：null 與空陣列／空字串相同、數字只比數值、失敗時的附帶回傳值依 Go 規則重建。
+
+### fd2-rules／fd2-formats 缺口（沒有改那兩個 crate）
+
+| 需要 | 現況 | 暫時做法 |
+|---|---|---|
+| 測試以結構字面值建 `battle.Unit` | `Unit` 的 `native_constructor_pending`、`native_death_flag_before`、`native_death_flag_valid` 是私有欄位，外部 crate 不能用 `..Default::default()` | 測試用 `unit!` 巨集逐欄指定；正式程式不受影響 |
+| Go `image.Rectangle` 的 `In`／`Overlaps` | `go_image.rs` 只有欄位（共用檔，B 組不改） | 只有測試用到，在 `native_town_scene_test.rs` 寫兩個區域函式 |

@@ -527,7 +527,6 @@ fn native_dialogue_layout_preserves_multi_rune_original_glyph_tokens() {
 
 /// Go：`TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets`
 #[test]
-#[ignore = "等 B 合併"]
 fn compose_native_story_dialogue_page_uses_original_indexed_assets() {
     let Some(fdother_path) = input("FD2_FLAME2_DIR", "FDOTHER.DAT") else { return };
     let Some(dato_path) = input("FD2_FLAME2_DIR", "DATO.DAT") else { return };

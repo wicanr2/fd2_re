@@ -21,7 +21,21 @@ pub fn compose_native_transient_expiry_frame(
     font: Option<&fdtxt::Font>,
     counter_index: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_transient_expiry.go:ComposeNativeTransientExpiryFrame")
+    if !(0..NATIVE_TRANSIENT_EXPIRY_TEXT_COUNT).contains(&counter_index) {
+        return Err(campaign_err!("campaign: native transient counter index is invalid"));
+    }
+    let mut frame = compose_native_transient_expiry_dialogue(background, dialogue_cells, portrait)?;
+    let text_index = NATIVE_TRANSIENT_EXPIRY_TEXT_BASE + counter_index;
+    // Go 以 nil 接收者呼叫 `Strings.Words`／`Font.BlitNativeGlyph` 時回傳這兩個 fdtxt 錯誤。Go 的
+    // 字型錯誤要畫到第一個字才出現；FDTXT 481..486 都不是空字串，結果相同。
+    let Some(strings) = strings else {
+        return Err(fdtxt::FdtxtError::StringIndex(text_index).into());
+    };
+    let words = strings.words(text_index)?;
+    let Some(font) = font else {
+        return Err(fdtxt::FdtxtError::InvalidNativeBlit.into());
+    };
+    compose_native_church_words_at(&mut frame, font, &words, NATIVE_TRANSIENT_EXPIRY_TEXT_OFFSET)
 }
 
 /// ComposeNativeTransientExpiryDialogue retains the original lower-left DATO
@@ -60,5 +74,38 @@ pub fn compose_native_death_reward_message_frame(
     kind: i64,
     value: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_transient_expiry.go:ComposeNativeDeathRewardMessageFrame")
+    let (Some(strings), Some(font)) = (strings, font) else {
+        return Err(campaign_err!("campaign: native death reward message assets/state are invalid"));
+    };
+    if dialogue.len() != 320 * 200 || value < 0 {
+        return Err(campaign_err!("campaign: native death reward message assets/state are invalid"));
+    }
+    let (words, dynamic): (Vec<u16>, Vec<u16>) = match kind {
+        0 => {
+            if value > 0xff {
+                return Err(campaign_err!("campaign: native death reward item byte is out of range"));
+            }
+            let words = strings.words(NATIVE_DEATH_REWARD_ITEM_TEXT_INDEX)?;
+            let dynamic = strings.words(value + NATIVE_DEATH_REWARD_ITEM_NAME_BASE)?;
+            (words, dynamic)
+        }
+        1 => {
+            let words = strings.words(NATIVE_DEATH_REWARD_GOLD_TEXT_INDEX)?;
+            let dynamic = value.to_string().bytes().map(|d| (d - b'0') as u16).collect();
+            (words, dynamic)
+        }
+        _ => return Err(campaign_err!("campaign: native death reward kind {kind} has no message")),
+    };
+    let mut expanded = Vec::with_capacity(words.len() + dynamic.len());
+    for &word in &words {
+        match word {
+            0xfffc | 0xfffa => expanded.extend_from_slice(&dynamic),
+            _ => expanded.push(word),
+        }
+    }
+    let mut frame = dialogue.to_vec();
+    compose_native_church_words_at(&mut frame, font, &expanded, NATIVE_DEATH_REWARD_MESSAGE_TEXT_OFFS)
 }
+
+#[cfg(test)]
+pub(crate) mod native_transient_expiry_test;

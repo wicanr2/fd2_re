@@ -31,7 +31,13 @@ pub(crate) static NATIVE_SHOP_RECIPIENT_FULL_TEXT: [i64; 6] = [1, 506, 1, 506, 5
 
 /// Go：`native_shop_purchase_message.go:36`，`func NativeShopPurchaseTextIndex( message NativeShopPurchaseMessage, hubVariant int, ) (int, bool)`
 pub fn native_shop_purchase_text_index(message: NativeShopPurchaseMessage, hub_variant: i64) -> (i64, bool) {
-    todo!("campaign/native_shop_purchase_message.go:NativeShopPurchaseTextIndex")
+    if message > NATIVE_SHOP_PURCHASE_EQUIP_QUESTION
+        || hub_variant < 0
+        || hub_variant >= NATIVE_SHOP_PURCHASE_TEXT[0].len() as i64
+    {
+        return (0, false);
+    }
+    (NATIVE_SHOP_PURCHASE_TEXT[message.0 as usize][hub_variant as usize], true)
 }
 
 /// ComposeNativeShopPurchaseMessage reproduces the stable target after
@@ -51,7 +57,33 @@ pub fn compose_native_shop_purchase_message(
     item_id: i64,
     price: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_purchase_message.go:ComposeNativeShopPurchaseMessage")
+    if source.len() as i64 != NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT
+        || dialogue_cells.len() <= 17
+        || strings.is_none()
+        || font.is_none()
+        || item_id < 0
+        || price < 0
+    {
+        return Err(campaign_err!("campaign: native shop purchase message state is invalid"));
+    }
+    if message == NATIVE_SHOP_PURCHASE_INSUFFICIENT_GOLD {
+        return Err(campaign_err!("campaign: insufficient-gold feedback requires an open purchase confirmation"));
+    }
+    let (text_index, ok) = native_shop_purchase_text_index(message, hub_variant);
+    if !ok {
+        return Err(campaign_err!("campaign: native shop purchase message variant is invalid"));
+    }
+    compose_native_shop_item_price_message(
+        source,
+        dialogue_cells,
+        portrait,
+        portrait_id,
+        strings,
+        font,
+        text_index,
+        item_id,
+        price,
+    )
 }
 
 /// Go：`native_shop_purchase_message.go:80`，`func composeNativeShopItemPriceMessage( source []byte, dialogueCells []fdother.RawCell, portrait dato.Frame, portraitID int, strings *fdtxt.Strings, font *fdtxt.Font, textIndex, itemID, price int, ) ([]byte, error)`
@@ -66,7 +98,45 @@ pub(crate) fn compose_native_shop_item_price_message(
     item_id: i64,
     price: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_purchase_message.go:composeNativeShopItemPriceMessage")
+    let (strings, font) = match (strings, font) {
+        (Some(s), Some(f))
+            if source.len() as i64 == NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT
+                && dialogue_cells.len() > 17
+                && text_index >= 0
+                && item_id >= 0
+                && price >= 0 =>
+        {
+            (s, f)
+        }
+        _ => return Err(campaign_err!("campaign: native shop item/price message state is invalid")),
+    };
+    let mut frame = compose_native_church_dialogue_overlay_at(
+        source,
+        dialogue_cells,
+        portrait,
+        native_facility_portrait_offset_inner(portrait_id),
+    )?;
+    let words = strings.words(text_index)?;
+    let name = strings.words(item_id + 181)?;
+    let price_words = go_decimal_words(price);
+    let mut expanded = Vec::with_capacity(words.len() + name.len() + price_words.len());
+    for &word in &words {
+        match word {
+            0xfffc => expanded.extend_from_slice(&name),
+            0xfffa => expanded.extend_from_slice(&price_words),
+            0xfffe => expanded.push(word),
+            _ => {
+                if word >= fdtxt::CONTROL_MIN {
+                    return Err(campaign_err!(
+                        "campaign: unsupported shop purchase control {}",
+                        battle::go_sharp_x(word as i64)
+                    ));
+                }
+                expanded.push(word);
+            }
+        }
+    }
+    compose_native_church_words_at(&mut frame, font, &expanded, NATIVE_SHOP_TEXT_OFFSET)
 }
 
 /// ComposeNativeShopPurchaseInsufficientGold reproduces the 0x2f2d3 branch:
@@ -81,7 +151,16 @@ pub fn compose_native_shop_purchase_insufficient_gold(
     font: Option<&fdtxt::Font>,
     hub_variant: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_purchase_message.go:ComposeNativeShopPurchaseInsufficientGold")
+    let (strings, font) = match (strings, font) {
+        (Some(s), Some(f)) if post_choice_close.len() as i64 == NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT => (s, f),
+        _ => return Err(campaign_err!("campaign: native shop insufficient-gold state is invalid")),
+    };
+    let (text_index, ok) = native_shop_purchase_text_index(NATIVE_SHOP_PURCHASE_INSUFFICIENT_GOLD, hub_variant);
+    if !ok {
+        return Err(campaign_err!("campaign: native shop insufficient-gold variant is invalid"));
+    }
+    // Go 就地改寫呼叫端的 postChoiceClose 後回傳它；Rust 同樣改寫並回傳複本。
+    compose_native_church_text_at(post_choice_close, strings, font, text_index, 157 * NATIVE_SHOP_WIDTH + 12)
 }
 
 /// ComposeNativeShopPurchaseRecipientFull reproduces the 0x2f36d branch:
@@ -100,7 +179,32 @@ pub fn compose_native_shop_purchase_recipient_full(
     hub_variant: i64,
     recipient_name_text_index: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_purchase_message.go:ComposeNativeShopPurchaseRecipientFull")
+    let (strings, font) = match (strings, font) {
+        (Some(s), Some(f))
+            if source.len() as i64 == NATIVE_SHOP_WIDTH * NATIVE_SHOP_HEIGHT
+                && dialogue_cells.len() > 17
+                && hub_variant >= 0
+                && hub_variant < NATIVE_SHOP_RECIPIENT_FULL_TEXT.len() as i64
+                && recipient_name_text_index >= 0 =>
+        {
+            (s, f)
+        }
+        _ => return Err(campaign_err!("campaign: native shop recipient-full state is invalid")),
+    };
+    let mut frame = compose_native_church_dialogue_overlay_at(
+        source,
+        dialogue_cells,
+        portrait,
+        native_facility_portrait_offset_inner(portrait_id),
+    )?;
+    compose_native_church_text_with_name_at(
+        &mut frame,
+        strings,
+        font,
+        NATIVE_SHOP_RECIPIENT_FULL_TEXT[hub_variant as usize],
+        recipient_name_text_index,
+        NATIVE_SHOP_TEXT_OFFSET,
+    )
 }
 
 /// Go：`native_shop_purchase_message.go:203`，`func ComposeNativeShopPurchaseConfirmation( source []byte, dialogueCells []fdother.RawCell, portrait dato.Frame, portraitID int, strings *fdtxt.Strings, font *fdtxt.Font, choices []fdother.RawCell, message NativeShopPurchaseMessage, hubVariant, itemID, price, selected, pulse int, ) ([]byte, error)`
@@ -119,5 +223,20 @@ pub fn compose_native_shop_purchase_confirmation(
     selected: i64,
     pulse: i64,
 ) -> Result<Vec<u8>> {
-    todo!("campaign/native_shop_purchase_message.go:ComposeNativeShopPurchaseConfirmation")
+    if message != NATIVE_SHOP_PURCHASE_QUESTION && message != NATIVE_SHOP_PURCHASE_EQUIP_QUESTION {
+        return Err(campaign_err!("campaign: native shop confirmation message has no yes/no lifecycle"));
+    }
+    let question = compose_native_shop_purchase_message(
+        source,
+        dialogue_cells,
+        portrait,
+        portrait_id,
+        strings,
+        font,
+        message,
+        hub_variant,
+        item_id,
+        price,
+    )?;
+    compose_native_confirmation_choices(&question, choices, selected, pulse)
 }
