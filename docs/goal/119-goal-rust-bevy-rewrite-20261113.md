@@ -233,3 +233,22 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 刻意不照做：Go 解 JSON 時欄位名不分大小寫與重複鍵；Go map 迭代順序決定的「多項不合法時先報哪一項」與 `ClassChangeCandidates` 不在 order 裡的 id 的附加順序（黃金改比集合）；`%#v`、`%v` 印指標等診斷文字。各組清單在各黃金測試的 `KNOWN_DIFFERENCES`。
 - 只證明 Rust 與凍結 Go 版一致，沒有新增原版對拍；`58` 的證據分層沒有變動。
 
+### 2026-11-15 R4 完成：遊戲狀態機
+
+`fd2-game` 已涵蓋第一章受控流程（標題、開場劇情、第一章戰鬥、城鎮與存讀檔）執行到的 `cmd/fd2` 函式。做法依 [120](120-goal-rust-r4-game-state-split-20261114.md)：階段 0 以第一章重播的覆蓋率圈出 565 個函式；階段 1 由產生器建立 186 個模組的骨架；階段 2 分六組、三個波次平行移植；階段 3 定義呈現回報介面，並把 Go 的章重播測試移植成無畫面驅動端。分組與各組紀錄在 `remake-rs/crates/fd2-game/PORTING.md`。
+
+| 項目 | 結果 |
+|---|---|
+| 移植 | 骨架範圍 565 個函式移植 553 個，剩下 2 個純繪圖（R5）與 10 個 HD 本體（R6）；另移植 78 個原標 R8 的小函式 |
+| 第一章檢查點 | Rust 重播 40 個檢查點與 Go 黃金逐位元組相同，SHA-256 `1c846f57…`；子代理 worktree 三次、整合後主 checkout 一次，結果相同 |
+| 存檔 | 流程結束時的 `FD2.SAV` 逐位元組相同（`f3942ff2…`）；`hotel-save.json` 只在名冊單位的 `fd2-rules` serde 子樹不同，以 F 組 `NORMALIZATIONS` 比對相同 |
+| 讀 Go 版存檔 | 存讀檔黃金 349 個案例（`dab44975…`），含 7 份 Go 版實際寫出的存檔與 2 份設定檔 |
+| 原版收據層 | `verify_chapter_parity.py` 以收據同一套政策判 Rust 與 Go 輸出，兩份都是 behavior、nodes、transaction 通過，保存為 `accepted_disclosed_difference`，結論相同 |
+
+- 完成條件「第一章受控流程的狀態軌跡與 Go 黃金軌跡相同；能讀 Go 版的存檔」：依上表成立。比對入口 `tools/rust_parity_ch01.sh`，竄改檢查點的單位 HP 或亂數字組時比對失敗。
+- 時間與輸入：Go 讀牆鐘的地方改讀虛擬時鐘，每個邏輯幀前進固定步長；輸入只來自 `TickInput`。
+- 呈現回報：`Game::acknowledge_present` 做 Go `Draw` 裡改流程狀態的部分，不畫像素；外殼每畫完一幀呼叫一次，無畫面驅動端在 Go 呼叫 `Draw` 的地方呼叫。第一章用到的分支已移植，其餘分支停在 R5／R6／R8 的 `todo!`。
+- `tools/rust_game_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 310 項通過，4 項 ignore：存讀檔黃金 2 項與章重播 1 項由各自的腳本執行，1 項停在第一章不會走到的 R8 分支。clippy `-D warnings` 乾淨，`Cargo.lock` 沒有新套件。
+- 斷行用的 Unicode Script 表照 Go 1.22.12 放在 `go_unicode`，是第四項具名例外。
+- 刻意不照做與尚待處理：`hotel-save.json` 的 `float64` 整數值與 nil 切片要逐位元組相同得改 `fd2-rules` 的 serde；crate 層的未使用警告豁免保留到 R5 接上正式入口（拿掉後 882 則，多數是 R8 範圍的函式）；第一章沒有執行到的流程留給 R8。
+- 只證明 Rust 與凍結 Go 版一致；原版收據層沿用 2026-10-17 的原版輸出，沒有新增原版對拍，`58` 的證據分層沒有變動。

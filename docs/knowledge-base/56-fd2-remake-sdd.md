@@ -739,7 +739,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | 原版格式解碼 | `fd2-formats` | `fdsave`、`fdicon`、`afm`、`fdtxt`、`fdother`、`dato`、`figani` | R1 已完成，與 Go 黃金資料一致 |
 | 戰鬥規則、目標、AI | `fd2-rules` | `internal/battle` | R2 已完成，同種子 AI 戰鬥逐步重播與 Go 一致 |
 | 戰役、內容與戰鬥演出 | `fd2-campaign` | `campaign`、`ending`、`editorcanonical`、`localization`、`musiccatalog`、`indexedmap`、`battlepresent` | R3 已完成，讀入全部劇本與語系與 Go 黃金資料一致 |
-| 遊戲狀態機 | `fd2-game` | `cmd/fd2` 的場景流程 | R4 未開始 |
+| 遊戲狀態機 | `fd2-game` | `cmd/fd2` 的場景流程 | R4 已完成，第一章受控流程的 40 個檢查點與 Go 黃金逐位元組相同 |
 | 畫面、輸入、音訊 | `fd2-app`（Bevy） | Ebiten 呈現層 | R0 可行性已驗，R5 未開始 |
 
 Rust 版目前只證明與凍結 Go 版一致，沒有新增原版對拍；E 級證據仍以 Go 版與 dosgolem 收據為準，R8 切換前不得宣稱 Rust 版可玩。

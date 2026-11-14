@@ -150,6 +150,20 @@ Go 的 `cmd/fd2` 是 `package main`，別的程式無法 import，所以 Go 側�
 
 組間呼叫有循環，沒有一組完全獨立；同一波平行移植，跨組的測試照 R3 標 `ignore` 等待。原本預估的「敵方回合」只有 13 個函式，併入 C。
 
+## 階段 3 結果（2026-11-15）
+
+提交 `927f38a4`。逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R4 階段 3」。
+
+| 項目 | 結果 |
+|---|---|
+| 呈現回報 | `src/game/present.rs` 的 `Game::acknowledge_present`：Go `Draw` 開頭的重設、結尾的白閃 defer，加 12 個分支（含第一章執行到的調色盤斜坡、END 回收、攻擊演出）；其餘 26 個分支停在 `todo!`（R5 3、R6 9、R8 14） |
+| 驅動端 | Go 章重播測試的 6 個檔移植成 crate 內測試，64 個函式；第一章以外的動作與其他章停在 `todo!`（R5 2、R8 14） |
+| 檢查點 | 40 筆與 Go 黃金逐位元組相同，SHA-256 `1c846f57…` |
+| 存檔 | `FD2.SAV` 逐位元組相同；`hotel-save.json` 只在 `fd2-rules` serde 子樹不同（整數值 `float64` 寫成 `0.0`、nil 切片寫成 `[]`），套 F 組 `NORMALIZATIONS` 相同 |
+| 原版收據層 | `verify_chapter_parity.py` 判 Rust 與 Go 輸出的結論相同 |
+
+第一次完整重播就與 Go 黃金相同；整合時只修了一處共用型別：`Game::growth_roll_observer` 改成與戰場狀態的觀察者同型，照 Go `main.go:4087` 直接交給 `st`。
+
 ## 其他章的流程（使用者 2026-11-14 定案）
 
 第一章沒有執行到的流程程式（其他章的處理器、結局等）放進 R8。R8 每一章先以該章重播的覆蓋率補移植缺少的函式，再跑該章對拍。R4 的範圍表裡「第一章沒有執行到的流程」一列依此處理。
