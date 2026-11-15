@@ -82,6 +82,9 @@ type MapData struct {
 type Game struct {
 	balance   *battle.BalanceOptions
 	balanceUI balanceEditor
+	controls  controlsPanel // F12 按鍵設定面板
+	input     *playerInput  // 輸入對應層；nil 時鍵盤直讀（測試與工具）
+	pointer   pointerTick   // 本次 Update 的滑鼠指向
 
 	m                            *MapData
 	nativeMapAssets              *nativeMapAssets             // all original map HUD resources, nil on any missing/malformed asset
@@ -5048,7 +5051,7 @@ func (g *Game) campInput() bool {
 	if g.camp == nil {
 		return false
 	}
-	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
+	enter := keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace)
 	n := g.camp.Node()
 	if n == nil {
 		return true // game over:鎖定
@@ -5057,12 +5060,12 @@ func (g *Game) campInput() bool {
 	case "story":
 		return g.handleNativeStoryInput(n, nativeStoryInput{
 			enter:  enter,
-			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			escape: keyJustPressed(ebiten.KeyEscape),
 		})
 	case "cutscene":
 		return g.handleNativeStoryInput(n, nativeStoryInput{
 			enter:  enter,
-			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			escape: keyJustPressed(ebiten.KeyEscape),
 		})
 	case "choice", "town":
 		nativeTown := n.Type == "town" && n.NativeTownVariant != nil
@@ -5071,12 +5074,13 @@ func (g *Game) campInput() bool {
 				g.revealNativeTownSecret(scanCode) {
 				return true
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			if keyJustPressed(ebiten.KeyArrowRight) {
 				g.moveNativeTownSelection(-1)
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			if keyJustPressed(ebiten.KeyArrowLeft) {
 				g.moveNativeTownSelection(1)
 			}
+			g.applyPointerToNativeTown(*n.NativeTownVariant)
 			if enter {
 				if g.camp.ConfirmNativeTownSecret(g.campSel) {
 					g.enterNode()
@@ -5090,12 +5094,13 @@ func (g *Game) campInput() bool {
 			}
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+		if keyJustPressed(ebiten.KeyArrowUp) {
 			g.stepCampaignMenu(campaign.MenuUp)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+		if keyJustPressed(ebiten.KeyArrowDown) {
 			g.stepCampaignMenu(campaign.MenuDown)
 		}
+		g.applyPointerToChoiceMenu()
 		selected, confirm := g.stepCampaignMenu(campaign.MenuTick)
 		if enter {
 			selected, confirm = g.stepCampaignMenu(campaign.MenuConfirm)
@@ -5108,12 +5113,12 @@ func (g *Game) campInput() bool {
 	case "preparation", "church":
 		if n.Type == "preparation" {
 			return g.handleNativePreparationInput(nativePreparationInput{
-				left:   inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft),
-				right:  inpututil.IsKeyJustPressed(ebiten.KeyArrowRight),
-				up:     inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
-				down:   inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
+				left:   keyJustPressed(ebiten.KeyArrowLeft),
+				right:  keyJustPressed(ebiten.KeyArrowRight),
+				up:     keyJustPressed(ebiten.KeyArrowUp),
+				down:   keyJustPressed(ebiten.KeyArrowDown),
 				enter:  enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 		}
 		if g.nativeClassUIBlocksInput() || g.nativeChurchUIBlocksInput() {
@@ -5121,111 +5126,111 @@ func (g *Game) campInput() bool {
 		}
 		if g.churchMode == "menu" {
 			delta := 0
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			if keyJustPressed(ebiten.KeyArrowLeft) {
 				delta = -1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			} else if keyJustPressed(ebiten.KeyArrowRight) {
 				delta = 1
 			}
 			g.handleNativeChurchMenuInput(nativeChurchMenuInput{
 				delta: delta, enter: enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
 		if g.churchMode == "status_roster" {
 			delta := 0
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			if keyJustPressed(ebiten.KeyArrowLeft) {
 				delta = -1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			} else if keyJustPressed(ebiten.KeyArrowRight) {
 				delta = 1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+			} else if keyJustPressed(ebiten.KeyArrowUp) {
 				delta = -2
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+			} else if keyJustPressed(ebiten.KeyArrowDown) {
 				delta = 2
 			}
 			g.handleNativeChurchStatusInput(nativeChurchStatusInput{
 				delta: delta, enter: enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
 		if g.churchMode == "status_view" || g.churchMode == "status_commands" {
-			ack := enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
-				inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
+			ack := enter || keyJustPressed(ebiten.KeyEscape) ||
+				keyJustPressed(ebiten.KeyBackspace)
 			g.handleNativeChurchStatusInput(nativeChurchStatusInput{enter: ack})
 			return true
 		}
 		if g.churchMode == "transfer_full" {
 			g.handleNativeChurchTransferInput(nativeChurchTransferInput{
-				enter: enter, escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				enter: enter, escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
 		if g.churchMode == "transfer_source" || g.churchMode == "transfer_item" || g.churchMode == "transfer_dest" {
 			delta := 0
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			if keyJustPressed(ebiten.KeyArrowLeft) {
 				delta = -1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			} else if keyJustPressed(ebiten.KeyArrowRight) {
 				delta = 1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+			} else if keyJustPressed(ebiten.KeyArrowUp) {
 				delta = -2
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+			} else if keyJustPressed(ebiten.KeyArrowDown) {
 				delta = 2
 			}
 			g.handleNativeChurchTransferInput(nativeChurchTransferInput{
 				delta: delta, enter: enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
 		if g.churchMode == "revive_confirm" {
 			delta := 0
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			if keyJustPressed(ebiten.KeyArrowLeft) {
 				delta = -1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			} else if keyJustPressed(ebiten.KeyArrowRight) {
 				delta = 1
 			}
 			g.handleNativeChurchReviveInput(nativeChurchReviveInput{
 				delta: delta, enter: enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
 		if g.churchMode == "revive_empty" || g.churchMode == "revive_insufficient" {
 			g.handleNativeChurchReviveInput(nativeChurchReviveInput{
-				enter: enter, escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				enter: enter, escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
 		if g.churchMode == "class" || g.churchMode == "class_confirm" {
 			delta := 0
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) ||
-				inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+			if keyJustPressed(ebiten.KeyArrowLeft) ||
+				keyJustPressed(ebiten.KeyArrowUp) {
 				delta = -1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) ||
-				inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+			} else if keyJustPressed(ebiten.KeyArrowRight) ||
+				keyJustPressed(ebiten.KeyArrowDown) {
 				delta = 1
 			}
 			g.handleNativeChurchClassInput(nativeChurchClassInput{
 				delta: delta, enter: enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			g.returnToNativeChurchMenu()
 			return true
 		}
 		if g.churchMode == "revive" {
 			delta := 0
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+			if keyJustPressed(ebiten.KeyArrowUp) {
 				delta = -1
-			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+			} else if keyJustPressed(ebiten.KeyArrowDown) {
 				delta = 1
 			}
 			g.handleNativeChurchReviveInput(nativeChurchReviveInput{
 				delta: delta, enter: enter,
-				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+				escape: keyJustPressed(ebiten.KeyEscape),
 			})
 			return true
 		}
@@ -5238,7 +5243,7 @@ func (g *Game) campInput() bool {
 		if g.shopEquipPrompt {
 			// Original ESC at the equip prompt means "leave it unequipped";
 			// the purchase still completes and money is deducted last.
-			if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			if enter || keyJustPressed(ebiten.KeyEscape) {
 				u := g.partyRoster[g.shopEquipUnit]
 				if enter {
 					if err := campaign.EquipItem(&u, g.shopEquipSlot, g.shopItemStats); err != nil {
@@ -5259,7 +5264,7 @@ func (g *Game) campInput() bool {
 			}
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
+		if keyJustPressed(ebiten.KeyTab) {
 			if g.shopMode == "sell" {
 				g.shopMode = "buy"
 			} else {
@@ -5273,13 +5278,13 @@ func (g *Game) campInput() bool {
 			ids := g.shopSellIDs()
 			if g.shopSellPicking {
 				u := g.partyRoster[ids[g.shopSellUnitSel]]
-				if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSellSlotSel > 0 {
+				if keyJustPressed(ebiten.KeyArrowUp) && g.shopSellSlotSel > 0 {
 					g.shopSellSlotSel--
 				}
-				if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopSellSlotSel < len(u.Inventory)-1 {
+				if keyJustPressed(ebiten.KeyArrowDown) && g.shopSellSlotSel < len(u.Inventory)-1 {
 					g.shopSellSlotSel++
 				}
-				if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+				if keyJustPressed(ebiten.KeyEscape) {
 					g.shopSellPicking = false
 					return true
 				}
@@ -5306,13 +5311,13 @@ func (g *Game) campInput() bool {
 				}
 				return true
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSellUnitSel > 0 {
+			if keyJustPressed(ebiten.KeyArrowUp) && g.shopSellUnitSel > 0 {
 				g.shopSellUnitSel--
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopSellUnitSel < len(ids)-1 {
+			if keyJustPressed(ebiten.KeyArrowDown) && g.shopSellUnitSel < len(ids)-1 {
 				g.shopSellUnitSel++
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			if keyJustPressed(ebiten.KeyEscape) {
 				g.shopMode = "buy"
 				return true
 			}
@@ -5323,13 +5328,13 @@ func (g *Game) campInput() bool {
 			return true
 		}
 		if g.shopPicking {
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopRecipientSel > 0 {
+			if keyJustPressed(ebiten.KeyArrowUp) && g.shopRecipientSel > 0 {
 				g.shopRecipientSel--
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopRecipientSel < len(g.shopRecipients)-1 {
+			if keyJustPressed(ebiten.KeyArrowDown) && g.shopRecipientSel < len(g.shopRecipients)-1 {
 				g.shopRecipientSel++
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			if keyJustPressed(ebiten.KeyEscape) {
 				g.shopPicking = false
 				return true
 			}
@@ -5357,10 +5362,10 @@ func (g *Game) campInput() bool {
 			}
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSel > 0 {
+		if keyJustPressed(ebiten.KeyArrowUp) && g.shopSel > 0 {
 			g.shopSel--
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopSel < len(goods)-1 {
+		if keyJustPressed(ebiten.KeyArrowDown) && g.shopSel < len(goods)-1 {
 			g.shopSel++
 		}
 		if enter && g.shopSel < len(goods) { // 購買
@@ -5376,7 +5381,7 @@ func (g *Game) campInput() bool {
 				g.shopPicking = true
 			}
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) { // 離店
+		if keyJustPressed(ebiten.KeyEscape) { // 離店
 			g.leaveShop()
 		}
 		return true
@@ -5384,13 +5389,13 @@ func (g *Game) campInput() bool {
 		if g.nativeHotelMode != "" {
 			return g.handleNativeHotelInput(currentNativeHotelInput(enter))
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.hotelSel > 0 {
+		if keyJustPressed(ebiten.KeyArrowUp) && g.hotelSel > 0 {
 			g.hotelSel--
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.hotelSel < 3 {
+		if keyJustPressed(ebiten.KeyArrowDown) && g.hotelSel < 3 {
 			g.hotelSel++
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			g.leaveHotel()
 			return true
 		}
@@ -5615,10 +5620,11 @@ func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm
 // ringInput 暫定四向命令選單 + 法術選單輸入。回傳 true = 已攔截。
 // 方向配對已由 Docker Capstone 0x18d8c switch 釘死：↑0攻擊/←1法術/→2物品/↓3待機。
 func (g *Game) ringInput() bool {
-	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
-	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
+	g.pointerOverlayRejectsClick()
+	enter := keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace)
+	esc := keyJustPressed(ebiten.KeyEscape) || keyJustPressed(ebiten.KeyBackspace)
 	if g.nativeSystemInfoUI != nil {
-		if g.nativeSystemInfoUI.phase == "steady" && len(inpututil.AppendJustPressedKeys(nil)) != 0 {
+		if g.nativeSystemInfoUI.phase == "steady" && len(appendJustPressedKeys(nil)) != 0 {
 			g.closeNativeSystemInfoUI()
 		}
 		return true
@@ -5644,10 +5650,10 @@ func (g *Game) ringInput() bool {
 			g.cancelNativeSystemEndTurn()
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) && g.nativeSystemEndTurnUI != nil {
+		if keyJustPressed(ebiten.KeyArrowLeft) && g.nativeSystemEndTurnUI != nil {
 			g.nativeSystemEndTurnUI.choice = 0
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) && g.nativeSystemEndTurnUI != nil {
+		if keyJustPressed(ebiten.KeyArrowRight) && g.nativeSystemEndTurnUI != nil {
 			g.nativeSystemEndTurnUI.choice = 1
 		}
 		if enter {
@@ -5799,10 +5805,10 @@ func (g *Game) ringInput() bool {
 		}
 		if g.nativeDeathRewardUI != nil {
 			return g.handleNativeDeathRewardItemInput(nativeDeathRewardInput{
-				up:      inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
-				down:    inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
-				left:    inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft),
-				right:   inpututil.IsKeyJustPressed(ebiten.KeyArrowRight),
+				up:      keyJustPressed(ebiten.KeyArrowUp),
+				down:    keyJustPressed(ebiten.KeyArrowDown),
+				left:    keyJustPressed(ebiten.KeyArrowLeft),
+				right:   keyJustPressed(ebiten.KeyArrowRight),
 				confirm: enter,
 				cancel:  esc,
 			})
@@ -5821,13 +5827,13 @@ func (g *Game) ringInput() bool {
 			}
 			key := 0
 			switch {
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
+			case keyJustPressed(ebiten.KeyArrowUp):
 				key = 72
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
+			case keyJustPressed(ebiten.KeyArrowDown):
 				key = 80
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
+			case keyJustPressed(ebiten.KeyArrowLeft):
 				key = 75
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
+			case keyJustPressed(ebiten.KeyArrowRight):
 				key = 77
 			}
 			if key != 0 {
@@ -5887,10 +5893,10 @@ func (g *Game) ringInput() bool {
 			}
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.itemSel > 0 {
+		if keyJustPressed(ebiten.KeyArrowUp) && g.itemSel > 0 {
 			g.itemSel--
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.itemSel < 7 {
+		if keyJustPressed(ebiten.KeyArrowDown) && g.itemSel < 7 {
 			g.itemSel++
 		}
 		if enter {
@@ -5921,16 +5927,16 @@ func (g *Game) ringInput() bool {
 			g.beginActionOverlayOpen(g.ringSel)
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+		if keyJustPressed(ebiten.KeyArrowUp) {
 			g.nativeCommandSel = battle.NativeCommandGridMove(g.nativeCommandSel, len(ids), 0)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+		if keyJustPressed(ebiten.KeyArrowDown) {
 			g.nativeCommandSel = battle.NativeCommandGridMove(g.nativeCommandSel, len(ids), 1)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+		if keyJustPressed(ebiten.KeyArrowLeft) {
 			g.nativeCommandSel = battle.NativeCommandGridMove(g.nativeCommandSel, len(ids), 2)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+		if keyJustPressed(ebiten.KeyArrowRight) {
 			g.nativeCommandSel = battle.NativeCommandGridMove(g.nativeCommandSel, len(ids), 3)
 		}
 		if enter && g.nativeCommandSel >= 0 && g.nativeCommandSel < len(ids) {
@@ -5972,10 +5978,10 @@ func (g *Game) ringInput() bool {
 			g.spellOpen = false
 			return false
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.spellSel > 0 {
+		if keyJustPressed(ebiten.KeyArrowUp) && g.spellSel > 0 {
 			g.spellSel--
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.spellSel < len(g.sel.Spells)-1 {
+		if keyJustPressed(ebiten.KeyArrowDown) && g.spellSel < len(g.sel.Spells)-1 {
 			g.spellSel++
 		}
 		if esc {
@@ -8382,12 +8388,16 @@ func (g *Game) Update() error {
 	defer g.recordInputAuditState()
 	defer g.traceRunLog()
 	g.frame++
-	if g.playerPosterControlsAllowed() && inpututil.IsKeyJustPressed(ebiten.KeyF10) {
+	if g.playerPosterControlsAllowed() && keyJustPressed(ebiten.KeyF10) {
 		g.playerPosterCycleRequested = true
 		return nil // Presentation input must not also advance a dialogue or map.
 	}
 	if g.playerFullscreenRequested || (inpututil.IsKeyJustPressed(ebiten.KeyEnter) && (ebiten.IsKeyPressed(ebiten.KeyAlt) || ebiten.IsKeyPressed(ebiten.KeyAltLeft) || ebiten.IsKeyPressed(ebiten.KeyAltRight))) {
 		ebiten.SetFullscreen(!ebiten.IsFullscreen())
+		return nil
+	}
+	if !nativeModifierHeld() && keyJustPressed(ebiten.KeyF12) { // 全域：按鍵設定面板（手把 Start 預設對應 F12）
+		g.openControlsPanel()
 		return nil
 	}
 	if g.nativeDefeat != nil {
@@ -8403,11 +8413,11 @@ func (g *Game) Update() error {
 	g.stepNativePlayerStatus()
 	g.stepNativeSystemEndTurn()
 	g.stepNativeClassUILifecycle(g.gameNow())
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF1) {
+	if g.nativeEnding == nil && !nativeModifierHeld() && keyJustPressed(ebiten.KeyF1) {
 		g.helpVisible = !g.helpVisible
 	}
 	if g.helpVisible {
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			g.helpVisible = false
 		}
 		return nil
@@ -8418,7 +8428,7 @@ func (g *Game) Update() error {
 	if state := g.nativeSystemEndTurnUI; state != nil && state.rewardMessage != nil {
 		// 0x1AA1D 的訊息是同步的：開框、0x16C57(0) 等任一鍵、關框期間 AI 與玩家輸入都不動。
 		if state.rewardMessage.awaitAck && g.nativeClassUIJob == nil &&
-			len(inpututil.AppendJustPressedKeys(nil)) != 0 {
+			len(appendJustPressedKeys(nil)) != 0 {
 			g.acknowledgeNativeDeathRewardMessage()
 		}
 		return nil
@@ -8430,27 +8440,27 @@ func (g *Game) Update() error {
 	g.stepNativeShopUILifecycle(g.gameNow())
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(g.gameNow()))
 	g.stepNativePreparationUILifecycle(g.gameNow())
-	g.pollModernThemeLoad()                                                                                                     // 背景載入完成時補做第一次 F2／F11
-	g.surfaceModernThemeNotices()                                                                                               // 延後檢查拒收時告訴玩家已改用原版圖
-	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerThemeRequested || inpututil.IsKeyJustPressed(ebiten.KeyF2)) { // 全域：忠實／現代主題
+	g.pollModernThemeLoad()                                                                                         // 背景載入完成時補做第一次 F2／F11
+	g.surfaceModernThemeNotices()                                                                                   // 延後檢查拒收時告訴玩家已改用原版圖
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerThemeRequested || keyJustPressed(ebiten.KeyF2)) { // 全域：忠實／現代主題
 		g.cycleTheme()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerInterfaceRequested || inpututil.IsKeyJustPressed(ebiten.KeyF11)) {
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerInterfaceRequested || keyJustPressed(ebiten.KeyF11)) {
 		g.cycleInterfaceMode()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域：切換音源
+	if g.nativeEnding == nil && !nativeModifierHeld() && keyJustPressed(ebiten.KeyF3) { // 全域：切換音源
 		g.cycleBGMSource()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerLocaleRequested || inpututil.IsKeyJustPressed(ebiten.KeyF4)) { // 全域：切換官方語系
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerLocaleRequested || keyJustPressed(ebiten.KeyF4)) { // 全域：切換官方語系
 		g.cycleLocale()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerFontRequested || inpututil.IsKeyJustPressed(ebiten.KeyF7)) { // 全域：切換字級
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerFontRequested || keyJustPressed(ebiten.KeyF7)) { // 全域：切換字級
 		g.cycleFontScale()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerSpeedRequested || inpututil.IsKeyJustPressed(ebiten.KeyF8)) {
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerSpeedRequested || keyJustPressed(ebiten.KeyF8)) {
 		g.cyclePlayerSpeed()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF6) { // 全域：音樂開關
+	if g.nativeEnding == nil && !nativeModifierHeld() && keyJustPressed(ebiten.KeyF6) { // 全域：音樂開關
 		if g.toggleNativeSystemOption(0) {
 			if g.currentNativeSystemOptions().MusicEnabled() {
 				g.msg = "音樂：開啟"
@@ -8459,7 +8469,7 @@ func (g *Game) Update() error {
 			}
 		}
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF12) { // 全域：開發除錯 HUD 開關
+	if g.nativeEnding == nil && ebiten.IsKeyPressed(ebiten.KeyControl) && inpututil.IsKeyJustPressed(ebiten.KeyF12) { // 全域：Ctrl+F12 開發除錯 HUD 開關（實體鍵）
 		g.debug = !g.debug
 	}
 	if g.bannerT > 0 {
@@ -8477,10 +8487,10 @@ func (g *Game) Update() error {
 		}
 	}
 	if g.nativeEnding != nil {
-		endingConfirm := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
-		reviewExit := inpututil.IsKeyJustPressed(ebiten.KeyEscape)
+		endingConfirm := keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace)
+		reviewExit := keyJustPressed(ebiten.KeyEscape)
 		if err := g.applyNativeEndingInput(
-			endingConfirm, reviewExit, len(inpututil.AppendJustPressedKeys(nil)) != 0,
+			endingConfirm, reviewExit, len(appendJustPressedKeys(nil)) != 0,
 		); err != nil {
 			g.loadErr = "native ending input: " + err.Error()
 			return err
@@ -9010,22 +9020,22 @@ func (g *Game) Update() error {
 	if g.nativePalettePulse != nil {
 		return nil
 	}
-	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔:節點進度;戰鬥中可操作時附戰場快照(battle_snapshot.go)
+	if !nativeModifierHeld() && keyJustPressed(ebiten.KeyF5) { // 快速存檔:節點進度;戰鬥中可操作時附戰場快照(battle_snapshot.go)
 		g.saveGame()
 	}
-	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF9) { // 快速讀檔
+	if !nativeModifierHeld() && keyJustPressed(ebiten.KeyF9) { // 快速讀檔
 		g.loadGame()
 	}
 	if g.nativeLevelUpDialogue != nil {
 		g.stepNativeLevelUpDialogue(nativeBattleDialogueAdvanceInput(
-			inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace),
-			inpututil.IsKeyJustPressed(ebiten.KeyEscape)))
+			keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace),
+			keyJustPressed(ebiten.KeyEscape)))
 		return nil // 0x1E292 同步：對話期間不進 AI 與其他輸入
 	}
 	if g.battleEvent != nil || g.nativeTurnStaging != nil {
 		g.handleBattleEventDialogueInput(nativeBattleDialogueAdvanceInput(
-			inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace),
-			inpututil.IsKeyJustPressed(ebiten.KeyEscape)))
+			keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace),
+			keyJustPressed(ebiten.KeyEscape)))
 		return nil // PAN/delay/dialogue sequence blocks battle input and repeated end-turn
 	}
 	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
@@ -9037,7 +9047,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 	if g.nativePlayerStatus != nil {
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace) || keyJustPressed(ebiten.KeyEscape) {
 			g.advanceNativePlayerStatus()
 		}
 		return nil
@@ -9051,32 +9061,32 @@ func (g *Game) Update() error {
 	}
 	if len(g.dialog) > 0 { // 戰鬥起手對白(g.camp==nil 直接開局,或 campaign battle 節點無 story 攔截):Enter/Space/Esc 逐句清除
 		if nativeBattleDialogueAdvanceInput(
-			inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace),
-			inpututil.IsKeyJustPressed(ebiten.KeyEscape)) {
+			keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace),
+			keyJustPressed(ebiten.KeyEscape)) {
 			g.dlgAdvance() // 翻頁優先,翻完換句(長對白分頁,不截斷)
 		}
 		return nil
 	}
 	if g.nativeItemTargeting { // 原始物品第一階段 target selector：ESC 回物品列
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
+		if keyJustPressed(ebiten.KeyEscape) || keyJustPressed(ebiten.KeyBackspace) {
 			g.cancelNativeItemTargetModal()
 			return nil
 		}
 	}
 	if g.nativeItemRelocating {
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
+		if keyJustPressed(ebiten.KeyEscape) || keyJustPressed(ebiten.KeyBackspace) {
 			g.cancelNativeItemTargetModal()
 			return nil
 		}
 	}
 	if g.castSp != nil || g.nativeCommand0Targeting { // native target selection: ESC 回 command grid
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			g.cancelNativeCommandTargetSelection()
 			return nil
 		}
 	}
 	// 游標移動:方向鍵 / WASD(按住持續移動,keyRepeat)/ 觸控
-	if g.nativeMovePanel != nil && len(inpututil.AppendJustPressedKeys(nil)) > 0 {
+	if g.nativeMovePanel != nil && len(appendJustPressedKeys(nil)) > 0 {
 		g.nativeMovePanel = nil
 	}
 	if keyRepeat(ebiten.KeyArrowLeft) || keyRepeat(ebiten.KeyA) {
@@ -9123,6 +9133,7 @@ func (g *Game) Update() error {
 			g.moveMapCursor(0, -1)
 		}
 	}
+	g.followPointerOnMap() // 滑鼠：移動或點下時游標跟到指向的格子
 	// 邊界
 	if g.curX < 0 {
 		g.curX = 0
@@ -9137,13 +9148,13 @@ func (g *Game) Update() error {
 		g.curY = g.m.H - 1
 	}
 	// 選取 / 移動 / 取消
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+	if keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace) {
 		g.confirm()
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
+	if keyJustPressed(ebiten.KeyEscape) || keyJustPressed(ebiten.KeyBackspace) {
 		if g.sel != nil && g.moved { // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
 			g.returnPlayerAttackTargetToRing()
-		} else if g.sel == nil && g.st.HasNativeMapViewState && inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		} else if g.sel == nil && g.st.HasNativeMapViewState && keyJustPressed(ebiten.KeyEscape) {
 			g.cycleNativePlayerUnit()
 		} else {
 			if g.nativeMovePlan != nil {
@@ -9155,10 +9166,10 @@ func (g *Game) Update() error {
 		}
 	}
 	if g.sel == nil && g.st.HasNativeMapViewState {
-		if inpututil.IsKeyJustPressed(ebiten.KeyZ) || inpututil.IsKeyJustPressed(ebiten.KeyNumpad5) {
+		if keyJustPressed(ebiten.KeyZ) || keyJustPressed(ebiten.KeyNumpad5) {
 			g.cycleNativePlayerUnit()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyHome) {
+		if keyJustPressed(ebiten.KeyHome) {
 			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
 				if _, err := g.inspectNativePlayerUnit(u, true); err != nil {
 					g.loadErr = err.Error()
@@ -9167,7 +9178,7 @@ func (g *Game) Update() error {
 		}
 	}
 	// Tab 是重製端快速鍵；原版式正常入口是空游標四格系統面板的 Down→END。
-	if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
+	if keyJustPressed(ebiten.KeyTab) {
 		g.endTurn()
 	}
 	// 相機跟隨游標(置中,夾在地圖內)
@@ -9314,7 +9325,7 @@ func (g *Game) positionScreenshotCursor(x, y int) bool {
 // keyRepeat 方向鍵按住持續觸發(playfix #1):首次按下立即動一格,按住 12 tick 後
 // 每 5 tick 再動一格(可玩性手感參數,原版掃描碼節奏未逐格量測,見 doc13 §游標)。
 func keyRepeat(k ebiten.Key) bool {
-	d := inpututil.KeyPressDuration(k)
+	d := keyPressDuration(k)
 	if d == 0 {
 		return false
 	}
@@ -13483,6 +13494,8 @@ func main() {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	g := loadGame()
 	defer g.closeAudioPlayers()
+	g.input = newPlayerInput(loadControlsSettings())
+	activeInput = g.input
 	player := &modernHDPresentation{Game: g, toolbar: true, floatingToolbar: floatingToolbar, faithfulWidth: logicalW * 2, faithfulHeight: height * 2}
 	player.initPosters()
 	if g.hdPresentationEnabled() {

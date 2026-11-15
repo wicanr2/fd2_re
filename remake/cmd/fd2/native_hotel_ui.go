@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -172,15 +171,15 @@ type nativeHotelInput struct {
 }
 
 func currentNativeHotelInput(enter bool) nativeHotelInput {
-	in := nativeHotelInput{enter: enter, esc: inpututil.IsKeyJustPressed(ebiten.KeyEscape)}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+	in := nativeHotelInput{enter: enter, esc: keyJustPressed(ebiten.KeyEscape)}
+	if keyJustPressed(ebiten.KeyArrowLeft) {
 		in.delta = -1
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+	if keyJustPressed(ebiten.KeyArrowRight) {
 		in.delta = 1
 	}
-	in.up = inpututil.IsKeyJustPressed(ebiten.KeyArrowUp)
-	in.down = inpututil.IsKeyJustPressed(ebiten.KeyArrowDown)
+	in.up = keyJustPressed(ebiten.KeyArrowUp)
+	in.down = keyJustPressed(ebiten.KeyArrowDown)
 	return in
 }
 

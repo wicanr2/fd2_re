@@ -10,11 +10,11 @@ package main
 //     drawNativeEndTurnRecovery、defer 的 DAC 白／黑 Fill，沒有別組圖層），記整張 640×400 雜湊，可與階段 0
 //     chapter 黃金同一擷取點直接比。
 //   - tail：三段各畫到一張 Clear 的 640×400 畫布，記雜湊（畫布全透明時記 0）：
-//     1. 游標白框與左下 HUD（main.go:9925..9941 的逐字複本）；
+//     1. 游標白框與左下 HUD（main.go:9936..9952 的逐字複本）；
 //     2. 照 Draw 把原生整幀（r5m）畫到另一張畫布，取 nativeMapPresented 與它對狀態的改動，鍵只記成功與否；
-//        再畫移動面板與回合橫幅（main.go:9964..9972 的逐字複本）；
+//        再畫移動面板與回合橫幅（main.go:9975..9983 的逐字複本）；
 //     3. TTF 段在語系缺鍵時 return 出 Draw（main.go:10137..10146），照同一條件判斷；沒有 return 時畫
-//        設施／班級工作、END 對話、指令環、指令格、法術與物品選單、系統資訊與角色狀態（main.go:10156..10174
+//        設施／班級工作、END 對話、指令環、指令格、法術與物品選單、系統資訊與角色狀態（main.go:10167..10185
 //        的逐字複本）。
 //     正規化世界層（r5p）、對白（r5d）、TTF 短訊（r5f）與 drawCampaignUI（r5c）是別組的圖層，不畫。
 //
@@ -97,10 +97,10 @@ func r5hLayerBranch(g *Game) string {
 	return "tail"
 }
 
-// r5hCursorHUD：Draw 的 main.go:9925..9941（!modernHDRequested 區塊內，正規化世界層之後）。
+// r5hCursorHUD：Draw 的 main.go:9936..9952（!modernHDRequested 區塊內，正規化世界層之後）。
 func r5hCursorHUD(g *Game, screen *ebiten.Image, tw, th int, legacyViewport, campaignBattleView bool) {
 	{
-		// ---- 逐字複本開始：main.go:9925..9941 ----
+		// ---- 逐字複本開始：main.go:9936..9952 ----
 		curPx := float64(g.curX*tw) - g.camX
 		curPy := float64(g.curY*th) - g.camY
 		if !g.ring && !g.spellOpen && !legacyViewport && campaignBattleView {
@@ -118,13 +118,13 @@ func r5hCursorHUD(g *Game, screen *ebiten.Image, tw, th int, legacyViewport, cam
 					g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 			}
 		}
-		// ---- 逐字複本結束：main.go:9925..9941 ----
+		// ---- 逐字複本結束：main.go:9936..9952 ----
 	}
 }
 
-// r5hMapOverlays：Draw 的 main.go:9964..9972（原生整幀之後）。
+// r5hMapOverlays：Draw 的 main.go:9975..9983（原生整幀之後）。
 func r5hMapOverlays(g *Game, screen *ebiten.Image, nativeMapPresented, legacyViewport, campaignBattleView bool) {
-	// ---- 逐字複本開始：main.go:9964..9972 ----
+	// ---- 逐字複本開始：main.go:9975..9983 ----
 	if nativeMapPresented {
 		g.drawNativeMovementPanel(screen)
 	}
@@ -134,12 +134,12 @@ func r5hMapOverlays(g *Game, screen *ebiten.Image, nativeMapPresented, legacyVie
 	if !legacyViewport && campaignBattleView {
 		g.drawPhaseBanner(screen)
 	}
-	// ---- 逐字複本結束：main.go:9964..9972 ----
+	// ---- 逐字複本結束：main.go:9975..9983 ----
 }
 
-// r5hCommandUI：Draw 的 main.go:10156..10174。回傳 false 表示複本裡的 return（transientUI 的班級介面工作）。
+// r5hCommandUI：Draw 的 main.go:10167..10185。回傳 false 表示複本裡的 return（transientUI 的班級介面工作）。
 func r5hCommandUI(g *Game, screen *ebiten.Image, nativeMapPresented bool) (completed bool) {
-	// ---- 逐字複本開始：main.go:10156..10174 ----
+	// ---- 逐字複本開始：main.go:10167..10185 ----
 	if g.transientUI && g.drawNativeClassUIJob(screen) {
 		return
 	}
@@ -159,7 +159,7 @@ func r5hCommandUI(g *Game, screen *ebiten.Image, nativeMapPresented bool) (compl
 	// 原版戰場資訊是 320×200 indexed 全畫面，最後覆蓋戰場與選單層。
 	g.drawNativeSystemInfoUI(screen)
 	g.drawNativePlayerStatus(screen)
-	// ---- 逐字複本結束：main.go:10156..10174 ----
+	// ---- 逐字複本結束：main.go:10167..10185 ----
 	return true
 }
 

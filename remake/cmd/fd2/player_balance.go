@@ -27,7 +27,7 @@ type balanceEditor struct {
 	input, message                   string
 }
 
-var playerBalanceButton = image.Rect(564, 3, 632, 21)
+var playerBalanceButton = image.Rect(598, 3, 632, 21)
 
 func (g *Game) balanceAllowed() bool {
 	return g.playerPosterControlsAllowed() && g.titlePhase == "" && g.camp != nil &&

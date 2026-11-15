@@ -29,12 +29,18 @@ type modernHDPresentation struct {
 	speedMenuSurface               *ebiten.Image
 	poster                         playerPosterPresentation
 	balanceSurface                 *ebiten.Image
+	controlsSurface                *ebiten.Image
 	posterMenuSurface, posterPixel *ebiten.Image
 }
 
 func (p *modernHDPresentation) Update() error {
 	p.Game.syncPlayerClockSpeedAt(time.Now())
+	if p.updateControlsPanel() {
+		p.sampleInput(false)
+		return nil
+	}
 	if p.updateBalanceEditor() {
+		p.sampleInput(false)
 		return nil
 	}
 	before := p.Game.hdPresentationEnabled()
@@ -61,7 +67,8 @@ func (p *modernHDPresentation) Update() error {
 	if p.speedMenuOpen {
 		p.Game.playerOverlayBlock = playerSpeedMenu
 	}
-	if !p.poster.consumeInput && !p.Game.balanceUI.open {
+	p.sampleInput(!p.poster.consumeInput && !p.Game.balanceUI.open && !p.Game.controls.open)
+	if !p.poster.consumeInput && !p.Game.balanceUI.open && !p.Game.controls.open {
 		if err := p.Game.Update(); err != nil {
 			return err
 		}
@@ -234,4 +241,5 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		p.drawSpeedMenu(screen, toolbarGeometry)
 	}
 	p.drawBalanceEditor(screen, contentGeometry)
+	p.drawControlsPanel(screen, contentGeometry)
 }

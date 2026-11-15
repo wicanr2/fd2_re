@@ -5933,6 +5933,36 @@
         ],
         "pattern": "func \\(g \\*Game\\) modernHDStoryDialogueMask"
       }
+    },
+    {
+      "id": "player-chrome-strings-stay-out-of-shared-pack",
+      "date": "2026-11-16",
+      "area": "語系",
+      "rule": "只屬 Go 播放器外框（設定面板、工具列下拉）的新字串不要加進 assets/locales/<語系>/pack.json：Go 的 officialLocaleContract 與 Rust 的 locale.rs 都要求 pack.json 鍵數完全相同，多一個鍵另一個引擎就拒收整份語系。另立同樣精確核對的檔案（例如 controls.json 與 controlsLocaleContract），並在 remake/.gitignore 為它加例外，否則會被 assets/locales/*/* 規則忽略、不進版控也不進發行包。",
+      "why": "2026-11-16 加按鍵設定面板時，Go 凍結例外只改 remake/，而 remake-rs 的 fd2-game 也讀同一份 pack.json 並檢查 entries.len() 等於契約數；直接加鍵會讓 Rust 版載入失敗。新檔第一次也被 .gitignore 的 assets/locales/*/* 吃掉，git status 看不到。",
+      "evidence": "remake/cmd/fd2/player_controls_locale.go、remake-rs/crates/fd2-game/src/game/locale.rs（official locale has N keys, want exact M）、remake/.gitignore",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/player_controls_locale.go"
+        ],
+        "pattern": "func controlsLocaleContract\\(\\)"
+      }
+    },
+    {
+      "id": "string-rebind-same-signature-shift-collides",
+      "date": "2026-11-16",
+      "area": "字串盤點",
+      "rule": "字串審查重綁後先查每個處置裡有沒有重複 id。同一支函式連續出現同一個字串、整段一起位移時，tools/migrate_string_review.py 的「原地」判斷會把位移後落在舊座標上的另一筆當成同一筆，兩個舊 id 對到同一個新 id，最後一筆新 id 變成「未審查」。修法是把重複的那一個換成同簽名群組裡尚未被占用的新 id，處置內容不動；新的字串才依慣例歸類。",
+      "why": "2026-11-16 player_toolbar.go 前面加了 4 行，playerThemeLabels 的三個「原版」由 l192/l194/l196 移到 l196/l198/l200；舊 l196 原地對到新 l196（其實是舊 l192），舊 l192 依名次也對到 l196，l200 被報成新候選。rebind_string_review.sh 的 id 集合檢查會擋下，但訊息看起來像多了一個新字串。",
+      "evidence": "tools/migrate_string_review.py（same = new_by_id.get(old_id) 的原地分支）、docs/data/fd2-string-review.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/migrate_string_review.py"
+        ],
+        "pattern": "same = new_by_id.get\\(old_id\\)"
+      }
     }
   ]
 }

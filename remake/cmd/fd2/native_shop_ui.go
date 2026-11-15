@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
@@ -1643,17 +1642,17 @@ type nativeShopTransferInput struct {
 func currentNativeShopTransferInput(enter bool) nativeShopTransferInput {
 	delta := 0
 	switch {
-	case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
+	case keyJustPressed(ebiten.KeyArrowLeft):
 		delta = -1
-	case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
+	case keyJustPressed(ebiten.KeyArrowRight):
 		delta = 1
-	case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
+	case keyJustPressed(ebiten.KeyArrowUp):
 		delta = -2
-	case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
+	case keyJustPressed(ebiten.KeyArrowDown):
 		delta = 2
 	}
 	return nativeShopTransferInput{
-		enter: enter, escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+		enter: enter, escape: keyJustPressed(ebiten.KeyEscape),
 		delta: delta,
 	}
 }
@@ -1684,7 +1683,7 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 			g.nativeShopServiceSel = (g.nativeShopServiceSel + 1) % 4
 			g.resetNativeShopUIPulse()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			if !g.beginNativeShopServiceClosing(g.leaveShop) {
 				g.leaveShop()
 			}
@@ -1731,21 +1730,21 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 		}
 	case "purchase":
 		goods := g.camp.ShopGoods()
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) && g.shopSel > 0 {
+		if keyJustPressed(ebiten.KeyArrowLeft) && g.shopSel > 0 {
 			g.shopSel--
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) &&
+		if keyJustPressed(ebiten.KeyArrowRight) &&
 			g.shopSel+1 < len(goods) {
 			g.shopSel++
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSel >= 2 {
+		if keyJustPressed(ebiten.KeyArrowUp) && g.shopSel >= 2 {
 			g.shopSel -= 2
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) &&
+		if keyJustPressed(ebiten.KeyArrowDown) &&
 			g.shopSel+2 < len(goods) {
 			g.shopSel += 2
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			openMenu := func() {
 				g.nativeShopMode = "menu"
 				g.nativeShopServiceSel = 0
@@ -1771,19 +1770,19 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 			return true
 		}
 	case "confirm":
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+		if keyJustPressed(ebiten.KeyArrowLeft) {
 			g.nativeShopConfirmSel = campaign.AdvanceNativeClassConfirmation(
 				g.nativeShopConfirmSel, -1,
 			)
 			g.resetNativeShopUIPulse()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+		if keyJustPressed(ebiten.KeyArrowRight) {
 			g.nativeShopConfirmSel = campaign.AdvanceNativeClassConfirmation(
 				g.nativeShopConfirmSel, 1,
 			)
 			g.resetNativeShopUIPulse()
 		}
-		cancel := inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
+		cancel := keyJustPressed(ebiten.KeyEscape) ||
 			enter && g.nativeShopConfirmSel == 1
 		if cancel {
 			closeDialogue := func() {
@@ -1840,7 +1839,7 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 			return true
 		}
 	case "insufficient":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if enter || keyJustPressed(ebiten.KeyEscape) {
 			frame, ok := g.composeNativeShopInsufficientGold()
 			if !ok || !g.beginNativeShopDialogueClosing(
 				frame, g.returnToNativeShopPurchaseList,
@@ -1852,36 +1851,36 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 	case "recipient_consumable", "recipient_equipment":
 		return g.handleNativeShopRecipientInput(nativeShopRecipientInput{
 			enter:  enter,
-			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
-			left:   inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft),
-			right:  inpututil.IsKeyJustPressed(ebiten.KeyArrowRight),
-			up:     inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
-			down:   inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
+			escape: keyJustPressed(ebiten.KeyEscape),
+			left:   keyJustPressed(ebiten.KeyArrowLeft),
+			right:  keyJustPressed(ebiten.KeyArrowRight),
+			up:     keyJustPressed(ebiten.KeyArrowUp),
+			down:   keyJustPressed(ebiten.KeyArrowDown),
 		})
 	case "recipient_full":
 		return g.handleNativeShopRecipientInput(nativeShopRecipientInput{
 			enter:  enter,
-			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			escape: keyJustPressed(ebiten.KeyEscape),
 		})
 	case "no_recipient":
 		return g.handleNativeShopRecipientInput(nativeShopRecipientInput{
 			enter:  enter,
-			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			escape: keyJustPressed(ebiten.KeyEscape),
 		})
 	case "equip_confirm":
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+		if keyJustPressed(ebiten.KeyArrowLeft) {
 			g.nativeShopEquipSel = campaign.AdvanceNativeClassConfirmation(
 				g.nativeShopEquipSel, -1,
 			)
 			g.resetNativeShopUIPulse()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+		if keyJustPressed(ebiten.KeyArrowRight) {
 			g.nativeShopEquipSel = campaign.AdvanceNativeClassConfirmation(
 				g.nativeShopEquipSel, 1,
 			)
 			g.resetNativeShopUIPulse()
 		}
-		cancel := inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
+		cancel := keyJustPressed(ebiten.KeyEscape) ||
 			enter && g.nativeShopEquipSel == 1
 		if cancel || enter {
 			if enter && !cancel {
@@ -1919,13 +1918,13 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 		count := len(g.partyJoinOrder)
 		delta := 0
 		switch {
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
+		case keyJustPressed(ebiten.KeyArrowLeft):
 			delta = -1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
+		case keyJustPressed(ebiten.KeyArrowRight):
 			delta = 1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
+		case keyJustPressed(ebiten.KeyArrowUp):
 			delta = -2
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
+		case keyJustPressed(ebiten.KeyArrowDown):
 			delta = 2
 		}
 		if delta != 0 {
@@ -1936,7 +1935,7 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 				count, g.shopSellUnitSel, g.nativeShopSellRosterTop,
 			)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			openMenu := func() {
 				g.nativeShopMode = "menu"
 				g.nativeShopServiceSel = 1
@@ -1975,7 +1974,7 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 			return true
 		}
 	case "sell_empty":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if enter || keyJustPressed(ebiten.KeyEscape) {
 			returnRoster := func() {
 				g.returnToNativeShopSellRoster()
 			}
@@ -1988,13 +1987,13 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 		count := len(g.nativeShopSellItemIDs)
 		delta := 0
 		switch {
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
+		case keyJustPressed(ebiten.KeyArrowLeft):
 			delta = -1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
+		case keyJustPressed(ebiten.KeyArrowRight):
 			delta = 1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
+		case keyJustPressed(ebiten.KeyArrowUp):
 			delta = -2
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
+		case keyJustPressed(ebiten.KeyArrowDown):
 			delta = 2
 		}
 		if delta != 0 {
@@ -2008,7 +2007,7 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 		returnRoster := func() {
 			g.returnToNativeShopSellRoster()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if keyJustPressed(ebiten.KeyEscape) {
 			if !g.beginNativeShopSellItemsClosing(returnRoster) {
 				returnRoster()
 			}
@@ -2029,21 +2028,21 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 			return true
 		}
 	case "sell_confirm":
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+		if keyJustPressed(ebiten.KeyArrowLeft) {
 			g.nativeShopSellConfirmSel =
 				campaign.AdvanceNativeClassConfirmation(
 					g.nativeShopSellConfirmSel, -1,
 				)
 			g.resetNativeShopUIPulse()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+		if keyJustPressed(ebiten.KeyArrowRight) {
 			g.nativeShopSellConfirmSel =
 				campaign.AdvanceNativeClassConfirmation(
 					g.nativeShopSellConfirmSel, 1,
 				)
 			g.resetNativeShopUIPulse()
 		}
-		cancel := inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
+		cancel := keyJustPressed(ebiten.KeyEscape) ||
 			enter && g.nativeShopSellConfirmSel == 1
 		if cancel {
 			returnRoster := func() {

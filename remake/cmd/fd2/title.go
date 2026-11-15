@@ -19,7 +19,6 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
@@ -586,7 +585,7 @@ func (g *Game) titleUpdate() bool {
 		}
 		// 原版第三參數只允許中斷當前 AFM 幕；不可跳過後續不可略過的幕。
 		if g.trySkipTitleCutStep(
-			step, len(inpututil.AppendJustPressedKeys(nil)) > 0,
+			step, len(appendJustPressedKeys(nil)) > 0,
 		) {
 			return true
 		}
@@ -667,7 +666,7 @@ func (g *Game) titleUpdate() bool {
 			g.playBGM("FDMUS_018") // 同開場曲(RE 確認,取代舊猜測 FDMUS_004)
 		}
 		g.scrollY -= 1.5 // 捲動速度(原版逐列複製;待 dosbox 錄影校)
-		anyKey := len(inpututil.AppendJustPressedKeys(nil)) > 0
+		anyKey := len(appendJustPressedKeys(nil)) > 0
 		if g.scrollY <= 0 || anyKey {
 			g.titlePhase = "logozoom" // dosbox 實拍(doc23 §2.4):紅閃→「2」縮入→白閃→選單
 			g.titleTick = 0
@@ -675,18 +674,19 @@ func (g *Game) titleUpdate() bool {
 		return true
 	case "logozoom":
 		g.titleTick++
-		if g.titleTick > 50 || len(inpututil.AppendJustPressedKeys(nil)) > 0 { // 紅閃12+縮放30+白閃8
+		if g.titleTick > 50 || len(appendJustPressedKeys(nil)) > 0 { // 紅閃12+縮放30+白閃8
 			g.enterTitleMenu()
 		}
 		return true
 	case "menu":
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+		if keyJustPressed(ebiten.KeyArrowUp) {
 			g.applyTitleMenuEvent(TitleMenuUp)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+		if keyJustPressed(ebiten.KeyArrowDown) {
 			g.applyTitleMenuEvent(TitleMenuDown)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		g.applyPointerToTitleMenu()
+		if keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace) {
 			g.applyTitleMenuEvent(TitleMenuConfirm)
 		}
 		g.applyTitleMenuEvent(TitleMenuTick)
@@ -694,17 +694,18 @@ func (g *Game) titleUpdate() bool {
 	case "loadslots":
 		// Native 0x30550 selector: four bounded slots, no wrap, Enter/Space
 		// confirms and Esc cancels back to the title menu.
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.titleSlotSel > 0 {
+		if keyJustPressed(ebiten.KeyArrowUp) && g.titleSlotSel > 0 {
 			g.applyTitleSlotEvent(TitleSlotUp)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.titleSlotSel < 3 {
+		if keyJustPressed(ebiten.KeyArrowDown) && g.titleSlotSel < 3 {
 			g.applyTitleSlotEvent(TitleSlotDown)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		g.applyPointerToTitleSlots()
+		if keyJustPressed(ebiten.KeyEscape) {
 			g.applyTitleSlotEvent(TitleSlotCancel)
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		if keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace) {
 			g.applyTitleSlotEvent(TitleSlotConfirm)
 		}
 		return true

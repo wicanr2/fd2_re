@@ -8,7 +8,7 @@ package main
 //
 //   - TestRustGoldenTTFLayers：照 TestRustGoldenFrames 的 chapter 模式原樣跑第一章受控重播（同一個
 //     ch01FrameObserver 掛點、60 Hz 虛擬時鐘與 rand.Seed(4)），每個 pump 幀不呼叫整個 Draw，只照 Draw 的
-//     分支順序（goldenMapLayersBranch）在走到尾段時執行 Draw 的 TTF 段（main.go:10125..10150 的逐字複本，
+//     分支順序（goldenMapLayersBranch）在走到尾段時執行 Draw 的 TTF 段（main.go:10136..10161 的逐字複本，
 //     g.font.Draw 換成 r.fontDraw 以記錄每次繪字），畫到 Clear 的 640×400 畫布。比對鍵是每次繪字的文字、
 //     座標、倍率、像素尺寸、ascent、顏色與 text.BoundString 外框（平移到畫面座標）；畫素統計（非透明像素外框、
 //     覆蓋率、與外框重疊的裁切 RGBA）另存 renders，不進比對鍵。
@@ -95,7 +95,7 @@ func (r *ttfLayerRecorder) fontDraw(f *Font, screen *ebiten.Image, s string, x, 
 // ttfSection 是 Draw 尾段 `if g.font != nil {` 裡的 TTF 戰場短訊與勝負字樣。
 func (r *ttfLayerRecorder) ttfSection(g *Game, screen *ebiten.Image) {
 	if g.font != nil {
-		// ---- 逐字複本開始：main.go:10125..10150（g.font.Draw( 換成 r.fontDraw(g.font, ） ----
+		// ---- 逐字複本開始：main.go:10136..10161（g.font.Draw( 換成 r.fontDraw(g.font, ） ----
 		if g.shouldDrawTransientBattleMessage() { // 攻擊等短訊(無對話框時)
 			r.fontDraw(g.font, screen, g.msg, 8, float64(logicalH)-30, 1.2, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
 		}
@@ -122,7 +122,7 @@ func (r *ttfLayerRecorder) ttfSection(g *Game, screen *ebiten.Image) {
 					color.RGBA{0xe0, 0xe0, 0xe0, 0xff})
 			}
 		}
-		// ---- 逐字複本結束：main.go:10125..10150 ----
+		// ---- 逐字複本結束：main.go:10136..10161 ----
 	}
 }
 

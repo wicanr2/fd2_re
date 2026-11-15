@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
@@ -881,13 +880,14 @@ func (g *Game) applyNativeOverlayDirectionInput() {
 	for direction, key := range [4]ebiten.Key{
 		ebiten.KeyArrowUp, ebiten.KeyArrowLeft, ebiten.KeyArrowRight, ebiten.KeyArrowDown,
 	} {
-		if !inpututil.IsKeyJustPressed(key) {
+		if !keyJustPressed(key) {
 			continue
 		}
 		if fdother.ActionOverlayAcceptsDirection(state.Availability, direction) {
 			g.ringSel = direction
 		}
 	}
+	g.applyPointerToOverlay(state.Availability)
 }
 
 // beginBattleActionOverlay 依 sub_173E7（0x18E53／0x18ED6 各呼叫一次）挑起始

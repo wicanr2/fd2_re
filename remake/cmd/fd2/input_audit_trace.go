@@ -28,13 +28,17 @@ func (g *Game) recordInputAuditState() {
 	if value, err := strconv.Atoi(os.Getenv("FD2_INPUT_AUDIT_INTERVAL")); err == nil && value >= 1 && value <= 120 {
 		interval = value
 	}
-	if len(keys) == 0 && len(released) == 0 && !mousePressed && !mouseReleased && (g.balanceUI.open || g.frame%interval != 0) {
+	if len(keys) == 0 && len(released) == 0 && !mousePressed && !mouseReleased && (g.balanceUI.open || g.controls.open || g.frame%interval != 0) {
 		return
 	}
 	r := map[string]any{"frame": g.frame, "keys": keys, "cursor": []int{g.curX, g.curY}, "camera": []float64{g.camX, g.camY}, "ring": g.ring, "ring_sel": g.ringSel, "ring_phase": g.actionOverlayPhase, "ring_blink": g.actionOverlayBlink.Phase, "banner": g.banner, "banner_t": g.bannerT, "moved": g.moved, "walking": g.walk != nil, "error": g.loadErr, "ai_busy": g.aiBusy, "dialogues": len(g.dialog), "move_preview": g.nativeMovePlan != nil}
 	r["released_keys"] = released
 	r["mouse_left_pressed"], r["mouse_left_released"] = mousePressed, mouseReleased
 	r["balance_editor"] = g.balanceAuditState()
+	r["controls_panel"] = map[string]any{"open": g.controls.open, "selected": g.controls.selected, "capture": g.controls.capture, "conflict": g.controls.conflict != nil}
+	if g.pointer.active {
+		r["pointer"] = []int{g.pointer.x, g.pointer.y}
+	}
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["hd_texture_quality"] = g.playerHDQuality.name()
