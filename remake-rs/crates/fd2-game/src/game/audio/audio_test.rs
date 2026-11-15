@@ -154,3 +154,27 @@ fn stop_owned_voices_only_clears_their_own_channel() {
     g.stop_title_ani1_sound();
     assert!(g.title_ani1_voice.is_none() && g.sfx_voices.len() == 1);
 }
+
+/// R5 階段 4 r5o（Rust 新增，沒有 Go 對應）：外殼介面依固定順序列出播放請求，每個新請求有新的序號。
+#[test]
+fn audio_voices_mut_lists_slots_in_order_with_fresh_serials() {
+    ensure_audio_ctx();
+    let mut g = Game {
+        bgm: Some(voice(true, "bgm")),
+        native_physical_voice: Some(voice(true, "physical")),
+        sfx_voices: vec![voice(true, "a")],
+        ..Default::default()
+    };
+    g.play_raw(&[1, 2, 3]);
+    g.play_raw(&[1, 2, 3]);
+    let listed: Vec<(VoiceSlot, u64)> = g.audio_voices_mut().into_iter().map(|(slot, v)| (slot, v.serial)).collect();
+    let slots: Vec<VoiceSlot> = listed.iter().map(|l| l.0).collect();
+    assert_eq!(slots, [VoiceSlot::Bgm, VoiceSlot::NativePhysical, VoiceSlot::Sfx, VoiceSlot::Sfx, VoiceSlot::Sfx]);
+    let (first, second) = (listed[3].1, listed[4].1);
+    assert!(first != 0 && second > first, "同內容的兩個請求要有不同序號：{first} {second}");
+    for (_, voice) in g.audio_voices_mut() {
+        voice.playing = false;
+    }
+    g.step_sfx_voices();
+    assert!(g.sfx_voices.is_empty() && g.audio_voices_mut().len() == 2);
+}

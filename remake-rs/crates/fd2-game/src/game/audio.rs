@@ -49,7 +49,13 @@ fn audio_muted() -> bool {
 
 /// Go `audio.NewPlayerFromBytes(audioCtx, b)` 後 `Play()`：一個播放中的音效請求。
 fn new_pcm_voice(b: &[u8]) -> SfxVoice {
-    AudioVoice { source: String::from("pcm"), playing: true, encoded: b.to_vec(), ..Default::default() }
+    AudioVoice {
+        source: String::from("pcm"),
+        playing: true,
+        encoded: b.to_vec(),
+        serial: next_voice_serial(),
+        ..Default::default()
+    }
 }
 
 impl Game {
@@ -106,8 +112,14 @@ impl Game {
         if let Some(old) = self.bgm.as_mut() {
             old.closed = true;
         }
-        self.bgm =
-            Some(AudioVoice { source: path, playing: true, closed: false, encoded: raw, looping: loop_count == 0 });
+        self.bgm = Some(AudioVoice {
+            source: path,
+            playing: true,
+            closed: false,
+            encoded: raw,
+            looping: loop_count == 0,
+            serial: next_voice_serial(),
+        });
         self.bgm_cur = track.to_string();
     }
 
@@ -320,6 +332,27 @@ impl Game {
         }
         // Go 對播完的 voice 呼叫 Close() 後丟掉；Rust 直接丟棄（外殼依 voice 是否還在佇列判斷）。
         self.sfx_voices.retain(|voice| voice.is_playing());
+    }
+
+    /// R5 階段 4 r5o 新增（外殼介面，沒有對應的 Go 函式）：目前存在的全部播放請求。
+    ///
+    /// Go 的 `*audio.Player` 自己出聲並回報 `IsPlaying()`；Rust 由 `fd2-app` 每幀呼叫這裡，依
+    /// [`AudioVoice::serial`] 開始或停止播放，播完把 `playing` 設回 `false`。不在清單裡的序號代表
+    /// Go 已 `Close()`（`stopBGM`、換曲、`stepSFXVoices` 回收等），外殼要停掉對應的播放。
+    /// 順序固定：BGM、標題 ANI #1、物理演出、疊播音效（依加入順序）。
+    pub fn audio_voices_mut(&mut self) -> Vec<(VoiceSlot, &mut AudioVoice)> {
+        let mut out = Vec::with_capacity(3 + self.sfx_voices.len());
+        if let Some(voice) = self.bgm.as_mut() {
+            out.push((VoiceSlot::Bgm, voice));
+        }
+        if let Some(voice) = self.title_ani1_voice.as_mut() {
+            out.push((VoiceSlot::TitleAni1, voice));
+        }
+        if let Some(voice) = self.native_physical_voice.as_mut() {
+            out.push((VoiceSlot::NativePhysical, voice));
+        }
+        out.extend(self.sfx_voices.iter_mut().map(|voice| (VoiceSlot::Sfx, voice)));
+        out
     }
 }
 

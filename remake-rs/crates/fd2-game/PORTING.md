@@ -2853,3 +2853,130 @@ Go 實際讀的輸入（`cmd/fd2` 非測試檔逐一 grep）與 Rust 的對應�
 | `tools/rust_r5_opening_frames.sh` | 10372／10372 相同，序列雜湊 `eeed99ea…0be771` |
 | `tools/rust_r5_app_frames.sh` | 上節，兩次執行結果相同 |
 | `tools/rust_r5_mark_ported.py --stage4` | 重跑不改 `PORTING.json`（SHA-256 相同） |
+
+## R5 階段 4：r5o（音訊，2026-11-15）
+
+代號 `r5o`，基準 `253f5f27`。`fd2-app` 解碼 BGM 與音效，依 `AudioVoice` 以 Bevy 播放，並與 Go 逐樣本比對。命令：
+`FD2_DATA_ROOT=<主工作區> tools/rust_r5o_audio_pcm.sh work/r5-stage4-r5o-20261115/final`；輸出在主工作區，不進版控
+（`.s16` 比對完刪除，留 jsonl 與摘要）。
+
+### r5o：fd2-game 對外介面
+
+| 項目 | 位置 | 說明 |
+|---|---|---|
+| `AudioVoice::serial` | `support.rs` | 共用變更：建立請求時由 `next_voice_serial()` 配發，從 1 遞增，不進存檔與檢查點。Go 以 `*audio.Player` 指標分辨「同一個播放器」與「同內容的新播放器」（停掉同一首再重播、同一音效連播），外殼以序號做同樣的分辨。`Default` 的 0 只出現在測試替身 |
+| `next_voice_serial()`、`VoiceSlot` | `support.rs` | 新增公開項；`VoiceSlot` 是 `Bgm`／`TitleAni1`／`NativePhysical`／`Sfx` |
+| `Game::audio_voices_mut()` | `audio.rs` | 新增公開方法：依 BGM、標題 ANI #1、物理演出、疊播音效的順序列出播放請求的可變參照 |
+| `new_pcm_voice`、`play_bgm_count` | `audio.rs` | 建立 `AudioVoice` 時配發序號 |
+
+`Game` 不是 `Send`／`Sync`（`Box<dyn FnMut + Send>` 欄位、借用 `&dyn Fn` 的 `FrameInput`、`mpsc::Receiver` 等），不能當 Bevy
+資源；`fd2-app` 以 `App::insert_non_send` 放入，系統用 `NonSendMut` 取得。新測試 `audio_voices_mut_lists_slots_in_order_with_fresh_serials`。
+
+### r5o：fd2-app 的解碼與播放（`fd2-app/src/audio.rs`）
+
+- 依賴：`fd2-game`、`lewton =0.10.2`、`rodio =0.22.2`（`default-features = false`，feature 照 bevy_audio 已啟用的 playback、tracing、
+  lewton）、`sha2 =0.10.9`。`Cargo.lock` 只在 `fd2-app` 多出這四條依賴邊，沒有改版本，沒有新增套件。
+- 解碼（`open_stream`／`decode_pcm`）：輸出 44.1 kHz、雙聲道、`i16` 交錯，與 Go 相同。OGG 以 lewton 逐封包解成浮點；WAV 用
+  本模組的 RIFF 解析，檢查與錯誤訊息照 Ebiten `audio/wav`，8 位元照 `convert.Stereo16` 轉成 `int16(b*0x101-32768)`。取樣率不是
+  44.1 kHz 時以 rodio `SampleRateConverter` 在浮點轉換，再照 Ebiten 夾到 ±1、乘 32767、向零取整；單聲道複製成雙聲道。
+  採串流解碼，BGM 不必整首先解完。
+- 播放（`VoiceSync`、`Fd2AudioPlugin<H>`）：每幀讀 `audio_voices_mut`。新序號建一個 `AudioPlayer<Fd2Sound>` 實體，BGM `looping`
+  用 `PlaybackSettings::LOOP`，其餘用 `ONCE`。不在清單、`closed` 或 `playing == false` 的序號停止並 despawn。一次性播放的
+  sink `empty()` 時把 `playing` 設回 `false`，由 `fd2-game` 的 `step_sfx_voices` 回收。`Fd2Sound` 的 `Decodable` 把 `i16` 除以
+  32768 交給 rodio（2 的冪次，不損失精度）。同步系統排在 `PostUpdate` 的 `TransformSystems::Propagate` 之前；Bevy 的播放系統
+  在其後，所以同一幀就建立 sink。
+- 音量與靜音：Go 沒有呼叫 `SetVolume`，音量一律 1.0。`FD2_MUTE`、截圖模式、系統設定的音樂／音效開關由 `fd2-game` 在建立請求時
+  判斷，與 Go 相同，外殼不再判斷。
+- 解碼失敗：外殼不播放，並把 `playing` 設成 `false`。Go 的 BGM 解不開就不換曲，音效庫解不開就整批拒收；`audio-decode-deferred`
+  不變。
+- 接線：`H` 是提供播放請求的 non-send 資源，`fd2_game::Game` 已實作 `GameAudioHost`。主迴圈只要 `insert_non_send(game)`、
+  加 `Fd2AudioPlugin::<Game>`，並讓 `fd2-game` 的 `Update` 排在 `PostUpdate` 之前。
+
+### r5o：Go／Rust 逐樣本比對
+
+Go 端新增只輸出資料的 `remake/cmd/fd2-r5-audio-pcm`（既有 Go 檔與 `go.mod` 沒改），照 `cmd/fd2` 的路徑解碼：OGG 用
+`vorbis.DecodeWithSampleRate(44100, …)`＋`io.ReadAll`，WAV 用 `wav.DecodeWithSampleRate`；另外輸出不重取樣的中間層
+（`DecodeWithoutResampling`）。跑兩次，`go-pcm.jsonl` 相同（`441e3463…`）。範圍是 `music_catalog.json` 的 15 曲 × FM／MT-32
+共 30 個 BGM（192 kHz 立體聲）、分離素材包 `sfx/` 全部 100 個 OGG（11025 Hz 單聲道），以及 `assets/sfx/` 全部 97 個 WAV
+（8 位元 11025 Hz 單聲道；Go 只載入其中的 `battle_48_00`、`battle_64_00`）。Rust 端 `fd2-app` 的 `r5o_audio_pcm` 逐檔比對：
+
+| 階段 | Rust | 對照的 Go |
+|---|---|---|
+| `final` | 正式播放路徑 `decode_pcm` | `DecodeWithSampleRate`＋`ReadAll` |
+| `native` | lewton 浮點 → Ebiten 取整 → 單聲道複製（WAV 是整數樣本） | `DecodeWithoutResampling` |
+| `ebiten_on_go_native` | 診斷：Ebiten `convert.Resampling` 的 Rust 移植，輸入 Go 的 `native` | `final` |
+| `ebiten_on_rust_native` | 診斷：同一個移植，輸入 Rust 的 `native` | `final` |
+| `*_head` | 同上，只取重取樣窗完全落在兩邊都有樣本的前段 | `final` 前段 |
+
+結果（`compare/summary.json` `3c17e711…`，兩次執行相同；差值以 16 位元樣本計）：
+
+| 類別 | 階段 | 整檔相同 | 長度相同 | Rust−Go 幀數 | 不同樣本／比較樣本 | 最大差 | RMS |
+|---|---|---|---|---|---|---|---|
+| BGM 30 | `final` | 0 | 1 | −4395..0 | 94809036／153587278 | 865 | 6.84 |
+| | `native` | 0 | 1 | −994..0 | 562438／668679084，全為 ±1 | 1 | 0.029 |
+| | `ebiten_on_go_native` | 30 | 30 | 0 | 0 | 0 | 0 |
+| | `ebiten_on_rust_native_head` | 0 | 30 | 0 | 219621／153587086 | 2 | 0.038 |
+| SFX OGG 100 | `final` | 0 | 0 | −3..1017 | 3843508／5173090 | 6912 | 453.4 |
+| | `native` | 0 | 13 | 0..255 | 842／1293292，全為 ±1 | 1 | 0.026 |
+| | `ebiten_on_go_native` | 100 | 100 | 0 | 0 | 0 | 0 |
+| | `ebiten_on_rust_native` | 19 | 100 | 0 | 5652／5173168，全為 ±1 | 1 | 0.033 |
+| WAV 97 | `final` | 0 | 0 | −3 | 3353908／4573194 | 7509 | 477.0 |
+| | `native` | 97 | 97 | 0 | 0 | 0 | 0 |
+| | `ebiten_on_go_native`、`ebiten_on_rust_native` | 97 | 97 | 0 | 0 | 0 | 0 |
+
+差異來源逐項分開：
+
+| 來源 | 證據 | 影響 |
+|---|---|---|
+| 重取樣器 | Ebiten 是 ±8 個來源樣本的加窗 sinc（`fastCos01` 查表），rodio 是相鄰兩點線性內插。Ebiten 移植版輸入 Go `native` 時 227 檔全部逐位元組相同；WAV 的 `native` 本來就相同，換成移植版後 97 檔全部相同 | `final` 的差異幾乎全部來自這裡：11025 Hz 音效 RMS 約 450、最大 7509；192 kHz BGM RMS 6.8 |
+| 取整順序 | Go 先把解碼浮點轉 16 位元，重取樣時除以 32767，算完再轉一次；Rust 在浮點重取樣後只轉一次 | 含在上一列；移植版照 Go 的順序 |
+| 解碼器浮點 | lewton 與 `jfreymuth/vorbis` 的浮點運算不同，轉 16 位元時約 0.07～0.08% 的樣本差 1（BGM 562438／668679084、SFX 842／1293292），沒有更大的差 | 移植版重取樣後，BGM 前段最大差 2、RMS 0.038；SFX 100 檔中 19 檔整檔相同 |
+| BGM 結尾 | 這批 BGM 的頁 granule 與實際解出的樣本數不一致：FDMUS_014 MT-32 以外的 29 曲都有，兩個解碼器解完的樣本都比最後 granule 少（lewton 最多少 19139 幀）。Ebiten 解碼時的 `Seek(0)` 讓 oggvorbis 從 0 自行計數，沒有超過最後 granule，所以保留最後一個封包的全部樣本；lewton 每頁把計數對齊到頁 granule，再把最後一個封包截到最後 granule，因此比 Go 少 0..994 個來源幀（約 0～5 ms） | 結尾最後幾 ms |
+| BGM 長度補零 | Go 的 `Resampling` 以最後 granule 定長度，解出的樣本不夠時補零：27 曲結尾多 1472..18752 個來源幀（約 8～98 ms）的靜音，BGM 以 `NewInfiniteLoop` 循環時每圈都有這段靜音；Rust 的長度是實際解出的樣本數 | Go 的循環點有最多約 98 ms 的空白，Rust 沒有 |
+| SFX 結尾 | 音效只有一頁，lewton 沒有頁 granule 可對齊，不截最後一個封包；Go 從 0 計數，截到最後 granule | Rust 多 0..255 個來源幀（13 檔相同），輸出多 −3..1017 幀 |
+| rodio 結尾 | `SampleRateConverter` 在最後少輸出 3 幀 | WAV 全部與 13 個 SFX 少 3 幀 |
+
+以上只是位元層級的量化；人耳聽辨沒有做。
+
+### r5o：播放驗證
+
+`r5o_audio_play`（`play/r5o-audio-play.json`，`status=passed`）：Bevy `MinimalPlugins`＋`AssetPlugin`＋`AudioPlugin`＋
+`Fd2AudioPlugin`，容器的 ALSA null 裝置，以腳本改 `AudioVoice`：
+
+| 步驟 | 觀察 |
+|---|---|
+| BGM FDMUS_018（循環） | 序號 1 建 1 個 sink，位置前進 |
+| 換 FDMUS_004 | 停 1、開 2，始終 1 個 sink |
+| 三個音效（#77 sub2、#77 sub1、WAV `battle_48_00`） | 開 3、4、5；sink 播完後回報 `finished`、`playing=false`，腳本照 `step_sfx_voices` 回收 |
+| 停止 BGM | 停 2，沒有播放器 |
+| 停止後重播同一首（內容相同、序號 6） | 新 sink 從頭播 |
+| 再停止 | 沒有播放器 |
+
+五個音檔交給 sink 的樣本（`Fd2Sound::decoder()` 乘回 32768）與 `decode_pcm` 逐樣本相同：樣本數與 SHA-256 都相同，全為整數。
+null 裝置消耗樣本比實際時間快（20 幀內 BGM 位置到 8.5 秒），所以這裡不驗證播放速度與時序；人耳聽辨列為未驗。
+
+### r5o：需要使用者決定
+
+逐樣本與 Go 不同。以下三案擇一；目前程式是 A，沒有照 Go 改：
+
+| 案 | 內容 | 與 Go 的差 |
+|---|---|---|
+| A | 維持 lewton＋rodio 線性重取樣，差異登記成 KNOWN_DIFFERENCES（建議名稱 `audio-resampler-rodio-linear`、`audio-vorbis-decoder-lewton`、`audio-ogg-tail-granule`） | 上表 `final` |
+| B | 把診斷用的 Ebiten `convert.Resampling` 移植（約 120 行；輸入相同時 227 檔逐位元組相同）改成正式路徑，並照 Go 的取整順序、以最後 granule 定長度補零、音效截到 granule、BGM 保留最後一個封包 | WAV 全同；OGG 只剩解碼器的 ±1，需要具名例外（例如 `audio-vorbis-decoder-lewton`） |
+| C | B 再加上移植 Go 的 `jfreymuth/vorbis` 解碼器（約 2000 行） | 可能逐位元組相同，但要另外驗證浮點運算順序；工作量大 |
+
+另一個獨立的問題：Go 的 BGM 循環點有最多約 98 ms 的靜音（補零）。B、C 案照 Go 會保留，A 案沒有。
+
+### r5o：共用檔改動
+
+| 檔案 | 改動 |
+|---|---|
+| `fd2-game/src/game/support.rs` | `AudioVoice::serial`、`next_voice_serial`、`VoiceSlot` |
+| `fd2-game/src/game/audio.rs` | 建立請求時配發序號；`audio_voices_mut` |
+| `fd2-game/src/game/audio/audio_test.rs` | 新測試 1 個 |
+| `fd2-app/Cargo.toml`、`src/lib.rs` | 四條依賴、`pub mod audio` |
+| `Cargo.lock` | `fd2-app` 多四條依賴邊 |
+
+### r5o：驗證
+
+見 [`docs/goal/121`](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)「階段 4 結果：r5o」。

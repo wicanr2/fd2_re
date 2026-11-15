@@ -689,3 +689,63 @@ R4 其他 KNOWN_DIFFERENCES（錯誤文字、map 走訪順序、診斷輸出的�
 - 軟體繪圖（llvmpipe）下外殼約每秒 3～7 幀（主機負載高時），只證明逐像素正確，不代表實機幀率。
 - 新增的 KNOWN_DIFFERENCES：`window-integer-scale-letterbox`（121 定案的整數倍）、`player-toolbar-deferred-r6`、`bevy-keycode-universe`、
   `packaged-defaults-reexec`，說明見 `PORTING.md`。
+
+## 階段 4 結果：r5o（2026-11-15）
+
+代號 `r5o`（音訊）。逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 4：r5o」。命令：
+`FD2_DATA_ROOT=<主工作區> tools/rust_r5o_audio_pcm.sh work/r5-stage4-r5o-20261115/final`；輸出在主工作區，不進版控。
+
+### 解碼與播放
+
+- `fd2-app/src/audio.rs`：OGG 以 lewton、WAV 以本模組的 RIFF 解析解碼，取樣率不同時以 rodio `SampleRateConverter` 轉成 44.1 kHz，
+  輸出 Go 的格式（雙聲道、`i16`，夾到 ±1 乘 32767 向零取整）。`Cargo.lock` 只在 `fd2-app` 多出 `fd2-game`、`lewton`、`rodio`、`sha2`
+  四條依賴邊，沒有改版本，沒有新增套件。
+- `Fd2AudioPlugin<H>` 每幀依 `Game::audio_voices_mut` 的序號開始、切換、停止 Bevy 播放器，一次性音效播完回報 `playing=false`。
+  `fd2-game` 為此新增 `AudioVoice::serial`（Go 以播放器指標分辨同內容的新播放器）。`Game` 不是 `Send`／`Sync`，以
+  `insert_non_send` 放進 Bevy。音量照 Go 一律 1.0；`FD2_MUTE` 等開關由 `fd2-game` 判斷。
+
+### Go／Rust 逐樣本比對
+
+Go 端新增只輸出資料的 `remake/cmd/fd2-r5-audio-pcm`，以 `cmd/fd2` 的 `DecodeWithSampleRate(44100)` 解 30 個 BGM（192 kHz）、
+100 個音效 OGG 與 97 個 WAV（11025 Hz），跑兩次結果相同。**逐樣本不同**，沒有一檔整檔相同：
+
+| 類別 | 不同樣本／比較樣本 | 最大差 | RMS | Rust−Go 幀數 |
+|---|---|---|---|---|
+| BGM 30 | 94809036／153587278 | 865 | 6.84 | −4395..0 |
+| 音效 OGG 100 | 3843508／5173090 | 6912 | 453.4 | −3..1017 |
+| WAV 97 | 3353908／4573194 | 7509 | 477.0 | −3 |
+
+原因已分開量出：
+
+- **重取樣器**是主因。Ebiten 是加窗 sinc，rodio 是線性內插。把 Ebiten `convert.Resampling` 移植成 Rust（診斷用，沒有接進播放），
+  輸入 Go 的未重取樣樣本時 227 檔全部逐位元組相同；WAV 換成移植版後 97 檔全部相同。
+- **解碼器**：lewton 與 Go 的 `jfreymuth/vorbis` 在轉 16 位元時約 0.07～0.08% 的樣本差 1，沒有更大的差。
+- **結尾**：這批 BGM 的頁 granule 與實際樣本數不一致。Go 保留最後一個封包、再以最後 granule 補零，27 曲的循環點有 8～98 ms
+  靜音；lewton 截掉最後封包的 0..994 個來源幀。單頁的音效則相反，Go 截到 granule，lewton 多 0..255 個來源幀。
+
+### 播放驗證
+
+`r5o_audio_play` 在容器的 ALSA null 裝置上通過：BGM 循環、換曲、停止、停止後重播同一首都建立或釋放對應的 `AudioSink`，三個
+音效播完回報並回收；五個音檔交給 sink 的樣本與解碼結果逐樣本相同。null 裝置消耗得比實際時間快，播放時序與人耳聽辨列為未驗。
+
+### 待使用者決定
+
+| 案 | 內容 |
+|---|---|
+| A（目前） | 維持 lewton＋rodio 線性重取樣，差異登記 KNOWN_DIFFERENCES |
+| B | 把 Ebiten 重取樣移植改成正式路徑，並照 Go 的取整順序與結尾處理；WAV 全同，OGG 只剩解碼器 ±1（具名例外） |
+| C | B 再移植 Go 的 vorbis 解碼器（約 2000 行），可能逐位元組相同 |
+
+Go 的 BGM 循環點靜音（最多約 98 ms）是否照做，也一併決定。
+
+### 驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_r5o_audio_pcm.sh`（`work/r5-stage4-r5o-20261115/final`） | Go 兩次 `go-pcm.jsonl` 相同（`441e3463…`）；比對摘要 `summary.json` `3c17e711…`（兩次執行相同）；Rust 解碼 227 檔沒有錯誤；播放驗證 `passed` |
+| `fd2-app` | fmt、clippy `-D warnings` 通過；單元測試 9 passed |
+| `tools/rust_game_test.sh` | fmt、clippy 通過；379 passed、7 ignored（新增 1 個）；沒有「略過」 |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage4-r5o-20261115/parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| Go 新檔 | `gofmt -l` 無輸出、`go vet` 通過；`go.mod`、`go.sum` 不變；既有 Go 檔沒有改 |
+| `Cargo.lock` | 只在 `fd2-app` 多出四條依賴邊 |

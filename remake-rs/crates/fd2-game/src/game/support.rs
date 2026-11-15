@@ -414,6 +414,10 @@ pub struct AudioVoice {
     pub encoded: Vec<u8>,
     /// R4 A 組新增（共用變更需求）：Go `audio.NewInfiniteLoop`（BGM loop count 0）。
     pub looping: bool,
+    /// R5 階段 4 r5o 新增（共用變更）：這個播放請求的序號，建立時由 [`next_voice_serial`] 配發，從 1 起
+    /// 遞增。Go 以 `*audio.Player` 指標分辨「同一個播放器」與「同內容的新播放器」（例如停掉同一首曲子
+    /// 再重播）；外殼以序號做同樣的分辨。`Default` 的 0 只出現在測試替身。
+    pub serial: u64,
 }
 
 impl AudioVoice {
@@ -421,6 +425,25 @@ impl AudioVoice {
     pub fn is_playing(&self) -> bool {
         self.playing && !self.closed
     }
+}
+
+/// R5 階段 4 r5o 新增：配發下一個 [`AudioVoice::serial`]（行程內唯一，不進存檔與檢查點）。
+pub fn next_voice_serial() -> u64 {
+    static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
+    NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+}
+
+/// R5 階段 4 r5o 新增：[`AudioVoice`] 在 `Game` 裡的位置，見 `Game::audio_voices_mut`。
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum VoiceSlot {
+    /// Go `g.bgm`（BGM，可能循環）。
+    Bgm,
+    /// Go `g.titleANI1Voice`（標題 ANI #1 專用音效）。
+    TitleAni1,
+    /// Go `g.nativePhysicalVoice`（物理演出的同通道音效）。
+    NativePhysical,
+    /// Go `g.sfxVoices`（疊播的一次性音效）。
+    Sfx,
 }
 
 /// Go `*audio.Context`：只保存取樣率。
