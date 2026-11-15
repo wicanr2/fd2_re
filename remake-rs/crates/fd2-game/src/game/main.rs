@@ -7728,8 +7728,38 @@ impl Game {
         if key_repeat(&input, Key::ArrowDown) || key_repeat(&input, Key::S) {
             self.move_map_cursor(0, 1);
         }
-        // 觸控:點哪格移到哪格。Go 讀 `inpututil.AppendJustPressedTouchIDs` 後經 `playerTouchCoordinates`
-        // （`r8`）換算；`TickInput` 還沒有觸控（共用變更需求），這段在 R5 接上。
+        // 觸控:點哪格移到哪格（Go `main.go:9095`..`9125`；R5 階段 4 r5w 接上 `TickInput::just_pressed_touches`）。
+        for &(tx, ty) in &input.just_pressed_touches {
+            let (tx, ty, accepted) = self.player_touch_coordinates(tx, ty);
+            if !accepted {
+                continue;
+            }
+            // Go `int(g.camX) + tx`：float64 轉 int 向零截斷。
+            let mut target_x = (self.cam_x as i64 + tx) / tile_w;
+            let mut target_y = (self.cam_y as i64 + ty) / tile_h;
+            if target_x < 0 {
+                target_x = 0;
+            } else if target_x >= map_w {
+                target_x = map_w - 1;
+            }
+            if target_y < 0 {
+                target_y = 0;
+            } else if target_y >= map_h {
+                target_y = map_h - 1;
+            }
+            while self.cur_x < target_x {
+                self.move_map_cursor(1, 0);
+            }
+            while self.cur_x > target_x {
+                self.move_map_cursor(-1, 0);
+            }
+            while self.cur_y < target_y {
+                self.move_map_cursor(0, 1);
+            }
+            while self.cur_y > target_y {
+                self.move_map_cursor(0, -1);
+            }
+        }
         // 邊界
         if self.cur_x < 0 {
             self.cur_x = 0;
@@ -8118,9 +8148,8 @@ impl Game {
         // 白閃的 drawn 與說明畫面的 clearModernHDText（R6）：與呈現回報共用。
         self.finish_present_frame();
         if self.help_visible {
-            todo!(
-                "r8:player_shortcuts.go:drawPlayerHelp（說明畫面；開場與第一章沒有開，PORTING.json 狀態 r8。121 範圍表把說明畫面列在 R5 的外殼，階段 4 接 F1 時移植）"
-            )
+            // R5 階段 4（r5w）：121 範圍表把說明畫面列在 R5 的外殼，接 F1 時移植。
+            self.draw_player_help(screen);
         }
     }
 

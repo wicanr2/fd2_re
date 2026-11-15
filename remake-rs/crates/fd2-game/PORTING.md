@@ -2710,3 +2710,146 @@ Update（`closeRing`）沒有掛 gap：Go 的 `closeRing` 是共用函式，呼�
 | 六組局部黃金（`rust_r5b_layers.sh`、`rust_r5h_layers.sh`、`rust_r5c_layers.sh`、`rust_r5_map_layers.sh`、`rust_r5_dialogue_layers.sh`、`rust_r5p_layers.sh`，兩側重跑，`work/r5-stage3-20261115/layers`） | 六組兩邊的 `checkpoints.jsonl` 都是 `1c846f57…`，序列雜湊兩邊相同且與階段 2 各組紀錄相同：r5b `64e96cad…`、r5h `c5e59e7b…`、r5c `4c5a3720…`（14579／14579）、r5m `bb359b4d…`、r5d `967a046c…`、r5p opening `40f0309d…`／chapter `75f45290…` |
 | Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip`；逐字複本 7 個函式與原檔逐字相同 |
 | `Cargo.lock` | 沒有改動 |
+
+## R5 階段 4：r5w（視窗、畫格呈現、輸入、說明畫面，2026-11-15）
+
+代號 `r5w`，基準 `253f5f27`。計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)「階段 4 結果：r5w」。
+音訊是同時進行的 `r5o`，不在本節。
+
+### r5w：fd2-game 對外 API（最小公開）
+
+`fd2-app` 只透過下列項目驅動遊戲；其餘欄位與函式維持 `pub(crate)`。
+
+| 項目 | 位置 | 說明 |
+|---|---|---|
+| `fd2_game::PlayerRunner`、`RunnerStep` | `src/game/player_runner.rs`（Rust 新增） | 主迴圈 runner：`load`（Go `main()` 的 `loadGame` 到 `SetTPS`）、`update(&RawInputState)`、`draw(&mut Picture)`、`layout`、`ticks_per_second`（`60 × appliedPlayerSpeed`）、`take_fullscreen_request`、`load_error`、`game_frame`／`progress`（診斷） |
+| `RawInputState`、`EbitenInputState` | `src/game/support.rs` | 輸入介面（下節）；`TickInput`、`Key`、`Picture` 本來就是 `pub` |
+| `Key::ALL` | 同上 | 33 個鍵的清單 |
+| `TickInput` 新欄位 | 同上 | `other_just_pressed`、`just_pressed_touches`、`touches`、`cursor`、`mouse_left_held`／`_just_pressed`／`_just_released`、`input_chars`；`any_just_pressed` 含 `other_just_pressed` |
+
+`PlayerRunner::update` 照 Go `modernHDPresentation.Update`（`modern_hd_presentation.go:35`）的忠實模式子集：`inpututil` 推進一幀 →
+虛擬時鐘推進一幀 → `syncPlayerClockSpeedAt` → `Game.Update` → `syncPlayerClockSpeedAt` → 依 `effectivePlayerSpeed` 更新 TPS。工具列、
+速度選單、海報與數值編輯器在 R6：runner 以 `toolbar == false` 的形狀執行（`toolbarOffset`／`posterOffset` 都是 0，`Layout` 640×400，
+`Draw` 直接 `Game.Draw`）；數值編輯器已開啟、HD 呈現、F10 海報要求時停在 `todo!("r6:…")`。`applyPackagedPlayerDefaults` 在
+`fd2-app` 的 `bin/fd2.rs`：`FD2_CAMPAIGN` 完全沒有設定時，以同一個執行檔補上 `canonical` 重新啟動（工作區禁用 `unsafe`，不能改
+行程內的環境變數）。
+
+### r5w：輸入層
+
+兩層，之後加手把與自訂綁定只改 `fd2-app`（使用者 2026-11-16）：
+
+1. `fd2-app/src/input.rs`：實體輸入（`PhysicalSnapshot`：Bevy 按住中的 `KeyCode`、滑鼠左鍵、游標、觸控點、輸入文字，視窗實體像素）
+   經對應表 `Bindings`（`PhysicalInput → Key`，預設 `Bindings::ebiten()` 是 Ebiten 鍵名的一對一對應）換成 `RawInputState`
+   （邏輯鍵、沒有對應的鍵、Ebiten 邏輯座標的觸控與游標、文字）。手把之後加成 `PhysicalInput` 的新變體。
+2. `fd2-game` 的 `EbitenInputState::update(&RawInputState) -> TickInput`：Ebiten v2.6.6 `inpututil` 的每幀狀態（每次 `Update` 前一次），
+   持續時間、剛按下、剛放開、虛擬鍵 `Alt`（左右任一）、觸控與滑鼠左鍵的持續時間。同一顯示幀跑多次 `Update` 時每次傳同一份
+   `RawInputState`（Ebiten `internal/ui/context.go:136`）。
+
+座標：滑鼠與觸控照 Ebiten `clientPositionToLogicalPosition` 的 `(x - ox) / s`，再 `int()` 向零截斷；`s`、`ox`、`oy` 是外殼實際顯示的
+整數倍位置。
+
+Go 實際讀的輸入（`cmd/fd2` 非測試檔逐一 grep）與 Rust 的對應：
+
+| Go | 讀的地方 | Rust |
+|---|---|---|
+| `inpututil.IsKeyJustPressed(k)`（Escape 46、方向鍵各 20～24、Enter 11、Space 10、Backspace 5、Tab 2、F1～F12、Home、Numpad5、Z，另有迴圈變數 2 處） | `main.go`、`title.go`、`native_shop_ui.go`、`native_hotel_ui.go`、`native_town_secret_input.go`、`action_overlay_runtime.go` | `TickInput::is_just_pressed`（`pressed`） |
+| `ebiten.IsKeyPressed`（`KeyAlt`／`KeyAltLeft`／`KeyAltRight` Alt+Enter、`KeyControl`／`KeyShift` 修飾鍵、秘密商店的修飾鍵） | `main.go`、`native_town_secret_input.go` | `is_pressed`（`held`）；`Alt` 由 `EbitenInputState` 從左右算出 |
+| `inpututil.KeyPressDuration(k)`（`keyRepeat`，方向鍵與 WASD） | `main.go:9317` | `key_press_duration` |
+| `inpututil.AppendJustPressedKeys(nil)` 非空（8 處「任意鍵」） | `main.go` 等 | `any_just_pressed`：`pressed` 或 `other_just_pressed`（`Key` 沒列出的鍵，例如 Q） |
+| `inpututil.AppendJustPressedTouchIDs` ＋ `TouchPosition`（點格移動游標） | `main.go:9095` | `just_pressed_touches`，經 `player_touch_coordinates`（`player_toolbar.go:26`，本輪移植） |
+| `AppendJustReleasedKeys`、`IsMouseButtonJustPressed/JustReleased(Left)` | `input_audit_trace.go:24`（除錯觀測器，fd2-tools） | `released`、`mouse_left_just_pressed`／`_just_released`（觀測器本體沒有移植） |
+| `CursorPosition`、`IsMouseButtonPressed/JustPressed(Left)`、`AppendTouchIDs`＋`TouchPosition`、`AppendInputChars`、`IsKeyPressed(KeyShift)` | 工具列、海報、速度選單、數值編輯器（`player_toolbar.go`、`player_poster_controls.go`、`player_speed_controls.go`、`player_balance.go`） | `cursor`、`mouse_left_held`、`mouse_left_just_pressed`、`touches`、`input_chars`：資料已接到 `TickInput`，消費端在 R6 |
+| 滾輪、手把 | Go 沒有讀 | 沒有接；遊戲內滑鼠語意與手把等 Go 版定案後再移植（使用者 2026-11-16） |
+
+鍵盤實體對應（`input.rs` 的 `EBITEN_KEYS`）：`KeyA/D/S/W/Z`、`AltLeft`、`AltRight`、`ControlLeft/Right → Control`、
+`ShiftLeft/Right → Shift`、四個方向鍵、`Backspace`、`Enter`、`Escape`、`Space`、`Tab`、`Home`、`Numpad5`、`F1`～`F12`；其餘
+`KeyCode`（含 `NumpadEnter`，Ebiten 的 `KeyNumpadEnter` 與 `KeyEnter` 不同）是 `other_keys`。
+
+### r5w：主迴圈與畫格呈現
+
+- 每個顯示幀照 Ebiten `updateFrameImpl`：讀一次實體輸入；`Update` 次數由 `fd2-app/src/clock.rs`（Ebiten `internal/clock/clock.go`
+  `calcCountFromTPS` 的移植，含「第一次 Draw 前至少 Update 一次」）依 `PlayerRunner::ticks_per_second` 算出；之後每幀把全新的
+  640×400 畫布交給 `PlayerRunner::draw`（Ebiten 預設每幀清畫面），`Update` 次數為 0 時也畫。Go 沒有改 TPS 以外的主迴圈設定
+  （`main.go:13493`、`modern_hd_presentation.go:83` 的 `SetTPS(60 * speed)`）。
+- 呈現（`fd2-app/src/video.rs`）：CPU 畫格的預乘 RGB 照抄、alpha 改 255，上傳成 `Rgba8UnormSrgb` 貼圖（最近鄰）；倍率
+  `max(1, min(w/640, h/400))`、置中，餘下黑邊（`ClearColor` 黑）。視窗初始 1280×800、可調整大小，Alt+Enter 切換無邊框全螢幕。
+
+### r5w：說明畫面
+
+- `drawPlayerHelp`（`player_shortcuts.go:330`）移植到 `src/game/player_shortcuts.rs`；`Draw` 的 defer 在 `help_visible` 時呼叫
+  （`main.rs` 的 `draw_deferred`，原本 `todo!("r8:…drawPlayerHelp")`）。F1 開關與 Esc 關閉（`main.go:8406`..`8414`）在 R4 已移植。
+- Go 沒有畫說明畫面的測試（`player_shortcuts_test.go` 的 4 個測試都是主題切換，R6）。Rust 加 2 項：無字型時只畫面板，逐像素
+  等於 Ebiten 實測的 source-over（`(8,18,44,242)` 疊在不透明底）；有字型時 12 行字只畫在面板內、每行寬度不超過 524。
+
+### r5w：其他移植
+
+| Go | Rust | 測試 |
+|---|---|---|
+| `player_battle_speed.go:13` `battleAnimationActive`、`:25` `effectivePlayerSpeed`、`:35` `syncPlayerClockSpeedAt` | `player_battle_speed.rs` | Go `player_battle_speed_test.go:9`、`:57`、`:94` 三項移植 |
+| `player_game_clock.go:35` `setPlayerSpeedAt` | `player_game_clock.rs`（只給上列測試用；F8 仍是 `r8`） | 同上 |
+| `player_toolbar.go:26` `playerTouchCoordinates` | `player_toolbar.rs`（新子模組，工具列其餘在 R6） | Go `player_toolbar_floating_test.go:54`..`68` 的觸控表、`player_poster_test.go:176`..`191` 的海報位移與選單阻擋 |
+| `main.go:9095`..`9125` 觸控移動游標 | `main.rs` `update_frame`（原本是註解「R5 接上」） | 由外殼腳本驅動（下節） |
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py --stage4`（新旗標：也接受 `r8`，Go 檔沒有 Rust 子模組時補上路徑）把上列 6 個函式改
+`ported`，紀錄在頂層 `r5_stage4_r5w`。
+
+### r5w：KNOWN_DIFFERENCES
+
+| 名稱 | 差異 | 影響 |
+|---|---|---|
+| `window-integer-scale-letterbox` | Go 的視窗倍率可為小數（Ebiten `screenScaleAndOffsets` 取 `min(w/640, h/400)`，非整數倍時用 screen shader 混色，`ebiten_screen_filter.go:52`）；Rust 只用整數倍、留黑邊（121 定案）；視窗小於 640×400 時倍率 1、超出部分裁掉 | 只在視窗不是 640×400 整數倍時看得出來；觸控座標依實際顯示的位置換算 |
+| `player-toolbar-deferred-r6` | Go 預設有浮動工具列（游標移到頂端 4 像素出現），可點選主題、語系、介面、字級、速度、海報、全螢幕；Rust 沒有工具列，`playerToolbarTouchBlocked` 恆為 false | 工具列出現時 Go 會擋掉 y<24 的觸控；Rust 不擋。功能鍵仍照 Go（F2、F10、F11 是 R6，F3～F9 是 R8，按下停在 `todo!`） |
+| `bevy-keycode-universe` | `other_keys` 依 Bevy `KeyCode` 判斷，Ebiten 與 Bevy 的鍵集合在罕用鍵（多媒體鍵、`Fn` 等）不一致 | 只影響「任意鍵」對罕用鍵的反應 |
+| `packaged-defaults-reexec` | Go 以 `os.Setenv` 補 `FD2_CAMPAIGN`；Rust 外殼補上後重新啟動自己 | 多一個父行程 |
+
+### r5w：外殼驗證（`tools/rust_r5_app_frames.sh`）
+
+每份腳本（`tools/rust_r5_app_scripts/*.json`，格式見 `fd2-app/src/script.rs`）跑兩個驅動端：無畫面的 `fd2_frames`（只用
+`fd2-game` 的 `PlayerRunner`，腳本的邏輯鍵直接組 `RawInputState`）與 Bevy 外殼 `fd2`（Xvfb＋Mesa llvmpipe；按鍵與觸控寫成 Bevy 的
+`KeyboardInput`／`TouchInput` 訊息，經 Bevy 輸入系統、`Bindings` 與 `EbitenInputState`）。`tools/rust_r5_app_frames_compare.py` 核對：
+
+1. 驅動一致：兩邊每個顯示幀的紀錄（`Update` 次數、CPU 畫格 RGBA SHA-256、`g.frame`、標題階段、節點）逐行相同。
+2. 外殼截圖：Bevy 截取的視窗 PNG 以工具內的 PNG 解碼器讀回，與同一幀 CPU 畫格（外殼另存 `shots/<名稱>.rgba`）依視窗大小獨立算出的
+   整數倍最近鄰放大、置中、黑邊逐像素比對；外殼自己也在截圖當下比一次（`shots.jsonl`）。不遮蔽像素。
+
+腳本模式下截圖期間不前進遊戲、不重畫（視窗持續顯示同一張畫格），垂直同步關閉、視窗沒有焦點也連續更新；這些只影響跑完腳本的時間，
+不影響每個顯示幀的 `Update` 次數與畫格。
+
+| 腳本 | 視窗 | 內容 | 顯示幀 | 相異畫格 | 序列雜湊（兩邊相同） | 截圖 |
+|---|---|---|---|---|---|---|
+| `opening-ch01-1280x800` | 1280×800（倍率 2） | 開場動畫 300 幀、標題選單、START、序章（每幀 8 次 `Update`、每 2 幀按 Enter）、第 1912 幀進入 `battle_ch01`、方向鍵移動游標、F1 說明開關、觸控點格 | 2319（`g.frame` 12293） | 1507 | `6f981065…bb8d430` | 8 張全部相同 |
+| `letterbox-1500x850` | 1500×850（倍率 2，左右 110、上下 25 黑邊） | 開場動畫（每幀 1～4 次 `Update`）、標題上的 F1 說明開關、黑邊上的觸控 | 433 | 257 | `1841c0e3…18b09431` | 5 張全部相同 |
+
+- 截圖：`title-cutscene`、`title-menu`、`story`、`battle-start`、`battle-cursor`、`help-battle`、`help-closed`、`touch`；
+  `lb-cutscene-start`、`lb-cutscene-x3`、`lb-help-title`、`lb-help-closed`、`lb-cutscene-late`，每張不同像素 0。
+- 截取的格式是 llvmpipe 的交換鏈格式，外殼依 `TextureFormat` 轉成 RGBA 再比；PNG 由 Bevy `save_to_disk` 寫出。
+- 竄改反向檢查（`work/r5-stage4-r5w-20261115/tamper`）：無畫面紀錄第 100 行的 `updates` 改 2，比對報第 99 幀不同；`touch.rgba` 改 1 個位元組，
+  該張截圖報 4 個不同像素（1 個邏輯像素的 2×2）。兩者 `ok` 都是 false。
+- 觸控點格（`main.go:9095`）照 Go 逐行移植，游標與鏡頭有動，但目標格是否與 Go 相同沒有 Go 黃金可比（第一章受控重播沒有觸控）。
+- 腳本進入 `battle_ch01` 之後不按 Enter：選中單位後的指令環、物品面板等分支多為 `todo!("R8…")`（探查時按 Enter 停在
+  `prepareNativeItemPanel`）。
+
+### r5w：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `support.rs` | `TickInput` 加 7 個欄位、`any_just_pressed` 含其他鍵；新增 `Key::ALL`、`RawInputState`、`EbitenInputState` 與測試子模組 |
+| `main.rs` | `update_frame` 接上觸控移動游標；`draw_deferred` 的說明畫面 `todo!` 改呼叫 `draw_player_help` |
+| `game.rs`、`lib.rs` | 掛 `player_runner`、`player_shortcuts`、`player_toolbar` 子模組；公開 `PlayerRunner`、`RunnerStep` |
+| `player_battle_speed.rs`、`player_game_clock.rs` | 上表的速度函式與測試 |
+| `fd2-app` | `Cargo.toml` 加 `fd2-game` 與 `sha2`（`=0.10.9`）；`lib.rs` 掛 `clock`、`input`、`script`、`shell`、`video`；新增 `bin/fd2.rs`、`bin/fd2_frames.rs`。R0 探針沒有動 |
+| `Cargo.lock` | 只多出 `fd2-app` 依賴清單的 `fd2-game`、`sha2` 兩行，沒有改版本、沒有新增套件 |
+| `tools/rust_r5_mark_ported.py` | 加 `--stage4` 旗標（預設行為不變） |
+| `canvas.rs`、`present.rs`、`parity_replay` | 沒有改 |
+
+### r5w：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh`（字型掛入、`FD2_REQUIRE_ORIGINAL=1`） | fmt、clippy `-D warnings` 通過；390 passed、7 ignored（新增 12 項）；沒有「略過」 |
+| `fd2-app` | `cargo clippy -p fd2-app --all-targets -D warnings` 通過；單元測試 9 passed（倍率與置中、座標截斷、預期畫面、鍵盤對應、腳本解析、TPS 時鐘） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed |
+| `tools/rust_parity_ch01.sh`（擷取關閉） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同 |
+| `tools/rust_r5_opening_frames.sh` | 10372／10372 相同，序列雜湊 `eeed99ea…0be771` |
+| `tools/rust_r5_app_frames.sh` | 上節，兩次執行結果相同 |
+| `tools/rust_r5_mark_ported.py --stage4` | 重跑不改 `PORTING.json`（SHA-256 相同） |

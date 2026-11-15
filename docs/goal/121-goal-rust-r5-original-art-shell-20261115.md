@@ -645,3 +645,47 @@ R4 其他 KNOWN_DIFFERENCES（錯誤文字、map 走訪順序、診斷輸出的�
 `tools/rust_game_test.sh` 378 passed、7 ignored（fmt、clippy 通過，字型掛入且沒有略過）；`tools/rust_campaign_test.sh` 530 passed、
 `tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、
 `hotel-save.json` `190b9f8f…` 與 Go 黃金相同；六組圖層級局部黃金兩側重跑 （r5b、r5h、r5c、r5m、r5d、r5p）兩邊序列雜湊相同，且與階段 2 各組紀錄相同；`Cargo.lock` 沒有改動，既有 Go 檔沒有改。
+
+## 階段 4 結果：r5w（2026-11-15）
+
+視窗、畫格呈現、輸入與說明畫面。逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 4：r5w」。音訊是 `r5o`。
+
+### 實作
+
+- `fd2-game` 公開 `PlayerRunner`（Go `main()` 與主迴圈 runner `modernHDPresentation` 的忠實模式子集：`Update`、`Layout`、`Draw`、TPS）與
+  輸入介面 `RawInputState`／`EbitenInputState`（Ebiten v2.6.6 `inpututil` 的每幀狀態）；`TickInput` 加滑鼠、觸控與「其他鍵」欄位。
+- `fd2-app`：Bevy 視窗（1280×800 起、可調整大小、Alt+Enter 全螢幕），每個顯示幀依 Ebiten `calcCountFromTPS` 跑 N 次 `Update`、畫一次
+  640×400 CPU 畫格，上傳成貼圖以整數倍最近鄰放大置中、留黑邊。
+- 輸入分兩層（使用者 2026-11-16）：`fd2-app` 的對應表把實體輸入換成邏輯鍵與邏輯座標，`fd2-game` 再組成 `TickInput`；之後加手把與自訂
+  綁定只改 `fd2-app`。鍵盤全部接上；滑鼠與觸控照 Go 現有的讀法接到 `TickInput`，遊戲內只有點格移動游標（`main.go:9095`）會讀，
+  工具列、海報、速度選單與數值編輯器的消費端在 R6。遊戲內的滑鼠語意與手把等 Go 版定案。
+- 說明畫面 `drawPlayerHelp` 移植，F1 開關在 R4 已移植；另移植 `effectivePlayerSpeed` 等速度函式與 `playerTouchCoordinates`。
+  `PORTING.json` 6 個函式 `r8` 改 `ported`（`r5_stage4_r5w`）。
+- 工具列與速度選單沒有做：原版美術模式用得到的是功能鍵（F2、F10、F11 屬 R6，F3～F9 屬 R8，都還是 `todo!`；F1 說明與 F12 除錯可用），工具列本身只是這些功能的
+  滑鼠入口，列為 KNOWN_DIFFERENCES `player-toolbar-deferred-r6`。
+
+### 驗證
+
+外殼驗證是新的 `tools/rust_r5_app_frames.sh`：同一份腳本交給 Bevy 外殼（按鍵與觸控以 Bevy 輸入訊息注入）與無畫面驅動端
+`fd2_frames`，比兩邊每個顯示幀的 CPU 畫格雜湊序列；外殼在腳本指定的幀截取視窗，與同一幀 CPU 畫格的整數倍最近鄰放大逐像素比對
+（驗證第 3 點）。輸出在主工作區 `work/r5-stage4-r5w-20261115/final/`，不進版控。
+
+| 腳本 | 視窗 | 顯示幀 | 驅動一致 | 截圖 |
+|---|---|---|---|---|
+| `opening-ch01-1280x800`（開場、標題選單、START、序章、`battle_ch01` 的游標移動、F1 說明、觸控） | 1280×800，倍率 2 | 2319 | 逐幀相同，序列 `6f981065…bb8d430` | 8 張，不同像素 0 |
+| `letterbox-1500x850`（非整數倍視窗、一幀多次 `Update`、標題上的說明畫面、黑邊觸控） | 1500×850，倍率 2、黑邊 110／25 | 433 | 逐幀相同，序列 `1841c0e3…18b09431` | 5 張，不同像素 0 |
+
+- `tools/rust_game_test.sh` 390 passed、7 ignored；`fd2-app` clippy 通過、單元測試 9 passed；`tools/rust_campaign_test.sh` 530 passed、
+  `tools/rust_rules_test.sh` 654 passed。
+- `tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；
+  opening 整張比對 10372／10372 相同（`eeed99ea…0be771`）。
+- `Cargo.lock` 只多出 `fd2-app` 依賴清單的 `fd2-game`、`sha2` 兩行；既有 Go 檔沒有改。
+
+### 未涵蓋與待決
+
+- 說明畫面沒有 Go 黃金：Go 沒有畫說明畫面的測試，開場與第一章黃金也沒有開說明。面板由實測公式的單元測試驗，文字屬 TTF
+  （`ttf-raster-coverage`）。要 Go 黃金得另加只輸出資料的 Go 測試。
+- 觸控點格照 Go 逐行移植，沒有 Go 黃金可比。
+- 軟體繪圖（llvmpipe）下外殼約每秒 3～7 幀（主機負載高時），只證明逐像素正確，不代表實機幀率。
+- 新增的 KNOWN_DIFFERENCES：`window-integer-scale-letterbox`（121 定案的整數倍）、`player-toolbar-deferred-r6`、`bevy-keycode-universe`、
+  `packaged-defaults-reexec`，說明見 `PORTING.md`。

@@ -2668,7 +2668,9 @@ name = "fd2-app"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "fd2-game",
  "serde_json",
+ "sha2",
 ]
 
 [[package]]

@@ -19,4 +19,4 @@ mod go_x_image_font;
 #[allow(dead_code)]
 mod test_support;
 
-pub use game::Game;
+pub use game::{Game, PlayerRunner, RunnerStep};

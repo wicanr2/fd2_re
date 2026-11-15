@@ -1,0 +1,22 @@
+{"schema": "fd2-app-script/1", "window": [1280, 800],
+ "note": "R5 階段 4 r5w：開場動畫 → 標題選單 → START → 序章 → 第 1912 幀進入 battle_ch01 → 游標、F1 說明、Esc、觸控點格。開場前 300 幀每幀 1 次 Update，其餘多段每幀 4～8 次 Update（Ebiten 一個顯示幀補跑多次 Update 的情形），序章每 2 幀按一次 Enter。",
+ "steps": [
+  {"frames": 300, "shot": "title-cutscene"},
+  {"frames": 410, "updates": 4, "shot": "title-menu", "note": "第 703 幀（g.frame 1916）進入標題選單"},
+  {"keys": ["Enter"], "note": "START（選單第 0 項）；閃爍 24 tick 內不要再按，否則重新計時"},
+  {"frames": 30, "updates": 4},
+  {"repeat": 60, "steps": [{"keys": ["Enter"], "updates": 8}, {"frames": 1, "updates": 8}]},
+  {"keys": ["Enter"], "updates": 8},
+  {"frames": 1, "updates": 8, "shot": "story"},
+  {"repeat": 525, "steps": [{"keys": ["Enter"], "updates": 8}, {"frames": 1, "updates": 8}]},
+  {"frames": 150, "updates": 4, "shot": "battle-start", "note": "進入 battle_ch01 之後不按 Enter（選中單位之後的指令環分支多為 R8）"},
+  {"repeat": 3, "steps": [{"keys": ["ArrowRight"]}, {"frames": 20}]},
+  {"keys": ["ArrowDown"], "frames": 40},
+  {"frames": 30, "shot": "battle-cursor"},
+  {"keys": ["F1"]},
+  {"frames": 30, "shot": "help-battle"},
+  {"keys": ["Escape"]},
+  {"frames": 30, "shot": "help-closed"},
+  {"touch": [700, 500]},
+  {"frames": 60, "shot": "touch"}
+ ]}

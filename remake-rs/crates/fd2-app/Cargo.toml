@@ -14,3 +14,6 @@ workspace = true
 [dependencies]
 bevy = "0.20.1"
 serde_json = "1"
+# R5 階段 4（r5w）：遊戲狀態與 CPU 畫格；sha2 用 Cargo.lock 已鎖定的版本（與 fd2-game 同一版）記畫格雜湊。
+fd2-game = { path = "../fd2-game" }
+sha2 = "=0.10.9"

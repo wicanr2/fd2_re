@@ -1,0 +1,13 @@
+{"schema": "fd2-app-script/1", "window": [1500, 850],
+ "note": "R5 階段 4 r5w：視窗不是 640×400 整數倍（倍率 2，左右各 110、上下各 25 黑邊）；一個顯示幀多次 Update；標題上的 F1 說明與關閉；黑邊上的觸控。",
+ "steps": [
+  {"frames": 60, "shot": "lb-cutscene-start"},
+  {"frames": 200, "updates": 3, "shot": "lb-cutscene-x3"},
+  {"keys": ["F1"], "updates": 2},
+  {"frames": 20, "shot": "lb-help-title"},
+  {"keys": ["Escape"]},
+  {"frames": 20, "shot": "lb-help-closed"},
+  {"touch": [50, 10], "note": "黑邊上的觸控（邏輯座標為負，playerTouchCoordinates 拒絕）"},
+  {"frames": 120, "updates": 4},
+  {"frames": 10, "shot": "lb-cutscene-late"}
+ ]}

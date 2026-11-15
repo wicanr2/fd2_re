@@ -25,11 +25,11 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 684,
+      "ported": 689,
       "r6": 59,
-      "r8": 1179
+      "r8": 1174
     },
-    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）"
+    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）"
   },
   "excluded_go_files": [
     "assets_glob_js.go",
@@ -20715,21 +20715,21 @@
           "name": "battleAnimationActive",
           "recv": "Game",
           "rust": "fd2_game::game::Game::battle_animation_active",
-          "status": "r8",
+          "status": "ported",
           "go_line": 13
         },
         {
           "name": "effectivePlayerSpeed",
           "recv": "Game",
           "rust": "fd2_game::game::Game::effective_player_speed",
-          "status": "r8",
+          "status": "ported",
           "go_line": 25
         },
         {
           "name": "syncPlayerClockSpeedAt",
           "recv": "Game",
           "rust": "fd2_game::game::Game::sync_player_clock_speed_at",
-          "status": "r8",
+          "status": "ported",
           "go_line": 35
         },
         {
@@ -21236,7 +21236,7 @@
     },
     {
       "go": "remake/cmd/fd2/player_shortcuts.go",
-      "rust": null,
+      "rust": "remake-rs/crates/fd2-game/src/game/player_shortcuts.rs",
       "go_lines": 365,
       "items": [],
       "functions": [
@@ -21265,7 +21265,7 @@
           "name": "drawPlayerHelp",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_player_help",
-          "status": "r8",
+          "status": "ported",
           "go_line": 330
         }
       ],
@@ -21353,7 +21353,7 @@
     },
     {
       "go": "remake/cmd/fd2/player_toolbar.go",
-      "rust": null,
+      "rust": "remake-rs/crates/fd2-game/src/game/player_toolbar.rs",
       "go_lines": 324,
       "hd": true,
       "items": [],
@@ -21362,7 +21362,7 @@
           "name": "playerTouchCoordinates",
           "recv": "Game",
           "rust": "fd2_game::game::Game::player_touch_coordinates",
-          "status": "r8",
+          "status": "ported",
           "go_line": 26
         },
         {
@@ -22910,6 +22910,47 @@
         "from": "r5",
         "to": "r8",
         "reason": "開場與第一章沒有開說明畫面；121 範圍表把說明畫面列在 R5 的外殼（階段 4 接 F1 時移植）"
+      }
+    ]
+  },
+  "r5_stage4_r5w": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches；--stage4 也接受 r8",
+    "functions": [
+      {
+        "go": "player_battle_speed.go:13",
+        "func": "battleAnimationActive",
+        "rust": "fd2_game::game::Game::battle_animation_active",
+        "todo_branches": []
+      },
+      {
+        "go": "player_battle_speed.go:25",
+        "func": "effectivePlayerSpeed",
+        "rust": "fd2_game::game::Game::effective_player_speed",
+        "todo_branches": []
+      },
+      {
+        "go": "player_battle_speed.go:35",
+        "func": "syncPlayerClockSpeedAt",
+        "rust": "fd2_game::game::Game::sync_player_clock_speed_at",
+        "todo_branches": []
+      },
+      {
+        "go": "player_game_clock.go:35",
+        "func": "setPlayerSpeedAt",
+        "rust": "fd2_game::game::Game::set_player_speed_at",
+        "todo_branches": []
+      },
+      {
+        "go": "player_shortcuts.go:330",
+        "func": "drawPlayerHelp",
+        "rust": "fd2_game::game::Game::draw_player_help",
+        "todo_branches": []
+      },
+      {
+        "go": "player_toolbar.go:26",
+        "func": "playerTouchCoordinates",
+        "rust": "fd2_game::game::Game::player_touch_coordinates",
+        "todo_branches": []
       }
     ]
   }

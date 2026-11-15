@@ -239,7 +239,10 @@ mod player_hd_quality;
 mod player_interface;
 mod player_poster_assets;
 mod player_poster_controls;
+mod player_runner;
+mod player_shortcuts;
 mod player_theme_loader;
+mod player_toolbar;
 mod present;
 mod run_log;
 mod save;
@@ -427,7 +430,9 @@ pub(crate) use player_hd_quality::*;
 pub(crate) use player_interface::*;
 pub(crate) use player_poster_assets::*;
 pub(crate) use player_poster_controls::*;
+pub(crate) use player_shortcuts::*;
 pub(crate) use player_theme_loader::*;
+pub(crate) use player_toolbar::*;
 pub(crate) use present::*;
 pub(crate) use run_log::*;
 pub(crate) use save::*;
@@ -439,3 +444,5 @@ pub(crate) use title_menu_state::*;
 
 // crate 外使用的入口
 pub use main::Game;
+// R5 階段 4（r5w）：fd2-app 的主迴圈入口。
+pub use player_runner::{PlayerRunner, RunnerStep};

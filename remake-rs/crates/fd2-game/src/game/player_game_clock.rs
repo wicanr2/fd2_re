@@ -51,6 +51,15 @@ impl Game {
         let now = self.virtual_now;
         self.player_clock.sample(now)
     }
+
+    /// Go：`player_game_clock.go:35`，`func (g *Game) setPlayerSpeedAt(speed int, now time.Time)`
+    ///
+    /// R5 階段 4（r5w）移植，只給 `player_battle_speed.go` 的測試用；F8 的 `cyclePlayerSpeed` 仍是 `r8`。
+    pub(crate) fn set_player_speed_at(&mut self, speed: i64, now: GameInstant) {
+        self.player_clock.sample(now);
+        self.player_speed = normalize_player_speed(speed);
+        self.player_clock.speed = self.effective_player_speed();
+    }
 }
 
 /// Rust 新增（沒有 Go 對應）：Ebiten 主迴圈的基準更新率。Go `main.go:13475` 與
