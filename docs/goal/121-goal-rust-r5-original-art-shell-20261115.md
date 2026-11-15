@@ -749,3 +749,10 @@ Go 的 BGM 循環點靜音（最多約 98 ms）是否照做，也一併決定。
 | `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage4-r5o-20261115/parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
 | Go 新檔 | `gofmt -l` 無輸出、`go vet` 通過；`go.mod`、`go.sum` 不變；既有 Go 檔沒有改 |
 | `Cargo.lock` | 只在 `fd2-app` 多出四條依賴邊 |
+
+## 階段 4 使用者定案（2026-11-16）
+
+- 音訊採 C 案：把 Ebiten 的加窗 sinc 重取樣與 Go 的 vorbis 解碼器（`github.com/jfreymuth/vorbis`）都移植成正式路徑，目標與 Go 逐樣本相同；需登記具名例外（照 `rust-port-no-go-stdlib` 的做法）。r5o 目前合併的是 A 案（lewton＋rodio），C 案為下一步工作。
+- Go 版 BGM 循環點每圈 8～98 ms 的靜音（結尾補零到最後 granule）照 Go 保留。
+- 工具列與速度選單延到 R6（含新的「按鍵設定」入口）；r5w 新增的四項 KNOWN_DIFFERENCES（`window-integer-scale-letterbox`、`player-toolbar-deferred-r6`、`bevy-keycode-universe`、`packaged-defaults-reexec`）接受。
+- 遊戲內滑鼠、手把與 F12 按鍵設定面板先在 Go 版實作（v.1.1.15），Rust 版照 Go 行為移植，排在 R5 階段 4 的後續工作。
