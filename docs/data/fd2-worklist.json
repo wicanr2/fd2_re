@@ -535,6 +535,19 @@
         "note": "證據檔的not_resolved仍列這一項。"
       },
       "issue": 316
+    },
+    {
+      "id": "hd-missing-speaker-portraits",
+      "layer": "data",
+      "category": "缺陷",
+      "title": "HD美術下部分說話者沒有HD頭像，那幾句對白可能畫不出來",
+      "body": "2026-11-15 診斷 v.1.1.11 玩家回報的 HD 對白問題時順帶發現（只讀程式推論，尚未實測）：\n\n- speaker 77「刺客隊長」沒有 HD 頭像。第三章第 3 回合事件走舊對話框，`remake/cmd/fd2/main.go` 約 10067 行（v.1.1.14 行號約 10070）找不到 HD 頭像時直接結束整個 `Draw`，那幾句的頭像與文字都不會畫出來。\n- 第十七章戰場事件有 68 號說話者，同樣沒有 HD 頭像；照程式，HD 下故事對白預備會回 `native story dialogue: modern portrait for speaker 68 is unavailable`。真實第十七章戰場的說話者解析沒有實測。\n\n要做：盤點正式章節對白用到的全部說話者，列出 HD 主題缺頭像的清單；決定缺圖時的行為（補 HD 頭像，或退回原版頭像），不讓整幀消失或報錯。Go 版凍結，修正需另徵使用者同意；Rust 版於 R6 處理。\n\n出處：`work/gpf-20261115/`（本機診斷收據）、v.1.1.14 發行說明「已知限制」。",
+      "acceptance": "列出正式章節對白用到、HD 主題缺頭像的全部說話者；HD 美術下這些對白不會讓 Draw 提早結束或報錯（補圖或退回原版頭像），並以真實 HD 包實測第三章第 3 回合與第十七章的對白。",
+      "verify": {
+        "kind": "manual",
+        "note": "需要以真實 HD 包實測對白畫面。"
+      },
+      "issue": 320
     }
   ]
 }

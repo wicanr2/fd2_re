@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 35 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 36 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -207,6 +207,21 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：由使用者或譯者核對六段來源、專名與語氣後逐筆reviewed，保存校譯紀錄並更新受控六句待審範圍；其他已審校譯文保持。
 
 證據：`docs/data/localization/ending-story-supplements.json`
+
+### HD美術下部分說話者沒有HD頭像，那幾句對白可能畫不出來
+
+`hd-missing-speaker-portraits` · 缺陷 · [#320](https://github.com/wicanr2/fd2_re/issues/320) · 仍未完成 · 要人判
+
+2026-11-15 診斷 v.1.1.11 玩家回報的 HD 對白問題時順帶發現（只讀程式推論，尚未實測）：
+
+- speaker 77「刺客隊長」沒有 HD 頭像。第三章第 3 回合事件走舊對話框，`remake/cmd/fd2/main.go` 約 10067 行（v.1.1.14 行號約 10070）找不到 HD 頭像時直接結束整個 `Draw`，那幾句的頭像與文字都不會畫出來。
+- 第十七章戰場事件有 68 號說話者，同樣沒有 HD 頭像；照程式，HD 下故事對白預備會回 `native story dialogue: modern portrait for speaker 68 is unavailable`。真實第十七章戰場的說話者解析沒有實測。
+
+要做：盤點正式章節對白用到的全部說話者，列出 HD 主題缺頭像的清單；決定缺圖時的行為（補 HD 頭像，或退回原版頭像），不讓整幀消失或報錯。Go 版凍結，修正需另徵使用者同意；Rust 版於 R6 處理。
+
+出處：`work/gpf-20261115/`（本機診斷收據）、v.1.1.14 發行說明「已知限制」。
+
+怎樣算做完：列出正式章節對白用到、HD 主題缺頭像的全部說話者；HD 美術下這些對白不會讓 Draw 提早結束或報錯（補圖或退回原版頭像），並以真實 HD 包實測第三章第 3 回合與第十七章的對白。
 
 ## runtime — 還沒接進正式執行期
 
