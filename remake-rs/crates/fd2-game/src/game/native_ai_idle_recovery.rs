@@ -381,3 +381,12 @@ impl Game {
         self.ai_busy = false;
     }
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_ai_idle_recovery.go:328`，`func (g *Game) drawNativeAIIdleRecovery(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_ai_idle_recovery(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_ai_idle_recovery.go:drawNativeAIIdleRecovery")
+    }
+}

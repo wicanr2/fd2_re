@@ -191,3 +191,27 @@ impl Game {
 
 #[cfg(test)]
 mod native_hotel_ui_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// composeNativeHotelStable 是背景＋對話框＋店主頭像（指定 DATO 幀）＋「有什麼事嗎？」。
+    ///
+    /// Go：`native_hotel_ui.go:82`，`func (g *Game) composeNativeHotelStable(portraitFrame int) ([]byte, bool)`
+    pub(crate) fn compose_native_hotel_stable(&self, portrait_frame: i64) -> (Vec<u8>, bool) {
+        todo!("r5:native_hotel_ui.go:composeNativeHotelStable")
+    }
+
+    /// composeNativeHotelFrame 依目前模式組出整幀；portraitFrame 是店主頭像的 DATO 幀
+    /// （0x16559 等待期間會眨眼，重播對每一幀各出一張）。
+    ///
+    /// Go：`native_hotel_ui.go:106`，`func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool)`
+    pub(crate) fn compose_native_hotel_frame(&mut self, portrait_frame: i64) -> (Vec<u8>, bool) {
+        todo!("r5:native_hotel_ui.go:composeNativeHotelFrame")
+    }
+
+    /// Go：`native_hotel_ui.go:159`，`func (g *Game) drawNativeHotel(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_hotel(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_hotel_ui.go:drawNativeHotel")
+    }
+}

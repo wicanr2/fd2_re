@@ -319,3 +319,12 @@ impl Game {
         self.publish_native_ch28_post_frame();
     }
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_ch28_post_present.go:339`，`func (g *Game) drawNativeCh28PostPresent(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_ch28_post_present(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_ch28_post_present.go:drawNativeCh28PostPresent")
+    }
+}

@@ -412,3 +412,12 @@ impl Game {
         }
     }
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_spawn_intro.go:360`，`func (g *Game) drawNativeSpawnIntro(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_spawn_intro(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_spawn_intro.go:drawNativeSpawnIntro")
+    }
+}

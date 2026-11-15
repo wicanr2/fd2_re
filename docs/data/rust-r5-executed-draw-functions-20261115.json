@@ -1,0 +1,6686 @@
+{
+ "coverage_profiles": [
+  "opening",
+  "chapter"
+ ],
+ "draw_tree_not_run": [
+  "battle_scene_layers.go:battleSceneLayerOrder",
+  "ending_preview.go:(*Game).drawNativeEndingPreview",
+  "font.go:(*Font).LineHeight",
+  "main.go:(*Game).actionOverlayAnchor",
+  "main.go:(*Game).captureShot",
+  "main.go:(*Game).drawBattlePanel",
+  "main.go:(*Game).drawNativeActionOverlay",
+  "main.go:(*Game).drawUnitHUD",
+  "main.go:(*Game).nativeItemMenuSlot",
+  "main.go:(*Game).preparationSelected",
+  "main.go:(*Game).redSilhouette",
+  "main.go:(*Game).shopSellIDs",
+  "main.go:battleImpactHP",
+  "main.go:campColor",
+  "main.go:dlgWrap",
+  "main.go:drawUnit",
+  "main.go:figaniFrameAtDisplayTick",
+  "main.go:nativeImpactDisplacement",
+  "main.go:saveShot",
+  "modern_hd_action_icon.go:(*Game).drawModernActionIcon",
+  "modern_hd_action_icon.go:(*Game).drawModernNativeMapRing",
+  "modern_hd_battle_gpu.go:(*modernHDBattleGPU).resetSources",
+  "modern_hd_battle_runtime.go:(*Game).modernHDBattlePreludeSources",
+  "modern_hd_battle_runtime.go:(*Game).publishModernHDBattle",
+  "modern_hd_battle_runtime.go:(*nativePhysicalScene).modernResources",
+  "modern_hd_battle_surface.go:modernPhysicalTargetBGIndex",
+  "modern_hd_church_confirmation_transition.go:(*nativeChurchConfirmationPresentation).compose",
+  "modern_hd_church_fee_currency.go:(*Game).modernHDChurchFeeCurrencyPlacements",
+  "modern_hd_church_fee_currency.go:(*Game).prepareNativeChurchFeeCurrency",
+  "modern_hd_confirmation.go:(*Game).appendModernHDConfirmation",
+  "modern_hd_confirmation.go:(*modernHDConfirmation).placements",
+  "modern_hd_dialogue_chrome.go:(*Game).appendModernHDDialogueChrome",
+  "modern_hd_dialogue_chrome.go:(*Game).prepareModernHDStoryDialogueChrome",
+  "modern_hd_facility_dialogue.go:(*Game).facilityDialoguePolicy",
+  "modern_hd_facility_item_rows.go:(*Game).modernFacilityItemRowSource",
+  "modern_hd_facility_item_rows.go:(*Game).modernHDFacilityItemRowPlacements",
+  "modern_hd_facility_list_transition.go:(*Game).activeFacilityListJob",
+  "modern_hd_facility_list_transition.go:(*nativeFacilityListPresentation).placement",
+  "modern_hd_facility_list_transition.go:outsideFacilityList",
+  "modern_hd_facility_money.go:facilityMoneySourceMatches",
+  "modern_hd_facility_portrait.go:(*Game).appendModernHDFacilityPortrait",
+  "modern_hd_facility_portrait.go:nativeFacilityPortraitFramesMatch",
+  "modern_hd_facility_roster.go:(*Game).prepareNativeFacilityRoster",
+  "modern_hd_facility_scene.go:(*Game).modernTownCursorFor",
+  "modern_hd_facility_scene.go:(*Game).prepareModernTownCursor",
+  "modern_hd_facility_scene.go:(*Game).presentModernFacilityFrame",
+  "modern_hd_facility_success.go:(*Game).drawModernHDFacilitySuccess",
+  "modern_hd_facility_text.go:(*Game).modernHDChurchItemAssets",
+  "modern_hd_full_reward.go:(*nativeDeathRewardUIState).modernHDFrame",
+  "modern_hd_full_reward.go:modernHDWrittenRuns",
+  "modern_hd_gold_roll.go:(*Game).drawModernHDGoldRoll",
+  "modern_hd_gold_roll.go:(*nativeClassUIJob).timelinePosition",
+  "modern_hd_item_panel_chrome.go:modernHDItemPanelSourceSeal",
+  "modern_hd_item_panel_chrome.go:prepareModernHDItemPanelChrome",
+  "modern_hd_item_panel_icons.go:modernHDItemPanelIconSources",
+  "modern_hd_item_panel_icons.go:modernUIRawDescription",
+  "modern_hd_item_panel_icons.go:paintModernHDItemPanelUpperIcons",
+  "modern_hd_item_panel_values.go:modernHDItemPanelValuesSeal",
+  "modern_hd_item_panel_values.go:prepareModernHDItemPanelValues",
+  "modern_hd_map_gpu.go:(*Game).drawModernHDMapFrame",
+  "modern_hd_map_gpu.go:(*Game).drawModernHDMapRing",
+  "modern_hd_map_gpu.go:(*Game).drawPreparedModernHDMapFrame",
+  "modern_hd_map_hud_panel.go:(*Game).prepareModernHDMapHUDPanel",
+  "modern_hd_map_runtime.go:(*Game).prepareModernHDMapFrameStageLayout",
+  "modern_hd_map_runtime.go:modernHDOverwriteLayer",
+  "modern_hd_movement_panel.go:(*Game).prepareModernHDMovementPanel",
+  "modern_hd_panel_transition.go:(*Game).drawModernBattlePlayerStatus",
+  "modern_hd_panel_transition.go:(*Game).drawModernHDStatusRegions",
+  "modern_hd_panel_transition.go:nativeStatusTransitionPass",
+  "modern_hd_preparation_background.go:(*Game).composeNativePreparationOn",
+  "modern_hd_preparation_background.go:(*Game).composeNativePreparationOnParts",
+  "modern_hd_preparation_background.go:modernTownTextOutsideWrites",
+  "modern_hd_preparation_counts.go:preparationCountSourceMatches",
+  "modern_hd_preparation_cursor.go:(*Game).prepareModernHDPreparationCursor",
+  "modern_hd_preparation_cursor.go:(*Game).prepareModernHDPreparationNativeCursorUnit",
+  "modern_hd_preparation_dialogue.go:(*Game).prepareModernHDPreparationDialogue",
+  "modern_hd_preparation_dialogue.go:preparationPortrait75Matches",
+  "modern_hd_preparation_transition.go:(*nativePreparationTransitionText).composeFrame",
+  "modern_hd_reward_message.go:modernHDRewardRegion",
+  "modern_hd_service_icons.go:(*Game).modernServiceMenuSource",
+  "modern_hd_service_menu_transition.go:(*Game).modernServiceMenuIcons",
+  "modern_hd_shop_comparison.go:(*Game).appendModernHDShopComparison",
+  "modern_hd_shop_comparison.go:(*Game).prepareModernHDShopComparison",
+  "modern_hd_shop_comparison.go:shopComparisonPlacements",
+  "modern_hd_status_text.go:(*Game).drawModernHDUnitStatus",
+  "modern_hd_system_confirmation.go:(*modernHDSystemConfirmation).frame",
+  "modern_hd_system_confirmation.go:treasureConfirmationSourceSeal",
+  "modern_hd_system_info.go:(*Game).drawModernHDSystemInfoUI",
+  "modern_hd_system_info.go:(*Game).prepareModernHDSystemInfo",
+  "modern_hd_text.go:(modernHDTextRun).freezeLayout",
+  "modern_hd_timed_dialogue.go:(*Game).modernHDTimedDialogueEligible",
+  "modern_hd_timed_dialogue.go:modernHDTimedDialoguePixels",
+  "modern_hd_title_interface.go:(*Game).appendModernHDJSONLoadFrame",
+  "modern_hd_title_interface.go:(*Game).titleMenuHDRuns",
+  "modern_hd_title_interface.go:(*modernHDTitleMenuItem).valid",
+  "modern_hd_town_transition.go:modernTownTextRuns",
+  "modern_hd_transient_expiry.go:(*Game).composeNativeTransientExpiryFrame",
+  "modern_hd_ui_embedded_icon.go:modernPreparationCountIcon",
+  "native_24b4d.go:(*Game).drawNative24B4D",
+  "native_24b4d.go:(*Game).failNative24B4D",
+  "native_ai_idle_recovery.go:(*Game).restoreNativeAIIdleRecoveryRange",
+  "native_ai_item_presentation.go:(*Game).drawNativeAIItemPresentation",
+  "native_ai_item_presentation.go:(*Game).failNativeAIItemPresentation",
+  "native_ai_modifier_presentation.go:(*Game).drawNativeAICommandModifierPresentation",
+  "native_ai_modifier_presentation.go:(*Game).failNativeAICommandModifierPresentation",
+  "native_ch20_sky_key.go:(*Game).drawNativeCh20SkyKey",
+  "native_ch20_sky_key.go:(*Game).failNativeCh20SkyKey",
+  "native_ch22_post.go:(*Game).drawNative2189A",
+  "native_ch22_post.go:(*Game).failNative2189A",
+  "native_ch23_post.go:(*Game).drawNativeCh23Loop",
+  "native_ch23_post.go:(*Game).failNativeCh23Loop",
+  "native_ch23_post.go:(*nativeCh23AdapterState).rotateRows",
+  "native_ch23_post.go:cloneNativeCh23AdapterState",
+  "native_ch28_post_present.go:(*Game).failNativeCh28PostPresent",
+  "native_church_revive_ui.go:(*Game).drawNativeChurchReviveConfirmation",
+  "native_church_revive_ui.go:(*Game).drawNativeChurchReviveList",
+  "native_church_revive_ui.go:(*Game).drawNativeChurchReviveMessage",
+  "native_church_roster_ui.go:(*Game).drawNativeChurchRoster",
+  "native_church_status_ui.go:(*Game).drawNativeChurchStatus",
+  "native_church_transfer_ui.go:(*Game).drawNativeChurchTransferFull",
+  "native_church_transfer_ui.go:(*Game).drawNativeChurchTransferItem",
+  "native_church_ui.go:(*Game).drawNativeChurchMenu",
+  "native_class_ui.go:(*Game).drawNativeClassConfirmation",
+  "native_class_ui.go:(*Game).drawNativeClassList",
+  "native_command0_presentation.go:(*Game).drawNativeCommand0Presentation",
+  "native_command0_presentation.go:(*Game).failNativeCommand0Presentation",
+  "native_command10_12_presentation.go:(*Game).drawNativeCommand1012Presentation",
+  "native_command10_12_presentation.go:(*Game).failNativeCommand1012Presentation",
+  "native_command1_presentation.go:(*Game).drawNativeCommand1Presentation",
+  "native_command1_presentation.go:(*Game).failNativeCommand1Presentation",
+  "native_command24_presentation.go:(*Game).drawNativeCommand24Presentation",
+  "native_command24_presentation.go:(*Game).failNativeCommand24Presentation",
+  "native_command29_presentation.go:(*Game).drawNativeCommand29Presentation",
+  "native_command29_presentation.go:(*Game).failNativeCommand29Presentation",
+  "native_command2_presentation.go:(*Game).drawNativeCommand2Presentation",
+  "native_command2_presentation.go:(*Game).failNativeCommand2Presentation",
+  "native_command32_presentation.go:(*Game).drawNativeCommand32Presentation",
+  "native_command32_presentation.go:(*Game).failNativeCommand32Presentation",
+  "native_command33_presentation.go:(*Game).drawNativeCommand33Presentation",
+  "native_command33_presentation.go:(*Game).failNativeCommand33Presentation",
+  "native_command34_presentation.go:(*Game).drawNativeCommand34Presentation",
+  "native_command34_presentation.go:(*Game).failNativeCommand34Presentation",
+  "native_command35_presentation.go:(*Game).drawNativeCommand35Presentation",
+  "native_command35_presentation.go:(*Game).failNativeCommand35Presentation",
+  "native_command3_presentation.go:(*Game).drawNativeCommand3Presentation",
+  "native_command3_presentation.go:(*Game).failNativeCommand3Presentation",
+  "native_command5_presentation.go:(*Game).drawNativeCommand5Presentation",
+  "native_command5_presentation.go:(*Game).failNativeCommand5Presentation",
+  "native_command6_presentation.go:(*Game).drawNativeCommand6Presentation",
+  "native_command6_presentation.go:(*Game).failNativeCommand6Presentation",
+  "native_command7_presentation.go:(*Game).drawNativeCommand7Presentation",
+  "native_command7_presentation.go:(*Game).failNativeCommand7Presentation",
+  "native_command8_presentation.go:(*Game).drawNativeCommand8Presentation",
+  "native_command8_presentation.go:(*Game).failNativeCommand8Presentation",
+  "native_command9_ai_presentation.go:(*Game).drawNativeCommand9AIPresentation",
+  "native_command9_ai_presentation.go:(*Game).failNativeCommand9AIPresentation",
+  "native_command9_player_presentation.go:(*Game).drawNativeCommand9PlayerPresentation",
+  "native_command9_player_presentation.go:(*Game).failNativeCommand9PlayerPresentation",
+  "native_command_heal_presentation.go:(*Game).drawNativeCommandHealPresentation",
+  "native_command_locale.go:(*Game).localizedNativeCommandLabel",
+  "native_command_modifier_presentation.go:(*Game).drawNativeCommandModifierPresentation",
+  "native_defeat.go:(*Game).drawNativeDefeat",
+  "native_end_turn_recovery.go:(*Game).cancelNativeEndTurnRecovery",
+  "native_field_event61.go:(*Game).drawNativeFieldEvent61",
+  "native_indexed_transition.go:(*Game).drawNativeIndexedTransition",
+  "native_item_panel_ui.go:(*Game).drawNativeItemPanel",
+  "native_load_slots_ui.go:(*Game).drawNativeLoadSlots",
+  "native_palette_pulse.go:(*Game).drawNativePalettePulse",
+  "native_physical_scene.go:(*Game).drawNativePhysicalBase",
+  "native_preparation_ui.go:(*Game).composeNativePreparationConfirmationFrame",
+  "native_preparation_ui.go:(*Game).composeNativePreparationFrameParts",
+  "native_preparation_ui.go:(*Game).composeNativePreparationRecordSlotsFrame",
+  "native_shop_equip_ui.go:(*Game).composeNativeShopEquipRoster",
+  "native_shop_recipient_ui.go:(*Game).composeNativeShopNoEligibleRecipient",
+  "native_shop_recipient_ui.go:(*Game).composeNativeShopRecipient",
+  "native_shop_recipient_ui.go:(*Game).composeNativeShopRecipientFull",
+  "native_shop_sell_ui.go:(*Game).composeNativeShopSellConfirmation",
+  "native_shop_sell_ui.go:(*Game).composeNativeShopSellEmpty",
+  "native_shop_sell_ui.go:(*Game).composeNativeShopSellItems",
+  "native_shop_sell_ui.go:(*Game).composeNativeShopSellRoster",
+  "native_shop_transaction_ui.go:(*Game).composeNativeShopEquipConfirmation",
+  "native_shop_transfer_ui.go:(*Game).composeNativeShopTransferItems",
+  "native_shop_transfer_ui.go:(*Game).composeNativeShopTransferMessage",
+  "native_shop_transfer_ui.go:(*Game).composeNativeShopTransferRoster",
+  "native_shop_ui.go:(*Game).composeNativeShopInsufficientGold",
+  "native_shop_ui.go:(*Game).composeNativeShopPurchaseConfirmation",
+  "native_shop_ui.go:(*Game).composeNativeShopPurchaseList",
+  "native_shop_ui.go:(*Game).composeNativeShopServiceMenu",
+  "native_system_info_ui.go:(*Game).nativeNestedSystemOverlayState",
+  "native_town_departure.go:(*Game).drawNativeTownDeparture",
+  "native_turn_staging.go:(*Game).drawNativeTurnStaging",
+  "native_unit_present.go:(*Game).drawNativeUnitPresent",
+  "native_unit_present.go:(*Game).failNativeUnitPresent",
+  "player_shortcuts.go:(*Game).drawPlayerHelp",
+  "title.go:titlePaletteBlend"
+ ],
+ "func_value_call_sites": 21,
+ "function_count": 196,
+ "functions": [
+  {
+   "func": "(*Game).actionOverlayBlocksInput",
+   "file": "action_overlay_runtime.go",
+   "lines": [
+    73,
+    76
+   ],
+   "line_count": 4,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 25054,
+    "opening": 10371
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).actionOverlayRenderState",
+   "file": "action_overlay_runtime.go",
+   "lines": [
+    78,
+    87
+   ],
+   "line_count": 10,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 30,
+    "opening": 0
+   },
+   "covered_blocks": "3/4"
+  },
+  {
+   "func": "(*Game).markActionOverlayDrawn",
+   "file": "action_overlay_runtime.go",
+   "lines": [
+    133,
+    137
+   ],
+   "line_count": 5,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 50,
+    "opening": 0
+   },
+   "covered_blocks": "2/2"
+  },
+  {
+   "func": "(*Game).currentNativeSystemOptions",
+   "file": "action_overlay_runtime.go",
+   "lines": [
+    171,
+    176
+   ],
+   "line_count": 6,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 1017,
+    "opening": 411
+   },
+   "covered_blocks": "3/3"
+  },
+  {
+   "func": "(*Game).drawNativeSystemEndTurn",
+   "file": "action_overlay_runtime.go",
+   "lines": [
+    823,
+    873
+   ],
+   "line_count": 51,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "12/27"
+  },
+  {
+   "func": "exeDir",
+   "file": "assets.go",
+   "lines": [
+    33,
+    47
+   ],
+   "line_count": 15,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 924,
+    "opening": 560
+   },
+   "covered_blocks": "6/7"
+  },
+  {
+   "func": "userDataDir",
+   "file": "assets.go",
+   "lines": [
+    52,
+    68
+   ],
+   "line_count": 17,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 467,
+    "opening": 281
+   },
+   "covered_blocks": "4/7"
+  },
+  {
+   "func": "userDataPath",
+   "file": "assets.go",
+   "lines": [
+    71,
+    73
+   ],
+   "line_count": 3,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 5,
+    "opening": 1
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "fileExists",
+   "file": "assets.go",
+   "lines": [
+    75,
+    78
+   ],
+   "line_count": 4,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 2310,
+    "opening": 1400
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "macBundleResourceDir",
+   "file": "assets.go",
+   "lines": [
+    82,
+    92
+   ],
+   "line_count": 11,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 462,
+    "opening": 280
+   },
+   "covered_blocks": "2/5"
+  },
+  {
+   "func": "assetPath",
+   "file": "assets.go",
+   "lines": [
+    97,
+    131
+   ],
+   "line_count": 35,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 464,
+    "opening": 281
+   },
+   "covered_blocks": "13/20"
+  },
+  {
+   "func": "(*Font).effectiveScale",
+   "file": "font.go",
+   "lines": [
+    59,
+    64
+   ],
+   "line_count": 6,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 3288,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Font).faceFor",
+   "file": "font.go",
+   "lines": [
+    157,
+    172
+   ],
+   "line_count": 16,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 3292,
+    "opening": 0
+   },
+   "covered_blocks": "5/7"
+  },
+  {
+   "func": "(*Font).Draw",
+   "file": "font.go",
+   "lines": [
+    175,
+    191
+   ],
+   "line_count": 17,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 2652,
+    "opening": 0
+   },
+   "covered_blocks": "3/5",
+   "ebiten_api": [
+    "ebiten.ColorScale.ScaleWithColor",
+    "ebiten.GeoM.Translate",
+    "ebiten.field.ColorScale",
+    "ebiten.field.GeoM",
+    "text.DrawWithOptions"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "ColorScale",
+     "line": 188,
+     "counts": {
+      "chapter": 2652,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "TTF text（ebiten/v2/text）",
+     "line": 189,
+     "counts": {
+      "chapter": 2652,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "(*Font).Width",
+   "file": "font.go",
+   "lines": [
+    194,
+    201
+   ],
+   "line_count": 8,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 20,
+    "opening": 0
+   },
+   "covered_blocks": "2/3",
+   "ebiten_api": [
+    "text.BoundString"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "TTF text（ebiten/v2/text）",
+     "line": 200,
+     "counts": {
+      "chapter": 20,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "(*Font).Wrap",
+   "file": "font.go",
+   "lines": [
+    206,
+    210
+   ],
+   "line_count": 5,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/2"
+  },
+  {
+   "func": "runeBreakable",
+   "file": "font.go",
+   "lines": [
+    214,
+    225
+   ],
+   "line_count": 12,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 18,
+    "opening": 0
+   },
+   "covered_blocks": "4/6"
+  },
+  {
+   "func": "textSegments",
+   "file": "font.go",
+   "lines": [
+    230,
+    257
+   ],
+   "line_count": 28,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "6/11",
+   "func_value_calls": {
+    "flush": 3
+   }
+  },
+  {
+   "func": "wrapTextByWidth",
+   "file": "font.go",
+   "lines": [
+    259,
+    284
+   ],
+   "line_count": 26,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "7/13",
+   "func_value_calls": {
+    "width": 3
+   }
+  },
+  {
+   "func": "loadOfficialLocale",
+   "file": "locale.go",
+   "lines": [
+    142,
+    172
+   ],
+   "line_count": 31,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 6,
+    "opening": 1
+   },
+   "covered_blocks": "10/17"
+  },
+  {
+   "func": "(*Game).localeMessage",
+   "file": "locale.go",
+   "lines": [
+    198,
+    211
+   ],
+   "line_count": 14,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 6,
+    "opening": 0
+   },
+   "covered_blocks": "3/7"
+  },
+  {
+   "func": "(*Game).tileAt",
+   "file": "main.go",
+   "lines": [
+    8363,
+    8368
+   ],
+   "line_count": 6,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 1310655,
+    "opening": 1154277
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).nativeMapFrameAdmission",
+   "file": "main.go",
+   "lines": [
+    9338,
+    9353
+   ],
+   "line_count": 16,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "5/7"
+  },
+  {
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "lines": [
+    9355,
+    10188
+   ],
+   "line_count": 834,
+   "group": "Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade）",
+   "entry_counts": {
+    "chapter": 19983,
+    "opening": 10372
+   },
+   "covered_blocks": "129/370",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.Image.Set",
+    "ebiten.NewImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM",
+    "ebitenutil.DebugPrint",
+    "ebitenutil.DebugPrintAt"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（不透明）",
+     "line": 9378,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9381,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9384,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9396,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9397,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9418,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9421,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9429,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9432,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9440,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9443,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9451,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9454,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9462,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 1064,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9465,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9473,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9476,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9484,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9491,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9493,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9501,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9503,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9511,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9513,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9521,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9524,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9529,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9532,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9540,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9543,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9551,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9554,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9562,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9565,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9573,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9576,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9584,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9587,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9595,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9598,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9606,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9609,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9617,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9620,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9628,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9631,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9639,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9642,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9650,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9653,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9661,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9664,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9672,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9675,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9683,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9690,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9697,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9704,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9711,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9716,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 5934,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9718,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9726,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9728,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9736,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 24,
+      "opening": 24
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9738,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9746,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9748,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9756,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9758,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9766,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 42,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9769,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9777,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 3,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9784,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9804,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 6404,
+      "opening": 8408
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 9819,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 2534,
+      "opening": 8407
+     }
+    },
+    {
+     "kind": "Fill（半透明）",
+     "line": 9844,
+     "detail": "alpha=102",
+     "counts": {
+      "chapter": 135,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（半透明）",
+     "line": 9852,
+     "detail": "alpha=92",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（半透明）",
+     "line": 9870,
+     "detail": "alpha=92",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9915,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ebitenutil.DebugPrint",
+     "line": 9934,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 9983,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（半透明）",
+     "line": 10018,
+     "detail": "alpha=242",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10108,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10122,
+     "counts": {
+      "chapter": 2650,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10137,
+     "counts": {
+      "chapter": 1,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10143,
+     "counts": {
+      "chapter": 1,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill",
+     "line": 10180,
+     "detail": "alpha 非常數",
+     "counts": {
+      "chapter": 34,
+      "opening": 72
+     }
+    }
+   ],
+   "func_value_calls": {
+    "drawPage": 3
+   }
+  },
+  {
+   "func": "(*Game).shouldDrawTransientBattleMessage",
+   "file": "main.go",
+   "lines": [
+    10194,
+    10197
+   ],
+   "line_count": 4,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 20131,
+    "opening": 16840
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).drawRing",
+   "file": "main.go",
+   "lines": [
+    10221,
+    10303
+   ],
+   "line_count": 83,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6355,
+    "opening": 8408
+   },
+   "covered_blocks": "2/32",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.NewImage",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（半透明）",
+     "line": 10252,
+     "detail": "alpha=80",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill",
+     "line": 10268,
+     "detail": "alpha 非常數",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ],
+   "func_value_calls": {
+    "border": 1
+   }
+  },
+  {
+   "func": "(*Game).usesModernBattleActionIcons",
+   "file": "main.go",
+   "lines": [
+    10305,
+    10311
+   ],
+   "line_count": 7,
+   "group": "共用與其他",
+   "entry_counts": {
+    "chapter": 40,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).actionOverlayAvailability",
+   "file": "main.go",
+   "lines": [
+    10339,
+    10387
+   ],
+   "line_count": 49,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 45,
+    "opening": 0
+   },
+   "covered_blocks": "16/21"
+  },
+  {
+   "func": "hasNativeEquippedWeapon",
+   "file": "main.go",
+   "lines": [
+    10413,
+    10427
+   ],
+   "line_count": 15,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 45,
+    "opening": 0
+   },
+   "covered_blocks": "3/8"
+  },
+  {
+   "func": "nativeCommandAllowedAfterMove",
+   "file": "main.go",
+   "lines": [
+    10431,
+    10438
+   ],
+   "line_count": 8,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 45,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "hasNativeCommand",
+   "file": "main.go",
+   "lines": [
+    10442,
+    10452
+   ],
+   "line_count": 11,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 45,
+    "opening": 0
+   },
+   "covered_blocks": "5/6"
+  },
+  {
+   "func": "nativeCommandActionBlocked",
+   "file": "main.go",
+   "lines": [
+    10459,
+    10461
+   ],
+   "line_count": 3,
+   "group": "轉場與調色盤",
+   "entry_counts": {
+    "chapter": 9,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).nativeActionOverlayState",
+   "file": "main.go",
+   "lines": [
+    10516,
+    10534
+   ],
+   "line_count": 19,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 35,
+    "opening": 0
+   },
+   "covered_blocks": "4/11"
+  },
+  {
+   "func": "(*Game).drawSpellMenu",
+   "file": "main.go",
+   "lines": [
+    10537,
+    10572
+   ],
+   "line_count": 36,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6365,
+    "opening": 8408
+   },
+   "covered_blocks": "2/15",
+   "ebiten_api": [
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.NewImage",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（半透明）",
+     "line": 10543,
+     "detail": "alpha=238",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10548,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10570,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "(*Game).drawItemMenu",
+   "file": "main.go",
+   "lines": [
+    10577,
+    10613
+   ],
+   "line_count": 37,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6365,
+    "opening": 8408
+   },
+   "covered_blocks": "2/14",
+   "ebiten_api": [
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.NewImage",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（半透明）",
+     "line": 10593,
+     "detail": "alpha=238",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10597,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10611,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "(*Game).drawNativeCommandGrid",
+   "file": "main.go",
+   "lines": [
+    10617,
+    10635
+   ],
+   "line_count": 19,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6365,
+    "opening": 8408
+   },
+   "covered_blocks": "2/8",
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10633,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "lines": [
+    10638,
+    11123
+   ],
+   "line_count": 486,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "13/212",
+   "ebiten_api": [
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.NewImage",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（半透明）",
+     "line": 10645,
+     "detail": "alpha=232",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10653,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10670,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10678,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10689,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10690,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10700,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10711,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10718,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10726,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10734,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10742,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10750,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10762,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10777,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10787,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10793,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10807,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10816,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10829,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10830,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10836,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10859,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10868,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10881,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10882,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10888,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10928,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10945,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10951,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10964,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 10974,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11001,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11007,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11034,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11044,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11063,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11074,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11089,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11096,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 11100,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11111,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11115,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 11119,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ],
+   "func_value_calls": {
+    "fillBox": 14
+   }
+  },
+  {
+   "func": "(*Game).drawBattleScene",
+   "file": "main.go",
+   "lines": [
+    11231,
+    11387
+   ],
+   "line_count": 157,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 6488,
+    "opening": 0
+   },
+   "covered_blocks": "2/48",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.Bounds",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（不透明）",
+     "line": 11238,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ],
+   "func_value_calls": {
+    "blit": 3
+   }
+  },
+  {
+   "func": "(*Game).mapSpriteGroup",
+   "file": "main.go",
+   "lines": [
+    11514,
+    11521
+   ],
+   "line_count": 8,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 58870,
+    "opening": 7
+   },
+   "covered_blocks": "3/4"
+  },
+  {
+   "func": "(*Game).drawUnitSprite",
+   "file": "main.go",
+   "lines": [
+    11528,
+    11548
+   ],
+   "line_count": 21,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 58891,
+    "opening": 104491
+   },
+   "covered_blocks": "5/7",
+   "ebiten_api": [
+    "ebiten.ColorScale.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.field.ColorScale",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "drawUnit（色塊後備）",
+     "line": 11533,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ColorScale",
+     "line": 11545,
+     "counts": {
+      "chapter": 9071,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "drawCursor",
+   "file": "main.go",
+   "lines": [
+    11571,
+    11584
+   ],
+   "line_count": 14,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 3827,
+    "opening": 1
+   },
+   "covered_blocks": "2/2",
+   "ebiten_api": [
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.NewImage",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill",
+     "line": 11579,
+     "detail": "alpha 非常數",
+     "counts": {
+      "chapter": 15308,
+      "opening": 4
+     }
+    }
+   ]
+  },
+  {
+   "func": "phaseBannerHoldMillis",
+   "file": "main.go",
+   "lines": [
+    12132,
+    12137
+   ],
+   "line_count": 6,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 7384,
+    "opening": 0
+   },
+   "covered_blocks": "3/3"
+  },
+  {
+   "func": "phaseBannerTotalMillis",
+   "file": "main.go",
+   "lines": [
+    12141,
+    12145
+   ],
+   "line_count": 5,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 4012,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).phaseBannerElapsedMillis",
+   "file": "main.go",
+   "lines": [
+    12148,
+    12150
+   ],
+   "line_count": 3,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 3998,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).phaseBannerSlideOffset",
+   "file": "main.go",
+   "lines": [
+    12154,
+    12171
+   ],
+   "line_count": 18,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6370,
+    "opening": 1
+   },
+   "covered_blocks": "7/7"
+  },
+  {
+   "func": "phaseBannerFrames",
+   "file": "main.go",
+   "lines": [
+    12175,
+    12177
+   ],
+   "line_count": 3,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 4012,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).blitPhaseBannerGlyphs",
+   "file": "main.go",
+   "lines": [
+    12203,
+    12217
+   ],
+   "line_count": 15,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 1999,
+    "opening": 0
+   },
+   "covered_blocks": "4/5"
+  },
+  {
+   "func": "blitPhaseBannerGlyph",
+   "file": "main.go",
+   "lines": [
+    12225,
+    12246
+   ],
+   "line_count": 22,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 3998,
+    "opening": 0
+   },
+   "covered_blocks": "9/11"
+  },
+  {
+   "func": "(*Game).phaseBannerGlyphsAvailable",
+   "file": "main.go",
+   "lines": [
+    12249,
+    12252
+   ],
+   "line_count": 4,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 1999,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).phaseBannerStep",
+   "file": "main.go",
+   "lines": [
+    12268,
+    12301
+   ],
+   "line_count": 34,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6370,
+    "opening": 1
+   },
+   "covered_blocks": "13/15"
+  },
+  {
+   "func": "(*Game).drawPhaseBanner",
+   "file": "main.go",
+   "lines": [
+    12317,
+    12334
+   ],
+   "line_count": 18,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 3837,
+    "opening": 1
+   },
+   "covered_blocks": "4/7",
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 12333,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ]
+  },
+  {
+   "func": "(*Game).nativeMapHUDInput",
+   "file": "main.go",
+   "lines": [
+    12356,
+    12419
+   ],
+   "line_count": 64,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 10060,
+    "opening": 99
+   },
+   "covered_blocks": "13/18"
+  },
+  {
+   "func": "(*Game).drawNativeMapHUD",
+   "file": "main.go",
+   "lines": [
+    12421,
+    12444
+   ],
+   "line_count": 24,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 3199,
+    "opening": 1
+   },
+   "covered_blocks": "5/7",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawNativeMapFrame",
+   "file": "main.go",
+   "lines": [
+    12450,
+    12464
+   ],
+   "line_count": 15,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6370,
+    "opening": 1
+   },
+   "covered_blocks": "3/5",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).nativeMapFrameImage",
+   "file": "main.go",
+   "lines": [
+    12469,
+    12525
+   ],
+   "line_count": 57,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6370,
+    "opening": 1
+   },
+   "covered_blocks": "17/20"
+  },
+  {
+   "func": "(*Game).composeNativeMapFrame",
+   "file": "main.go",
+   "lines": [
+    12527,
+    12529
+   ],
+   "line_count": 3,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6554,
+    "opening": 98
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).composeNativeMapFrameForActionBackground",
+   "file": "main.go",
+   "lines": [
+    12534,
+    12536
+   ],
+   "line_count": 3,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6554,
+    "opening": 98
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).composeNativeMapFrameForCaller",
+   "file": "main.go",
+   "lines": [
+    12544,
+    12555
+   ],
+   "line_count": 12,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6600,
+    "opening": 98
+   },
+   "covered_blocks": "3/5",
+   "func_value_calls": {
+    "nativeMapFrozenNow": 1
+   }
+  },
+  {
+   "func": "(*Game).composeNativeMapFrameAtWithPaletteCycle",
+   "file": "main.go",
+   "lines": [
+    12570,
+    12759
+   ],
+   "line_count": 190,
+   "group": "轉場與調色盤",
+   "entry_counts": {
+    "chapter": 6600,
+    "opening": 98
+   },
+   "covered_blocks": "38/78"
+  },
+  {
+   "func": "drawModernBattlePanelInk",
+   "file": "modern_hd_battle_panel.go",
+   "lines": [
+    224,
+    246
+   ],
+   "line_count": 23,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 616,
+    "opening": 0
+   },
+   "covered_blocks": "4/7"
+  },
+  {
+   "func": "(*Game).modernHDBattleWanted",
+   "file": "modern_hd_battle_runtime.go",
+   "lines": [
+    54,
+    83
+   ],
+   "line_count": 30,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 9432,
+    "opening": 0
+   },
+   "covered_blocks": "4/16"
+  },
+  {
+   "func": "(*Game).syncModernHDBattleOwner",
+   "file": "modern_hd_battle_runtime.go",
+   "lines": [
+    85,
+    131
+   ],
+   "line_count": 47,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 19983,
+    "opening": 10372
+   },
+   "covered_blocks": "2/22"
+  },
+  {
+   "func": "(*Game).drawModernHDBattlePrelude",
+   "file": "modern_hd_battle_runtime.go",
+   "lines": [
+    312,
+    329
+   ],
+   "line_count": 18,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 460,
+    "opening": 0
+   },
+   "covered_blocks": "2/9"
+  },
+  {
+   "func": "(*Game).drawModernHDBattleBody",
+   "file": "modern_hd_battle_runtime.go",
+   "lines": [
+    331,
+    343
+   ],
+   "line_count": 13,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 6028,
+    "opening": 0
+   },
+   "covered_blocks": "2/7"
+  },
+  {
+   "func": "modernBattleBackdropGeometry",
+   "file": "modern_hd_battle_surface.go",
+   "lines": [
+    223,
+    226
+   ],
+   "line_count": 4,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 787,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).drawModernHDChurchConfirmation",
+   "file": "modern_hd_church_confirmation_transition.go",
+   "lines": [
+    337,
+    339
+   ],
+   "line_count": 3,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 56,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).drawModernHDFacilityConfirmation",
+   "file": "modern_hd_church_confirmation_transition.go",
+   "lines": [
+    341,
+    419
+   ],
+   "line_count": 79,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 58,
+    "opening": 0
+   },
+   "covered_blocks": "2/40"
+  },
+  {
+   "func": "(*Game).appendModernHDChurchFeeCurrency",
+   "file": "modern_hd_church_fee_currency.go",
+   "lines": [
+    80,
+    89
+   ],
+   "line_count": 10,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/4"
+  },
+  {
+   "func": "freezeModernHDConfirmation",
+   "file": "modern_hd_confirmation.go",
+   "lines": [
+    51,
+    136
+   ],
+   "line_count": 86,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "28/42",
+   "ebiten_api": [
+    "text.BoundString"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "TTF text（ebiten/v2/text）",
+     "line": 122,
+     "counts": {
+      "chapter": 8,
+      "opening": 0
+     }
+    }
+   ],
+   "func_value_calls": {
+    "colorAt": 3
+   }
+  },
+  {
+   "func": "freezeModernHDDialogueChrome",
+   "file": "modern_hd_dialogue_chrome.go",
+   "lines": [
+    41,
+    109
+   ],
+   "line_count": 69,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 6,
+    "opening": 1
+   },
+   "covered_blocks": "25/35",
+   "func_value_calls": {
+    "rgba": 3
+   }
+  },
+  {
+   "func": "(*Game).prepareModernHDFacilityDialogue",
+   "file": "modern_hd_facility_dialogue.go",
+   "lines": [
+    63,
+    124
+   ],
+   "line_count": 62,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "18/30"
+  },
+  {
+   "func": "facilityDialogueBorderVisible",
+   "file": "modern_hd_facility_dialogue.go",
+   "lines": [
+    128,
+    143
+   ],
+   "line_count": 16,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "7/9"
+  },
+  {
+   "func": "(*Game).appendModernHDFacilityDialogue",
+   "file": "modern_hd_facility_dialogue.go",
+   "lines": [
+    145,
+    200
+   ],
+   "line_count": 56,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/27"
+  },
+  {
+   "func": "(*Game).appendModernHDFacilityItemRows",
+   "file": "modern_hd_facility_item_rows.go",
+   "lines": [
+    303,
+    316
+   ],
+   "line_count": 14,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/7"
+  },
+  {
+   "func": "(*Game).drawModernHDFacilityList",
+   "file": "modern_hd_facility_list_transition.go",
+   "lines": [
+    298,
+    441
+   ],
+   "line_count": 144,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 58,
+    "opening": 0
+   },
+   "covered_blocks": "3/66"
+  },
+  {
+   "func": "(*Game).appendModernHDFacilityMoney",
+   "file": "modern_hd_facility_money.go",
+   "lines": [
+    52,
+    122
+   ],
+   "line_count": 71,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2326,
+    "opening": 5207
+   },
+   "covered_blocks": "2/31"
+  },
+  {
+   "func": "(*Game).prepareModernHDFacilityRoster",
+   "file": "modern_hd_facility_roster.go",
+   "lines": [
+    94,
+    110
+   ],
+   "line_count": 17,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/8"
+  },
+  {
+   "func": "(*Game).drawModernHDFacilityRosterUnderlay",
+   "file": "modern_hd_facility_roster.go",
+   "lines": [
+    175,
+    187
+   ],
+   "line_count": 13,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/3",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.Dispose",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).modernFacility",
+   "file": "modern_hd_facility_scene.go",
+   "lines": [
+    142,
+    147
+   ],
+   "line_count": 6,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 9,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).drawModernHDTown",
+   "file": "modern_hd_facility_scene.go",
+   "lines": [
+    243,
+    296
+   ],
+   "line_count": 54,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 7,
+    "opening": 0
+   },
+   "covered_blocks": "4/26",
+   "func_value_calls": {
+    "restore": 1
+   }
+  },
+  {
+   "func": "(*Game).drawModernHDShopFrame",
+   "file": "modern_hd_facility_scene.go",
+   "lines": [
+    298,
+    324
+   ],
+   "line_count": 27,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "3/13"
+  },
+  {
+   "func": "(*Game).modernStableFacilitySource",
+   "file": "modern_hd_facility_scene_pair.go",
+   "lines": [
+    51,
+    99
+   ],
+   "line_count": 49,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/21"
+  },
+  {
+   "func": "(*Game).composeModernFacilityMarker",
+   "file": "modern_hd_facility_scene_pair.go",
+   "lines": [
+    103,
+    124
+   ],
+   "line_count": 22,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "4/6",
+   "func_value_calls": {
+    "compose": 1
+   }
+  },
+  {
+   "func": "(*Game).drawModernHDStableFacilityScene",
+   "file": "modern_hd_facility_scene_pair.go",
+   "lines": [
+    126,
+    157
+   ],
+   "line_count": 32,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/16",
+   "func_value_calls": {
+    "compose": 1
+   }
+  },
+  {
+   "func": "(*Game).modernHDFacilityFont",
+   "file": "modern_hd_facility_text.go",
+   "lines": [
+    17,
+    60
+   ],
+   "line_count": 44,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 23,
+    "opening": 0
+   },
+   "covered_blocks": "15/19"
+  },
+  {
+   "func": "(*Game).beginModernHDFacilityText",
+   "file": "modern_hd_facility_text.go",
+   "lines": [
+    62,
+    72
+   ],
+   "line_count": 11,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 6,
+    "opening": 0
+   },
+   "covered_blocks": "5/5"
+  },
+  {
+   "func": "(*Game).drawModernHDFacilityFrame",
+   "file": "modern_hd_facility_text.go",
+   "lines": [
+    74,
+    108
+   ],
+   "line_count": 35,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "6/14",
+   "func_value_calls": {
+    "compose": 1,
+    "restore": 1
+   }
+  },
+  {
+   "func": "(*Game).beginModernHDPreparationText",
+   "file": "modern_hd_facility_text.go",
+   "lines": [
+    120,
+    147
+   ],
+   "line_count": 28,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "3/11",
+   "func_value_calls": {
+    "restoreClass": 1
+   }
+  },
+  {
+   "func": "(*Game).drawModernHDFullReward",
+   "file": "modern_hd_full_reward.go",
+   "lines": [
+    287,
+    376
+   ],
+   "line_count": 90,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 39,
+    "opening": 0
+   },
+   "covered_blocks": "2/41",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.Dispose",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "hasModernHDDeathBank",
+   "file": "modern_hd_map_overlay_assets.go",
+   "lines": [
+    106,
+    117
+   ],
+   "line_count": 12,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1079,
+    "opening": 0
+   },
+   "covered_blocks": "2/6"
+  },
+  {
+   "func": "(*Game).modernHDMapFrameAdmission",
+   "file": "modern_hd_map_runtime.go",
+   "lines": [
+    47,
+    81
+   ],
+   "line_count": 35,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "4/18"
+  },
+  {
+   "func": "(*Game).modernOpeningEnabled",
+   "file": "modern_hd_opening.go",
+   "lines": [
+    238,
+    242
+   ],
+   "line_count": 5,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 24,
+    "opening": 1940
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).drawModernHDStatusTransition",
+   "file": "modern_hd_panel_transition.go",
+   "lines": [
+    146,
+    152
+   ],
+   "line_count": 7,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 52,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*nativeTownFrameSource).matches",
+   "file": "modern_hd_preparation_background.go",
+   "lines": [
+    11,
+    14
+   ],
+   "line_count": 4,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 23,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).drawModernHDPreparationBackground",
+   "file": "modern_hd_preparation_background.go",
+   "lines": [
+    102,
+    189
+   ],
+   "line_count": 88,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 21,
+    "opening": 0
+   },
+   "covered_blocks": "2/40",
+   "func_value_calls": {
+    "clearRuns": 2,
+    "compose": 4
+   }
+  },
+  {
+   "func": "(*Game).prepareModernHDPreparationCounts",
+   "file": "modern_hd_preparation_counts.go",
+   "lines": [
+    36,
+    132
+   ],
+   "line_count": 97,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "2/38",
+   "func_value_calls": {
+    "pal": 2
+   }
+  },
+  {
+   "func": "(*Game).appendModernHDPreparationCounts",
+   "file": "modern_hd_preparation_counts.go",
+   "lines": [
+    134,
+    140
+   ],
+   "line_count": 7,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "1/2"
+  },
+  {
+   "func": "preparationCursorPalette",
+   "file": "modern_hd_preparation_cursor.go",
+   "lines": [
+    36,
+    51
+   ],
+   "line_count": 16,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 6,
+    "opening": 0
+   },
+   "covered_blocks": "5/8"
+  },
+  {
+   "func": "(*Game).preparationDialoguePlacement",
+   "file": "modern_hd_preparation_dialogue.go",
+   "lines": [
+    31,
+    75
+   ],
+   "line_count": 45,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 21,
+    "opening": 0
+   },
+   "covered_blocks": "20/25"
+  },
+  {
+   "func": "(*Game).appendModernHDPreparationDialogue",
+   "file": "modern_hd_preparation_dialogue.go",
+   "lines": [
+    112,
+    146
+   ],
+   "line_count": 35,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 21,
+    "opening": 0
+   },
+   "covered_blocks": "6/15"
+  },
+  {
+   "func": "(*Game).prepareModernHDPreparationRoster",
+   "file": "modern_hd_preparation_roster.go",
+   "lines": [
+    21,
+    89
+   ],
+   "line_count": 69,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "2/33"
+  },
+  {
+   "func": "(*Game).drawModernHDPreparationRoster",
+   "file": "modern_hd_preparation_roster.go",
+   "lines": [
+    91,
+    114
+   ],
+   "line_count": 24,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "2/12"
+  },
+  {
+   "func": "(*Game).prepareModernHDPreparationStatus",
+   "file": "modern_hd_preparation_status.go",
+   "lines": [
+    23,
+    72
+   ],
+   "line_count": 50,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "2/19"
+  },
+  {
+   "func": "(*Game).appendModernHDPreparationStableLayers",
+   "file": "modern_hd_preparation_status.go",
+   "lines": [
+    74,
+    81
+   ],
+   "line_count": 8,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "1/2"
+  },
+  {
+   "func": "(*Game).drawModernHDPreparationTransition",
+   "file": "modern_hd_preparation_transition.go",
+   "lines": [
+    93,
+    114
+   ],
+   "line_count": 22,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 56,
+    "opening": 0
+   },
+   "covered_blocks": "6/11",
+   "func_value_calls": {
+    "compose": 1
+   }
+  },
+  {
+   "func": "(*Game).drawModernHDRewardMessage",
+   "file": "modern_hd_reward_message.go",
+   "lines": [
+    62,
+    151
+   ],
+   "line_count": 90,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 39,
+    "opening": 0
+   },
+   "covered_blocks": "2/39",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.Dispose",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).appendModernHDServiceIcons",
+   "file": "modern_hd_service_icons.go",
+   "lines": [
+    186,
+    226
+   ],
+   "line_count": 41,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "2/17"
+  },
+  {
+   "func": "(*nativeServiceMenuPresentation).compose",
+   "file": "modern_hd_service_menu_transition.go",
+   "lines": [
+    101,
+    137
+   ],
+   "line_count": 37,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 12,
+    "opening": 0
+   },
+   "covered_blocks": "11/16"
+  },
+  {
+   "func": "(*Game).drawModernHDFacilityServiceMenu",
+   "file": "modern_hd_service_menu_transition.go",
+   "lines": [
+    182,
+    252
+   ],
+   "line_count": 71,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "13/34"
+  },
+  {
+   "func": "(*Game).beginModernHDShopDigits",
+   "file": "modern_hd_shop_digits.go",
+   "lines": [
+    13,
+    26
+   ],
+   "line_count": 14,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "5/7"
+  },
+  {
+   "func": "(*Game).modernHDDecimalFrames",
+   "file": "modern_hd_shop_digits.go",
+   "lines": [
+    28,
+    41
+   ],
+   "line_count": 14,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "7/7"
+  },
+  {
+   "func": "(*Game).modernHDDecimalSprite",
+   "file": "modern_hd_shop_digits.go",
+   "lines": [
+    43,
+    84
+   ],
+   "line_count": 42,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 150,
+    "opening": 0
+   },
+   "covered_blocks": "16/19"
+  },
+  {
+   "func": "(*Game).hasModernHDStoryMapSource",
+   "file": "modern_hd_story_map.go",
+   "lines": [
+    10,
+    14
+   ],
+   "line_count": 5,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 8407
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).modernHDStoryTextFrame",
+   "file": "modern_hd_story_text.go",
+   "lines": [
+    13,
+    91
+   ],
+   "line_count": 79,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 1342,
+    "opening": 3235
+   },
+   "covered_blocks": "2/35"
+  },
+  {
+   "func": "(*Game).drawModernHDSystemConfirmation",
+   "file": "modern_hd_system_confirmation.go",
+   "lines": [
+    335,
+    436
+   ],
+   "line_count": 102,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 39,
+    "opening": 0
+   },
+   "covered_blocks": "2/50",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.Dispose",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "modernHDNativeTextColor",
+   "file": "modern_hd_text.go",
+   "lines": [
+    81,
+    90
+   ],
+   "line_count": 10,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 92,
+    "opening": 26
+   },
+   "covered_blocks": "4/4"
+  },
+  {
+   "func": "(*Game).beginModernHDText",
+   "file": "modern_hd_text.go",
+   "lines": [
+    92,
+    110
+   ],
+   "line_count": 19,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 19983,
+    "opening": 10372
+   },
+   "covered_blocks": "3/10"
+  },
+  {
+   "func": "(*Game).clearModernHDText",
+   "file": "modern_hd_text.go",
+   "lines": [
+    160,
+    164
+   ],
+   "line_count": 5,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2326,
+    "opening": 5207
+   },
+   "covered_blocks": "1/2"
+  },
+  {
+   "func": "(*Game).modernHDShopText",
+   "file": "modern_hd_text.go",
+   "lines": [
+    166,
+    168
+   ],
+   "line_count": 3,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 15,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).clearModernHDShopText",
+   "file": "modern_hd_text.go",
+   "lines": [
+    170,
+    180
+   ],
+   "line_count": 11,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "5/5"
+  },
+  {
+   "func": "(*Game).presentNativeStoryDialogueFrame",
+   "file": "modern_hd_timed_dialogue.go",
+   "lines": [
+    65,
+    110
+   ],
+   "line_count": 46,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 2254,
+    "opening": 5207
+   },
+   "covered_blocks": "6/19",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.WritePixels",
+    "ebiten.NewImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawModernHDTitleMenuItem",
+   "file": "modern_hd_title_interface.go",
+   "lines": [
+    147,
+    165
+   ],
+   "line_count": 19,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 72,
+    "opening": 72
+   },
+   "covered_blocks": "2/7",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "modernHDTransientExpiryRegion",
+   "file": "modern_hd_transient_expiry.go",
+   "lines": [
+    157,
+    169
+   ],
+   "line_count": 13,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 56,
+    "opening": 0
+   },
+   "covered_blocks": "2/7"
+  },
+  {
+   "func": "(*Game).drawModernHDTransientExpiryMessage",
+   "file": "modern_hd_transient_expiry.go",
+   "lines": [
+    176,
+    254
+   ],
+   "line_count": 79,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 56,
+    "opening": 0
+   },
+   "covered_blocks": "2/31",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.Dispose",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawNativeAIIdleRecovery",
+   "file": "native_ai_idle_recovery.go",
+   "lines": [
+    328,
+    350
+   ],
+   "line_count": 23,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "6/8",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "nativePaletteColor",
+   "file": "native_battle_name.go",
+   "lines": [
+    87,
+    93
+   ],
+   "line_count": 7,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 4436,
+    "opening": 26
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*nativeBIOSClock).Sample",
+   "file": "native_bios_clock.go",
+   "lines": [
+    48,
+    64
+   ],
+   "line_count": 17,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 33409,
+    "opening": 12409
+   },
+   "covered_blocks": "6/7"
+  },
+  {
+   "func": "(*nativeBIOSClock).Current",
+   "file": "native_bios_clock.go",
+   "lines": [
+    70,
+    75
+   ],
+   "line_count": 6,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 6600,
+    "opening": 98
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).advanceNativeMapClock",
+   "file": "native_bios_clock.go",
+   "lines": [
+    82,
+    95
+   ],
+   "line_count": 14,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 6600,
+    "opening": 98
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).prepareNativeCh23SteadyStage",
+   "file": "native_ch23_post.go",
+   "lines": [
+    63,
+    91
+   ],
+   "line_count": 29,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6600,
+    "opening": 98
+   },
+   "covered_blocks": "2/14"
+  },
+  {
+   "func": "(*Game).drawNativeCh28PostPresent",
+   "file": "native_ch28_post_present.go",
+   "lines": [
+    339,
+    363
+   ],
+   "line_count": 25,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 1064,
+    "opening": 0
+   },
+   "covered_blocks": "3/9",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawNativeChurchUIJob",
+   "file": "native_church_ui.go",
+   "lines": [
+    214,
+    235
+   ],
+   "line_count": 22,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "4/9"
+  },
+  {
+   "func": "(*Game).presentNativeClassFrame",
+   "file": "native_class_ui.go",
+   "lines": [
+    206,
+    208
+   ],
+   "line_count": 3,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2326,
+    "opening": 5207
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).presentNativeClassFrameWithPalette",
+   "file": "native_class_ui.go",
+   "lines": [
+    210,
+    223
+   ],
+   "line_count": 14,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2326,
+    "opening": 5207
+   },
+   "covered_blocks": "1/1",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawNativeClassUIJob",
+   "file": "native_class_ui_lifecycle.go",
+   "lines": [
+    179,
+    240
+   ],
+   "line_count": 62,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 60,
+    "opening": 0
+   },
+   "covered_blocks": "18/33"
+  },
+  {
+   "func": "(*Game).nativeConfirmationMouthWaitingOwner",
+   "file": "native_confirmation_mouth.go",
+   "lines": [
+    12,
+    33
+   ],
+   "line_count": 22,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "7/13"
+  },
+  {
+   "func": "(*Game).composeNativeConfirmationMouth",
+   "file": "native_confirmation_mouth.go",
+   "lines": [
+    71,
+    81
+   ],
+   "line_count": 11,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "2/5"
+  },
+  {
+   "func": "(*Game).drawNativeEndTurnRecovery",
+   "file": "native_end_turn_recovery.go",
+   "lines": [
+    162,
+    179
+   ],
+   "line_count": 18,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 42,
+    "opening": 0
+   },
+   "covered_blocks": "3/5",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).composeNativeHotelStable",
+   "file": "native_hotel_ui.go",
+   "lines": [
+    82,
+    102
+   ],
+   "line_count": 21,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "4/7"
+  },
+  {
+   "func": "(*Game).composeNativeHotelFrame",
+   "file": "native_hotel_ui.go",
+   "lines": [
+    106,
+    157
+   ],
+   "line_count": 52,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "4/21"
+  },
+  {
+   "func": "(*Game).drawNativeHotel",
+   "file": "native_hotel_ui.go",
+   "lines": [
+    159,
+    164
+   ],
+   "line_count": 6,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "3/4"
+  },
+  {
+   "func": "nativeLoadSlotMetadata",
+   "file": "native_load_slots_ui.go",
+   "lines": [
+    64,
+    88
+   ],
+   "line_count": 25,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "2/11"
+  },
+  {
+   "func": "nativeLoadSlotMetadataFromFD2SAV",
+   "file": "native_load_slots_ui.go",
+   "lines": [
+    90,
+    114
+   ],
+   "line_count": 25,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "8/11"
+  },
+  {
+   "func": "nativeMapAssetsAvailable",
+   "file": "native_map_assets.go",
+   "lines": [
+    125,
+    143
+   ],
+   "line_count": 19,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 17037,
+    "opening": 7774
+   },
+   "covered_blocks": "6/10"
+  },
+  {
+   "func": "buildNativeMapFrameInput",
+   "file": "native_map_frame_input.go",
+   "lines": [
+    24,
+    89
+   ],
+   "line_count": 66,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 6825,
+    "opening": 98
+   },
+   "covered_blocks": "11/19"
+  },
+  {
+   "func": "(*Game).nativeCh12UpWalkFrame",
+   "file": "native_map_frame_input.go",
+   "lines": [
+    93,
+    107
+   ],
+   "line_count": 15,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 14430,
+    "opening": 196
+   },
+   "covered_blocks": "2/5"
+  },
+  {
+   "func": "(*Game).nativeActionOverlayInMapFrame",
+   "file": "native_map_unit_window.go",
+   "lines": [
+    14,
+    17
+   ],
+   "line_count": 4,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6365,
+    "opening": 8408
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).nativeMapSelectionOverlay",
+   "file": "native_map_unit_window.go",
+   "lines": [
+    26,
+    54
+   ],
+   "line_count": 29,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6600,
+    "opening": 98
+   },
+   "covered_blocks": "5/14"
+  },
+  {
+   "func": "(*Game).nativeMapActionOverlay",
+   "file": "native_map_unit_window.go",
+   "lines": [
+    58,
+    126
+   ],
+   "line_count": 69,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 30,
+    "opening": 0
+   },
+   "covered_blocks": "19/34"
+  },
+  {
+   "func": "(*Game).drawNativePaletteRamp",
+   "file": "native_palette_ramp.go",
+   "lines": [
+    164,
+    188
+   ],
+   "line_count": 25,
+   "group": "轉場與調色盤",
+   "entry_counts": {
+    "chapter": 5934,
+    "opening": 0
+   },
+   "covered_blocks": "3/9",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "nativeDACIsBlack",
+   "file": "native_palette_ramp.go",
+   "lines": [
+    190,
+    200
+   ],
+   "line_count": 11,
+   "group": "轉場與調色盤",
+   "entry_counts": {
+    "chapter": 14025,
+    "opening": 8432
+   },
+   "covered_blocks": "4/6"
+  },
+  {
+   "func": "(*nativePhysicalBodyJob).indexed",
+   "file": "native_physical_body.go",
+   "lines": [
+    407,
+    412
+   ],
+   "line_count": 6,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 810,
+    "opening": 0
+   },
+   "covered_blocks": "3/3"
+  },
+  {
+   "func": "(*Game).drawNativePhysicalBody",
+   "file": "native_physical_body.go",
+   "lines": [
+    414,
+    454
+   ],
+   "line_count": 41,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 6028,
+    "opening": 0
+   },
+   "covered_blocks": "12/19",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawNativePhysicalPrelude",
+   "file": "native_physical_scene.go",
+   "lines": [
+    372,
+    422
+   ],
+   "line_count": 51,
+   "group": "戰鬥演出",
+   "entry_counts": {
+    "chapter": 6488,
+    "opening": 0
+   },
+   "covered_blocks": "10/26",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).drawNativePlayerStatus",
+   "file": "native_player_input.go",
+   "lines": [
+    214,
+    237
+   ],
+   "line_count": 24,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "2/11"
+  },
+  {
+   "func": "(*Game).drawNativeMovementPanel",
+   "file": "native_player_movement.go",
+   "lines": [
+    100,
+    118
+   ],
+   "line_count": 19,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6370,
+    "opening": 1
+   },
+   "covered_blocks": "2/6",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).nativePreparationPromptActive",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    187,
+    193
+   ],
+   "line_count": 7,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 10,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).composeNativePreparationPromptQuestion",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    208,
+    242
+   ],
+   "line_count": 35,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "5/8"
+  },
+  {
+   "func": "(*Game).composeNativePreparationPromptFrame",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    244,
+    263
+   ],
+   "line_count": 20,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "4/7"
+  },
+  {
+   "func": "(*Game).drawNativePreparation",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    429,
+    456
+   ],
+   "line_count": 28,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 21,
+    "opening": 0
+   },
+   "covered_blocks": "7/13",
+   "func_value_calls": {
+    "restore": 1
+   }
+  },
+  {
+   "func": "(*Game).composeNativePreparationStableFrame",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    458,
+    460
+   ],
+   "line_count": 3,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).composeNativePreparationStableFrameLayers",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    462,
+    464
+   ],
+   "line_count": 3,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).composeNativePreparationStableFrameParts",
+   "file": "native_preparation_ui.go",
+   "lines": [
+    466,
+    477
+   ],
+   "line_count": 12,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "covered_blocks": "3/7"
+  },
+  {
+   "func": "(*Game).localizedShopKey",
+   "file": "native_shop_locale.go",
+   "lines": [
+    151,
+    156
+   ],
+   "line_count": 6,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "3/3"
+  },
+  {
+   "func": "(*Game).composeLocalizedNativeShopStable",
+   "file": "native_shop_locale.go",
+   "lines": [
+    158,
+    176
+   ],
+   "line_count": 19,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "3/5"
+  },
+  {
+   "func": "(*Game).drawLocalizedShopMessage",
+   "file": "native_shop_locale.go",
+   "lines": [
+    224,
+    248
+   ],
+   "line_count": 25,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "6/10"
+  },
+  {
+   "func": "(*Game).nativeShopState",
+   "file": "native_shop_ui.go",
+   "lines": [
+    1106,
+    1118
+   ],
+   "line_count": 13,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 18,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).composeNativeShopStable",
+   "file": "native_shop_ui.go",
+   "lines": [
+    1120,
+    1139
+   ],
+   "line_count": 20,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 10,
+    "opening": 0
+   },
+   "covered_blocks": "6/7"
+  },
+  {
+   "func": "(*Game).drawNativeShopUIJob",
+   "file": "native_shop_ui.go",
+   "lines": [
+    1495,
+    1541
+   ],
+   "line_count": 47,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "9/24"
+  },
+  {
+   "func": "(*Game).drawNativeShop",
+   "file": "native_shop_ui.go",
+   "lines": [
+    1543,
+    1611
+   ],
+   "line_count": 69,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "3/35"
+  },
+  {
+   "func": "(*Game).drawNativeSpawnIntro",
+   "file": "native_spawn_intro.go",
+   "lines": [
+    360,
+    372
+   ],
+   "line_count": 13,
+   "group": "地圖與單位",
+   "entry_counts": {
+    "chapter": 24,
+    "opening": 24
+   },
+   "covered_blocks": "2/3",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.Image.DrawImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "nativeStoryOpeningFrameIndex",
+   "file": "native_story_dialogue.go",
+   "lines": [
+    339,
+    351
+   ],
+   "line_count": 13,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 364,
+    "opening": 679
+   },
+   "covered_blocks": "6/7"
+  },
+  {
+   "func": "(*Game).nativeStoryDialogueAtInputWait",
+   "file": "native_story_dialogue.go",
+   "lines": [
+    408,
+    417
+   ],
+   "line_count": 10,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 11285,
+    "opening": 8345
+   },
+   "covered_blocks": "3/3"
+  },
+  {
+   "func": "(*Game).drawNativeStoryDialogue",
+   "file": "native_story_dialogue.go",
+   "lines": [
+    485,
+    586
+   ],
+   "line_count": 102,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "27/44"
+  },
+  {
+   "func": "drawIndexedLocalizedText",
+   "file": "native_story_dialogue_locale.go",
+   "lines": [
+    160,
+    221
+   ],
+   "line_count": 62,
+   "group": "對話與文字",
+   "entry_counts": {
+    "chapter": 2,
+    "opening": 0
+   },
+   "covered_blocks": "8/24"
+  },
+  {
+   "func": "(*Game).drawNativeSystemInfoUI",
+   "file": "native_system_info_ui.go",
+   "lines": [
+    186,
+    233
+   ],
+   "line_count": 48,
+   "group": "HUD 與選單",
+   "entry_counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "covered_blocks": "2/22",
+   "ebiten_api": [
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.SubImage",
+    "ebiten.NewImageFromImage",
+    "ebiten.field.GeoM"
+   ]
+  },
+  {
+   "func": "(*Game).snapshotNativeTownSource",
+   "file": "native_town_ui.go",
+   "lines": [
+    27,
+    60
+   ],
+   "line_count": 34,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 13,
+    "opening": 0
+   },
+   "covered_blocks": "11/17"
+  },
+  {
+   "func": "(*nativeTownFrameSource).compose",
+   "file": "native_town_ui.go",
+   "lines": [
+    62,
+    76
+   ],
+   "line_count": 15,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 13,
+    "opening": 0
+   },
+   "covered_blocks": "4/7",
+   "func_value_calls": {
+    "compose": 1
+   }
+  },
+  {
+   "func": "(*Game).composeNativeTownFrame",
+   "file": "native_town_ui.go",
+   "lines": [
+    208,
+    210
+   ],
+   "line_count": 3,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 13,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).composeNativeTownFrameWithBackground",
+   "file": "native_town_ui.go",
+   "lines": [
+    212,
+    214
+   ],
+   "line_count": 3,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 13,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).composeNativeTownFrameLayers",
+   "file": "native_town_ui.go",
+   "lines": [
+    216,
+    222
+   ],
+   "line_count": 7,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 13,
+    "opening": 0
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "(*Game).drawNativeTown",
+   "file": "native_town_ui.go",
+   "lines": [
+    224,
+    234
+   ],
+   "line_count": 11,
+   "group": "城鎮與設施",
+   "entry_counts": {
+    "chapter": 7,
+    "opening": 0
+   },
+   "covered_blocks": "3/5"
+  },
+  {
+   "func": "normalizePlayerSpeed",
+   "file": "player_game_clock.go",
+   "lines": [
+    10,
+    15
+   ],
+   "line_count": 6,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 25249,
+    "opening": 10373
+   },
+   "covered_blocks": "3/3"
+  },
+  {
+   "func": "(*playerGameClock).sample",
+   "file": "player_game_clock.go",
+   "lines": [
+    17,
+    29
+   ],
+   "line_count": 13,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 132944,
+    "opening": 53893
+   },
+   "covered_blocks": "5/5"
+  },
+  {
+   "func": "(*Game).gameNow",
+   "file": "player_game_clock.go",
+   "lines": [
+    31,
+    33
+   ],
+   "line_count": 3,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 132944,
+    "opening": 53893
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).modernHDInterfaceEnabled",
+   "file": "player_interface.go",
+   "lines": [
+    18,
+    30
+   ],
+   "line_count": 13,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 36221,
+    "opening": 10567
+   },
+   "covered_blocks": "3/6"
+  },
+  {
+   "func": "(*Game).hdPresentationEnabled",
+   "file": "player_interface.go",
+   "lines": [
+    32,
+    34
+   ],
+   "line_count": 3,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 39,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "(*Game).interfaceThemeForArt",
+   "file": "player_interface.go",
+   "lines": [
+    36,
+    50
+   ],
+   "line_count": 15,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 40,
+    "opening": 0
+   },
+   "covered_blocks": "2/9"
+  },
+  {
+   "func": "(*Game).interfaceAssetTheme",
+   "file": "player_interface.go",
+   "lines": [
+    52,
+    54
+   ],
+   "line_count": 3,
+   "group": "HD 檔（原版模式下有執行，多為守門）",
+   "entry_counts": {
+    "chapter": 40,
+    "opening": 0
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "saveSlotPath",
+   "file": "save.go",
+   "lines": [
+    21,
+    30
+   ],
+   "line_count": 10,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "covered_blocks": "3/5"
+  },
+  {
+   "func": "separatedAssetPath",
+   "file": "separated_asset_path_native.go",
+   "lines": [
+    13,
+    18
+   ],
+   "line_count": 6,
+   "group": "素材路徑與時鐘（非繪圖）",
+   "entry_counts": {
+    "chapter": 577,
+    "opening": 197
+   },
+   "covered_blocks": "2/3"
+  },
+  {
+   "func": "titleMenuY",
+   "file": "title.go",
+   "lines": [
+    45,
+    47
+   ],
+   "line_count": 3,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 72,
+    "opening": 72
+   },
+   "covered_blocks": "1/1"
+  },
+  {
+   "func": "titlePublisherBrightness",
+   "file": "title.go",
+   "lines": [
+    456,
+    467
+   ],
+   "line_count": 12,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 0,
+    "opening": 119
+   },
+   "covered_blocks": "4/5"
+  },
+  {
+   "func": "titlePalettePhase",
+   "file": "title.go",
+   "lines": [
+    470,
+    478
+   ],
+   "line_count": 9,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 40,
+    "opening": 20
+   },
+   "covered_blocks": "5/5"
+  },
+  {
+   "func": "titleScrollUsesPulsePalette",
+   "file": "title.go",
+   "lines": [
+    486,
+    493
+   ],
+   "line_count": 8,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 0,
+    "opening": 963
+   },
+   "covered_blocks": "4/4"
+  },
+  {
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "lines": [
+    716,
+    890
+   ],
+   "line_count": 175,
+   "group": "標題與開場",
+   "entry_counts": {
+    "chapter": 24,
+    "opening": 1940
+   },
+   "covered_blocks": "29/66",
+   "ebiten_api": [
+    "ebiten.ColorScale.Scale",
+    "ebiten.GeoM.Scale",
+    "ebiten.GeoM.Translate",
+    "ebiten.Image.Bounds",
+    "ebiten.Image.Clear",
+    "ebiten.Image.DrawImage",
+    "ebiten.Image.Fill",
+    "ebiten.NewImage",
+    "ebiten.field.ColorScale",
+    "ebiten.field.GeoM"
+   ],
+   "legacy_or_rgba_sites": [
+    {
+     "kind": "Fill（不透明）",
+     "line": 723,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ColorScale",
+     "line": 739,
+     "counts": {
+      "chapter": 0,
+      "opening": 119
+     }
+    },
+    {
+     "kind": "titlePaletteBlend（ColorM 後備）",
+     "line": 765,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 769,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 6
+     }
+    },
+    {
+     "kind": "titlePaletteBlend（ColorM 後備）",
+     "line": 775,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "ColorScale",
+     "line": 790,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（不透明）",
+     "line": 797,
+     "detail": "alpha=255",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill",
+     "line": 812,
+     "detail": "alpha 非常數",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "Fill（半透明）",
+     "line": 852,
+     "detail": "alpha=240",
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 861,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    },
+    {
+     "kind": "(*Font).Draw（TTF 後備文字）",
+     "line": 887,
+     "counts": {
+      "chapter": 0,
+      "opening": 0
+     }
+    }
+   ]
+  }
+ ],
+ "hd_executed_reached": [
+  "modern_hd_battle_panel.go:drawModernBattlePanelInk",
+  "modern_hd_battle_runtime.go:(*Game).drawModernHDBattleBody",
+  "modern_hd_battle_runtime.go:(*Game).drawModernHDBattlePrelude",
+  "modern_hd_battle_runtime.go:(*Game).modernHDBattleWanted",
+  "modern_hd_battle_runtime.go:(*Game).syncModernHDBattleOwner",
+  "modern_hd_battle_surface.go:modernBattleBackdropGeometry",
+  "modern_hd_church_confirmation_transition.go:(*Game).drawModernHDChurchConfirmation",
+  "modern_hd_church_confirmation_transition.go:(*Game).drawModernHDFacilityConfirmation",
+  "modern_hd_church_fee_currency.go:(*Game).appendModernHDChurchFeeCurrency",
+  "modern_hd_confirmation.go:freezeModernHDConfirmation",
+  "modern_hd_dialogue_chrome.go:freezeModernHDDialogueChrome",
+  "modern_hd_facility_dialogue.go:(*Game).appendModernHDFacilityDialogue",
+  "modern_hd_facility_dialogue.go:(*Game).prepareModernHDFacilityDialogue",
+  "modern_hd_facility_dialogue.go:facilityDialogueBorderVisible",
+  "modern_hd_facility_item_rows.go:(*Game).appendModernHDFacilityItemRows",
+  "modern_hd_facility_list_transition.go:(*Game).drawModernHDFacilityList",
+  "modern_hd_facility_money.go:(*Game).appendModernHDFacilityMoney",
+  "modern_hd_facility_roster.go:(*Game).drawModernHDFacilityRosterUnderlay",
+  "modern_hd_facility_roster.go:(*Game).prepareModernHDFacilityRoster",
+  "modern_hd_facility_scene.go:(*Game).drawModernHDShopFrame",
+  "modern_hd_facility_scene.go:(*Game).drawModernHDTown",
+  "modern_hd_facility_scene.go:(*Game).modernFacility",
+  "modern_hd_facility_scene_pair.go:(*Game).composeModernFacilityMarker",
+  "modern_hd_facility_scene_pair.go:(*Game).drawModernHDStableFacilityScene",
+  "modern_hd_facility_scene_pair.go:(*Game).modernStableFacilitySource",
+  "modern_hd_facility_text.go:(*Game).beginModernHDFacilityText",
+  "modern_hd_facility_text.go:(*Game).beginModernHDPreparationText",
+  "modern_hd_facility_text.go:(*Game).drawModernHDFacilityFrame",
+  "modern_hd_facility_text.go:(*Game).modernHDFacilityFont",
+  "modern_hd_full_reward.go:(*Game).drawModernHDFullReward",
+  "modern_hd_map_overlay_assets.go:hasModernHDDeathBank",
+  "modern_hd_map_runtime.go:(*Game).modernHDMapFrameAdmission",
+  "modern_hd_opening.go:(*Game).modernOpeningEnabled",
+  "modern_hd_panel_transition.go:(*Game).drawModernHDStatusTransition",
+  "modern_hd_preparation_background.go:(*Game).drawModernHDPreparationBackground",
+  "modern_hd_preparation_background.go:(*nativeTownFrameSource).matches",
+  "modern_hd_preparation_counts.go:(*Game).appendModernHDPreparationCounts",
+  "modern_hd_preparation_counts.go:(*Game).prepareModernHDPreparationCounts",
+  "modern_hd_preparation_cursor.go:preparationCursorPalette",
+  "modern_hd_preparation_dialogue.go:(*Game).appendModernHDPreparationDialogue",
+  "modern_hd_preparation_dialogue.go:(*Game).preparationDialoguePlacement",
+  "modern_hd_preparation_roster.go:(*Game).drawModernHDPreparationRoster",
+  "modern_hd_preparation_roster.go:(*Game).prepareModernHDPreparationRoster",
+  "modern_hd_preparation_status.go:(*Game).appendModernHDPreparationStableLayers",
+  "modern_hd_preparation_status.go:(*Game).prepareModernHDPreparationStatus",
+  "modern_hd_preparation_transition.go:(*Game).drawModernHDPreparationTransition",
+  "modern_hd_reward_message.go:(*Game).drawModernHDRewardMessage",
+  "modern_hd_service_icons.go:(*Game).appendModernHDServiceIcons",
+  "modern_hd_service_menu_transition.go:(*Game).drawModernHDFacilityServiceMenu",
+  "modern_hd_service_menu_transition.go:(*nativeServiceMenuPresentation).compose",
+  "modern_hd_shop_digits.go:(*Game).beginModernHDShopDigits",
+  "modern_hd_shop_digits.go:(*Game).modernHDDecimalFrames",
+  "modern_hd_shop_digits.go:(*Game).modernHDDecimalSprite",
+  "modern_hd_story_map.go:(*Game).hasModernHDStoryMapSource",
+  "modern_hd_story_text.go:(*Game).modernHDStoryTextFrame",
+  "modern_hd_system_confirmation.go:(*Game).drawModernHDSystemConfirmation",
+  "modern_hd_text.go:(*Game).beginModernHDText",
+  "modern_hd_text.go:(*Game).clearModernHDShopText",
+  "modern_hd_text.go:(*Game).clearModernHDText",
+  "modern_hd_text.go:(*Game).modernHDShopText",
+  "modern_hd_text.go:modernHDNativeTextColor",
+  "modern_hd_timed_dialogue.go:(*Game).presentNativeStoryDialogueFrame",
+  "modern_hd_title_interface.go:(*Game).drawModernHDTitleMenuItem",
+  "modern_hd_transient_expiry.go:(*Game).drawModernHDTransientExpiryMessage",
+  "modern_hd_transient_expiry.go:modernHDTransientExpiryRegion",
+  "player_interface.go:(*Game).hdPresentationEnabled",
+  "player_interface.go:(*Game).interfaceAssetTheme",
+  "player_interface.go:(*Game).interfaceThemeForArt",
+  "player_interface.go:(*Game).modernHDInterfaceEnabled"
+ ],
+ "interface_calls": 0,
+ "legacy_or_rgba_sites": [
+  {
+   "kind": "ColorScale",
+   "func": "(*Font).Draw",
+   "file": "font.go",
+   "line": 188,
+   "counts": {
+    "chapter": 2652,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "TTF text（ebiten/v2/text）",
+   "func": "(*Font).Draw",
+   "file": "font.go",
+   "line": 189,
+   "counts": {
+    "chapter": 2652,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "TTF text（ebiten/v2/text）",
+   "func": "(*Font).Width",
+   "file": "font.go",
+   "line": 200,
+   "counts": {
+    "chapter": 20,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9378,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9381,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9384,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9396,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9397,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9418,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9421,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9429,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9432,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9440,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9443,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9451,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9454,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9462,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 1064,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9465,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9473,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9476,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9484,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9491,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9493,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9501,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9503,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9511,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9513,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9521,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9524,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9529,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9532,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9540,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9543,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9551,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9554,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9562,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9565,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9573,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9576,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9584,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9587,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9595,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9598,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9606,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9609,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9617,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9620,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9628,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9631,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9639,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9642,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9650,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9653,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9661,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9664,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9672,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9675,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9683,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9690,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9697,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9704,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9711,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9716,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 5934,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9718,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9726,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9728,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9736,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 24,
+    "opening": 24
+   },
+   "executed": true
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9738,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9746,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9748,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9756,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9758,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9766,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 42,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9769,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9777,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 3,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9784,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9804,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 6404,
+    "opening": 8408
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9819,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 2534,
+    "opening": 8407
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9844,
+   "detail": "alpha=102",
+   "counts": {
+    "chapter": 135,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9852,
+   "detail": "alpha=92",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9870,
+   "detail": "alpha=92",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9915,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ebitenutil.DebugPrint",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9934,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 9983,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 10018,
+   "detail": "alpha=242",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 10108,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 10122,
+   "counts": {
+    "chapter": 2650,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 10137,
+   "counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 10143,
+   "counts": {
+    "chapter": 1,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill",
+   "func": "(*Game).Draw",
+   "file": "main.go",
+   "line": 10180,
+   "detail": "alpha 非常數",
+   "counts": {
+    "chapter": 34,
+    "opening": 72
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).drawRing",
+   "file": "main.go",
+   "line": 10252,
+   "detail": "alpha=80",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill",
+   "func": "(*Game).drawRing",
+   "file": "main.go",
+   "line": 10268,
+   "detail": "alpha 非常數",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).drawSpellMenu",
+   "file": "main.go",
+   "line": 10543,
+   "detail": "alpha=238",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawSpellMenu",
+   "file": "main.go",
+   "line": 10548,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawSpellMenu",
+   "file": "main.go",
+   "line": 10570,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).drawItemMenu",
+   "file": "main.go",
+   "line": 10593,
+   "detail": "alpha=238",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawItemMenu",
+   "file": "main.go",
+   "line": 10597,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawItemMenu",
+   "file": "main.go",
+   "line": 10611,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawNativeCommandGrid",
+   "file": "main.go",
+   "line": 10633,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10645,
+   "detail": "alpha=232",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10653,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10670,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10678,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10689,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10690,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10700,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10711,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10718,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10726,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10734,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10742,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10750,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10762,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10777,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10787,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10793,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10807,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10816,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10829,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10830,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10836,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10859,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10868,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10881,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10882,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10888,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10928,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10945,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10951,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10964,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 10974,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11001,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11007,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11034,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11044,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11063,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11074,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11089,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11096,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11100,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11111,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11115,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawCampaignUI",
+   "file": "main.go",
+   "line": 11119,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).drawBattleScene",
+   "file": "main.go",
+   "line": 11238,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "drawUnit（色塊後備）",
+   "func": "(*Game).drawUnitSprite",
+   "file": "main.go",
+   "line": 11533,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ColorScale",
+   "func": "(*Game).drawUnitSprite",
+   "file": "main.go",
+   "line": 11545,
+   "counts": {
+    "chapter": 9071,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill",
+   "func": "drawCursor",
+   "file": "main.go",
+   "line": 11579,
+   "detail": "alpha 非常數",
+   "counts": {
+    "chapter": 15308,
+    "opening": 4
+   },
+   "executed": true
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawPhaseBanner",
+   "file": "main.go",
+   "line": 12333,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "TTF text（ebiten/v2/text）",
+   "func": "freezeModernHDConfirmation",
+   "file": "modern_hd_confirmation.go",
+   "line": 122,
+   "counts": {
+    "chapter": 8,
+    "opening": 0
+   },
+   "executed": true
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 723,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ColorScale",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 739,
+   "counts": {
+    "chapter": 0,
+    "opening": 119
+   },
+   "executed": true
+  },
+  {
+   "kind": "titlePaletteBlend（ColorM 後備）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 765,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 769,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 6
+   },
+   "executed": true
+  },
+  {
+   "kind": "titlePaletteBlend（ColorM 後備）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 775,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "ColorScale",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 790,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（不透明）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 797,
+   "detail": "alpha=255",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 812,
+   "detail": "alpha 非常數",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "Fill（半透明）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 852,
+   "detail": "alpha=240",
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 861,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  },
+  {
+   "kind": "(*Font).Draw（TTF 後備文字）",
+   "func": "(*Game).drawTitle",
+   "file": "title.go",
+   "line": 887,
+   "counts": {
+    "chapter": 0,
+    "opening": 0
+   },
+   "executed": false
+  }
+ ],
+ "line_count": 6738,
+ "method": "go/types 靜態呼叫邊（含函式值，介面呼叫不解析）從 (*Game).Draw 出發，只經過覆蓋率有執行的函式（HD 檔另列一組）；進入次數取函式本體第一個覆蓋區塊的 count",
+ "non_hd_functions": 127,
+ "non_hd_lines": 4307,
+ "plan": "docs/goal/121-goal-rust-r5-original-art-shell-20261115.md 階段 0",
+ "producer": "tools/rust_r5_draw_inventory（tools/rust_r5_golden_frames.sh）",
+ "schema": "fd2_rust_r5_executed_draw_functions/1"
+}

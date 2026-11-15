@@ -86,7 +86,7 @@ impl Game {
     }
 
     /// Go `main.go:9376`..`9394` 的第二個 `defer`：每條 return 路徑都會執行（A 組表第 4、5 項）。
-    fn finish_present_frame(&mut self) {
+    pub(crate) fn finish_present_frame(&mut self) {
         if let Some(job) = self.native_turn_staging.as_mut()
             && !job.indexed
             && job.phase == NATIVE_TURN_STAGING_FLASH

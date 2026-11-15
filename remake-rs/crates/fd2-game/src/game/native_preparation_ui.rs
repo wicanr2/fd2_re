@@ -231,3 +231,36 @@ impl Game {
 
 #[cfg(test)]
 mod native_preparation_cycle_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_preparation_ui.go:244`，`func (g *Game) composeNativePreparationPromptFrame() ([]byte, bool)`
+    pub(crate) fn compose_native_preparation_prompt_frame(&mut self) -> (Vec<u8>, bool) {
+        todo!("r5:native_preparation_ui.go:composeNativePreparationPromptFrame")
+    }
+
+    /// Go：`native_preparation_ui.go:429`，`func (g *Game) drawNativePreparation(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_preparation(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_preparation_ui.go:drawNativePreparation")
+    }
+
+    /// Go：`native_preparation_ui.go:458`，`func (g *Game) composeNativePreparationStableFrame() ([]byte, bool)`
+    pub(crate) fn compose_native_preparation_stable_frame(&mut self) -> (Vec<u8>, bool) {
+        todo!("r5:native_preparation_ui.go:composeNativePreparationStableFrame")
+    }
+
+    /// Go：`native_preparation_ui.go:462`，`func (g *Game) composeNativePreparationStableFrameLayers(drawUnits bool) ([]byte, bool)`
+    pub(crate) fn compose_native_preparation_stable_frame_layers(&mut self, draw_units: bool) -> (Vec<u8>, bool) {
+        todo!("r5:native_preparation_ui.go:composeNativePreparationStableFrameLayers")
+    }
+
+    /// Go：`native_preparation_ui.go:466`，`func (g *Game) composeNativePreparationStableFrameParts(drawUnits, drawCursor bool) ([]byte, bool)`
+    pub(crate) fn compose_native_preparation_stable_frame_parts(
+        &mut self,
+        draw_units: bool,
+        draw_cursor: bool,
+    ) -> (Vec<u8>, bool) {
+        todo!("r5:native_preparation_ui.go:composeNativePreparationStableFrameParts")
+    }
+}

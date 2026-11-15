@@ -69,3 +69,12 @@ impl Game {
         self.native_system_info_ui = None;
     }
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_system_info_ui.go:186`，`func (g *Game) drawNativeSystemInfoUI(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_system_info_ui(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_system_info_ui.go:drawNativeSystemInfoUI")
+    }
+}

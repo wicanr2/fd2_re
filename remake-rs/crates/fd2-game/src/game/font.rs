@@ -293,3 +293,14 @@ pub(crate) fn wrap_text_by_width(s: &str, max_width: f64, width: &mut dyn FnMut(
 #[cfg(test)]
 #[path = "font/font_test.rs"]
 mod font_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Font {
+    /// Draw 畫文字(支援 \n)。scale 相對 base 尺寸;內部用整數尺寸 face 直接 rasterize(銳利)。
+    ///
+    /// Go：`font.go:175`，`func (f *Font) Draw(dst *ebiten.Image, s string, x, y, scale float64, clr color.RGBA) float64`
+    pub(crate) fn draw(&mut self, dst: &mut Picture, s: &str, x: f64, y: f64, scale: f64, clr: ColorRgba) -> f64 {
+        todo!("r5:font.go:Draw")
+    }
+}

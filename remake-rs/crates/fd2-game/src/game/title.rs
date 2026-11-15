@@ -241,8 +241,9 @@ pub(crate) fn load_separated_title_fdother(pack_root: &str, target: Option<&mut 
 
 /// Go：`title.go:282`，`func maskedRGBA(frame fdother.Frame, palette color.Palette) *image.NRGBA`
 ///
-/// Go 把 `palette[i].RGBA()`（預乘值）的高 8 位元直接寫進 NRGBA 的像素；Rust 照寫同樣的位元組
-/// （調色盤是不透明色，預乘與否相同）。
+/// Go 把 `palette[i].RGBA()`（預乘值）的高 8 位元直接寫進 NRGBA 的像素；兩個呼叫端都立刻
+/// `ebiten.NewImageFromImage`，再預乘一次。R5 階段 1 起 [`Picture`] 存 Ebiten 影像的預乘值，所以 Rust 直接回傳
+/// 那一步之後的結果：寫入的位元組再經 `premultiply_channel`（調色盤是不透明色，兩次預乘都不改值）。
 pub(crate) fn masked_rgba(frame: &fdother::Frame, palette: &ColorPalette) -> Option<Arc<Picture>> {
     let (w, h) = (frame.width.max(0), frame.height.max(0));
     let mut pix = vec![0u8; (w * h * 4) as usize];
@@ -252,7 +253,8 @@ pub(crate) fn masked_rgba(frame: &fdother::Frame, palette: &ColorPalette) -> Opt
         }
         // Go 的 palette 索引越界會 panic；Rust 同樣以索引存取。
         let c = palette[frame.indexed[index] as usize];
-        pix[index * 4..index * 4 + 4].copy_from_slice(&[c.r, c.g, c.b, c.a]);
+        let p = |v: u8| premultiply_channel(v, c.a);
+        pix[index * 4..index * 4 + 4].copy_from_slice(&[p(c.r), p(c.g), p(c.b), c.a]);
     }
     Some(Arc::new(Picture { width: w, height: h, pix }))
 }
@@ -558,3 +560,32 @@ impl Game {
 #[cfg(test)]
 #[path = "title/title_test.rs"]
 mod title_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// drawTitle 畫開頭動畫/主選單。
+    ///
+    /// Go：`title.go:716`，`func (g *Game) drawTitle(screen *ebiten.Image)`
+    pub(crate) fn draw_title(&mut self, screen: &mut Picture) {
+        todo!("r5:title.go:drawTitle")
+    }
+}
+
+/// Go：`title.go:45`，`func titleMenuY(item int) int`
+pub(crate) fn title_menu_y(item: i64) -> i64 {
+    todo!("r5:title.go:titleMenuY")
+}
+
+/// Go：`title.go:456`，`func titlePublisherBrightness(tick int) float32`
+pub(crate) fn title_publisher_brightness(tick: i64) -> f32 {
+    todo!("r5:title.go:titlePublisherBrightness")
+}
+
+/// titleScrollUsesPulsePalette 投影 sub_1F894 的 FDOTHER #102→#101 DAC owner。
+/// 原版在命中列後安裝 #102，11 個30ms列迴圈後、下一列 delay 前恢復 #101。
+///
+/// Go：`title.go:486`，`func titleScrollUsesPulsePalette(scrollY float64) bool`
+pub(crate) fn title_scroll_uses_pulse_palette(scroll_y: f64) -> bool {
+    todo!("r5:title.go:titleScrollUsesPulsePalette")
+}

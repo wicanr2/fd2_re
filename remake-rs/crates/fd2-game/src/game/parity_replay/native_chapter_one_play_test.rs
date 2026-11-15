@@ -12,6 +12,9 @@ pub(crate) const CH01_FRAME_BUDGET: i64 = 4000;
 pub(crate) struct Driver {
     pub(crate) g: Game,
     pub(crate) clock: VirtualFrameClock,
+    /// R5 階段 1：Go `ch01FrameObserver`（`native_chapter_one_play_test.go:300`）在 R5 黃金畫格的掛法；
+    /// `None` 時（預設）與 R4 相同。
+    pub(crate) frame_capture: Option<FrameCapture>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。
@@ -28,10 +31,14 @@ pub(crate) fn pending_own(g: &Game) -> Vec<UnitIdx> {
 }
 
 impl Driver {
-    /// Go `native_chapter_one_play_test.go:302`：`pump`。每一幀先問 `done`，再承認呈現、回答取寶提示、
-    /// 按掉敵方回合的掉落訊息與升級對話、按戰場事件對白，最後 `parityUpdateGame`。
+    /// Go `native_chapter_one_play_test.go:302`：`pump`。每一幀先交給畫格擷取（Go `ch01FrameObserver`，章重播
+    /// 預設沒有），再問 `done`，承認呈現、回答取寶提示、按掉敵方回合的掉落訊息與升級對話、按戰場事件對白，
+    /// 最後 `parityUpdateGame`。
     pub(crate) fn pump(&mut self, budget: i64, mut done: impl FnMut(&mut Game) -> bool) -> bool {
         for _ in 0..budget {
+            if let Some(capture) = self.frame_capture.as_mut() {
+                capture.observe(&mut self.g);
+            }
             if done(&mut self.g) {
                 return true;
             }

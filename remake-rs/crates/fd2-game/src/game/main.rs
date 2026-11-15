@@ -8067,28 +8067,308 @@ pub(crate) fn clamp(v: &mut f64, lo: f64, mut hi: f64) {
 impl Game {
     /// Go：`main.go:9355`，`func (g *Game) Draw(screen *ebiten.Image)`
     ///
-    /// R4 只移植開頭重設本幀呈現旗標的部分（純狀態）；之後的繪圖本體，以及藏在繪圖裡的狀態改寫
-    /// （`drawn`／`presented` 旗標、原生地圖合成推進 BIOS 時鐘、`fail*Presentation`、`captureShot` 等），
-    /// 逐項列在 `PORTING.md`「Draw 中改狀態的位置」，由階段 3 的呈現回報介面承接。
+    /// R5 階段 1 的分派骨架（`PORTING.md`「R5 階段 1」）：照 Go 的 early-return 順序選分支。開場與第一章
+    /// 執行到的分支呼叫對應函式（R5 階段 2 移植，目前多是 `todo!("r5:…")`）；HD 分支 `todo!("r6:…")`；
+    /// 開場與第一章沒有走到的分支 `todo!("r8:…")`。分支是否執行到依階段 0 的 `Draw` 覆蓋率
+    /// （`work/r5-stage0-20261115/r1/cover-*.out`）。
+    ///
+    /// 開頭的重設是 R4 的 `begin_present_frame`（Go 9356..9372，含 `defer g.beginModernHDText(screen)()`；忠實模式下
+    /// 收尾是空函式）；結尾的 `defer` 是 [`Game::draw_deferred`]。Draw 裡改流程狀態的地方照 `PORTING.md`
+    /// 「Draw 中改狀態的位置」由各 `draw*` 函式自己做（與 Go 相同），不經呈現回報；無畫面重播不擷取畫格時
+    /// 不呼叫本函式，改走 `acknowledge_present`。
     pub(crate) fn draw(&mut self, screen: &mut Picture) {
-        self.native_map_presented = false;
-        self.movement_panel_draw = None;
-        self.native_interface_hud_visible = false;
-        self.modern_hd_overlay = None;
-        self.modern_hd_scene = None;
-        self.preparation_roster_hd = None;
-        self.facility_roster_hd = None;
-        self.facility_list_roster_hd = None;
-        self.modern_hd_panel_portraits = Vec::new();
-        self.modern_hd_battle_visible = false;
-        self.sync_modern_hd_battle_owner();
-        self.modern_hd_world_visible = false;
-        self.modern_hd_timed_dialogue_visible = false;
-        if self.modern_hd_map_gpu.is_some() && self.banner_t <= 0 {
-            todo!("R6: modernHDMapGPU.BannerName 清除（HD 地圖 GPU）")
+        self.begin_present_frame();
+        self.draw_frame(screen);
+        self.draw_deferred(screen);
+    }
+
+    /// Go `Draw` 的第二個 `defer`（`main.go:9376`..`9393`）：每條 return 路徑都執行。
+    fn draw_deferred(&mut self, screen: &mut Picture) {
+        const WHITE: ColorRgba = ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff };
+        const BLACK: ColorRgba = ColorRgba { r: 0, g: 0, b: 0, a: 0xff };
+        if self.native_full_dac_white {
+            screen.fill(WHITE);
         }
-        let _finish = self.begin_modern_hd_text(screen);
-        todo!("R5: main.go:Draw 繪圖本體（main.go:9373..10188；其中改狀態的位置見 PORTING.md）")
+        if self.native_full_dac_black {
+            screen.fill(BLACK);
+        }
+        if self.native_defeat.is_none()
+            && self.title_phase.is_empty()
+            && self.native_palette_ramp.is_none()
+            && native_dacis_black(&self.native_map_dac)
+        {
+            screen.fill(BLACK);
+        }
+        // 白閃的 drawn 與說明畫面的 clearModernHDText（R6）：與呈現回報共用。
+        self.finish_present_frame();
+        if self.help_visible {
+            todo!("r5:player_shortcuts.go:drawPlayerHelp（說明畫面，121 範圍表列 R5；開場與第一章沒有開）")
+        }
+    }
+
+    /// Go `g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame` 時的 `captureShot`（截圖模式，fd2-tools）。
+    fn draw_capture_shot_point(&mut self, screen: &mut Picture) {
+        if !self.shot_path.is_empty() && !self.shot_taken && self.frame >= self.shot_frame {
+            let _ = screen;
+            todo!("r8:main.go:captureShot（FD2_SHOT 截圖模式；R5 的畫格擷取走 parity_replay 的擷取點）")
+        }
+    }
+
+    /// Go `Draw` 的 if 鏈（`main.go:9395`..`9797`）與尾段（`main.go:9799`..`10188`）。
+    fn draw_frame(&mut self, screen: &mut Picture) {
+        const BLACK: ColorRgba = ColorRgba { r: 0, g: 0, b: 0, a: 0xff };
+        if self.startup_blocked {
+            screen.fill(ColorRgba { r: 0x12, g: 0x16, b: 0x20, a: 0xff });
+            todo!("r8:main.go:9397 啟動失敗畫面的 ebitenutil.DebugPrintAt");
+        }
+        if self.native_defeat.is_some() {
+            todo!("r8:native_defeat.go:drawNativeDefeat");
+        }
+        if !self.title_phase.is_empty() {
+            self.draw_title(screen);
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_ending.is_some() {
+            todo!("r8:ending_preview.go:drawNativeEndingPreview");
+        }
+        if self.native_ch20_sky_key.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_ch20_sky_key.go:drawNativeCh20SkyKey／failNativeCh20SkyKey");
+        }
+        if self.native_ch23_loop.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_ch23_post.go:drawNativeCh23Loop／failNativeCh23Loop");
+        }
+        if self.native2189_a.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_ch22_post.go:drawNative2189A／failNative2189A");
+        }
+        if self.native_unit_present.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_unit_present.go:drawNativeUnitPresent／failNativeUnitPresent");
+        }
+        if self.native_ch28_post_present.is_some() {
+            // 第一章執行到（階段 0 覆蓋率 1064 次），失敗路徑沒有。
+            screen.fill(BLACK);
+            if !self.draw_native_ch28_post_present(screen) {
+                todo!("r8:native_ch28_post_present.go:failNativeCh28PostPresent 與 DebugPrint（第一章沒有走到）");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.transition_reveal.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_24b4d.go:drawNative24B4D／failNative24B4D");
+        }
+        if self.m.is_none() {
+            todo!("r8:main.go:9483 缺地圖時的 ebitenutil.DebugPrint");
+        }
+        if self.indexed_transition.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_indexed_transition.go:drawNativeIndexedTransition（Draw 裡開場與第一章沒有走到）");
+        }
+        if self.native_heal_presentation.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_command_heal_presentation.go:drawNativeCommandHealPresentation");
+        }
+        if self.native_modifier_presentation.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_command_modifier_presentation.go:drawNativeCommandModifierPresentation");
+        }
+        if self.native_ai_command_modifier.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_ai_modifier_presentation.go:drawNativeAICommandModifierPresentation");
+        }
+        if self.native_cmd0_presentation.is_some()
+            || self.native_cmd6_presentation.is_some()
+            || self.native_cmd1_presentation.is_some()
+            || self.native_cmd2_presentation.is_some()
+            || self.native_cmd3_presentation.is_some()
+            || self.native_cmd5_presentation.is_some()
+            || self.native_cmd7_presentation.is_some()
+            || self.native_cmd8_presentation.is_some()
+            || self.native_cmd9_player.is_some()
+            || self.native_cmd9_ai_presentation.is_some()
+            || self.native_cmd1012.is_some()
+            || self.native_cmd24_presentation.is_some()
+            || self.native_cmd29_presentation.is_some()
+            || self.native_cmd32_presentation.is_some()
+            || self.native_cmd33_presentation.is_some()
+            || self.native_cmd34_presentation.is_some()
+            || self.native_cmd35_presentation.is_some()
+        {
+            // Go main.go:9528..9701 依序 17 個指令演出分支，各自 Fill 黑、draw、失敗時 fail＋DebugPrint。
+            screen.fill(BLACK);
+            todo!("r8:main.go:9528..9701 指令 0～35 演出（第一章沒有）");
+        }
+        if self.native_ai_item_presentation.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_ai_item_presentation.go:drawNativeAIItemPresentation");
+        }
+        if self.native_town_departure.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_town_departure.go:drawNativeTownDeparture（Draw 裡開場與第一章沒有走到）");
+        }
+        if self.native_palette_ramp.is_some() {
+            screen.fill(BLACK);
+            if !self.draw_native_palette_ramp(screen) {
+                todo!("r8:main.go:9718 調色盤斜坡畫不出來時的 DebugPrint");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_palette_pulse.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_palette_pulse.go:drawNativePalettePulse");
+        }
+        if self.spawn_intro_transition.is_some() {
+            screen.fill(BLACK);
+            if !self.draw_native_spawn_intro(screen) {
+                todo!("r8:main.go:9738 登場轉場畫不出來時的 DebugPrint");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_turn_staging.as_ref().is_some_and(|j| j.indexed) {
+            screen.fill(BLACK);
+            todo!("r8:native_turn_staging.go:drawNativeTurnStaging（indexed）");
+        }
+        if self.native_field_event61.is_some() {
+            screen.fill(BLACK);
+            todo!("r8:native_field_event61.go:drawNativeFieldEvent61");
+        }
+        if self.native_end_turn_recovery.is_some() {
+            screen.fill(BLACK);
+            if !self.draw_native_end_turn_recovery(screen) {
+                self.cancel_native_end_turn_recovery(&game_err!("native END recovery: Draw unavailable"));
+                todo!("r8:main.go:9769 ebitenutil.DebugPrint(loadErr)");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_ai_idle_recovery.is_some() {
+            screen.fill(BLACK);
+            if !self.draw_native_ai_idle_recovery(screen) {
+                // Go main.go:9779..9783；與 present.rs 的呈現回報相同。
+                let job = self.native_ai_idle_recovery.take().unwrap();
+                let st = self.st.as_mut().unwrap();
+                st.native_map_range_mode = job.before_range;
+                st.has_native_map_range_mode_state = job.before_has;
+                self.load_err = "native AI 0x13fd4 presentation unavailable".to_string();
+                self.ai_busy = false;
+                todo!("r8:main.go:9784 ebitenutil.DebugPrint");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.atk.is_some() {
+            self.draw_battle_scene(screen);
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        self.draw_field(screen);
+    }
+
+    /// Go `Draw` 尾段（`main.go:9799`..`10188`）：地圖、原生整幀、回合橫幅、對話、文字層、戰役介面、指令環與
+    /// 系統介面、舊 fade 疊層。
+    fn draw_field(&mut self, screen: &mut Picture) {
+        screen.fill(ColorRgba { r: 0, g: 0, b: 0, a: 0xff });
+        let mut native_map_presented = false;
+        let campaign_battle_view =
+            self.camp.is_none() || self.camp.as_ref().and_then(|c| c.node()).is_some_and(|n| n.r#type == "battle");
+        // Go modernHDMapFrameAdmission（HD 守門）：modernStoryPortraits 為 nil 時兩條路徑都回 false。
+        let modern_hd_requested = if self.modern_story_portraits.is_some() {
+            todo!("r6:modern_hd_map_runtime.go:modernHDMapFrameAdmission")
+        } else {
+            false
+        };
+        let legacy_viewport = self.story_bg || self.battle_event.is_some();
+        if !modern_hd_requested {
+            // main.go:9814..9950：storyView 離屏（storyZoom 放大）、圖塊、移動範圍格（(0x40,0x80,0xff,0x66)）、單位
+            // （drawUnitSprite、ColorScale 變暗）、storyActors、白框游標（drawCursor）與左下 HUD（drawNativeMapHUD）。
+            // 施法射程、攻擊射程、FD2_UNIT_LABELS、F3 除錯字、drawUnitHUD 在開場與第一章沒有走到（r8）。
+            todo!("r5:main.go:9814..9950 正規化地圖層（Draw 本體）");
+        }
+        if modern_hd_requested {
+            todo!("r6:modern_hd_map_gpu.go:drawModernHDMapFrame");
+        } else if self.native_map_frame_admission(self.story_bg, campaign_battle_view) {
+            native_map_presented = self.draw_native_map_frame(screen);
+        }
+        if native_map_presented {
+            self.draw_native_movement_panel(screen);
+        }
+        if !legacy_viewport && campaign_battle_view {
+            self.draw_phase_banner(screen);
+        }
+        let native_story_dialogue_drawn = self.draw_native_story_dialogue(screen);
+        if self.font.is_some() {
+            if let Some(st) = self.st.as_ref()
+                && !legacy_viewport
+                && !native_map_presented
+                && st.unit_at(self.cur_x, self.cur_y).is_some()
+            {
+                // main.go:9974..9984 游標格上方的單位中文名；開場與第一章條件成立時都沒有游標單位。
+                todo!("r8:main.go:9975 選中單位中文名（開場與第一章沒有走到）");
+            }
+            if !native_story_dialogue_drawn
+                && !self.dialog.is_empty()
+                && !(self.story_bg && self.walk_first && !self.story_walks.is_empty())
+                && self.dlg_shown != DLG_NONE
+            {
+                todo!("r8:main.go:9987..10119 舊對話框（開場與第一章沒有走到）");
+            }
+            if self.should_draw_transient_battle_message() {
+                let clr = ColorRgba { r: 0xff, g: 0xf0, b: 0xb4, a: 0xff };
+                self.font.as_mut().unwrap().draw(screen, &self.msg, 8.0, LOGICAL_H as f64 - 30.0, 1.2, clr);
+            }
+            if !self.result.is_empty() {
+                let (mut t, ok) = self.locale_message("battle.result.win", &[]);
+                if !ok {
+                    return;
+                }
+                let mut c = ColorRgba { r: 0xff, g: 0xdc, b: 0x50, a: 0xff };
+                if self.result == "lose" {
+                    let (lose, ok) = self.locale_message("battle.result.lose", &[]);
+                    if !ok {
+                        return;
+                    }
+                    t = lose;
+                    c = ColorRgba { r: 0xff, g: 0x70, b: 0x70, a: 0xff };
+                }
+                let (cx, cy) = (LOGICAL_W as f64 / 2.0, LOGICAL_H as f64 / 2.0);
+                self.font.as_mut().unwrap().draw(screen, &t, cx - 78.0, cy - 30.0, 3.0, c);
+                if self.camp.is_some() {
+                    let (continue_text, ok) = self.locale_message("battle.result.continue", &[]);
+                    if !ok {
+                        return;
+                    }
+                    let gray = ColorRgba { r: 0xe0, g: 0xe0, b: 0xe0, a: 0xff };
+                    self.font.as_mut().unwrap().draw(screen, &continue_text, cx - 70.0, cy + 36.0, 1.0, gray);
+                }
+            }
+        }
+        self.draw_campaign_ui(screen);
+        if self.transient_ui && self.draw_native_class_ui_job(screen) {
+            return;
+        }
+        if !self.draw_native_system_end_turn(screen) {
+            if self.native_action_overlay_in_map_frame(native_map_presented) {
+                self.mark_action_overlay_drawn();
+            } else {
+                self.draw_ring(screen);
+            }
+            self.draw_native_command_grid(screen);
+            self.draw_spell_menu(screen);
+            self.draw_item_menu(screen);
+        }
+        self.draw_native_system_info_ui(screen);
+        self.draw_native_player_status(screen);
+        if self.fade.is_some() {
+            // main.go:10170..10181：ebiten.NewImage(640,400) Fill (0,0,0,uint8(alpha*0xff)) 後 DrawImage。
+            todo!("r5:main.go:10170 舊 fade 黑色疊層（Draw 本體）");
+        }
+        self.draw_capture_shot_point(screen);
     }
 
     /// Go：`main.go:11586`，`func (g *Game) Layout(outsideW, outsideH int) (int, int)`（`r8`：Ebiten 主迴圈的
@@ -10123,3 +10403,202 @@ mod main_b_test;
 #[cfg(test)]
 #[path = "main/main_d_test.rs"]
 mod main_d_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`main.go:8363`，`func (g *Game) tileAt(idx int) *ebiten.Image`
+    pub(crate) fn tile_at(&self, idx: i64) -> Option<Arc<Picture>> {
+        todo!("r5:main.go:tileAt")
+    }
+
+    /// Go：`main.go:9338`，`func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) bool`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn native_map_frame_admission(&self, legacy_viewport: bool, campaign_battle_view: bool) -> bool {
+        todo!("r5:main.go:nativeMapFrameAdmission")
+    }
+
+    /// shouldDrawTransientBattleMessage 不讓診斷／結果文字覆蓋已還原的原生目標選擇器。
+    /// 未修改原版的 command 0 玩家軌跡在 LUT 相位循環中只呈現索引地圖、游標與 HUD；
+    /// modal 關閉後仍保留 g.msg，供拒絕或結果 owner 使用。其餘既有戰鬥短訊在各自
+    /// caller-specific UI 閉合前維持原本呈現。
+    ///
+    /// Go：`main.go:10194`，`func (g *Game) shouldDrawTransientBattleMessage() bool`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn should_draw_transient_battle_message(&self) -> bool {
+        todo!("r5:main.go:shouldDrawTransientBattleMessage")
+    }
+
+    /// drawRing shows the native FDOTHER #2 action overlay in the faithful theme.
+    /// A fully admitted modern theme deliberately bypasses that original overlay so
+    /// its catalog-verified action icons remain visible in local complete packages.
+    ///
+    /// Go：`main.go:10221`，`func (g *Game) drawRing(screen *ebiten.Image)`
+    pub(crate) fn draw_ring(&mut self, screen: &mut Picture) {
+        todo!("r5:main.go:drawRing")
+    }
+
+    /// drawSpellMenu 法術選單(名稱 + MP;↑↓選、Enter 施放、ESC 回環)。
+    ///
+    /// Go：`main.go:10537`，`func (g *Game) drawSpellMenu(screen *ebiten.Image)`
+    pub(crate) fn draw_spell_menu(&mut self, screen: &mut Picture) {
+        todo!("r5:main.go:drawSpellMenu")
+    }
+
+    /// drawItemMenu prefers the proven indexed native panel. The text shell below
+    /// is only a legacy/missing-original-assets fallback; using an item remains
+    /// blocked when its 0x20c6f effect/target transaction is unavailable.
+    ///
+    /// Go：`main.go:10577`，`func (g *Game) drawItemMenu(screen *ebiten.Image)`
+    pub(crate) fn draw_item_menu(&mut self, screen: &mut Picture) {
+        todo!("r5:main.go:drawItemMenu")
+    }
+
+    /// drawNativeCommandGrid renders the recovered 0x1ceed four-row layout only
+    /// when its player-provided labels and VGA palette are both available.
+    ///
+    /// Go：`main.go:10617`，`func (g *Game) drawNativeCommandGrid(screen *ebiten.Image)`
+    pub(crate) fn draw_native_command_grid(&mut self, screen: &mut Picture) {
+        todo!("r5:main.go:drawNativeCommandGrid")
+    }
+
+    /// drawCampaignUI campaign 節點 UI:choice 選單 / ending 結語 / game over。
+    ///
+    /// Go：`main.go:10638`，`func (g *Game) drawCampaignUI(screen *ebiten.Image)`
+    pub(crate) fn draw_campaign_ui(&mut self, screen: &mut Picture) {
+        todo!("r5:main.go:drawCampaignUI")
+    }
+
+    /// mapSpriteGroup chooses the exact native raw FDICON key only for a battle
+    /// State whose whole construction sequence materialized successfully. Story
+    /// actors remain on their editable legacy Fig path by construction.
+    ///
+    /// Go：`main.go:11514`，`func (g *Game) mapSpriteGroup(u *battle.Unit) int`
+    pub(crate) fn map_sprite_group(&self, u: UnitIdx) -> i64 {
+        todo!("r5:main.go:mapSpriteGroup")
+    }
+
+    /// drawUnitSprite 以 FDICON Q 版 sprite 呈現單位；正式 sprite 路徑不另加重製端
+    /// HP bar／腳標，fallback 色塊則仍有自己的除錯資訊。完整戰場畫面另依 E2 驗收。
+    /// 用方向走動分鏡(FDICON 12幀=4方向×3:站/抬左手/抬右手);行軍時套用 OffX/OffY 位移。
+    /// spriteGroup is either a proven native raw key or an explicit legacy Fig;
+    /// this helper never infers one from the other.
+    ///
+    /// Go：`main.go:11528`，`func (g *Game) drawUnitSprite(screen *ebiten.Image, x, y, w, h float64, u *battle.Unit, spriteGroup int)`
+    pub(crate) fn draw_unit_sprite(
+        &mut self,
+        screen: &mut Picture,
+        x: f64,
+        y: f64,
+        w: f64,
+        h: f64,
+        u: UnitIdx,
+        sprite_group: i64,
+    ) {
+        todo!("r5:main.go:drawUnitSprite")
+    }
+
+    /// phaseBannerElapsedMillis 是這一段橫幅已經走了多少毫秒。
+    ///
+    /// Go：`main.go:12148`，`func (g *Game) phaseBannerElapsedMillis() float64`
+    pub(crate) fn phase_banner_elapsed_millis(&self) -> f64 {
+        todo!("r5:main.go:phaseBannerElapsedMillis")
+    }
+
+    /// phaseBannerSlideOffset 回傳字樣相對停住位置的 x 偏移（原版像素），以及字樣
+    /// 這一刻要不要畫。滑入在馬賽克之前、滑出在馬賽克之後，都是每步一個 BIOS tick。
+    ///
+    /// Go：`main.go:12154`，`func (g *Game) phaseBannerSlideOffset() (int, bool)`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn phase_banner_slide_offset(&self) -> (i64, bool) {
+        todo!("r5:main.go:phaseBannerSlideOffset")
+    }
+
+    /// blitPhaseBannerGlyphs 把兩塊原版字樣畫進索引畫面，回傳是否畫成。缺分離素材時
+    /// 回 false，由 drawPhaseBanner 用重製端字型頂著——那是可玩性的後備，不是原版
+    /// 版面。
+    ///
+    /// Go：`main.go:12203`，`func (g *Game) blitPhaseBannerGlyphs(dst []byte, offset int) bool`
+    pub(crate) fn blit_phase_banner_glyphs(&self, dst: &mut [u8], offset: i64) -> bool {
+        todo!("r5:main.go:blitPhaseBannerGlyphs")
+    }
+
+    /// phaseBannerGlyphsAvailable 回報這一輪橫幅會不會用原版字樣。
+    ///
+    /// Go：`main.go:12249`，`func (g *Game) phaseBannerGlyphsAvailable() bool`
+    pub(crate) fn phase_banner_glyphs_available(&self) -> bool {
+        todo!("r5:main.go:phaseBannerGlyphsAvailable")
+    }
+
+    /// phaseBannerStep 回傳目前的馬賽克步驟；沒有橫幅時回 -1。
+    ///
+    /// 三段對應原版的三段：進場 16 步、中段 `delay()`(畫面停在進場最後一步)、
+    /// 退場 17 步。
+    ///
+    /// Go：`main.go:12268`，`func (g *Game) phaseBannerStep() int`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn phase_banner_step(&self) -> i64 {
+        todo!("r5:main.go:phaseBannerStep")
+    }
+
+    /// drawPhaseBanner 是回合字樣的**後備路徑**：拿得到 FDOTHER #5 的三格字模時，
+    /// 字樣已經由 blitPhaseBannerGlyphs 畫進索引畫面，這裡直接讓開；只有分離素材
+    /// 缺件時才用重製端字型頂著，那時的字寬與落點都不是原版版面。
+    ///
+    /// 原版整段期間不重繪地圖，畫面變化來自對進場時那張快照重算的馬賽克，以及每步
+    /// 套在 DAC 上的減量(`sub_11D40`，只動索引 0x10..0xFF，所以字樣不變暗)。馬賽克
+    /// 前後另有字樣滑入 7 步與滑出 5 步(`sub_1F42D`)，每步同樣等一個 BIOS tick，
+    /// 偏移就是那七／五個參數(見 indexedmap 的 PhaseBannerSlideInOffset／
+    /// PhaseBannerSlideOutOffset；兩塊是相向移動的)。
+    /// 見 docs/knowledge-base/105-phase-banner-timing-20260910.md。
+    ///
+    /// 落點與相向滑動來自 `sub_1F42D` 的 `0x55 − 參數` 與 `參數 + 0xA5`，並由原版
+    /// 逐幀畫面逐像素比對確認(滑入 7 步、停留 33 步、滑出 5 步全中，收據
+    /// docs/data/ui-traces/fd2-phase-banner-glyph-parity-20260910.json)。
+    ///
+    /// Go：`main.go:12317`，`func (g *Game) drawPhaseBanner(screen *ebiten.Image)`
+    pub(crate) fn draw_phase_banner(&mut self, screen: &mut Picture) {
+        todo!("r5:main.go:drawPhaseBanner")
+    }
+
+    /// Go：`main.go:12421`，`func (g *Game) drawNativeMapHUD(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_map_hud(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:main.go:drawNativeMapHUD")
+    }
+
+    /// drawNativeMapFrame is the production 0x11cac bridge for the currently
+    /// materialized neutral tactical state. It composes terrain, range, units,
+    /// foreground and HUD atomically, then presents the corrected 312x192 viewport
+    /// at VGA (4,4) on a 320x200 paletted surface.
+    ///
+    /// Go：`main.go:12450`，`func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_map_frame(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:main.go:drawNativeMapFrame")
+    }
+
+    /// nativeMapFrameImage 把已組好的 nativeMapVGA 配上當前 DAC，再依橫幅狀態
+    /// （bannerT）疊上馬賽克與字樣，回傳玩家看到的 320×200 索引畫面。重播測試
+    /// 也走這裡取橫幅期間的畫面。
+    ///
+    /// Go：`main.go:12469`，`func (g *Game) nativeMapFrameImage() (*image.Paletted, bool)`
+    pub(crate) fn native_map_frame_image(&mut self) -> (Option<Arc<IndexedFrame>>, bool) {
+        todo!("r5:main.go:nativeMapFrameImage")
+    }
+}
+
+/// Go：`main.go:11571`，`func drawCursor(dst *ebiten.Image, x, y, w, h float64)`
+pub(crate) fn draw_cursor(dst: &mut Picture, x: f64, y: f64, w: f64, h: f64) {
+    todo!("r5:main.go:drawCursor")
+}
+
+/// blitPhaseBannerGlyph 把一格字模畫在索引畫面的 y ＝ phaseBannerGlyphY 上，
+/// **裁在 0x11EB0 的搬運窗格內**。
+///
+/// 原版把字樣畫進離屏緩衝區，再由 `sub_11EB0` 把 312×192 搬到 VGA 的 (4,4)；
+/// 超出窗格的部分不會出現在畫面上。滑入第一步的 `ENEMY` 落在 x ＝ −11，若照著
+/// 整幀去畫就會多畫到左邊那四欄黑邊——原版那四欄留著先前的內容。
+///
+/// Go：`main.go:12225`，`func blitPhaseBannerGlyph(dst []byte, cell fdother.LMI1Entry, x int) bool`
+pub(crate) fn blit_phase_banner_glyph(dst: &mut [u8], cell: &fdother::LMI1Entry, x: i64) -> bool {
+    todo!("r5:main.go:blitPhaseBannerGlyph")
+}

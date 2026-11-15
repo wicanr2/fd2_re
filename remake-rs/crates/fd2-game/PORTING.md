@@ -359,7 +359,8 @@ Go `Update` 開頭排了四個 `defer`：`syncBalanceState`、清除玩家面板
 ### Draw 中改狀態的位置
 
 階段 3 要定義「呈現請求與回報」介面。下列是 Go `Draw`（`main.go:9355`..`10188`）與 A 組繪圖函式裡改寫流程狀態的地方。Rust 的 `draw` 只做
-第 1、3 項，其餘停在 `todo!("R5: …")`；表中屬於別組的旗標由該組的 `draw*` 函式設定。
+第 1、3 項，其餘停在 `todo!("R5: …")`；表中屬於別組的旗標由該組的 `draw*` 函式設定。R5 階段 1 起 `draw` 是完整的分派骨架，
+見「R5 階段 1」的「`Game::draw` 分派骨架」。
 
 | # | Go 位置 | 改寫 | 階段 3 的對應 |
 |---|---|---|---|
@@ -1237,7 +1238,7 @@ R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 量寬／繪字，不在�
   的失敗路徑。
 - 唯一建立的畫面是 `NativePhysicalBodyPlayback::image`：Go 把它快取在演出工作裡，`stepNativePhysicalBodyMillis` 以「有沒有
   快取」決定換幀（`native_physical_body.go:433`、`:484`），所以照 Go 以 `picture_from_indexed` 建立同一份畫面。
-- `begin_present_frame` 是 Go `Draw` 開頭的重設，可單獨呼叫；`Game::draw`（A 組，R5）的開頭與它相同，R5 改成呼叫它。
+- `begin_present_frame` 是 Go `Draw` 開頭的重設，可單獨呼叫；`Game::draw`（A 組，R5）的開頭與它相同；R5 階段 1 起 `draw` 直接呼叫它。
 
 | A 組表 | Go 位置 | Rust |
 |---|---|---|
@@ -1334,3 +1335,260 @@ ch01-start-residual-20261017 --oracle-save state-full-r4/FD2.SAV`）各判 Rust 
 
 crate 層 `allow(unused, dead_code, unreachable_code, clippy::todo)` 仍保留：驅動端只在測試編譯，正式建置仍沒有呼叫 `update` 的
 公開入口。2026-11-15 試算拿掉後 `cargo clippy --all-targets` 有 882 則警告（lib 819、lib test 另 63 則不重複）。
+
+## R5 階段 1：CPU 畫布、Ebiten 語意子集與 Draw 骨架（2026-11-15）
+
+代號 `r5a`，合併基準 `eeb024d7`（含 R5 階段 0）。計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)。
+
+### CPU 畫布
+
+`src/game/canvas.rs`（Rust 新增，沒有 Go 檔對應），測試在 `src/game/canvas/canvas_test.rs`。放在 `game` 底下而不是 crate 層：
+R4 已經把 `*ebiten.Image` 定成 `Picture`，每個繪圖函式的簽名都收 `&mut Picture`／`&Arc<Picture>`；畫布操作寫成 `Picture`
+的方法，`screen.DrawImage(img, op)` 一對一寫成 `screen.draw_image(&img, &op)`。`fd2-app` 只讀畫格位元組（`Picture` 的欄位
+是 `pub`），之後的 GPU 模式以這裡的輸出當黃金，都不需要畫布操作本身。
+
+**`Picture` 改存預乘 alpha。** R4 的 doc 寫「不預乘」，但 Ebiten 影像在 `NewImageFromImage` 時就預乘，之後混色也在預乘空間，
+`ReadPixels` 讀回的也是預乘值；照存才能和 Go 黃金逐位元組比。沒有另立畫布型別。R4 的轉換函式逐一對照：
+
+| 函式 | R4 | R5 階段 1 | 影響 |
+|---|---|---|---|
+| `picture_from_indexed`（`*image.Paletted`） | 調色盤解除預乘後存 | 原值（`ColorRgba` 本來就是預乘） | 調色盤都是不透明色，位元組不變 |
+| `picture_from_paletted`（`color.NRGBA` 調色盤） | 原值 | 依 `color.RGBAModel` 預乘 | 同上 |
+| `decode_png_picture`（Go `*image.NRGBA`） | 不預乘 | `uint8((v*a*0x101/0xff)>>8)` | 只有半透明像素會變；原版美術模式的 PNG（舊 tileset、sprite）是全透明或不透明 |
+| `masked_rgba`（Go 寫 NRGBA 後再 `NewImageFromImage`） | 原值 | 再預乘一次（與 Go 兩步相同） | 調色盤不透明，位元組不變 |
+| `picture_from_rgba`、`native_attack_assets`、`title` 的 AFM 畫格 | 原值 | 不變（Go 本來就是 `*image.RGBA` 或不透明） | 無 |
+
+Go `*image.NRGBA` 對應的 `Picture` 存的是 `NewImageFromImage` 之後的值；Go 直接讀 NRGBA 像素做計算的地方只在 HD，R6 處理。
+
+子集與 Go 對照：
+
+| Go（Ebiten v2.6.6） | Rust |
+|---|---|
+| `ebiten.NewImage(w, h)` | `Picture::new_image(w, h)`（寬高非正時 panic，同 Ebiten） |
+| `ebiten.NewImageFromImage(*image.Paletted)`／`(*image.NRGBA)` | `Picture::from_indexed`（即 `picture_from_indexed`）／`Picture::from_nrgba` |
+| `img.Clear()`、`img.Fill(c)` | `clear`、`fill`（覆蓋，不疊合） |
+| `img.Set(x, y, c)` | `set`（`color.NRGBA` 先 `ColorNrgba::premultiplied`） |
+| `img.WritePixels`、`img.ReadPixels` | `write_pixels`（長度不符 panic）、`read_pixels` |
+| `img.SubImage(r)` | `sub_image`（來源）、`sub_image_mut`（目標：`fill`、`clear`、`set`、`draw_image`、`draw_sub_image`、`sub_image_mut`） |
+| `dst.DrawImage(src, op)` | `draw_image`、`draw_sub_image` |
+| `ebiten.GeoM`（`Translate`、`Scale`、`Element`） | `GeoM`（同樣存 `a-1`、`d-1`，`elements32` 轉 float32） |
+| `ebiten.ColorScale`（`Scale`、`ScaleWithColor`） | `ColorScale`（float32 存 `係數-1`） |
+| `ebiten.DrawImageOptions` | `DrawImageOptions { geo_m, color_scale }`（source-over、最近鄰、`ColorM` 單位矩陣） |
+| `image.Rect`、`r.Intersect` | `rect`、`rect_intersect`（`r.Empty()` 沿用 `font.rs` 的 `rect_empty`） |
+
+公式與出處寫在 `canvas.rs` 的模組文件。旋轉、負縮放、`ColorM`、線性濾鏡、其他混色模式不實作，用到時 panic，不輸出近似值。
+
+測試向量 `src/game/canvas/ebiten_vectors.json`（93 KB，SHA-256 `5ade78bf…c339`）由 `tools/rust_r5_canvas_vectors.sh` 從兩份
+Go 實測輸出抽出，輸入檔雜湊寫在檔內 `inputs`：
+
+- 每個實驗保留重建輸入的參數與整張讀回的 SHA-256。測試照 Go 工具重建同一份輸入，以畫布畫一次再比雜湊，雜湊相同即每個通道值都相同：
+  階段 0 混色 30 組（每組 196608 個通道值）、階段 1 取樣 89 組（640×400）、語意 11 組。
+- 另外逐筆比對常見公式會算錯的值（階段 0 每個非逐值相同候選列出的不符，去重後 546 筆），包括 121 列出的 d=191、a=2 → 189 與
+  30×0.55 → 16。
+- 反向檢查：`common_rounding_formula_is_rejected` 以 `(d*(255-a)+127)/255` 算 `alpha_sweep_black` 必須得到不同雜湊；另手動把
+  `adjust_destination_pixel` 的 11/16 改成 1/2、`mul255` 改成 `(x+127)/255` 各跑一次，取樣、混色與抽樣值測試都失敗（語意實驗
+  `over_translucent_dst` 兩式結果相同，不能分辨），改回後通過。
+
+KNOWN_DIFFERENCES：
+
+| 名稱 | 內容 |
+|---|---|
+| `indexed-out-of-palette-transparent` | 索引超出調色盤時 Ebiten `imageToBytes` 會 panic；Rust 沿用 R4 寫成透明黑。正式素材的調色盤都是 256 色 |
+| `png-16bit-premultiply` | 16 位元 PNG 先去掉低位元組再預乘，Go 在 16 位元預乘後才取高位元組，半透明時可能差 1。原版美術模式沒有 16 位元 PNG，未實測 |
+| `sampling-out-of-range-texel` | 對齊後的頂點讓覆蓋像素的來源索引不會越界（89 組實測都沒有）；萬一越界，Ebiten 會取到圖集鄰格，Rust 當作沒有覆蓋 |
+
+### Ebiten 實測補充（取樣與 Fill）
+
+命令：`FD2_GOCACHE=<主工作區>/work/gocache tools/rust_r5_ebiten_sampling.sh <主工作區>/work/r5-stage1-20261115/sampling`。
+只執行 R5 新增的 `remake/cmd/fd2-r5-ebiten-rounding`（加 `-sampling-out`，實驗在 `sampling.go`），環境同階段 0（`fd2-go-test-local`、
+Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元組相同，`ebiten-sampling.json` SHA-256
+`096f7972595345223ebc3e4335cbed53da5c96ca1429a3d99b4c20a3e17bdce8`。工具改成每個 Update 執行一步後，重跑階段 0 的 `-out`
+仍是 `1dc87b3a…`。
+
+- **取樣**：來源圖以座標編碼，讀回先確認可拆成兩軸對應表，再與候選規則逐值比。89 組（原生整幀與 storyView 的 2 倍、標題捲動
+  的 2 倍加整數平移、倍率 1 的小數平移 32 組、圖塊鏡頭 4 組、舊對話框 `Scale(2, 2*sc)` 14 組、2.1 倍頭像 2 組、1×198 漸層
+  `Scale(604, 182/198)` 2 組、標題 logo 縮放 30 組）全部可拆成兩軸，下列規則逐值相同：頂點先經 Ebiten
+  `adjustDestinationPixel` 對齊到 0、5/16、11/16、1（`internal/graphics/vertex.go:113`），像素中心 `p+0.5` 在 `[x0, x1)` 內才
+  覆蓋，來源索引 `floor((p+0.5-x0)*n/(x1-x0))`。float32 與 float64 內插都逐值相同，畫布用 float32。不經對齊的像素中心公式在平移小數
+  約 0.3、0.5 時不符（`frac_translate_02`、`_07`、`tile_cam_37.5`，每軸 24 到 49 個）與舊對話框垂直縮放 k=1、3、4、6（6 到 8 個），
+  logo 縮放與 2.1 倍頭像則碰巧相同；左緣四捨五入的公式連整數 2 倍都不符。
+- **Fill**：直接 `Fill` 半透明或 R/G/B 大於 A 的非預乘色是**覆蓋**（BlendCopy），讀回等於 `color.RGBA` 的四個位元組
+  （256 個值 × 13 個 alpha）。`SubImage(r)` 與父影像相交，座標是父影像座標，`Fill`、`DrawImage` 都只寫入相交矩形（含出界矩形
+  與子影像的子影像）。`Clear` 全部為 0。
+- **其他語意**：`Set` 寫入 `clr.RGBA()>>8`；`NewImageFromImage(*image.Paletted)` 是 `color.RGBAModel.Convert`；
+  `NewImageFromImage(*image.NRGBA)` 是 `image/draw` 的預乘；`WritePixels` 後 `ReadPixels` 原樣（含 R/G/B 大於 A）；
+  疊到半透明底時四個通道（含 alpha）都是 `min(255, s+mul255(d*(255-a)))`。
+
+### PORTING.json 狀態與骨架
+
+`tools/rust_r5_skeleton.sh`：Go 容器以 `tools/rust_r4_skeleton -r5` 讀階段 0 盤點的受版控複本
+[`docs/data/rust-r5-executed-draw-functions-20261115.json`](../../../docs/data/rust-r5-executed-draw-functions-20261115.json)
+（與 `work/r5-stage0-20261115/inventory/executed-draw-functions.json` 逐位元組相同，`60e0a421…`），以 R4 的型別閉包與命名產生簽名，
+輸出 `r5-plan.json`；Python 容器以 `tools/rust_r5_skeleton_apply.py` 依 crate 現況套用；最後 `cargo fmt`。規則：
+
+- 已是 `ported` 的不動；非 HD 的改 `r5`，crate 裡沒有對應函式的補 `todo!("r5:<檔>.go:<函式名>")` 骨架，附在該 Go 檔子模組末尾的
+  「R5 階段 1 骨架」區段；HD 檔的 `r8` 改 `r6`，不產生骨架（Draw 裡的 HD 分支 `todo!("r6:…")`）。
+- 例外：更正錯誤的 `ported`（逐筆記在 `PORTING.json` 的 `r5_stage1.corrections`）。
+
+| Go | 原狀態 | 改為 | 原因 |
+|---|---|---|---|
+| `font.go:175` `Font.Draw` | ported | r5（補骨架） | crate 裡沒有這個函式：R4 階段 2 的狀態工具以名稱比對，把 `Game.Draw` 的狀態套到 `Font.Draw` |
+| `native_end_turn_recovery.go:162` `drawNativeEndTurnRecovery` | ported | r5 | 本體只有 `todo!("R5: …")`，狀態工具把註解算成本體 |
+| `native_physical_body.go:414` `drawNativePhysicalBody` | ported | r5 | 同上（另有 `let _ = …;`） |
+| `native_physical_scene.go:372` `drawNativePhysicalPrelude` | ported | r5 | 同上 |
+| `native_story_dialogue_locale.go:160` `drawIndexedLocalizedText` | ported | r5 | 同上 |
+
+只有部分分支是 `todo!("R5…")` 的仍算 ported，列在 `r5_stage1.ported_with_r5_todo_branch`：`Font.faceFor`、`Font.Width`
+（等外殼注入 `TextMeasure`）、`Game.Draw`（本節的分派骨架）、`drawModernBattlePanelInk`（HD）。
+
+結果（`r5_stage1.result`）：盤點 196 個函式，非 HD 127 個中 ported 69、r5 58（新骨架 52）；HD 69 個中 ported 27、r6 42。
+全 crate 狀態 ported 626、r5 58、r6 59、r8 1179。重跑第二次不改任何檔；從 `eeb024d7` 的 crate 重新套一次，`PORTING.json` 與
+20 個子模組的骨架區段與這次逐位元組相同。
+
+### `Game::draw` 分派骨架
+
+`main.rs` 的 `Game::draw` = `begin_present_frame`（R4，Go 9356..9372）→ `draw_frame`（Go 的 if 鏈）→ `draw_deferred`（Go 第二個
+`defer`：`nativeFullDACWhite`／`Black` 與黑 DAC 的 `Fill`、白閃 `drawn`、說明畫面）。分支是否執行到依階段 0 的 `Draw` 覆蓋率
+（opening＋chapter 合計次數）：
+
+| Go 分支 | 行 | 執行次數 | Rust |
+|---|---|---|---|
+| `startupBlocked`、`nativeDefeat`、`nativeEnding`、ch20／ch23／2189A／單位登場、24B4D、`m == nil` | 9395..9488 | 0 | `todo!("r8:…")`（需要 Fill 的先 Fill 黑） |
+| `titlePhase` → `drawTitle` | 9406 | 1964 | `draw_title`（r5） |
+| `nativeCh28PostPresent` | 9461 | 1064 | `draw_native_ch28_post_present`（r5）；失敗路徑 r8 |
+| `indexedTransition`、補血、修飾、AI 修飾、指令 0～35、AI 物品、`nativeTownDeparture` | 9490..9714 | 0 | `todo!("r8:…")` |
+| `nativePaletteRamp` | 9715 | 5934 | `draw_native_palette_ramp`（r5）；DebugPrint r8 |
+| `nativePalettePulse` | 9725 | 0 | r8 |
+| `spawnIntroTransition` | 9735 | 48 | `draw_native_spawn_intro`（r5） |
+| indexed 回合演出、事件 61 | 9745..9763 | 0 | r8 |
+| `nativeEndTurnRecovery` | 9765 | 42 | `draw_native_end_turn_recovery`（r5）；失敗時 `cancel_native_end_turn_recovery` 已移植，DebugPrint r8 |
+| `nativeAIIdleRecovery` | 9776 | 3 | `draw_native_ai_idle_recovery`（r5）；失敗收尾與 `present.rs` 相同 |
+| `atk` → `drawBattleScene` | 9792 | 6488 | `draw_battle_scene`（r5） |
+| 尾段 `draw_field` | 9804..10188 | 14812 | 見下 |
+
+尾段：`modernHDMapFrameAdmission` 在 `modern_story_portraits` 為 `None` 時一律 false（忠實模式），否則 `todo!("r6:…")`；
+正規化地圖層 9814..9950（storyView 10941 次、圖塊、移動範圍格 135 次、單位、游標 3828 次、`drawNativeMapHUD` 3200 次）是
+Draw 本體的 r5 `todo!`；`drawNativeMapFrame` 6371 次；`drawNativeMovementPanel`、`drawPhaseBanner`、`drawNativeStoryDialogue`；
+TTF 短訊 2650 次與勝負字樣 1 次照 Go 寫好、呼叫 `Font::draw`（r5）；選中單位中文名與舊對話框 0 次（r8）；`drawCampaignUI`、
+`drawNativeClassUIJob`、`drawNativeSystemEndTurn`、`markActionOverlayDrawn`（10 次）或 `drawRing`、指令格、法術與物品選單、
+`drawNativeSystemInfoUI`、`drawNativePlayerStatus`；舊 fade 疊層 106 次是 Draw 本體的 r5 `todo!`；`captureShot` 是 r8（截圖模式）。
+
+Draw 裡改流程狀態的地方（R4 A 組表）在 `draw` 路徑由各 `draw*` 函式自己做，與 Go 相同；`acknowledge_present` 照舊是無畫面重播
+不擷取畫格時的版本。兩者不能在同一幀都呼叫（旗標會設兩次，Go 黃金是「pump 擷取點呼叫 Draw，`ackPresents` 另外只在三處呼叫
+Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_deferred` 共用。
+
+### R5 對照表（階段 2 的工作單）
+
+依階段 0 分組；「局部黃金」是該函式在哪一種 Go 黃金畫格裡執行到：`opening`、`chapter` 是 `tools/rust_r5_golden_frames.sh` 的兩種
+模式；`FD2_SHOT_STATE` 表示城鎮與設施在 `chapter` 模式只擷到 1 到 21 幀（多半不經 `pump`），要照 121「驗證」第 2 點另補。
+畫布操作取自盤點的 `ebiten_api`（函式本體直接用到的）。表由 `PORTING.json` 狀態與盤點檔產生。`Game.Draw` 本體另有兩段 r5
+`todo!`（正規化地圖層 9814..9950 約 137 行、fade 疊層 12 行）。
+
+| 分組 | 函式（r5／ported／HD r6） | 行數（r5） | 畫布操作 | 局部黃金 |
+|---|---|---|---|---|
+| 城鎮與設施 | 28（16／12／0） | 859 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter、chapter＋FD2_SHOT_STATE、opening＋chapter |
+| Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | — |
+| HUD 與選單 | 35（20／15／0） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
+| 對話與文字 | 16（5／11／0） | 205 | 平移、ColorScale、TTF | chapter、opening＋chapter |
+| 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
+| 地圖與單位 | 14（7／7／0） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
+| 標題與開場 | 7（4／3／0） | 198 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening、opening＋chapter |
+| 轉場與調色盤 | 4（1／3／0） | 25 | DrawImage、縮放、NewImageFromImage | chapter |
+| 素材路徑與時鐘（非繪圖） | 14（0／14／0） | 0 | — | — |
+| 共用與其他 | 1（0／1／0） | 0 | — | — |
+| HD 檔（原版模式下有執行，多為守門） | 69（0／27／42） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、WritePixels、TTF、Dispose | — |
+
+| 分組 | Go 位置 | 函式 | 行數 | 畫布操作 | 局部黃金 |
+|---|---|---|---|---|---|
+| 城鎮與設施 | `main.go:10638..11123` | `drawCampaignUI` | 486 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| 城鎮與設施 | `native_church_ui.go:214..235` | `drawNativeChurchUIJob` | 22 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_class_ui.go:206..208` | `presentNativeClassFrame` | 3 | — | opening＋chapter |
+| 城鎮與設施 | `native_class_ui.go:210..223` | `presentNativeClassFrameWithPalette` | 14 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| 城鎮與設施 | `native_class_ui_lifecycle.go:179..240` | `drawNativeClassUIJob` | 62 | — | chapter |
+| 城鎮與設施 | `native_hotel_ui.go:82..102` | `composeNativeHotelStable` | 21 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_hotel_ui.go:106..157` | `composeNativeHotelFrame` | 52 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_hotel_ui.go:159..164` | `drawNativeHotel` | 6 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:244..263` | `composeNativePreparationPromptFrame` | 20 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:429..456` | `drawNativePreparation` | 28 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:458..460` | `composeNativePreparationStableFrame` | 3 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:462..464` | `composeNativePreparationStableFrameLayers` | 3 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:466..477` | `composeNativePreparationStableFrameParts` | 12 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_shop_ui.go:1495..1541` | `drawNativeShopUIJob` | 47 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_shop_ui.go:1543..1611` | `drawNativeShop` | 69 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_town_ui.go:224..234` | `drawNativeTown` | 11 | — | chapter＋FD2_SHOT_STATE |
+| HUD 與選單 | `action_overlay_runtime.go:823..873` | `drawNativeSystemEndTurn` | 51 | — | opening＋chapter |
+| HUD 與選單 | `main.go:10194..10197` | `shouldDrawTransientBattleMessage` | 4 | — | opening＋chapter |
+| HUD 與選單 | `main.go:10221..10303` | `drawRing` | 83 | DrawImage、平移、縮放、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10537..10572` | `drawSpellMenu` | 36 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10577..10613` | `drawItemMenu` | 37 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10617..10635` | `drawNativeCommandGrid` | 19 | — | opening＋chapter |
+| HUD 與選單 | `main.go:11571..11584` | `drawCursor` | 14 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:12148..12150` | `phaseBannerElapsedMillis` | 3 | — | chapter |
+| HUD 與選單 | `main.go:12154..12171` | `phaseBannerSlideOffset` | 18 | — | opening＋chapter |
+| HUD 與選單 | `main.go:12203..12217` | `blitPhaseBannerGlyphs` | 15 | — | chapter |
+| HUD 與選單 | `main.go:12225..12246` | `blitPhaseBannerGlyph` | 22 | — | chapter |
+| HUD 與選單 | `main.go:12249..12252` | `phaseBannerGlyphsAvailable` | 4 | — | chapter |
+| HUD 與選單 | `main.go:12268..12301` | `phaseBannerStep` | 34 | — | opening＋chapter |
+| HUD 與選單 | `main.go:12317..12334` | `drawPhaseBanner` | 18 | — | opening＋chapter |
+| HUD 與選單 | `main.go:12421..12444` | `drawNativeMapHUD` | 24 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| HUD 與選單 | `native_end_turn_recovery.go:162..179` | `drawNativeEndTurnRecovery` | 18 | DrawImage、縮放、NewImageFromImage | chapter |
+| HUD 與選單 | `native_map_unit_window.go:14..17` | `nativeActionOverlayInMapFrame` | 4 | — | opening＋chapter |
+| HUD 與選單 | `native_player_input.go:214..237` | `drawNativePlayerStatus` | 24 | — | opening＋chapter |
+| HUD 與選單 | `native_player_movement.go:100..118` | `drawNativeMovementPanel` | 19 | DrawImage、平移、縮放 | opening＋chapter |
+| HUD 與選單 | `native_system_info_ui.go:186..233` | `drawNativeSystemInfoUI` | 48 | DrawImage、平移、縮放、NewImageFromImage、SubImage | opening＋chapter |
+| 對話與文字 | `font.go:175..191` | `Font.Draw` | 17 | 平移、ColorScale、TTF | chapter |
+| 對話與文字 | `native_confirmation_mouth.go:71..81` | `composeNativeConfirmationMouth` | 11 | — | chapter |
+| 對話與文字 | `native_story_dialogue.go:339..351` | `nativeStoryOpeningFrameIndex` | 13 | — | opening＋chapter |
+| 對話與文字 | `native_story_dialogue.go:485..586` | `drawNativeStoryDialogue` | 102 | — | opening＋chapter |
+| 對話與文字 | `native_story_dialogue_locale.go:160..221` | `drawIndexedLocalizedText` | 62 | — | chapter |
+| 戰鬥演出 | `main.go:11231..11387` | `drawBattleScene` | 157 | DrawImage、平移、縮放、Fill | chapter |
+| 戰鬥演出 | `native_ai_idle_recovery.go:328..350` | `drawNativeAIIdleRecovery` | 23 | DrawImage、縮放、NewImageFromImage | chapter |
+| 戰鬥演出 | `native_ch28_post_present.go:339..363` | `drawNativeCh28PostPresent` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
+| 戰鬥演出 | `native_physical_body.go:414..454` | `drawNativePhysicalBody` | 41 | DrawImage、縮放、NewImageFromImage | chapter |
+| 戰鬥演出 | `native_physical_scene.go:372..422` | `drawNativePhysicalPrelude` | 51 | DrawImage、縮放 | chapter |
+| 地圖與單位 | `main.go:8363..8368` | `tileAt` | 6 | — | opening＋chapter |
+| 地圖與單位 | `main.go:9338..9353` | `nativeMapFrameAdmission` | 16 | — | opening＋chapter |
+| 地圖與單位 | `main.go:11514..11521` | `mapSpriteGroup` | 8 | — | opening＋chapter |
+| 地圖與單位 | `main.go:11528..11548` | `drawUnitSprite` | 21 | DrawImage、平移、ColorScale | opening＋chapter |
+| 地圖與單位 | `main.go:12450..12464` | `drawNativeMapFrame` | 15 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| 地圖與單位 | `main.go:12469..12525` | `nativeMapFrameImage` | 57 | — | opening＋chapter |
+| 地圖與單位 | `native_spawn_intro.go:360..372` | `drawNativeSpawnIntro` | 13 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| 標題與開場 | `title.go:45..47` | `titleMenuY` | 3 | — | opening＋chapter |
+| 標題與開場 | `title.go:456..467` | `titlePublisherBrightness` | 12 | — | opening |
+| 標題與開場 | `title.go:486..493` | `titleScrollUsesPulsePalette` | 8 | — | opening |
+| 標題與開場 | `title.go:716..890` | `drawTitle` | 175 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening＋chapter |
+| 轉場與調色盤 | `native_palette_ramp.go:164..188` | `drawNativePaletteRamp` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
+
+### R5 階段 1：畫格擷取介面
+
+`src/game/parity_replay/rust_golden_frames_test.rs`（對應 Go `remake/cmd/fd2/rust_golden_frames_test.go` 的 chapter 模式）。
+設 `FD2_GOLDEN_FRAMES_MODE=chapter` 與 `FD2_GOLDEN_FRAMES_OUT=<目錄>` 才建立 `FrameCapture`，掛在 `Driver::frame_capture`；兩者都沒
+設時是 `None`，重播與 R4 完全相同。只設一個或模式不是 `chapter` 時 panic。
+
+| Go | Rust |
+|---|---|
+| `pump` 每一幀開頭的 `ch01FrameObserver(g)`（`native_chapter_one_play_test.go:305`，在上一個 `Update` 之後、`done` 與 `ackPresents` 之前） | `Driver::pump` 每一幀開頭的 `FrameCapture::observe`，同一位置 |
+| `goldenFrameRecorder.observe`：`pinClock` → 記 gap → `screen.Clear()` → `g.Draw(screen)` → `ReadPixels` → SHA-256 | 同順序：`pin_clock` → gap → `Picture::clear` → `Game::draw` → `read_pixels` → SHA-256 |
+| 連續相同雜湊併成一列（`count`）；序列雜湊是每次擷取 SHA-256 串接後的 SHA-256 | 同（`rows`、`sequence_sha256`） |
+| 重播結束寫 `frames.json` | `ParityReplay` 的 `end` checkpoint 之後 `FrameCapture::finish` 寫 `<目錄>/frames.json`，欄位與 Go 同名 |
+| `ackPresents` 在城鎮出發、有原生場景的攻擊演出、END 回收三處另外呼叫 `g.Draw` 到暫存影像 | 照舊呼叫 `acknowledge_present`（R4），不畫像素 |
+
+目前 r5 函式都是 `todo!`，打開擷取會停在第一個擷取點；本輪只驗證關閉時重播結果不變。下列是重現 Go 黃金畫格的規格：
+
+| 項目 | Go 黃金（`rust_golden_frames_test.go`） | Rust | 狀態 |
+|---|---|---|---|
+| 60 Hz 虛擬時鐘 | 第一次擷取時把 `playerClock.wall` 設在遠未來（`sample` 只回傳 `game`），`wall` 為零時 `game` 從 `time.Unix(1<<30, 0)` 起；之後每次擷取前把 `game` 推進 `Δg.frame × 16666666 ns × normalizePlayerSpeed(speed)`。pump 以外的 `Update` 期間遊戲時間凍結，到下一個 pump 幀才補上；pump 的 `Update` 看到的是上一次擷取的時間（比 `Draw` 晚一幀推進） | `FrameCapture::pin_clock` 照寫：`player_clock.wall = GameInstant(i64::MAX/2)`，`game += d × 16666666 × speed`。`VirtualFrameClock` 照舊每幀推進 `virtual_now`，但 `sample` 的差值為負，只回傳凍結的 `game`，與 Go 相同。擷取打開時遊戲時間改由擷取點推進，與 R4 重播（每個 `update` 前推進 1/60 秒，誤差小於 speed 奈秒）不同；Go 黃金在這個模型下檢查點仍是 `1c846f57…` | 已實作 |
+| 第一個 pump 之前 | Go 以真實牆鐘跑 `startFromNormalTitle`（`clock = "virtual-60hz-from-first-pump"`），只有差值影響畫面 | 以 R4 的 `VirtualFrameClock` 跑，`clock` 同名 | 同 |
+| 全域亂數 | 測試開頭 `rand.Seed(4)`，之後 `math/rand` 全域來源依程式順序被取用：故事對白嘴型 `rand.Intn(30)`（`native_story_dialogue.go:430`、`442`、`453`）、確認框嘴型第一次用到時 `rand.New(rand.NewSource(rand.Int63()))`（`native_confirmation_mouth.go:38`）、結局預覽（R8） | 擷取打開時要改成：`Game` 另存一個 `GoMathRand::new(4)` 代表全域來源，在重播開始前建立；`story_mouth_intn30` 改取它的 `intn(30)`；`native_confirmation_mouth_rng` 惰性建立時改用 `GoMathRand::new(global.int63())`；擷取關閉時維持 R4 的兩個固定種子（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`） | **未實作**；`frames.json` 的 `global_rand` 寫明，階段 3 比對前必須接上 |
+| gaps | pump 以外迴圈的 `Update` 不擷取，記 `{after_capture, uncaptured_updates, from_update_frame, to_update_frame, node}`；第一章 7 段 9282 個（`driveStory` 8430、武器店直接迴圈 817、`closeRing`／`settleActionOverlay` 5 段各 7） | 同一格式記在 `gaps`；Rust 的迴圈結構照 Go 移植（R4），段數與長度應相同，階段 3 先比 `gaps` 再比畫格 | 已實作 |
+| 調色盤與像素格式 | `ReadPixels` 的預乘 RGBA8 | `Picture` 預乘（本節「CPU 畫布」） | 已實作 |
+
+### R5 階段 1 驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；320 passed、4 ignored（R4 312 項加畫布 8 項） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage1-20261115/r5a-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，三者與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `Cargo.lock` | 沒有改動；沒有新增套件 |
+| 實驗重跑 | `tools/rust_r5_ebiten_sampling.sh` 兩次輸出相同；`tools/rust_r5_canvas_vectors.sh`、`tools/rust_r5_skeleton.sh` 重跑結果相同 |

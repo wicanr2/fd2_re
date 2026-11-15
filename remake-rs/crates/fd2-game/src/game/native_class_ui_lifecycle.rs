@@ -155,3 +155,12 @@ impl Game {
 
 #[cfg(test)]
 mod native_class_ui_lifecycle_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_class_ui_lifecycle.go:179`，`func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_class_ui_job(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_class_ui_lifecycle.go:drawNativeClassUIJob")
+    }
+}

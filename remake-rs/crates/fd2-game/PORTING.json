@@ -25,12 +25,12 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 631,
-      "r5": 2,
-      "r6": 17,
-      "r8": 1272
+      "ported": 626,
+      "r5": 58,
+      "r6": 59,
+      "r8": 1179
     },
-    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8"
+    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）"
   },
   "excluded_go_files": [
     "assets_glob_js.go",
@@ -748,7 +748,7 @@
           "name": "drawNativeSystemEndTurn",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_system_end_turn",
-          "status": "r8",
+          "status": "r5",
           "go_line": 823
         },
         {
@@ -1745,7 +1745,7 @@
           "name": "Draw",
           "recv": "Font",
           "rust": "fd2_game::game::Font::draw",
-          "status": "ported",
+          "status": "r5",
           "go_line": 175
         },
         {
@@ -3858,7 +3858,7 @@
           "name": "tileAt",
           "recv": "Game",
           "rust": "fd2_game::game::Game::tile_at",
-          "status": "r8",
+          "status": "r5",
           "go_line": 8363
         },
         {
@@ -4089,7 +4089,7 @@
           "name": "nativeMapFrameAdmission",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_map_frame_admission",
-          "status": "r8",
+          "status": "r5",
           "go_line": 9338
         },
         {
@@ -4116,7 +4116,7 @@
           "name": "shouldDrawTransientBattleMessage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::should_draw_transient_battle_message",
-          "status": "r8",
+          "status": "r5",
           "go_line": 10194
         },
         {
@@ -4130,7 +4130,7 @@
           "name": "drawRing",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_ring",
-          "status": "r8",
+          "status": "r5",
           "go_line": 10221
         },
         {
@@ -4252,28 +4252,28 @@
           "name": "drawSpellMenu",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_spell_menu",
-          "status": "r8",
+          "status": "r5",
           "go_line": 10537
         },
         {
           "name": "drawItemMenu",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_item_menu",
-          "status": "r8",
+          "status": "r5",
           "go_line": 10577
         },
         {
           "name": "drawNativeCommandGrid",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_command_grid",
-          "status": "r8",
+          "status": "r5",
           "go_line": 10617
         },
         {
           "name": "drawCampaignUI",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_campaign_ui",
-          "status": "r8",
+          "status": "r5",
           "go_line": 10638
         },
         {
@@ -4337,14 +4337,14 @@
           "name": "mapSpriteGroup",
           "recv": "Game",
           "rust": "fd2_game::game::Game::map_sprite_group",
-          "status": "r8",
+          "status": "r5",
           "go_line": 11514
         },
         {
           "name": "drawUnitSprite",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_unit_sprite",
-          "status": "r8",
+          "status": "r5",
           "go_line": 11528
         },
         {
@@ -4356,7 +4356,7 @@
         {
           "name": "drawCursor",
           "rust": "fd2_game::game::draw_cursor",
-          "status": "r8",
+          "status": "r5",
           "go_line": 11571
         },
         {
@@ -4463,14 +4463,14 @@
           "name": "phaseBannerElapsedMillis",
           "recv": "Game",
           "rust": "fd2_game::game::Game::phase_banner_elapsed_millis",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12148
         },
         {
           "name": "phaseBannerSlideOffset",
           "recv": "Game",
           "rust": "fd2_game::game::Game::phase_banner_slide_offset",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12154
         },
         {
@@ -4489,20 +4489,20 @@
           "name": "blitPhaseBannerGlyphs",
           "recv": "Game",
           "rust": "fd2_game::game::Game::blit_phase_banner_glyphs",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12203
         },
         {
           "name": "blitPhaseBannerGlyph",
           "rust": "fd2_game::game::blit_phase_banner_glyph",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12225
         },
         {
           "name": "phaseBannerGlyphsAvailable",
           "recv": "Game",
           "rust": "fd2_game::game::Game::phase_banner_glyphs_available",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12249
         },
         {
@@ -4522,14 +4522,14 @@
           "name": "phaseBannerStep",
           "recv": "Game",
           "rust": "fd2_game::game::Game::phase_banner_step",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12268
         },
         {
           "name": "drawPhaseBanner",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_phase_banner",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12317
         },
         {
@@ -4556,21 +4556,21 @@
           "name": "drawNativeMapHUD",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_map_hud",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12421
         },
         {
           "name": "drawNativeMapFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_map_frame",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12450
         },
         {
           "name": "nativeMapFrameImage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_map_frame_image",
-          "status": "r8",
+          "status": "r5",
           "go_line": 12469
         },
         {
@@ -6038,14 +6038,14 @@
           "name": "drawModernHDChurchConfirmation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_church_confirmation",
-          "status": "r8",
+          "status": "r6",
           "go_line": 337
         },
         {
           "name": "drawModernHDFacilityConfirmation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_facility_confirmation",
-          "status": "r8",
+          "status": "r6",
           "go_line": 341
         }
       ],
@@ -6085,7 +6085,7 @@
           "name": "appendModernHDChurchFeeCurrency",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_church_fee_currency",
-          "status": "r8",
+          "status": "r6",
           "go_line": 80
         }
       ],
@@ -6934,7 +6934,7 @@
           "name": "appendModernHDFacilityDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_facility_dialogue",
-          "status": "r8",
+          "status": "r6",
           "go_line": 145
         }
       ],
@@ -7012,7 +7012,7 @@
           "name": "appendModernHDFacilityItemRows",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_facility_item_rows",
-          "status": "r8",
+          "status": "r6",
           "go_line": 303
         }
       ],
@@ -7116,7 +7116,7 @@
           "name": "drawModernHDFacilityList",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_facility_list",
-          "status": "r8",
+          "status": "r6",
           "go_line": 298
         },
         {
@@ -7158,7 +7158,7 @@
           "name": "appendModernHDFacilityMoney",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_facility_money",
-          "status": "r8",
+          "status": "r6",
           "go_line": 52
         },
         {
@@ -7258,7 +7258,7 @@
           "name": "prepareModernHDFacilityRoster",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_modern_hd_facility_roster",
-          "status": "r8",
+          "status": "r6",
           "go_line": 94
         },
         {
@@ -7272,7 +7272,7 @@
           "name": "drawModernHDFacilityRosterUnderlay",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_facility_roster_underlay",
-          "status": "r8",
+          "status": "r6",
           "go_line": 175
         },
         {
@@ -7324,7 +7324,7 @@
           "name": "modernFacility",
           "recv": "Game",
           "rust": "fd2_game::game::Game::modern_facility",
-          "status": "r8",
+          "status": "r6",
           "go_line": 142
         },
         {
@@ -7352,14 +7352,14 @@
           "name": "drawModernHDTown",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_town",
-          "status": "r8",
+          "status": "r6",
           "go_line": 243
         },
         {
           "name": "drawModernHDShopFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_shop_frame",
-          "status": "r8",
+          "status": "r6",
           "go_line": 298
         },
         {
@@ -7396,7 +7396,7 @@
           "name": "modernStableFacilitySource",
           "recv": "Game",
           "rust": "fd2_game::game::Game::modern_stable_facility_source",
-          "status": "r8",
+          "status": "r6",
           "go_line": 51
         },
         {
@@ -7413,7 +7413,7 @@
           "name": "drawModernHDStableFacilityScene",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_stable_facility_scene",
-          "status": "r8",
+          "status": "r6",
           "go_line": 126
         }
       ],
@@ -7553,7 +7553,7 @@
           "name": "drawModernHDFacilityFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_facility_frame",
-          "status": "r8",
+          "status": "r6",
           "go_line": 74
         },
         {
@@ -7567,7 +7567,7 @@
           "name": "beginModernHDPreparationText",
           "recv": "Game",
           "rust": "fd2_game::game::Game::begin_modern_hd_preparation_text",
-          "status": "r8",
+          "status": "r6",
           "go_line": 120
         }
       ],
@@ -7750,7 +7750,7 @@
           "name": "drawModernHDFullReward",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_full_reward",
-          "status": "r8",
+          "status": "r6",
           "go_line": 287
         }
       ],
@@ -8586,7 +8586,7 @@
           "name": "modernHDMapFrameAdmission",
           "recv": "Game",
           "rust": "fd2_game::game::Game::modern_hd_map_frame_admission",
-          "status": "r8",
+          "status": "r6",
           "go_line": 47
         },
         {
@@ -8934,7 +8934,7 @@
           "name": "modernOpeningEnabled",
           "recv": "Game",
           "rust": "fd2_game::game::Game::modern_opening_enabled",
-          "status": "r8",
+          "status": "r6",
           "go_line": 238
         },
         {
@@ -9170,7 +9170,7 @@
           "name": "drawModernHDStatusTransition",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_status_transition",
-          "status": "r8",
+          "status": "r6",
           "go_line": 146
         },
         {
@@ -9329,7 +9329,7 @@
           "name": "drawModernHDPreparationBackground",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_preparation_background",
-          "status": "r8",
+          "status": "r6",
           "go_line": 102
         }
       ],
@@ -9360,14 +9360,14 @@
           "name": "prepareModernHDPreparationCounts",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_modern_hd_preparation_counts",
-          "status": "r8",
+          "status": "r6",
           "go_line": 36
         },
         {
           "name": "appendModernHDPreparationCounts",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_preparation_counts",
-          "status": "r8",
+          "status": "r6",
           "go_line": 134
         }
       ],
@@ -9458,7 +9458,7 @@
           "name": "preparationDialoguePlacement",
           "recv": "Game",
           "rust": "fd2_game::game::Game::preparation_dialogue_placement",
-          "status": "r8",
+          "status": "r6",
           "go_line": 31
         },
         {
@@ -9478,7 +9478,7 @@
           "name": "appendModernHDPreparationDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_preparation_dialogue",
-          "status": "r8",
+          "status": "r6",
           "go_line": 112
         }
       ],
@@ -9503,14 +9503,14 @@
           "name": "prepareModernHDPreparationRoster",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_modern_hd_preparation_roster",
-          "status": "r8",
+          "status": "r6",
           "go_line": 21
         },
         {
           "name": "drawModernHDPreparationRoster",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_preparation_roster",
-          "status": "r8",
+          "status": "r6",
           "go_line": 91
         },
         {
@@ -9542,14 +9542,14 @@
           "name": "prepareModernHDPreparationStatus",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_modern_hd_preparation_status",
-          "status": "r8",
+          "status": "r6",
           "go_line": 23
         },
         {
           "name": "appendModernHDPreparationStableLayers",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_preparation_stable_layers",
-          "status": "r8",
+          "status": "r6",
           "go_line": 74
         }
       ],
@@ -9623,7 +9623,7 @@
           "name": "drawModernHDPreparationTransition",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_preparation_transition",
-          "status": "r8",
+          "status": "r6",
           "go_line": 93
         },
         {
@@ -9707,7 +9707,7 @@
           "name": "drawModernHDRewardMessage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_reward_message",
-          "status": "r8",
+          "status": "r6",
           "go_line": 62
         }
       ],
@@ -9789,7 +9789,7 @@
           "name": "appendModernHDServiceIcons",
           "recv": "Game",
           "rust": "fd2_game::game::Game::append_modern_hd_service_icons",
-          "status": "r8",
+          "status": "r6",
           "go_line": 186
         },
         {
@@ -9858,7 +9858,7 @@
           "name": "drawModernHDFacilityServiceMenu",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_facility_service_menu",
-          "status": "r8",
+          "status": "r6",
           "go_line": 182
         }
       ],
@@ -10254,7 +10254,7 @@
           "name": "hasModernHDStoryMapSource",
           "recv": "Game",
           "rust": "fd2_game::game::Game::has_modern_hd_story_map_source",
-          "status": "r8",
+          "status": "r6",
           "go_line": 10
         },
         {
@@ -10320,7 +10320,7 @@
           "name": "modernHDStoryTextFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::modern_hd_story_text_frame",
-          "status": "r8",
+          "status": "r6",
           "go_line": 13
         }
       ],
@@ -10404,7 +10404,7 @@
           "name": "drawModernHDSystemConfirmation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_system_confirmation",
-          "status": "r8",
+          "status": "r6",
           "go_line": 335
         }
       ],
@@ -10637,7 +10637,7 @@
           "name": "clearModernHDText",
           "recv": "Game",
           "rust": "fd2_game::game::Game::clear_modern_hd_text",
-          "status": "r8",
+          "status": "r6",
           "go_line": 160
         },
         {
@@ -10700,7 +10700,7 @@
           "name": "presentNativeStoryDialogueFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::present_native_story_dialogue_frame",
-          "status": "r8",
+          "status": "r6",
           "go_line": 65
         }
       ],
@@ -10779,7 +10779,7 @@
           "name": "drawModernHDTitleMenuItem",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_title_menu_item",
-          "status": "r8",
+          "status": "r6",
           "go_line": 147
         },
         {
@@ -10946,7 +10946,7 @@
         {
           "name": "modernHDTransientExpiryRegion",
           "rust": "fd2_game::game::modern_hd_transient_expiry_region",
-          "status": "r8",
+          "status": "r6",
           "go_line": 157
         },
         {
@@ -10960,7 +10960,7 @@
           "name": "drawModernHDTransientExpiryMessage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_modern_hd_transient_expiry_message",
-          "status": "r8",
+          "status": "r6",
           "go_line": 176
         }
       ],
@@ -11509,7 +11509,7 @@
           "name": "drawNativeAIIdleRecovery",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ai_idle_recovery",
-          "status": "r8",
+          "status": "r5",
           "go_line": 328
         }
       ],
@@ -12450,7 +12450,7 @@
           "name": "drawNativeCh28PostPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ch28_post_present",
-          "status": "r8",
+          "status": "r5",
           "go_line": 339
         }
       ],
@@ -13060,7 +13060,7 @@
           "name": "drawNativeChurchUIJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_church_ui_job",
-          "status": "r8",
+          "status": "r5",
           "go_line": 214
         },
         {
@@ -13183,14 +13183,14 @@
           "name": "presentNativeClassFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::present_native_class_frame",
-          "status": "r8",
+          "status": "r5",
           "go_line": 206
         },
         {
           "name": "presentNativeClassFrameWithPalette",
           "recv": "Game",
           "rust": "fd2_game::game::Game::present_native_class_frame_with_palette",
-          "status": "r8",
+          "status": "r5",
           "go_line": 210
         },
         {
@@ -13275,7 +13275,7 @@
           "name": "drawNativeClassUIJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_class_ui_job",
-          "status": "r8",
+          "status": "r5",
           "go_line": 179
         },
         {
@@ -15216,7 +15216,7 @@
           "name": "composeNativeConfirmationMouth",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_confirmation_mouth",
-          "status": "r8",
+          "status": "r5",
           "go_line": 71
         }
       ],
@@ -15767,7 +15767,7 @@
           "name": "drawNativeEndTurnRecovery",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_end_turn_recovery",
-          "status": "ported",
+          "status": "r5",
           "go_line": 162,
           "class": "畫面",
           "cover": 84.6,
@@ -16089,21 +16089,21 @@
           "name": "composeNativeHotelStable",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_hotel_stable",
-          "status": "r8",
+          "status": "r5",
           "go_line": 82
         },
         {
           "name": "composeNativeHotelFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_hotel_frame",
-          "status": "r8",
+          "status": "r5",
           "go_line": 106
         },
         {
           "name": "drawNativeHotel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_hotel",
-          "status": "r8",
+          "status": "r5",
           "go_line": 159
         },
         {
@@ -16892,7 +16892,7 @@
           "name": "nativeActionOverlayInMapFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_action_overlay_in_map_frame",
-          "status": "r8",
+          "status": "r5",
           "go_line": 14
         },
         {
@@ -17214,7 +17214,7 @@
           "name": "drawNativePhysicalBody",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_physical_body",
-          "status": "ported",
+          "status": "r5",
           "go_line": 414,
           "class": "畫面",
           "cover": 74.2,
@@ -17379,7 +17379,7 @@
           "name": "drawNativePhysicalPrelude",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_physical_prelude",
-          "status": "ported",
+          "status": "r5",
           "go_line": 372,
           "class": "畫面",
           "cover": 42.1,
@@ -17492,7 +17492,7 @@
           "name": "drawNativePlayerStatus",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_player_status",
-          "status": "r8",
+          "status": "r5",
           "go_line": 214
         }
       ],
@@ -17546,7 +17546,7 @@
           "name": "drawNativeMovementPanel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_movement_panel",
-          "status": "r8",
+          "status": "r5",
           "go_line": 100
         },
         {
@@ -17761,7 +17761,7 @@
           "name": "composeNativePreparationPromptFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_prompt_frame",
-          "status": "r8",
+          "status": "r5",
           "go_line": 244
         },
         {
@@ -17841,28 +17841,28 @@
           "name": "drawNativePreparation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_preparation",
-          "status": "r8",
+          "status": "r5",
           "go_line": 429
         },
         {
           "name": "composeNativePreparationStableFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame",
-          "status": "r8",
+          "status": "r5",
           "go_line": 458
         },
         {
           "name": "composeNativePreparationStableFrameLayers",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame_layers",
-          "status": "r8",
+          "status": "r5",
           "go_line": 462
         },
         {
           "name": "composeNativePreparationStableFrameParts",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame_parts",
-          "status": "r8",
+          "status": "r5",
           "go_line": 466
         },
         {
@@ -18953,14 +18953,14 @@
           "name": "drawNativeShopUIJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_shop_ui_job",
-          "status": "r8",
+          "status": "r5",
           "go_line": 1495
         },
         {
           "name": "drawNativeShop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_shop",
-          "status": "r8",
+          "status": "r5",
           "go_line": 1543
         },
         {
@@ -19202,7 +19202,7 @@
           "name": "drawNativeSpawnIntro",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_spawn_intro",
-          "status": "r8",
+          "status": "r5",
           "go_line": 360
         }
       ],
@@ -19317,7 +19317,7 @@
         {
           "name": "nativeStoryOpeningFrameIndex",
           "rust": "fd2_game::game::native_story_opening_frame_index",
-          "status": "r8",
+          "status": "r5",
           "go_line": 339
         },
         {
@@ -19400,7 +19400,7 @@
           "name": "drawNativeStoryDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_story_dialogue",
-          "status": "r8",
+          "status": "r5",
           "go_line": 485
         }
       ],
@@ -19449,7 +19449,7 @@
         {
           "name": "drawIndexedLocalizedText",
           "rust": "fd2_game::game::draw_indexed_localized_text",
-          "status": "ported",
+          "status": "r5",
           "go_line": 160,
           "class": "畫面",
           "cover": 34.4,
@@ -19700,7 +19700,7 @@
           "name": "drawNativeSystemInfoUI",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_system_info_ui",
-          "status": "r8",
+          "status": "r5",
           "go_line": 186
         }
       ],
@@ -19974,7 +19974,7 @@
           "name": "drawNativeTown",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_town",
-          "status": "r8",
+          "status": "r5",
           "go_line": 224
         }
       ],
@@ -20949,7 +20949,7 @@
           "name": "hdPresentationEnabled",
           "recv": "Game",
           "rust": "fd2_game::game::Game::hd_presentation_enabled",
-          "status": "r8",
+          "status": "r6",
           "go_line": 32
         },
         {
@@ -21946,7 +21946,7 @@
         {
           "name": "titleMenuY",
           "rust": "fd2_game::game::title_menu_y",
-          "status": "r8",
+          "status": "r5",
           "go_line": 45
         },
         {
@@ -22059,7 +22059,7 @@
         {
           "name": "titlePublisherBrightness",
           "rust": "fd2_game::game::title_publisher_brightness",
-          "status": "r8",
+          "status": "r5",
           "go_line": 456
         },
         {
@@ -22074,7 +22074,7 @@
         {
           "name": "titleScrollUsesPulsePalette",
           "rust": "fd2_game::game::title_scroll_uses_pulse_palette",
-          "status": "r8",
+          "status": "r5",
           "go_line": 486
         },
         {
@@ -22155,7 +22155,7 @@
           "name": "drawTitle",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_title",
-          "status": "r8",
+          "status": "r5",
           "go_line": 716
         }
       ],
@@ -22291,5 +22291,65 @@
       ],
       "depends_on": []
     }
-  ]
+  ],
+  "r5_stage1": {
+    "inventory": {
+      "file": "rust-r5-executed-draw-functions-20261115.json",
+      "sha256": "60e0a421b3a2f0906f3c69fe282bc534ec491dc131d5e77486dd3c6e3ada1f2a"
+    },
+    "rule": "已 ported 的不動；非 HD 標 r5，沒有 Rust 對應的補 todo!(\"r5:<檔>.go:<函式名>\") 骨架；HD 檔 r8 改 r6。ported 但 crate 沒有該函式、或本體只有 todo!(\"R5/R6/R8: …\") 的，依 R4 階段 2 的規則更正（列在 corrections）",
+    "result": {
+      "inventory": 196,
+      "non_hd": 127,
+      "non_hd_ported": 69,
+      "non_hd_r5": 58,
+      "r5_stubs": 52,
+      "hd": 69,
+      "hd_ported": 27,
+      "hd_r6": 42
+    },
+    "corrections": [
+      {
+        "go": "font.go:175",
+        "func": "(*Font).Draw",
+        "from": "ported",
+        "to": "r5",
+        "reason": "PORTING.json 寫 ported，crate 裡卻沒有這個函式"
+      },
+      {
+        "go": "native_end_turn_recovery.go:162",
+        "func": "(*Game).drawNativeEndTurnRecovery",
+        "from": "ported",
+        "to": "r5",
+        "reason": "本體只有 todo!(\"R5: …\")（R4 階段 2 的狀態工具把註解算成本體）"
+      },
+      {
+        "go": "native_physical_body.go:414",
+        "func": "(*Game).drawNativePhysicalBody",
+        "from": "ported",
+        "to": "r5",
+        "reason": "本體只有 todo!(\"R5: …\")（R4 階段 2 的狀態工具把註解算成本體）"
+      },
+      {
+        "go": "native_physical_scene.go:372",
+        "func": "(*Game).drawNativePhysicalPrelude",
+        "from": "ported",
+        "to": "r5",
+        "reason": "本體只有 todo!(\"R5: …\")（R4 階段 2 的狀態工具把註解算成本體）"
+      },
+      {
+        "go": "native_story_dialogue_locale.go:160",
+        "func": "drawIndexedLocalizedText",
+        "from": "ported",
+        "to": "r5",
+        "reason": "本體只有 todo!(\"R5: …\")（R4 階段 2 的狀態工具把註解算成本體）"
+      }
+    ],
+    "ported_with_r5_todo_branch": [
+      "font.go:157 (*Font).faceFor",
+      "font.go:194 (*Font).Width",
+      "main.go:9355 (*Game).Draw",
+      "modern_hd_battle_panel.go:224 drawModernBattlePanelInk"
+    ]
+  }
 }

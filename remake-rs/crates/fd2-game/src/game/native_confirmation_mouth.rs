@@ -97,3 +97,12 @@ fn confirmation_owner_token(owner: &str) -> OwnerToken {
     }
     OwnerToken(hash & !(1 << 63))
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_confirmation_mouth.go:71`，`func (g *Game) composeNativeConfirmationMouth(frame []byte, portraits []dato.Frame) ([]byte, bool)`
+    pub(crate) fn compose_native_confirmation_mouth(&self, frame: &[u8], portraits: &[dato::Frame]) -> (Vec<u8>, bool) {
+        todo!("r5:native_confirmation_mouth.go:composeNativeConfirmationMouth")
+    }
+}

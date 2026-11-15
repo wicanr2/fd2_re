@@ -28,10 +28,14 @@ use fd2_rules::battle::BattleError;
 
 // ---------------- 畫面 ----------------
 
-/// RGBA 畫面（每像素 R、G、B、A 各一位元組，不預乘 alpha，依列存放，列距 `width * 4`）。
+/// RGBA 畫面（每像素 R、G、B、A 各一位元組，**預乘 alpha**，依列存放，列距 `width * 4`）。
 ///
 /// 取代 Go 狀態裡的 `*ebiten.Image`、`*image.NRGBA` 與 `image.Image`。Go 以指標共用同一張圖，
 /// Rust 的欄位是 `Option<Arc<Picture>>`；要改寫內容的函式收 `&mut Picture`。
+///
+/// 像素和 Ebiten `ReadPixels` 的輸出相同（R5 階段 1 定案，R4 時寫成不預乘）：`*image.NRGBA` 在 Go 都是
+/// 建好就交給 `ebiten.NewImageFromImage`，Rust 直接存那一步之後的預乘值。繪圖操作（Ebiten 語意子集）在
+/// `canvas.rs`。
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct Picture {
     pub width: i64,

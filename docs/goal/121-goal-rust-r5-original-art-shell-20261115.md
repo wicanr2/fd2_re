@@ -157,3 +157,71 @@ HD 檔 `modern_hd_confirmation.go:122` 在第一章執行 8 次，那一行是 `
 - 階段 1 的 Ebiten 語意子集要包含：最近鄰 `DrawImage`（平移、整數與 `storyZoom` 縮放、對話框的非整數縮放）、`Fill`、`SubImage`、`Set`、上列 source-over 與 `ColorScale` 公式，以及 TTF 文字的位置與外框。
 - 階段 2 的分組照上表。`story-viewport` 的正規化圖層與 `drawCampaignUI` 是行數最多的兩塊，城鎮與設施要先補 `FD2_SHOT_STATE` 黃金才能驗。
 - Rust 對比 `chapter` 畫格時，要照同一套 pump 擷取點、60 Hz 虛擬時鐘與 `rand.Seed(4)` 重現。
+
+## 階段 1 結果（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 1」。
+
+### 畫布型別
+
+- `Picture` 改存預乘 alpha（Ebiten `ReadPixels` 的輸出），不另立畫布型別。R4 的轉換函式逐一改成 `NewImageFromImage` 之後的值：
+  `*image.Paletted` 原值、`color.NRGBA` 調色盤與 PNG（Go `*image.NRGBA`）依 `image/draw` 預乘。原版美術模式的素材都是不透明或全透明，
+  位元組不變。
+- Ebiten 語意子集在 `remake-rs/crates/fd2-game/src/game/canvas.rs`：`NewImage`、`NewImageFromImage`（`Paletted`、`NRGBA`）、`Clear`、
+  `Fill`、`Set`、`WritePixels`、`ReadPixels`、`SubImage`（來源與目標）、`DrawImage`（`GeoM` 平移與縮放、最近鄰、`ColorScale.Scale`／
+  `ScaleWithColor`、source-over）。放在 `game` 底下，因為 R4 已把 `*ebiten.Image` 定成 `Picture`，繪圖函式的簽名都收 `Picture`。
+- 單元測試 8 項讀 `src/game/canvas/ebiten_vectors.json`（`tools/rust_r5_canvas_vectors.sh` 從兩份實測輸出抽出，`5ade78bf…`）：
+  重建每個實驗的輸入、以畫布畫一次、比整張讀回的 SHA-256。階段 0 混色 30 組、階段 1 取樣 89 組與語意 11 組全部相同；常見公式會算錯的
+  546 個值逐筆相同（含 d=191、a=2 → 189 與 30×0.55 → 16）。竄改公式後對應測試失敗。
+
+### 取樣與 Fill 實測
+
+命令：`FD2_GOCACHE=<主工作區>/work/gocache tools/rust_r5_ebiten_sampling.sh <主工作區>/work/r5-stage1-20261115/sampling`，
+環境同階段 0。實驗加在 `remake/cmd/fd2-r5-ebiten-rounding/sampling.go`（`-sampling-out`）；`remake/cmd/fd2` 與其他既有 Go 檔沒有改。
+兩次輸出相同，`ebiten-sampling.json` SHA-256 `096f7972595345223ebc3e4335cbed53da5c96ca1429a3d99b4c20a3e17bdce8`；工具改成逐步執行
+後重跑階段 0 的實驗仍是 `1dc87b3a…`。
+
+| 項目 | 結論（逐值相同） |
+|---|---|
+| 最近鄰取樣（89 組：原生整幀與 storyView 2 倍、標題捲動、倍率 1 的小數平移 32 組、圖塊鏡頭、舊對話框 `Scale(2, 2*sc)`、2.1 倍頭像、1×198 漸層、標題 logo 縮放 30 組） | 目標頂點先經 Ebiten `adjustDestinationPixel` 對齊到整數加 0、5/16、11/16、1；像素中心 `p+0.5` 落在 `[x0, x1)` 才覆蓋；來源索引 `floor((p+0.5-x0)*n/(x1-x0))`。兩軸可分開算。不經對齊的像素中心公式在平移小數約 0.3、0.5 與舊對話框的部分縮放不符 |
+| `Fill` 半透明色 | 覆蓋，不疊合；讀回等於 `color.RGBA` 的四個位元組，含 R/G/B 大於 A |
+| `SubImage` 後 `Fill`／`DrawImage` | 只寫入與父影像相交的矩形；座標是父影像座標；子影像的子影像再取交集 |
+| `Set`、`NewImageFromImage`、`WritePixels`／`ReadPixels`、疊到半透明底 | `clr.RGBA()>>8`；`color.RGBAModel` 與 `image/draw` 預乘；原樣；四個通道同一 source-over 公式 |
+
+開場與第一章實際用到的非整數倍只有倍率 1 的小數平移（鏡頭內插、行軍位移）；舊對話框、頭像、logo 縮放沒有執行到，一併量了。
+
+### 骨架
+
+`tools/rust_r5_skeleton.sh`：`tools/rust_r4_skeleton -r5` 以 R4 的型別閉包與命名，依階段 0 盤點（受版控複本
+`docs/data/rust-r5-executed-draw-functions-20261115.json`，`60e0a421…`）產生簽名，`tools/rust_r5_skeleton_apply.py` 依 crate 現況
+套用，重跑不改任何檔，從 `eeb024d7` 重新套一次結果相同。
+
+| 項目 | 數量 |
+|---|---|
+| 盤點的函式 | 196（非 HD 127、HD 69） |
+| 非 HD 標 `r5` | 58（其中 5 個是更正錯誤的 `ported`：`Font.Draw` 在 crate 裡沒有函式，另 4 個本體只有 `todo!("R5: …")`） |
+| 新增骨架 `todo!("r5:<檔>.go:<函式名>")` | 52 個函式，分在 20 個子模組 |
+| 非 HD 已 `ported` | 69 |
+| HD 檔 `r8` 改 `r6` | 42（另 27 個已 ported） |
+
+`Game::draw` 照 Go `Draw` 的 early-return 順序寫成分派：開場與第一章執行到的分支（標題、ch28 post present、調色盤斜坡、登場轉場、
+END 回收、AI 閒置回收、攻擊畫面、尾段地圖與介面）呼叫對應函式，HD 分支 `todo!("r6:…")`，沒有執行到的分支 `todo!("r8:…")`；分支是否
+執行到依階段 0 的覆蓋率。尾段的正規化地圖層與舊 fade 疊層是 Draw 本體的 r5 `todo!`。R5 對照表（每組函式、Go 位置、行數、畫布操作、
+局部黃金來源）在 `PORTING.md`，r5 函式合計約 2200 行。
+
+### 畫格擷取介面
+
+- `parity_replay/rust_golden_frames_test.rs`：設 `FD2_GOLDEN_FRAMES_MODE=chapter`、`FD2_GOLDEN_FRAMES_OUT` 時，章重播的 `pump` 每一幀
+  在上一個 `update` 之後、`ack_presents` 之前呼叫 `Game::draw` 到 640×400 畫布並記 SHA-256，與 Go `ch01FrameObserver` 同一位置；結束時
+  寫與 Go 同名欄位的 `frames.json`。預設關閉。
+- 關閉時 `tools/rust_parity_ch01.sh` 的 `checkpoints.jsonl`（`1c846f57…`）、`FD2.SAV`（`f3942ff2…`）、`hotel-save.json`（`190b9f8f…`）
+  與 Go 黃金逐位元組相同。
+- 重現規格：60 Hz 虛擬時鐘照 Go 黃金的 `pinClock`（第一次擷取時牆鐘設在遠未來，之後每次擷取依幀數增量推進
+  `16666666 ns × speed`，pump 以外的 `Update` 期間凍結）已實作；gaps 以同一格式記錄，階段 3 先比 gaps 再比畫格；全域亂數
+  `rand.Seed(4)`（故事嘴型 `rand.Intn(30)` 與確認框嘴型的 `rand.Int63()` 共用一個來源）**還沒接上**，規格寫在 `PORTING.md`，階段 3
+  比對前要先做。
+- 目前 r5 函式都是 `todo!`，打開擷取會停在第一個擷取點；沒有做畫格比對。
+
+### 驗證
+
+`tools/rust_game_test.sh` 320 passed、4 ignored（加畫布 8 項）；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；`Cargo.lock` 沒有改動，沒有新增套件。

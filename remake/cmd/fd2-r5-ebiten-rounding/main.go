@@ -450,21 +450,24 @@ func scaleWithColor(name string, clr color.RGBA) experiment {
 		Vectors:   total, RGBASHA256: sha(out), Exact: exact, Candidates: results, ActualFirst: rowsSample(out, 0)}
 }
 
+// prober 每個 Update 執行一步，讓 Ebiten 在步與步之間走完一個畫格（教訓
+// ebiten-readpixels-loop-must-cycle-frames：每幀新建的影像要等畫格結束才釋放）。
 type prober struct {
-	out  string
-	done bool
-	err  error
+	out   string
+	steps []func() error
+	next  int
+	err   error
 }
 
 func (p *prober) Layout(int, int) (int, int) { return 640, 400 }
 func (p *prober) Draw(*ebiten.Image)         {}
 func (p *prober) Update() error {
-	if p.done {
+	if p.err != nil || p.next >= len(p.steps) {
 		return ebiten.Termination
 	}
-	p.done = true
-	p.err = p.run()
-	return ebiten.Termination
+	p.err = p.steps[p.next]()
+	p.next++
+	return nil
 }
 
 func (p *prober) run() error {
@@ -577,15 +580,22 @@ func (p *prober) run() error {
 }
 
 func main() {
-	out := flag.String("out", "", "輸出 JSON")
+	out := flag.String("out", "", "階段 0 實驗（alpha 疊合與 ColorScale）的輸出 JSON")
+	samplingOut := flag.String("sampling-out", "", "階段 1 實驗（最近鄰取樣、Fill／SubImage／Set／NewImageFromImage 語意）的輸出 JSON")
 	flag.StringVar(&rawDir, "raw", "", "另存每個實驗讀回 RGBA 的目錄（可省略）")
 	flag.Parse()
-	if *out == "" {
-		fmt.Fprintln(os.Stderr, "需要 -out")
+	if *out == "" && *samplingOut == "" {
+		fmt.Fprintln(os.Stderr, "需要 -out 或 -sampling-out")
 		os.Exit(2)
 	}
 	ebiten.SetWindowSize(640, 400)
 	p := &prober{out: *out}
+	if *out != "" {
+		p.steps = append(p.steps, p.run)
+	}
+	if *samplingOut != "" {
+		p.steps = append(p.steps, samplingSteps(*samplingOut)...)
+	}
 	if err := ebiten.RunGame(p); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

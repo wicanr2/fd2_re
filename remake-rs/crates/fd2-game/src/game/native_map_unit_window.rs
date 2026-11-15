@@ -224,3 +224,17 @@ impl NativeMapActionOverlay {
         Ok(())
     }
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// #181 uses this Draw's admission, matching nativeMapSelectionOverlay's ring
+    /// branch. Stale buffers cannot witness presentation. Modern themes retain their
+    /// catalog icons. Contract: fd2_parity_ring_open_20261005.json/draw_layer_spec.
+    ///
+    /// Go：`native_map_unit_window.go:14`，`func (g *Game) nativeActionOverlayInMapFrame(presented bool) bool`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn native_action_overlay_in_map_frame(&mut self, presented: bool) -> bool {
+        todo!("r5:native_map_unit_window.go:nativeActionOverlayInMapFrame")
+    }
+}

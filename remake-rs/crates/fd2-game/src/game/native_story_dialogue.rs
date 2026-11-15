@@ -473,3 +473,18 @@ impl Game {
 
 #[cfg(test)]
 mod native_story_dialogue_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_story_dialogue.go:485`，`func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn draw_native_story_dialogue(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:native_story_dialogue.go:drawNativeStoryDialogue")
+    }
+}
+
+/// Go：`native_story_dialogue.go:339`，`func nativeStoryOpeningFrameIndex(tick, count int) int`
+pub(crate) fn native_story_opening_frame_index(tick: i64, count: i64) -> i64 {
+    todo!("r5:native_story_dialogue.go:nativeStoryOpeningFrameIndex")
+}

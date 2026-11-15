@@ -139,3 +139,12 @@ impl Game {
         }
     }
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_player_input.go:214`，`func (g *Game) drawNativePlayerStatus(screen *ebiten.Image)`
+    pub(crate) fn draw_native_player_status(&mut self, screen: &mut Picture) {
+        todo!("r5:native_player_input.go:drawNativePlayerStatus")
+    }
+}

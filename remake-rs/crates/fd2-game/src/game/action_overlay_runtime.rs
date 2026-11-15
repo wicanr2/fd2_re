@@ -321,3 +321,15 @@ mod action_overlay_runtime_test;
 #[cfg(test)]
 #[path = "action_overlay_runtime/main_c_test.rs"]
 mod main_c_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// drawNativeSystemEndTurn 在 END 對話展開、等待輸入、顯示回覆與收合期間，
+    /// 完整擁有320×200索引畫面，避免底下的重製指令層穿透。
+    ///
+    /// Go：`action_overlay_runtime.go:823`，`func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_system_end_turn(&mut self, screen: &mut Picture) -> bool {
+        todo!("r5:action_overlay_runtime.go:drawNativeSystemEndTurn")
+    }
+}

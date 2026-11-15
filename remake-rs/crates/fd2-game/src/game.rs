@@ -41,8 +41,10 @@
 //! - HD（`modern_*`、`player_poster*`、`player_toolbar*`）型別保留型別名，欄位只留第一章忠實模式執行到的
 //!   函式用到的，其餘 R6。
 
+mod canvas;
 mod support;
 
+pub use canvas::*;
 pub use support::*;
 
 pub(crate) use crate::game_err;

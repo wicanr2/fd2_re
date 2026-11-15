@@ -1569,7 +1569,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
     }));
     let skip_frames = frame_setting == "0";
     let mut r = ParityReplay {
-        d: Driver { g, clock: VirtualFrameClock::default() },
+        d: Driver { g, clock: VirtualFrameClock::default(), frame_capture: FrameCapture::from_env() },
         out: out.to_path_buf(),
         run: run.to_path_buf(),
         log: log.clone(),
@@ -1636,6 +1636,9 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         }
         let (ui, with_frame) = (r.ui(), r.d.g.title_phase.is_empty());
         r.checkpoint("end", 0, &ui, with_frame, &[]);
+        if let Some(capture) = r.d.frame_capture.take() {
+            capture.finish();
+        }
     }));
     if let Err(panic) = outcome {
         let g = &r.d.g;

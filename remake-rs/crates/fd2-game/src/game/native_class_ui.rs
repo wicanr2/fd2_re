@@ -77,3 +77,22 @@ pub(crate) fn load_native_class_ui_assets() -> Result<Option<NativeClassUIAssets
 
 #[cfg(test)]
 mod native_class_ui_test;
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_class_ui.go:206`，`func (g *Game) presentNativeClassFrame(screen *ebiten.Image, frame []byte)`
+    pub(crate) fn present_native_class_frame(&mut self, screen: &mut Picture, frame: &mut [u8]) {
+        todo!("r5:native_class_ui.go:presentNativeClassFrame")
+    }
+
+    /// Go：`native_class_ui.go:210`，`func (g *Game) presentNativeClassFrameWithPalette( screen *ebiten.Image, frame []byte, palette color.Palette, )`
+    pub(crate) fn present_native_class_frame_with_palette(
+        &mut self,
+        screen: &mut Picture,
+        frame: &mut [u8],
+        palette: &ColorPalette,
+    ) {
+        todo!("r5:native_class_ui.go:presentNativeClassFrameWithPalette")
+    }
+}

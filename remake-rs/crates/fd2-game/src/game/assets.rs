@@ -219,19 +219,23 @@ fn unpremultiply(c: ColorRgba) -> (u8, u8, u8) {
     }
 }
 
-/// Go `ebiten.NewImageFromImage(*image.Paletted)`：每像素查調色盤，範圍外是透明黑。
+/// Go `ebiten.NewImageFromImage(*image.Paletted)`：每像素存 `color.RGBAModel.Convert(palette[i])`
+/// （[`ColorRgba`] 已預乘，原值寫入；R5 階段 1 起 [`Picture`] 存預乘值）。
+///
+/// 範圍外的索引：Ebiten `imageToBytes` 會 panic；這裡沿用 R4 寫成透明黑（KNOWN_DIFFERENCES
+/// `indexed-out-of-palette-transparent`，正式素材的調色盤都是 256 色，不會出現）。
 pub(crate) fn picture_from_indexed(frame: &IndexedFrame) -> Picture {
     let mut pix = vec![0u8; frame.pix.len() * 4];
     for (i, &index) in frame.pix.iter().enumerate() {
         if let Some(&c) = frame.palette.get(index as usize) {
-            let (r, g, b) = unpremultiply(c);
-            pix[i * 4..i * 4 + 4].copy_from_slice(&[r, g, b, c.a]);
+            pix[i * 4..i * 4 + 4].copy_from_slice(&[c.r, c.g, c.b, c.a]);
         }
     }
     Picture { width: frame.width, height: frame.height, pix }
 }
 
-/// Go `ebiten.NewImageFromImage(*image.Paletted)`（`fdother::PalettedImage`）。
+/// Go `ebiten.NewImageFromImage(*image.Paletted)`（`fdother::PalettedImage`，調色盤是 `color.NRGBA`）：
+/// 每像素 `color.RGBAModel.Convert` 預乘。
 pub(crate) fn picture_from_paletted(image: &fdother::PalettedImage) -> Picture {
     let (w, h) = (image.width.max(0), image.height.max(0));
     let mut pix = vec![0u8; (w * h * 4) as usize];
@@ -240,7 +244,8 @@ pub(crate) fn picture_from_paletted(image: &fdother::PalettedImage) -> Picture {
             let index = image.color_index_at(x, y) as usize;
             if let Some(c) = image.palette.get(index) {
                 let at = ((y * w + x) * 4) as usize;
-                pix[at..at + 4].copy_from_slice(&[c.r, c.g, c.b, c.a]);
+                let p = ColorNrgba { r: c.r, g: c.g, b: c.b, a: c.a }.premultiplied();
+                pix[at..at + 4].copy_from_slice(&[p.r, p.g, p.b, p.a]);
             }
         }
     }
@@ -272,8 +277,12 @@ pub(crate) fn indexed_frame(width: i64, height: i64, pixels: &[u8], palette: Col
     IndexedFrame { width, height, pix, palette }
 }
 
-/// Go `image.Decode`＋`ebiten.NewImageFromImage`：PNG 解成不預乘的 RGBA8；失敗回 `None`
-/// （Go 呼叫端失敗時略過該檔）。
+/// Go `image.Decode`＋`ebiten.NewImageFromImage`：PNG 解成 RGBA8 後照 Ebiten 預乘（R5 階段 1 起 [`Picture`]
+/// 存預乘值）；失敗回 `None`（Go 呼叫端失敗時略過該檔）。
+///
+/// Go 的 PNG 解碼器對帶 alpha 的 8 位元圖回傳 `*image.NRGBA`、對調色盤圖回傳 `color.NRGBA` 調色盤，兩者經
+/// `NewImageFromImage` 都是 `uint8((v*a*0x101/0xff)>>8)`，與這裡相同；不透明的像素不變。16 位元 PNG 這裡先去掉
+/// 低位元組再預乘，Go 在 16 位元預乘後才取高位元組，半透明時可能差 1（原版美術模式沒有 16 位元 PNG，未實測）。
 pub(crate) fn decode_png_picture(data: &[u8]) -> Option<Picture> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(data));
     decoder.set_transformations(
@@ -292,6 +301,14 @@ pub(crate) fn decode_png_picture(data: &[u8]) -> Option<Picture> {
             }
         }
         _ => return None,
+    }
+    for px in pix.as_chunks_mut::<4>().0 {
+        let a = px[3];
+        if a != 255 {
+            for v in &mut px[..3] {
+                *v = premultiply_channel(*v, a);
+            }
+        }
     }
     Some(Picture { width: w as i64, height: h as i64, pix })
 }

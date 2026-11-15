@@ -155,3 +155,12 @@ pub(crate) fn go_copy<T: Copy>(dst: &mut [T], src: &[T]) -> usize {
     dst[..n].copy_from_slice(&src[..n]);
     n
 }
+
+// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
+
+impl Game {
+    /// Go：`native_player_movement.go:100`，`func (g *Game) drawNativeMovementPanel(screen *ebiten.Image)`
+    pub(crate) fn draw_native_movement_panel(&mut self, screen: &mut Picture) {
+        todo!("r5:native_player_movement.go:drawNativeMovementPanel")
+    }
+}
