@@ -133,7 +133,7 @@
 | publisher 亮度 `ColorScale` | `title.go:739` | 119／0 | 會走到 |
 | 色塊單位 `drawUnit`、標題 `ColorM`（`titlePaletteBlend`）、`DebugPrint` 35 處、scroll 淡入（`title.go:790`）、白閃（`title.go:812`）、舊對話框（`main.go:10000`..`10118`） | | 0 | 開場與第一章沒走到 |
 
-HD 檔 `modern_hd_confirmation.go:122` 的 `text.DrawWithOptions` 在第一章執行 8 次，階段 1 要核對它在原版模式下是否影響畫面。
+HD 檔 `modern_hd_confirmation.go:122` 在第一章執行 8 次，那一行是 `freezeModernHDConfirmation` 預先量「是／否」字框的 `text.BoundString`，只量尺寸、不畫到影像，原版模式的畫面不受影響。呼叫端是 `native_death_reward_ui.go:108` 等建構 HD 確認框的地方，屬 R6。
 
 ### Ebiten 取整（llvmpipe）
 
