@@ -79,6 +79,7 @@
 | `chapter` | 第一章受控重播（輸入同 `tools/rust_r4_ch01_coverage.sh`）的每個 pump 幀 | 13751 | 8589 | 7463 | `2f26390d…ff7c4f` |
 
 - 兩次執行的序列雜湊、`frames.json`（`7a9c8226…`、`d71aad6a…`）與 16034 張 PNG 逐檔相同。
+- Go 的 HD 載入修正（`a399da4a`，v.1.1.13）改了 `cmd/fd2` 的 `Update` 與 `loadGame`。合併後以 `FD2_R5_RUNS=r1 FD2_R5_SKIP_ANALYSIS=1` 重跑一輪（`work/r5-golden-recheck-20261115`），兩種模式的序列雜湊與 16034 張 PNG 都與上表相同，`checkpoints.jsonl` 仍是 `1c846f57…`，黃金畫格不必重產。
 - 加上每幀 `Draw` 之後，`chapter` 模式的 `checkpoints.jsonl` 兩次都是 R4 Go 黃金 `1c846f57…`。
 - 擷取方式：`chapter` 模式原樣呼叫 `TestChapterParityReplay`，只掛共用 `pump` 既有的 `ch01FrameObserver`，在上一個 Update 之後、下一個 `ackPresents` 之前 `Draw` 到離屏 640×400 影像並 `ReadPixels`。`Draw` 在 Ebiten 的 `Update` 內執行，每次擷取都走完一個 Ebiten 畫格，否則每幀新建的影像不會釋放。
 - 牆鐘：遊戲時間都經過 `playerClock.sample`。擷取時把 `playerClock.wall` 設在遠未來，再依 `g.frame` 的增量把 `playerClock.game` 推進 1/60 秒，等於 60 Hz 虛擬時鐘。

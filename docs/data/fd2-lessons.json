@@ -5910,6 +5910,14 @@
       "rule": "量遊戲迴圈期間的 heap 或幀時間，要在 ebiten.RunGame 下跑正式的 modernHDPresentation。測試裡自己呼叫 Update／Draw 的離屏迴圈沒有幀結束，Ebiten 的待處理繪圖與每幀新建圖片的像素會一直留在 heap，數值隨迴圈幀數膨脹，長短不同的兩段量測不能比較。",
       "why": "#317 量測時，離屏迴圈跑第一次 F2 量到修正前 heap 高峰 9.1 GB、切換後留存 6.4 GB；heap 剖析顯示多出的部分是 presentNativeClassFrame 每幀 NewImageFromImage 留在 mipmap.WritePixels 的像素。改用 RunGame 後修正前同一情境的高峰是 3.7 GB、留存 2.0 GB。",
       "evidence": "remake/cmd/fd2/hd_theme_load_gui_measure_test.go"
+    },
+    {
+      "id": "porting-status-match-by-go-location",
+      "date": "2026-11-15",
+      "area": "改寫",
+      "rule": "產生或更新 PORTING.json 的移植狀態時，以 Go 檔加行號（或 recv.FuncName 全名）對應 Rust 的實際函式與本體，不只比函式名稱；本體只有 todo! 的函式不能標 ported。同名方法（例如 Game.Draw 與 Font.Draw）會互相套用狀態。",
+      "why": "R5 階段 1 發現 R4 的狀態工具以名稱比對，把 Game.Draw 的 ported 套到 crate 裡根本不存在的 Font.Draw，另有 4 個本體只有 todo!(\"R5\") 的繪圖函式被標成 ported；逐筆更正記在 PORTING.json 的 r5_stage1.corrections。",
+      "evidence": "remake-rs/crates/fd2-game/PORTING.json（r5_stage1.corrections）、tools/rust_r5_skeleton_apply.py"
     }
   ]
 }
