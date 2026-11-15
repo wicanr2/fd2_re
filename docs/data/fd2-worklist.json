@@ -535,50 +535,6 @@
         "note": "證據檔的not_resolved仍列這一項。"
       },
       "issue": 316
-    },
-    {
-      "id": "hd-theme-memory-peak",
-      "layer": "runtime",
-      "category": "工作",
-      "title": "P2 降低HD主題載入的記憶體高峰（戰鬥動畫幀延遲解碼）",
-      "body": "F2／F11卡死已改為背景載入（ea7ef639），但載入仍一次解碼整個HD包，heap高峰2～3.4 GiB；剖析顯示戰鬥HD動畫幀佔載入時間69%。4 GB記憶體的機器可能換頁或被終止。Go版已凍結，於Rust版R6實作。",
-      "acceptance": "戰鬥HD動畫幀改為用到時才解碼或分批載入；同一份HD包的載入高峰與首次切換時間有量測收據，且低於現況（2～3.4 GiB、約3～4分鐘）。",
-      "verify": {
-        "kind": "manual",
-        "note": "需要以真實HD包量測記憶體與時間。"
-      },
-      "issue": 317
-    },
-    {
-      "id": "hd-theme-startup-sync-load",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P2 設定為HD時啟動同步載入主題包2～4分鐘",
-      "body": "設定已存成HD的玩家，Go版在loadGame時同步載入整個HD主題包（main.go約11646行），啟動多等2～4分鐘，視窗出現前沒有進度。第一次F2／F11的同類問題已於ea7ef639改為背景載入。Go版已凍結，於Rust版實作。",
-      "acceptance": "設定為HD時啟動不阻塞：先以原版素材顯示並有載入進度，HD包載入完成後再切換；以真實HD包量測啟動到可操作的時間。",
-      "verify": {
-        "kind": "manual",
-        "note": "需要以真實HD包量測啟動時間。"
-      },
-      "issue": 318
-    },
-    {
-      "id": "rust-rules-serde-go-bytes",
-      "layer": "runtime",
-      "category": "工作",
-      "title": "Rust改寫：fd2-rules存檔子樹的JSON寫法與Go逐位元組相同",
-      "body": "排程：R5 之前。R4 第一章無畫面重播的 `hotel-save.json` 與 Go 黃金位元組不同（Rust `baca933d…`、Go `190b9f8f…`），差異只在 `party_roster` 的 fd2-rules serde 子樹，套 `NORMALIZATIONS` 後內容相同；`checkpoints.jsonl` 與 `FD2.SAV` 已逐位元組相同。F 組存檔黃金另有 127 份存檔同樣只在這些子樹不同。\n\n差異清單見 `remake-rs/crates/fd2-game/PORTING.md`「fd2-rules 缺口（F 組發現）」：\n- `Unit` 的 `OffX`／`OffY`／`Exp`（`float64`）整數值，Go 寫 `0`，Rust 寫 `0.0`。\n- `Unit` 的 `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` 為 nil 時，Go 寫 `null`，Rust 的 `Vec` 寫 `[]`。\n- `StateSnapshot` 的 `flags`：Go 非 nil 空 map 寫 `{}`，Rust 空的寫 `null`。\n\n修正照 fd2-rules 的 Go 原檔，保留 nil 與空的區別、`float64` 以 Go `encoding/json` 的寫法輸出，並讓 `tools/rust_rules_test.sh` 通過。\n\n依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結並完整保留作對照規格，Rust程式在`remake-rs/`。",
-      "acceptance": "F 組 191 份存檔由 Rust 讀回再寫出全部與 Go 逐位元組相同；`tools/rust_parity_ch01.sh` 的 `hotel-save.json` 與 Go 黃金逐位元組相同；拿掉 `golden_save_test.rs` 與 `tools/rust_parity_compare.py` 的 battle 子樹 `NORMALIZATIONS`。",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake-rs/crates/fd2-game/src/game/save/golden_save_test.rs",
-          "tools/rust_parity_compare.py"
-        ],
-        "pattern": "battle 子樹：數字只比數值",
-        "note": "正規化規則還在就代表位元組仍不同；修好後兩處一起拿掉。"
-      },
-      "issue": 319
     }
   ]
 }

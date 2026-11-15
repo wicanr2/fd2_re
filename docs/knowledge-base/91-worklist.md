@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 38 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 35 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -394,39 +394,6 @@ HD主題、F2／F11切換、畫質與速度設定、浮出工具列，沿用私�
 玩家指令的經驗發放已於1892614b補上（凍結例外）。敵方行動路徑0x1546A清零、0x1566A發給[0x53C4B]，AI施法累加的[0x53EC8]在重製端沒有發放；物品使用（0x20C6F呼叫的寫入端）也沒有接發放。證據與寫入端清單見docs/data/ida/fd2_command_experience_writers_20261114.json。Go版已凍結，於Rust版（fd2-rules／fd2-game）實作並驗收。
 
 怎樣算做完：AI施法與物品使用依原版寫入端累加並由正確單位收下經驗；單元測試涵蓋兩條路徑，並以原版oracle抽驗至少一次AI施法與一次物品使用的經驗變化。
-
-### P2 降低HD主題載入的記憶體高峰（戰鬥動畫幀延遲解碼）
-
-`hd-theme-memory-peak` · 工作 · [#317](https://github.com/wicanr2/fd2_re/issues/317) · 仍未完成 · 要人判
-
-F2／F11卡死已改為背景載入（ea7ef639），但載入仍一次解碼整個HD包，heap高峰2～3.4 GiB；剖析顯示戰鬥HD動畫幀佔載入時間69%。4 GB記憶體的機器可能換頁或被終止。Go版已凍結，於Rust版R6實作。
-
-怎樣算做完：戰鬥HD動畫幀改為用到時才解碼或分批載入；同一份HD包的載入高峰與首次切換時間有量測收據，且低於現況（2～3.4 GiB、約3～4分鐘）。
-
-### P2 設定為HD時啟動同步載入主題包2～4分鐘
-
-`hd-theme-startup-sync-load` · 缺陷 · [#318](https://github.com/wicanr2/fd2_re/issues/318) · 仍未完成 · 要人判
-
-設定已存成HD的玩家，Go版在loadGame時同步載入整個HD主題包（main.go約11646行），啟動多等2～4分鐘，視窗出現前沒有進度。第一次F2／F11的同類問題已於ea7ef639改為背景載入。Go版已凍結，於Rust版實作。
-
-怎樣算做完：設定為HD時啟動不阻塞：先以原版素材顯示並有載入進度，HD包載入完成後再切換；以真實HD包量測啟動到可操作的時間。
-
-### Rust改寫：fd2-rules存檔子樹的JSON寫法與Go逐位元組相同
-
-`rust-rules-serde-go-bytes` · 工作 · [#319](https://github.com/wicanr2/fd2_re/issues/319) · **可能已完成，回去確認** · 找不到 battle 子樹：數字只比數值
-
-排程：R5 之前。R4 第一章無畫面重播的 `hotel-save.json` 與 Go 黃金位元組不同（Rust `baca933d…`、Go `190b9f8f…`），差異只在 `party_roster` 的 fd2-rules serde 子樹，套 `NORMALIZATIONS` 後內容相同；`checkpoints.jsonl` 與 `FD2.SAV` 已逐位元組相同。F 組存檔黃金另有 127 份存檔同樣只在這些子樹不同。
-
-差異清單見 `remake-rs/crates/fd2-game/PORTING.md`「fd2-rules 缺口（F 組發現）」：
-- `Unit` 的 `OffX`／`OffY`／`Exp`（`float64`）整數值，Go 寫 `0`，Rust 寫 `0.0`。
-- `Unit` 的 `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` 為 nil 時，Go 寫 `null`，Rust 的 `Vec` 寫 `[]`。
-- `StateSnapshot` 的 `flags`：Go 非 nil 空 map 寫 `{}`，Rust 空的寫 `null`。
-
-修正照 fd2-rules 的 Go 原檔，保留 nil 與空的區別、`float64` 以 Go `encoding/json` 的寫法輸出，並讓 `tools/rust_rules_test.sh` 通過。
-
-依[119 改寫目標](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/119-goal-rust-bevy-rewrite-20261113.md)。Go版`remake/`凍結並完整保留作對照規格，Rust程式在`remake-rs/`。
-
-怎樣算做完：F 組 191 份存檔由 Rust 讀回再寫出全部與 Go 逐位元組相同；`tools/rust_parity_ch01.sh` 的 `hotel-save.json` 與 Go 黃金逐位元組相同；拿掉 `golden_save_test.rs` 與 `tools/rust_parity_compare.py` 的 battle 子樹 `NORMALIZATIONS`。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
