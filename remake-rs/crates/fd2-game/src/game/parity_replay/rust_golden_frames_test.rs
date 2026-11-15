@@ -80,6 +80,49 @@ pub(crate) struct FrameCapture {
     /// `FD2_GOLDEN_FRAMES_DUMP=<擷取序號,…>`：把這些擷取的 640×400 RGBA 原樣寫到 `<out>/frames/<序號>.rgba`，
     /// 供逐像素找出與 Go 黃金 PNG 的差異（Rust 新增的除錯輸出，不影響雜湊）。
     dump: BTreeSet<i64>,
+    /// R5 階段 3（`r5s`）：`FD2_GOLDEN_FRAMES_DUMP_DIFF=<Go 黃金 frames.json>`，見 [`DiffDump`]。
+    diff_dump: Option<DiffDump>,
+}
+
+/// R5 階段 3（`r5s`）：與參考 `frames.json`（Go 黃金；`rows[].capture／count／rgba_sha256` 展開成每次擷取的雜湊）
+/// 同一擷取序號雜湊不同時，把這張 640×400 RGBA 以雜湊為檔名寫到 `<out>/frames/<sha>.rgba`（同一雜湊只寫一次），
+/// 供 `tools/rust_r5_stage3_compare.py` 逐像素核對差異落在哪裡。Rust 新增的除錯輸出，不影響雜湊與重播。
+pub(crate) struct DiffDump {
+    reference: Vec<String>,
+    dir: std::path::PathBuf,
+    written: BTreeSet<String>,
+}
+
+impl DiffDump {
+    /// 讀環境變數 `var`（參考 `frames.json` 的路徑）；沒設回 `None`。
+    pub(crate) fn from_env(var: &str, out: &std::path::Path) -> Option<DiffDump> {
+        let path = std::env::var(var).unwrap_or_default();
+        if path.is_empty() {
+            return None;
+        }
+        let raw = std::fs::read(&path).unwrap_or_else(|e| panic!("讀 {var}={path}：{e}"));
+        let doc: serde_json::Value = serde_json::from_slice(&raw).unwrap_or_else(|e| panic!("{path} 不是 JSON：{e}"));
+        let mut reference = Vec::new();
+        for row in doc["rows"].as_array().unwrap_or_else(|| panic!("{path} 沒有 rows")) {
+            let capture = row["capture"].as_i64().expect("rows[].capture");
+            assert_eq!(capture, reference.len() as i64, "{path} 的 rows 不連續");
+            let sha = row["rgba_sha256"].as_str().expect("rows[].rgba_sha256").to_string();
+            for _ in 0..row["count"].as_i64().expect("rows[].count") {
+                reference.push(sha.clone());
+            }
+        }
+        Some(DiffDump { reference, dir: out.join("frames"), written: BTreeSet::new() })
+    }
+
+    /// 第 `index` 次擷取的雜湊 `hash` 與參考不同（或超出參考範圍）時寫出 `pix`。
+    pub(crate) fn observe(&mut self, index: i64, hash: &str, pix: &[u8]) {
+        if self.reference.get(index as usize).is_some_and(|r| r == hash) || self.written.contains(hash) {
+            return;
+        }
+        std::fs::create_dir_all(&self.dir).expect("建立 frames 目錄");
+        std::fs::write(self.dir.join(format!("{hash}.rgba")), pix).expect("寫 RGBA 傾印");
+        self.written.insert(hash.to_string());
+    }
 }
 
 impl FrameCapture {
@@ -101,7 +144,6 @@ impl FrameCapture {
     pub(crate) fn new(mode: &'static str, out: std::path::PathBuf) -> FrameCapture {
         FrameCapture {
             mode,
-            out,
             screen: Picture::new_image(LOGICAL_W, LOGICAL_H),
             stopped: None,
             pinned: false,
@@ -117,6 +159,8 @@ impl FrameCapture {
                 .split(',')
                 .filter_map(|v| v.trim().parse().ok())
                 .collect(),
+            diff_dump: DiffDump::from_env("FD2_GOLDEN_FRAMES_DUMP_DIFF", &out),
+            out,
         }
     }
 
@@ -217,6 +261,9 @@ impl FrameCapture {
             let dir = self.out.join("frames");
             std::fs::create_dir_all(&dir).expect("建立 frames 目錄");
             std::fs::write(dir.join(format!("{index:06}.rgba")), pix).expect("寫 RGBA 傾印");
+        }
+        if let Some(diff) = self.diff_dump.as_mut() {
+            diff.observe(index, &hash, pix);
         }
         if let Some(last) = self.rows.last_mut()
             && last.rgba_sha256 == hash

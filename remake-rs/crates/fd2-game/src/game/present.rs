@@ -14,9 +14,14 @@
 //!   Go 只在 GPU 上才會失敗的情況不存在於忠實模式。
 //! - 不畫像素、不建 GPU 貼圖；唯一的例外是 Go 快取在演出工作裡、而 `step*` 以「有沒有快取」判斷流程的
 //!   `NativePhysicalBodyPlayback::image`（`native_physical_body.go:433`、`:484`），這裡照 Go 建立同一份畫面。
-//! - HD（`modern_*`）分支是 R6；第一章沒有執行到、Go 失敗路徑的函式還沒移植的分支是 R8；Go `Draw` 尾段
-//!   （地圖整幀、對話框、指令環、系統資訊等）要配合外殼的繪圖順序，是 R5。這些分支在擁有者存在時停在
-//!   `todo!`，不以猜測的旗標推進流程。
+//! - HD（`modern_*`）分支是 R6；第一章沒有執行到、Go 失敗路徑的函式還沒移植的分支是 R8。這些分支在擁有者存在時
+//!   停在 `todo!`，不以猜測的旗標推進流程。
+//! - Go `Draw` 尾段（地圖整幀、對話框、指令環、系統資訊等，`main.go:9799`..`10188`）的狀態改寫與合成交錯（原生整幀
+//!   重建 `nativeMapVGA`、各設施與對白呈現設 `drawn`、`markActionOverlayDrawn` 等）。R5 階段 3 起這一段直接呼叫
+//!   R5 移植的 [`Game::draw_field`]，畫到丟棄的 640×400 畫布：狀態改寫與 `Draw` 是同一份程式，像素不用。
+//!
+//! R5 階段 3 起，章重播的 `ack_presents` 照 Go 呼叫 [`Game::draw`]（Go 在城鎮出發、有原生場景的攻擊演出、END 回收
+//! 三處呼叫 `g.Draw` 到暫存影像），不再經本模組；本模組留給不需要像素的呼叫端與單元測試。
 //!
 //! 逐項對應 Go 行號見 `PORTING.md`「R4 階段 3：呈現回報」。
 
@@ -277,7 +282,10 @@ impl Game {
             self.acknowledge_battle_scene();
             return PresentOwner::AttackScene;
         }
-        todo!("R5: main.go:9804..10188 地圖整幀、移動面板、對話框、指令環與系統介面的呈現回報")
+        // Go `main.go:9799`..`10188`：尾段的狀態改寫與合成交錯，照 `Draw` 執行同一份程式（R5 階段 3），像素丟棄。
+        let mut scratch = Picture::new_image(LOGICAL_W, LOGICAL_H);
+        self.draw_field(&mut scratch);
+        PresentOwner::Map
     }
 
     /// Go `main.go:11231` drawBattleScene 的流程部分：先走 `drawNativePhysicalPrelude`

@@ -282,8 +282,16 @@ impl R5cLayerCapture {
 impl Driver {
     /// R5 階段 2 r5c：gap 擷取點（Go 逐字複本裡的 `rec.observeGap(g, point)`）；沒打開時不做事。`scoped` 為 true 的
     /// 擷取點只在 [`R5cLayerCapture::gap_scope`] 打開時擷取（戰後的 `drive_story`、`settle_town`）。
+    ///
+    /// R5 階段 3 r5s：同一批擷取點也轉給整張畫格黃金 [`R5sFrameCapture`]（Go `rust_golden_r5s_frames_test.go` 的逐字
+    /// 複本在同樣的位置插入 `// r5s-insert`）。兩者不會同時打開。
     pub(crate) fn observe_r5c_gap(&mut self, point: &str, scoped: bool) {
         if let Some(capture) = self.r5c_layer_capture.as_mut()
+            && (!scoped || capture.gap_scope)
+        {
+            capture.observe_gap(&mut self.g, point);
+        }
+        if let Some(capture) = self.r5s_frame_capture.as_mut()
             && (!scoped || capture.gap_scope)
         {
             capture.observe_gap(&mut self.g, point);

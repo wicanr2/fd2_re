@@ -36,12 +36,12 @@ struct TtfLayerRender {
     conflicts: i64,
 }
 
-/// Go `ttfLayerDraw`。
-struct TtfLayerDraw {
-    draw: BattleTextDraw,
-    px: i64,
-    asc: f64,
-    bounds: Rectangle,
+/// Go `ttfLayerDraw`（R5 階段 3 `r5s` 的整張畫格黃金也用它組 TTF 鍵）。
+pub(crate) struct TtfLayerDraw {
+    pub(crate) draw: BattleTextDraw,
+    pub(crate) px: i64,
+    pub(crate) asc: f64,
+    pub(crate) bounds: Rectangle,
 }
 
 /// Go `ttfLayerRecorder`（rows 沿用 [`MapLayerRow`]）。
@@ -89,7 +89,7 @@ fn go_quote_to_ascii(s: &str) -> String {
 }
 
 /// Go `ttfLayerDrawKey`。
-fn ttf_layer_draw_key(d: &TtfLayerDraw) -> String {
+pub(crate) fn ttf_layer_draw_key(d: &TtfLayerDraw) -> String {
     let c = d.draw.clr;
     format!(
         "text={};x={:.3};y={:.3};scale={:.3};px={};asc={};clr={:02x}{:02x}{:02x}{:02x};bound={},{},{},{}",

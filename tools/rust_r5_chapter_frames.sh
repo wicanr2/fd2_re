@@ -12,6 +12,8 @@
 # 環境變數：
 #   FD2_WORK／FD2_ASSET_PACK／FD2_REMAKE_ASSETS／FD2_RUST_BUILD／FD2_RUST_TARGET 同 tools/rust_parity_ch01.sh
 #   FD2_GOLDEN_FRAMES_DUMP 逗號分隔的擷取序號，Rust 端另把這些擷取的 RGBA 寫到 rust/frames/<序號>.rgba
+#   FD2_R5_DUMP_DIFF=1   R5 階段 3：與 Go 黃金同一擷取序號雜湊不同的畫格，以雜湊為檔名寫到 rust/frames/<sha>.rgba
+#                        （同一雜湊只寫一次；tools/rust_r5_stage3_verify.sh 用）
 #   FD2_PYTHON_IMAGE 比對用的映像檔（預設 python:3.13-slim）
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -48,6 +50,12 @@ for e in "$packsrc"/*; do
 done
 ln -s /assets/locales "$pack/locales"
 
+dump_diff=()
+if [ "${FD2_R5_DUMP_DIFF:-0}" = 1 ]; then
+  dump_diff=(-e "FD2_GOLDEN_FRAMES_DUMP_DIFF=/golden/$(basename "$golden")"
+             --mount "type=bind,source=$golden_dir,target=/golden,readonly")
+fi
+
 echo "== Rust chapter 模式擷取"
 status=0
 timeout 3000s docker run --rm --name "fd2-r5ch-$$" --network none --memory 6g --cpus 4 --pids-limit 1024 \
@@ -55,7 +63,7 @@ timeout 3000s docker run --rm --name "fd2-r5ch-$$" --network none --memory 6g --
   -e CARGO_HOME=/build/cargo -e CARGO_TARGET_DIR=/build/target-x \
   -e FD2_ASSET_PACK=/pack -e FD2_REMAKE_ASSETS=/assets \
   -e FD2_GOLDEN_FRAMES_MODE=chapter -e FD2_GOLDEN_FRAMES_OUT=/frames-out \
-  -e "FD2_GOLDEN_FRAMES_DUMP=${FD2_GOLDEN_FRAMES_DUMP:-}" \
+  -e "FD2_GOLDEN_FRAMES_DUMP=${FD2_GOLDEN_FRAMES_DUMP:-}" "${dump_diff[@]}" \
   -e FD2_PARITY_CHAPTER=1 -e FD2_PARITY_SLOT=/slot/FD2.SAV -e FD2_PARITY_ORACLE_RUN=/oracle \
   -e FD2_PARITY_OUT=/frames-out/parity-out -e FD2_PARITY_ENTRY=start -e FD2_PARITY_CAPTURE_FRAMES=0 \
   --mount "type=bind,source=$slot,target=/slot,readonly" \

@@ -322,7 +322,7 @@ pub(crate) fn draw_modern_battle_panel_ink(
     // R4 E 組（主代理指派）：Go 的 `prepareNativePlayerMovement` 與物理演出在字型有 TTF、`localeEntities`
     // 存在時就收集 HD 面板文字，`renderBattlePanelText` 以 `raster` 預檢（忠實模式也一樣），預檢失敗會讓流程
     // 回錯誤。這裡照 Go 移植「找得到不超框字級」的量測與兩個錯誤；字形點陣化（`font.Drawer` 的陰影與前景
-    // 兩次 `DrawString`）是 R5，Rust 不在畫布上畫字、直接回成功，所以 `raster` 的畫布與 `key` 沒有文字墨跡
+    // 兩次 `DrawString`）只有 HD 繪製讀（R6），Rust 不在畫布上畫字、直接回成功，所以 `raster` 的畫布與 `key` 沒有文字墨跡
     // （KNOWN_DIFFERENCES `panel-ink-measure-only`；只有 HD 繪製讀它們）。
     // Go `int(f.effectiveScale(float64(maximum)))`：轉整數時向零截斷。
     let maximum = f.effective_scale(maximum as f64) as i64;
@@ -335,15 +335,18 @@ pub(crate) fn draw_modern_battle_panel_ink(
         // Go `font.BoundString(face, value)` 再取 `Floor`／`Ceil`。量測器的 `bound_string` 對應 Ebiten
         // `text.BoundString`（v2.6.6 `text/text.go:281`）；單行字串兩者的聯集相同（`fixed.Rectangle26_6.Union`
         // 略過空矩形，x/image v0.12.0 `font/font.go:245` 另以 `!b.Empty()` 略過），面板字串都沒有換行。
-        let Some(measure) = f.measure.0.clone() else {
-            todo!("R5: modern_hd_battle_panel.go:drawModernBattlePanelInk 需要外殼注入 TextMeasure（font.BoundString）")
-        };
+        // R5 r5f 起 `load_font_sized` 讀到字型就注入量測器，`face_for` 回 `Some` 時一定有（同 `face_for` 的 `expect`）。
+        let measure = f
+            .measure
+            .0
+            .clone()
+            .expect("modern_hd_battle_panel.go:drawModernBattlePanelInk：face_for 成功卻沒有 TextMeasure");
         let bounds = measure.bound_string(&face, value);
         if rect_dx(&bounds) + 2 > rect_dx(&rect) || rect_dy(&bounds) + 2 > rect_dy(&rect) {
             size -= 1;
             continue;
         }
-        // R5：`pen := fixed.P(rect.Min.X-box.Min.X, rect.Min.Y-box.Min.Y)`，先以 RGBA{12,22,38,ink.A} 在
+        // R6：`pen := fixed.P(rect.Min.X-box.Min.X, rect.Min.Y-box.Min.Y)`，先以 RGBA{12,22,38,ink.A} 在
         // pen+(2,2) 畫陰影，再以 `ink` 在 pen 畫前景，目的端是 `dst.SubImage(rect)`。
         return Ok(());
     }

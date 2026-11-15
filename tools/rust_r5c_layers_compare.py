@@ -10,6 +10,9 @@
   rust_r5c_layers_compare.py --go <go/r5c-layers.json> --rust <rust/r5c-layers.json> [--stage0 <frames.json>]
       逐擷取點比對兩邊的比對鍵；--stage0 另把 pump 擷取裡有畫的圖層與階段 0 整張黃金同一擷取點對照（旁證）。
 
+  --profile r5s 讓 --verbatim／--emit-copies 改核對 R5 階段 3 的 rust_golden_r5s_frames_test.go（同一批複本與擷取點，
+  接收者 r5sFrameRecorder、插入標記 `// r5s-insert`）；預設 r5c。
+
 結束碼：比對或核對失敗為 1，參數錯誤為 2。
 """
 import argparse
@@ -20,6 +23,12 @@ import sys
 GO_TEST = "rust_golden_r5c_layers_test.go"
 COPIES_MARK = "// ---- 逐字複本"
 INSERT_MARK = "// r5c-insert"
+RECV = "r5cLayerRecorder"
+# R5 階段 3（r5s）：整張畫格黃金沿用同一批逐字複本與擷取點，只換測試檔、接收者與插入標記。
+PROFILES = {
+    "r5c": ("rust_golden_r5c_layers_test.go", "r5cLayerRecorder", "// r5c-insert"),
+    "r5s": ("rust_golden_r5s_frames_test.go", "r5sFrameRecorder", "// r5s-insert"),
+}
 
 # (名稱, 原檔, 原簽名, 複本簽名, [(原文字, 複本文字)], [插入規則])
 # 插入規則：("after_block", 錨點子字串, 擷取點)：錨點所在行之後第一個縮排少一層的 "}" 之後插入；
@@ -114,9 +123,15 @@ def read_lines(path):
         return f.read().split("\n")
 
 
+def profile_copies():
+    """COPIES 的複本簽名換成目前 profile 的接收者。"""
+    return [(name, src, sig, copy_sig.replace("r5cLayerRecorder", RECV), subs, rules)
+            for name, src, sig, copy_sig, subs, rules in COPIES]
+
+
 def emit_copies(gosrc):
     blocks = []
-    for name, src, sig, copy_sig, subs, rules in COPIES:
+    for name, src, sig, copy_sig, subs, rules in profile_copies():
         original = extract(read_lines(os.path.join(gosrc, src)), sig, src)
         blocks.append(f"// {name}：{src} 的逐字複本。")
         blocks.extend(emit(original, copy_sig, subs, rules))
@@ -127,7 +142,7 @@ def emit_copies(gosrc):
 def verbatim(gosrc):
     test = read_lines(os.path.join(gosrc, GO_TEST))
     ok = True
-    for name, src, sig, copy_sig, subs, rules in COPIES:
+    for name, src, sig, copy_sig, subs, rules in profile_copies():
         original = extract(read_lines(os.path.join(gosrc, src)), sig, src)
         copy = extract(test, copy_sig, GO_TEST)
         inserted = [line for line in copy if line.endswith(INSERT_MARK)]
@@ -230,7 +245,10 @@ def main():
     ap.add_argument("--go")
     ap.add_argument("--rust")
     ap.add_argument("--stage0")
+    ap.add_argument("--profile", choices=sorted(PROFILES), default="r5c")
     args = ap.parse_args()
+    global GO_TEST, RECV, INSERT_MARK
+    GO_TEST, RECV, INSERT_MARK = PROFILES[args.profile]
     if args.verbatim:
         sys.exit(0 if verbatim(args.verbatim) else 1)
     if args.emit_copies:

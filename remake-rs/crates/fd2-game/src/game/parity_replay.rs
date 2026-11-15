@@ -12,7 +12,8 @@
 //! 和 Go 的差異：
 //! - Go 每次 `g.Update()` 讀牆鐘；這裡每次 `update` 之前以 [`VirtualFrameClock`] 推進一個邏輯幀
 //!   （A 組「虛擬時鐘」）。
-//! - Go 呼叫 `g.Draw(screen)` 的地方改呼叫 [`Game::acknowledge_present`]（`present.rs`），不畫像素。
+//! - Go 呼叫 `g.Draw(screen)` 的地方（`ackPresents` 的三處）R4 時改呼叫 [`Game::acknowledge_present`]（`present.rs`），
+//!   不畫像素；R5 階段 3 起照 Go 呼叫 [`Game::draw`]，畫到丟棄的暫存畫布。
 //! - R5 階段 1：`rust_golden_frames_test.rs` 是 Go `rust_golden_frames_test.go` chapter 模式的擷取點，設
 //!   `FD2_GOLDEN_FRAMES_MODE=chapter`、`FD2_GOLDEN_FRAMES_OUT` 才打開，預設關閉。
 //! - R5 階段 2：`rust_golden_frames_opening_test.rs` 是同一個 Go 檔的 opening 模式（`goldenFramesOpening`），
@@ -32,6 +33,8 @@
 //!   設 `FD2_GOLDEN_R5B_LAYERS_OUT` 才打開，由 `tools/rust_r5b_layers.sh` 執行）。
 //! - R5 階段 2 r5h：`rust_golden_r5h_layers_test.rs` 是 Go `rust_golden_r5h_layers_test.go`（chapter 模式同一個掛點，
 //!   設 `FD2_GOLDEN_R5H_LAYERS_OUT` 才打開，由 `tools/rust_r5h_layers.sh` 執行）。
+//! - R5 階段 3 r5s：`rust_golden_r5s_frames_test.rs` 是 Go `rust_golden_r5s_frames_test.go`（r5c 同一批 pump 與 gap
+//!   擷取點，每次呼叫整個 `Draw`；設 `FD2_GOLDEN_R5S_FRAMES_OUT` 才打開，由 `tools/rust_r5_stage3_verify.sh` 執行）。
 //! - Go 以 `t.Setenv` 設的環境變數由父測試以子行程傳入（F 組 `f_child_env` 的做法），工作區禁用 `unsafe`。
 
 use super::*;
@@ -50,6 +53,7 @@ mod rust_golden_r5b_layers_test;
 mod rust_golden_r5c_layers_test;
 mod rust_golden_r5h_layers_test;
 mod rust_golden_r5p_layers_test;
+mod rust_golden_r5s_frames_test;
 mod rust_golden_ttf_layers_test;
 
 pub(crate) use chapter_parity_hp_lock_test::*;
@@ -65,4 +69,5 @@ pub(crate) use rust_golden_r5b_layers_test::*;
 pub(crate) use rust_golden_r5c_layers_test::*;
 pub(crate) use rust_golden_r5h_layers_test::*;
 pub(crate) use rust_golden_r5p_layers_test::*;
+pub(crate) use rust_golden_r5s_frames_test::*;
 pub(crate) use rust_golden_ttf_layers_test::*;

@@ -385,7 +385,9 @@ pub(crate) fn parity_checkpoint(
         cp.round = st.turn;
     }
     if with_frame && !skip_frames {
-        todo!("R5: chapter_parity_replay_test.go:1696 frame（320×200 索引畫面擷取）")
+        // R5 階段 3 改標 R8：FD2_PARITY_CAPTURE_FRAMES=1 的索引畫格變體是原版收據層（verify_chapter_parity.py）的
+        // 輸入；R5 的黃金畫格都以 FD2_PARITY_CAPTURE_FRAMES=0 跑，開場與第一章的驗收沒有走到。
+        todo!("R8: chapter_parity_replay_test.go:1696 frame（320×200 索引畫面擷取，原版收據層）")
     }
     parity_write(log, cp.clone());
     cp.index = log.lock().unwrap().index - 1;
@@ -1228,6 +1230,9 @@ impl ParityReplay {
         if let Some(capture) = self.d.r5c_layer_capture.as_mut() {
             capture.gap_scope = true;
         }
+        if let Some(capture) = self.d.r5s_frame_capture.as_mut() {
+            capture.gap_scope = true;
+        }
         let mut frame = 0;
         while frame < 3000 && node_id(&self.d.g) == self.battle {
             let g = &mut self.d.g;
@@ -1255,6 +1260,9 @@ impl ParityReplay {
         self.battle_done = true;
         self.settle_town();
         if let Some(capture) = self.d.r5c_layer_capture.as_mut() {
+            capture.gap_scope = false;
+        }
+        if let Some(capture) = self.d.r5s_frame_capture.as_mut() {
             capture.gap_scope = false;
         }
     }
@@ -1556,7 +1564,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
     }
     if frame_setting != "0" {
         todo!(
-            "R5: chapter_parity_replay_test.go:1696 frame（畫面擷取；第一章 Rust 重播以 FD2_PARITY_CAPTURE_FRAMES=0 執行）"
+            "R8: chapter_parity_replay_test.go:1696 frame（320×200 索引畫格變體，原版收據層；R5 黃金畫格與第一章 Rust 重播以 FD2_PARITY_CAPTURE_FRAMES=0 執行）"
         )
     }
     let g = load_game().expect("loadGame");
@@ -1603,6 +1611,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             ttf_layer_capture: TtfLayerCapture::from_env(),
             r5b_layer_capture: R5bLayerCapture::from_env(),
             r5h_layer_capture: R5hLayerCapture::from_env(),
+            r5s_frame_capture: R5sFrameCapture::from_env(),
         },
         out: out.to_path_buf(),
         run: run.to_path_buf(),
@@ -1645,6 +1654,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         || r.d.ttf_layer_capture.is_some()
         || r.d.r5b_layer_capture.is_some()
         || r.d.r5h_layer_capture.is_some()
+        || r.d.r5s_frame_capture.is_some()
     {
         pin_global_rand(&mut r.d.g);
     }
@@ -1706,6 +1716,9 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             capture.finish();
         }
         if let Some(capture) = r.d.r5h_layer_capture.take() {
+            capture.finish();
+        }
+        if let Some(capture) = r.d.r5s_frame_capture.take() {
             capture.finish();
         }
     }));

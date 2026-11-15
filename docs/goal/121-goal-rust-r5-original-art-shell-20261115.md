@@ -563,3 +563,85 @@ Update 之後、城鎮游標移動之後、酒店每次輸入之後，不推進�
 | chapter（階段 3 預備，`FD2_GOLDEN_FRAMES_MODE=chapter`） | 停在第 124 次擷取（`battle_ch01`）的 `drawBattleScene`（戰鬥演出組）；已比對 124 張全部相同，沒有不同的擷取 |
 
 chapter 模式的擷取改用 `try_observe`：停在未移植的 `todo!` 時記進 `frames.json` 的 `stopped`，重播照 R4 走完；沒有停下時行為不變。
+
+## 階段 3 結果（2026-11-15）
+
+代號 `r5s`。逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 3」。命令：
+`FD2_DATA_ROOT=<主工作區> tools/rust_r5_stage3_verify.sh work/r5-stage3-20261115/final`；輸出在主工作區，不進版控。
+
+### 整張畫格比對
+
+| 模式 | 擷取 | 整張相同 | 不同 | 結果 |
+|---|---|---|---|---|
+| opening（`tools/rust_r5_opening_frames.sh`） | 10372 | 10372 | 0 | 序列雜湊 `eeed99ea…0be771` 與階段 0 相同，沒有停點 |
+| chapter（階段 0 黃金 `d71aad6a…`） | 13751 | 11101 | 2650 | 2650 張的差異全部在 TTF 墨跡外框內（下節） |
+| 城鎮與設施（pump 13751＋gap 828，整個 `Draw`） | 14579 | 11929 | 2650 | gap 828 張全部相同；不同的 2650 張就是 chapter 那批 TTF 差異 |
+
+### TTF 外框核對
+
+`tools/rust_r5_stage3_compare.py` 對每一張不同的擷取讀 Go（階段 0 PNG）與 Rust（雜湊不同時寫出的 RGBA）的 640×400 像素，列出不同的
+像素，核對它們都落在同一擷取點 TTF 繪字的墨跡外框內；TTF 鍵與兩邊圖層取同一次執行的 r5f 工具（`tools/rust_r5f_ttf_layers.sh`，
+2651 張文字與 `BoundString` 外框相同）。逐張結果在 `compare/chapter-captures.jsonl`。
+
+| 繪字 | 張數 | 每張不同像素 | 最大通道差 | 墨跡外框外 | `BoundString` 外框外 |
+|---|---|---|---|---|---|
+| 攻擊：選擇目標（戰場短訊 `g.msg`） | 2649 | 435..459 | 28 | 0 | 0 |
+| 勝　利＋按 Enter 繼續（勝負字樣，第 13717 次） | 1 | 910 | 24 | 0 | 0 |
+| 合計 | 2650（相異雜湊對 1298） | 共 1192464 | 28 | 0 | 0 |
+
+- 1192464 個不同的像素處，兩邊的 TTF 圖層也都不同，而且全部能以「同一底色上分別疊兩邊圖層」逐通道重現；差異只來自字形覆蓋率。
+- 第 13717 次（`update_frame` 24066，`battle_ch01` 第 8 回合）是 `Draw` 尾段的勝負字樣；`g.msg` 是空字串，所以階段 0 的 `draw_path` 是
+  `native-map`，不帶 `+ttf-msg`。
+- 有 TTF 繪字的 2651 張裡，「已存檔（槽位 1：hotel_ch02）」1 張整張相同：TTF 之後的城鎮畫面蓋滿。沒有 TTF 的 11100 張全部相同。
+- 竄改反向檢查：Rust 畫格在墨跡外框外改 1 個通道值，比對判違規、結束碼 1。沒有遮蔽像素。
+
+### 城鎮與設施整張比對
+
+Go 端新增只輸出資料的 `remake/cmd/fd2/rust_golden_r5s_frames_test.go`（未設環境變數時略過），在 r5c 同一批擷取點（pump 13751；
+gap：戰後 `driveStory` 782、`settleTown` 36、城鎮游標 5、酒店輸入 5）每次呼叫整個 `Draw`；Rust 端在同一處擷取。
+
+- Go、Rust 的 `checkpoints.jsonl` 都是 R4 黃金 `1c846f57…`，gap 擷取的整個 `Draw` 沒有改變流程。
+- gap 828／828 張整張相同（相異畫面 584 張：戰後故事 539、城鎮 41、酒店 4）。pump 的城鎮 5、商店 2、酒店 2、整備 23、教會 1 張全部相同。
+- Go 端 pump 13751 張全部與階段 0 整張黃金同一擷取點相同。
+- 指令環開合的 5 段各 7 個 Update 沒有掛點：Go 的 `closeRing` 是共用函式，要逐字複製 6 個呼叫端的整條呼叫鏈。這些幀是原生整幀，
+  由 r5m、r5h 的局部黃金涵蓋。
+
+### R5 標記
+
+`fd2-game/src` 已沒有 `todo!("R5…")`／`todo!("r5…")`：
+
+- `acknowledge_present` 尾段接上，改成呼叫移植好的 `draw_field` 畫到丟棄的畫布（狀態改寫與 `Draw` 同一份程式）。
+- 章重播的 `ack_presents` 照 Go 在城鎮出發、有原生場景的攻擊演出、END 回收三處呼叫 `Game::draw`；改後第一章重播、兩種整張比對與六組
+  局部黃金都不變。
+- HD 面板量字的 R5 分支改 `expect`（r5f 起一定有量測器）。
+- 說明畫面 `drawPlayerHelp` 改標 r8：開場與第一章沒有開，留給階段 4 接 F1。
+- `FD2_PARITY_CAPTURE_FRAMES=1` 的 320×200 索引畫格變體改標 R8：那是原版收據層的輸入；階段 0 起的黃金畫格是 640×400 整張畫格，
+  R5 的重播都以 `FD2_PARITY_CAPTURE_FRAMES=0` 執行。驗證第 2 點第一項（索引畫格逐位元組比對）因此沒有做，要不要補由主代理決定。
+
+### KNOWN_DIFFERENCES 總表（開場與第一章畫格）
+
+| 名稱 | 範圍 | 開場與第一章的量化 | 定案出處 |
+|---|---|---|---|
+| `ttf-raster-coverage` | TTF 字形的反鋸齒覆蓋率（Go `x/image/vector`、Rust `swash` 的 zeno）；文字位置、`BoundString`、墨跡外框相同 | chapter 2650 張、1192464 個像素，最大通道差 28，全部在墨跡外框內；opening 0 張；設施 gap 0 張 | 本計畫「架構」的文字一項（使用者 2026-11-15）；`PORTING.md`「R5 階段 2：r5f」 |
+| `system-info-locale-hd-overlay` | 非繁中語系的系統資訊畫面不做 Go 的 6 倍 HD 合成 | 第一章黃金是繁中，沒有打開系統資訊，0 張 | 本計畫「貼圖與語系分開」（使用者 2026-11-15）；`PORTING.md`「R5 階段 2：r5h」 |
+| `cosmetic-mouth-rng-fixed-seed` | 擷取關閉時嘴型亂數用 R4 的固定種子 | 畫格比對都打開擷取（`rand.Seed(4)` 對應的全域來源），0 張 | `PORTING.md` R4 B 組、「R5 階段 2：r5d」 |
+| `indexed-out-of-palette-transparent`、`png-16bit-premultiply`、`sampling-out-of-range-texel` | 畫布在正式素材不會走到的輸入上的處理 | 0 張（調色盤都是 256 色、沒有 16 位元 PNG、89 組取樣實測沒有越界） | `PORTING.md`「R5 階段 1」 |
+| `panel-ink-measure-only`、`facility-hd-precompute-faithful-skip`、`hd-preflight-scene-deferred` | HD 描述與 HD 面板墨跡在忠實模式不建立 | 只給 HD 繪製讀，原版美術的畫格 0 張 | `PORTING.md` R4 D、E 組 |
+
+R4 其他 KNOWN_DIFFERENCES（錯誤文字、map 走訪順序、診斷輸出的時間前綴等）不進畫格。
+
+### 未涵蓋的畫面
+
+下列畫面第一章與開場沒有畫到，像素只由單元測試驗（或尚未移植）：
+
+- 戰場：移動範圍格（選中單位的畫格裡範圍是空的）、施法與攻擊射程、指令環本體與重製端後備環、指令格文字、法術與物品選單、移動面板、
+  回合橫幅 TTF 後備、系統資訊、角色狀態、END 對話的確認框與回覆延遲、物理演出的出發與捲動、本體錯誤路徑與 cue-only 幀。
+- 城鎮與設施：商店穩態、購買與出售清單、教會子畫面、整備名冊與四槽列表、設施成功演出（timeline）。
+- 文字：非繁中語系的 `drawIndexedLocalizedText` 像素路徑、選中單位中文名、舊對話框。
+- 其他：標題的 `scroll`、`logozoom` 兩相與 `ColorM` 後備、讀檔槽畫面、`drawUnit` 色塊、說明畫面、指令環開合 5 段各 7 個 Update 的整張畫格。
+
+### 驗證
+
+`tools/rust_game_test.sh` 378 passed、7 ignored（fmt、clippy 通過，字型掛入且沒有略過）；`tools/rust_campaign_test.sh` 530 passed、
+`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、
+`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；六組圖層級局部黃金兩側重跑 （r5b、r5h、r5c、r5m、r5d、r5p）兩邊序列雜湊相同，且與階段 2 各組紀錄相同；`Cargo.lock` 沒有改動，既有 Go 檔沒有改。

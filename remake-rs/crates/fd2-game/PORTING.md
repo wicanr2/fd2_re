@@ -1572,7 +1572,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | `goldenFrameRecorder.observe`：`pinClock` → 記 gap → `screen.Clear()` → `g.Draw(screen)` → `ReadPixels` → SHA-256 | 同順序：`pin_clock` → gap → `Picture::clear` → `Game::draw` → `read_pixels` → SHA-256 |
 | 連續相同雜湊併成一列（`count`）；序列雜湊是每次擷取 SHA-256 串接後的 SHA-256 | 同（`rows`、`sequence_sha256`） |
 | 重播結束寫 `frames.json` | `ParityReplay` 的 `end` checkpoint 之後 `FrameCapture::finish` 寫 `<目錄>/frames.json`，欄位與 Go 同名 |
-| `ackPresents` 在城鎮出發、有原生場景的攻擊演出、END 回收三處另外呼叫 `g.Draw` 到暫存影像 | 照舊呼叫 `acknowledge_present`（R4），不畫像素 |
+| `ackPresents` 在城鎮出發、有原生場景的攻擊演出、END 回收三處另外呼叫 `g.Draw` 到暫存影像 | 階段 1、2 照舊呼叫 `acknowledge_present`（R4），不畫像素；R5 階段 3 起照 Go 呼叫 `Game::draw` 到丟棄的暫存畫布（見「R5 階段 3」） |
 
 目前 r5 函式都是 `todo!`，打開擷取會停在第一個擷取點；本輪只驗證關閉時重播結果不變。下列是重現 Go 黃金畫格的規格：
 
@@ -2592,3 +2592,121 @@ early-return 順序分支：
 | `tools/rust_r5_opening_frames.sh` | 10372／10372 相同，沒有停點；兩次相同 |
 | Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |
+
+## R5 階段 3（r5s：開場與第一章整張畫格整合，2026-11-15）
+
+代號 `r5s`，基準 `bbdba651`（含階段 2 八組）。計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)「階段 3 結果」。
+本節的 `main.go` 行號是目前的 `main.go`（v.1.1.14 之後）。
+
+### r5s：工具
+
+| 檔案 | 用途 |
+|---|---|
+| `tools/rust_r5_stage3_verify.sh` | Docker 驅動，三段（`FD2_STAGE3_PARTS`，預設全跑）：`ttf` 跑 `tools/rust_r5f_ttf_layers.sh`；`chapter` 跑 `tools/rust_r5_chapter_frames.sh`（`FD2_R5_DUMP_DIFF=1`）再逐張核對；`facility` 先核對 Go 逐字複本，跑 Go 與 Rust 的整張畫格黃金，兩邊 `checkpoints.jsonl` 必須是 R4 黃金，再逐張核對 |
+| `tools/rust_r5_stage3_compare.py` | `chapter`／`facility` 兩種模式的逐張核對（規則見下） |
+| `remake/cmd/fd2/rust_golden_r5s_frames_test.go` | `TestRustGoldenR5sFrames`，未設 `FD2_GOLDEN_R5S_FRAMES_OUT` 時 `t.Skip`。擷取點與 r5c 相同（pump 加 828 個 gap），每次呼叫整個 `g.Draw`；檔末是 r5c 同一批 7 個函式的逐字複本（接收者 `r5sFrameRecorder`、插入行 `// r5s-insert`）。TTF 鍵借用 r5f 的 `ttfLayerRecorder.ttfSection`（`main.go:10125..10150` 的逐字複本）。既有 Go 檔沒有改 |
+| `parity_replay/rust_golden_r5s_frames_test.rs` | Rust 端 `R5sFrameCapture`：pump 掛在 `Driver::pump`，gap 由 `Driver::observe_r5c_gap` 轉來（r5c 的同一批插入點），`ensure_postbattle_node` 期間打開 `gap_scope` |
+| `tools/rust_r5c_layers_compare.py --profile r5s` | `--verbatim`／`--emit-copies` 改核對 r5s 的 Go 測試檔；預設 `r5c` 行為不變 |
+| `parity_replay/rust_golden_frames_test.rs` 的 `DiffDump` | `FD2_GOLDEN_FRAMES_DUMP_DIFF`（chapter 模式）與 `FD2_GOLDEN_R5S_FRAMES_DIFF_REF`（r5s）：與參考 `frames.json` 同一擷取序號雜湊不同的畫格，以雜湊為檔名寫出 RGBA，同一雜湊只寫一次 |
+
+逐張核對的規則（兩種模式相同，不遮蔽像素）：
+
+- 依 `rows` 的 `capture`／`count` 展開成每次擷取的 RGBA SHA-256 逐次比；雜湊相同即整張相同。
+- 雜湊不同的擷取讀兩邊像素（讀回的位元組先核對雜湊），列出不同的像素。該擷取點兩邊的 TTF 鍵（文字、座標、倍率、像素尺寸、
+  ascent、顏色、`BoundString`）與 TTF 圖層的墨跡外框都要相同，每個不同的像素都要落在 Go 的墨跡外框內；另記落在 `BoundString`
+  外框外的個數。
+- `chapter` 模式另以 r5f 的兩邊圖層裁切核對：不同的像素處兩邊 TTF 圖層也不同，並記能以「同一底色分別疊上兩邊圖層」
+  （source-over `min(255, s + mul255(d*(255-a)))`）逐通道重現的像素數。
+- 同一對（Go 雜湊、Rust 雜湊）的像素差只算一次；外框核對逐張做。輸出 `<模式>-captures.jsonl`（每張一行：不同像素數、是否全在外框內、
+  所屬繪字）、`<模式>-summary.json`／`.txt`。
+
+### r5s：chapter 模式整張比對
+
+`tools/rust_r5_stage3_verify.sh <主工作區>/work/r5-stage3-20261115/final`（Go 黃金是階段 0 `chapter/frames.json`，`d71aad6a…`；TTF 鍵與
+圖層取同一次執行的 r5f 工具輸出）：
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數 | 13751（Rust 沒有停點） |
+| 整張相同 | 11101 |
+| 不同 | 2650，相異的（Go、Rust）雜湊對 1298 |
+| 不同的像素 | 共 1192464 個，最大通道差 28；落在墨跡外框外 0、`BoundString` 外框外 0；不同像素處兩邊 TTF 圖層相同 0；1192464 個全部能以同一底色疊兩邊圖層重現 |
+| 依繪字 | 「攻擊：選擇目標」2649 張，每張 435..459 個像素；「勝　利」＋「按 Enter 繼續」1 張（第 13717 次），910 個像素 |
+| 有 TTF 繪字的擷取 | 2651 張：2650 張不同；「已存檔（槽位 1：hotel_ch02）」1 張整張相同（TTF 之後的 `drawCampaignUI` 城鎮畫面蓋滿） |
+| 沒有 TTF 的擷取 | 11100 張全部相同 |
+
+- 第 13717 次（`update_frame` 24066，`battle_ch01` 第 8 回合，階段 0 `draw_path` 是 `native-map`）是 `Draw` 尾段的勝負字樣：
+  `勝　利`（`x=242`、`y=170`、倍率 3、54 像素、`BoundString` `243,187,400,238`）與 `按 Enter 繼續`（`x=250`、`y=236`、18 像素、
+  `250,241,358,259`），墨跡外框 `243,187,400,259`。`g.msg` 是空字串，所以階段 0 的分類沒有 `+ttf-msg`。
+- 階段 0 的 `draw_path` 是依 `Draw` 後狀態推定的近似分類：`native-map+ttf-msg` 2649 張全部不同；`fullscreen-native+ttf-msg`、
+  `battle-normalized+ttf-msg`、`story-viewport+ttf-msg` 共 3114 張在 TTF 段之前就 return 或沒有短訊，全部相同。
+- 竄改反向檢查（`work/r5-stage3-20261115/tamper`）：把第 515..516 次的 Rust 畫格在 (0,0) 改 1 個通道值（墨跡外框外），比對判 2 張違規、
+  結束碼 1。
+- 重跑：`try1` 與 `final` 兩次結果相同。chapter 段 Rust 的序列雜湊都是 `4c3effd3…2b9f811`（與階段 2 合併時的
+  `work/r5-stage2d-merge-20261115/chapter` 相同）；城鎮與設施段 Go `dc4d417c…86210500`、Rust `5e606567…5e9dfd1d`，兩次相同。
+
+### r5s：城鎮與設施整張比對
+
+`facility` 段（同一次執行）。擷取點與 r5c 局部黃金相同：pump 13751（推進 60 Hz 虛擬時鐘）加 gap 828（戰後 `driveStory` 782、
+`settleTown` 36、城鎮游標 5、酒店輸入 5；不推進時鐘），每次 `Clear` 後呼叫整個 `Draw`。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數 | Go、Rust 都是 14579；分支 early 7323、spawn 24、tail 7232 |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…`（gap 擷取的整個 `Draw` 沒有改變流程） |
+| gap 擷取 | 828／828 張整張相同（相異畫面 584 張：戰後故事 539、城鎮 41、酒店 4）；其中 3 次有 TTF 繪字，都被設施畫面蓋住 |
+| pump 擷取 | Go 13751 張全部與階段 0 整張黃金同一擷取點相同；Rust 11101 張相同，其餘 2650 張即 chapter 段的 TTF 差異（同一批雜湊對） |
+| 整體 | 11929 張相同、2650 張不同，不同的像素全部在墨跡外框內（外框外 0、`BoundString` 外框外 0） |
+
+依節點：pump 的城鎮 5、商店 2、酒店 2、整備 23、教會 1 與故事 25 張全部相同；設施畫面裡沒有 TTF 差異。指令環開合的 5 段各 7 個
+Update（`closeRing`）沒有掛 gap：Go 的 `closeRing` 是共用函式，呼叫端是 6 個 `parityReplay` 方法，要逐字複製整條呼叫鏈；環開合幀的
+原生整幀由 r5m、r5h 的局部黃金涵蓋。
+
+### r5s：R5 標記清理
+
+`grep -rn 'todo!("R5\|todo!("r5' remake-rs/crates/fd2-game/src` 剩 0 處（`main.rs` 的文件註解另改成「不再有 r5」）。
+
+| 位置 | 原標記 | 處理 | 依據 |
+|---|---|---|---|
+| `present.rs` `acknowledge_present` 尾段 | `todo!("R5: main.go:9804..10188 …")` | 改成呼叫 `Game::draw_field`（`main.go:9799..10188` 的移植，改成 `pub(crate)`）畫到丟棄的 640×400 畫布，回 `PresentOwner::Map`：尾段的狀態改寫（原生整幀重建 `nativeMapVGA`、設施與對白的 `drawn`、`markActionOverlayDrawn` 等）與合成交錯，照 `Draw` 執行同一份程式 | 121 範圍表「`acknowledge_present` 剩下的 R5 分支：接上」 |
+| `parity_replay` `ack_presents` | 呼叫 `acknowledge_present` | 照 Go `ackPresents`（`native_chapter_one_play_test.go:535`）在城鎮出發、有原生場景的攻擊演出、END 回收三處呼叫 `Game::draw`，畫到每次新建的暫存畫布 | Go 在這三處呼叫 `g.Draw`；改後第一章重播、兩種整張比對與六組局部黃金不變 |
+| `modern_hd_battle_panel.rs` `draw_modern_battle_panel_ink` | `todo!("R5: … 需要外殼注入 TextMeasure")` | 改 `expect`：`face_for` 回 `Some` 時一定已注入量測器（同 r5f 對 `face_for`／`width` 的處理）；畫字的註解改標 R6（只有 HD 讀，`panel-ink-measure-only`） | r5f |
+| `main.rs` `draw_deferred` 說明畫面 | `todo!("r5:player_shortcuts.go:drawPlayerHelp …")` | 改標 `r8`：開場與第一章沒有開說明畫面，`PORTING.json` 狀態本來就是 `r8` | 階段 0 覆蓋率 0 次；121 範圍表把說明畫面列在 R5 外殼，留給階段 4 接 F1 |
+| `chapter_parity_replay_test.rs` `checkpoint` 與 `run_chapter_parity_replay` | `todo!("R5: chapter_parity_replay_test.go:1696 frame …")` 兩處 | 改標 `R8`：`FD2_PARITY_CAPTURE_FRAMES=1` 的 320×200 索引畫格變體是原版收據層（`verify_chapter_parity.py`）的輸入 | R5 的黃金畫格與第一章 Rust 重播都以 `FD2_PARITY_CAPTURE_FRAMES=0` 執行 |
+
+`PORTING.json` 函式狀態不變（ported 684、r6 59、r8 1179），另記頂層 `r5_stage3_r5s`；`r5_stage1.ported_with_r5_todo_branch` 的 4 個函式
+已沒有 R5 分支。
+
+### r5s：KNOWN_DIFFERENCES
+
+沒有新增。開場與第一章畫格用到的總表在 121「階段 3 結果」。
+
+### r5s：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `main.rs` | `draw_field` 改 `pub(crate)`；說明畫面 `todo!` 改標 r8；`draw` 的文件註解 |
+| `present.rs` | 尾段 `todo!` 改呼叫 `draw_field`；模組文件 |
+| `modern_hd_battle_panel.rs` | `todo!("R5…")` 改 `expect`、註解 R6 |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `r5s_frame_capture`；`pump` 在 `r5h_layer_capture` 之後呼叫它；`ack_presents` 三處改呼叫 `Game::draw` |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `R5sFrameCapture::from_env()`；它打開時也 `pin_global_rand`；`ensure_postbattle_node` 開關 `gap_scope`；`end` 之後 `finish`；兩個 `todo!("R5…")` 改標 R8 |
+| `parity_replay/rust_golden_r5c_layers_test.rs` | `observe_r5c_gap` 也轉給 `R5sFrameCapture` |
+| `parity_replay/rust_golden_ttf_layers_test.rs` | `TtfLayerDraw`、`ttf_layer_draw_key` 改 `pub(crate)`（r5s 組 TTF 鍵用） |
+| `parity_replay/rust_golden_frames_test.rs` | `DiffDump` 與 `FD2_GOLDEN_FRAMES_DUMP_DIFF` |
+| `parity_replay/rust_golden_frames_opening_test.rs`、`rust_golden_r5p_layers_test.rs` | `Driver` 字面值補 `r5s_frame_capture: None` |
+| `parity_replay.rs` | 掛新子模組、模組文件 |
+| `tools/rust_r5_chapter_frames.sh` | `FD2_R5_DUMP_DIFF=1` 時掛入 Go 黃金並設 `FD2_GOLDEN_FRAMES_DUMP_DIFF` |
+| `canvas.rs`、`Cargo.lock` | 沒有改 |
+
+### r5s：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh`（字型掛入、`FD2_REQUIRE_ORIGINAL=1`） | fmt、clippy `-D warnings` 通過；378 passed、7 ignored；沒有「略過」 |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage3-20261115/r5s-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5_opening_frames.sh`（`work/r5-stage3-20261115/opening-frames`） | 10372／10372 相同，沒有停點，序列雜湊 `eeed99ea…0be771` |
+| `tools/rust_r5_stage3_verify.sh`（`work/r5-stage3-20261115/final`） | 上兩節；r5f 的 TTF 圖層黃金同時重跑，2651 張文字與外框相同 |
+| 六組局部黃金（`rust_r5b_layers.sh`、`rust_r5h_layers.sh`、`rust_r5c_layers.sh`、`rust_r5_map_layers.sh`、`rust_r5_dialogue_layers.sh`、`rust_r5p_layers.sh`，兩側重跑，`work/r5-stage3-20261115/layers`） | 六組兩邊的 `checkpoints.jsonl` 都是 `1c846f57…`，序列雜湊兩邊相同且與階段 2 各組紀錄相同：r5b `64e96cad…`、r5h `c5e59e7b…`、r5c `4c5a3720…`（14579／14579）、r5m `bb359b4d…`、r5d `967a046c…`、r5p opening `40f0309d…`／chapter `75f45290…` |
+| Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip`；逐字複本 7 個函式與原檔逐字相同 |
+| `Cargo.lock` | 沒有改動 |

@@ -8084,14 +8084,14 @@ impl Game {
     /// Go：`main.go:9355`，`func (g *Game) Draw(screen *ebiten.Image)`
     ///
     /// R5 階段 1 的分派骨架（`PORTING.md`「R5 階段 1」）：照 Go 的 early-return 順序選分支。開場與第一章
-    /// 執行到的分支呼叫對應函式（R5 階段 2 移植，目前多是 `todo!("r5:…")`）；HD 分支 `todo!("r6:…")`；
+    /// 執行到的分支呼叫對應函式（R5 階段 2 移植完畢，R5 階段 3 起不再有 `todo!("r5:…")`）；HD 分支 `todo!("r6:…")`；
     /// 開場與第一章沒有走到的分支 `todo!("r8:…")`。分支是否執行到依階段 0 的 `Draw` 覆蓋率
     /// （`work/r5-stage0-20261115/r1/cover-*.out`）。
     ///
     /// 開頭的重設是 R4 的 `begin_present_frame`（Go 9356..9372，含 `defer g.beginModernHDText(screen)()`；忠實模式下
     /// 收尾是空函式）；結尾的 `defer` 是 [`Game::draw_deferred`]。Draw 裡改流程狀態的地方照 `PORTING.md`
-    /// 「Draw 中改狀態的位置」由各 `draw*` 函式自己做（與 Go 相同），不經呈現回報；無畫面重播不擷取畫格時
-    /// 不呼叫本函式，改走 `acknowledge_present`。
+    /// 「Draw 中改狀態的位置」由各 `draw*` 函式自己做（與 Go 相同），不經呈現回報。章重播的 `ack_presents` 在 Go
+    /// 呼叫 `g.Draw` 的三處（城鎮出發、有原生場景的攻擊演出、END 回收）也呼叫本函式（R5 階段 3）。
     pub(crate) fn draw(&mut self, screen: &mut Picture) {
         self.begin_present_frame();
         self.draw_frame(screen);
@@ -8118,7 +8118,9 @@ impl Game {
         // 白閃的 drawn 與說明畫面的 clearModernHDText（R6）：與呈現回報共用。
         self.finish_present_frame();
         if self.help_visible {
-            todo!("r5:player_shortcuts.go:drawPlayerHelp（說明畫面，121 範圍表列 R5；開場與第一章沒有開）")
+            todo!(
+                "r8:player_shortcuts.go:drawPlayerHelp（說明畫面；開場與第一章沒有開，PORTING.json 狀態 r8。121 範圍表把說明畫面列在 R5 的外殼，階段 4 接 F1 時移植）"
+            )
         }
     }
 
@@ -8287,8 +8289,8 @@ impl Game {
     }
 
     /// Go `Draw` 尾段（`main.go:9799`..`10188`）：地圖、原生整幀、回合橫幅、對話、文字層、戰役介面、指令環與
-    /// 系統介面、舊 fade 疊層。
-    fn draw_field(&mut self, screen: &mut Picture) {
+    /// 系統介面、舊 fade 疊層。R5 階段 3：`present.rs` 的呈現回報在尾段也呼叫它（狀態改寫與 `Draw` 同一份程式）。
+    pub(crate) fn draw_field(&mut self, screen: &mut Picture) {
         screen.fill(ColorRgba { r: 0, g: 0, b: 0, a: 0xff });
         let mut native_map_presented = false;
         let campaign_battle_view =

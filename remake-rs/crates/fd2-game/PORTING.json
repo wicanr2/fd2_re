@@ -22871,5 +22871,46 @@
         ]
       }
     ]
+  },
+  "r5_stage3_r5s": {
+    "rule": "R5 階段 3：清掉剩下的 todo!(\"R5…\")／todo!(\"r5…\")；開場與第一章走到的照 Go 補上，沒走到的依階段 0 覆蓋率改標 R8／r8 或 R6。函式狀態不變（都已是 ported 或 r8）",
+    "ported_with_r5_todo_branch_resolved": [
+      {
+        "go": "font.go:157 (*Font).faceFor",
+        "result": "R5 階段 2 r5f 已改 expect（load_font_sized 注入 TextMeasure），本輪確認沒有 R5 分支"
+      },
+      {
+        "go": "font.go:194 (*Font).Width",
+        "result": "同上"
+      },
+      {
+        "go": "main.go:9355 (*Game).Draw",
+        "result": "分派骨架的 r5 todo 在階段 2 移植完畢；說明畫面 drawPlayerHelp 的 todo 改標 r8（開場與第一章沒有開，PORTING.json 本來就是 r8）"
+      },
+      {
+        "go": "modern_hd_battle_panel.go:224 drawModernBattlePanelInk",
+        "result": "「沒有注入 TextMeasure」的 todo!(\"R5…\") 改 expect（face_for 回 Some 時一定有量測器）；畫字只給 HD 讀，註解改標 R6"
+      }
+    ],
+    "present_rs": {
+      "acknowledge_present_tail": "main.go:9799..10188 的 todo!(\"R5…\") 改成呼叫 Game::draw_field 畫到丟棄的畫布（狀態改寫與 Draw 同一份程式）",
+      "ack_presents": "章重播 ackPresents 的三處（城鎮出發、有原生場景的攻擊演出、END 回收）照 Go 呼叫 Game::draw（R4 時呼叫 acknowledge_present）"
+    },
+    "relabeled": [
+      {
+        "rust": "parity_replay/chapter_parity_replay_test.rs checkpoint 與 run_chapter_parity_replay（兩處）",
+        "go": "chapter_parity_replay_test.go:1696 frame",
+        "from": "R5",
+        "to": "R8",
+        "reason": "FD2_PARITY_CAPTURE_FRAMES=1 的 320×200 索引畫格變體是原版收據層 verify_chapter_parity.py 的輸入；R5 的黃金畫格以 FD2_PARITY_CAPTURE_FRAMES=0 跑，開場與第一章的驗收沒有走到"
+      },
+      {
+        "rust": "main.rs draw_deferred",
+        "go": "player_shortcuts.go:330 drawPlayerHelp",
+        "from": "r5",
+        "to": "r8",
+        "reason": "開場與第一章沒有開說明畫面；121 範圍表把說明畫面列在 R5 的外殼（階段 4 接 F1 時移植）"
+      }
+    ]
   }
 }

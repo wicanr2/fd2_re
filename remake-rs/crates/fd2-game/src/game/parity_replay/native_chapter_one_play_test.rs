@@ -31,6 +31,9 @@ pub(crate) struct Driver {
     pub(crate) r5b_layer_capture: Option<R5bLayerCapture>,
     /// R5 階段 2 r5h：HUD 與選單組的局部黃金（`rust_golden_r5h_layers_test.rs`），同一個掛點；預設 `None`。
     pub(crate) r5h_layer_capture: Option<R5hLayerCapture>,
+    /// R5 階段 3 r5s：城鎮與設施的整張畫格黃金（`rust_golden_r5s_frames_test.rs`），同一個掛點另加 r5c 的 gap
+    /// 擷取點；預設 `None`。
+    pub(crate) r5s_frame_capture: Option<R5sFrameCapture>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。
@@ -78,6 +81,9 @@ impl Driver {
                 capture.observe(&mut self.g);
             }
             if let Some(capture) = self.r5h_layer_capture.as_mut() {
+                capture.observe(&mut self.g);
+            }
+            if let Some(capture) = self.r5s_frame_capture.as_mut() {
                 capture.observe(&mut self.g);
             }
             if done(&mut self.g) {
@@ -188,11 +194,14 @@ pub(crate) fn ch01_blockers(g: &Game) -> String {
 }
 
 /// Go `native_chapter_one_play_test.go:535`：`ackPresents`。承認演出工作的「這一幀已呈現」。Go 在三種情況呼叫
-/// 正式 `g.Draw`（城鎮出發、攻擊演出、END 回收），這裡改呼叫呈現回報 [`Game::acknowledge_present`]；其餘照 Go
-/// 只設 `drawn`。
+/// 正式 `g.Draw`（城鎮出發、攻擊演出、END 回收），畫到重複使用的 640×400 暫存影像（Go `ch23JourneyScreen`）；其餘照
+/// Go 只設 `drawn`。
+///
+/// R5 階段 3：三處改照 Go 呼叫 [`Game::draw`]（R4 時繪圖還沒移植，呼叫的是只做狀態改寫的呈現回報
+/// `acknowledge_present`）；畫到每次新建的暫存畫布，像素不用。
 pub(crate) fn ack_presents(g: &mut Game) {
     if g.native_town_departure.is_some() {
-        g.acknowledge_present();
+        g.draw(&mut Picture::new_image(LOGICAL_W, LOGICAL_H));
     }
     if let Some(scene) = g.atk.as_ref().and_then(|a| a.native_scene.as_ref())
         && (scene.prelude_frame < scene.prelude_images.len() as i64
@@ -200,10 +209,10 @@ pub(crate) fn ack_presents(g: &mut Game) {
             || scene.body.is_some())
     {
         // 同一攻擊owner在body後仍持有兩段palette ramp；依正式Draw優先序確認。
-        g.acknowledge_present();
+        g.draw(&mut Picture::new_image(LOGICAL_W, LOGICAL_H));
     }
     if g.native_end_turn_recovery.is_some() {
-        g.acknowledge_present();
+        g.draw(&mut Picture::new_image(LOGICAL_W, LOGICAL_H));
         // 離屏測試以明示虛擬時間跨過 initial BIOS tick；兩個零 tick 發布仍由正式 Draw/Update 分別確認。
         if let Some(job) = g.native_end_turn_recovery.as_ref()
             && job.frame == 0
