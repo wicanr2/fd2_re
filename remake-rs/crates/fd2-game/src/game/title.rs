@@ -40,6 +40,16 @@ pub(crate) struct TitleAssets {
     pub(crate) ani_clips: BTreeMap<i64, afm::Clip>,
 }
 
+/// Go：`title.go:41`
+pub(crate) const TITLE_MENU_TOP_Y: i64 = 164;
+/// Go：`title.go:42`
+pub(crate) const TITLE_MENU_GAP_Y: i64 = 9;
+
+/// Go：`title.go:45`，`func titleMenuY(item int) int`
+pub(crate) fn title_menu_y(item: i64) -> i64 {
+    TITLE_MENU_TOP_Y + item * TITLE_MENU_GAP_Y
+}
+
 impl Game {
     /// applyTitleMenuEvent 是標題主選單輸入的單一具型別擁有者；Ebiten 鍵盤與
     /// 決定性玩家路徑測試都必須經過此接縫。
@@ -307,6 +317,19 @@ pub(crate) fn build_title_palette_transitions(
     Ok((red_frames, title_frames))
 }
 
+/// Go：`title.go:456`，`func titlePublisherBrightness(tick int) float32`
+pub(crate) fn title_publisher_brightness(tick: i64) -> f32 {
+    if !(0..119).contains(&tick) {
+        0.0
+    } else if tick < 8 {
+        (tick + 1) as f32 / 8.0
+    } else if tick < 111 {
+        1.0
+    } else {
+        (119 - tick) as f32 / 8.0
+    }
+}
+
 /// titlePalettePhase 把原版41個8ms DAC相位投影到20個60Hz畫面，保留0與40端點。
 ///
 /// Go：`title.go:470`，`func titlePalettePhase(tick int) int`
@@ -318,6 +341,20 @@ pub(crate) fn title_palette_phase(tick: i64) -> i64 {
         return 40;
     }
     (tick * 40 + 9) / 19
+}
+
+/// Go：`title.go:480`，`var nativeTitlePalettePulseRows`
+pub(crate) const NATIVE_TITLE_PALETTE_PULSE_ROWS: [i64; 14] =
+    [520, 430, 410, 340, 310, 300, 240, 180, 150, 130, 110, 87, 64, 22];
+
+/// titleScrollUsesPulsePalette 投影 sub_1F894 的 FDOTHER #102→#101 DAC owner。
+/// 原版在命中列後安裝 #102，11 個30ms列迴圈後、下一列 delay 前恢復 #101。
+///
+/// Go：`title.go:486`，`func titleScrollUsesPulsePalette(scrollY float64) bool`
+pub(crate) fn title_scroll_uses_pulse_palette(scroll_y: f64) -> bool {
+    NATIVE_TITLE_PALETTE_PULSE_ROWS
+        .iter()
+        .any(|&trigger| scroll_y <= trigger as f64 && scroll_y > (trigger - 11) as f64)
 }
 
 impl Game {
@@ -557,35 +594,179 @@ impl Game {
     }
 }
 
-#[cfg(test)]
-#[path = "title/title_test.rs"]
-mod title_test;
-
-// ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
-
 impl Game {
     /// drawTitle 畫開頭動畫/主選單。
     ///
     /// Go：`title.go:716`，`func (g *Game) drawTitle(screen *ebiten.Image)`
+    ///
+    /// Go 在 `titleAssets` 為 nil、或該幕影像為 nil 時解參考會 panic；Rust 與 `title_update` 相同，把缺少的
+    /// 素材當作不畫（`loadGame` 在素材不全時失敗即關閉，正式路徑不會走到）。HD 守門（`modernOpeningEnabled`、
+    /// `drawModernHDTitleMenuItem`）在忠實模式下為 false，HD 時 `todo!("r6:…")`。`ColorM` 後備
+    /// （`titlePaletteBlend`，預建調色盤幀缺漏時）與讀檔槽畫面（`drawNativeLoadSlots`）在開場與第一章沒有走到，
+    /// 標 `todo!("r8:…")`。
     pub(crate) fn draw_title(&mut self, screen: &mut Picture) {
-        todo!("r5:title.go:drawTitle")
+        const RED: ColorRgba = ColorRgba { r: 0xff, g: 0, b: 0, a: 0xff };
+        // Go `g.modernOpeningEnabled()`（`modern_hd_opening.go:238`）的第一個條件是 modernStoryPortraits 非 nil；
+        // 忠實模式下為 false，Go 的 `if modern { screen.Clear() … }` 不執行。
+        let modern = if self.modern_story_portraits.is_some() {
+            todo!("r6:modern_hd_opening.go:modernOpeningEnabled（HD 開場）")
+        } else {
+            false
+        };
+        let ta = self.title_assets.as_ref();
+        match self.title_phase.as_str() {
+            "cutscene" => {
+                if self.cut_idx >= CUT_SCRIPT.len() as i64 {
+                    return;
+                }
+                let mut op = DrawImageOptions::default();
+                op.geo_m.scale(2.0, 2.0);
+                let step = &CUT_SCRIPT[self.cut_idx as usize];
+                match step.kind.as_str() {
+                    "publisher" => {
+                        if let Some(publisher) = ta.and_then(|t| t.publisher.as_ref()) {
+                            let s = title_publisher_brightness(self.cut_tick);
+                            op.color_scale.scale(s, s, s, 1.0);
+                            screen.draw_image(publisher, &op);
+                        }
+                    }
+                    "static" => {
+                        if let Some(img) = ta.and_then(|t| t.cut_static[step.res as usize].as_ref()) {
+                            screen.draw_image(img, &op);
+                        }
+                    }
+                    "scroll" => {
+                        if let Some(t) = ta
+                            && let Some(mut scroll) = t.scroll.as_ref()
+                        {
+                            if title_scroll_uses_pulse_palette(self.scroll_y)
+                                && let Some(pulse) = t.scroll_pulse.as_ref()
+                            {
+                                scroll = pulse;
+                            }
+                            op.geo_m.translate(0.0, -self.scroll_y * 2.0); // 視窗=大圖 y=scrollY 起 200 列
+                            screen.draw_image(scroll, &op);
+                        }
+                    }
+                    "hold" => {
+                        if let Some(scroll) = ta.and_then(|t| t.scroll.as_ref()) {
+                            op.geo_m.translate(0.0, -self.scroll_y * 2.0);
+                            screen.draw_image(scroll, &op);
+                        }
+                    }
+                    "redfade" => {
+                        let frames = ta.map(|t| &t.red_fade_frames);
+                        let frame = frames.and_then(|f| f[self.cut_tick.min(f.len() as i64 - 1) as usize].as_ref());
+                        if let Some(frame) = frame {
+                            screen.draw_image(frame, &op);
+                        } else if ta.is_some_and(|t| t.scroll.is_some()) {
+                            todo!("r8:title.go:titlePaletteBlend（ColorM 後備：預建紅幕調色盤幀缺漏時）")
+                        }
+                    }
+                    "redhold" => screen.fill(RED),
+                    "titlefade" => {
+                        let frames = ta.map(|t| &t.title_fade_frame);
+                        let frame = frames.and_then(|f| f[self.cut_tick.min(f.len() as i64 - 1) as usize].as_ref());
+                        if let Some(frame) = frame {
+                            screen.draw_image(frame, &op);
+                        } else if ta.is_some_and(|t| t.title.is_some()) {
+                            todo!("r8:title.go:titlePaletteBlend（ColorM 後備：預建標題調色盤幀缺漏時）")
+                        }
+                    }
+                    _ => {
+                        if self.cut_frame < self.cut_cur.len() as i64
+                            && let Some(frame) = self.cut_cur[self.cut_frame as usize].as_ref()
+                        {
+                            screen.draw_image(frame, &op);
+                        }
+                    }
+                }
+            }
+            "scroll" => {
+                let Some(scroll) = ta.and_then(|t| t.scroll.as_ref()) else {
+                    return;
+                };
+                let mut op = DrawImageOptions::default();
+                op.geo_m.scale(2.0, 2.0);
+                op.geo_m.translate(0.0, -self.scroll_y * 2.0); // 視窗=大圖的 y=scrollY 起 200 列
+                // 淡入：捲動前60 tick從黑亮起。這是 E1 RGBA 可玩近似，不等同
+                // 原版 0x1f525 的 delta 64→0 共65次六位元 DAC 寫入。
+                let fade = (535.0 - self.scroll_y) / 60.0;
+                if fade < 1.0 {
+                    op.color_scale.scale(fade as f32, fade as f32, fade as f32, 1.0);
+                }
+                screen.draw_image(scroll, &op);
+            }
+            "logozoom" => {
+                let t = self.title_tick;
+                let title = ta.and_then(|a| a.title.as_ref());
+                if t <= 12 {
+                    // 全螢幕紅閃(實拍:硬切純紅)
+                    screen.fill(ColorRgba { r: 0xc8, g: 0x10, b: 0x10, a: 0xff });
+                } else if t <= 42 {
+                    // 標題縮放進場(3.0→1.0,~0.5s;實拍「2」縮入之近似——單獨「2」圖層待 ANI RE)
+                    let p = (t - 12) as f64 / 30.0;
+                    let sc = 2.0 * (3.0 - 2.0 * p); // 6→2
+                    let mut op = DrawImageOptions::default();
+                    op.geo_m.translate(-160.0, -100.0); // 以畫面中心縮放
+                    op.geo_m.scale(sc, sc);
+                    op.geo_m.translate(320.0, 200.0);
+                    if let Some(title) = title {
+                        screen.draw_image(title, &op);
+                    }
+                } else {
+                    // 全螢幕白閃(bloom)
+                    let mut op = DrawImageOptions::default();
+                    op.geo_m.scale(2.0, 2.0);
+                    if let Some(title) = title {
+                        screen.draw_image(title, &op);
+                    }
+                    let mut w = Picture::new_image(LOGICAL_W, LOGICAL_H);
+                    // Go `uint8(255 - (t-42)*30)`：整數轉 uint8 取低 8 位元。
+                    let a = (255 - (t - 42) * 30) as u8;
+                    w.fill(ColorRgba { r: a, g: a, b: a, a });
+                    screen.draw_image(&w, &DrawImageOptions::default());
+                }
+            }
+            "menu" => {
+                let mut op = DrawImageOptions::default();
+                op.geo_m.scale(2.0, 2.0);
+                if !modern && let Some(title) = ta.and_then(|t| t.title.as_ref()) {
+                    screen.draw_image(title, &op);
+                }
+                // 選單項(置中;y 位置對照原版標題畫面下半)
+                for i in 0..3i64 {
+                    let mut st = 0usize;
+                    if i == self.title_sel && (self.title_flash == 0 || (self.title_flash / 3) % 2 == 0) {
+                        st = 1; // 選中(閃爍時交替)
+                    }
+                    let Some(it) = ta.and_then(|t| t.items[i as usize][st].as_ref()) else {
+                        continue;
+                    };
+                    // Go `g.drawModernHDTitleMenuItem(...)`（`modern_hd_title_interface.go:147`）：`modernHDText`
+                    // 為 nil 時回 false；忠實模式的 `begin_present_frame` 把它清成 None。
+                    if self.modern_hd_text.is_some() {
+                        todo!("r6:modern_hd_title_interface.go:drawModernHDTitleMenuItem（HD 標題選單項）")
+                    }
+                    let b = it.bounds();
+                    let mut iop = DrawImageOptions::default();
+                    iop.geo_m.scale(2.0, 2.0);
+                    // 同狀態 DOSBox 最佳匹配:y=164/173/182、間距9@320
+                    iop.geo_m.translate(((320 - (b.max.x - b.min.x)) / 2 * 2) as f64, (title_menu_y(i) * 2) as f64);
+                    screen.draw_image(it, &iop);
+                }
+                // F2 仍可切換重製端音源，但原版標題沒有常駐提示；忠實畫面不疊診斷文字。
+            }
+            "loadslots" => {
+                todo!(
+                    "r8:native_load_slots_ui.go:drawNativeLoadSlots（標題 LOAD 讀檔槽畫面與其後備；開場與第一章沒有進）"
+                )
+            }
+            _ => {}
+        }
     }
 }
 
-/// Go：`title.go:45`，`func titleMenuY(item int) int`
-pub(crate) fn title_menu_y(item: i64) -> i64 {
-    todo!("r5:title.go:titleMenuY")
-}
-
-/// Go：`title.go:456`，`func titlePublisherBrightness(tick int) float32`
-pub(crate) fn title_publisher_brightness(tick: i64) -> f32 {
-    todo!("r5:title.go:titlePublisherBrightness")
-}
-
-/// titleScrollUsesPulsePalette 投影 sub_1F894 的 FDOTHER #102→#101 DAC owner。
-/// 原版在命中列後安裝 #102，11 個30ms列迴圈後、下一列 delay 前恢復 #101。
-///
-/// Go：`title.go:486`，`func titleScrollUsesPulsePalette(scrollY float64) bool`
-pub(crate) fn title_scroll_uses_pulse_palette(scroll_y: f64) -> bool {
-    todo!("r5:title.go:titleScrollUsesPulsePalette")
-}
+#[cfg(test)]
+#[path = "title/title_test.rs"]
+mod title_test;

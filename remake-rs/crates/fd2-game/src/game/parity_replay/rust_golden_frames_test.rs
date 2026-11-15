@@ -9,6 +9,10 @@
 //! 沒設這兩個變數時不建立擷取器，重播與 R4 完全相同。R5 階段 1 的繪圖函式還是 `todo!`，所以打開時第一個
 //! 擷取點就會停在對應的 `todo!`；比對是階段 3 的工作。時鐘、全域亂數與 gaps 的規格見 `PORTING.md`
 //! 「R5 階段 1：畫格擷取介面」；全域亂數（Go `rand.Seed(4)`）還沒有接上，見 [`GLOBAL_RAND_MODEL`]。
+//!
+//! R5 階段 2（`r5t`）：同一個擷取器也供 opening 模式（`rust_golden_frames_opening_test.rs`）使用：
+//! [`FrameCapture::new`] 指定模式，[`FrameCapture::try_observe`] 在 `Game::draw` 停在未移植的 `todo!` 時記下位置並
+//! 回傳 false，`frames.json` 多一個 `stopped` 欄位；`finish` 收 Go `extra` 那幾個欄位（`phase_captures` 等）。
 
 use super::*;
 use sha2::Digest;
@@ -42,10 +46,14 @@ pub(crate) struct FrameGap {
     pub(crate) node: String,
 }
 
-/// Go `goldenFrameRecorder` 的 chapter 模式（不寫 PNG、不分類 draw_path）。
+/// Go `goldenFrameRecorder` 的 chapter 與 opening 模式（不寫 PNG、不分類 draw_path）。
 pub(crate) struct FrameCapture {
+    mode: &'static str,
     out: std::path::PathBuf,
     screen: Picture,
+    /// R5 階段 2：opening 模式以 [`FrameCapture::try_observe`] 擷取，`Game::draw` 停在未移植的 `todo!` 時記下
+    /// 擷取序號與訊息，寫進 `frames.json` 的 `stopped`。
+    stopped: Option<serde_json::Value>,
     pinned: bool,
     clock_mode: &'static str,
     last_frame: i64,
@@ -54,6 +62,9 @@ pub(crate) struct FrameCapture {
     seq: sha2::Sha256,
     rows: Vec<FrameRow>,
     gaps: Vec<FrameGap>,
+    /// `FD2_GOLDEN_FRAMES_DUMP=<擷取序號,…>`：把這些擷取的 640×400 RGBA 原樣寫到 `<out>/frames/<序號>.rgba`，
+    /// 供逐像素找出與 Go 黃金 PNG 的差異（Rust 新增的除錯輸出，不影響雜湊）。
+    dump: BTreeSet<i64>,
 }
 
 impl FrameCapture {
@@ -68,9 +79,16 @@ impl FrameCapture {
             mode == "chapter" && !out.is_empty(),
             "FD2_GOLDEN_FRAMES_MODE={mode:?}、FD2_GOLDEN_FRAMES_OUT={out:?}：章重播只支援 chapter 模式且要指定輸出目錄"
         );
-        Some(FrameCapture {
-            out: out.into(),
+        Some(FrameCapture::new("chapter", out.into()))
+    }
+
+    /// 指定模式與輸出目錄建立擷取器（`from_env` 與 opening 模式共用）。
+    pub(crate) fn new(mode: &'static str, out: std::path::PathBuf) -> FrameCapture {
+        FrameCapture {
+            mode,
+            out,
             screen: Picture::new_image(LOGICAL_W, LOGICAL_H),
+            stopped: None,
             pinned: false,
             clock_mode: "",
             last_frame: 0,
@@ -79,7 +97,12 @@ impl FrameCapture {
             seq: sha2::Sha256::new(),
             rows: Vec::new(),
             gaps: Vec::new(),
-        })
+            dump: std::env::var("FD2_GOLDEN_FRAMES_DUMP")
+                .unwrap_or_default()
+                .split(',')
+                .filter_map(|v| v.trim().parse().ok())
+                .collect(),
+        }
     }
 
     /// Go `goldenFrameRecorder.pinClock`：第一次擷取時把牆鐘設在遠未來（之後 `update` 讀到的遊戲時間凍結），
@@ -106,8 +129,38 @@ impl FrameCapture {
         g.player_clock.game = g.player_clock.game + GoDuration(step);
     }
 
+    /// 已擷取的次數（Go `rec.capture`，opening 模式的 `phase_captures` 用）。
+    pub(crate) fn captures(&self) -> i64 {
+        self.captures
+    }
+
     /// Go `goldenFrameRecorder.observe`：在一個 `update` 之後呼叫。
     pub(crate) fn observe(&mut self, g: &mut Game) {
+        self.observe_with(g, |g, screen| {
+            g.draw(screen);
+            Ok(())
+        });
+    }
+
+    /// opening 模式的 `observe`：`Game::draw` panic（停在未移植的 `todo!`）時不往外傳，把擷取序號、
+    /// `update_frame` 與訊息記進 `stopped`，回傳 false 讓驅動端停下；這次擷取不算進序列。
+    pub(crate) fn try_observe(&mut self, g: &mut Game) -> bool {
+        self.observe_with(g, |g, screen| {
+            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| g.draw(screen))).map_err(|payload| {
+                payload
+                    .downcast_ref::<String>()
+                    .cloned()
+                    .or_else(|| payload.downcast_ref::<&str>().map(|s| s.to_string()))
+                    .unwrap_or_default()
+            })
+        })
+    }
+
+    fn observe_with(
+        &mut self,
+        g: &mut Game,
+        draw: impl FnOnce(&mut Game, &mut Picture) -> std::result::Result<(), String>,
+    ) -> bool {
         let prev = self.last_frame;
         self.pin_clock(g);
         if self.captures > 0 && g.frame - prev > 1 {
@@ -120,17 +173,33 @@ impl FrameCapture {
             });
         }
         self.screen.clear();
-        g.draw(&mut self.screen);
-        let sum: [u8; 32] = sha2::Sha256::digest(self.screen.read_pixels()).into();
+        if let Err(message) = draw(g, &mut self.screen) {
+            eprintln!("畫格擷取停在第 {} 次（update_frame={}）：{message}", self.captures, g.frame);
+            self.stopped = Some(serde_json::json!({
+                "capture": self.captures,
+                "update_frame": g.frame,
+                "node": node_id(g),
+                "title_phase": g.title_phase,
+                "panic": message,
+            }));
+            return false;
+        }
+        let pix = self.screen.read_pixels();
+        let sum: [u8; 32] = sha2::Sha256::digest(pix).into();
         self.seq.update(sum);
         let hash: String = sum.iter().map(|b| format!("{b:02x}")).collect();
         let index = self.captures;
         self.captures += 1;
+        if self.dump.contains(&index) {
+            let dir = self.out.join("frames");
+            std::fs::create_dir_all(&dir).expect("建立 frames 目錄");
+            std::fs::write(dir.join(format!("{index:06}.rgba")), pix).expect("寫 RGBA 傾印");
+        }
         if let Some(last) = self.rows.last_mut()
             && last.rgba_sha256 == hash
         {
             last.count += 1;
-            return;
+            return true;
         }
         self.rows.push(FrameRow {
             capture: index,
@@ -139,16 +208,17 @@ impl FrameCapture {
             rgba_sha256: hash,
             node: node_id(g),
         });
+        true
     }
 
     /// Go `goldenFrameRecorder.finish`：寫 `frames.json`。
-    pub(crate) fn finish(self) {
+    pub(crate) fn finish(self, extra: serde_json::Map<String, serde_json::Value>) {
         let seq: String = self.seq.finalize().iter().map(|b| format!("{b:02x}")).collect();
         let distinct: BTreeSet<&str> = self.rows.iter().map(|r| r.rgba_sha256.as_str()).collect();
         let gap_updates: i64 = self.gaps.iter().map(|g| g.uncaptured_updates).sum();
-        let manifest = serde_json::json!({
+        let mut manifest = serde_json::json!({
             "schema": "fd2_rust_r5_golden_frames/1",
-            "mode": "chapter",
+            "mode": self.mode,
             "plan": "docs/goal/121-goal-rust-r5-original-art-shell-20261115.md",
             "producer": "remake-rs/crates/fd2-game parity_replay/rust_golden_frames_test.rs",
             "logical_size": [LOGICAL_W, LOGICAL_H],
@@ -162,9 +232,11 @@ impl FrameCapture {
             "sequence_sha256": seq,
             "uncaptured_gaps": self.gaps.len(),
             "uncaptured_update": gap_updates,
+            "stopped": self.stopped,
             "rows": self.rows,
             "gaps": self.gaps,
         });
+        manifest.as_object_mut().unwrap().extend(extra);
         std::fs::create_dir_all(&self.out).expect("建立畫格輸出目錄");
         let mut raw = serde_json::to_vec_pretty(&manifest).unwrap();
         raw.push(b'\n');

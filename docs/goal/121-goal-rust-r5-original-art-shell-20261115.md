@@ -226,3 +226,35 @@ END 回收、AI 閒置回收、攻擊畫面、尾段地圖與介面）呼叫對�
 ### 驗證
 
 `tools/rust_game_test.sh` 320 passed、4 ignored（加畫布 8 項）；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；`Cargo.lock` 沒有改動，沒有新增套件。
+
+## 階段 2 結果：r5t 標題與開場（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5t」。
+
+- 移植 `title.go` 的 `titleMenuY`、`titlePublisherBrightness`、`titleScrollUsesPulsePalette`、`drawTitle`，`PORTING.json` 以
+  `tools/rust_r5_mark_ported.py` 改成 `ported`。`drawTitle` 的 HD 守門（`modernOpeningEnabled`、`drawModernHDTitleMenuItem`）在忠實模式
+  為 false，HD 時 `todo!("r6:…")`；沒有執行到的 `ColorM` 後備（`titlePaletteBlend`）與讀檔槽畫面標 `todo!("r8:…")`。canvas 沒有補語意。
+- Go 測試 3 條（`title_menu_state_test.go` 的 `:110`、`:129`、`:349`）逐條移植。`drawTitle` 在 Go 只有 HD 的 GPU 測試（R6）。
+- Rust 加 opening 模式擷取（`parity_replay/rust_golden_frames_opening_test.rs`，`tools/rust_r5_opening_frames.sh`），步驟與 Go
+  `goldenFramesOpening` 相同；`Game::draw` 停在未移植的 `todo!` 時記在 `frames.json` 的 `stopped`。
+
+### 局部黃金
+
+比對工具 `tools/rust_r5_frames_compare.py`：兩邊的 rows 依 `capture`／`count` 展開成每次擷取的 RGBA SHA-256，逐次比；另要求 Go 黃金
+`draw_path` 為 `title` 的每一次都在 Rust 範圍內且相同。不遮蔽像素。輸出在主工作區 `work/r5-stage2-r5t-20261115/`（不進版控）。
+
+| 項目 | 結果 |
+|---|---|
+| Go 黃金 | `work/r5-stage0-20261115/r1/opening/frames.json`（`7a9c8226…`），`title` 擷取 1940 次，序號 0..1939 連續 |
+| Rust 擷取 | 1940 次，停在第 1940 次：序章第一幀（`story_ch00_handler`）走到 Draw 本體的正規化地圖層 `todo!("r5:main.go:9814..9950")`，不屬本組 |
+| 逐次比對 | 1940／1940 相同；前 1940 次的序列雜湊兩邊都是 `8768d920a135e001a53a2bed8f1b230d402fd07b2dd49d72fa76b875d7e3fa06` |
+| 重跑 | 三次 `frames.json` 逐位元組相同；暫時拿掉 publisher 的 `ColorScale` 後比對失敗（1926／1940，第一個不同在第 0 次），比對有效 |
+
+序章故事段（Go 黃金第 1940..10371 次共 8432 次，`story-viewport` 8431 次、`native-map` 1 次）要等正規化地圖層移植後才能比。`scroll`、`logozoom` 兩個 `titlePhase`
+與 `ColorM` 後備不在 Go 黃金範圍內。
+
+### 驗證
+
+`tools/rust_game_test.sh` 323 passed、5 ignored；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl`
+`1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；`Cargo.lock` 沒有改動。共用檔只改
+`parity_replay` 的擷取器（`FrameCapture` 加 opening 模式與 `stopped`，chapter 模式行為不變），`Game::draw`、`canvas.rs` 沒有改。

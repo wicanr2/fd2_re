@@ -1454,7 +1454,7 @@ Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元�
 | Go 分支 | 行 | 執行次數 | Rust |
 |---|---|---|---|
 | `startupBlocked`、`nativeDefeat`、`nativeEnding`、ch20／ch23／2189A／單位登場、24B4D、`m == nil` | 9395..9488 | 0 | `todo!("r8:…")`（需要 Fill 的先 Fill 黑） |
-| `titlePhase` → `drawTitle` | 9406 | 1964 | `draw_title`（r5） |
+| `titlePhase` → `drawTitle` | 9406 | 1964 | `draw_title`（R5 階段 2 `r5t` 已移植） |
 | `nativeCh28PostPresent` | 9461 | 1064 | `draw_native_ch28_post_present`（r5）；失敗路徑 r8 |
 | `indexedTransition`、補血、修飾、AI 修飾、指令 0～35、AI 物品、`nativeTownDeparture` | 9490..9714 | 0 | `todo!("r8:…")` |
 | `nativePaletteRamp` | 9715 | 5934 | `draw_native_palette_ramp`（r5）；DebugPrint r8 |
@@ -1492,7 +1492,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 對話與文字 | 16（5／11／0） | 205 | 平移、ColorScale、TTF | chapter、opening＋chapter |
 | 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
 | 地圖與單位 | 14（7／7／0） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
-| 標題與開場 | 7（4／3／0） | 198 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening、opening＋chapter |
+| 標題與開場 | 7（0／7／0；R5 階段 2 `r5t` 移植 4 個） | 0 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening（標題段 1940／1940 次與 Go 相同）、opening＋chapter |
 | 轉場與調色盤 | 4（1／3／0） | 25 | DrawImage、縮放、NewImageFromImage | chapter |
 | 素材路徑與時鐘（非繪圖） | 14（0／14／0） | 0 | — | — |
 | 共用與其他 | 1（0／1／0） | 0 | — | — |
@@ -1553,10 +1553,10 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 地圖與單位 | `main.go:12450..12464` | `drawNativeMapFrame` | 15 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
 | 地圖與單位 | `main.go:12469..12525` | `nativeMapFrameImage` | 57 | — | opening＋chapter |
 | 地圖與單位 | `native_spawn_intro.go:360..372` | `drawNativeSpawnIntro` | 13 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
-| 標題與開場 | `title.go:45..47` | `titleMenuY` | 3 | — | opening＋chapter |
-| 標題與開場 | `title.go:456..467` | `titlePublisherBrightness` | 12 | — | opening |
-| 標題與開場 | `title.go:486..493` | `titleScrollUsesPulsePalette` | 8 | — | opening |
-| 標題與開場 | `title.go:716..890` | `drawTitle` | 175 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening＋chapter |
+| 標題與開場 | `title.go:45..47` | `titleMenuY` | 3 | — | opening＋chapter（`r5t` ported） |
+| 標題與開場 | `title.go:456..467` | `titlePublisherBrightness` | 12 | — | opening（`r5t` ported） |
+| 標題與開場 | `title.go:486..493` | `titleScrollUsesPulsePalette` | 8 | — | opening（`r5t` ported） |
+| 標題與開場 | `title.go:716..890` | `drawTitle` | 175 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening＋chapter（`r5t` ported；opening 標題段 1940 次相同） |
 | 轉場與調色盤 | `native_palette_ramp.go:164..188` | `drawNativePaletteRamp` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
 
 ### R5 階段 1：畫格擷取介面
@@ -1592,3 +1592,107 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage1-20261115/r5a-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，三者與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |
 | 實驗重跑 | `tools/rust_r5_ebiten_sampling.sh` 兩次輸出相同；`tools/rust_r5_canvas_vectors.sh`、`tools/rust_r5_skeleton.sh` 重跑結果相同 |
+
+## R5 階段 2：r5t（標題與開場，2026-11-15）
+
+代號 `r5t`，基準 `eb24e88b`。工作單是本檔「R5 對照表」的「標題與開場」4 個 r5 函式；同組已 ported 的 3 個沒有動。
+
+### r5t：移植結果
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `title.go:41`、`42` 常數 `titleMenuTopY`、`titleMenuGapY` | `TITLE_MENU_TOP_Y`、`TITLE_MENU_GAP_Y` | 新增（R4 骨架沒有） |
+| `title.go:45` `titleMenuY` | `title_menu_y` | 逐行 |
+| `title.go:456` `titlePublisherBrightness` | `title_publisher_brightness` | 逐行；`float32(tick+1)/8` 寫成 `(tick + 1) as f32 / 8.0` |
+| `title.go:480` `nativeTitlePalettePulseRows` | `NATIVE_TITLE_PALETTE_PULSE_ROWS` | 新增 |
+| `title.go:486` `titleScrollUsesPulsePalette` | `title_scroll_uses_pulse_palette` | 逐行 |
+| `title.go:716` `drawTitle` | `Game::draw_title` | 見下 |
+
+`draw_title` 照 Go 的 `switch g.titlePhase` 與 `switch step.kind` 逐分支寫，畫布操作一對一：`op.GeoM.Scale(2, 2)`、
+`Translate(0, -scrollY*2)`、publisher 的 `ColorScale.Scale(s, s, s, 1)`、scroll 淡入的 `ColorScale`、logo 縮放的
+`Translate(-160,-100)`→`Scale(sc,sc)`→`Translate(320,200)`、白閃的 `NewImage`＋`Fill(color.RGBA{a,a,a,a})`＋`DrawImage(w, nil)`、
+紅幕 `Fill`、選單項的 `((320-Dx)/2*2, titleMenuY(i)*2)`。canvas 沒有補任何語意。
+
+| 分支 | 開場與第一章 | Rust |
+|---|---|---|
+| `modernOpeningEnabled()`（HD 開場） | 忠實模式為 false | `modern_story_portraits` 為 `None` 時 false，否則 `todo!("r6:…")`（同 `draw_field` 的 `modernHDMapFrameAdmission` 守門） |
+| `drawModernHDTitleMenuItem`（HD 選單項） | `modernHDText` 為 nil，回 false | `modern_hd_text` 為 `None` 時照畫原版選單項，否則 `todo!("r6:…")` |
+| `redfade`／`titlefade` 預建幀缺漏時的 `titlePaletteBlend`（`ColorM`） | 沒有走到（階段 0 盤點 0 次） | `todo!("r8:title.go:titlePaletteBlend…")`：canvas 不實作 `ColorM` |
+| `loadslots`（`drawNativeLoadSlots` 與其後的 TTF 後備） | 沒有走到 | `todo!("r8:native_load_slots_ui.go:drawNativeLoadSlots…")`：`drawNativeLoadSlots` 是 r8，後備要 `Font.Draw`（對話與文字組） |
+| `scroll`、`logozoom` 兩個 `titlePhase` | 沒有走到（`FD2_TITLE=1` 從 `cutscene` 開始） | 照 Go 移植，opening 黃金沒有涵蓋 |
+
+Go 在 `titleAssets` 或該幕影像為 nil 時解參考會 panic；Rust 與 R4 的 `title_update` 相同，把缺少的素材當作不畫
+（`loadGame` 在素材不全時失敗即關閉，正式路徑不會走到）。`PORTING.json` 以 `tools/rust_r5_mark_ported.py` 把 4 個函式改成
+`ported`，未執行分支的 `todo!` 逐筆記在 `r5_stage2_r5t.functions[].todo_branches`；全 crate 狀態 ported 630、r5 54、r6 59、r8 1179。
+
+### r5t：測試
+
+Go 對這 4 個函式的測試都在 `title_menu_state_test.go`，逐條移植到 `title/title_test.rs`：
+
+| Go | Rust |
+|---|---|
+| `TestTitleScrollPalettePulseMatchesNativeRowWindows`（:110） | `test_title_scroll_palette_pulse_matches_native_row_windows` |
+| `TestTitlePublisherScheduleAndBrightness`（:129） | `test_title_publisher_schedule_and_brightness` |
+| `TestTitleMenuRowsMatchStableDOSBoxOracle`（:349） | `test_title_menu_rows_match_stable_dosbox_oracle` |
+
+`drawTitle` 在 Go 只有 HD 開場的 GPU 測試（`modern_hd_opening_test.go` `TestModernHDOpeningRuntimeGPU`，畫 HD 層後檢查原版層全為 0），
+屬 R6；忠實模式的畫格改由下節的 opening 黃金逐張比對。
+
+### r5t：opening 模式擷取
+
+`parity_replay/rust_golden_frames_opening_test.rs`（`test_rust_golden_frames_opening`，`#[ignore]`）對應 Go
+`rust_golden_frames_test.go` 的 `goldenFramesOpening`：同一組 `t.Setenv`（`FD2_TITLE=1`、`FD2_SEED=4`、`FD2_MUTE=1`、
+`FD2_CAMPAIGN=canonical`、`FD2_SHOT_AI=1`、建構槽複本、`XDG_DATA_HOME`，以子行程傳入），`loadGame` 後擷取一次，之後四段迴圈與 Go
+相同（開場到選單、START 後等標題結束、`settleTown`、`driveStory` 到 `battle_ch01`），每段迴圈都是 `ackPresents`→`parityUpdateGame`
+→擷取。時鐘沿用 chapter 模式的 `pin_clock`（第一次擷取時牆鐘為零，`clock` 是 `virtual-60hz-fixed-origin`，與 Go 黃金相同）。
+
+`Game::draw` 停在未移植的 `todo!` 時，`FrameCapture::try_observe` 以 `catch_unwind` 接住，把擷取序號、`update_frame`、節點與訊息寫進
+`frames.json` 的 `stopped`，驅動端結束並照常寫檔；停下的那一次不算進序列。命令：
+
+```
+FD2_WORK=<主工作區>/work FD2_ASSET_PACK=… FD2_REMAKE_ASSETS=… FD2_RUST_BUILD=… FD2_RUST_TARGET=… \
+  tools/rust_r5_opening_frames.sh <輸出目錄>
+```
+
+腳本在 Docker 內跑擷取，再以 `tools/rust_r5_frames_compare.py --path title` 與 Go 黃金
+`work/r5-stage0-20261115/r1/opening/frames.json`（`7a9c8226…`）逐次比 RGBA SHA-256：rows 依 `capture`／`count` 展開成每次擷取，
+比 Rust 擷取到的範圍，並要求 Go `draw_path` 為 `title` 的每一次都在範圍內且相同。`FD2_GOLDEN_FRAMES_DUMP=<序號,…>` 可另把指定擷取的
+RGBA 原樣寫出，供逐像素找差異（本輪沒有用到）。
+
+### r5t：局部黃金結果
+
+輸出在主工作區 `work/r5-stage2-r5t-20261115/opening-r1`、`opening-r2`（不進版控）。
+
+| 項目 | 結果 |
+|---|---|
+| Rust 擷取 | 1940 次（變化 1256 列、相異 1208 張），停在第 1940 次（`update_frame` 1940，`story_ch00_handler`，`titlePhase` 已清空）：`todo!("r5:main.go:9814..9950 正規化地圖層（Draw 本體）")`，即序章第一幀走到 `story-viewport`，屬 Draw 本體的正規化地圖層，不在本組 |
+| Go 黃金的 `title` 擷取 | 1940 次，序號 0..1939 連續（`cutscene` 0..1915、`menu` 1916..1939；第 1916 次之後按 START，其後 23 次是選中項閃爍） |
+| 逐次比對 | 1940／1940 相同，沒有不同的擷取；前 1940 次的序列雜湊兩邊都是 `8768d920a135e001a53a2bed8f1b230d402fd07b2dd49d72fa76b875d7e3fa06` |
+| 重跑 | 三次的 `frames.json` 逐位元組相同（`7fb4b7b2…`）；竄改反向檢查見「r5t：驗證」 |
+
+標題段涵蓋 publisher 的 `ColorScale` 亮度（119 幀）、AFM 幀、捲動與 #102 短暫調色盤、兩張靜態幕、紅幕與標題的預建調色盤幀、紅色
+`Fill`、主選單與選中項閃爍。沒有遮蔽任何像素。`scroll`／`logozoom` 兩個 `titlePhase`、`ColorM` 後備與讀檔槽畫面不在 Go 黃金範圍內。
+
+### r5t：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `parity_replay/rust_golden_frames_test.rs` | `FrameCapture` 加 `mode`、`stopped`、`dump` 欄位；`FrameCapture::new(mode, out)`（`from_env` 改呼叫它）；`observe` 改成共用的 `observe_with`，另加 `try_observe`（`catch_unwind`）與 `captures()`；`finish` 收 `extra`（Go `finish(mode, extra)`），`frames.json` 多 `stopped`，`mode` 改寫實際模式。chapter 模式的行為不變 |
+| `parity_replay/chapter_parity_replay_test.rs` | `capture.finish()` 改成 `capture.finish(serde_json::Map::new())` |
+| `parity_replay.rs` | 掛新子模組 `rust_golden_frames_opening_test`、模組文件加一行 |
+| `main.rs` 的 `Game::draw`、`canvas.rs` | 沒有改 |
+
+### r5t：KNOWN_DIFFERENCES
+
+沒有新增。缺素材時「不畫」而不是 panic 的差異與 R4 `title_update` 相同，正式路徑不會走到。
+
+### r5t：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；323 passed、5 ignored（加本組 3 項測試；ignored 多 1 個 opening 擷取） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5t-20261115/parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5_opening_frames.sh` | 上節；三次（`opening-r1`..`r3`）的 `frames.json` 逐位元組相同 |
+| 竄改反向檢查 | 暫時拿掉 publisher 的 `ColorScale.Scale(s, s, s, 1)` 重跑（`opening-tamper`），比對失敗：1926／1940 相同，第一個不同在第 0 次（`cutscene` 的 publisher 淡入）；改回後重跑相同 |
+| `Cargo.lock` | 沒有改動；沒有新增套件 |

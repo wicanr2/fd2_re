@@ -1,11 +1,11 @@
 //! Go 來源：`remake/cmd/fd2/title_menu_state_test.go`。
 //!
-//! 未移植的 Go 測試（理由見 `PORTING.md`「A 組測試」）：`TestTitleScrollPalettePulseMatchesNativeRowWindows`、
-//! `TestTitlePublisherScheduleAndBrightness`（`titleScrollUsesPulsePalette`／`titlePublisherBrightness`
-//! 是繪圖用的 `r8` 函式）、`TestNativeTitlePaletteTransitionsUseIndexedFDOTHERFrames`、
-//! `TestNativeTitlePublisherUsesFixedFDOTHERResources`（`decode…` 是 `r8`）、`TestTitleMenuRowsMatchStableDOSBoxOracle`
-//! （`titleMenuY`，`r8`）、`TestTitleSlotTraceIsBoundedAndCancelable`（`TitleSlotState.Step`，`r8`），以及三個
-//! 經 `loadGame` 改寫環境變數的測試。
+//! 未移植的 Go 測試（理由見 `PORTING.md`「A 組測試」）：`TestNativeTitlePaletteTransitionsUseIndexedFDOTHERFrames`、
+//! `TestNativeTitlePublisherUsesFixedFDOTHERResources`（`decode…` 是 `r8`）、
+//! `TestTitleSlotTraceIsBoundedAndCancelable`（`TitleSlotState.Step`，`r8`），以及三個經 `loadGame` 改寫環境變數的
+//! 測試。R5 階段 2（`r5t`）補上 `titleScrollUsesPulsePalette`、`titlePublisherBrightness`、`titleMenuY` 的三個測試；
+//! `drawTitle` 在 Go 只有 HD 開場的 GPU 測試（`modern_hd_opening_test.go`，R6），忠實模式的畫格由 opening 模式的
+//! Go 黃金逐張比對（`PORTING.md`「R5 階段 2：r5t」）。
 
 use super::*;
 use crate::test_support;
@@ -76,6 +76,35 @@ fn test_title_cut_advance_stops_ani1_companion_voice() {
     g.title_ani1_voice = Some(AudioVoice { playing: true, ..Default::default() });
     g.cut_advance();
     assert!(g.title_ani1_voice.is_none() && g.cut_idx == index + 1);
+}
+
+/// Go：`title_menu_state_test.go:110` `TestTitleScrollPalettePulseMatchesNativeRowWindows`
+#[test]
+fn test_title_scroll_palette_pulse_matches_native_row_windows() {
+    let mut want_rows = BTreeSet::new();
+    for trigger in NATIVE_TITLE_PALETTE_PULSE_ROWS {
+        for row in (trigger - 10..=trigger).rev() {
+            want_rows.insert(row);
+        }
+    }
+    for row in (0..=535i64).rev() {
+        let (got, want) = (title_scroll_uses_pulse_palette(row as f64), want_rows.contains(&row));
+        assert_eq!(got, want, "scroll row {row} pulse={got}, want {want}");
+    }
+    for (y, want) in [(520.001, false), (520.0, true), (509.001, true), (509.0, false)] {
+        assert_eq!(title_scroll_uses_pulse_palette(y), want, "fractional scrollY={y}");
+    }
+}
+
+/// Go：`title_menu_state_test.go:129` `TestTitlePublisherScheduleAndBrightness`
+#[test]
+fn test_title_publisher_schedule_and_brightness() {
+    let got = &CUT_SCRIPT[0];
+    assert!(got.kind == "publisher" && got.tick == 119 && !got.skip, "publisher step={got:?}");
+    for (tick, want) in [(-1, 0.0f32), (0, 0.125), (7, 1.0), (8, 1.0), (110, 1.0), (111, 1.0), (118, 0.125), (119, 0.0)]
+    {
+        assert_eq!(title_publisher_brightness(tick), want, "publisher brightness tick {tick}");
+    }
 }
 
 /// Go：`title_menu_state_test.go:140` `TestTitleLogoPaletteTransitionSchedule`
@@ -196,6 +225,14 @@ fn test_separated_title_fdother_fails_closed_without_pack() {
         "missing separated title bundle was accepted"
     );
     assert!(load_separated_title_fdother(&dir.to_string_lossy(), None).is_err());
+}
+
+/// Go：`title_menu_state_test.go:349` `TestTitleMenuRowsMatchStableDOSBoxOracle`
+#[test]
+fn test_title_menu_rows_match_stable_dosbox_oracle() {
+    for (item, y) in [164i64, 173, 182].into_iter().enumerate() {
+        assert_eq!(title_menu_y(item as i64), y, "title menu row {item}");
+    }
 }
 
 /// Go：`title_menu_state_test.go:358` `TestTitleCutSkipIsPerStepAndDoesNotGrantEscapeOverride`

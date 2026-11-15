@@ -25,12 +25,12 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 626,
-      "r5": 58,
+      "ported": 630,
+      "r5": 54,
       "r6": 59,
       "r8": 1179
     },
-    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）"
+    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）"
   },
   "excluded_go_files": [
     "assets_glob_js.go",
@@ -21946,7 +21946,7 @@
         {
           "name": "titleMenuY",
           "rust": "fd2_game::game::title_menu_y",
-          "status": "r5",
+          "status": "ported",
           "go_line": 45
         },
         {
@@ -22059,7 +22059,7 @@
         {
           "name": "titlePublisherBrightness",
           "rust": "fd2_game::game::title_publisher_brightness",
-          "status": "r5",
+          "status": "ported",
           "go_line": 456
         },
         {
@@ -22074,7 +22074,7 @@
         {
           "name": "titleScrollUsesPulsePalette",
           "rust": "fd2_game::game::title_scroll_uses_pulse_palette",
-          "status": "r5",
+          "status": "ported",
           "go_line": 486
         },
         {
@@ -22155,7 +22155,7 @@
           "name": "drawTitle",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_title",
-          "status": "r5",
+          "status": "ported",
           "go_line": 716
         }
       ],
@@ -22350,6 +22350,41 @@
       "font.go:194 (*Font).Width",
       "main.go:9355 (*Game).Draw",
       "modern_hd_battle_panel.go:224 drawModernBattlePanelInk"
+    ]
+  },
+  "r5_stage2_r5t": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "title.go:45",
+        "func": "titleMenuY",
+        "rust": "fd2_game::game::title_menu_y",
+        "todo_branches": []
+      },
+      {
+        "go": "title.go:456",
+        "func": "titlePublisherBrightness",
+        "rust": "fd2_game::game::title_publisher_brightness",
+        "todo_branches": []
+      },
+      {
+        "go": "title.go:486",
+        "func": "titleScrollUsesPulsePalette",
+        "rust": "fd2_game::game::title_scroll_uses_pulse_palette",
+        "todo_branches": []
+      },
+      {
+        "go": "title.go:716",
+        "func": "drawTitle",
+        "rust": "fd2_game::game::Game::draw_title",
+        "todo_branches": [
+          "r6:modern_hd_opening.go:modernOpeningEnabled（HD 開場）",
+          "r8:title.go:titlePaletteBlend（ColorM 後備：預建紅幕調色盤幀缺漏時）",
+          "r8:title.go:titlePaletteBlend（ColorM 後備：預建標題調色盤幀缺漏時）",
+          "r6:modern_hd_title_interface.go:drawModernHDTitleMenuItem（HD 標題選單項）",
+          "r8:native_load_slots_ui.go:drawNativeLoadSlots（標題 LOAD 讀檔槽畫面與其後備；開場與第一章沒有進）"
+        ]
+      }
     ]
   }
 }
