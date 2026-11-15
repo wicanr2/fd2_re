@@ -93,7 +93,7 @@ Go 版正式程式約 13.7 萬行，測試約 15 萬行（2026-11-13 以 `wc -l`
 
 各階段工單：R0 [#306](https://github.com/wicanr2/fd2_re/issues/306)、R1 [#307](https://github.com/wicanr2/fd2_re/issues/307)、R2 [#308](https://github.com/wicanr2/fd2_re/issues/308)、R3 [#309](https://github.com/wicanr2/fd2_re/issues/309)、R4 [#310](https://github.com/wicanr2/fd2_re/issues/310)、R5 [#311](https://github.com/wicanr2/fd2_re/issues/311)、R6 [#312](https://github.com/wicanr2/fd2_re/issues/312)、R7 [#313](https://github.com/wicanr2/fd2_re/issues/313)、R8 [#314](https://github.com/wicanr2/fd2_re/issues/314)。R0～R4 各階段收尾時，在下方「進度」加一個標題寫明該階段已完成的小節（格式見 R0），工單的機器檢查以這個標題判定；其他段落不要寫出那個字串，以免誤判。
 
-R4 的流程與畫面拆分計畫見 [120](120-goal-rust-r4-game-state-split-20261114.md)。
+R4 的流程與畫面拆分計畫見 [120](120-goal-rust-r4-game-state-split-20261114.md)。R5 的原版美術外殼計畫（CPU 合成、之後加 GPU 加速模式）見 [121](121-goal-rust-r5-original-art-shell-20261115.md)。
 
 R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每個階段完成時更新 `56` 與 `58`，切換前 Go 版的發行包維持可用。
 
