@@ -208,7 +208,7 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 完成條件「Go 的戰鬥決定性測試以相同種子產生相同結果」：Go 測試的固定種子期望值不改即全部通過；跨組黃金在 33 張地圖 × 3 個種子上跑敵我 AI 戰鬥（上限 24 回合），每一步的計畫、結果、單位變化與下一個亂數都和 Go 相同，結局 `StateSnapshot` 相同。
 - `tools/rust_rules_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 647 項單元測試通過，沒有 ignore 或略過；clippy `-D warnings` 乾淨。每份黃金都在子代理 worktree 與整合後的主 checkout 各產一次，SHA 相同，並做過竄改反向檢查。
 - 快照與 Go 雙向相容：Rust 讀 Go 寫的快照再寫出與 Go 相同，Rust 寫出的快照 Go 能讀回。
-- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的具名例外之一；2026-11-14 使用者另同意登記 `fd2-formats` 的 `go_math`（`math.Sin`／`Cos`）與 `fd2-campaign` 的 `go_filepath`（`filepath.Clean`／`Join`），2026-11-15 再同意登記 `fd2-game` 的 `go_unicode`（斷行用的 `unicode.Han` 等 Script 表與 `unicode.Is`／`In`）與 `go_json_float`（`encoding/json` 寫 `float64` 的格式），清單見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`。
+- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的具名例外之一；2026-11-14 使用者另同意登記 `fd2-formats` 的 `go_math`（`math.Sin`／`Cos`）與 `fd2-campaign` 的 `go_filepath`（`filepath.Clean`／`Join`），2026-11-15 再同意登記 `fd2-game` 的 `go_unicode`（斷行用的 `unicode.Han` 等 Script 表與 `unicode.Is`／`In`）與 `go_json_float`（`encoding/json` 寫 `float64` 的格式），以及 `go_x_image_font`（R5 TTF 用的 `golang.org/x/image` 字型度量慣例，第六項），清單見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`。
 - `serde_json` 開啟 `float_roundtrip`，讀小數與 Go 一樣正確捨入。
 - 跨組黃金抓到一處：Go `native_ai_action_runtime.go` 531 行以 `:=` 重新賦值了 `found`，診斷欄位 `NativeModeBlockedFound` 實際寫入「找到最近對立單位」。Rust 照 Go 的實際值寫入並在註解寫明。
 - 刻意不照做：Go 解 JSON 時欄位名不分大小寫，Rust 只認標籤原文；損壞輸入只比接受或拒收；Go map 迭代順序造成的平手與錯誤訊息選擇（`combat.go` reach 平手在重播中出現 0 次）；nil 接收者與不在 `State.Units` 裡的單位指標。各組清單在各黃金測試的 `KNOWN_DIFFERENCES`。
