@@ -12,9 +12,9 @@ package main
 //   - ramp：Draw 走到 nativePaletteRamp 分支時呼叫整個 g.Draw（該分支是 Fill 黑、
 //     drawNativePaletteRamp、defer 的 DAC 白／黑 Fill，沒有別組圖層），記整張 640×400 雜湊，
 //     可與階段 0 chapter 黃金同一擷取點直接比。
-//   - tail：Draw 走到尾段時，640×400 Fill 黑後畫正規化世界層（main.go:9816..9919 的逐字複本：
+//   - tail：Draw 走到尾段時，640×400 Fill 黑後畫正規化世界層（main.go:9819..9922 的逐字複本：
 //     storyView 離屏、圖塊、移動範圍格、施法／攻擊射程格、單位、storyActors、storyZoom 放大），
-//     記雜湊（world）；g.fade 非 nil 時再於同一張畫布疊舊 fade 黑色疊層（main.go:10174..10183
+//     記雜湊（world）；g.fade 非 nil 時再於同一張畫布疊舊 fade 黑色疊層（main.go:10177..10186
 //     的逐字複本），記雜湊（fade）。游標與左下 HUD（HUD 組）與其後各層不畫；原生整幀（r5m）照 Draw
 //     畫到另一張畫布，只為了留下它對 nativeMapVGA 的重建（之後的調色盤斜坡從那裡取底圖），鍵只記成功與否。
 //
@@ -87,13 +87,13 @@ func r5pLayerBranch(g *Game) string {
 	return goldenMapLayersBranch(g)
 }
 
-// r5pDrawNormalizedWorld：Draw 的 main.go:9812..9814 與 9816..9919（!modernHDRequested 時）。
+// r5pDrawNormalizedWorld：Draw 的 main.go:9815..9817 與 9819..9922（!modernHDRequested 時）。
 func r5pDrawNormalizedWorld(g *Game, screen *ebiten.Image) {
 	target, viewW, viewH := screen, logicalW, logicalH
 	legacyViewport := g.storyBG || g.battleEvent != nil
 	tw, th := g.m.TileW, g.m.TileH
 	{
-		// ---- 逐字複本開始：main.go:9816..9919 ----
+		// ---- 逐字複本開始：main.go:9819..9922 ----
 		if legacyViewport {
 			if g.storyView == nil {
 				g.storyView = ebiten.NewImage(logicalW/storyZoom, logicalH/storyZoom)
@@ -198,13 +198,13 @@ func r5pDrawNormalizedWorld(g *Game, screen *ebiten.Image) {
 				}
 			}
 		}
-		// ---- 逐字複本結束：main.go:9816..9919 ----
+		// ---- 逐字複本結束：main.go:9819..9922 ----
 	}
 }
 
-// r5pDrawFade：Draw 的 main.go:10174..10183。
+// r5pDrawFade：Draw 的 main.go:10177..10186。
 func r5pDrawFade(g *Game, screen *ebiten.Image) {
-	// ---- 逐字複本開始：main.go:10174..10183 ----
+	// ---- 逐字複本開始：main.go:10177..10186 ----
 	if g.fade != nil {
 		frac := float64(g.fade.t) / float64(g.fade.total)
 		alpha := frac
@@ -215,7 +215,7 @@ func r5pDrawFade(g *Game, screen *ebiten.Image) {
 		ov.Fill(color.RGBA{0, 0, 0, uint8(alpha * 0xff)})
 		screen.DrawImage(ov, &ebiten.DrawImageOptions{})
 	}
-	// ---- 逐字複本結束：main.go:10174..10183 ----
+	// ---- 逐字複本結束：main.go:10177..10186 ----
 }
 
 // r5pFadeAlpha 是 main.go:10175..10181 的 uint8(alpha * 0xff)，只供比對鍵顯示。
