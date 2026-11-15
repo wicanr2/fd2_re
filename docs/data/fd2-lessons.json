@@ -5870,6 +5870,23 @@
       "rule": "清理子代理 worktree 時只用本輪記下的確切路徑或代理 ID 逐一移除，不以「路徑含 agent-」之類的樣式從 git worktree list 篩選；git worktree remove --force 會連同未提交與被忽略的檔案一起刪掉，誤選就無法回復。移除前先 git -C <路徑> status --short 並確認分支名是 worktree-agent-<本輪 ID>。",
       "why": "R4 階段 2 收尾以 awk '/^worktree .*agent-/' 篩選，誤中 work/matching-copy-agent-20261008 與 work/matching-inventory-agent-20261008 兩個 11-05 的 matching 備份 worktree 並刪掉分支；分支已推送遠端，當場以原 SHA 7074338e／a74c32f0 重建分支與 worktree，但目錄內若有提交後新增或被忽略的檔案已無法確認。",
       "evidence": "WORKLOG.md 2026-11-15"
+    },
+    {
+      "id": "golden-frames-pin-global-rand",
+      "date": "2026-11-15",
+      "area": "改寫",
+      "rule": "Go 黃金畫格或任何要求兩次重播逐位元組相同的擷取，除了牆鐘之外還要以 rand.Seed 固定 math/rand 的全域來源：對白與確認框的嘴型動畫用全域 rand.Intn，Go 1.20 起全域來源在行程啟動時隨機播種，正式程式沒有呼叫 rand.Seed。章重播的檢查點不含嘴型，所以檢查點相同不代表畫格相同。",
+      "why": "R5 階段 0 第一章畫格在檢查點與 R4 黃金逐位元組相同的情況下，兩次執行的序列雜湊不同（6f80e030… 對 d19db19c…），第一個分歧在戰場事件對白的嘴型開合時點；固定全域種子後才可重現。",
+      "evidence": "remake/cmd/fd2/rust_golden_frames_test.go（goldenFrameGlobalRandSeed）",
+      "guard_note": "guard 掃描器排除 _test.go，種子寫在測試檔，不掛會失真的 guard；以 tools/rust_r5_golden_frames.sh 連跑兩次比序列雜湊驗證。"
+    },
+    {
+      "id": "ebiten-readpixels-loop-must-cycle-frames",
+      "date": "2026-11-15",
+      "area": "驗證",
+      "rule": "在 RunGame 裡逐幀 Draw＋ReadPixels 的長流程，每次擷取都要讓 Ebiten 走完一個畫格（在 Update 內執行擷取後回傳，下一個 Update 再放測試端繼續），不要讓 Update 一直停住；Draw 每幀新建的 ebiten.Image 要等畫格結束才釋放，llvmpipe 的貼圖在主機記憶體。",
+      "why": "R5 階段 0 第一版讓 probe 停在第一個 Update、測試 goroutine 直接 Draw／ReadPixels，第一章戰場每次擷取約多 3.6 MB，2048 次後 RSS 8 GB 被砍；定期 runtime.GC 也無效。改成每次擷取走一個畫格後 RSS 穩定在約 0.9 GB。",
+      "evidence": "remake/cmd/fd2/rust_golden_frames_test.go（goldenFrameProbe）"
     }
   ]
 }

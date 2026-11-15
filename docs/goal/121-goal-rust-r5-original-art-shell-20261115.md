@@ -57,3 +57,103 @@
 | 3 | 整合：開場與第一章全部畫格與 Go 黃金比對到相同 |
 | 4 | `fd2-app`：Bevy 視窗、輸入、音訊（OGG 解碼與 Go 逐樣本比對，見 119 R0 的待查） |
 | 5 | GPU 加速模式（CPU 驗收後） |
+
+## 階段 0 結果（2026-11-15）
+
+命令：`FD2_DATA_ROOT=<主工作區> tools/rust_r5_golden_frames.sh work/r5-stage0-20261115`。產出在主工作區 `work/r5-stage0-20261115/`，PNG 與覆蓋率檔不進版控。環境是 `fd2-go-test-local`（Go 1.22.12、Ebiten v2.6.6），Xvfb 下的 Mesa 22.3.6 llvmpipe。
+
+新增的工具都只輸出資料，既有 Go 檔沒有改：
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_frames_test.go` | `TestRustGoldenFrames`，未設 `FD2_GOLDEN_FRAMES_OUT` 時略過 |
+| `remake/cmd/fd2-r5-ebiten-rounding/` | Ebiten 半透明疊色與 `ColorScale` 的讀回實測 |
+| `tools/rust_r5_draw_inventory/` | 以 go/types 建 `Game.Draw` 的靜態呼叫樹，與覆蓋率交集 |
+| `tools/rust_r5_golden_frames.sh` | Docker 驅動：兩種模式各跑兩次、比雜湊、再跑實測與盤點 |
+
+### Go 黃金畫格
+
+| 模式 | 範圍 | 擷取 | 內容改變的幀 | 相異畫面 | 序列 SHA-256 |
+|---|---|---|---|---|---|
+| `opening` | 標題開場動畫 → 選單 → START → 序章故事 → 第一次進入 `battle_ch01`，每個 Update 之後一張 | 10372 | 7445 | 6334 | `eeed99ea…0be771` |
+| `chapter` | 第一章受控重播（輸入同 `tools/rust_r4_ch01_coverage.sh`）的每個 pump 幀 | 13751 | 8589 | 7463 | `2f26390d…ff7c4f` |
+
+- 兩次執行的序列雜湊、`frames.json`（`7a9c8226…`、`d71aad6a…`）與 16034 張 PNG 逐檔相同。
+- 加上每幀 `Draw` 之後，`chapter` 模式的 `checkpoints.jsonl` 兩次都是 R4 Go 黃金 `1c846f57…`。
+- 擷取方式：`chapter` 模式原樣呼叫 `TestChapterParityReplay`，只掛共用 `pump` 既有的 `ch01FrameObserver`，在上一個 Update 之後、下一個 `ackPresents` 之前 `Draw` 到離屏 640×400 影像並 `ReadPixels`。`Draw` 在 Ebiten 的 `Update` 內執行，每次擷取都走完一個 Ebiten 畫格，否則每幀新建的影像不會釋放。
+- 牆鐘：遊戲時間都經過 `playerClock.sample`。擷取時把 `playerClock.wall` 設在遠未來，再依 `g.frame` 的增量把 `playerClock.game` 推進 1/60 秒，等於 60 Hz 虛擬時鐘。
+- 亂數：嘴型動畫用 `math/rand` 全域來源，Go 1.20 起它隨機播種，正式程式沒有 `rand.Seed`。沒固定時檢查點相同，但兩次執行的畫格序列不同，第一個分歧在戰場事件對白的嘴型時點。擷取前以 `rand.Seed(4)` 固定。Rust 版的嘴型要照 Go `math/rand` 的序列。
+- `chapter` 模式沒擷到的 Update 共 7 段 9282 個，記在 `frames.json` 的 `gaps`。序章 `driveStory` 佔 8430 個，由 `opening` 模式補上。武器店直接迴圈佔 817 個。另有 5 段各 7 個，推定是指令環開合的 `closeRing`／`settleActionOverlay`。城鎮、商店、整備多半不經 `pump`，只擷到 1 到 21 幀，要照驗證第 2 點以 `FD2_SHOT_STATE` 另補。
+
+`Draw` 後依狀態推定的主路徑（`frames.json` 的 `draw_paths`，近似分類）：
+
+| 路徑 | opening | chapter |
+|---|---|---|
+| `title`（`drawTitle`） | 1940 | 24 |
+| `story-viewport`（storyBG 或戰場事件：正規化圖塊與 sprite 畫到 320×200 離屏，再 `GeoM.Scale(storyZoom)`） | 8431 | 1837 |
+| `native-map`（`drawNativeMapFrame` 蓋上整幀索引畫面） | 1 | 4077 |
+| `battle-normalized`（戰場但沒有原生整幀，正規化圖層可見） | 0 | 1548 |
+| `fullscreen-native`（`Draw` 前段 early-return 的原生全螢幕呈現與非戰場節點） | 0 | 6265 |
+| 其中帶 `+ttf-msg`（尾段以 TTF 畫 `g.msg`） | 0 | 5763 |
+| 其中帶 `+fade`（舊 fade 黑色疊層） | 72 | 34 |
+
+### 執行到的繪圖函式
+
+從 `(*Game).Draw` 沿靜態呼叫邊走，只經過覆蓋率有執行的函式。結果在 `work/r5-stage0-20261115/inventory/executed-draw-functions.json`（`60e0a421…`）與 `draw-inventory.json`（`4be7ce9d…`）。
+
+| 分組 | 函式 | 行數 |
+|---|---|---|
+| 城鎮與設施（含 486 行的 `drawCampaignUI`，第一章只跑到守門與少數分支） | 28 | 1046 |
+| `Game.Draw` 本體（分派、正規化地圖層、舊對話框與 fade） | 1 | 834 |
+| HUD 與選單 | 35 | 790 |
+| 對話與文字 | 16 | 383 |
+| 戰鬥演出 | 7 | 318 |
+| 地圖與單位 | 14 | 283 |
+| 標題與開場 | 7 | 257 |
+| 轉場與調色盤 | 4 | 229 |
+| 素材路徑與時鐘（非繪圖） | 14 | 160 |
+| 共用與其他 | 1 | 7 |
+| 非 HD 合計 | 127 | 4307 |
+| HD 檔（`modern_*` 等，原版模式下多為守門） | 69 | 2431 |
+
+- 這些函式直接用到的 Ebiten API：`DrawImage`、`GeoM.Translate`／`Scale`、`NewImage`、`NewImageFromImage`、`Fill`、`SubImage`、`Clear`、`WritePixels`、`Set`、`Dispose`、`ColorScale.Scale`／`ScaleWithColor`、`text.DrawWithOptions`／`BoundString`、`ebitenutil.DebugPrint*`。`ColorM`、`vector`、shader 都沒有出現在執行到的函式裡。
+- 限制：介面呼叫無法靜態解析，本輪為 0 處。經 func 型別變數或欄位的呼叫有 21 處，多是函式內的閉包。`internal/` 的合成器不在 `-coverpkg=./cmd/fd2` 內，這裡只算 `cmd/fd2`。
+
+### 舊後備與 RGBA 路徑
+
+| 路徑 | 位置 | 執行次數（opening／chapter） | 結論 |
+|---|---|---|---|
+| 正規化圖塊與 sprite 的 320×200 離屏放大 | `main.go:9815`..`9909` | 序章與戰場事件的主要路徑 | 會走到，畫面可見，要移植 |
+| 已行動單位 `ColorScale.Scale(0.55,0.55,0.6)` | `main.go:11545` | 0／9071 | 會走到；有原生整幀時被蓋掉，`battle-normalized` 時可見 |
+| 移動範圍半透明格 `(0x40,0x80,0xff,0x66)` | `main.go:9844` | 0／135 | 會走到，同上 |
+| 白框游標 `drawCursor` | `main.go:11571` | 4／15308（每次 4 條） | 會走到，同上 |
+| 舊 fade 黑色疊層 | `main.go:10180` | 72／34 | 會走到，畫在最上層，可見 |
+| TTF 戰場短訊 `g.msg` | `main.go:10122` | 0／2650 | 會走到，畫在原生整幀之上，可見 |
+| TTF 勝負字樣 | `main.go:10137`、`10143` | 0／1 | 會走到 |
+| publisher 亮度 `ColorScale` | `title.go:739` | 119／0 | 會走到 |
+| 色塊單位 `drawUnit`、標題 `ColorM`（`titlePaletteBlend`）、`DebugPrint` 35 處、scroll 淡入（`title.go:790`）、白閃（`title.go:812`）、舊對話框（`main.go:10000`..`10118`） | | 0 | 開場與第一章沒走到 |
+
+HD 檔 `modern_hd_confirmation.go:122` 的 `text.DrawWithOptions` 在第一章執行 8 次，階段 1 要核對它在原版模式下是否影響畫面。
+
+### Ebiten 取整（llvmpipe）
+
+`cmd/fd2-r5-ebiten-rounding` 跑 30 組實驗，每組 196608 個通道值。結果在 `work/r5-stage0-20261115/rounding/ebiten-rounding.json`（`1dc87b3a…`）。下列公式與 Go 實際讀回逐值相同：
+
+| 操作 | 逐值相同的公式 |
+|---|---|
+| `Fill` 色塊以 `DrawImage` source-over 疊到不透明底 | `out = min(255, s + mul255(d*(255-a)))`，`mul255(x) = (x + (x>>8) + 0x80) >> 8` |
+| `ColorScale.Scale(k)` 畫到不透明底 | `out = f2u(u2f(v) * k)` |
+| `ColorScale.ScaleWithColor(c)`（TTF 字的覆蓋率） | 來源 rgb 與 alpha 各自 `f2u(u2f(v) * k)`，再照第一列疊合 |
+
+- `u2f(v) = float32(float32(v)/256) * float32(256/255)`，是 llvmpipe 讀 8 位元貼圖的換算。
+- `f2u(x)`：x≤0 為 0，x≥1 為 255，其餘取 `float32(float32(x*float32(255/256)) + 32768)` 的 IEEE 位元低 8 位，float32 加法以最近偶數取整。
+- 每一步都要明寫 float32 轉換，避免乘加融合成 FMA。
+- 常見的四捨五入公式不對：`(d*(255-a)+127)/255` 在每組 alpha 掃描的每個通道有 24 個 (d, a) 組合不同，例如 d=191、a=2 時實際是 189，不是 190。`round(v*k)` 在 30×0.55 時實際是 16，不是 17。
+- R/G/B 大於 A 的非預乘色（main.go 的範圍格、對話框底）也走同一公式，結果在 255 截頂。
+- 這是 llvmpipe 的行為，換 GPU 驅動可能不同。黃金畫格在同一環境產生，CPU 合成照上列公式實作；之後的 GPU 模式以 CPU 畫格為準。
+
+### 對下一階段的輸入
+
+- 階段 1 的 Ebiten 語意子集要包含：最近鄰 `DrawImage`（平移、整數與 `storyZoom` 縮放、對話框的非整數縮放）、`Fill`、`SubImage`、`Set`、上列 source-over 與 `ColorScale` 公式，以及 TTF 文字的位置與外框。
+- 階段 2 的分組照上表。`story-viewport` 的正規化圖層與 `drawCampaignUI` 是行數最多的兩塊，城鎮與設施要先補 `FD2_SHOT_STATE` 黃金才能驗。
+- Rust 對比 `chapter` 畫格時，要照同一套 pump 擷取點、60 Hz 虛擬時鐘與 `rand.Seed(4)` 重現。
