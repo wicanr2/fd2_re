@@ -198,20 +198,138 @@ impl Game {
     /// composeNativeHotelStable 是背景＋對話框＋店主頭像（指定 DATO 幀）＋「有什麼事嗎？」。
     ///
     /// Go：`native_hotel_ui.go:82`，`func (g *Game) composeNativeHotelStable(portraitFrame int) ([]byte, bool)`
+    ///
+    /// R5 階段 2 r5c。`ui.assets` 為 nil 時 Go 解參考 panic，Rust 同樣 panic；`shared.strings`／`shared.font` 為 nil
+    /// 時 Go 由 `ComposeNativeChurchTextAt` 回錯誤，Rust 的 campaign 函式收借用，nil 時同樣回 false
+    /// （同 `compose_native_church_scene`）。
     pub(crate) fn compose_native_hotel_stable(&self, portrait_frame: i64) -> (Vec<u8>, bool) {
-        todo!("r5:native_hotel_ui.go:composeNativeHotelStable")
+        let (Some(ui), Some(shared)) = (self.native_hotel_ui.as_ref(), self.native_class_ui.as_ref()) else {
+            return (Vec::new(), false);
+        };
+        if portrait_frame < 0 || portrait_frame >= ui.portraits.len() as i64 {
+            return (Vec::new(), false);
+        }
+        let assets = ui.assets.as_ref().expect("composeNativeHotelStable：nativeHotelUI.assets 為 nil");
+        let Ok(mut frame) = campaign::compose_native_church_dialogue_overlay_at(
+            &assets.background,
+            &shared.dialogue,
+            &ui.portraits[portrait_frame as usize],
+            campaign::native_facility_portrait_offset(NATIVE_HOTEL_PORTRAIT_ID),
+        ) else {
+            return (Vec::new(), false);
+        };
+        let prompt = if self.native_hotel_prompt_return { 0x24a } else { NATIVE_HOTEL_PROMPT_TEXT };
+        let (Some(strings), Some(font)) = (shared.strings.as_ref(), shared.font.as_ref()) else {
+            return (Vec::new(), false);
+        };
+        match campaign::compose_native_church_text_at(
+            &mut frame,
+            strings,
+            font,
+            prompt,
+            campaign::NATIVE_SHOP_TEXT_OFFSET,
+        ) {
+            Ok(frame) => (frame, true),
+            Err(_) => (Vec::new(), false),
+        }
     }
 
     /// composeNativeHotelFrame 依目前模式組出整幀；portraitFrame 是店主頭像的 DATO 幀
     /// （0x16559 等待期間會眨眼，重播對每一幀各出一張）。
     ///
     /// Go：`native_hotel_ui.go:106`，`func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool)`
+    ///
+    /// R5 階段 2 r5c。第一章的正式路徑只畫到 `menu`；`slots`、`saved` 由酒店保存（`town_save`）走到，局部黃金在
+    /// 每次輸入後擷取（`rust_golden_r5c_layers_test.rs`）。`loadslots`、`loaded`、`load_blocked` 與它們共用同一段。
+    /// `saved` 這段 Go 以 `ui.portraits[portraitFrame]` 直接索引，越界時 panic；呼叫端都傳已檢查過的 0。
     pub(crate) fn compose_native_hotel_frame(&mut self, portrait_frame: i64) -> (Vec<u8>, bool) {
-        todo!("r5:native_hotel_ui.go:composeNativeHotelFrame")
+        if self.native_hotel_ui.is_none() || self.native_class_ui.is_none() {
+            return (Vec::new(), false);
+        }
+        let (stable, ok) = self.compose_native_hotel_stable(portrait_frame);
+        if !ok {
+            return (Vec::new(), false);
+        }
+        match self.native_hotel_mode.as_str() {
+            "menu" => {
+                let ui = self.native_hotel_ui.as_ref().unwrap();
+                match campaign::compose_native_shop_service_steady_frame(
+                    &stable,
+                    ui.assets.as_ref(),
+                    self.hotel_sel,
+                    self.native_shop_ui_pulse,
+                ) {
+                    Ok(frame) => (frame, true),
+                    Err(_) => (Vec::new(), false),
+                }
+            }
+            "slots" | "loadslots" => {
+                // The opaque slots box covers the greeting produced above.
+                if let Some(indexed) = self.font.as_mut().and_then(|f| f.indexed_hd.as_mut()) {
+                    indexed.runs.clear();
+                }
+                let (slots, ok) = native_load_slot_metadata();
+                if !ok {
+                    return (Vec::new(), false);
+                }
+                let (ui, shared) = (self.native_hotel_ui.as_ref().unwrap(), self.native_class_ui.as_ref().unwrap());
+                match campaign::compose_native_load_slots_frame(
+                    &stable,
+                    &ui.slots_box,
+                    shared.strings.as_ref(),
+                    shared.font.as_ref(),
+                    slots,
+                    self.native_hotel_slot_sel,
+                ) {
+                    Ok(frame) => (frame, true),
+                    Err(_) => (Vec::new(), false),
+                }
+            }
+            "saved" | "loaded" | "load_blocked" => {
+                if let Some(indexed) = self.font.as_mut().and_then(|f| f.indexed_hd.as_mut()) {
+                    indexed.runs.clear();
+                }
+                let (ui, shared) = (self.native_hotel_ui.as_ref().unwrap(), self.native_class_ui.as_ref().unwrap());
+                let assets = ui.assets.as_ref().expect("composeNativeHotelFrame：nativeHotelUI.assets 為 nil");
+                let Ok(mut frame) = campaign::compose_native_church_dialogue_overlay_at(
+                    &assets.background,
+                    &shared.dialogue,
+                    &ui.portraits
+                        [usize::try_from(portrait_frame).expect("composeNativeHotelFrame：portraitFrame 為負")],
+                    campaign::native_facility_portrait_offset(NATIVE_HOTEL_PORTRAIT_ID),
+                ) else {
+                    return (Vec::new(), false);
+                };
+                let text = match self.native_hotel_mode.as_str() {
+                    "loaded" => 0x1de,
+                    "load_blocked" => 0x1df,
+                    _ => NATIVE_HOTEL_SAVED_TEXT,
+                };
+                let (Some(strings), Some(font)) = (shared.strings.as_ref(), shared.font.as_ref()) else {
+                    return (Vec::new(), false);
+                };
+                match campaign::compose_native_church_text_at(
+                    &mut frame,
+                    strings,
+                    font,
+                    text,
+                    campaign::NATIVE_SHOP_TEXT_OFFSET,
+                ) {
+                    Ok(frame) => (frame, true),
+                    Err(_) => (Vec::new(), false),
+                }
+            }
+            _ => (Vec::new(), false),
+        }
     }
 
     /// Go：`native_hotel_ui.go:159`，`func (g *Game) drawNativeHotel(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。`drawModernHDFacilityFrame` 只移植忠實模式路徑（HD 檔，見該函式）。
     pub(crate) fn draw_native_hotel(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_hotel_ui.go:drawNativeHotel")
+        if self.native_hotel_mode.is_empty() {
+            return false;
+        }
+        self.draw_modern_hd_facility_frame(screen, |g: &mut Game| g.compose_native_hotel_frame(0), false)
     }
 }

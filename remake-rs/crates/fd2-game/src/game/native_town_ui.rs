@@ -233,7 +233,18 @@ mod native_town_ui_test;
 
 impl Game {
     /// Go：`native_town_ui.go:224`，`func (g *Game) drawNativeTown(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。`drawModernHDTown`（HD，R6）要 `modernFacility` 場景，`modernStoryPortraits` 為 nil 時回 false；
+    /// 有 HD 主題時 `todo!("r6:…")`。
     pub(crate) fn draw_native_town(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_town_ui.go:drawNativeTown")
+        if self.modern_story_portraits.is_some() {
+            todo!("r6:modern_hd_facility_scene.go:drawModernHDTown");
+        }
+        let (frame, ok) = self.compose_native_town_frame();
+        if !ok {
+            return false;
+        }
+        self.present_native_class_frame(screen, &frame);
+        true
     }
 }

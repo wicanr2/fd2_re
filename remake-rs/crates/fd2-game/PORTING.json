@@ -25,8 +25,8 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 649,
-      "r5": 35,
+      "ported": 663,
+      "r5": 21,
       "r6": 59,
       "r8": 1179
     },
@@ -4273,7 +4273,7 @@
           "name": "drawCampaignUI",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_campaign_ui",
-          "status": "r5",
+          "status": "ported",
           "go_line": 10638
         },
         {
@@ -13060,7 +13060,7 @@
           "name": "drawNativeChurchUIJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_church_ui_job",
-          "status": "r5",
+          "status": "ported",
           "go_line": 214
         },
         {
@@ -13275,7 +13275,7 @@
           "name": "drawNativeClassUIJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_class_ui_job",
-          "status": "r5",
+          "status": "ported",
           "go_line": 179
         },
         {
@@ -16089,21 +16089,21 @@
           "name": "composeNativeHotelStable",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_hotel_stable",
-          "status": "r5",
+          "status": "ported",
           "go_line": 82
         },
         {
           "name": "composeNativeHotelFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_hotel_frame",
-          "status": "r5",
+          "status": "ported",
           "go_line": 106
         },
         {
           "name": "drawNativeHotel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_hotel",
-          "status": "r5",
+          "status": "ported",
           "go_line": 159
         },
         {
@@ -17761,7 +17761,7 @@
           "name": "composeNativePreparationPromptFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_prompt_frame",
-          "status": "r5",
+          "status": "ported",
           "go_line": 244
         },
         {
@@ -17841,28 +17841,28 @@
           "name": "drawNativePreparation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_preparation",
-          "status": "r5",
+          "status": "ported",
           "go_line": 429
         },
         {
           "name": "composeNativePreparationStableFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame",
-          "status": "r5",
+          "status": "ported",
           "go_line": 458
         },
         {
           "name": "composeNativePreparationStableFrameLayers",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame_layers",
-          "status": "r5",
+          "status": "ported",
           "go_line": 462
         },
         {
           "name": "composeNativePreparationStableFrameParts",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame_parts",
-          "status": "r5",
+          "status": "ported",
           "go_line": 466
         },
         {
@@ -18953,14 +18953,14 @@
           "name": "drawNativeShopUIJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_shop_ui_job",
-          "status": "r5",
+          "status": "ported",
           "go_line": 1495
         },
         {
           "name": "drawNativeShop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_shop",
-          "status": "r5",
+          "status": "ported",
           "go_line": 1543
         },
         {
@@ -19974,7 +19974,7 @@
           "name": "drawNativeTown",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_town",
-          "status": "r5",
+          "status": "ported",
           "go_line": 224
         }
       ],
@@ -22549,5 +22549,128 @@
       "rust": "fd2_game::game::Game::draw_story_fade_overlay（draw_field 呼叫）",
       "todo_branches": []
     }
-  ]
+  ],
+  "r5_stage2_r5c": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "main.go:10638",
+        "func": "drawCampaignUI",
+        "rust": "fd2_game::game::Game::draw_campaign_ui",
+        "todo_branches": [
+          "r8:main.go:10652 流程結束的 GAME OVER（fillBox＋TTF；開場與第一章沒有走到）",
+          "r8:main.go:10660..10679 choice／town 的 TTF 後備選單（開場與第一章沒有走到）",
+          "r8:main.go:10685..10764 商店的 TTF 後備版面（開場與第一章沒有走到）",
+          "r8:main.go:10769..10794 酒店的 TTF 後備版面（開場與第一章沒有走到）",
+          "r8:main.go:10799..10889 整備的 TTF 後備版面（開場與第一章沒有走到）",
+          "r8:main.go:10897..11098 教會的其餘原生子畫面與 TTF 後備（開場與第一章沒有走到）",
+          "r8:main.go:11099..11122 ending 結語（開場與第一章沒有走到）"
+        ]
+      },
+      {
+        "go": "native_church_ui.go:214",
+        "func": "drawNativeChurchUIJob",
+        "rust": "fd2_game::game::Game::draw_native_church_ui_job",
+        "todo_branches": [
+          "r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu"
+        ]
+      },
+      {
+        "go": "native_class_ui_lifecycle.go:179",
+        "func": "drawNativeClassUIJob",
+        "rust": "fd2_game::game::Game::draw_native_class_ui_job",
+        "todo_branches": [
+          "r6:modern_hd_church_confirmation_transition.go:drawModernHDChurchConfirmation",
+          "r6:modern_hd_facility_list_transition.go:drawModernHDFacilityList",
+          "r6:modern_hd_transient_expiry.go:drawModernHDTransientExpiryMessage",
+          "r8:native_class_ui_lifecycle.go:195..218 timeline（設施成功演出；開場與第一章沒有走到）",
+          "r6:modern_hd_panel_transition.go:drawModernHDStatusTransition",
+          "r6:modern_hd_preparation_transition.go:drawModernHDPreparationTransition"
+        ]
+      },
+      {
+        "go": "native_hotel_ui.go:82",
+        "func": "composeNativeHotelStable",
+        "rust": "fd2_game::game::Game::compose_native_hotel_stable",
+        "todo_branches": []
+      },
+      {
+        "go": "native_hotel_ui.go:106",
+        "func": "composeNativeHotelFrame",
+        "rust": "fd2_game::game::Game::compose_native_hotel_frame",
+        "todo_branches": []
+      },
+      {
+        "go": "native_hotel_ui.go:159",
+        "func": "drawNativeHotel",
+        "rust": "fd2_game::game::Game::draw_native_hotel",
+        "todo_branches": []
+      },
+      {
+        "go": "native_preparation_ui.go:244",
+        "func": "composeNativePreparationPromptFrame",
+        "rust": "fd2_game::game::Game::compose_native_preparation_prompt_frame",
+        "todo_branches": []
+      },
+      {
+        "go": "native_preparation_ui.go:429",
+        "func": "drawNativePreparation",
+        "rust": "fd2_game::game::Game::draw_native_preparation",
+        "todo_branches": [
+          "r6:modern_hd_facility_text.go:beginModernHDPreparationText、modern_hd_preparation_roster.go:drawModernHDPreparationRoster、modern_hd_preparation_background.go:drawModernHDPreparationBackground"
+        ]
+      },
+      {
+        "go": "native_preparation_ui.go:458",
+        "func": "composeNativePreparationStableFrame",
+        "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame",
+        "todo_branches": []
+      },
+      {
+        "go": "native_preparation_ui.go:462",
+        "func": "composeNativePreparationStableFrameLayers",
+        "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame_layers",
+        "todo_branches": []
+      },
+      {
+        "go": "native_preparation_ui.go:466",
+        "func": "composeNativePreparationStableFrameParts",
+        "rust": "fd2_game::game::Game::compose_native_preparation_stable_frame_parts",
+        "todo_branches": [
+          "r8:native_preparation_ui.go:composeNativePreparationRecordSlotsFrame（開場與第一章沒有走到）",
+          "r8:native_preparation_ui.go:composeNativePreparationConfirmationFrame（開場與第一章沒有走到）",
+          "r8:native_preparation_ui.go:composeNativePreparationFrameParts（整備名冊；開場與第一章沒有走到）"
+        ]
+      },
+      {
+        "go": "native_shop_ui.go:1495",
+        "func": "drawNativeShopUIJob",
+        "rust": "fd2_game::game::Game::draw_native_shop_ui_job",
+        "todo_branches": [
+          "r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu",
+          "r6:modern_hd_church_confirmation_transition.go:drawModernHDFacilityConfirmation",
+          "r6:modern_hd_facility_list_transition.go:drawModernHDFacilityList",
+          "r8:native_shop_ui.go:1512..1525 timeline（購買／出售成功演出；開場與第一章沒有走到）",
+          "r6:modern_hd_facility_scene.go:drawModernHDShopFrame"
+        ]
+      },
+      {
+        "go": "native_shop_ui.go:1543",
+        "func": "drawNativeShop",
+        "rust": "fd2_game::game::Game::draw_native_shop",
+        "todo_branches": [
+          "r6:native_shop_ui.go:1550..1554 HD 文字擷取（modernHDIndexedText、beginModernHDShopDigits）",
+          "r8:native_shop_ui.go:1555..1610 商店穩態畫面（composeNativeShop*；開場與第一章沒有走到）, mode={}"
+        ]
+      },
+      {
+        "go": "native_town_ui.go:224",
+        "func": "drawNativeTown",
+        "rust": "fd2_game::game::Game::draw_native_town",
+        "todo_branches": [
+          "r6:modern_hd_facility_scene.go:drawModernHDTown"
+        ]
+      }
+    ]
+  }
 }

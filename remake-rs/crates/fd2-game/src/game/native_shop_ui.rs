@@ -227,12 +227,63 @@ mod native_shop_ui_test;
 
 impl Game {
     /// Go：`native_shop_ui.go:1495`，`func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。HD 路徑（`drawModernHDFacilityServiceMenu`、`drawModernHDFacilityConfirmation`、
+    /// `drawModernHDFacilityList`、`drawModernHDShopFrame`，R6）在忠實模式都回 false：前三個要 HD 描述（Rust 在忠實
+    /// 模式不建立），`drawModernHDShopFrame` 要 `modernFacility` 場景。描述或 HD 主題存在時 `todo!("r6:…")`；
+    /// `drawModernHDFacilityList` 開頭的 `facilityListRosterHD = nil` 照做。timeline（購買、出售成功演出）在開場與
+    /// 第一章沒有走到（`todo!("r8:…")`）。
     pub(crate) fn draw_native_shop_ui_job(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_shop_ui.go:drawNativeShopUIJob")
+        let Some(job) = self.native_shop_ui_job.as_ref() else {
+            return false;
+        };
+        if job.service_menu.is_some() {
+            todo!("r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu");
+        }
+        if job.church_confirmation.is_some() {
+            todo!("r6:modern_hd_church_confirmation_transition.go:drawModernHDFacilityConfirmation");
+        }
+        self.facility_list_roster_hd = None;
+        let job = self.native_shop_ui_job.as_ref().unwrap();
+        if job.facility_list.is_some() {
+            todo!("r6:modern_hd_facility_list_transition.go:drawModernHDFacilityList");
+        }
+        if !job.timeline.is_empty() {
+            todo!("r8:native_shop_ui.go:1512..1525 timeline（購買／出售成功演出；開場與第一章沒有走到）");
+        }
+        let pix = if job.frame < job.frames.len() as i64 {
+            // Go 以負的 frame 索引切片會 panic；Rust 同樣 panic。
+            job.frames[usize::try_from(job.frame).expect("drawNativeShopUIJob：frame 為負")].clone()
+        } else if job.restore.len() == 320 * 200 {
+            job.restore.clone()
+        } else {
+            return false;
+        };
+        if self.modern_story_portraits.is_some() {
+            todo!("r6:modern_hd_facility_scene.go:drawModernHDShopFrame");
+        }
+        self.present_native_class_frame(screen, &pix);
+        self.native_shop_ui_job.as_mut().unwrap().drawn = true;
+        true
     }
 
     /// Go：`native_shop_ui.go:1543`，`func (g *Game) drawNativeShop(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。第一章只走到開關框工作（`drawNativeShopUIJob`）；各模式的穩態合成（`composeNativeShop*`）
+    /// 在 crate 裡還沒有，開場與第一章也沒有畫到，`todo!("r8:…")`。`modernHDText` 存在時的 HD 文字擷取 `todo!("r6:…")`。
     pub(crate) fn draw_native_shop(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_shop_ui.go:drawNativeShop")
+        if self.native_shop_mode.is_empty() {
+            return false;
+        }
+        if self.draw_native_shop_ui_job(screen) {
+            return true;
+        }
+        if self.modern_hd_text.is_some() && self.font.is_some() {
+            todo!("r6:native_shop_ui.go:1550..1554 HD 文字擷取（modernHDIndexedText、beginModernHDShopDigits）");
+        }
+        todo!(
+            "r8:native_shop_ui.go:1555..1610 商店穩態畫面（composeNativeShop*；開場與第一章沒有走到）, mode={}",
+            self.native_shop_mode
+        )
     }
 }

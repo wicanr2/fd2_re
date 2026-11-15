@@ -139,7 +139,27 @@ mod native_church_ui_test;
 
 impl Game {
     /// Go：`native_church_ui.go:214`，`func (g *Game) drawNativeChurchUIJob(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。`drawModernHDFacilityServiceMenu`（HD，R6）在 `job.serviceMenu` 為 nil 時回 false；Rust 在忠實
+    /// 模式不建立這份描述（KNOWN_DIFFERENCES `facility-hd-precompute-faithful-skip`），描述存在時 `todo!("r6:…")`。
     pub(crate) fn draw_native_church_ui_job(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_church_ui.go:drawNativeChurchUIJob")
+        let Some(job) = self.native_church_ui_job.as_ref() else {
+            return false;
+        };
+        if job.service_menu.is_some() {
+            todo!("r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu");
+        }
+        let frame = job.frame;
+        let pix = if frame < job.frames.len() as i64 {
+            // Go 以負的 frame 索引切片會 panic；Rust 同樣 panic。
+            job.frames[usize::try_from(frame).expect("drawNativeChurchUIJob：frame 為負")].clone()
+        } else if job.restore.len() == 320 * 200 {
+            job.restore.clone()
+        } else {
+            return false;
+        };
+        self.present_native_class_frame(screen, &pix);
+        self.native_church_ui_job.as_mut().unwrap().drawn = true;
+        true
     }
 }

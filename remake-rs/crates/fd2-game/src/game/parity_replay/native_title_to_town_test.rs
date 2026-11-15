@@ -382,6 +382,9 @@ impl Driver {
             if !g.load_err.is_empty() {
                 panic!("故事節點 {} 執行期錯誤：{}\n阻塞：{}", node_id(g), g.load_err, ch01_blockers(g));
             }
+            // R5 階段 2 r5c：戰後 driveStory 的 gap 擷取點（Go 逐字複本的插入行；只在 gap_scope 期間）。
+            self.observe_r5c_gap("story", true);
+            let g = &self.g;
             let sig = progress_signature(g);
             if sig == last_sig {
                 still += 1;

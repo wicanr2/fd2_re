@@ -236,31 +236,90 @@ mod native_preparation_cycle_test;
 
 impl Game {
     /// Go：`native_preparation_ui.go:244`，`func (g *Game) composeNativePreparationPromptFrame() ([]byte, bool)`
+    ///
+    /// R5 階段 2 r5c。`composeNativePreparationPromptQuestion` 成功表示 `nativePreparationUI` 存在。
     pub(crate) fn compose_native_preparation_prompt_frame(&mut self) -> (Vec<u8>, bool) {
-        todo!("r5:native_preparation_ui.go:composeNativePreparationPromptFrame")
+        let (question, ok) = self.compose_native_preparation_prompt_question();
+        if !ok {
+            return (Vec::new(), false);
+        }
+        if self.prep_required_missing.is_some() {
+            return (question, true);
+        }
+        let ui = self.native_preparation_ui.as_ref().unwrap();
+        let (question, ok) = self.compose_native_confirmation_mouth(&question, &ui.portraits);
+        if !ok {
+            return (Vec::new(), false);
+        }
+        match campaign::compose_native_confirmation_choices(
+            &question,
+            &ui.choices,
+            self.prep_confirm_sel,
+            self.native_class_ui_pulse / 2,
+        ) {
+            Ok(frame) => (frame, true),
+            Err(_) => (Vec::new(), false),
+        }
     }
 
     /// Go：`native_preparation_ui.go:429`，`func (g *Game) drawNativePreparation(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。HD 路徑（`beginModernHDPreparationText` 的擷取、`drawModernHDPreparationRoster`、
+    /// `drawModernHDPreparationBackground`，R6）在忠實模式都不成立：擷取要 `modernHDText`，名冊要 HD 主題或 HD 介面，
+    /// 背景要 `modernFacility` 場景或 `modernHDText`；任一成立時 `todo!("r6:…")`。`appendModernHDPreparationStableLayers`
+    /// 在忠實模式只留下 `appendModernHDPreparationDialogue` 開頭的 `modernHDOverlay = nil`（人數與狀態面板都要
+    /// `modernHDText`），這裡照做。`beginModernHDPreparationText` 的收尾在忠實模式不做事。
     pub(crate) fn draw_native_preparation(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_preparation_ui.go:drawNativePreparation")
+        if self.draw_native_class_ui_job(screen) {
+            return true;
+        }
+        if self.facility_hd_draw_active() {
+            todo!(
+                "r6:modern_hd_facility_text.go:beginModernHDPreparationText、modern_hd_preparation_roster.go:drawModernHDPreparationRoster、modern_hd_preparation_background.go:drawModernHDPreparationBackground"
+            );
+        }
+        let (frame, ok) = self.compose_native_preparation_stable_frame();
+        if !ok {
+            if self.prep_record_slots {
+                self.load_err = String::from("preparation record slot assets unavailable");
+            }
+            return false;
+        }
+        self.present_native_class_frame(screen, &frame);
+        self.modern_hd_overlay = None;
+        true
     }
 
     /// Go：`native_preparation_ui.go:458`，`func (g *Game) composeNativePreparationStableFrame() ([]byte, bool)`
     pub(crate) fn compose_native_preparation_stable_frame(&mut self) -> (Vec<u8>, bool) {
-        todo!("r5:native_preparation_ui.go:composeNativePreparationStableFrame")
+        self.compose_native_preparation_stable_frame_layers(true)
     }
 
     /// Go：`native_preparation_ui.go:462`，`func (g *Game) composeNativePreparationStableFrameLayers(drawUnits bool) ([]byte, bool)`
     pub(crate) fn compose_native_preparation_stable_frame_layers(&mut self, draw_units: bool) -> (Vec<u8>, bool) {
-        todo!("r5:native_preparation_ui.go:composeNativePreparationStableFrameLayers")
+        self.compose_native_preparation_stable_frame_parts(draw_units, true)
     }
 
     /// Go：`native_preparation_ui.go:466`，`func (g *Game) composeNativePreparationStableFrameParts(drawUnits, drawCursor bool) ([]byte, bool)`
+    ///
+    /// R5 階段 2 r5c。第一章只走到出擊前提示（`composeNativePreparationPromptFrame`）；四槽列表、出擊確認與名冊
+    /// （`composeNativePreparationRecordSlotsFrame`、`composeNativePreparationConfirmationFrame`、
+    /// `composeNativePreparationFrameParts`）在 crate 裡還沒有，`todo!("r8:…")`。
     pub(crate) fn compose_native_preparation_stable_frame_parts(
         &mut self,
         draw_units: bool,
         draw_cursor: bool,
     ) -> (Vec<u8>, bool) {
-        todo!("r5:native_preparation_ui.go:composeNativePreparationStableFrameParts")
+        if self.prep_record_slots {
+            todo!("r8:native_preparation_ui.go:composeNativePreparationRecordSlotsFrame（開場與第一章沒有走到）");
+        }
+        if self.native_preparation_prompt_active() {
+            return self.compose_native_preparation_prompt_frame();
+        }
+        if self.prep_confirm {
+            todo!("r8:native_preparation_ui.go:composeNativePreparationConfirmationFrame（開場與第一章沒有走到）");
+        }
+        let _ = (draw_units, draw_cursor);
+        todo!("r8:native_preparation_ui.go:composeNativePreparationFrameParts（整備名冊；開場與第一章沒有走到）")
     }
 }

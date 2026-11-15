@@ -10608,6 +10608,11 @@ mod main_r5m_test;
 #[path = "main/main_r5p_test.rs"]
 mod main_r5p_test;
 
+// R5 階段 2 r5c：城鎮與設施組的測試。
+#[cfg(test)]
+#[path = "main/main_r5c_test.rs"]
+mod main_r5c_test;
+
 // ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
 
 impl Game {
@@ -10690,8 +10695,56 @@ impl Game {
     /// drawCampaignUI campaign 節點 UI:choice 選單 / ending 結語 / game over。
     ///
     /// Go：`main.go:10638`，`func (g *Game) drawCampaignUI(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5c。第一章走到的分支（階段 0 覆蓋率）只有各節點的原生呈現：城鎮 `drawNativeTown`、商店
+    /// `drawNativeShop`、酒店 `drawNativeHotel`、整備 `drawNativePreparation`、教會 `drawNativeChurchUIJob`，各自成立就
+    /// return；其他節點型別（戰場、故事等）沒有分支。原生呈現不成立時的 TTF 後備版面（`fillBox`＋`Font.Draw`）、流程
+    /// 結束的 GAME OVER、`choice` 選單、教會的其餘子畫面與 `ending` 結語都沒有走到，`todo!("r8:…")`；分支表見
+    /// `PORTING.md`「R5 階段 2：r5c」。Go 的 `fillBox` 閉包只在後備分支使用，這裡不建立。
     pub(crate) fn draw_campaign_ui(&mut self, screen: &mut Picture) {
-        todo!("r5:main.go:drawCampaignUI")
+        if self.camp.is_none() || self.font.is_none() {
+            return;
+        }
+        let Some(node_type) = self.camp.as_ref().unwrap().node().map(|n| n.r#type.clone()) else {
+            todo!("r8:main.go:10652 流程結束的 GAME OVER（fillBox＋TTF；開場與第一章沒有走到）");
+        };
+        match node_type.as_str() {
+            "choice" | "town" => {
+                if node_type == "town" && self.draw_native_town(screen) {
+                    return;
+                }
+                todo!("r8:main.go:10660..10679 choice／town 的 TTF 後備選單（開場與第一章沒有走到）");
+            }
+            "shop" => {
+                if self.draw_native_shop(screen) {
+                    return;
+                }
+                todo!("r8:main.go:10685..10764 商店的 TTF 後備版面（開場與第一章沒有走到）");
+            }
+            "hotel" => {
+                if self.draw_native_hotel(screen) {
+                    return;
+                }
+                todo!("r8:main.go:10769..10794 酒店的 TTF 後備版面（開場與第一章沒有走到）");
+            }
+            "preparation" => {
+                if self.draw_native_preparation(screen) {
+                    return;
+                }
+                todo!("r8:main.go:10799..10889 整備的 TTF 後備版面（開場與第一章沒有走到）");
+            }
+            "church" => {
+                if self.draw_native_church_ui_job(screen) {
+                    return;
+                }
+                if self.draw_native_class_ui_job(screen) {
+                    return;
+                }
+                todo!("r8:main.go:10897..11098 教會的其餘原生子畫面與 TTF 後備（開場與第一章沒有走到）");
+            }
+            "ending" => todo!("r8:main.go:11099..11122 ending 結語（開場與第一章沒有走到）"),
+            _ => {}
+        }
     }
 
     /// mapSpriteGroup chooses the exact native raw FDICON key only for a battle

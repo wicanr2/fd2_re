@@ -1486,7 +1486,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 
 | 分組 | 函式（r5／ported／HD r6） | 行數（r5） | 畫布操作 | 局部黃金 |
 |---|---|---|---|---|
-| 城鎮與設施 | 28（14／14／0；`presentNativeClassFrame` 兩個由 r5d 移植） | 842 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter、chapter＋FD2_SHOT_STATE、opening＋chapter |
+| 城鎮與設施 | 28（0／28／0；`presentNativeClassFrame` 兩個由 r5d、其餘 14 個由 R5 階段 2 `r5c` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter（`r5c`：pump 13751 次加戰後迴圈、城鎮游標與酒店輸入的 gap 828 次，有畫的 80 張與 Go 相同） |
 | Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0；正規化地圖層與 fade 疊層由 `r5p` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | opening＋chapter（`r5p` 圖層級） |
 | HUD 與選單 | 35（14／21／0；回合橫幅 6 個由 r5m 移植） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
 | 對話與文字 | 16（2／14／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個留 r5） | 79 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同）、opening＋chapter |
@@ -1500,22 +1500,22 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 
 | 分組 | Go 位置 | 函式 | 行數 | 畫布操作 | 局部黃金 |
 |---|---|---|---|---|---|
-| 城鎮與設施 | `main.go:10638..11123` | `drawCampaignUI` | 486 | DrawImage、平移、NewImage、Fill | opening＋chapter |
-| 城鎮與設施 | `native_church_ui.go:214..235` | `drawNativeChurchUIJob` | 22 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `main.go:10638..11123` | `drawCampaignUI`（ported，r5c） | 486 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| 城鎮與設施 | `native_church_ui.go:214..235` | `drawNativeChurchUIJob`（ported，r5c） | 22 | — | chapter＋FD2_SHOT_STATE |
 | 城鎮與設施 | `native_class_ui.go:206..208` | `presentNativeClassFrame`（ported，r5d） | 3 | — | opening＋chapter |
 | 城鎮與設施 | `native_class_ui.go:210..223` | `presentNativeClassFrameWithPalette`（ported，r5d） | 14 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
-| 城鎮與設施 | `native_class_ui_lifecycle.go:179..240` | `drawNativeClassUIJob` | 62 | — | chapter |
-| 城鎮與設施 | `native_hotel_ui.go:82..102` | `composeNativeHotelStable` | 21 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_hotel_ui.go:106..157` | `composeNativeHotelFrame` | 52 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_hotel_ui.go:159..164` | `drawNativeHotel` | 6 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_preparation_ui.go:244..263` | `composeNativePreparationPromptFrame` | 20 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_preparation_ui.go:429..456` | `drawNativePreparation` | 28 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_preparation_ui.go:458..460` | `composeNativePreparationStableFrame` | 3 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_preparation_ui.go:462..464` | `composeNativePreparationStableFrameLayers` | 3 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_preparation_ui.go:466..477` | `composeNativePreparationStableFrameParts` | 12 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_shop_ui.go:1495..1541` | `drawNativeShopUIJob` | 47 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_shop_ui.go:1543..1611` | `drawNativeShop` | 69 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_town_ui.go:224..234` | `drawNativeTown` | 11 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_class_ui_lifecycle.go:179..240` | `drawNativeClassUIJob`（ported，r5c） | 62 | — | chapter |
+| 城鎮與設施 | `native_hotel_ui.go:82..102` | `composeNativeHotelStable`（ported，r5c） | 21 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_hotel_ui.go:106..157` | `composeNativeHotelFrame`（ported，r5c） | 52 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_hotel_ui.go:159..164` | `drawNativeHotel`（ported，r5c） | 6 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:244..263` | `composeNativePreparationPromptFrame`（ported，r5c） | 20 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:429..456` | `drawNativePreparation`（ported，r5c） | 28 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:458..460` | `composeNativePreparationStableFrame`（ported，r5c） | 3 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:462..464` | `composeNativePreparationStableFrameLayers`（ported，r5c） | 3 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_preparation_ui.go:466..477` | `composeNativePreparationStableFrameParts`（ported，r5c） | 12 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_shop_ui.go:1495..1541` | `drawNativeShopUIJob`（ported，r5c） | 47 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_shop_ui.go:1543..1611` | `drawNativeShop`（ported，r5c） | 69 | — | chapter＋FD2_SHOT_STATE |
+| 城鎮與設施 | `native_town_ui.go:224..234` | `drawNativeTown`（ported，r5c） | 11 | — | chapter＋FD2_SHOT_STATE |
 | HUD 與選單 | `action_overlay_runtime.go:823..873` | `drawNativeSystemEndTurn` | 51 | — | opening＋chapter |
 | HUD 與選單 | `main.go:10194..10197` | `shouldDrawTransientBattleMessage` | 4 | — | opening＋chapter |
 | HUD 與選單 | `main.go:10221..10303` | `drawRing` | 83 | DrawImage、平移、縮放、NewImage、Fill | opening＋chapter |
@@ -2034,5 +2034,137 @@ Go 對 Draw 本體這兩段沒有只看非 HD 像素的測試：`modern_hd_dialo
 | `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5p-20261115/r5p-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
 | `tools/rust_r5p_layers.sh` | 上節；`layers-r2`、`layers-r3` 相同；chapter 兩邊的 `checkpoints.jsonl` 都是 `1c846f57…` |
 | `tools/rust_r5_opening_frames.sh` | 1940／1940 相同，停在 `drawNativeStoryDialogue` |
+| Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
+| `Cargo.lock` | 沒有改動；沒有新增套件 |
+
+## R5 階段 2：r5c（城鎮與設施，2026-11-15）
+
+代號 `r5c`，基準 `34620dd3`（含 r5t、r5m、r5d、r5p）。工作單是「R5 對照表」的「城鎮與設施」14 個 r5 函式（同組
+`presentNativeClassFrame` 兩個已由 r5d 移植）。計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)。
+
+### r5c：移植結果
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py … r5c …` 把 14 個函式從 `r5` 改成 `ported`（記在 `r5_stage2_r5c`，未執行分支的
+`todo!` 逐筆在 `todo_branches`）；全 crate 狀態 ported 663、r5 21、r6 59、r8 1179。畫布只用 `canvas.rs` 既有的 `from_indexed`、
+`draw_image`（`Scale(2, 2)`），都經 r5d 的 `present_native_class_frame`；`canvas.rs` 沒有改。
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `main.go:10638` `drawCampaignUI` | `Game::draw_campaign_ui` | 分支表見下 |
+| `native_church_ui.go:214` `drawNativeChurchUIJob` | `Game::draw_native_church_ui_job` | 逐行；HD 服務選單描述存在時 `todo!("r6:…")` |
+| `native_class_ui_lifecycle.go:179` `drawNativeClassUIJob` | `Game::draw_native_class_ui_job` | 開關框幀與還原畫面逐行；timeline（設施成功演出）`todo!("r8:…")` |
+| `native_hotel_ui.go:82` `composeNativeHotelStable`、`:106` `composeNativeHotelFrame`、`:159` `drawNativeHotel` | 同名 snake_case | `menu`、`slots`／`loadslots`、`saved`／`loaded`／`load_blocked` 三段都移植：第一章正式路徑只畫到 `menu`，`slots`、`saved` 由酒店保存走到，局部黃金在每次輸入後擷取 |
+| `native_preparation_ui.go:244` `composeNativePreparationPromptFrame`、`:429` `drawNativePreparation`、`:458`／`:462`／`:466` `composeNativePreparationStableFrame*` | 同名 snake_case | 出擊前提示逐行；四槽列表、出擊確認、整備名冊的合成（`composeNativePreparationRecordSlotsFrame`、`ConfirmationFrame`、`FrameParts`）在 crate 裡還沒有，`todo!("r8:…")` |
+| `native_shop_ui.go:1495` `drawNativeShopUIJob`、`:1543` `drawNativeShop` | 同名 snake_case | 開關框幀逐行；timeline 與各模式的穩態合成（`composeNativeShop*`）`todo!("r8:…")` |
+| `native_town_ui.go:224` `drawNativeTown` | `Game::draw_native_town` | 逐行 |
+| `modern_hd_facility_text.go:74` `drawModernHDFacilityFrame`（HD 檔） | `Game::draw_modern_hd_facility_frame`（放在 `modern_hd_facility_text.rs`） | 酒店的呈現出口，只移植忠實模式路徑，`PORTING.json` 狀態維持 `r6`（同 r5d 的 `presentNativeStoryDialogueFrame`）。HD 文字擷取、HD 場景與 HD 文字層 `todo!("r6:…")` |
+
+`drawCampaignUI` 的分支（階段 0 覆蓋率，`cover-*.out` 的行號比現行 `main.go` 少 1；次數是 opening／chapter）：
+
+| Go 分支（現行 `main.go`） | 次數 | Rust |
+|---|---|---|
+| 守門 `g.camp == nil \|\| g.font == nil`（10640） | 進入 8408／6404，return 0／0 | 照寫 |
+| `n == nil` 的 GAME OVER（10652） | 0／0 | `todo!("r8:…")` |
+| `choice`／`town`（10656） | 0／7，都是 town 且 `drawNativeTown` 成立 | `draw_native_town`；不成立時的 TTF 後備選單 `todo!("r8:…")` |
+| `shop`（10681） | 0／2，`drawNativeShop` 成立 | 同上，後備（購買、出售、收件人等 TTF 版面）r8 |
+| `hotel`（10765） | 0／2，`drawNativeHotel` 成立 | 同上，後備 r8 |
+| `preparation`（10795） | 0／21，`drawNativePreparation` 成立 | 同上，後備 r8 |
+| `church`（10890） | 0／1，`drawNativeChurchUIJob` 成立 | 其後的 `drawNativeClassUIJob` 照寫（0 次）；教會其餘原生子畫面與 TTF 後備（10897..11098）r8 |
+| `ending`（11099） | 0／0 | r8 |
+| 其他型別（cutscene、story、battle 等） | 8408／6371 | 沒有分支，與 Go 相同 |
+
+HD 路徑：Go 的 `drawModernHD*` 在忠實模式都回 false，`appendModernHD*` 不做事。依賴 HD 描述的（服務選單、確認框、清單、狀態轉場、
+到期訊息）在描述存在時 `todo!("r6:…")`：Rust 在忠實模式不建立這些描述（`facility-hd-precompute-faithful-skip`）；依賴 HD 主題或
+`modernHDText` 的（城鎮、商店、整備背景與名冊、酒店穩態場景）以新增的 `Game::facility_hd_draw_active`（`modernStoryPortraits`、
+`modernHDText` 任一存在，或介面是 HD）或 `modern_story_portraits` 守門。忠實模式下這些 HD 函式留下的副作用只有清 HD 狀態：
+`drawModernHDFacilityList` 的 `facilityListRosterHD = nil`、`drawModernHDFacilityRosterUnderlay` 的 `facilityRosterHD = nil`、
+`appendModernHDPreparationDialogue` 的 `modernHDOverlay = nil`，Rust 照做。Go 以負的 frame 索引切片或 `ui.assets` 為 nil 時 panic，
+Rust 同樣 panic；`strings`／`font` 為 nil 時與 `compose_native_church_scene` 相同回 false。
+
+### r5c：測試
+
+`src/game/main/main_r5c_test.rs` 5 項：
+
+| Go 測試 | Rust |
+|---|---|
+| `native_confirmation_mouth_test.go:15` `TestNativePreparationConfirmationMouthWaitShowsBothFrames` | `test_native_preparation_confirmation_mouth_wait_shows_both_frames`（夾具 `newPreparationRecordTestGame` 照 Go；`t.Setenv` 以子行程傳入） |
+| Rust 新增 4 項 | 開關框幀與還原畫面的選幀、2 倍貼上、`drawn` 與失敗條件（班級、教會、商店工作）；`drawCampaignUI` 的守門與教會分派；酒店三種畫格與直接呼叫 campaign 合成器逐位元組相同（讀分離素材包，缺檔依 `FD2_REQUIRE_ORIGINAL` 失敗） |
+
+沒有移植：同檔另兩項經 `beginNativeSystemEndTurn`（crate 裡還沒有）；`native_shop_ui_test.go`、`native_shop_recipient_path_test.go`、
+`native_church_class_path_test.go`、`native_church_revive_path_test.go`、`native_preparation_ui_test.go:124` 經商店購買清單、教會轉職清單、
+復活與整備名冊的合成（r8）；`hotel_trace_test.go:209` 是以環境變數啟用、輸出畫面的同源探針。
+
+### r5c：局部黃金
+
+城鎮、商店、整備在 `chapter` 模式多半不經 `pump`：戰後到城鎮的 817 個 Update 在 `ensurePostbattleNode`、`driveStory`、`settleTown`
+的直接迴圈裡，酒店保存的每次輸入不經 Update，凍結的 Go 測試在這些地方沒有掛點。做法：
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_r5c_layers_test.go` | `TestRustGoldenR5cLayers`，未設 `FD2_GOLDEN_R5C_LAYERS_OUT` 時 `t.Skip`。pump 擷取點同階段 0（`ch01FrameObserver`）；檔末是 `TestChapterParityReplay`、`ensureTown`、`ensurePostbattleNode`、`driveStory`、`settleTown`、`townProbe`、`townSave` 的逐字複本，只換互相呼叫的名稱並插入標 `// r5c-insert` 的 gap 擷取行；第一章第一次走 `ensureTown` 的是 `town_after_battle` mark，手寫的 `mark` 先走複本的 `ensureTown` 再呼叫原本的 `r.mark`（之後的 `r.ensureTown()` 直接返回）。既有 Go 檔沒有改 |
+| `src/game/parity_replay/rust_golden_r5c_layers_test.rs` | Rust 端 `R5cLayerCapture`：pump 掛在 `Driver::pump`；gap 是 `Driver::observe_r5c_gap`，插在章重播同一處（`ensure_postbattle_node` 期間打開 `gap_scope`，涵蓋其中的 `drive_story`、`settle_town`） |
+| `tools/rust_r5c_layers.sh` | Docker 驅動：先以 `--verbatim` 核對逐字複本，再跑 Go（`fd2-go-test-local`、Xvfb）與 Rust（`fd2-rust:1.99.1-r3`），最後比對 |
+| `tools/rust_r5c_layers_compare.py` | `--verbatim` 核對複本（拿掉插入行、換回名稱後與原檔逐行相同）；`--emit-copies` 從原檔重產複本區段；比對模式逐擷取點比鍵，`--stage0` 另與階段 0 整張黃金對照 |
+
+擷取規則（兩邊相同）：
+
+- pump 擷取推進 60 Hz 虛擬時鐘（`pinClock`），gap 擷取不推進（階段 0 在這些迴圈裡時鐘凍結）；Go `rand.Seed(4)`、Rust `pin_global_rand`。
+- 每次擷取先照 `Draw` 開頭清三個本幀旗標，以 `goldenMapLayersBranch` 決定分支；尾段時在 `Fill` 黑的 640×400 畫布上依 `Draw` 的順序呼叫
+  `drawCampaignUI`，`transientUI` 時再呼叫 `drawNativeClassUIJob`，讀回取雜湊。鍵另記節點型別、各設施模式、游標、三個脈動相位與
+  三個 UI 工作（畫之前）；畫布全為不透明黑時只記狀態。
+- gap 擷取點：戰後迴圈與戰後 `driveStory`、`settleTown` 每個 Update 之後，`townProbe`／`townSave` 移動城鎮游標之後，`townSave` 每次
+  酒店輸入之後。
+- Go 黃金容器有 Noto CJK，`g.font` 不是 nil；Rust 測試映像沒有字型，擷取期間暫時代入空的 `Font`（`sf` 為 `None`）只為通過
+  `drawCampaignUI` 的守門，畫完換回（`rust_font_stub`，只有 Rust 端有）。本組走到的分支不呼叫 `Font::draw`。
+
+結果（`tools/rust_r5c_layers.sh <主工作區>/work/r5-stage2-r5c-20261115/r2`；r1 是兩邊分開跑的同一份程式，輸出不進版控）：
+
+| 項目 | Go | Rust |
+|---|---|---|
+| `checkpoints.jsonl` | `1c846f57…`（R4 黃金） | `1c846f57…` |
+| 擷取數 | 14579（pump 13751，與階段 0 相同；gap 828：戰後 `driveStory` 782、`settleTown` 36、城鎮游標 5、酒店輸入 5；戰後迴圈本身 0 次，進迴圈時勝負確認已可按） | 同 |
+| 分支 | early 7323、spawn 24、tail 7232 | 同 |
+| 序列雜湊 | `4c5a3720b3488b482f4fb6f338b7df311ee0ea197a23f2290ab2683dd605440d` | 同 |
+| 逐擷取點 | — | 14579／14579 相同 |
+
+本組有畫的 80 張全部相同（相異 25 張）：城鎮 50（pump 7、settle 36、游標 5、戰後故事最後一幀 1、離開酒店 1）、整備 21（開框 20、出擊前提示穩態 1）、
+酒店 6（`menu` 4、`slots` 1、`saved` 1）、商店開框 2、教會開框 1。沒有遮蔽像素。
+
+- 逐字複本核對：7 個函式拿掉插入行、換回名稱後與原檔逐行相同（`verbatim.txt`）；`--emit-copies` 重產的區段與檔內逐位元組相同。
+- 重跑：r1（兩邊分開跑）與 r2 兩邊的 `rows` 逐筆相同。
+- 旁證：pump 擷取裡有畫的 33 張全部與階段 0 `chapter` 整張黃金同一擷取點逐位元組相同（設施畫面蓋滿全畫面）。gap 的 47 張階段 0 沒有對應畫格。
+- 竄改反向檢查（`work/r5-stage2-r5c-20261115/tamper`，只重跑 Rust、沿用 r1 的 Go）：城鎮畫格第 0 個索引改 1 位元、酒店 `saved` 改用招呼語
+  文字，比對失敗：14528／14579，城鎮 50 張與 `saved` 1 張不同，第一個不同在第 14499 次（戰後故事最後一幀的城鎮）。改回後 r2 相同。
+- 涵蓋限制：商店與教會只畫到開框第 0 幀（`townProbe` 的 pump 第一幀就達成停止條件），整備只有出擊前提示；商店穩態、購買與出售清單、教會子畫面、
+  整備名冊與四槽列表在第一章沒有畫到，留 r8。
+
+### r5c：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `main.rs` | `draw_campaign_ui` 本體、測試模組 `main/main_r5c_test.rs` 的登記；`Game::draw`／`draw_field` 沒有改 |
+| `native_class_ui_lifecycle.rs` | 新增 `Game::facility_hd_draw_active`（本組的 HD 守門） |
+| `modern_hd_facility_text.rs` | 新增 `draw_modern_hd_facility_frame`（HD 檔的忠實模式路徑） |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `r5c_layer_capture`；`pump` 在 `r5p_layer_capture` 之後呼叫它的 `observe` |
+| `parity_replay/native_title_to_town_test.rs` | `Driver::drive_story` 每個 `update` 之後呼叫 `observe_r5c_gap("story", true)`（只在 `gap_scope` 期間） |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `R5cLayerCapture::from_env()`；任一擷取打開時 `pin_global_rand` 的條件加上它；`ensure_postbattle_node` 開關 `gap_scope` 並在迴圈裡擷取；`settle_town`、`town_probe`、`town_save` 插 gap 擷取點；`end` 之後 `finish`。擷取關閉時這些呼叫不做事 |
+| `parity_replay/rust_golden_frames_opening_test.rs`、`rust_golden_r5p_layers_test.rs` | `Driver` 字面值補 `r5c_layer_capture: None` |
+| `parity_replay.rs` | 掛新子模組、模組文件加一行 |
+| `canvas.rs` | 沒有改 |
+
+### r5c：KNOWN_DIFFERENCES
+
+沒有新增。整張畫格比對時要注意：Rust 測試映像沒有字型時 `draw_campaign_ui` 照 Go 在 `g.font == nil` 時整段不畫，Go 黃金有字型，
+階段 0 `chapter` 的 33 張設施畫格會不同；r5f 接上字型後才一致。
+
+### r5c：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；357 passed、6 ignored（基準 352／6，加本組 5 項） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5c-20261115/r5c-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5c_layers.sh` | 上節；r1、r2 相同，兩邊的 `checkpoints.jsonl` 都是 `1c846f57…` |
+| `tools/rust_r5_opening_frames.sh`（`work/r5-stage2-r5c-20261115/opening-frames`） | 1940／1940 相同（序列雜湊 `8768d920…`）；第 1940 次（`story_ch00_handler`）走過本組的 `draw_campaign_ui`（Rust 沒有字型時在守門返回，Go 有字型但序章節點沒有分支，兩者都不畫）與 `transientUI` 的判斷，停在 HUD 組的 `todo!("r5:action_overlay_runtime.go:drawNativeSystemEndTurn")` |
 | Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |

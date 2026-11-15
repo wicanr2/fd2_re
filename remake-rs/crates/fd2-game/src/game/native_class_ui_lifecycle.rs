@@ -160,7 +160,61 @@ mod native_class_ui_lifecycle_test;
 
 impl Game {
     /// Go：`native_class_ui_lifecycle.go:179`，`func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5c。HD 路徑（`drawModernHDChurchConfirmation`、`drawModernHDFacilityList`、
+    /// `drawModernHDTransientExpiryMessage`、`drawModernHDStatusTransition`、`drawModernHDPreparationTransition`，R6）
+    /// 在忠實模式都回 false：前四個要 HD 描述（Rust 在忠實模式不建立）或 HD 呈現開關，最後一個要
+    /// `modernFacility` 場景或 `modernHDText`。描述存在或 HD 開著時 `todo!("r6:…")`。忠實模式下它們留下的唯一
+    /// 副作用是清掉 HD 狀態：`drawModernHDFacilityList` 開頭的 `facilityListRosterHD = nil`、
+    /// `appendModernHDPreparationDialogue` 開頭的 `modernHDOverlay = nil`，這裡照做。設施成功演出的 timeline
+    /// 分支在開場與第一章沒有走到（`todo!("r8:…")`）。
     pub(crate) fn draw_native_class_ui_job(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_class_ui_lifecycle.go:drawNativeClassUIJob")
+        let Some(job) = self.native_class_ui_job.as_ref() else {
+            return false;
+        };
+        if job.frame < 0 {
+            return false;
+        }
+        if job.church_confirmation.is_some() {
+            todo!("r6:modern_hd_church_confirmation_transition.go:drawModernHDChurchConfirmation");
+        }
+        self.facility_list_roster_hd = None;
+        let job = self.native_class_ui_job.as_ref().unwrap();
+        if job.facility_list.is_some() {
+            todo!("r6:modern_hd_facility_list_transition.go:drawModernHDFacilityList");
+        }
+        if job.expiry_text.is_some() && self.facility_hd_draw_active() {
+            todo!("r6:modern_hd_transient_expiry.go:drawModernHDTransientExpiryMessage");
+        }
+        if !job.timeline.is_empty() {
+            todo!("r8:native_class_ui_lifecycle.go:195..218 timeline（設施成功演出；開場與第一章沒有走到）");
+        }
+        let (pix, has_preparation_text) = if (job.frame as usize) < job.frames.len() {
+            if job.status_text.is_some() {
+                todo!("r6:modern_hd_panel_transition.go:drawModernHDStatusTransition");
+            }
+            (job.frames[job.frame as usize].clone(), job.preparation_text.is_some())
+        } else if job.restore.len() == 320 * 200 {
+            (job.restore.clone(), job.preparation_text.is_some())
+        } else {
+            return false;
+        };
+        if has_preparation_text && (self.modern_story_portraits.is_some() || self.modern_hd_text.is_some()) {
+            todo!("r6:modern_hd_preparation_transition.go:drawModernHDPreparationTransition");
+        }
+        self.present_native_class_frame(screen, &pix);
+        if has_preparation_text {
+            // appendModernHDPreparationDialogue：忠實模式只清 HD 疊層，其餘要 modernHDText 或 HD 頭像。
+            self.modern_hd_overlay = None;
+        }
+        self.native_class_ui_job.as_mut().unwrap().drawn = true;
+        true
+    }
+
+    /// R5 階段 2 r5c（Rust 新增）：設施繪圖裡 HD 呈現的守門。Go 的 `drawModernHD*`（R6）在
+    /// `modernStoryPortraits`、`modernHDText` 都是 nil 且介面不是 HD 時（忠實模式）都回 false，`appendModernHD*`
+    /// 不做事；三者任一成立時本組的繪圖函式改走 `todo!("r6:…")`，不輸出近似畫面。
+    pub(crate) fn facility_hd_draw_active(&self) -> bool {
+        self.modern_story_portraits.is_some() || self.modern_hd_text.is_some() || self.modern_hd_interface_enabled()
     }
 }

@@ -541,6 +541,8 @@ impl ParityReplay {
             if let Err(err) = parity_update_game(&mut self.d) {
                 panic!("Update：{err}");
             }
+            // R5 階段 2 r5c：戰後 settleTown 的 gap 擷取點（只在 gap_scope 期間）。
+            self.d.observe_r5c_gap("settle", true);
         }
     }
 
@@ -1219,7 +1221,13 @@ impl ParityReplay {
     }
 
     /// Go `chapter_parity_replay_test.go:3074`：`ensurePostbattleNode`。
+    ///
+    /// R5 階段 2 r5c：局部黃金打開時，整段（戰後迴圈、`drive_story`、`settle_town`）的每個 `update` 之後擷取，
+    /// 對應 Go 逐字複本插入的擷取點（`rust_golden_r5c_layers_test.rs`）。
     fn ensure_postbattle_node(&mut self, target: &str) {
+        if let Some(capture) = self.d.r5c_layer_capture.as_mut() {
+            capture.gap_scope = true;
+        }
         let mut frame = 0;
         while frame < 3000 && node_id(&self.d.g) == self.battle {
             let g = &mut self.d.g;
@@ -1233,6 +1241,7 @@ impl ParityReplay {
             if let Err(err) = parity_update_game(&mut self.d) {
                 panic!("Update：{err}");
             }
+            self.d.observe_r5c_gap("postbattle", true);
             frame += 1;
         }
         if node_id(&self.d.g) == self.battle {
@@ -1245,6 +1254,9 @@ impl ParityReplay {
         self.d.drive_story(&mut j, |g| node_id(g) == target);
         self.battle_done = true;
         self.settle_town();
+        if let Some(capture) = self.d.r5c_layer_capture.as_mut() {
+            capture.gap_scope = false;
+        }
     }
 
     /// Go `chapter_parity_replay_test.go:3115`：`townProbe`。
@@ -1254,6 +1266,7 @@ impl ParityReplay {
         if !self.d.g.move_native_town_selection(delta) {
             panic!("town_enter(seq {})：城鎮選擇無法移動", action.seq);
         }
+        self.d.observe_r5c_gap("town_move", false);
         let selection = self.d.g.camp_sel;
         self.enter_town_option(selection);
         self.d.pump(120, |g| g.native_class_ui_job.is_none() && g.fade.is_none());
@@ -1295,6 +1308,7 @@ impl ParityReplay {
             if !self.d.g.move_native_town_selection(1) {
                 panic!("town_save(seq {})：城鎮選擇移不到酒店", action.seq);
             }
+            self.d.observe_r5c_gap("town_move", false);
             guard += 1;
         }
         self.enter_town_option(0);
@@ -1307,17 +1321,22 @@ impl ParityReplay {
                 self.d.g.native_hotel_mode
             );
         }
+        // R5 階段 2 r5c：每次酒店輸入之後的 gap 擷取點（Go 逐字複本的插入行）。
         for _ in 0..NATIVE_HOTEL_SERVICE_SAVE {
             self.d.g.handle_native_hotel_input(NativeHotelInput { delta: 1, ..Default::default() });
+            self.d.observe_r5c_gap("hotel_input", false);
         }
         self.d.g.handle_native_hotel_input(NativeHotelInput { enter: true, ..Default::default() });
+        self.d.observe_r5c_gap("hotel_input", false);
         if self.d.g.native_hotel_mode != "slots" {
             panic!("town_save(seq {})：存檔列表沒有開（mode={:?}）", action.seq, self.d.g.native_hotel_mode);
         }
         while self.d.g.native_hotel_slot_sel < slot {
             self.d.g.handle_native_hotel_input(NativeHotelInput { down: true, ..Default::default() });
+            self.d.observe_r5c_gap("hotel_input", false);
         }
         self.d.g.handle_native_hotel_input(NativeHotelInput { enter: true, ..Default::default() });
+        self.d.observe_r5c_gap("hotel_input", false);
         if self.d.g.native_hotel_mode != "saved" {
             panic!(
                 "town_save(seq {})：存檔後沒有「記錄儲存完畢」（mode={:?}）",
@@ -1340,7 +1359,9 @@ impl ParityReplay {
         self.checkpoint("town_save", action.seq, "hotel", true, &[note]);
         // 原版側接著 esc 三次回到城鎮：訊息 → 選單 → 離開。
         self.d.g.handle_native_hotel_input(NativeHotelInput { esc: true, ..Default::default() });
+        self.d.observe_r5c_gap("hotel_input", false);
         self.d.g.handle_native_hotel_input(NativeHotelInput { esc: true, ..Default::default() });
+        self.d.observe_r5c_gap("hotel_input", false);
         let town = self.current_town();
         self.d.pump(120, |g| node_id(g) == town);
         if node_id(&self.d.g) != town {
@@ -1576,6 +1597,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             map_layer_capture: MapLayerCapture::from_env(),
             dialogue_layer_capture: DialogueLayerCapture::from_env(),
             r5p_layer_capture: R5pLayerCapture::from_env(),
+            r5c_layer_capture: R5cLayerCapture::from_env(),
         },
         out: out.to_path_buf(),
         run: run.to_path_buf(),
@@ -1614,6 +1636,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         || r.d.map_layer_capture.is_some()
         || r.d.dialogue_layer_capture.is_some()
         || r.d.r5p_layer_capture.is_some()
+        || r.d.r5c_layer_capture.is_some()
     {
         pin_global_rand(&mut r.d.g);
     }
@@ -1664,6 +1687,9 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             let mut extra = serde_json::Map::new();
             extra.insert("scope".into(), "第一章受控重播的每個 pump 幀（同 TestRustGoldenFrames chapter 模式）".into());
             capture.finish("chapter", extra);
+        }
+        if let Some(capture) = r.d.r5c_layer_capture.take() {
+            capture.finish();
         }
     }));
     if let Err(panic) = outcome {

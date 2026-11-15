@@ -37,3 +37,45 @@ impl Game {
         todo!("R6: modern_hd_facility_text.go:beginModernHDFacilityText（HD 文字擷取）")
     }
 }
+
+// ---- R5 階段 2 r5c：HD 檔的忠實模式路徑（`PORTING.json` 狀態維持 `r6`）----
+
+impl Game {
+    /// Go：`modern_hd_facility_text.go:74`，`func (g *Game) drawModernHDFacilityFrame(screen *ebiten.Image, compose func() ([]byte, bool), digits bool) bool`
+    ///
+    /// R5 階段 2 r5c：酒店（`drawNativeHotel`）的呈現出口，只移植忠實模式路徑。`beginModernHDFacilityText` 回 nil 擷取、
+    /// `drawModernHDStableFacilityScene` 在 `modernStoryPortraits` 為 nil 時回 false，於是 `compose` 後
+    /// `presentNativeClassFrame`；之後的 `drawModernHDFacilityRosterUnderlay` 只清 `facilityRosterHD`
+    /// （`prepareModernHDFacilityRoster` 要 HD 主題），`appendModernHDFacilityDialogue`／`ServiceIcons`／`ItemRows`／
+    /// `ChurchFeeCurrency` 在 `modernHDText` 為 nil 時不做事。HD 文字擷取、HD 場景與 HD 文字層 `todo!("r6:…")`。
+    /// Go 的 `defer restore()` 在每條 return 路徑最後執行，這裡在兩個出口各呼叫一次。
+    pub(crate) fn draw_modern_hd_facility_frame(
+        &mut self,
+        screen: &mut Picture,
+        compose: impl FnOnce(&mut Game) -> (Vec<u8>, bool),
+        digits: bool,
+    ) -> bool {
+        let (capture, restore) = self.begin_modern_hd_facility_text();
+        if capture.is_some() {
+            let _ = digits;
+            todo!("r6:modern_hd_facility_text.go:drawModernHDFacilityFrame（HD 文字擷取與 HD 數字）");
+        }
+        if self.modern_story_portraits.is_some() {
+            todo!("r6:modern_hd_facility_scene_pair.go:drawModernHDStableFacilityScene");
+        }
+        let (frame, ok) = compose(self);
+        if ok {
+            self.present_native_class_frame(screen, &frame);
+            self.facility_roster_hd = None;
+            if self.modern_hd_text.is_some() {
+                todo!(
+                    "r6:modern_hd_facility_text.go:drawModernHDFacilityFrame 的 HD 文字層（appendModernHDFacility*）"
+                );
+            }
+        }
+        if let Some(mut restore) = restore {
+            restore(self);
+        }
+        ok
+    }
+}

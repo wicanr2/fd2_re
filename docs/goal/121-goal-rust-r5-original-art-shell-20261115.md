@@ -388,3 +388,47 @@ Rust 端 `parity_replay/rust_golden_dialogue_layers_test.rs`。兩邊照階段 0
 ### 驗證
 
 `tools/rust_game_test.sh` 344 passed、6 ignored；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；局部黃金重跑兩次相同；`Cargo.lock` 沒有改動。共用檔：`Game::draw_field` 只改兩段 `todo!`（另加兩個方法），`parity_replay` 加擷取掛點，`canvas.rs` 沒有改。
+
+## 階段 2 結果：r5c 城鎮與設施（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5c」。
+
+### 移植
+
+- 「城鎮與設施」14 個 r5 函式照 Go 逐行移植：`drawCampaignUI`、`drawNativeChurchUIJob`、`drawNativeClassUIJob`、酒店 3 個、整備 5 個、
+  `drawNativeShopUIJob`、`drawNativeShop`、`drawNativeTown`；`PORTING.json` 以 `tools/rust_r5_mark_ported.py` 改成 `ported`（記在
+  `r5_stage2_r5c`）。酒店的呈現出口 `drawModernHDFacilityFrame`（HD 檔）只移植忠實模式路徑，狀態維持 `r6`。`canvas.rs` 沒有改。
+- `drawCampaignUI` 依階段 0 覆蓋率只移植第一章走到的分支：各節點的原生呈現（城鎮 7、商店 2、酒店 2、整備 21、教會 1 次）成立就 return，
+  其他節點型別沒有分支；原生呈現不成立時的 TTF 後備、GAME OVER、`choice` 選單、教會其餘子畫面與 `ending` 結語 `todo!("r8:…")`。
+  timeline（設施成功演出）、商店穩態、整備名冊與四槽列表的合成在 crate 裡還沒有，也標 r8；HD 路徑 `todo!("r6:…")`。
+- Go 測試 1 項移植（`native_confirmation_mouth_test.go:15`），另加 4 項；其餘呼叫本組的 Go 測試經 r8 的合成器，沒有移植。
+
+### 局部黃金
+
+城鎮、商店、整備多半不經 `pump`，凍結的 Go 測試在戰後迴圈與酒店輸入沒有掛點。新增只輸出資料的
+`remake/cmd/fd2/rust_golden_r5c_layers_test.go`：pump 擷取點同階段 0；另把 `TestChapterParityReplay`、`ensureTown`、`ensurePostbattleNode`、
+`driveStory`、`settleTown`、`townProbe`、`townSave` 逐字複製到檔末，只換名稱並插入 gap 擷取點（戰後 `driveStory` 與 `settleTown` 的每個
+Update 之後、城鎮游標移動之後、酒店每次輸入之後，不推進虛擬時鐘）。`tools/rust_r5c_layers_compare.py --verbatim` 每次先核對複本與原檔
+逐字相同。Rust 端 `parity_replay/rust_golden_r5c_layers_test.rs` 在章重播同一處擷取。每次只畫本組圖層：`Fill` 黑後 `drawCampaignUI`，
+`transientUI` 時再 `drawNativeClassUIJob`。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數（Go、Rust） | 14579（pump 13751，與階段 0 相同；gap 828） |
+| 逐擷取點 | 14579／14579 相同；序列雜湊兩邊都是 `4c5a3720b3488b482f4fb6f338b7df311ee0ea197a23f2290ab2683dd605440d` |
+| 本組有畫的畫格 | 80 張相同：城鎮 50、整備 21、酒店 6（`menu` 4、`slots` 1、`saved` 1）、商店開框 2、教會開框 1 |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…`（gap 擷取的繪圖沒有改變流程） |
+| 重跑與竄改 | r1、r2 的 `rows` 逐筆相同；城鎮畫格改 1 位元、酒店 `saved` 換文字後 14528／14579，比對失敗 |
+
+- 沒有遮蔽像素。旁證：pump 擷取裡有畫的 33 張全部與階段 0 `chapter` 整張黃金同一擷取點相同。
+- Rust 測試映像沒有字型，`drawCampaignUI` 的 `g.font == nil` 守門會讓整段不畫；局部黃金擷取期間暫時代入空的 `Font` 通過守門。整張畫格
+  比對時這 33 張要等 r5f 接上字型才會一致。
+- 涵蓋限制：商店與教會只畫到開框第 0 幀，整備只有出擊前提示；其餘設施子畫面第一章沒有畫到（r8）。
+- opening 整張比對：1940／1940 相同，停點從本組的 `drawCampaignUI` 移到 HUD 組的 `drawNativeSystemEndTurn`（第 1940 次）。
+
+### 驗證
+
+`tools/rust_game_test.sh` 357 passed、6 ignored；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；
+`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；
+`Cargo.lock` 沒有改動。共用檔：`main.rs` 只換 `draw_campaign_ui` 本體並登記測試模組，`Game::draw`／`draw_field`、`canvas.rs` 沒有改；
+`parity_replay` 加擷取掛點與 gap 擷取點（擷取關閉時不做事）。
