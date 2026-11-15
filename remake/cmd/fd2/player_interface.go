@@ -54,11 +54,16 @@ func (g *Game) interfaceAssetTheme() *modernStoryPortraitSet {
 }
 
 func loadPlayerModernTheme() (*modernStoryPortraitSet, error) {
+	return loadPlayerModernThemeWithProgress(nil)
+}
+
+// loadPlayerModernThemeWithProgress 與 loadPlayerModernTheme 相同，另以 progress 回報已處理的清冊項目數。
+func loadPlayerModernThemeWithProgress(progress func(done, total int)) (*modernStoryPortraitSet, error) {
 	root := os.Getenv("FD2_MODERN_THEME_PACK")
 	if root == "" {
 		root = assetPath("assets/themes/modern")
 	}
-	return loadModernStoryPortraitSet(assetPath("assets/themes/modern/catalog.json"), root)
+	return loadModernStoryPortraitSetWithProgress(assetPath("assets/themes/modern/catalog.json"), root, progress)
 }
 
 func (g *Game) setInterfaceMode(mode string) error {
@@ -159,6 +164,15 @@ func (g *Game) saveDisplaySettings() {
 	s.ThemeID = "faithful"
 	if g.modernStoryPortraits != nil {
 		s.ThemeID = modernHandpaintedThemeID
+	}
+	if themeID, iface, ok := g.startupThemeSettings(); ok {
+		// 啟動時的 HD 主題還在背景載入，畫面暫用原版；設定保留玩家原本選的值。
+		if g.modernStoryPortraits == nil {
+			s.ThemeID = themeID
+		}
+		if g.interfaceMode == playerInterfaceOriginal {
+			s.InterfaceMode = iface
+		}
 	}
 	s.FontScale, s.LocaleID, s.BGMSource = g.fontScale, g.localeID, g.bgmSource
 	saveSettings(s)

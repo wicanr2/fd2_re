@@ -8428,6 +8428,7 @@ func (g *Game) Update() error {
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(g.gameNow()))
 	g.stepNativePreparationUILifecycle(g.gameNow())
 	g.pollModernThemeLoad()                                                                                                     // 背景載入完成時補做第一次 F2／F11
+	g.surfaceModernThemeNotices()                                                                                               // 延後檢查拒收時告訴玩家已改用原版圖
 	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerThemeRequested || inpututil.IsKeyJustPressed(ebiten.KeyF2)) { // 全域：忠實／現代主題
 		g.cycleTheme()
 	}
@@ -11663,6 +11664,13 @@ func loadGame() *Game {
 	if themeID == "" {
 		themeID = configured.ThemeID
 	}
+	// 設定存成 HD 的一般啟動不在這裡同步載入主題包（要數十秒到數分鐘，視窗出現前沒有進度）：
+	// 先以原版素材進入，背景載入完成後補做切換（#318）。工具路徑維持同步載入。
+	deferTheme := modernThemeStartupDeferred()
+	deferArt, deferInterface := false, ""
+	if deferTheme && themeID == modernHandpaintedThemeID {
+		deferArt, themeID = true, ""
+	}
 	if themeID != "" && themeID != "faithful" {
 		if themeID != modernHandpaintedThemeID {
 			g.loadErr = "modern theme: unsupported theme " + themeID
@@ -11694,7 +11702,14 @@ func loadGame() *Game {
 		if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
 			g.interfaceMode = playerInterfaceHD
 		}
+		if deferArt {
+			deferInterface = modernThemePendingInterfaceAuto
+		}
 	}
+	if deferTheme && g.interfaceMode == playerInterfaceHD && g.modernThemeCache == nil {
+		g.interfaceMode, deferInterface = playerInterfaceOriginal, modernThemePendingInterface
+	}
+	g.deferStartupModernTheme(deferArt, deferInterface, configured.ThemeID, configured.InterfaceMode)
 	if g.interfaceMode == playerInterfaceHD && g.modernThemeCache == nil {
 		g.modernThemeCache, localeErr = loadPlayerModernTheme()
 		if localeErr != nil {

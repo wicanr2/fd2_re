@@ -55,6 +55,15 @@ func battleHDAssetFixture(t *testing.T) (modernThemeAsset, *figani.Animation, st
 	return a, native, root
 }
 
+// loadModernBattleHDAssetVerified 載入後立即做延後到第一次預備的解碼與透明度檢查，等同 #317
+// 之前載入時的完整檢查；未通過時資源已退回原版（不在 map 內）。
+func loadModernBattleHDAssetVerified(set *modernStoryPortraitSet, asset modernThemeAsset, root string, native *figani.Animation) error {
+	if err := loadModernBattleHDAssetWithNative(set, asset, root, native); err != nil {
+		return err
+	}
+	return set.verifyBattleHDResource(asset.SourceArchive, asset.SourceResource)
+}
+
 func TestPhysicalBattleAuditSourcesReadOnly(t *testing.T) {
 	frame := figani.Frame{X: 32, Y: 40, Width: 120, Height: 130}
 	scene := &nativePhysicalScene{body: &nativePhysicalBodyPlayback{jobs: []nativePhysicalBodyJob{{hdPhase: "counter",
@@ -238,7 +247,7 @@ func TestModernHDBattleEmptyFrameRequiresCompleteNativeMask(t *testing.T) {
 			digest := sha256.Sum256(raw)
 			a.FrameSHA256[1] = hex.EncodeToString(digest[:])
 			set := &modernStoryPortraitSet{}
-			err = loadModernBattleHDAssetWithNative(set, a, root, native)
+			err = loadModernBattleHDAssetVerified(set, a, root, native)
 			if kind != "native-empty" {
 				if err == nil || len(set.battleAnimations) != 0 || len(set.battleEffects) != 0 {
 					t.Fatal("invalid empty frame published")

@@ -5887,6 +5887,29 @@
       "rule": "在 RunGame 裡逐幀 Draw＋ReadPixels 的長流程，每次擷取都要讓 Ebiten 走完一個畫格（在 Update 內執行擷取後回傳，下一個 Update 再放測試端繼續），不要讓 Update 一直停住；Draw 每幀新建的 ebiten.Image 要等畫格結束才釋放，llvmpipe 的貼圖在主機記憶體。",
       "why": "R5 階段 0 第一版讓 probe 停在第一個 Update、測試 goroutine 直接 Draw／ReadPixels，第一章戰場每次擷取約多 3.6 MB，2048 次後 RSS 8 GB 被砍；定期 runtime.GC 也無效。改成每次擷取走一個畫格後 RSS 穩定在約 0.9 GB。",
       "evidence": "remake/cmd/fd2/rust_golden_frames_test.go（goldenFrameProbe）"
+    },
+    {
+      "id": "theme-pack-no-decode-only-to-validate",
+      "date": "2026-11-15",
+      "area": "重製端",
+      "rule": "主題包載入時不為了驗證而把會立刻丟掉的圖解碼一遍。檔案存在、路徑、SHA-256 與 PNG 標頭尺寸在載入時檢查（壞包仍整包拒收）；只能靠解碼像素判斷的條件（透明度、壓縮資料）延到第一次預備那筆資源時順便檢查，位元組已由 SHA-256 釘住，結果不會變。延後的檢查失敗時，該筆資源退回原版畫格並告訴玩家，不讓呼叫端的交易失敗，也不發布半組圖。",
+      "why": "#317：以真實 HD 包剖析，戰鬥 HD 動畫幀佔主題載入 64% 的 CPU 時間（約 99 秒）與 65% 的配置量（10.5 GB），解出的圖片在載入當下就丟掉，第一次進戰鬥時又重新解碼一次。",
+      "evidence": "remake/cmd/fd2/modern_hd_battle_assets.go、remake/cmd/fd2/modern_theme_deferred.go",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_battle_assets.go"
+        ],
+        "pattern": "func \\(entry \\*modernBattleHDResource\\) verifyCoverage"
+      }
+    },
+    {
+      "id": "measure-game-loop-heap-under-rungame",
+      "date": "2026-11-15",
+      "area": "驗證",
+      "rule": "量遊戲迴圈期間的 heap 或幀時間，要在 ebiten.RunGame 下跑正式的 modernHDPresentation。測試裡自己呼叫 Update／Draw 的離屏迴圈沒有幀結束，Ebiten 的待處理繪圖與每幀新建圖片的像素會一直留在 heap，數值隨迴圈幀數膨脹，長短不同的兩段量測不能比較。",
+      "why": "#317 量測時，離屏迴圈跑第一次 F2 量到修正前 heap 高峰 9.1 GB、切換後留存 6.4 GB；heap 剖析顯示多出的部分是 presentNativeClassFrame 每幀 NewImageFromImage 留在 mipmap.WritePixels 的像素。改用 RunGame 後修正前同一情境的高峰是 3.7 GB、留存 2.0 GB。",
+      "evidence": "remake/cmd/fd2/hd_theme_load_gui_measure_test.go"
     }
   ]
 }

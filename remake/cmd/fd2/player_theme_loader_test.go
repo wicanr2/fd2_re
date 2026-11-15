@@ -107,3 +107,125 @@ func TestFirstInterfaceSwitchDefersWhileThemeLoads(t *testing.T) {
 		t.Fatal("cached pack still deferred the switch")
 	}
 }
+
+// 設定存成 HD 時 loadGame 不同步載入主題包（#318）：先以原版進入、背景載入，載入期間存設定
+// 不把 HD 蓋成原版；載入失敗時留在原版、顯示原因，不讓遊戲停在錯誤畫面。
+func TestStartupHDSettingsLoadInBackgroundAndFailSafe(t *testing.T) {
+	isolateThemeSettings(t)
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("FD2_CAMPAIGN", defaultPlayerCampaign)
+	t.Setenv("FD2_MODERN_THEME_PACK", t.TempDir()) // 空包：背景載入必定失敗
+	s := loadSettings()
+	s.ThemeID, s.InterfaceMode = modernHandpaintedThemeID, playerInterfaceHD
+	saveSettings(s)
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	load := g.modernThemeLoading
+	if load == nil || !load.pendingArt || !load.pendingInterface || !load.startup {
+		t.Fatal("HD settings did not start a background load with both pending switches")
+	}
+	if g.modernStoryPortraits != nil || g.interfaceMode != playerInterfaceOriginal || g.modernThemeCache != nil {
+		t.Fatalf("startup published HD before the pack loaded: iface=%s", g.interfaceMode)
+	}
+	g.saveDisplaySettings() // 例如載入期間按了 F7
+	if saved := loadSettings(); saved.ThemeID != modernHandpaintedThemeID || saved.InterfaceMode != playerInterfaceHD {
+		t.Fatalf("saving during the startup load overwrote HD settings: %+v", saved)
+	}
+	waitModernThemeLoad(t, g)
+	if g.modernStoryPortraits != nil || g.interfaceMode != playerInterfaceOriginal || g.loadErr != "" ||
+		!strings.HasPrefix(g.msg, "現代主題不可用：") {
+		t.Fatalf("failed startup load did not stay in original mode with a message: msg=%q err=%q", g.msg, g.loadErr)
+	}
+	if saved := loadSettings(); saved.ThemeID != modernHandpaintedThemeID || saved.InterfaceMode != playerInterfaceHD {
+		t.Fatalf("failed startup load erased HD settings: %+v", saved)
+	}
+}
+
+// 以環境變數指定主題或介面、截圖與結局預覽等工具路徑仍同步載入，輸出不受背景載入影響。
+func TestStartupThemeToolPathsStaySynchronous(t *testing.T) {
+	names := []string{"FD2_THEME", "FD2_INTERFACE_MODE", "FD2_SHOT", "FD2_SHOT_SERIES", "FD2_ENDING_PREFIX"}
+	for _, name := range names {
+		for _, other := range names {
+			t.Setenv(other, "")
+		}
+		if !modernThemeStartupDeferred() {
+			t.Fatal("plain startup is not deferred")
+		}
+		t.Setenv(name, "x")
+		if modernThemeStartupDeferred() {
+			t.Fatalf("%s did not keep the synchronous load", name)
+		}
+	}
+}
+
+// 啟動時兩個切換都等載入完成才做：美術套用並寫入設定，介面依結果切換或留原版；
+// 自動介面只在主題包確實有 HD 素材時才嘗試切換。
+func TestStartupPendingSwitchesApplyAfterLoad(t *testing.T) {
+	for _, hasHD := range []bool{false, true} {
+		isolateThemeSettings(t)
+		release := make(chan struct{})
+		set := &modernStoryPortraitSet{hasHD: hasHD}
+		g := &Game{m: &MapData{TileW: 24, TileH: 24, Cols: 2}, interfaceMode: playerInterfaceOriginal,
+			baseMapTileset: image.NewRGBA(image.Rect(0, 0, 48, 24)),
+			modernThemeLoader: func() (*modernStoryPortraitSet, error) {
+				<-release
+				return set, nil
+			}}
+		g.deferStartupModernTheme(true, modernThemePendingInterfaceAuto, modernHandpaintedThemeID, "")
+		load := g.modernThemeLoading
+		if load == nil || !load.pendingArt || !load.pendingInterfaceAuto || g.modernStoryPortraits != nil {
+			t.Fatal("startup did not defer both switches")
+		}
+		g.pollModernThemeLoad()
+		if g.modernStoryPortraits != nil {
+			t.Fatal("switched before load finished")
+		}
+		close(release)
+		waitModernThemeLoad(t, g)
+		if g.modernStoryPortraits != set || g.modernThemeCache != set {
+			t.Fatal("art switch not applied after startup load")
+		}
+		if saved := loadSettings(); saved.ThemeID != modernHandpaintedThemeID {
+			t.Fatalf("applied art not saved: %+v", saved)
+		}
+		if hasHD {
+			// 介面切換排在下一次 Update，不和美術擠在同一幀。
+			if g.modernThemeLoading == nil || strings.Contains(g.msg, "介面") {
+				t.Fatalf("interface switch was not deferred to the next update: msg=%q", g.msg)
+			}
+			g.pollModernThemeLoad()
+		}
+		if g.modernThemeLoading != nil {
+			t.Fatal("startup load still pending after both switches")
+		}
+		// 測試用 Game 沒有 HD 字型，HD 介面預檢必定失敗：只要有試、失敗時留原版即可。
+		tried := strings.Contains(g.msg, "介面切換失敗")
+		if hasHD != tried || g.interfaceMode != playerInterfaceOriginal {
+			t.Fatalf("auto interface hasHD=%v tried=%v iface=%s msg=%q", hasHD, tried, g.interfaceMode, g.msg)
+		}
+	}
+}
+
+// 背景載入期間訊息顯示進度，但不覆寫其他訊息。
+func TestModernThemeLoadShowsProgress(t *testing.T) {
+	load := &modernThemeLoad{done: make(chan struct{})}
+	g := &Game{modernThemeLoading: load, msg: modernThemeLoadMessage}
+	g.pollModernThemeLoad()
+	if g.msg != modernThemeLoadMessage {
+		t.Fatalf("progress shown before total known: %q", g.msg)
+	}
+	load.progress(5, 20)
+	g.pollModernThemeLoad()
+	if !strings.Contains(g.msg, "25%") {
+		t.Fatalf("progress not shown: %q", g.msg)
+	}
+	g.msg = "攻擊！"
+	load.progress(10, 20)
+	g.pollModernThemeLoad()
+	if g.msg != "攻擊！" {
+		t.Fatalf("progress overwrote another message: %q", g.msg)
+	}
+}

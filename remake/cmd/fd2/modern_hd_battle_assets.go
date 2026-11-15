@@ -33,6 +33,29 @@ type modernBattleHDResource struct {
 	hdRects          []image.Rectangle
 	visualScale      modernHDVisualScale
 	flameEmberSprite image.Image
+	// coverage 是載入時由原生 descriptor 決定、延到第一次預備時才對解碼像素檢查的透明度條件；
+	// nil 表示這筆資源不是由 catalog 載入器建立，沒有延後的條件。verified 記錄已通過的畫格
+	// （條件只取決於已核對 SHA-256 的 PNG 位元組，所以通過一次即可）。
+	coverage []modernBattleHDCoverageRule
+	verified []bool
+	notices  *modernThemeNotices
+}
+
+// modernBattleHDCoverageRule 是一個畫格的透明度契約：原生全空白的畫格不得有墨跡；其餘畫格
+// 必須有不透明核心，且除非原生遮罩全滿，也必須有透明背景。
+type modernBattleHDCoverageRule struct {
+	nativeEmpty bool
+	fullMask    bool
+}
+
+func (rule modernBattleHDCoverageRule) check(coverage modernHDAlphaCoverage) error {
+	if rule.nativeEmpty && coverage.visible {
+		return errors.New("adds ink to empty native frame")
+	}
+	if !rule.nativeEmpty && ((!coverage.transparent && !rule.fullMask) || !coverage.opaque) {
+		return errors.New("lacks transparent background or opaque core")
+	}
+	return nil
 }
 
 // HD coordinates are independent of the immutable native FIGANI descriptor.
@@ -147,6 +170,7 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 	}
 	paths := make([]string, asset.FrameCount)
 	sizes := make([]image.Rectangle, asset.FrameCount)
+	coverage := make([]modernBattleHDCoverageRule, asset.FrameCount)
 	var hdRects []image.Rectangle
 	if consumer == "native_figani_rgba_hd6_v2" {
 		if len(asset.HDFrames) != asset.FrameCount {
@@ -187,25 +211,9 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		if err != nil || config.Width != width || config.Height != height {
 			return fmt.Errorf("modern HD battle: frame %d has invalid geometry", index)
 		}
-		picture, _, err := image.Decode(bytes.NewReader(raw))
-		if err != nil {
-			return err
-		}
-		transparent, opaque, visible := false, false, false
-	alphaScan:
-		for y := picture.Bounds().Min.Y; y < picture.Bounds().Max.Y; y++ {
-			for x := picture.Bounds().Min.X; x < picture.Bounds().Max.X; x++ {
-				_, _, _, a := picture.At(x, y).RGBA()
-				transparent = transparent || a == 0
-				opaque = opaque || a == 0xffff
-				visible = visible || a != 0
-				// 這三個OR結果只會由false轉true；找到兩端後不再改變。
-				// 原空白若有任何墨跡，仍由下方nativeEmpty／visible拒收。
-				if transparent && opaque {
-					break alphaScan
-				}
-			}
-		}
+		// 完整解碼與透明度檢查延到第一次預備這筆資源時（stageModernBattleHDResources 本來就
+		// 要解碼）。這裡只決定條件：載入時解碼全部戰鬥畫格佔主題載入約三分之二的時間，解出的
+		// 圖片又立刻丟掉（#317）。
 		fullMask := asset.SourceArchive == "FDOTHER.DAT" && len(frame.Mask) == frame.Width*frame.Height
 		for _, value := range frame.Mask {
 			fullMask = fullMask && value != 0
@@ -213,20 +221,16 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		emptyAllowed := asset.SourceArchive == "FIGANI.DAT" ||
 			(asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource == 44 && len(native.Frames) == 31 && index == 30)
 		nativeEmpty := emptyAllowed && len(frame.Mask) == frame.Width*frame.Height && bytes.Count(frame.Mask, []byte{0}) == len(frame.Mask)
-		if nativeEmpty && visible {
-			return fmt.Errorf("modern HD battle: frame %d adds ink to empty native frame", index)
-		}
-		if !nativeEmpty && ((!transparent && !fullMask) || !opaque) {
-			return fmt.Errorf("modern HD battle: frame %d lacks transparent background or opaque core", index)
-		}
+		coverage[index] = modernBattleHDCoverageRule{nativeEmpty: nativeEmpty, fullMask: fullMask}
 		paths[index] = filepath.Join(root, name)
-		sizes[index] = picture.Bounds()
+		sizes[index] = image.Rect(0, 0, config.Width, config.Height)
 	}
 	if entries == nil {
 		entries = make(map[int]*modernBattleHDResource)
 	}
 	entries[asset.SourceResource] = &modernBattleHDResource{Frames: make([]image.Image, asset.FrameCount),
-		paths: paths, sizes: sizes, hdRects: hdRects, visualScale: asset.VisualScalePercent, hashes: append([]string(nil), asset.FrameSHA256...)}
+		paths: paths, sizes: sizes, hdRects: hdRects, visualScale: asset.VisualScalePercent, hashes: append([]string(nil), asset.FrameSHA256...),
+		coverage: coverage, verified: make([]bool, asset.FrameCount), notices: set.themeNotices()}
 	if asset.SourceArchive == "FDOTHER.DAT" {
 		set.battleEffects = entries
 	} else {
@@ -317,6 +321,7 @@ func stageModernBattleHDResources(entries map[int]*modernBattleHDResource, resou
 	// Images are immutable. Share only newly decoded, verified sources within
 	// this transaction, retaining independent path/hash/geometry validation.
 	decoded := make(map[string]image.Image)
+	coverage := make(map[string]modernHDAlphaCoverage)
 	for _, resource := range resources {
 		if requested[resource] {
 			continue
@@ -332,32 +337,82 @@ func stageModernBattleHDResources(entries map[int]*modernBattleHDResource, resou
 		if entry.Frames[0] != nil {
 			continue
 		}
-		frames := make([]image.Image, len(entry.paths))
-		for index, path := range entry.paths {
-			raw, err := os.ReadFile(path)
-			if err != nil {
-				return nil, err
-			}
-			digest := sha256.Sum256(raw)
-			if hex.EncodeToString(digest[:]) != entry.hashes[index] {
-				return nil, fmt.Errorf("modern HD battle: resource %d frame %d changed before preflight", resource, index)
-			}
-			picture := decoded[entry.hashes[index]]
-			if picture == nil {
-				picture, _, err = image.Decode(bytes.NewReader(raw))
-				if err != nil {
-					return nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
-				}
-			}
-			if picture.Bounds() != entry.sizes[index] {
-				return nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
-			}
-			frames[index] = picture
-			decoded[entry.hashes[index]] = picture
+		frames, rejected, err := stageModernBattleHDResource(entry, resource, decoded, coverage)
+		if err != nil {
+			return nil, err
+		}
+		if rejected != nil {
+			// 延後的檢查失敗：這筆資源整組退回原版畫格（等同包內沒有登錄它），其他資源照常；
+			// 不發布任何一格，也不讓呼叫端的交易因此失敗（#317）。
+			delete(entries, resource)
+			entry.notices.reject(rejected)
+			continue
 		}
 		pending[resource] = frames
 	}
 	return &modernBattleHDPending{entries: entries, requested: requested, frames: pending}, nil
+}
+
+// stageModernBattleHDResource 讀取、核對並解碼一筆資源的全部畫格。err 是原有的硬性失敗（檔案
+// 不見或在載入後被改），呼叫端整個交易拒收；rejected 是載入時延後的檢查沒有通過。
+func stageModernBattleHDResource(entry *modernBattleHDResource, resource int, decoded map[string]image.Image, coverage map[string]modernHDAlphaCoverage) (frames []image.Image, rejected, err error) {
+	frames = make([]image.Image, len(entry.paths))
+	for index, path := range entry.paths {
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			return nil, nil, err
+		}
+		digest := sha256.Sum256(raw)
+		if hex.EncodeToString(digest[:]) != entry.hashes[index] {
+			return nil, nil, fmt.Errorf("modern HD battle: resource %d frame %d changed before preflight", resource, index)
+		}
+		picture := decoded[entry.hashes[index]]
+		if picture == nil {
+			picture, _, err = image.Decode(bytes.NewReader(raw))
+			if err != nil {
+				if entry.coverage != nil {
+					// 位元組已通過 SHA-256，解不開是清冊登錄了壞圖，不是檔案在載入後被改。
+					return nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be decoded: %w", resource, index, err), nil
+				}
+				return nil, nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
+			}
+		}
+		if picture.Bounds() != entry.sizes[index] {
+			return nil, nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
+		}
+		if err := entry.verifyCoverage(index, picture, coverage); err != nil {
+			return nil, fmt.Errorf("modern HD battle: resource %d frame %d %w", resource, index, err), nil
+		}
+		frames[index] = picture
+		decoded[entry.hashes[index]] = picture
+	}
+	return frames, nil, nil
+}
+
+// verifyBattleHDResource 立即做一筆資源延後的解碼與透明度檢查，不發布任何畫格；未通過時
+// 和第一次預備相同，退回原版畫格並回傳原因。供清冊核對與測試使用。
+func (set *modernStoryPortraitSet) verifyBattleHDResource(archive string, resource int) error {
+	if set == nil {
+		return nil
+	}
+	entries := set.battleAnimations
+	if archive == "FDOTHER.DAT" {
+		entries = set.battleEffects
+	}
+	entry := entries[resource]
+	if entry == nil {
+		return nil
+	}
+	_, rejected, err := stageModernBattleHDResource(entry, resource, map[string]image.Image{}, map[string]modernHDAlphaCoverage{})
+	if err != nil {
+		return err
+	}
+	if rejected != nil {
+		delete(entries, resource)
+		entry.notices.reject(rejected)
+		return rejected
+	}
+	return nil
 }
 
 func (pending *modernBattleHDPending) publish() {
@@ -369,4 +424,24 @@ func (pending *modernBattleHDPending) publish() {
 			entry.Frames = make([]image.Image, len(entry.paths))
 		}
 	}
+}
+
+// verifyCoverage 檢查載入時延後的透明度條件；同一次預備內相同 SHA-256 的圖只掃一次。
+func (entry *modernBattleHDResource) verifyCoverage(index int, picture image.Image, cache map[string]modernHDAlphaCoverage) error {
+	if entry.coverage == nil || (index < len(entry.verified) && entry.verified[index]) {
+		return nil
+	}
+	if index >= len(entry.coverage) || index >= len(entry.verified) {
+		return errors.New("has no coverage rule")
+	}
+	summary, ok := cache[entry.hashes[index]]
+	if !ok {
+		summary = modernHDAlphaCoverageOf(picture)
+		cache[entry.hashes[index]] = summary
+	}
+	if err := entry.coverage[index].check(summary); err != nil {
+		return err
+	}
+	entry.verified[index] = true
+	return nil
 }

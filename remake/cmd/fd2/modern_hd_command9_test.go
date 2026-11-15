@@ -70,7 +70,7 @@ func TestModernHDCommand9ContractAndNativeBlank(t *testing.T) {
 				a.SourceResource, a.ConsumerContract, a.CyclePolicy = 43, "native_fdother_ordinary_rgba_hd6_v1", "native_ordinary_frames"
 			}
 			set := &modernStoryPortraitSet{}
-			err := loadModernBattleHDAssetWithNative(set, a, root, native)
+			err := loadModernBattleHDAssetVerified(set, a, root, native)
 			if fault == "none" {
 				if err != nil || set.battleEffects[44] == nil {
 					t.Fatal("44 native blank rejected", err)
