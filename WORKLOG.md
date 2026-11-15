@@ -5658,3 +5658,13 @@ figani（b536270c）、fdother B份（d3157892）、A份（2ca7cd59）、C份（
 ## 2026-11-15 勘誤：誤刪兩個 matching 備份 worktree
 
 R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的樣式篩選 `git worktree list`，誤中 `work/matching-copy-agent-20261008` 與 `work/matching-inventory-agent-20261008`，以 `git worktree remove --force` 刪除並刪掉分支 `backup/matching-copy-20261008-20261105`（7074338e）、`backup/matching-inventory-20261008-20261105`（a74c32f0）。兩個分支在遠端仍在且 SHA 相同，當場以原 SHA 重建分支與 worktree，受版控內容完整。兩個目錄在 2026-11-05 17:14／17:17 的備份提交之後若有新增、修改或被忽略的檔案，已隨 `--force` 刪除，無法回復或確認。教訓 `worktree-cleanup-exact-ids-only`。2026-11-15 使用者決定放棄可能遺失的未提交內容，兩個 worktree 以備份提交現況為準。
+
+## 2026-11-15 #319 存檔位元組、R5 階段 0 與 v.1.1.13 修正版（Go 凍結例外）
+
+- #319：`fd2-rules` 以 `NilableVec`／`NilableMap` 區分 Go 的 nil 與空切片，存檔 JSON 的浮點寫法登記為第五項具名例外 `go_json_float`（使用者同意）。191 份存檔由 Rust 讀回再寫出與 Go 逐位元組相同，第一章 `hotel-save.json` 與 Go 黃金相同；比對工具拿掉正規化（`6cc268e2`）。
+- R5 計畫 121（`5166c4b5`）。階段 0（`5a05799a`）：新增只輸出資料的 Go 黃金畫格工具，開場 10372 張、第一章 13751 張，兩次執行逐檔相同，加每幀 `Draw` 後 `checkpoints.jsonl` 仍是 `1c846f57…`；Ebiten 在 llvmpipe 的 alpha 與 `ColorScale` 取整找到逐值相同的公式；執行到的非 HD 繪圖函式 127 個、4307 行。詳見 121「階段 0 結果」。
+- Go 凍結例外（使用者 2026-11-15 同意）：第一次 F2／F11 切到 HD 與設定存成 HD 的啟動太慢（#317、#318）。戰鬥 HD 畫格改為第一次使用時才解碼、四類素材分組並行載入、HD 設定啟動改背景載入（`a399da4a`）。真實 HD 包量測：F2 由 217～235 秒降到 31～55 秒，F11 由 220～226 秒降到 41～57 秒，HD 設定啟動到可操作由 117～142 秒降到 3.7～6.3 秒，切換期間 heap 高峰由 3.4～3.6 降到 2.4～3.0 GiB。收據在 `work/ghd-20261115/`。`cmd/fd2` 全套失敗由 22 項變 19 項，是原名單的子集。
+- `cmd/fd2-string-inventory` 自 v.1.1.12 修正後沒有重綁而一直失敗；本輪合併後以 `tools/rebind_string_review.sh` 遷移，新增 7 個字串依既有慣例歸類，測試通過（`8b57cea6`）。
+- 版號 `v.1.1.13-20261115`，引擎來源提交 `8b57cea6`，本機 Docker 建置（macOS 為 osxcross，static-verified）。完整版 Windows 3748417984 位元組／`c090b6d0…`、macOS 3757118654／`e892192b…`、Linux 3236542968／`31fd9593…`；三包各 54577 份素材通過，`ASSET-SHA256.json` 與 v.1.1.12 逐位元組相同；Linux 與 Wine 完整包自檢及受控截圖通過，截圖與 v.1.1.12 相同（`affb593a…`）。`finalize --promo-version v.1.1.10-20261112` 為 PASS-SCOPED。
+- 照抄的 v.1.1.12 組裝腳本把交付目錄唯讀掛載，內容核對寫結果時失敗；先把兩平台完整包的自檢產出複製進交付目錄 `smoke/`（同 v.1.1.12 的交付結構），再以 `smoke/` 可寫掛載重跑通過；自檢收據由 `work/local-release-v.1.1.13-20261115/write_smoke_receipts.py` 產生，截圖經人工檢視。
+- 核對後刪除本輪組裝樹 163824 檔、11690431626 位元組，保留 `work/full-local-v.1.1.13-20261115` 的清冊與 staging.json，以及 `work/local-release-v.1.1.13-20261115` 的建置紀錄。v.1.1.12 的三個完整包（約 11 GB）仍在，是否刪除待使用者決定。
