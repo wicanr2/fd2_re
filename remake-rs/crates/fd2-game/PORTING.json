@@ -25,8 +25,8 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 663,
-      "r5": 21,
+      "ported": 666,
+      "r5": 18,
       "r6": 59,
       "r8": 1179
     },
@@ -1745,7 +1745,7 @@
           "name": "Draw",
           "recv": "Font",
           "rust": "fd2_game::game::Font::draw",
-          "status": "r5",
+          "status": "ported",
           "go_line": 175
         },
         {
@@ -4116,7 +4116,7 @@
           "name": "shouldDrawTransientBattleMessage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::should_draw_transient_battle_message",
-          "status": "r5",
+          "status": "ported",
           "go_line": 10194
         },
         {
@@ -19449,7 +19449,7 @@
         {
           "name": "drawIndexedLocalizedText",
           "rust": "fd2_game::game::draw_indexed_localized_text",
-          "status": "r5",
+          "status": "ported",
           "go_line": 160,
           "class": "畫面",
           "cover": 34.4,
@@ -22670,6 +22670,62 @@
         "todo_branches": [
           "r6:modern_hd_facility_scene.go:drawModernHDTown"
         ]
+      }
+    ]
+  },
+  "r5_stage2_r5f": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "font.go:175",
+        "func": "Draw",
+        "rust": "fd2_game::game::Font::draw",
+        "todo_branches": [
+          "r6:font.go:Draw HD 文字框（f.hd.runs）"
+        ]
+      },
+      {
+        "go": "main.go:10194",
+        "func": "shouldDrawTransientBattleMessage",
+        "rust": "fd2_game::game::Game::should_draw_transient_battle_message",
+        "todo_branches": []
+      },
+      {
+        "go": "native_story_dialogue_locale.go:160",
+        "func": "drawIndexedLocalizedText",
+        "rust": "fd2_game::game::draw_indexed_localized_text",
+        "todo_branches": []
+      }
+    ]
+  },
+  "r5_stage2_r5f_extra": {
+    "r5_todo_branch_removed": [
+      {
+        "go": "font.go:157",
+        "func": "(*Font).faceFor",
+        "note": "原本「有字型卻沒注入 TextMeasure」停在 todo!(\"R5…\")；load_font_sized 現在注入 XImageMeasure，這個分支改成 expect（失敗即關閉）"
+      },
+      {
+        "go": "font.go:194",
+        "func": "(*Font).Width",
+        "note": "同上"
+      }
+    ],
+    "draw_body": [
+      {
+        "go": "main.go:10122..10147",
+        "rust": "fd2_game::game::Game::battle_text_draws",
+        "note": "Draw 尾段的 TTF 戰場短訊與勝負字樣：列出 g.font.Draw 的參數，draw_field 逐一 Font::draw；拆出來讓局部黃金呼叫同一份程式（Go 沒有對應的函式邊界）"
+      }
+    ],
+    "rust_new": [
+      {
+        "rust": "remake-rs/crates/fd2-game/src/go_x_image_font.rs",
+        "note": "golang.org/x/image v0.12.0 的度量慣例（sfnt／opentype／font.Drawer），以 skrifa 0.44.0 讀表格與外框、swash 0.2.10 重新匯出的 zeno 點陣化"
+      },
+      {
+        "rust": "fd2_game::game::XImageMeasure",
+        "note": "TextMeasure 的正式實作，含 Ebiten v2.6.6 text.BoundString／DrawWithOptions 的排版"
       }
     ]
   }

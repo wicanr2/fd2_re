@@ -27,3 +27,7 @@ serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = { version = "=1.0.154", features = ["float_roundtrip", "raw_value"] }
 png = "=0.18.1"
 sha2 = "=0.10.9"
+# TTF（R5 r5f，2026-11-15 使用者定案）：Cargo.lock 已鎖定的版本，只多出 fd2-game 的兩條依賴邊。
+# skrifa：讀表格、cmap 與字形外框（`skrifa::raw` 即 read-fonts）；swash：只用它重新匯出的 zeno 點陣化。
+skrifa = { version = "=0.44.0", default-features = false, features = ["std"] }
+swash = { version = "=0.2.10", default-features = false, features = ["std", "render"] }

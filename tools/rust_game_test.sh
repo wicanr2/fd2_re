@@ -9,6 +9,8 @@
 #   FD2_RUST_TARGET 建置目錄下的 cargo target 目錄名稱（預設 target）
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
+# R5 r5f：Go 黃金用的 TTF 字型（缺檔或雜湊不符即失敗），見 tools/rust_ttf_font.sh。
+source "$root/tools/rust_ttf_font.sh"
 build="${FD2_RUST_BUILD:-$root/work/rust-build}"
 target="${FD2_RUST_TARGET:-target}"
 flame="${FD2_FLAME2_DIR:-$root/org_game/炎龍騎士團/FLAME2}"
@@ -27,6 +29,7 @@ timeout 3000s docker run --rm --network none --memory 6g --cpus 4 --pids-limit 1
   --mount "type=bind,source=$pack,target=/pack,readonly" \
   --mount "type=bind,source=$raw,target=/raw,readonly" \
   --mount "type=bind,source=$assets,target=/assets,readonly" \
+  "${ttf_mounts[@]}" \
   --mount "type=bind,source=$root/remake-rs,target=/src" \
   --mount "type=bind,source=$root/LICENSE,target=/LICENSE,readonly" \
   --mount "type=bind,source=$root/docs,target=/docs,readonly" \

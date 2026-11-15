@@ -25,6 +25,9 @@
 //!   設 `FD2_GOLDEN_R5P_LAYERS_*` 才打開；opening 模式 `#[ignore]`，由 `tools/rust_r5p_layers.sh` 執行）。
 //! - R5 階段 2 r5c：`rust_golden_r5c_layers_test.rs` 是 Go `rust_golden_r5c_layers_test.go`（pump 掛點加上戰後迴圈、
 //!   城鎮游標與酒店輸入的 gap 擷取點；設 `FD2_GOLDEN_R5C_LAYERS_OUT` 才打開，由 `tools/rust_r5c_layers.sh` 執行）。
+//! - R5 階段 2 r5f：`rust_golden_ttf_layers_test.rs` 是 Go `rust_golden_ttf_layers_test.go`（chapter 模式同一個掛點，
+//!   設 `FD2_GOLDEN_TTF_LAYERS_OUT` 才打開；度量黃金 `#[ignore]`，由 `tools/rust_r5f_ttf_layers.sh` 執行）。驅動端在
+//!   `load_game` 之後以 `require_golden_font` 要求 Go 黃金同一份字型。
 //! - Go 以 `t.Setenv` 設的環境變數由父測試以子行程傳入（F 組 `f_child_env` 的做法），工作區禁用 `unsafe`。
 
 use super::*;
@@ -41,6 +44,7 @@ mod rust_golden_frames_test;
 mod rust_golden_map_layers_test;
 mod rust_golden_r5c_layers_test;
 mod rust_golden_r5p_layers_test;
+mod rust_golden_ttf_layers_test;
 
 pub(crate) use chapter_parity_hp_lock_test::*;
 pub(crate) use chapter_parity_legacy_end_test::*;
@@ -53,3 +57,4 @@ pub(crate) use rust_golden_frames_test::*;
 pub(crate) use rust_golden_map_layers_test::*;
 pub(crate) use rust_golden_r5c_layers_test::*;
 pub(crate) use rust_golden_r5p_layers_test::*;
+pub(crate) use rust_golden_ttf_layers_test::*;

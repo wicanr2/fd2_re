@@ -66,6 +66,8 @@ fn test_rust_golden_frames_opening() {
 fn run_golden_frames_opening(out: &Path) {
     let mut capture = FrameCapture::new("opening", out.to_path_buf());
     let g = load_game().expect("loadGame");
+    // R5 r5f：Go 黃金載入了系統的 NotoSansCJK-Regular.ttc。
+    require_golden_font(&g);
     if !g.load_err.is_empty() {
         panic!("{}", g.load_err);
     }
@@ -80,6 +82,7 @@ fn run_golden_frames_opening(out: &Path) {
         dialogue_layer_capture: None,
         r5p_layer_capture: None,
         r5c_layer_capture: None,
+        ttf_layer_capture: None,
     };
     // R5 階段 2 r5d：Go 黃金的 rand.Seed(4)。
     pin_global_rand(&mut d.g);

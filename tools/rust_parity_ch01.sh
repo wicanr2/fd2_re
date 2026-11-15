@@ -16,6 +16,8 @@
 #   FD2_PYTHON_IMAGE 判定與比對用的映像檔（預設 python:3.13-slim；verify_chapter_parity.py 的 PIL 是選用）
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
+# R5 r5f：Go 黃金用的 TTF 字型（缺檔或雜湊不符即失敗），見 tools/rust_ttf_font.sh。
+source "$root/tools/rust_ttf_font.sh"
 out="$(mkdir -p "${1:?輸出目錄}" && cd "$1" && pwd -P)"
 work="${FD2_WORK:-$root/work}"
 build="${FD2_RUST_BUILD:-$root/work/rust-build}"
@@ -63,6 +65,7 @@ timeout 3000s docker run --rm --network none --memory 6g --cpus 4 --pids-limit 1
   --mount "type=bind,source=$pack,target=/pack,readonly" \
   --mount "type=bind,source=$packsrc,target=/packsrc,readonly" \
   --mount "type=bind,source=$assets,target=/assets,readonly" \
+  "${ttf_mounts[@]}" \
   --mount "type=bind,source=$root/remake-rs,target=/src" \
   --mount "type=bind,source=$root/LICENSE,target=/LICENSE,readonly" \
   --mount "type=bind,source=$root/docs,target=/docs,readonly" \

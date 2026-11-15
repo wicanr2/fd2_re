@@ -25,6 +25,8 @@ pub(crate) struct Driver {
     /// R5 階段 2 r5c：城鎮與設施組的局部黃金（`rust_golden_r5c_layers_test.rs`），同一個掛點另加 gap 擷取點；
     /// 預設 `None`。
     pub(crate) r5c_layer_capture: Option<R5cLayerCapture>,
+    /// R5 階段 2 r5f：TTF 戰場短訊與勝負字樣的局部黃金（`rust_golden_ttf_layers_test.rs`），同一個掛點；預設 `None`。
+    pub(crate) ttf_layer_capture: Option<TtfLayerCapture>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。
@@ -59,6 +61,9 @@ impl Driver {
                 capture.observe(&mut self.g);
             }
             if let Some(capture) = self.r5c_layer_capture.as_mut() {
+                capture.observe(&mut self.g);
+            }
+            if let Some(capture) = self.ttf_layer_capture.as_mut() {
                 capture.observe(&mut self.g);
             }
             if done(&mut self.g) {

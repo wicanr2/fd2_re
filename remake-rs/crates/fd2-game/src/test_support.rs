@@ -51,6 +51,26 @@ pub(crate) fn docs_file(rel: &str) -> Option<String> {
     }
 }
 
+/// Go 黃金（`fd2-go-test-local` 的 `fonts-noto-cjk`）用的 `NotoSansCJK-Regular.ttc` 的 SHA-256（R5 r5f）。
+pub(crate) const NOTO_SANS_CJK_REGULAR_SHA256: &str =
+    "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a";
+
+/// Go `fontPaths` 的系統 Noto CJK 路徑（`font.go:67`）；驅動腳本把主機同一檔唯讀掛在這裡。
+pub(crate) const NOTO_SANS_CJK_REGULAR_PATH: &str = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc";
+
+/// 測試要用真 TTF 時呼叫：字型在 `NOTO_SANS_CJK_REGULAR_PATH` 且 SHA-256 相符才回 true。缺檔時略過
+/// （`FD2_REQUIRE_ORIGINAL=1` 下失敗）；檔案存在但雜湊不符一律失敗，不拿別版字型比 Go 黃金。
+pub(crate) fn cjk_font_available() -> bool {
+    use sha2::{Digest, Sha256};
+    let Ok(data) = std::fs::read(NOTO_SANS_CJK_REGULAR_PATH) else {
+        skip(NOTO_SANS_CJK_REGULAR_PATH);
+        return false;
+    };
+    let got: String = Sha256::digest(&data).iter().map(|b| format!("{b:02x}")).collect();
+    assert_eq!(got, NOTO_SANS_CJK_REGULAR_SHA256, "{NOTO_SANS_CJK_REGULAR_PATH} 不是 Go 黃金用的那一版");
+    true
+}
+
 /// 小端 u16 寫入（Go `binary.LittleEndian.PutUint16(b[off:], v)`）。
 pub(crate) fn put16(b: &mut [u8], off: usize, v: u16) {
     b[off..off + 2].copy_from_slice(&v.to_le_bytes());

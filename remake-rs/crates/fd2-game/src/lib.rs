@@ -14,6 +14,7 @@
 pub mod game;
 mod go_json_float;
 mod go_unicode;
+mod go_x_image_font;
 #[cfg(test)]
 #[allow(dead_code)]
 mod test_support;

@@ -392,9 +392,10 @@ Go `Update` 開頭排了四個 `defer`：`syncBalanceState`、清除玩家面板
 
 ### 字型
 
-`fd2-game` 沒有 TTF 解析器（不加依賴）。`Font` 新增 `measure: TextMeasurer`，外殼注入 `TextMeasure`（`ascent`、`bound_string`、`has_glyph`，
-對應 Go 的 opentype face、`text.BoundString`、`sfnt.GlyphIndex`）。沒有字型檔時 `width` 照 Go 回 0；有字型卻沒注入量測器時 `face_for`／`width`
-停在 `todo!("R5: …")`，不以猜測的寬度斷行。`load_font_sized` 只檢查 TTC／sfnt 檔頭；依家族名稱選區域字型（`hdFonts`）只給 HD 用，在 R6。
+`Font` 有 `measure: TextMeasurer`（`TextMeasure`：`ascent`、`bound_string`、`has_glyph`，R5 r5f 加 `draw_text`、`draw_alpha`，對應 Go 的
+opentype face、`text.BoundString`、`sfnt.GlyphIndex`、`text.DrawWithOptions`、`font.Drawer`）。R5 r5f 起 `load_font_sized` 解析字型成功就注入
+`XImageMeasure`（`skrifa`／`swash`，見「R5 階段 2：r5f」）；沒有字型檔時 `width` 照 Go 回 0，帶 `sf` 卻沒有量測器的 `Font` 只能手動組出，
+`face_for` 直接 panic，不以猜測的寬度斷行。依家族名稱選區域字型（`hdFonts`）只給 HD 用，在 R6。
 `rune_breakable` 的 Han／Hiragana／Katakana／Hangul 判斷放在 `src/go_unicode.rs`，是教訓 `rust-port-no-go-stdlib` 的第四項具名例外
 （2026-11-15 使用者同意）：表格照 Go 1.22.12 `unicode.Scripts`（Unicode 15.0.0），`is`／`is_in` 對應 `unicode.Is`／`In`。2026-11-15 以
 `fd2-go-test-local` 容器列印 Go 的四張表，與 Rust 表逐列比對 54 列相同。
@@ -776,7 +777,7 @@ Go `stepDialogueMouth` 呼叫套件層 `rand.Intn(30)`（全域來源，每次�
 | `dlg_page_count` | 非原生對白（沒有 `native_dialogue`）以 `dlgWrap` 依字寬斷行算頁數 | 停在 `todo!("R8: main.go:dlgWrap")` |
 | `resolve_campaign_dialog_line` | 非繁中語系以 `localizedNativeDialogueLayout` 依字寬重排原生頁 | 停在 `todo!("R8: …")` |
 | `prepare_native_dialogue_frames` | 非繁中語系以 `composeLocalizedNativeDialogueProgressiveFrames` 逐字合成 | 停在 `todo!("R8: …")` |
-| `draw_indexed_localized_text` | TTF 點陣化進索引色畫格 | `todo!("R5: …")` |
+| `draw_indexed_localized_text` | TTF 點陣化進索引色畫格 | R5 r5f 已移植（`font.Drawer` 照 x/image 的字形位置，點陣化是 zeno） |
 
 忠實模式繁中的原生對白用 FDTXT 點陣字與編譯好的頁面（`NativeDialogueLayout.pages`／`glyph_ids`），完全不經 TTF，結果決定性。第一章重播的對白都是原生繁中（`dlgWrap` 在階段 0 覆蓋率是 0），所以階段 3 的檢查點重播不受 TTF 量測影響；改跑其他語系或含一般對白的章節時，`dlgWrap` 與在地化重排要先有與 Go 相同的量寬。
 
@@ -1469,7 +1470,7 @@ Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元�
 尾段：`modernHDMapFrameAdmission` 在 `modern_story_portraits` 為 `None` 時一律 false（忠實模式），否則 `todo!("r6:…")`；
 正規化地圖層 9814..9950（storyView 10941 次、圖塊、移動範圍格 135 次、單位、游標 3828 次、`drawNativeMapHUD` 3200 次）的
 世界層部分由 `r5p` 移植成 `draw_normalized_world_layer`（9812..9919），游標 `drawCursor` 與 `drawNativeMapHUD` 是 HUD 組；`drawNativeMapFrame` 6371 次；`drawNativeMovementPanel`、`drawPhaseBanner`、`drawNativeStoryDialogue`；
-TTF 短訊 2650 次與勝負字樣 1 次照 Go 寫好、呼叫 `Font::draw`（r5）；選中單位中文名與舊對話框 0 次（r8）；`drawCampaignUI`、
+TTF 短訊 2650 次與勝負字樣 1 次由 `r5f` 移植（`battle_text_draws` 列出、`Font::draw` 畫）；選中單位中文名與舊對話框 0 次（r8）；`drawCampaignUI`、
 `drawNativeClassUIJob`、`drawNativeSystemEndTurn`、`markActionOverlayDrawn`（10 次）或 `drawRing`、指令格、法術與物品選單、
 `drawNativeSystemInfoUI`、`drawNativePlayerStatus`；舊 fade 疊層 106 次由 `r5p` 移植成 `draw_story_fade_overlay`；`captureShot` 是 r8（截圖模式）。
 
@@ -1488,8 +1489,8 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 |---|---|---|---|---|
 | 城鎮與設施 | 28（0／28／0；`presentNativeClassFrame` 兩個由 r5d、其餘 14 個由 R5 階段 2 `r5c` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter（`r5c`：pump 13751 次加戰後迴圈、城鎮游標與酒店輸入的 gap 828 次，有畫的 80 張與 Go 相同） |
 | Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0；正規化地圖層與 fade 疊層由 `r5p` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | opening＋chapter（`r5p` 圖層級） |
-| HUD 與選單 | 35（14／21／0；回合橫幅 6 個由 r5m 移植） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
-| 對話與文字 | 16（2／14／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個留 r5） | 79 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同）、opening＋chapter |
+| HUD 與選單 | 35（13／22／0；回合橫幅 6 個由 r5m 移植，`shouldDrawTransientBattleMessage` 由 r5f 移植） | 491 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
+| 對話與文字 | 16（0／16／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個由 r5f 移植） | 0 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同；r5f：TTF 文字與外框，見「R5 階段 2：r5f」）、opening＋chapter |
 | 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
 | 地圖與單位 | 14（0／14／0；R5 階段 2 r5m） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
 | 標題與開場 | 7（0／7／0；R5 階段 2 `r5t` 移植 4 個） | 0 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening（標題段 1940／1940 次與 Go 相同）、opening＋chapter |
@@ -1517,7 +1518,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 城鎮與設施 | `native_shop_ui.go:1543..1611` | `drawNativeShop`（ported，r5c） | 69 | — | chapter＋FD2_SHOT_STATE |
 | 城鎮與設施 | `native_town_ui.go:224..234` | `drawNativeTown`（ported，r5c） | 11 | — | chapter＋FD2_SHOT_STATE |
 | HUD 與選單 | `action_overlay_runtime.go:823..873` | `drawNativeSystemEndTurn` | 51 | — | opening＋chapter |
-| HUD 與選單 | `main.go:10194..10197` | `shouldDrawTransientBattleMessage` | 4 | — | opening＋chapter |
+| HUD 與選單 | `main.go:10194..10197` | `shouldDrawTransientBattleMessage`（ported，r5f：TTF 短訊的條件） | 4 | — | opening＋chapter |
 | HUD 與選單 | `main.go:10221..10303` | `drawRing` | 83 | DrawImage、平移、縮放、NewImage、Fill | opening＋chapter |
 | HUD 與選單 | `main.go:10537..10572` | `drawSpellMenu` | 36 | DrawImage、平移、NewImage、Fill | opening＋chapter |
 | HUD 與選單 | `main.go:10577..10613` | `drawItemMenu` | 37 | DrawImage、平移、NewImage、Fill | opening＋chapter |
@@ -1536,11 +1537,11 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | HUD 與選單 | `native_player_input.go:214..237` | `drawNativePlayerStatus` | 24 | — | opening＋chapter |
 | HUD 與選單 | `native_player_movement.go:100..118` | `drawNativeMovementPanel` | 19 | DrawImage、平移、縮放 | opening＋chapter |
 | HUD 與選單 | `native_system_info_ui.go:186..233` | `drawNativeSystemInfoUI` | 48 | DrawImage、平移、縮放、NewImageFromImage、SubImage | opening＋chapter |
-| 對話與文字 | `font.go:175..191` | `Font.Draw`（r5：缺字型點陣化，見「R5 階段 2：r5d」） | 17 | 平移、ColorScale、TTF | chapter |
+| 對話與文字 | `font.go:175..191` | `Font.Draw`（ported，r5f） | 17 | 平移、ColorScale、TTF | chapter |
 | 對話與文字 | `native_confirmation_mouth.go:71..81` | `composeNativeConfirmationMouth`（ported，r5d） | 11 | — | chapter |
 | 對話與文字 | `native_story_dialogue.go:339..351` | `nativeStoryOpeningFrameIndex`（ported，r5d） | 13 | — | opening＋chapter |
 | 對話與文字 | `native_story_dialogue.go:485..586` | `drawNativeStoryDialogue`（ported，r5d） | 102 | — | opening＋chapter |
-| 對話與文字 | `native_story_dialogue_locale.go:160..221` | `drawIndexedLocalizedText`（r5：缺字型點陣化，見「R5 階段 2：r5d」） | 62 | — | chapter |
+| 對話與文字 | `native_story_dialogue_locale.go:160..221` | `drawIndexedLocalizedText`（ported，r5f） | 62 | — | chapter |
 | 戰鬥演出 | `main.go:11231..11387` | `drawBattleScene` | 157 | DrawImage、平移、縮放、Fill | chapter |
 | 戰鬥演出 | `native_ai_idle_recovery.go:328..350` | `drawNativeAIIdleRecovery` | 23 | DrawImage、縮放、NewImageFromImage | chapter |
 | 戰鬥演出 | `native_ch28_post_present.go:339..363` | `drawNativeCh28PostPresent` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
@@ -1853,6 +1854,8 @@ spawn 24、world 1796、map 2257、索引 2170。r1（Go 端用舊版掛載配�
 | 需要決定 | (1) 是否同意 `fd2-game` 加 `ab_glyph`（或 `swash`）的依賴邊並更新 `Cargo.lock`；(2) Rust 測試映像是否加 `fonts-noto-cjk`，或唯讀掛入同一份 `NotoSansCJK-Regular.ttc`（雜湊寫進收據）。兩項都定了，`Font.Draw`、`drawIndexedLocalizedText` 與 `TextMeasure`（`face_for`、`width` 的 `todo!("R5…")`）可以一起接 |
 
 `drawIndexedLocalizedText` 在第一章 Go 執行 2 次，覆蓋率顯示都走 `displayFont.indexedHD` 的 HD 擷取分支（商店 HD 文字，R6），忠實模式繁中不經過。
+
+使用者 2026-11-15 定案兩項（`swash`／`skrifa`、唯讀掛入同一份字型），兩個函式與 `TextMeasure` 由 `r5f` 接上，見「R5 階段 2：r5f」。
 
 ### r5d：測試
 
@@ -2168,3 +2171,163 @@ Rust 同樣 panic；`strings`／`font` 為 nil 時與 `compose_native_church_sce
 | `tools/rust_r5_opening_frames.sh`（`work/r5-stage2-r5c-20261115/opening-frames`） | 1940／1940 相同（序列雜湊 `8768d920…`）；第 1940 次（`story_ch00_handler`）走過本組的 `draw_campaign_ui`（Rust 沒有字型時在守門返回，Go 有字型但序章節點沒有分支，兩者都不畫）與 `transientUI` 的判斷，停在 HUD 組的 `todo!("r5:action_overlay_runtime.go:drawNativeSystemEndTurn")` |
 | Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |
+
+## R5 階段 2：r5f（TTF 文字，2026-11-15）
+
+代號 `r5f`，基準 `34620dd3`（含 r5t、r5m、r5d、r5p）。工作單是「R5 對照表」對話與文字組留在 r5 的 `Font.Draw`、`drawIndexedLocalizedText`，
+`TextMeasure`（`face_for`／`width` 的 `todo!("R5…")`），以及 `Draw` 尾段的 TTF 戰場短訊與勝負字樣（含 HUD 組的 `shouldDrawTransientBattleMessage`）。
+使用者 2026-11-15 定案：點陣化用 `Cargo.lock` 已鎖定的 `swash` 0.2.10／`skrifa` 0.44.0；字型唯讀掛入主機同一份 `NotoSansCJK-Regular.ttc`。
+
+### r5f：依賴與字型
+
+| 項目 | 內容 |
+|---|---|
+| `Cargo.toml` | `skrifa = "=0.44.0"`（`default-features = false`、`std`）、`swash = "=0.2.10"`（`default-features = false`、`std`、`render`） |
+| `Cargo.lock` | 只有 `fd2-game` 的 `dependencies` 多 `"skrifa"`、`"swash"` 兩行；沒有改版本、沒有新增套件（read-fonts 0.41.0、font-types 0.12.7、zeno 0.3.3、yazi 0.2.2 原本就在） |
+| 字型 | `/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`（Go `fontPaths` 第三項），SHA-256 `b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a`，與 `fd2-go-test-local` 映像內同一檔相同（`rust_r5f_ttf_layers.sh` 每次在 Go 容器內重算） |
+| 驅動腳本 | 新增 `tools/rust_ttf_font.sh`（`source`）：執行前核對主機字型的 SHA-256，缺檔或不符即失敗；Rust 容器唯讀掛到同一路徑並設 `FD2_REQUIRE_ORIGINAL=1`。`tools/rust_game_test.sh`、`rust_parity_ch01.sh`、`rust_r5_opening_frames.sh`、`rust_r5_map_layers.sh`、`rust_r5_dialogue_layers.sh`、`rust_r5p_layers.sh` 都改成載入它；`rust_golden_save.sh` 不建 `Game`，沒有改 |
+| 測試端 | `test_support::cjk_font_available`：字型在且雜湊相符才回 true，缺檔照 `FD2_REQUIRE_ORIGINAL` 略過或失敗，存在卻不符一律失敗。章重播、opening 模式與 r5p opening 驅動端在 `load_game` 之後呼叫 `require_golden_font`，要求 `load_font` 真的讀到這一檔（`fontPaths` 前兩個相對路徑不存在） |
+
+### r5f：移植結果
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py … r5f font.go:175 native_story_dialogue_locale.go:160 main.go:10194` 改 `ported`（記在
+`r5_stage2_r5f`）；`faceFor`／`Width` 拿掉 R5 分支、Draw 本體 TTF 段與 Rust 新增模組另記在 `r5_stage2_r5f_extra`。全 crate 狀態 ported 652、
+r5 32、r6 59、r8 1179。
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `font.go:175` `Font.Draw` | `Font::draw` | 逐行：`px = round(base*effectiveScale(scale))`、`faceFor`、`GeoM.Translate(round(x), round(y)+asc)`、`ColorScale.ScaleWithColor(clr)`，再交給量測器的 `draw_text`（Ebiten `text.DrawWithOptions`）。`f.hd` 有值（HD 文字框）是 `todo!("r6:…")`：R5 沒有建立 `hd` 的路徑 |
+| `font.go:157` `faceFor`、`:194` `Width`（原本 ported，R5 分支） | 同名 | 「有字型卻沒注入量測器」的 `todo!("R5…")` 改成 `expect`：`load_font_sized` 讀到字型就注入，只有手動組出的 `Font` 會走到 |
+| `font.go:80` `loadFontSized` | `load_font_sized` | 解析（`XImageFont::parse`，對應 `sfnt.ParseCollection`＋`Font(0)`，失敗再 `sfnt.Parse`）失敗時回 `None`，與 Go 回 nil 相同；成功注入 `XImageMeasure` |
+| `native_story_dialogue_locale.go:160` `drawIndexedLocalizedText` | `draw_indexed_localized_text` | 逐行：邊界、`Width` 安全寬度、逐字 `GlyphIndex`、`indexedHD` 擷取（記兩條 HD 文字列，不畫像素）、`font.Drawer` 畫 alpha 遮罩（dot `(0, ascent)`）、A≥32 先寫右下陰影再寫前景。錯誤訊息照 Go（`%q` 的字元以 `go_quote_rune`） |
+| `main.go:10194` `shouldDrawTransientBattleMessage` | 同名 | 分組表列在「HUD 與選單」，是 TTF 短訊的條件，本組一併移植（4 行） |
+| `main.go:10122..10147`（Draw 本體） | `Game::battle_text_draws` | TTF 戰場短訊（`g.msg`）與勝負字樣：列出每次 `g.font.Draw` 的參數，`draw_field` 逐一 `Font::draw`；第二個回傳值是 false 對應 Go 在語系缺鍵時 `return` 出 `Draw`（已列出的先畫）。畫字不改判斷用到的狀態，先列再畫結果相同；拆出來只為了讓局部黃金呼叫同一份程式 |
+
+Rust 新增：
+
+| 檔／型別 | 內容 |
+|---|---|
+| `src/go_x_image_font.rs` | `golang.org/x/image` v0.12.0 的度量慣例，以 `skrifa`（`skrifa::raw` 即 read-fonts）讀 head／hhea／hmtx／maxp／cmap／GPOS 與未縮放外框、以 `swash::zeno` 點陣化。照做的慣例：`opentype.NewFace` 的 ppem `Int26_6(0.5+size*dpi*64/72)`；`sfnt.scale` 的四捨五入（遠離零）；`Metrics` 以 hhea ascender／descender／lineGap 縮放、HintingFull 向上取整；`GlyphAdvance` HintingFull 四捨五入；`GlyphBounds` 是外框**所有控制點**的極值；`LoadGlyph` 縮放到 26.6、Y 翻轉；`opentype.Face.Kern` 把 unitsPerEm 當 ppem 傳給 `sfnt.Kern`（結果是字型單位原值），HintingFull 四捨五入；GPOS kern 只取 `latn`（沒有再 `DFLT`）預設語系的 `kern` 功能、PairPos 格式 1／2、ValueFormat 恰為 X_ADVANCE／0、略過 markFilteringSet、延伸 lookup 型別不是 2 就略過整個 lookup，第一個認得這一對的子表為準（格式 2 涵蓋到就回類別值，含 0）；`opentype.Face.Glyph` 的 `dr`（極值加 dot 取 floor／ceil）與 `bias`；`font.Drawer.DrawString`（kern、`draw.Over` 的 16 位元式）。檔頭保留 x/image 的 BSD 聲明 |
+| `XImageMeasure`（`font.rs`） | `TextMeasure` 的正式實作：`ascent`（`Metrics().Ascent.Round()`）、`bound_string`（Ebiten v2.6.6 `text.BoundString`：kern、`\n` 換行、空外框不並入、floor／ceil）、`has_glyph`、`draw_text`（Ebiten `text.DrawWithOptions`：x 次像素偏移以 1/4 像素為單位、字形影像寬高 ceil 且起點有小數時加 1、以白色 `font.Drawer` 畫成四通道相同的 RGBA、整數位置 `DrawImage`，`op.GeoM` 接在字形平移後；子集只收純平移）、`draw_alpha`。字形影像以 Ebiten 的鍵（尺寸、字、x 偏移）快取，不淘汰 |
+| `TextMeasure` | 加 `draw_text`、`draw_alpha` 兩個方法，預設 panic（只量寬的測試量測器不必實作） |
+
+點陣化不照 Go：Go 是 `golang.org/x/image/vector` 的面積累加，Rust 是 zeno 的非零規則填滿，輸入是同一組 26.6 線段（`float32(v+bias)/64`）。
+`skrifa` 的 CFF 解譯會濾掉退化的 move／line（`NopFilterSink`），x/image 的 Type 2 解譯器把 16.16 小數運算元取整；這兩點可能讓外框或極值不同，
+度量黃金（下節）對 3067 個字元、8 個尺寸全部相同，`fractional_points` 為 0。
+
+這一模組照的是 Go 函式庫（x/image 不是 Go 標準函式庫）的數值慣例，沒有逐行搬移程式碼；外框與斷行寬度必須與 Go 相同才能符合 121 的「只比文字
+位置與外框」，所以是必要的。它與教訓 `rust-port-no-go-stdlib` 的具名例外同一性質，是否登記成第六項由使用者決定（本輪沒有改 `fd2-lessons.json`）。
+
+### r5f：測試
+
+| Go 測試 | Rust |
+|---|---|
+| `font_scale_test.go:99` `TestFontUserScaleChangesMeasuredWidth` | `test_font_user_scale_changes_measured_width` |
+| `native_story_dialogue_locale_test.go:97` `TestDrawIndexedLocalizedLineUsesNativePaletteAndRejectsMissingGlyph` | `test_draw_indexed_localized_line_uses_native_palette_and_rejects_missing_glyph`（`drawIndexedLocalizedLine` 是 r8，以它的固定參數直接呼叫） |
+| `native_shop_locale_test.go:74` `TestOfficialBattleNamesFitNativePanelRectangle` | `test_official_battle_names_fit_native_panel_rectangle`（三語系 94 個戰鬥名） |
+| Rust 新增（`font/font_test.rs`） | `x_image_metrics_kern_and_bounds_match_go_probe`（Go 探針列印的 Metrics、kern、GlyphBounds 26.6 值）、`font_draw_places_glyphs_inside_bound_string`（墨跡不超出平移後的 BoundString、不透明處等於 `clr`） |
+| Rust 新增（`go_x_image_font.rs`） | `fixed_helpers_follow_go`（Floor／Ceil／Round、`sfnt.scale`、Union） |
+
+真字型測試經 `test_support::cjk_font_available`：`tools/rust_game_test.sh` 掛入字型並設 `FD2_REQUIRE_ORIGINAL=1`，缺檔即失敗。沒有移植：
+`native_shop_locale_test.go` 其餘 5 項與 `text_wrap_segments_test.go:71`、`native_story_dialogue_locale_test.go:123` 受測函式是 r8
+（`localizedShopItemScale`、`wrapLocalizedNativeDialogue` 等）；HD 檔的真字型測試在 R6。
+
+### r5f：局部黃金
+
+`chapter` 畫格的 TTF 短訊疊在原生整幀、HUD 等別組圖層上，所以照 r5m 的做法做圖層級比對；另加一份不跑遊戲的度量黃金，直接比 `TextMeasure`。
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_ttf_layers_test.go` | `TestRustGoldenTTFLayers`（未設 `FD2_GOLDEN_TTF_LAYERS_OUT` 時 `t.Skip`）與 `TestRustGoldenTTFMetrics`（未設 `FD2_GOLDEN_TTF_METRICS_OUT` 時 `t.Skip`）；借用 `goldenFrameProbe`、`pinClock`、`goldenMapLayersBranch`、`mapLayerSHA`，既有 Go 檔沒有改 |
+| `src/game/parity_replay/rust_golden_ttf_layers_test.rs` | Rust 端 `TtfLayerCapture`（掛在 `Driver::pump` 同一位置）與 `test_rust_golden_ttf_metrics`（`#[ignore]`，以 Go 輸出的清單當輸入） |
+| `tools/rust_r5f_ttf_layers.sh` | Docker 驅動：先核對 Go 測試裡的逐字複本，Go（`fd2-go-test-local`、Xvfb）跑兩個測試並在容器內重算字型雜湊，Rust（`fd2-rust:1.99.1-r3`）跑章重播與度量，最後比對 |
+| `tools/rust_r5f_ttf_layers_compare.py` | `--verbatim`、`--metrics-go/--metrics-rust`、`--go/--rust`（`--stage0` 對照張數） |
+
+圖層擷取規則（兩邊相同）：
+
+- 掛點、60 Hz 虛擬時鐘與全域種子 4 同階段 0 `chapter` 模式；每一幀先照 `Draw` 開頭清三個本幀旗標，以 `goldenMapLayersBranch` 決定分支。
+- 尾段：640×400 `Clear` 後只執行 Draw 的 TTF 段。Go 端是 `main.go:10122..10147` 的逐字複本（`g.font.Draw(` 換成記錄用的
+  `r.fontDraw(g.font, `，3 處），`rust_r5f_ttf_layers.sh` 每次以 `--verbatim` 核對；Rust 端呼叫正式的 `battle_text_draws` 與 `Font::draw`。
+- 比對鍵：每次繪字的文字（`%+q`，非 ASCII 一律 `\u` 跳脫）、`x`、`y`、`scale`、像素尺寸、ascent、顏色、`text.BoundString` 平移到
+  `(round(x), round(y)+ascent)` 的外框。鍵相同才算通過。
+- 畫素另存 `renders`（每個不同的鍵一份）：非透明像素數、不透明數、alpha 總和、墨跡外框、落在外框外的像素數、整張 RGBA SHA-256，以及外框
+  外擴 2 像素的裁切 RGBA。比對程式逐像素相減。墨跡在外框外或同一個鍵兩次畫出不同像素算失敗。
+- 選中單位中文名（`main.go:9974`）與舊對話框（`9987`）兩段不在複本內：階段 0 覆蓋率 0 次，Rust 是 `todo!("r8:…")`。
+
+度量黃金的輸入：`remake/assets/locales` 每個 JSON 的全部字串葉節點（排序去重，17131 個）、其中的字元加 ASCII 列印字元（3067 個）。
+
+結果（`tools/rust_r5f_ttf_layers.sh <主工作區>/work/r5-stage2-r5f-20261115/r2`，輸出不進版控）：
+
+| 項目 | Go | Rust |
+|---|---|---|
+| `checkpoints.jsonl` | `1c846f57…`（R4 黃金） | `1c846f57…` |
+| 字型 SHA-256 | 主機與 `fd2-go-test-local` 映像內都是 `b76b0433…690a` | 唯讀掛入同一檔 |
+| 擷取數 | 13751（early 7323、spawn 24、tail 6404） | 同 |
+| TTF 擷取 | 2651（戰場短訊 2650 張；勝負字樣 1 張，「勝　利」與「按 Enter 繼續」兩次繪字） | 2651 張文字與外框全部相同 |
+| 序列雜湊 | `2edbfb5a55245cbc41d7e6d2db27c8a804cefdb84bbc38d840d7e2d67a4e957e` | 同 |
+| `Face.Metrics` | 8 個尺寸（6、12、14、18、22、28、31、54） | 相同 |
+| `GlyphIndex`＋`GlyphBounds` | 3067 字元 × 8 尺寸（字型沒有的字 3 個，取 .notdef） | 全部相同；字型單位小數座標 0 個 |
+| `Kern` | 50324 對，非零 297 對 | 相同 |
+| `BoundString` | 17131 字串 × 18、22 像素 | 全部相同 |
+
+不同的繪字結果只有 3 個（「攻擊：選擇目標」2649 次、「已存檔（槽位 1：hotel_ch02）」1 次、勝負字樣 1 次）。畫素差異（KNOWN_DIFFERENCES
+`ttf-raster-coverage`，沒有遮蔽）：
+
+| 繪字結果 | 不同像素 | 最大通道差 | 非透明像素 Go／Rust | alpha 總和 Go／Rust | 墨跡外框 |
+|---|---|---|---|---|---|
+| 勝　利＋按 Enter 繼續 | 958 | 39 | 3409／3408 | 626247／626758 | 相同 |
+| 已存檔（槽位 1：hotel_ch02） | 785 | 32 | 2266／2265 | 352803／353515 | 相同 |
+| 攻擊：選擇目標 | 459 | 28 | 1692／1693 | 249858／250339 | 相同 |
+| 合計 | 2202／23486（9.38%） | 39 | — | — | 兩邊墨跡都在外框內、同鍵像素不變 |
+
+- 階段 0 的 `+ttf-msg` 5763 張是 `goldenFrameDrawPath` 依 Draw 後狀態推定的分類（含尾段以外的分支）；尾段真正以 TTF 畫 `g.msg` 的是 2650 張，
+  與階段 0 覆蓋率（`main.go:10122` 2650 次、勝負 1 次）相同。
+- 第一次執行（`r1`）比對鍵用 `%q`：Go 把 U+3000 跳脫成 `　`（`strconv.IsPrint` 不收全形空白），Rust 原樣輸出，勝負那一張的鍵不同。改成兩邊都用
+  ASCII 跳脫（`%+q`）後重跑 `r2`；度量與其餘 2650 張在 `r1` 已相同。
+- 竄改反向檢查（只重跑 Rust 端、沿用 `r2` 的 Go 端，改回後檔案逐位元組相同）：
+  - `tamper-ascent`：`Metrics` 的 HintingFull 向上取整改成向下取整。TTF 擷取 0／2651 相同（第一個不同在第 515 次，ascent 26→25、外框上移 1），
+    `Face.Metrics` 不同、`BoundString` 57 個不同（多行字串的行高）。
+  - `tamper-shift`：`draw_text` 每個字多平移 1 像素。比對鍵仍 2651 張相同（外框是量測，不受影響），但三個繪字結果的墨跡都超出外框
+    （9、7、49 個像素）、不同像素升到 6573 個、最大通道差 255，比對失敗。
+- 涵蓋限制：第一章的 TTF 文字只有上面三種，都是中文加少數 ASCII，kern 都是 0；kern、多行與其他語系由度量黃金涵蓋（`BoundString` 含
+  `\n` 的字串一併比對）。`drawIndexedLocalizedText` 的像素路徑（非繁中語系）只由單元測試驗；第一章 Go 走到的 2 次是 `indexedHD` 擷取分支。
+
+### r5f：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `Cargo.toml`／`Cargo.lock` | `fd2-game` 加 `skrifa`、`swash` 兩條依賴邊（見上） |
+| `main.rs` 的 `Game::draw_field` | 只改 TTF 段：照 Go 寫好的短訊與勝負字樣改成呼叫 `battle_text_draws` 再逐一 `Font::draw`；分派骨架其他分支沒有動。另加 `battle_text_draws`、`BattleTextDraw`，`should_draw_transient_battle_message` 補本體 |
+| `font.rs` | `TextMeasure` 加兩個預設方法；`load_font_sized` 注入 `XImageMeasure`；`face_for`／`width` 的 R5 分支改 `expect` |
+| `lib.rs` | 掛 `go_x_image_font` |
+| `test_support.rs` | `NOTO_SANS_CJK_REGULAR_*`、`cjk_font_available` |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `ttf_layer_capture`；`pump` 在 `r5p_layer_capture` 之後呼叫它的 `observe` |
+| `parity_replay/chapter_parity_replay_test.rs` | `load_game` 後 `require_golden_font`；建 `Driver` 時 `TtfLayerCapture::from_env()`；它打開時也 `pin_global_rand`；`end` 之後 `finish` |
+| `parity_replay/rust_golden_frames_opening_test.rs`、`rust_golden_r5p_layers_test.rs` | `Driver` 字面值補 `ttf_layer_capture: None`；`load_game` 後 `require_golden_font` |
+| `parity_replay.rs` | 掛新子模組、模組文件加一行 |
+| `tools/rust_game_test.sh`、`rust_parity_ch01.sh`、`rust_r5_opening_frames.sh`、`rust_r5_map_layers.sh`、`rust_r5_dialogue_layers.sh`、`rust_r5p_layers.sh` | `source tools/rust_ttf_font.sh`，Rust 容器加 `"${ttf_mounts[@]}"` |
+| `canvas.rs` | 沒有改（`ColorScale::scale_with_color`、`draw_image` 的整數平移已有） |
+
+### r5f：KNOWN_DIFFERENCES
+
+| 名稱 | 內容 |
+|---|---|
+| `ttf-raster-coverage` | TTF 字形的反鋸齒覆蓋率：Go 是 `golang.org/x/image/vector`，Rust 是 `swash` 重新匯出的 zeno（121 定案不移植 Go 的點陣化器）。兩邊輸入同一組 26.6 線段、同一個字形影像大小與位置，所以文字位置、`BoundString` 外框、墨跡外框相同；邊緣像素的 alpha 不同。第一章三個繪字結果的不同像素 9.38%、最大通道差 39（上節）。非繁中語系的 `drawIndexedLocalizedText` 以 A≥32 二值化，閾值附近的像素可能一邊有墨一邊沒有 |
+
+### r5f：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh`（字型掛入、`FD2_REQUIRE_ORIGINAL=1`） | fmt、clippy `-D warnings` 通過；358 passed、7 ignored（基準 352／6，加本組 6 項；ignored 多 1 個度量黃金）；沒有「略過」 |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉、字型已載入，`work/r5-stage2-r5f-20261115/r5f-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同；`replay-settings.json`、`start-entry.json` 與 r5p 沒載字型時的輸出逐位元組相同。載入字型沒有改變第一章重播的流程 |
+| `tools/rust_r5f_ttf_layers.sh` | 上節（`r2`）；兩邊 `checkpoints.jsonl` 都是 `1c846f57…`；兩個竄改檢查都失敗 |
+| 其他組的局部黃金（字型已載入，只重跑 Rust 端、沿用合併時的 Go 端） | `rust_r5p_layers.sh` opening `40f0309d…`、chapter `75f45290…`，`rust_r5_dialogue_layers.sh` `967a046c…`，`rust_r5_map_layers.sh`，全部每個擷取點與 Go 相同（`work/r5-stage2-r5f-20261115/regress-*`） |
+| `tools/rust_r5_opening_frames.sh` | 1940／1940 相同，停在第 1940 次的 `drawCampaignUI`（城鎮與設施組，r5c） |
+| Go 新檔 | `gofmt -l` 不列出本檔、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
+| `Cargo.lock` | 只多 `fd2-game` 依賴清單的 `"skrifa"`、`"swash"` 兩行 |
+
+字型載入後 Rust 多走的路：`bind_modern_facility_service_menu`（商店、教會服務選單）以前在 `self.font.as_ref()?` 就回 `None`，現在照 Go
+做完前置檢查，到 HD 介面關閉的地方才回 `None`（E 組的 KNOWN_DIFFERENCES `facility-hd-precompute-faithful-skip`）。Go 忠實模式會往下做 HD 預檢
+（`captureModernFacilityListText` 覆蓋率 3 次、`drawIndexedLocalizedText` 的 `indexedHD` 分支 2 次）；Rust 仍跳過，結果不進節點、交易或延續，
+上表的重播收據相同。這是既有的 E 組決定，本組沒有改。

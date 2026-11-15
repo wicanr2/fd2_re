@@ -432,3 +432,54 @@ Update 之後、城鎮游標移動之後、酒店每次輸入之後，不推進�
 `tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；
 `Cargo.lock` 沒有改動。共用檔：`main.rs` 只換 `draw_campaign_ui` 本體並登記測試模組，`Game::draw`／`draw_field`、`canvas.rs` 沒有改；
 `parity_replay` 加擷取掛點與 gap 擷取點（擷取關閉時不做事）。
+
+## 階段 2 結果：r5f TTF 文字（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5f」。
+
+### 依賴與字型
+
+- 使用者 2026-11-15 定案：`fd2-game` 直接依賴 `Cargo.lock` 已鎖定的 `skrifa` 0.44.0 與 `swash` 0.2.10。`Cargo.lock` 只多出 `fd2-game` 依賴清單的
+  這兩行，沒有改版本、沒有新增套件。
+- 字型是主機的 `/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`（SHA-256 `b76b0433…690a`，與 Go 黃金映像 `fd2-go-test-local` 內同一檔
+  相同），由新的 `tools/rust_ttf_font.sh` 在執行前核對並唯讀掛進 Rust 容器（`FD2_REQUIRE_ORIGINAL=1`，缺檔或不符即失敗）。`rust_game_test.sh`、
+  `rust_parity_ch01.sh` 與各 R5 黃金腳本都改用它。
+
+### 移植
+
+- `Font.Draw`、`drawIndexedLocalizedText`、HUD 組的 `shouldDrawTransientBattleMessage` 改 `ported`；`TextMeasure` 的 `faceFor`／`Width` 不再有
+  `todo!("R5…")`（`load_font` 讀到字型就注入量測器）。`Draw` 尾段的 TTF 戰場短訊與勝負字樣（`main.go:10122..10147`）以
+  `Game::battle_text_draws` 列出、`Font::draw` 畫，局部黃金呼叫同一份程式。
+- 度量照 x/image v0.12.0 的慣例重做（`src/go_x_image_font.rs`：ppem、`sfnt.scale` 的取整、HintingFull、以控制點求外框、`Face.Kern` 把
+  unitsPerEm 當 ppem、GPOS kern 的選取規則），排版照 Ebiten v2.6.6 `text`；點陣化不移植 Go 的 `x/image/vector`，用 zeno。這一模組照的是
+  Go 函式庫的數值慣例，是否登記為 `rust-port-no-go-stdlib` 的具名例外由使用者決定。
+- Go 測試 3 項移植，另加 3 項。
+
+### 局部黃金
+
+新增只輸出資料的 `remake/cmd/fd2/rust_golden_ttf_layers_test.go`（未設環境變數時略過，既有 Go 檔沒有改）與 Rust 端
+`parity_replay/rust_golden_ttf_layers_test.rs`，由 `tools/rust_r5f_ttf_layers.sh` 驅動。
+
+- 圖層：階段 0 `chapter` 模式的掛點、60 Hz 虛擬時鐘與全域種子 4；尾段只執行 Draw 的 TTF 段（Go 端是 `main.go` 的逐字複本，每次核對），畫到
+  空白畫布。比對鍵是每次繪字的文字、座標、倍率、像素尺寸、ascent、顏色與平移後的 `BoundString`，相同才算通過；畫素只量化。
+- 度量：`remake/assets/locales` 全部字串的字元加 ASCII，`Face.Metrics`、`GlyphIndex`、`GlyphBounds`（8 個尺寸）、相鄰字與 ASCII 兩兩的 `Kern`、
+  每個字串在 18／22 像素的 `BoundString`。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數（Go、Rust 相同） | 13751（early 7323、spawn 24、tail 6404） |
+| TTF 擷取 | 2651 張文字與外框全部相同（戰場短訊 2650、勝負字樣 1 次各 2 行），序列雜湊兩邊都是 `2edbfb5a…4e957e` |
+| 度量 | 3067 字元 × 8 尺寸、50324 對 kern（非零 297）、17131 字串 × 2 尺寸 `BoundString` 全部相同 |
+| 畫素（KNOWN_DIFFERENCES `ttf-raster-coverage`） | 3 個不同的繪字結果，墨跡外框全部相同，覆蓋像素數差 1；不同像素 2202／23486（9.38%），最大通道差 39 |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…` |
+
+- 階段 0 的 `+ttf-msg` 5763 張是依 Draw 後狀態推定的分類；尾段真正以 TTF 畫 `g.msg` 的是 2650 張（與覆蓋率的 2650 次相同）。
+- 沒有遮蔽像素；墨跡都在 `BoundString` 外框內，同一個鍵每次畫出的像素相同。
+
+### 驗證
+
+`tools/rust_game_test.sh` 358 passed、7 ignored（fmt、clippy 通過，字型掛入且沒有略過）；`tools/rust_campaign_test.sh` 530 passed、
+`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉、字型已載入）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、
+`hotel-save.json` `190b9f8f…` 與 Go 黃金相同，載入字型沒有改變第一章重播的流程；字型載入後重跑其他組的局部黃金（r5m、r5d、r5p 的 Rust 端）全部
+與 Go 相同，opening 整張比對 1940／1940 相同、停在 `drawCampaignUI`（r5c）。共用檔：`Game::draw_field` 只改 TTF 段，`parity_replay` 加擷取掛點與
+字型檢查，`canvas.rs` 沒有改。

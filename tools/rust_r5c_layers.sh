@@ -18,6 +18,8 @@
 #   FD2_PYTHON_IMAGE 比對用映像檔（預設 python:3.13-slim）
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
+# R5 r5f：Go 黃金用的 TTF 字型（缺檔或雜湊不符即失敗），見 tools/rust_ttf_font.sh。
+source "$root/tools/rust_ttf_font.sh"
 data="$(cd "${FD2_DATA_ROOT:-$root}" && pwd -P)"
 out="$(mkdir -p "${1:?輸出目錄}" && cd "$1" && pwd -P)"
 gocache="${FD2_GOCACHE:-$data/work/gocache}"
@@ -102,6 +104,7 @@ for side in $sides; do
         --mount "type=bind,source=$assets,target=/packsrc,readonly" \
         --mount "type=bind,source=$root/remake/assets/locales,target=/locales,readonly" \
         --mount "type=bind,source=$data/remake/assets,target=/assets,readonly" \
+        "${ttf_mounts[@]}" \
         --mount "type=bind,source=$root/remake-rs,target=/src" \
         --mount "type=bind,source=$root/LICENSE,target=/LICENSE,readonly" \
         --mount "type=bind,source=$root/docs,target=/docs,readonly" \

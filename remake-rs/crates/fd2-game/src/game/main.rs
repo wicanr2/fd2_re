@@ -8070,6 +8070,16 @@ pub(crate) fn clamp(v: &mut f64, lo: f64, mut hi: f64) {
     }
 }
 
+/// Rust 新增：`Game::battle_text_draws` 列出的一次 `g.font.Draw(screen, text, x, y, scale, clr)`。
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct BattleTextDraw {
+    pub(crate) text: String,
+    pub(crate) x: f64,
+    pub(crate) y: f64,
+    pub(crate) scale: f64,
+    pub(crate) clr: ColorRgba,
+}
+
 impl Game {
     /// Go：`main.go:9355`，`func (g *Game) Draw(screen *ebiten.Image)`
     ///
@@ -8343,34 +8353,13 @@ impl Game {
             {
                 todo!("r8:main.go:9987..10119 舊對話框（開場與第一章沒有走到）");
             }
-            if self.should_draw_transient_battle_message() {
-                let clr = ColorRgba { r: 0xff, g: 0xf0, b: 0xb4, a: 0xff };
-                self.font.as_mut().unwrap().draw(screen, &self.msg, 8.0, LOGICAL_H as f64 - 30.0, 1.2, clr);
+            // main.go:10122..10147：TTF 戰場短訊與勝負字樣（R5 r5f；拆成 `battle_text_draws` 讓局部黃金呼叫同一份程式）。
+            let (draws, finished) = self.battle_text_draws();
+            for d in &draws {
+                self.font.as_mut().unwrap().draw(screen, &d.text, d.x, d.y, d.scale, d.clr);
             }
-            if !self.result.is_empty() {
-                let (mut t, ok) = self.locale_message("battle.result.win", &[]);
-                if !ok {
-                    return;
-                }
-                let mut c = ColorRgba { r: 0xff, g: 0xdc, b: 0x50, a: 0xff };
-                if self.result == "lose" {
-                    let (lose, ok) = self.locale_message("battle.result.lose", &[]);
-                    if !ok {
-                        return;
-                    }
-                    t = lose;
-                    c = ColorRgba { r: 0xff, g: 0x70, b: 0x70, a: 0xff };
-                }
-                let (cx, cy) = (LOGICAL_W as f64 / 2.0, LOGICAL_H as f64 / 2.0);
-                self.font.as_mut().unwrap().draw(screen, &t, cx - 78.0, cy - 30.0, 3.0, c);
-                if self.camp.is_some() {
-                    let (continue_text, ok) = self.locale_message("battle.result.continue", &[]);
-                    if !ok {
-                        return;
-                    }
-                    let gray = ColorRgba { r: 0xe0, g: 0xe0, b: 0xe0, a: 0xff };
-                    self.font.as_mut().unwrap().draw(screen, &continue_text, cx - 70.0, cy + 36.0, 1.0, gray);
-                }
+            if !finished {
+                return;
             }
         }
         self.draw_campaign_ui(screen);
@@ -8528,6 +8517,47 @@ impl Game {
 
     /// Go `Draw` 本體 `main.go:10173..10183`：場景淡出/淡入轉場(doc46 §5.2)，全螢幕黑色疊層，alpha 隨 `fade.t`
     /// 漸變。R5 階段 2 `r5p` 逐行移植；從 [`Game::draw_field`] 拆出來的理由同 [`Game::draw_normalized_world_layer`]。
+    /// `main.go:10122..10147`（Draw 尾段 `if g.font != nil` 裡）：依序列出要以 `g.font.Draw` 畫的 TTF 戰場短訊與
+    /// 勝負字樣。第二個值是 false 時 Go 在這裡 `return` 出 `Draw`（語系訊息缺鍵；列出的字仍先畫）。
+    ///
+    /// Go 沒有這個函式邊界：Go 是邊判斷邊 `g.font.Draw`，畫字不改判斷用到的狀態，所以先列出再畫結果相同。
+    /// 拆出來只為了讓局部黃金（`rust_golden_ttf_layers_test.rs`）呼叫同一份程式。
+    pub(crate) fn battle_text_draws(&mut self) -> (Vec<BattleTextDraw>, bool) {
+        let mut draws = Vec::new();
+        if self.should_draw_transient_battle_message() {
+            // 攻擊等短訊(無對話框時)
+            let clr = ColorRgba { r: 0xff, g: 0xf0, b: 0xb4, a: 0xff };
+            draws.push(BattleTextDraw { text: self.msg.clone(), x: 8.0, y: LOGICAL_H as f64 - 30.0, scale: 1.2, clr });
+        }
+        if !self.result.is_empty() {
+            // 勝負(中央大字)
+            let (mut t, ok) = self.locale_message("battle.result.win", &[]);
+            if !ok {
+                return (draws, false);
+            }
+            let mut c = ColorRgba { r: 0xff, g: 0xdc, b: 0x50, a: 0xff };
+            if self.result == "lose" {
+                let (lose, ok) = self.locale_message("battle.result.lose", &[]);
+                if !ok {
+                    return (draws, false);
+                }
+                t = lose;
+                c = ColorRgba { r: 0xff, g: 0x70, b: 0x70, a: 0xff };
+            }
+            let (cx, cy) = (LOGICAL_W as f64 / 2.0, LOGICAL_H as f64 / 2.0);
+            draws.push(BattleTextDraw { text: t, x: cx - 78.0, y: cy - 30.0, scale: 3.0, clr: c });
+            if self.camp.is_some() {
+                let (continue_text, ok) = self.locale_message("battle.result.continue", &[]);
+                if !ok {
+                    return (draws, false);
+                }
+                let gray = ColorRgba { r: 0xe0, g: 0xe0, b: 0xe0, a: 0xff };
+                draws.push(BattleTextDraw { text: continue_text, x: cx - 70.0, y: cy + 36.0, scale: 1.0, clr: gray });
+            }
+        }
+        (draws, true)
+    }
+
     pub(crate) fn draw_story_fade_overlay(&self, screen: &mut Picture) {
         if let Some(fade) = self.fade.as_ref() {
             let frac = fade.t as f64 / fade.total as f64;
@@ -10656,7 +10686,7 @@ impl Game {
     /// Go：`main.go:10194`，`func (g *Game) shouldDrawTransientBattleMessage() bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn should_draw_transient_battle_message(&self) -> bool {
-        todo!("r5:main.go:shouldDrawTransientBattleMessage")
+        !self.msg.is_empty() && self.dialog.is_empty() && !self.native_command0_targeting
     }
 
     /// drawRing shows the native FDOTHER #2 action overlay in the faithful theme.
