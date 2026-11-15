@@ -13,8 +13,8 @@ fn native_ai_phase_diagnostic_fixture() -> State {
         unit.native_record_byte6 = 1 - index as u8;
         unit.native_transient[4] = 0;
         unit.native_command_mask = [0; 5];
-        unit.native_inventory_flags = vec![0x80; 8];
-        unit.inventory_slots = vec![0xff; 8];
+        unit.native_inventory_flags = vec![0x80; 8].into();
+        unit.inventory_slots = vec![0xff; 8].into();
     }
     State {
         w: 2,
@@ -113,8 +113,8 @@ fn map0_cross_fixture_builds_native_ai_phase_diagnostic_gate() {
         let unit = &mut st.units[actor];
         unit.native_command_mask = [1, 0, 0, 0, 0];
         unit.mp = 255;
-        unit.inventory_slots = vec![79, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
-        unit.native_inventory_flags = vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80];
+        unit.inventory_slots = vec![79, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into();
+        unit.native_inventory_flags = vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     }
     let book = load_native_command_records(&spells).unwrap();
     let item_rows = load_native_item_effect_row_prefix(&item_path).unwrap();

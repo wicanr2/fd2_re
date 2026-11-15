@@ -21,8 +21,8 @@ fn native_player_attack_target_field_marks_weapon_diamond() {
     s.units.push(Unit {
         x: 3,
         y: 3,
-        inventory: vec![0x34, 0xa4],
-        native_inventory_flags: vec![0x40, 0x40],
+        inventory: vec![0x34, 0xa4].into(),
+        native_inventory_flags: vec![0x40, 0x40].into(),
         ..Default::default()
     });
     let field = s.native_player_attack_target_field(Some(0)).unwrap();

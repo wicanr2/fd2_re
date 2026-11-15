@@ -6,15 +6,16 @@
 //!
 //! 每個案例的比對：
 //! - `save`：Go 寫出（或手寫、真實檔）的位元組讀成 [`SaveData`]，是否接受、章節範圍、隊伍拓撲與能力
-//!   設定的驗證結果、逐欄讀回結果都要與 Go 相同；Rust 重新寫出的位元組與 Go 重新寫出的比對。拿掉
-//!   `party_roster` 與 `battle_snapshot`（battle 套件的型別）後的外層位元組必須逐位元組相同。
+//!   設定的驗證結果、逐欄讀回結果都要與 Go 相同；Rust 重新寫出的位元組必須與 Go 重新寫出的逐位元組
+//!   相同。拿掉 `party_roster` 與 `battle_snapshot`（battle 套件的型別）後的外層位元組另外比一次，
+//!   讓失敗訊息分得出差異在哪一層。
 //! - `settings`：零值起點與 `loadSettings` 起點的解碼結果、重新寫出的位元組逐位元組相同。
 //!   `loadSettings` 正規化後的結果在另一個測試（要等 A 組的正規化函式）。
 //! - `sidecar`：`readBalanceSidecar` 的錯誤（本套件的錯誤逐字比，JSON 解碼錯誤只比失敗）、讀回結果與
 //!   重新寫出的位元組逐位元組相同。
 //! - `balance_key`：`balanceSaveKey` 的結果或錯誤逐字相同。
 //!
-//! 比對時的表示法正規化列在 [`NORMALIZATIONS`]，只用在 battle 套件型別的子樹；刻意不照做的 Go
+//! 比對時的表示法正規化列在 [`NORMALIZATIONS`]，只剩讀回結果的 `party_join_order`；刻意不照做的 Go
 //! 行為列在 [`KNOWN_DIFFERENCES`]（與 `SAVE_JSON_KNOWN_DIFFERENCES` 相同）。
 
 use super::*;
@@ -25,16 +26,10 @@ use sha2::{Digest, Sha256};
 /// 刻意不照做的 Go 行為。黃金案例不落在這些輸入上，或案例本身標明（設定檔的型別錯誤）。
 const KNOWN_DIFFERENCES: &[&str] = SAVE_JSON_KNOWN_DIFFERENCES;
 
-/// 比對前的表示法正規化，只用在 battle 套件型別（`Unit`、`StateSnapshot`）的子樹與 `omitempty` 切片：
+/// 比對讀回結果前的表示法正規化。battle 套件型別的子樹以 Go 的寫法（[`to`]）比對，不正規化（#319）。
 const NORMALIZATIONS: &[&str] = &[
-    // Go nil 切片／map 寫 null、空的寫 []／{}，nil []byte 寫 null、空的寫 ""；fd2-rules 的 Vec／BTreeMap
-    // 不分 nil（見 PORTING.md「fd2-rules／fd2-campaign 缺口」），null、[]、{}、"" 視為相同。
-    "battle 子樹：null 與空陣列、空物件、空字串相同",
-    // Go 把整數值的 float64 寫成 0，fd2-rules 的 serde 寫成 0.0；只比數值。
-    "battle 子樹：數字只比數值",
-    // Go 的 map 以字串鍵排序輸出，fd2-rules 的 BTreeMap 依整數鍵排序；位元組不同時以物件比對。
-    "battle 子樹：物件鍵順序",
-    // party_join_order 有 omitempty：Go 讀到 [] 時是非 nil 空切片、讀到缺欄時是 nil，寫出都省略。
+    // party_join_order 有 omitempty：Go 讀到 [] 時是非 nil 空切片、讀到缺欄時是 nil，寫出都省略，
+    // 位元組相同；Rust 的欄位不分兩者，只在讀回結果的比對上視為相同。
     "party_join_order：null 與 [] 相同",
 ];
 
@@ -46,16 +41,10 @@ fn hex(b: &[u8]) -> String {
     b.iter().map(|x| format!("{x:02x}")).collect()
 }
 
-/// 正規化 battle 套件子樹（見 [`NORMALIZATIONS`]）。
-fn norm(v: &Value) -> Value {
+/// `party_join_order` 的正規化（見 [`NORMALIZATIONS`]）：`null` 與 `[]` 相同。
+fn norm_join_order(v: &Value) -> Value {
     match v {
-        Value::Null => Value::Null,
         Value::Array(a) if a.is_empty() => Value::Null,
-        Value::Object(o) if o.is_empty() => Value::Null,
-        Value::String(s) if s.is_empty() => Value::Null,
-        Value::Number(n) => json!(n.as_f64().expect("數字")),
-        Value::Array(a) => Value::Array(a.iter().map(norm).collect()),
-        Value::Object(o) => Value::Object(o.iter().map(|(k, v)| (k.clone(), norm(v))).collect()),
         other => other.clone(),
     }
 }
@@ -90,10 +79,6 @@ fn same(path: &str, rust: &Value, go: &Value) -> std::result::Result<(), String>
     if rust == go { Ok(()) } else { Err(first_diff(path, rust, go)) }
 }
 
-fn same_norm(path: &str, rust: &Value, go: &Value) -> std::result::Result<(), String> {
-    same(path, &norm(rust), &norm(go))
-}
-
 /// 數字只比數值（`font_scale` 這類 Go `float64` 欄位在 Value 裡可能是整數或小數）。
 fn same_number(path: &str, rust: &Value, go: &Value) -> std::result::Result<(), String> {
     if rust.as_f64() == go.as_f64() && rust.as_f64().is_some() {
@@ -104,11 +89,12 @@ fn same_number(path: &str, rust: &Value, go: &Value) -> std::result::Result<(), 
 }
 
 fn int_pairs<V: serde::Serialize>(m: &BTreeMap<i64, V>) -> Value {
-    Value::Array(m.iter().map(|(k, v)| json!([k, serde_json::to_value(v).expect("序列化")])).collect())
+    Value::Array(m.iter().map(|(k, v)| json!([k, to(v)])).collect())
 }
 
+/// 以 Go `json.Marshal` 的寫法（[`go_json_marshal_indent`]）轉成 `Value`，數字的整數與小數形式和 Go 的 view 一致。
 fn to<T: serde::Serialize>(v: &T) -> Value {
-    serde_json::to_value(v).expect("序列化")
+    serde_json::from_slice(&go_json_marshal_indent(v).expect("序列化")).expect("讀回")
 }
 
 fn save_view(d: &SaveData) -> Value {
@@ -133,7 +119,7 @@ fn save_view(d: &SaveData) -> Value {
     })
 }
 
-/// 逐欄比對讀回結果：battle 套件的子樹以正規化比對，其他欄位嚴格相等。
+/// 逐欄比對讀回結果：除 `party_join_order` 外嚴格相等。
 fn compare_save_view(id: &str, rust: &Value, go: &Value) -> std::result::Result<(), String> {
     let (Value::Object(r), Value::Object(g)) = (rust, go) else {
         return Err(format!("{id}：view 不是物件"));
@@ -148,8 +134,7 @@ fn compare_save_view(id: &str, rust: &Value, go: &Value) -> std::result::Result<
     for key in keys {
         let path = format!("{id}.view.{key}");
         match key.as_str() {
-            "party_roster" | "battle_snapshot" => same_norm(&path, &r[key], &g[key])?,
-            "party_join_order" => same_norm(&path, &r[key], &g[key])?,
+            "party_join_order" => same(&path, &norm_join_order(&r[key]), &norm_join_order(&g[key]))?,
             _ => same(&path, &r[key], &g[key])?,
         }
     }
@@ -162,9 +147,6 @@ struct Stats {
     save: usize,
     save_accepted: usize,
     save_bytes_exact: usize,
-    save_bytes_normalized: Vec<String>,
-    /// 位元組不同的行，依 JSON 鍵統計（只供回報 fd2-rules 缺口）：鍵 → (次數, 範例)。
-    normalized_keys: BTreeMap<String, (usize, String)>,
     settings: usize,
     sidecar: usize,
     balance_key: usize,
@@ -202,22 +184,6 @@ fn check_save(c: &Value, st: &mut Stats) -> std::result::Result<(), String> {
     compare_save_view(id, &save_view(&d), &c["view"])?;
     let rewritten = go_json_marshal_indent(&d).map_err(|e| e.to_string())?;
     let go_rewritten = b64(&c["rewritten"]);
-    if rewritten == go_rewritten {
-        st.save_bytes_exact += 1;
-    } else {
-        // 位元組不同時：外層必須相同（下面），整份以正規化比對，差異只能在 battle 子樹。
-        let r: Value = serde_json::from_slice(&rewritten).map_err(|e| e.to_string())?;
-        let g: Value = serde_json::from_slice(&go_rewritten).map_err(|e| e.to_string())?;
-        same_norm(&format!("{id}.rewritten"), &r, &g)?;
-        st.save_bytes_normalized.push(id.to_string());
-        let (rs, gs) =
-            (String::from_utf8_lossy(&rewritten).into_owned(), String::from_utf8_lossy(&go_rewritten).into_owned());
-        for (rl, gl) in rs.lines().zip(gs.lines()).filter(|(a, b)| a != b) {
-            let key = gl.trim().split(':').next().unwrap_or("").to_string();
-            let entry = st.normalized_keys.entry(key).or_insert((0, format!("Go {} ／ Rust {}", gl.trim(), rl.trim())));
-            entry.0 += 1;
-        }
-    }
     let mut outer = d.clone();
     outer.party_roster.clear();
     outer.battle_snapshot = None;
@@ -230,6 +196,17 @@ fn check_save(c: &Value, st: &mut Stats) -> std::result::Result<(), String> {
             String::from_utf8_lossy(&go_outer)
         ));
     }
+    if rewritten != go_rewritten {
+        let (rs, gs) = (String::from_utf8_lossy(&rewritten), String::from_utf8_lossy(&go_rewritten));
+        let (line, (rl, gl)) = rs
+            .lines()
+            .zip(gs.lines())
+            .enumerate()
+            .find(|(_, (a, b))| a != b)
+            .unwrap_or((0, ("（長度不同）", "（長度不同）")));
+        return Err(format!("{id}：重新寫出的位元組不同，第 {} 行 Go {} ／ Rust {}", line + 1, gl.trim(), rl.trim()));
+    }
+    st.save_bytes_exact += 1;
     Ok(())
 }
 
@@ -430,22 +407,10 @@ fn golden_save_matches_go() {
     let dir = crate::test_support::temp_dir("golden-save");
     let st = run_all(&golden, &dir).unwrap_or_else(|e| panic!("{e}"));
     eprintln!(
-        "案例 {}：存檔 {}（接受 {}，重新寫出逐位元組相同 {}，經 battle 子樹正規化才相同 {}）、設定 {}、附檔 {}、\
-         附檔鍵 {}、真實檔 {}",
-        st.cases,
-        st.save,
-        st.save_accepted,
-        st.save_bytes_exact,
-        st.save_bytes_normalized.len(),
-        st.settings,
-        st.sidecar,
-        st.balance_key,
-        st.real
+        "案例 {}：存檔 {}（接受 {}，重新寫出逐位元組相同 {}）、設定 {}、附檔 {}、附檔鍵 {}、真實檔 {}",
+        st.cases, st.save, st.save_accepted, st.save_bytes_exact, st.settings, st.sidecar, st.balance_key, st.real
     );
-    eprintln!("經正規化才相同的存檔案例：{:?}", st.save_bytes_normalized);
-    for (key, (n, example)) in &st.normalized_keys {
-        eprintln!("  位元組不同的行 {key}：{n} 次，例：{example}");
-    }
+    assert_eq!(st.save_bytes_exact, st.save_accepted, "接受的存檔都要逐位元組相同");
     assert!(st.save >= 150 && st.settings >= 60 && st.sidecar >= 30 && st.balance_key >= 20 && st.real >= 5);
 
     // 竄改反向檢查：每一類比對都要抓得到單一欄位的改動。
@@ -481,6 +446,35 @@ fn golden_save_matches_go() {
                     raw[last] ^= 1;
                     c["outer"] = json!(base64::engine::general_purpose::STANDARD.encode(raw));
                     return true;
+                }
+                false
+            }),
+        ),
+        (
+            // #319 修掉的差異：Go 寫 `"OffX": 0`，舊的 fd2-rules serde 寫 `0.0`；改回舊寫法要被位元組比對抓到。
+            "存檔名冊單位的浮點寫法",
+            Box::new(|c: &mut Value| {
+                if c["kind"] == "save" && c["accepted"] == true {
+                    let raw = String::from_utf8(b64(&c["rewritten"])).unwrap();
+                    if raw.contains("\"OffX\": 0,") {
+                        let raw = raw.replacen("\"OffX\": 0,", "\"OffX\": 0.0,", 1);
+                        c["rewritten"] = json!(base64::engine::general_purpose::STANDARD.encode(raw));
+                        return true;
+                    }
+                }
+                false
+            }),
+        ),
+        (
+            "存檔名冊單位的 nil 切片",
+            Box::new(|c: &mut Value| {
+                if c["kind"] == "save" && c["accepted"] == true {
+                    let raw = String::from_utf8(b64(&c["rewritten"])).unwrap();
+                    if raw.contains("\"Spells\": null,") {
+                        let raw = raw.replacen("\"Spells\": null,", "\"Spells\": [],", 1);
+                        c["rewritten"] = json!(base64::engine::general_purpose::STANDARD.encode(raw));
+                        return true;
+                    }
                 }
                 false
             }),

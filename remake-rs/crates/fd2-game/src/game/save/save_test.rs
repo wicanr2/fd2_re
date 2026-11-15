@@ -125,8 +125,8 @@ fn save_data_round_trips_persistent_party() {
                 u.mp = 18;
                 u.max_mp = 24;
                 u.exp = 67.5;
-                u.spells = vec![0, 4, 13];
-                u.inventory = vec![0xc6, 0x64];
+                u.spells = vec![0, 4, 13].into();
+                u.inventory = vec![0xc6, 0x64].into();
             }),
         )]),
         chapter: 1,
@@ -253,7 +253,7 @@ fn campaign_save_load_restores_town_boundary_and_party() {
         u.hp = 44;
         u.max_hp = 44;
         u.mv = 7;
-        u.inventory = vec![0x64];
+        u.inventory = vec![0x64].into();
     });
     let mut g = Game {
         camp: Some(campaign::new_runner(&c)),

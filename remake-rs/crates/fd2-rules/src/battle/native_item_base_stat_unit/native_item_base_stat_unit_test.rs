@@ -8,10 +8,10 @@ fn apply_native_item_base_stat_delta_to_unit_wraps_and_compacts() {
     let mut units = vec![Unit {
         base_ap: 32766,
         equipment_base_set: true,
-        inventory: vec![0xc6, 0x20],
-        equipped: vec![false, true],
-        inventory_slots: vec![0xc6, 0x20, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![0xc6, 0x20].into(),
+        equipped: vec![false, true].into(),
+        inventory_slots: vec![0xc6, 0x20, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         ..Default::default()
     }];
     let (route, _) = native_item_word_delta_route_for_type(8);
@@ -37,9 +37,9 @@ fn apply_native_item_base_stat_delta_to_unit_wraps_and_compacts() {
 fn apply_native_item_base_stat_delta_to_unit_fails_atomically() {
     let mut units = vec![Unit {
         base_dp: 12,
-        inventory: vec![0xc7],
-        inventory_slots: vec![0xc7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![0xc7].into(),
+        inventory_slots: vec![0xc7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         ..Default::default()
     }];
     let (route, _) = native_item_word_delta_route_for_type(9);

@@ -161,7 +161,7 @@ fn test_apply_persistent_stats_preserves_dynamic_native_command_mask() {
     (src.native_record_byte36, src.has_native_record_byte36) = (0x33, true);
     (src.native_record_word42, src.has_native_record_word42) = (0x140, true);
     (src.native_record_word46, src.has_native_record_word46) = (0x24, true);
-    src.native_inventory_flags = vec![0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80];
+    src.native_inventory_flags = vec![0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     apply_persistent_stats(Some(&mut dst), Some(&src));
     assert_eq!(dst.native_command_mask, src.native_command_mask);
     assert!(dst.native_record_byte5 == 1 && dst.has_native_record_byte5);

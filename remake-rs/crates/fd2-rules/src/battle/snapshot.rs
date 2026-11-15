@@ -12,7 +12,8 @@
 //!
 //! - 欄位名是 Go 標籤；Go 型別沒有標籤時用 Go 欄位名（`Spell` 的 `Name`、`Treasure` 的 `Slot` 等）。
 //! - Go nil 切片與 nil map 寫成 `null`。Rust 的 `Vec`／`BTreeMap` 不分 nil 與空值，空的一律寫 `null`
-//!   （`go_slice`、`go_map`）；Go 寫出的 `[]`、`{}` 讀成空值。`State` 以 `Option` 區分 nil 的三個欄位
+//!   （`go_slice`、`go_map`）；Go 寫出的 `[]`、`{}` 讀成空值。`flags` 在 Go 存檔裡兩種都會出現，改用
+//!   [`NilableMap`] 保留 nil 狀態（#319）。`State` 以 `Option` 區分 nil 的三個欄位
 //!   （`cost`、`treasures`、`opened_treasure`）在快照裡也是 `Option`，`None` 寫 `null`、`Some` 照寫。
 //! - Go `[]byte` 是標準 base64（`go_bytes`，空的寫 `null`）；Go 固定長度陣列 `[N]byte` 是數字陣列。
 //! - `battle` 裡沒有 serde 的別組型別（`Spell`、`Treasure`、`NativeChestControl`、
@@ -207,8 +208,7 @@ pub struct StateSnapshot {
     /// Go 標籤：`json:"native_round_counter"`
     pub native_round_counter: i64,
     /// Go 標籤：`json:"flags"`
-    #[serde(with = "go_map")]
-    pub flags: BTreeMap<String, bool>,
+    pub flags: NilableMap<String, bool>,
     /// Go 標籤：`json:"native_event_state"`
     pub native_event_state: [u8; 32],
     /// Go 標籤：`json:"cost"`
@@ -353,7 +353,7 @@ impl State {
         }
         out.pending_groups = clone_map(&self.pending_groups);
         out.own_deploy = clone_slice(&self.own_deploy);
-        out.flags = clone_map(&self.flags);
+        out.flags = self.flags.clone(); // cloneMap 保留 nil（NilableMap::clone）
         out.cost = self.cost.as_deref().map(clone_slice);
         out.native_composition_event_bytes = clone_slice(&self.native_composition_event_bytes);
         out.native_map_event_grid = clone_slice(&self.native_map_event_grid);
@@ -443,7 +443,7 @@ impl State {
         self.pending_groups = clone_map(&snap.pending_groups);
         self.own_deploy = clone_slice(&snap.own_deploy);
         (self.turn, self.native_round_counter) = (snap.turn, snap.native_round_counter);
-        self.flags = clone_map(&snap.flags);
+        self.flags = snap.flags.clone(); // cloneMap 保留 nil（NilableMap::clone）
         self.native_event_state = snap.native_event_state;
         self.cost = snap.cost.as_deref().map(clone_slice);
         self.native_composition_event_bytes = clone_slice(&snap.native_composition_event_bytes);

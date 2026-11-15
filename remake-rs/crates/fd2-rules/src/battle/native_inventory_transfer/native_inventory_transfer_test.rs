@@ -4,10 +4,10 @@ use super::*;
 
 fn inv(inventory: &[i64], equipped: &[bool], slots: &[i64], flags: &[i64]) -> Unit {
     Unit {
-        inventory: inventory.to_vec(),
-        equipped: equipped.to_vec(),
-        inventory_slots: slots.to_vec(),
-        native_inventory_flags: flags.to_vec(),
+        inventory: inventory.to_vec().into(),
+        equipped: equipped.to_vec().into(),
+        inventory_slots: slots.to_vec().into(),
+        native_inventory_flags: flags.to_vec().into(),
         ..Default::default()
     }
 }

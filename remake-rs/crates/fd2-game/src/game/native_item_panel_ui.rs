@@ -68,8 +68,8 @@ pub(crate) fn sync_native_item_runtime_record(unit: &mut battle::Unit, record: &
     unit.hit = word(0x4c);
     unit.ev = word(0x4e);
     unit.native_transient.copy_from_slice(&record[0x22..0x28]);
-    unit.inventory_slots = vec![0; 8];
-    unit.native_inventory_flags = vec![0; 8];
+    unit.inventory_slots = vec![0; 8].into();
+    unit.native_inventory_flags = vec![0; 8].into();
     unit.inventory.clear();
     unit.equipped.clear();
     for slot in 0..8 {

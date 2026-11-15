@@ -79,7 +79,7 @@ fn state_snapshot_round_trip_preserves_saved_fields() {
         own_deploy: vec![Cell { x: 1, y: 0 }],
         turn: 4,
         native_round_counter: 3,
-        flags: BTreeMap::from([("x".to_string(), true)]),
+        flags: BTreeMap::from([("x".to_string(), true)]).into(),
         cost: Some(vec![1, 2, 3, 4]),
         native_composition_event_bytes: vec![0, 1, 2, 3],
         native_map_event_grid: vec![2, 0, 2, 0, 1, 2, 3, 4],
@@ -102,7 +102,7 @@ fn state_snapshot_round_trip_preserves_saved_fields() {
     let snap = src.snapshot().unwrap();
     let raw = serde_json::to_vec(&snap).unwrap();
     let decoded: StateSnapshot = serde_json::from_slice(&raw).unwrap();
-    let mut dst = State { flags: BTreeMap::from([("stale".to_string(), true)]), ..Default::default() };
+    let mut dst = State { flags: BTreeMap::from([("stale".to_string(), true)]).into(), ..Default::default() };
     dst.restore_snapshot(&decoded).unwrap();
 
     macro_rules! same {

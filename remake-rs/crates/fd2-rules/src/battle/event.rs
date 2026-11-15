@@ -1457,7 +1457,7 @@ impl Scenario {
                 x,
                 y,
                 on_field: true,
-                spells: pm.spells.clone(),
+                spells: NilableVec::appended(pm.spells.clone()), // append([]int(nil), pm.Spells...)
                 inventory,
                 equipped,
                 inventory_slots: runtime_slots,
@@ -1486,7 +1486,7 @@ impl Scenario {
                 (u.native_record_word46, u.has_native_record_word46) = (u.max_mp as u16, true);
             }
             if let Ok(flags) = native_inventory_flags_from_source(&pm.inventory_slots) {
-                u.native_inventory_flags = flags;
+                u.native_inventory_flags = NilableVec::from_vec(flags); // make([]int, 8)
             }
             if let Some(identity) = pm.native_identity
                 && (0..=0xff).contains(&identity)

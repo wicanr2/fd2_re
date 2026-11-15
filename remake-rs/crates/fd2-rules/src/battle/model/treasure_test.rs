@@ -167,7 +167,7 @@ fn claim_treasure_uses_active_unit_inventory_and_fails_atomically_when_full() {
         on_field: true,
         x: 4,
         y: 5,
-        inventory: vec![1, 2, 3, 4, 5, 6, 7, 8],
+        inventory: vec![1, 2, 3, 4, 5, 6, 7, 8].into(),
         ..Default::default()
     });
     let opened = |st: &State| st.opened_treasure.as_ref().and_then(|m| m.get(&0).copied()).unwrap_or(false);

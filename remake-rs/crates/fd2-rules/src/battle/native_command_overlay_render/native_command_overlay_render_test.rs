@@ -33,8 +33,8 @@ fn native_item_panel_record_includes_command_mask_at1_a() {
         has_native_record_class: true,
         lv: 1,
         mv: 1,
-        inventory_slots: vec![0xff; 8],
-        native_inventory_flags: vec![0x80; 8],
+        inventory_slots: vec![0xff; 8].into(),
+        native_inventory_flags: vec![0x80; 8].into(),
         native_command_mask: [1, 2, 3, 4, 5],
         ..Default::default()
     };

@@ -160,11 +160,11 @@ fn sel_unit(g: &mut Game) -> &mut battle::Unit {
 #[test]
 fn test_action_overlay_availability_uses_current_remake_gates() {
     let mut selected = battle::Unit::default();
-    (selected.spells, selected.inventory) = (vec![1], vec![2]);
+    (selected.spells, selected.inventory) = (vec![1].into(), vec![2].into());
     let mut g = availability_game(selected, Vec::new());
     assert_eq!(g.action_overlay_availability(), [1, 0, 0, 0]);
     sel_unit(&mut g).sealed = true;
-    sel_unit(&mut g).inventory = Vec::new();
+    sel_unit(&mut g).inventory = Vec::new().into();
     assert_eq!(g.action_overlay_availability(), [1, 1, 1, 0]);
 }
 
@@ -179,7 +179,7 @@ fn enemy_at(x: i64, y: i64) -> battle::Unit {
 fn test_action_overlay_availability_requires_recovered_native_inventory_gates() {
     let mut selected = battle::Unit::default();
     (selected.on_field, selected.hp, selected.atk_min, selected.atk_max) = (true, 10, 1, 1);
-    (selected.inventory, selected.equipped) = (vec![3], vec![false]);
+    (selected.inventory, selected.equipped) = (vec![3].into(), vec![false].into());
     let mut g = availability_game(selected, vec![enemy_at(1, 0)]);
     assert_eq!(g.action_overlay_availability(), [1, 1, 0, 0], "without equipped weapon/raw command");
     sel_unit(&mut g).equipped[0] = true;
@@ -192,7 +192,8 @@ fn test_action_overlay_availability_requires_recovered_native_inventory_gates() 
 fn test_action_overlay_native_command_gate_uses_raw_offset27_not_legacy_seal() {
     let mut selected = battle::Unit::default();
     (selected.on_field, selected.hp, selected.atk_min, selected.atk_max) = (true, 10, 1, 1);
-    (selected.inventory, selected.equipped, selected.native_command_mask) = (vec![3], vec![true], [1, 0, 0, 0, 0]);
+    (selected.inventory, selected.equipped, selected.native_command_mask) =
+        (vec![3].into(), vec![true].into(), [1, 0, 0, 0, 0]);
     let mut g = availability_game(selected, vec![enemy_at(1, 0)]);
     sel_unit(&mut g).sealed = true; // normalized legacy state is not the native +0x27 gate.
     assert_eq!(g.action_overlay_availability(), [0, 0, 0, 0], "legacy seal must not disable raw command");
@@ -210,7 +211,7 @@ fn test_action_overlay_command_disabled_after_move_except_three_figs() {
     (selected.on_field, selected.hp, selected.atk_min, selected.atk_max, selected.x, selected.y) =
         (true, 10, 1, 1, 2, 2);
     (selected.inventory, selected.equipped, selected.native_command_mask, selected.battle_fig) =
-        (vec![3], vec![true], [1, 0, 0, 0, 0], 9);
+        (vec![3].into(), vec![true].into(), [1, 0, 0, 0, 0], 9);
     let mut g = availability_game(selected, vec![enemy_at(3, 2)]);
     (g.moved, g.sel_orig_x, g.sel_orig_y) = (true, 2, 2);
     assert_eq!(g.action_overlay_availability(), [0, 0, 0, 0], "原地開環");
@@ -263,7 +264,7 @@ fn current_native_system_options_defaults_to_original() {
 #[test]
 fn overlay_direction_input_respects_availability_gate() {
     let mut selected = battle::Unit::default();
-    (selected.spells, selected.inventory) = (vec![1], vec![2]);
+    (selected.spells, selected.inventory) = (vec![1].into(), vec![2].into());
     let mut g = availability_game(selected, Vec::new()); // availability [1,0,0,0]
     g.ring_sel = 3;
     g.tick_input.pressed.insert(Key::ArrowUp);

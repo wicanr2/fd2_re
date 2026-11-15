@@ -206,7 +206,7 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 完成條件「Go 的戰鬥決定性測試以相同種子產生相同結果」：Go 測試的固定種子期望值不改即全部通過；跨組黃金在 33 張地圖 × 3 個種子上跑敵我 AI 戰鬥（上限 24 回合），每一步的計畫、結果、單位變化與下一個亂數都和 Go 相同，結局 `StateSnapshot` 相同。
 - `tools/rust_rules_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 647 項單元測試通過，沒有 ignore 或略過；clippy `-D warnings` 乾淨。每份黃金都在子代理 worktree 與整合後的主 checkout 各產一次，SHA 相同，並做過竄改反向檢查。
 - 快照與 Go 雙向相容：Rust 讀 Go 寫的快照再寫出與 Go 相同，Rust 寫出的快照 Go 能讀回。
-- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的具名例外之一；2026-11-14 使用者另同意登記 `fd2-formats` 的 `go_math`（`math.Sin`／`Cos`）與 `fd2-campaign` 的 `go_filepath`（`filepath.Clean`／`Join`），2026-11-15 再同意登記 `fd2-game` 的 `go_unicode`（斷行用的 `unicode.Han` 等 Script 表與 `unicode.Is`／`In`），清單見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`。
+- Go `math/rand` 的 `rngSource` 與 `Intn` 取樣在 `battle/rng.rs` 重現，是「不移植 Go 標準函式庫」的具名例外之一；2026-11-14 使用者另同意登記 `fd2-formats` 的 `go_math`（`math.Sin`／`Cos`）與 `fd2-campaign` 的 `go_filepath`（`filepath.Clean`／`Join`），2026-11-15 再同意登記 `fd2-game` 的 `go_unicode`（斷行用的 `unicode.Han` 等 Script 表與 `unicode.Is`／`In`）與 `go_json_float`（`encoding/json` 寫 `float64` 的格式），清單見 `docs/data/fd2-lessons.json` 的 `rust-port-no-go-stdlib`。
 - `serde_json` 開啟 `float_roundtrip`，讀小數與 Go 一樣正確捨入。
 - 跨組黃金抓到一處：Go `native_ai_action_runtime.go` 531 行以 `:=` 重新賦值了 `found`，診斷欄位 `NativeModeBlockedFound` 實際寫入「找到最近對立單位」。Rust 照 Go 的實際值寫入並在註解寫明。
 - 刻意不照做：Go 解 JSON 時欄位名不分大小寫，Rust 只認標籤原文；損壞輸入只比接受或拒收；Go map 迭代順序造成的平手與錯誤訊息選擇（`combat.go` reach 平手在重播中出現 0 次）；nil 接收者與不在 `State.Units` 裡的單位指標。各組清單在各黃金測試的 `KNOWN_DIFFERENCES`。
@@ -241,8 +241,8 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 |---|---|
 | 移植 | 骨架範圍 565 個函式移植 553 個，剩下 2 個純繪圖（R5）與 10 個 HD 本體（R6）；另移植 78 個原標 R8 的小函式 |
 | 第一章檢查點 | Rust 重播 40 個檢查點與 Go 黃金逐位元組相同，SHA-256 `1c846f57…`；子代理 worktree 三次、整合後主 checkout 一次，結果相同 |
-| 存檔 | 流程結束時的 `FD2.SAV` 逐位元組相同（`f3942ff2…`）；`hotel-save.json` 只在名冊單位的 `fd2-rules` serde 子樹不同，以 F 組 `NORMALIZATIONS` 比對相同 |
-| 讀 Go 版存檔 | 存讀檔黃金 349 個案例（`dab44975…`），含 7 份 Go 版實際寫出的存檔與 2 份設定檔 |
+| 存檔 | 流程結束時的 `FD2.SAV` 逐位元組相同（`f3942ff2…`）；`hotel-save.json` 在 #319 修正後也逐位元組相同（`190b9f8f…`） |
+| 讀 Go 版存檔 | 存讀檔黃金 349 個案例（`dab44975…`），含 7 份 Go 版實際寫出的存檔與 2 份設定檔；191 份接受的存檔由 Rust 讀回再寫出，全部與 Go 逐位元組相同（#319） |
 | 原版收據層 | `verify_chapter_parity.py` 以收據同一套政策判 Rust 與 Go 輸出，兩份都是 behavior、nodes、transaction 通過，保存為 `accepted_disclosed_difference`，結論相同 |
 
 - 完成條件「第一章受控流程的狀態軌跡與 Go 黃金軌跡相同；能讀 Go 版的存檔」：依上表成立。比對入口 `tools/rust_parity_ch01.sh`，竄改檢查點的單位 HP 或亂數字組時比對失敗。
@@ -250,5 +250,6 @@ R1 改由子代理平行移植，每個子代理在獨立 git worktree 工作；
 - 呈現回報：`Game::acknowledge_present` 做 Go `Draw` 裡改流程狀態的部分，不畫像素；外殼每畫完一幀呼叫一次，無畫面驅動端在 Go 呼叫 `Draw` 的地方呼叫。第一章用到的分支已移植，其餘分支停在 R5／R6／R8 的 `todo!`。
 - `tools/rust_game_test.sh` 在 `FD2_REQUIRE_ORIGINAL=1` 下 310 項通過，4 項 ignore：存讀檔黃金 2 項與章重播 1 項由各自的腳本執行，1 項停在第一章不會走到的 R8 分支。clippy `-D warnings` 乾淨，`Cargo.lock` 沒有新套件。
 - 斷行用的 Unicode Script 表照 Go 1.22.12 放在 `go_unicode`，是第四項具名例外。
-- 刻意不照做與尚待處理：`hotel-save.json` 的 `float64` 整數值與 nil 切片要逐位元組相同得改 `fd2-rules` 的 serde；crate 層的未使用警告豁免保留到 R5 接上正式入口（拿掉後 882 則，多數是 R8 範圍的函式）；第一章沒有執行到的流程留給 R8。
+- 存檔 JSON 的位元組（#319）：`fd2-rules` 的 `NilableVec`／`NilableMap` 記住 Go 切片與 map 的 nil 狀態，`fd2-game` 的 `go_json_float` 照 Go `encoding/json` 寫浮點數（第五項具名例外）；存讀檔黃金與章重播的比對都拿掉了 battle 子樹的正規化。
+- 刻意不照做與尚待處理：crate 層的未使用警告豁免保留到 R5 接上正式入口（拿掉後 882 則，多數是 R8 範圍的函式）；第一章沒有執行到的流程留給 R8。
 - 只證明 Rust 與凍結 Go 版一致；原版收據層沿用 2026-10-17 的原版輸出，沒有新增原版對拍，`58` 的證據分層沒有變動。

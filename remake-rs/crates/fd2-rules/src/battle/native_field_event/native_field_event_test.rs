@@ -405,10 +405,10 @@ fn setup_chapter26_event61(items: &[i64]) -> Option<State> {
     let mut st = chapter26_setup()?;
     let trigger = &mut st.units[0];
     (trigger.x, trigger.y) = (1, 46);
-    trigger.inventory = items.to_vec();
-    trigger.equipped = vec![false; items.len()];
-    trigger.inventory_slots = vec![0xff; 8];
-    trigger.native_inventory_flags = vec![0x80; 8];
+    trigger.inventory = items.to_vec().into();
+    trigger.equipped = vec![false; items.len()].into();
+    trigger.inventory_slots = vec![0xff; 8].into();
+    trigger.native_inventory_flags = vec![0x80; 8].into();
     for (i, &item) in items.iter().enumerate() {
         trigger.inventory_slots[i] = item;
         trigger.native_inventory_flags[i] = 0;

@@ -43,8 +43,8 @@ fn native_ai_runtime_unit(x: i64, y: i64, selector: u8, mode: u8) -> Unit {
         has_native_record_word46: true,
         native_map_presentation: NativeMapPresentationState { x: x as u8, y: y as u8, ..Default::default() },
         has_native_map_presentation: true,
-        inventory_slots: vec![0xff; 8],
-        native_inventory_flags: vec![0; 8],
+        inventory_slots: vec![0xff; 8].into(),
+        native_inventory_flags: vec![0; 8].into(),
         ..Default::default()
     }
 }
@@ -183,16 +183,16 @@ fn native_system_group_march_preflights_owned_event75_without_live_mutation() {
 #[test]
 fn native_system_group_march_event61_projection_extends_dynamic_record_bound() {
     let mut actor = native_ai_runtime_unit(2, 0, 2, 0);
-    actor.inventory = vec![0xD0];
-    actor.equipped = vec![false];
-    actor.inventory_slots = vec![0xD0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
-    actor.native_inventory_flags = vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80];
+    actor.inventory = vec![0xD0].into();
+    actor.equipped = vec![false].into();
+    actor.inventory_slots = vec![0xD0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into();
+    actor.native_inventory_flags = vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     let mut joined = native_ai_runtime_unit(1, 0, 2, 0);
     joined.group = 1;
     joined.fig = 31;
     joined.camp = OWN;
-    joined.inventory_slots = vec![0xff; 8];
-    joined.native_inventory_flags = vec![0x80; 8];
+    joined.inventory_slots = vec![0xff; 8].into();
+    joined.native_inventory_flags = vec![0x80; 8].into();
     let presentation = NativeFieldPresentation {
         archive: "FDOTHER.DAT".into(),
         resource: 45,

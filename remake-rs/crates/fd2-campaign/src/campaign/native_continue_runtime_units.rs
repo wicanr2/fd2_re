@@ -150,8 +150,9 @@ pub(crate) fn materialize_native_continue_runtime_unit(
     unit.equipment_base_set = true;
     unit.dx = i64::from(view.dx);
     unit.exp = f64::from(view.experience);
-    unit.inventory_slots = vec![0; view.inventory.len()];
-    unit.native_inventory_flags = vec![0; view.inventory.len()];
+    // make([]int, len(view.Inventory))：非 nil。
+    unit.inventory_slots = battle::NilableVec::from_vec(vec![0; view.inventory.len()]);
+    unit.native_inventory_flags = battle::NilableVec::from_vec(vec![0; view.inventory.len()]);
     unit.native_map_presentation =
         battle::NativeMapPresentationState { x: raw[0], y: raw[1], pose: raw[3], motion: raw[4] };
     unit.has_native_map_presentation = true;

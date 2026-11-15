@@ -237,7 +237,7 @@ fn next_ai_plan_default_spell_command_is_disabled() {
 #[test]
 fn next_ai_plan_selects_editable_heal_spell_before_physical_fallback() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
-    (caster.mp, caster.spells, caster.on_field) = (10, vec![13], true);
+    (caster.mp, caster.spells, caster.on_field) = (10, vec![13].into(), true);
     let mut ally = mk_fighter(ENEMY, 1, 0, 30, 10, 20, 100, 0, 0);
     (ally.hp, ally.on_field) = (10, true);
     let mut target = mk_fighter(OWN, 2, 0, 30, 30, 0, 0, 0, 0);
@@ -260,7 +260,7 @@ fn next_ai_plan_selects_editable_heal_spell_before_physical_fallback() {
 #[test]
 fn next_ai_plan_approaches_editable_attack_spell_target() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
-    (caster.mp, caster.mv, caster.spells, caster.on_field) = (5, 2, vec![0], true);
+    (caster.mp, caster.mv, caster.spells, caster.on_field) = (5, 2, vec![0].into(), true);
     let mut target = mk_fighter(OWN, 3, 0, 30, 30, 0, 0, 0, 0);
     target.on_field = true;
     let mut st = State {
@@ -284,7 +284,7 @@ fn next_ai_plan_approaches_editable_attack_spell_target() {
 #[test]
 fn next_ai_plan_ally_targets_enemy_with_editable_attack_spell() {
     let mut caster = mk_fighter(ALLY, 0, 0, 100, 40, 0, 100, 0, 0);
-    (caster.mp, caster.spells, caster.on_field) = (5, vec![0], true);
+    (caster.mp, caster.spells, caster.on_field) = (5, vec![0].into(), true);
     let mut friend = mk_fighter(OWN, 1, 0, 30, 30, 0, 0, 0, 0);
     friend.on_field = true;
     let mut target = mk_fighter(ENEMY, 2, 0, 30, 30, 0, 0, 0, 0);
@@ -307,7 +307,7 @@ fn next_ai_plan_ally_targets_enemy_with_editable_attack_spell() {
 #[test]
 fn next_ai_plan_uses_editable_inventory_spell_mapping() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
-    (caster.mp, caster.inventory, caster.on_field) = (5, vec![0x61], true);
+    (caster.mp, caster.inventory, caster.on_field) = (5, vec![0x61].into(), true);
     let mut target = mk_fighter(OWN, 1, 0, 30, 30, 0, 0, 0, 0);
     target.on_field = true;
     let mut st = State {
@@ -329,7 +329,7 @@ fn next_ai_plan_uses_editable_inventory_spell_mapping() {
 #[test]
 fn next_ai_plan_spell_path_uses_stable_cell_tie_break() {
     let mut caster = mk_fighter(ENEMY, 0, 0, 100, 40, 0, 100, 0, 0);
-    (caster.mp, caster.mv, caster.spells, caster.on_field) = (5, 2, vec![0], true);
+    (caster.mp, caster.mv, caster.spells, caster.on_field) = (5, 2, vec![0].into(), true);
     let mut target = mk_fighter(OWN, 3, 1, 30, 30, 0, 0, 0, 0);
     target.on_field = true;
     let mut st = State {
@@ -389,7 +389,7 @@ fn next_ai_plan_omits_raw_scored_commands_without_verified_book() {
 /// Go 的 `u` 不在 `State.Units`；Rust 依模組文件第 6 點先 push 再傳索引（只讀該單位的物品欄）。
 #[test]
 fn ai_available_spells_resolves_inventory_commands_without_scoring() {
-    let u = Unit { inventory: vec![79, 80, 79], ..Default::default() };
+    let u = Unit { inventory: vec![79, 80, 79].into(), ..Default::default() };
     let st = State {
         ai_command_spell: BTreeMap::from([(79, 15), (80, 99)]),
         spell_book: vec![Spell { id: 15, name: "回復".into(), ..Default::default() }],

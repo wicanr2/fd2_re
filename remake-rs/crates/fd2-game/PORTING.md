@@ -546,8 +546,8 @@ Go 測試當驅動用（以函式名掃描，共 460 個 Go 測試直接引用 A
 | 存檔 196 | Go 寫出的固定與固定種子隨機 `saveData` 164 份（含 JOIN 建構器建立的真實持續隊伍單位）、手寫讀取端輸入 23 份、第一章戰鬥中 F5 存檔 2 份（附戰場快照）、真實 Go 版存檔 7 份 |
 | 設定 80 | Go 寫出的 64 份、手寫 14 份、真實設定檔 2 份；比零值起點與 `loadSettings` 起點的解碼及重新寫出的位元組 |
 | 附檔 45、附檔鍵 28 | `readBalanceSidecar` 的接受／拒收與錯誤文字、讀回與重新寫出；`balanceSaveKey` 的鍵與錯誤 |
-| 存檔位元組 | 191 份接受的存檔裡 64 份 Rust 重新寫出逐位元組相同；127 份只在 battle 套件子樹（名冊單位、戰場快照）不同，以 `NORMALIZATIONS` 比對相同，拿掉這兩個子樹的外層位元組 191 份全部相同。設定與附檔逐位元組相同 |
-| 竄改反向檢查 | 測試內對七類比對各改一個欄位（讀回金幣、名冊 HP、外層位元組、設定位元組、設定讀回、附檔錯誤文字、附檔鍵），全部被抓到 |
+| 存檔位元組 | 191 份接受的存檔由 Rust 重新寫出全部與 Go 逐位元組相同（#319 修正後；之前 127 份只在 battle 套件子樹不同，見下方「fd2-rules 缺口」）。設定與附檔逐位元組相同 |
+| 竄改反向檢查 | 測試內對九類比對各改一個欄位（讀回金幣、名冊 HP、外層位元組、名冊單位的浮點寫法 `0`→`0.0`、nil 切片 `null`→`[]`、設定位元組、設定讀回、附檔錯誤文字、附檔鍵），全部被抓到 |
 
 真實輸入（主工作區 `work/`，唯讀；大小與 SHA-256 寫進黃金檔）：
 
@@ -565,22 +565,23 @@ Go 測試當驅動用（以函式名掃描，共 460 個 Go 測試直接引用 A
 
 `KNOWN_DIFFERENCES`（`save.rs` 的 `SAVE_JSON_KNOWN_DIFFERENCES`）：JSON 欄位名大小寫；battle 套件型別的純量 null；
 型別錯誤時的部分填入（設定檔）；字串的 HTML 與控制字元跳脫；整數鍵的非標準寫法；作業系統錯誤文字；非有限小數；
-巢狀結構欄位的陣列寫法；存檔與附檔 JSON 的重複鍵。`NORMALIZATIONS`（只用在 battle 子樹與 `party_join_order`）：
-null 與空陣列／空物件／空字串相同、數字只比數值、物件鍵順序、`party_join_order` 的 null 與 `[]`。
+巢狀結構欄位的陣列寫法；存檔與附檔 JSON 的重複鍵。`NORMALIZATIONS`：只剩讀回結果的 `party_join_order` 的 null 與 `[]`
+（`omitempty`，位元組相同）；battle 子樹的正規化在 #319 拿掉。
 
-### fd2-rules 缺口（F 組發現）
+### fd2-rules 缺口（F 組發現，2026-11-15 以 #319 修正）
 
-Go 寫出的存檔由 Rust 讀回再寫出時，位元組只在 fd2-rules 型別的 serde 上不同（黃金統計，127 份存檔）：
+Go 寫出的存檔由 Rust 讀回再寫出時，位元組原本只在 fd2-rules 型別的 serde 上不同（黃金統計，127 份存檔）：
 
-| 型別 | 欄位 | Go | fd2-rules |
-|---|---|---|---|
-| `Unit` | `OffX`、`OffY`、`Exp`（`float64`） | 整數值寫 `0` | `0.0` |
-| `Unit` | `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` | nil 寫 `null` | `Vec` 不分 nil，寫 `[]` |
-| `StateSnapshot` | `flags` | 非 nil 空 map 寫 `{}` | 空的寫 `null` |
-| `BalanceOptions` | `characters`、`skill_hit`（整數鍵） | 依鍵的字串排序 | 依整數排序（F 組寫出時改走 `go_json_balance_options`，已相同） |
+| 型別 | 欄位 | Go | 修正前的 fd2-rules | 修正 |
+|---|---|---|---|---|
+| `Unit` | `OffX`、`OffY`、`Exp`（`float64`） | 整數值寫 `0` | `0.0` | `go_json_marshal_indent` 改用 `src/go_json_float.rs` 的 `GoJsonFormatter`（第五項具名例外） |
+| `Unit` | `Spells`、`Inventory`、`Equipped`、`InventorySlots`、`NativeInventoryFlags` | nil 寫 `null`、空的寫 `[]` | `Vec` 不分 nil，寫 `[]` | 欄位改為 fd2-rules 的 `NilableVec` |
+| `State`／`StateSnapshot` | `flags` | nil 寫 `null`、空的寫 `{}` | 空的寫 `null` | 欄位改為 `NilableMap`，快照照 Go `cloneMap` 保留 nil |
+| `BalanceOptions` | `characters`、`skill_hit`（整數鍵） | 依鍵的字串排序 | 依整數排序 | F 組寫出時已改走 `go_json_balance_options` |
 
-讀回的內容都相同（逐欄比對通過）。要讓整份存檔逐位元組相同，需要 fd2-rules 的 `Unit` 以 `Option<Vec<_>>` 或寫出端
-規則保留 nil、`float64` 欄位以整數值寫出，並讓 `StateSnapshot` 區分 nil 與空 map；由主代理決定是否在 fd2-rules 補。
+`NilableVec`／`NilableMap` 以 `Deref` 當成 `Vec`／`BTreeMap` 使用；重新指定整個欄位的地方照 Go 原檔選 nil 或非 nil：
+`append([]T(nil), src...)` 用 `NilableVec::appended`（沒有元素時是 nil），`make` 與字面值用 `from_vec`，`= nil` 用 `nil()`。
+修正後 191 份存檔與第一章章重播的 `hotel-save.json`（`190b9f8f…`）都與 Go 逐位元組相同。
 
 ### 整合紀錄（A＋F，2026-11-14）
 
@@ -1317,7 +1318,7 @@ ch01-start-residual-20261017 --oracle-save state-full-r4/FD2.SAV`）各判 Rust 
 | `checkpoints.jsonl` | 40 筆，與 Go 黃金逐位元組相同，SHA-256 `1c846f573434658cabb3cfa486edd5826b401673c3bff411e30cbdc3e18ac0cc` |
 | `FD2.SAV` | 逐位元組相同，SHA-256 `f3942ff2288a76d1c736a3a6f6ff8b7661efea0fc9870c323bc49da8805f1860` |
 | `start-entry.json`、`replay-settings.json` | 逐位元組相同（不是要求項目，順帶核對） |
-| `hotel-save.json` | 位元組不同（Rust `baca933d…`、Go `190b9f8f…`）；只在 `party_roster` 的 fd2-rules serde 子樹，套 F 組 `NORMALIZATIONS` 後相同。差異是 F 組已列的兩類：`OffX`／`OffY`／`Exp` 的整數值 `float64`（Go `0`、Rust `0.0`）與 `Spells` 的 nil（Go `null`、Rust `[]`），各 5 個單位 |
+| `hotel-save.json` | 階段 3 時位元組不同（Rust `baca933d…`、Go `190b9f8f…`），只在 `party_roster` 的 `OffX`／`OffY`／`Exp` 整數值與 `Spells` 的 nil；#319 修正後逐位元組相同（`190b9f8f…`），比對工具不再正規化 |
 | `verify_chapter_parity.py` | 兩份都是 `status=passed`、behavior／nodes／transaction 通過、frames 依政策不要求、保存 `accepted_disclosed_difference`，結論相同 |
 
 竄改反向檢查：把 Rust `checkpoints.jsonl` 第 12 筆的 `rng_word` 改一個值，比對工具列出該筆該欄並以結束碼 1 失敗。

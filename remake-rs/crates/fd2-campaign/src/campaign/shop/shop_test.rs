@@ -27,14 +27,14 @@ fn three_item_stats() -> BTreeMap<i64, ItemStats> {
 #[test]
 fn buy_good_uses_selected_inventory_and_is_atomic_on_failure() {
     let good = Good { id: 0xc0, name: "藥草".into(), price: 10 };
-    let mut receiver = unit! { inventory: vec![1, 2], };
+    let mut receiver = unit! { inventory: vec![1, 2].into(), };
     let (gold, err) = go_gold(50, buy_good(50, Some(&mut receiver), &good));
     assert!(
         err.is_none() && gold == 40 && receiver.inventory == [1, 2, 0xc0],
         "purchase gold={gold} err={err:?} inventory={:?}",
         receiver.inventory
     );
-    let mut full = unit! { inventory: vec![0; 8], };
+    let mut full = unit! { inventory: vec![0; 8].into(), };
     let (got, err) = go_gold(50, buy_good(50, Some(&mut full), &good));
     assert!(
         err.is_some() && got == 50 && full.inventory.len() == 8,
@@ -70,7 +70,7 @@ fn reserve_good_defers_gold_until_equip_decision() {
 /// Go：`TestSellGoodPaysThreeQuartersAndRemovesSlot`
 #[test]
 fn sell_good_pays_three_quarters_and_removes_slot() {
-    let mut u = unit! { inventory: vec![7, 8], equipped: vec![true, false], };
+    let mut u = unit! { inventory: vec![7, 8].into(), equipped: vec![true, false].into(), };
     let (gold, err) = go_gold(10, sell_good(10, Some(&mut u), 7, 101));
     assert!(
         err.is_none() && gold == 85 && u.inventory == [8] && u.equipped == [false],
@@ -83,7 +83,7 @@ fn sell_good_pays_three_quarters_and_removes_slot() {
 /// Go：`TestSellSlotTargetsDuplicateInventoryEntry`
 #[test]
 fn sell_slot_targets_duplicate_inventory_entry() {
-    let mut u = unit! { inventory: vec![7, 7], equipped: vec![true, false], };
+    let mut u = unit! { inventory: vec![7, 7].into(), equipped: vec![true, false].into(), };
     let (gold, err) = go_gold(0, sell_slot(0, Some(&mut u), 1, 100));
     assert!(
         err.is_none() && u.inventory.len() == 1 && u.equipped == [true] && gold == 75,
@@ -108,10 +108,10 @@ fn sell_native_slot_compacts_raw_cells_and_credits_after_validation() {
         base_ev: 2,
         base_mv: 4,
         equipment_base_set: true,
-        inventory: vec![0, 1, 132],
-        equipped: vec![true, false, true],
-        inventory_slots: vec![0, 1, 132, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0x40, 0, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![0, 1, 132].into(),
+        equipped: vec![true, false, true].into(),
+        inventory_slots: vec![0, 1, 132, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0x40, 0, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
     };
     let gold = sell_native_slot(100, Some(&mut u), 1, 200, &three_item_stats()).unwrap();
     assert!(
@@ -141,10 +141,10 @@ fn equip_native_compact_slot_preserves_raw_hole_mapping() {
         base_ev: 2,
         base_mv: 4,
         equipment_base_set: true,
-        inventory: vec![0, 1, 132],
-        equipped: vec![true, false, true],
-        inventory_slots: vec![0, 0x77, 1, 132, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0x40, 0x80, 0, 0x40, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![0, 1, 132].into(),
+        equipped: vec![true, false, true].into(),
+        inventory_slots: vec![0, 0x77, 1, 132, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0x40, 0x80, 0, 0x40, 0x80, 0x80, 0x80, 0x80].into(),
     };
     equip_native_compact_slot(Some(&mut u), 1, &three_item_stats()).unwrap();
     assert!(
@@ -164,10 +164,10 @@ fn equip_native_compact_slot_preserves_raw_hole_mapping() {
 #[test]
 fn equip_native_compact_slot_rejects_divergent_projection_atomically() {
     let mut u = unit! {
-        inventory: vec![0, 1],
-        equipped: vec![true, false],
-        inventory_slots: vec![0, 2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0x40, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![0, 1].into(),
+        equipped: vec![true, false].into(),
+        inventory_slots: vec![0, 2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0x40, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
     };
     let before = u.clone();
     let stats = BTreeMap::from([(1, ItemStats { r#type: 1, ..Default::default() })]);

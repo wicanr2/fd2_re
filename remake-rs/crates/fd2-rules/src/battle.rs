@@ -63,10 +63,12 @@
 
 mod error;
 mod format_deps;
+mod nilable;
 mod rng;
 mod support;
 
 pub use error::*;
+pub use nilable::*;
 pub use rng::*;
 pub use support::*;
 

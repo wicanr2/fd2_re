@@ -209,10 +209,11 @@ impl NativeJoinConstructorTable {
         unit.native_transient = [0; 6];
         (unit.native_record_word42, unit.has_native_record_word42) = (max_hp as u16, true);
         (unit.native_record_word46, unit.has_native_record_word46) = (max_mp as u16, true);
-        unit.inventory = Vec::new();
-        unit.equipped = Vec::new();
-        unit.inventory_slots = vec![0; 8];
-        unit.native_inventory_flags = vec![0; 8];
+        // Go：`unit.Inventory = nil`、`unit.Equipped = nil`，兩個槽表是 `make([]int, 8)`。
+        unit.inventory = battle::NilableVec::nil();
+        unit.equipped = battle::NilableVec::nil();
+        unit.inventory_slots = battle::NilableVec::from_vec(vec![0; 8]);
+        unit.native_inventory_flags = battle::NilableVec::from_vec(vec![0; 8]);
         for slot in 0..8 {
             let cell = 0x0a + slot * 2;
             let (flags, item) = (record[cell], record[cell + 1]);

@@ -6,8 +6,8 @@ use super::*;
 #[test]
 fn native_inventory_records_materializes_only_proven_cells() {
     let u = Unit {
-        inventory_slots: vec![0x64, 0xff, 2, 3, 4, 5, 6, 7],
-        native_inventory_flags: vec![0, 0x80, 0, 0, 0, 0, 0, 0x80],
+        inventory_slots: vec![0x64, 0xff, 2, 3, 4, 5, 6, 7].into(),
+        native_inventory_flags: vec![0, 0x80, 0, 0, 0, 0, 0, 0x80].into(),
         ..Default::default()
     };
     let records = native_inventory_records(&[u], 1).unwrap();
@@ -25,6 +25,6 @@ fn native_inventory_records_materializes_only_proven_cells() {
 /// Go：`TestNativeInventoryRecordsFailsClosedWithoutProvenance`
 #[test]
 fn native_inventory_records_fails_closed_without_provenance() {
-    let u = Unit { inventory: vec![0x64], ..Default::default() };
+    let u = Unit { inventory: vec![0x64].into(), ..Default::default() };
     assert!(native_inventory_records(&[u], 1).is_err(), "normalized-only inventory must not be serialized as raw");
 }

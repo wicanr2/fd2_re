@@ -180,8 +180,9 @@ pub fn materialize_native_persistent_party_record(
     unit.equipment_base_set = true;
     unit.dx = i64::from(view.dx);
     unit.exp = f64::from(view.experience);
-    unit.inventory_slots = vec![0; view.inventory.len()];
-    unit.native_inventory_flags = vec![0; view.inventory.len()];
+    // make([]int, len(view.Inventory))：非 nil。
+    unit.inventory_slots = battle::NilableVec::from_vec(vec![0; view.inventory.len()]);
+    unit.native_inventory_flags = battle::NilableVec::from_vec(vec![0; view.inventory.len()]);
     for (index, cell) in view.inventory.iter().enumerate() {
         unit.inventory_slots[index] = i64::from(cell.item_id);
         unit.native_inventory_flags[index] = i64::from(cell.flags);

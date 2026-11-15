@@ -418,10 +418,10 @@ impl Runner<'_> {
             "set_inventory" => {
                 let items = ints(&args["items"]);
                 let u = &mut self.st.units[i(args, "unit") as usize];
-                u.inventory = items.clone();
-                u.equipped = vec![false; items.len()];
-                u.inventory_slots = vec![0xff; 8];
-                u.native_inventory_flags = vec![0x80; 8];
+                u.inventory = items.clone().into();
+                u.equipped = vec![false; items.len()].into();
+                u.inventory_slots = vec![0xff; 8].into();
+                u.native_inventory_flags = vec![0x80; 8].into();
                 for (k, &item) in items.iter().enumerate() {
                     u.inventory_slots[k] = item;
                     u.native_inventory_flags[k] = 0;

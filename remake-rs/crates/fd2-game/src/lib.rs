@@ -12,6 +12,7 @@
 #![allow(unused, dead_code, unreachable_code, clippy::todo)]
 
 pub mod game;
+mod go_json_float;
 mod go_unicode;
 #[cfg(test)]
 #[allow(dead_code)]

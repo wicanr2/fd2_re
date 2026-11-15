@@ -96,8 +96,8 @@ fn native_neutral_test_unit(x: u8, y: u8) -> battle::Unit {
     (u.lv, u.mv, u.exp, u.dx) = (12, 5, 34.0, 56);
     (u.hp, u.max_hp, u.mp, u.max_mp) = (80, 100, 20, 40);
     (u.ap, u.dp, u.hit, u.ev) = (123, 98, 76, 54);
-    u.inventory_slots = vec![0, 0xff, 79, 0xff, 0xff, 0xff, 0xff, 0xff];
-    u.native_inventory_flags = vec![0x40, 0x80, 0, 0x80, 0x80, 0x80, 0x80, 0x80];
+    u.inventory_slots = vec![0, 0xff, 79, 0xff, 0xff, 0xff, 0xff, 0xff].into();
+    u.native_inventory_flags = vec![0x40, 0x80, 0, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     (u.has_battle_fig, u.has_native_record_byte5) = (true, true);
     u.native_record_byte6 = 2;
     u.has_native_map_presentation = true;
@@ -394,8 +394,8 @@ fn complete_native_ai_executor_unit() -> battle::Unit {
     (u.native_record_byte36, u.has_native_record_byte36) = (0, true);
     (u.native_record_word42, u.has_native_record_word42) = (100, true);
     (u.native_record_word46, u.has_native_record_word46) = (10, true);
-    u.inventory_slots = vec![0xff; 8];
-    u.native_inventory_flags = vec![0x80; 8];
+    u.inventory_slots = vec![0xff; 8].into();
+    u.native_inventory_flags = vec![0x80; 8].into();
     u
 }
 
@@ -681,7 +681,7 @@ fn terrain_at_and_equipped_weapon_gates() {
     assert_eq!((g.terrain_at(1, 0), g.terrain_at(2, 0), g.terrain_at(-1, 0)), (6, -1, -1));
     assert_eq!(Game::default().terrain_at(0, 0), -1);
     let mut u = battle::Unit::default();
-    (u.inventory, u.equipped) = (vec![0x80, 3], vec![true, false]);
+    (u.inventory, u.equipped) = (vec![0x80, 3].into(), vec![true, false].into());
     assert!(!has_native_equipped_weapon(Some(&u)));
     u.equipped[1] = true;
     assert!(has_native_equipped_weapon(Some(&u)));

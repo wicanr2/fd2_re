@@ -186,8 +186,8 @@ pub struct Unit {
     #[serde(rename = "OnField")]
     pub on_field: bool,
     /// normalized/editable spell IDs; not a raw unit+0x22 bitfield
-    #[serde(rename = "Spells", deserialize_with = "null_as_default")]
-    pub spells: Vec<i64>,
+    #[serde(rename = "Spells")]
+    pub spells: NilableVec<i64>,
     /// NativeCommandMask is the runtime 40-bit command inventory enumerated by
     /// 0x1c269.  FDFIELD b13..b16 initializes bytes 0..3; byte 4 begins zero and
     /// can be OR-mutated by 0x1d7fb.  It is deliberately separate from Spells:
@@ -286,18 +286,18 @@ pub struct Unit {
     #[serde(rename = "has_native_record_word46", skip_serializing_if = "std::ops::Not::not")]
     pub has_native_record_word46: bool,
     /// 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B
-    #[serde(rename = "Inventory", deserialize_with = "null_as_default")]
-    pub inventory: Vec<i64>,
+    #[serde(rename = "Inventory")]
+    pub inventory: NilableVec<i64>,
     /// 與 Inventory 對齊；true 表示該欄位目前已裝備
-    #[serde(rename = "Equipped", deserialize_with = "null_as_default")]
-    pub equipped: Vec<bool>,
+    #[serde(rename = "Equipped")]
+    pub equipped: NilableVec<bool>,
     /// 原始 8 個 source bytes；0xff 保留空槽位置
-    #[serde(rename = "InventorySlots", deserialize_with = "null_as_default")]
-    pub inventory_slots: Vec<i64>,
+    #[serde(rename = "InventorySlots")]
+    pub inventory_slots: NilableVec<i64>,
     /// NativeInventoryFlags is the constructor's raw eight-cell flag view. It is
     /// present only when InventorySlots came from the proven source layout.
-    #[serde(rename = "NativeInventoryFlags", deserialize_with = "null_as_default")]
-    pub native_inventory_flags: Vec<i64>,
+    #[serde(rename = "NativeInventoryFlags")]
+    pub native_inventory_flags: NilableVec<i64>,
     /// Base* are the persistent pre-remake equipment values. Existing scenario
     /// data stores effective values, so EquipmentBaseSet is true for those
     /// records and newly purchased equipment is added without double counting.
@@ -490,9 +490,17 @@ pub(crate) fn initial_equipment_flags(n: i64) -> Vec<bool> {
 }
 
 /// Go：`model.go:303`，`func materializeInventory(source, compact []int) ([]int, []bool, []int)`
-pub(crate) fn materialize_inventory(source: &[i64], compact: &[i64]) -> (Vec<i64>, Vec<bool>, Vec<i64>) {
+/// Rust：回傳值保留 Go 的 nil 狀態：`append([]int(nil), compact...)` 沒有元素時是 nil，`make` 出來的是非 nil。
+pub(crate) fn materialize_inventory(
+    source: &[i64],
+    compact: &[i64],
+) -> (NilableVec<i64>, NilableVec<bool>, NilableVec<i64>) {
     if source.len() != 8 {
-        return (compact.to_vec(), initial_equipment_flags(compact.len() as i64), compact.to_vec());
+        return (
+            NilableVec::appended(compact.to_vec()),
+            NilableVec::from_vec(initial_equipment_flags(compact.len() as i64)),
+            NilableVec::appended(compact.to_vec()),
+        );
     }
     let mut runtime = vec![0xffi64; 8];
     let mut flags = [false; 8];
@@ -513,7 +521,7 @@ pub(crate) fn materialize_inventory(source: &[i64], compact: &[i64]) -> (Vec<i64
             used_flags.push(flags[i]);
         }
     }
-    (ids, used_flags, runtime)
+    (NilableVec::from_vec(ids), NilableVec::from_vec(used_flags), NilableVec::from_vec(runtime))
 }
 
 impl Unit {
@@ -522,7 +530,7 @@ impl Unit {
         if self.inventory_slots.len() == 8 {
             return;
         }
-        self.inventory_slots = vec![0xff; 8];
+        self.inventory_slots = NilableVec::from_vec(vec![0xff; 8]); // make([]int, 8)
         for (i, &id) in self.inventory.iter().enumerate().take(8) {
             self.inventory_slots[i] = id;
         }
@@ -776,7 +784,8 @@ pub struct State {
     /// Go 標籤：`json:"native_round_counter,omitempty"`
     pub native_round_counter: i64,
     /// 事件旗標(跨事件/跨關劇情狀態,doc 29)
-    pub flags: BTreeMap<String, bool>,
+    /// Rust：快照以 `cloneMap` 保留 nil 與空 map 的差別，所以記住 nil 狀態（[`NilableMap`]）。
+    pub flags: NilableMap<String, bool>,
     /// raw [0x53ad5] battle-local state table; unnamed indices
     pub native_event_state: [u8; 32],
     /// per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
@@ -1468,7 +1477,7 @@ pub fn load(path: &str) -> Result<State> {
         h: f.h,
         own_deploy: f.own_deploy.clone(),
         turn: 1,
-        flags: BTreeMap::new(),
+        flags: NilableMap::from_map(BTreeMap::new()), // map[string]bool{}
         treasures: Some(BTreeMap::new()),
         opened_treasure: Some(BTreeMap::new()),
         native_treasure_event_rules: BTreeMap::new(),
@@ -1515,7 +1524,7 @@ pub fn load(path: &str) -> Result<State> {
             fig: u.fig,
             x: u.x,
             y: u.y,
-            spells: u.spells.clone(),
+            spells: NilableVec::appended(u.spells.clone()), // append([]int(nil), u.Spells...)
             inventory,
             equipped,
             inventory_slots: runtime_slots,
@@ -1537,7 +1546,7 @@ pub fn load(path: &str) -> Result<State> {
             (nu.native_record_byte5, nu.has_native_record_byte5) = (v, true);
         }
         if let Ok(flags) = native_inventory_flags_from_source(&u.inventory_slots) {
-            nu.native_inventory_flags = flags;
+            nu.native_inventory_flags = NilableVec::from_vec(flags); // make([]int, 8)
         }
         // Older generated JSON lacks battle_fig; preserve its compatibility
         // behavior, while new exports carry the direct FDFIELD-b1 value.

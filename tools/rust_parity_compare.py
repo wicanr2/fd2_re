@@ -5,11 +5,10 @@
 
 - checkpoints.jsonl：逐位元組比對；不同時逐筆逐欄列出差異（單位依 native_index 對齊）。
 - FD2.SAV：逐位元組比對；不同時列出差異 byte 數與前幾個偏移。
-- hotel-save.json：逐位元組比對；不同時只在 fd2-rules serde 子樹（party_roster）套用 F 組的
-  NORMALIZATIONS（remake-rs/crates/fd2-game/src/game/save/golden_save_test.rs）再比，結果分開報告。
+- hotel-save.json：逐位元組比對；不同時列出第一個不同的行與頂層欄位的差異。
 - 給了兩份 verify_chapter_parity.py 收據時，比對 status 與各閘門的 ok。
 
-逐位元組比對失敗時結束碼為 1；只在正規化後相同的 hotel-save.json 不算失敗，但會另列。
+任何一份逐位元組比對失敗，或兩份收據結論不同時，結束碼為 1。
 """
 from __future__ import annotations
 
@@ -18,32 +17,6 @@ import hashlib
 import json
 import sys
 from pathlib import Path
-
-NORMALIZATIONS = [
-    "battle 子樹：null 與空陣列、空物件、空字串相同",
-    "battle 子樹：數字只比數值",
-    "battle 子樹：物件鍵順序",
-    "party_join_order：null 與 [] 相同",
-]
-BATTLE_SUBTREES = ("party_roster",)
-
-
-def sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def norm(v):
-    if v is None or v == [] or v == {} or v == "":
-        return None
-    if isinstance(v, bool):
-        return v
-    if isinstance(v, (int, float)):
-        return float(v)
-    if isinstance(v, list):
-        return [norm(x) for x in v]
-    if isinstance(v, dict):
-        return {k: norm(x) for k, x in sorted(v.items())}
-    return v
 
 
 def first_diff(path: str, a, b) -> str:
@@ -110,32 +83,24 @@ def compare_save(rust: Path, go: Path, out: list[str]) -> bool:
     return False
 
 
-def compare_hotel(rust: Path, go: Path, out: list[str]) -> tuple[bool, bool]:
+def compare_hotel(rust: Path, go: Path, out: list[str]) -> bool:
     r, g = rust.read_bytes(), go.read_bytes()
     out.append(f"hotel-save.json：Rust {hashlib.sha256(r).hexdigest()}，Go {hashlib.sha256(g).hexdigest()}")
     if r == g:
         out.append("  逐位元組相同")
-        return True, True
+        return True
+    rl, gl = r.decode("utf-8", "replace").splitlines(), g.decode("utf-8", "replace").splitlines()
+    for i, (x, y) in enumerate(zip(rl, gl)):
+        if x != y:
+            out.append(f"  第 {i + 1} 行：Go {y.strip()} ／ Rust {x.strip()}")
+            break
+    else:
+        out.append(f"  行數 Rust {len(rl)}／Go {len(gl)}")
     a, b = json.loads(r), json.loads(g)
-    problems = []
-    for k in list(b) + [k for k in a if k not in b]:
-        x, y = a.get(k, "<缺>"), b.get(k, "<缺>")
-        if k in BATTLE_SUBTREES:
-            if norm(x) != norm(y):
-                problems.append(first_diff(k, norm(x), norm(y)))
-        elif k == "party_join_order":
-            if (x or None) != (y or None):
-                problems.append(first_diff(k, x, y))
-        elif x != y:
-            problems.append(first_diff(k, x, y))
-    if problems:
-        out.append("  正規化後仍不同：")
-        out.extend("    " + p for p in problems[:20])
-        return False, False
-    out.append("  位元組不同；只在 fd2-rules serde 子樹（party_roster）以 NORMALIZATIONS 比對後相同：")
-    out.extend("    - " + n for n in NORMALIZATIONS)
-    # 拿掉 battle 子樹後外層是否逐值相同（位元組差異只在子樹）
-    return False, True
+    problems = [first_diff(k, a.get(k, "<缺>"), b.get(k, "<缺>"))
+                for k in list(b) + [k for k in a if k not in b] if a.get(k, "<缺>") != b.get(k, "<缺>")]
+    out.extend("  " + p for p in problems[:20])
+    return False
 
 
 def receipt_summary(path: Path) -> dict:
@@ -155,8 +120,7 @@ def main() -> int:
     out: list[str] = []
     ok = compare_checkpoints(args.rust / "checkpoints.jsonl", args.go / "checkpoints.jsonl", out)
     ok &= compare_save(args.rust / "FD2.SAV", args.go / "FD2.SAV", out)
-    hotel_bytes, hotel_norm = compare_hotel(args.rust / "hotel-save.json", args.go / "hotel-save.json", out)
-    ok &= hotel_norm
+    ok &= compare_hotel(args.rust / "hotel-save.json", args.go / "hotel-save.json", out)
     if args.receipt_rust and args.receipt_go:
         a, b = receipt_summary(args.receipt_rust), receipt_summary(args.receipt_go)
         out.append(f"verify_chapter_parity.py：Rust {a}")
@@ -165,7 +129,7 @@ def main() -> int:
         out.append("  結論相同" if same else "  結論不同")
         ok &= same
     print("\n".join(out))
-    print("結果：" + ("通過" if ok else "失敗") + ("" if hotel_bytes else "（hotel-save.json 依 NORMALIZATIONS）" if hotel_norm else ""))
+    print("結果：" + ("通過" if ok else "失敗"))
     return 0 if ok else 1
 
 

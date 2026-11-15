@@ -17,7 +17,9 @@
 //! - Go 以整數為鍵的 map 依鍵的十進位字串排序寫出（`"10"` 在 `"2"` 前面）；本檔的整數鍵 map 以
 //!   [`go_json_int_key_map`] 依同樣順序寫出。
 //! - `json.MarshalIndent(v, "", " ")` 對應 [`go_json_marshal_indent`]：serde_json 的 `PrettyFormatter`
-//!   縮排一個空白，格式（`"key": value`、空容器 `{}`／`[]`、結尾不換行）與 Go 相同。
+//!   縮排一個空白，格式（`"key": value`、空容器 `{}`／`[]`、結尾不換行）與 Go 相同；浮點數照 Go
+//!   `encoding/json` 寫（`crate::go_json_float`，整數值寫 `0` 而非 `0.0`）。
+//! - battle 套件型別（名冊單位、戰場快照）的 nil 切片與 map 由 fd2-rules 的 `NilableVec`／`NilableMap` 保留。
 //! - 刻意不照做的 Go 行為列在本模組的 `KNOWN_DIFFERENCES`（測試與黃金共用）。
 
 use super::*;
@@ -132,7 +134,8 @@ pub(crate) fn go_json_unmarshal_zero<T: serde::de::DeserializeOwned + Default>(r
 /// Go `json.MarshalIndent(v, "", " ")`。
 pub(crate) fn go_json_marshal_indent<T: serde::Serialize>(v: &T) -> Result<Vec<u8>> {
     let mut out = Vec::new();
-    let mut ser = serde_json::Serializer::with_formatter(&mut out, serde_json::ser::PrettyFormatter::with_indent(b" "));
+    let mut ser =
+        serde_json::Serializer::with_formatter(&mut out, crate::go_json_float::GoJsonFormatter::with_indent(b" "));
     v.serialize(&mut ser).map_err(|err| GameError::new(err.to_string()))?;
     Ok(out)
 }

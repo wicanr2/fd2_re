@@ -47,8 +47,8 @@ pub(crate) fn native_ai_runtime_unit(x: i64, y: i64, selector: u8, mode: u8) -> 
         has_native_record_word46: true,
         native_map_presentation: NativeMapPresentationState { x: x as u8, y: y as u8, ..Default::default() },
         has_native_map_presentation: true,
-        inventory_slots: vec![0xff; 8],
-        native_inventory_flags: vec![0; 8],
+        inventory_slots: vec![0xff; 8].into(),
+        native_inventory_flags: vec![0; 8].into(),
         ..Default::default()
     }
 }
@@ -144,10 +144,10 @@ fn next_ai_plan_physical_helper_uses_full_target_item_table() {
 fn next_ai_plan_mode11_builds_ordered_direct_stages() {
     let mut actor = native_ai_runtime_unit(0, 0, 1, 11);
     actor.native_command_mask[0] = 1;
-    actor.native_inventory_flags = vec![0x80; 8];
+    actor.native_inventory_flags = vec![0x80; 8].into();
     actor.mp = 255;
     let mut target = own(native_ai_runtime_unit(2, 0, 0, 0));
-    target.native_inventory_flags = vec![0x80; 8];
+    target.native_inventory_flags = vec![0x80; 8].into();
     let mut state = line_state(3, 1, vec![actor, target]);
     state.native_command_book = native_ai_action_command_book();
     state.bind_native_future_item_rows(&[0u8; 2 * ROW]).unwrap();
@@ -305,9 +305,9 @@ fn native_ai_physical_helper1_debe_keeps_raw_predicate_boundaries() {
 fn next_ai_plan_uses14_ef0_command_winner_and_retains_raw_target() {
     let mut actor = native_ai_runtime_unit(0, 0, 1, 2);
     actor.native_command_mask[0] = 1;
-    actor.native_inventory_flags = vec![0x80; 8];
+    actor.native_inventory_flags = vec![0x80; 8].into();
     let mut target = own(native_ai_runtime_unit(2, 0, 0, 0));
-    target.native_inventory_flags = vec![0x80; 8];
+    target.native_inventory_flags = vec![0x80; 8].into();
     let mut state = line_state(3, 1, vec![actor, target]);
     state.native_command_book = native_ai_action_command_book();
     state.bind_native_future_item_rows(&[0u8; 2 * ROW]).unwrap();
@@ -335,11 +335,11 @@ fn next_ai_plan_uses14_ef0_command_winner_and_retains_raw_target() {
 #[test]
 fn next_ai_plan_uses14_ef0_item_winner_and_retains_raw_target() {
     let mut actor = native_ai_runtime_unit(0, 0, 0, 2);
-    actor.native_inventory_flags = vec![0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80];
+    actor.native_inventory_flags = vec![0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     actor.inventory_slots[0] = 1;
     let mut target = own(native_ai_runtime_unit(2, 0, 1, 0));
     target.hp = 1;
-    target.native_inventory_flags = vec![0x80; 8];
+    target.native_inventory_flags = vec![0x80; 8].into();
     let mut state = line_state(3, 1, vec![actor, target]);
     state.native_command_book = native_ai_action_command_book();
     state.native_command_book[0].mp_cost = 99; // make the command unavailable

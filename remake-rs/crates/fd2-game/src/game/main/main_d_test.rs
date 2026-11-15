@@ -178,8 +178,8 @@ fn test_native_death_reward_only_for_player_killer() {
             camp: camp,
             native_record_byte6: side,
             has_native_record_byte6: true,
-            inventory_slots: vec![0xff; 8],
-            native_inventory_flags: vec![0x80; 8]
+            inventory_slots: vec![0xff; 8].into(),
+            native_inventory_flags: vec![0x80; 8].into()
         })
     };
     let mut g = Game {

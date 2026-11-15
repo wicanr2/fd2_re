@@ -35,8 +35,8 @@ fn complete_native_ai_scoring_unit() -> Unit {
         has_native_record_word42: true,
         native_record_word46: 18,
         has_native_record_word46: true,
-        inventory_slots: vec![1, 2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory_slots: vec![1, 2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         native_command_mask: [1, 2, 3, 4, 5],
         native_transient: [6, 7, 8, 9, 10, 0],
         lv: 15,
@@ -159,8 +159,8 @@ fn native_counter_experience_pair() -> (State, UnitIdx, UnitIdx) {
     (d.lv, d.exp, d.hp, d.max_hp, d.hit, d.ev, d.ap, d.dp) = (4, 95.0, 48, 48, 100, 100, 200, 4);
     d.battle_fig = 9;
     d.native_transient = [0; 6]; // +0x26 非零就不反擊
-    (d.inventory, d.equipped) = (vec![1], vec![true]);
-    (d.inventory_slots, d.native_inventory_flags) = (vec![1], vec![0x40]);
+    (d.inventory, d.equipped) = (vec![1].into(), vec![true].into());
+    (d.inventory_slots, d.native_inventory_flags) = (vec![1].into(), vec![0x40].into());
     let mut s = State { w: 2, h: 1, units: vec![a, d], ..Default::default() };
     s.bind_native_future_item_rows(&vec![0; 2 * NATIVE_ITEM_EFFECT_ROW_SIZE as usize]).unwrap();
     s.native_future_item_rows[NATIVE_ITEM_EFFECT_ROW_SIZE as usize + 11] = 1; // 武器射程 1 才能反擊

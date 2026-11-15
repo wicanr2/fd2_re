@@ -152,10 +152,10 @@ fn append_group_with_native_placement_consumes_per_call_gate() {
             record: vec![4, 5, 10, 0, 3, 6, 7, 8, 9, 0],
             ..Default::default()
         }),
-        inventory: vec![0],
-        equipped: vec![true],
-        inventory_slots: vec![0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![0].into(),
+        equipped: vec![true].into(),
+        inventory_slots: vec![0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         ..Default::default()
     };
     let new_state = |unit: Unit| {

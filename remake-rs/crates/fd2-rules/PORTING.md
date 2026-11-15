@@ -84,7 +84,7 @@
 
 ## 開工前的決定（2026-11-14）
 
-1. **Go `math/rand` 相容序列：移植，放在 `src/battle/rng.rs`，由 A 組實作。** 119 的 R2 完成條件是「Go 的戰鬥決定性測試以相同種子產生相同結果」，約 90 處 Go 測試的期望值綁在 `rand.NewSource(seed)` 的序列上，只有重現序列才能不改期望值。這是 `rust-port-no-go-stdlib` 教訓的具名例外之一（2026-11-14 另登記 `fd2-formats` 的 `go_math` 與 `fd2-campaign` 的 `go_filepath`，2026-11-15 登記 `fd2-game` 的 `go_unicode`），範圍限定為：
+1. **Go `math/rand` 相容序列：移植，放在 `src/battle/rng.rs`，由 A 組實作。** 119 的 R2 完成條件是「Go 的戰鬥決定性測試以相同種子產生相同結果」，約 90 處 Go 測試的期望值綁在 `rand.NewSource(seed)` 的序列上，只有重現序列才能不改期望值。這是 `rust-port-no-go-stdlib` 教訓的具名例外之一（2026-11-14 另登記 `fd2-formats` 的 `go_math` 與 `fd2-campaign` 的 `go_filepath`，2026-11-15 登記 `fd2-game` 的 `go_unicode` 與 `go_json_float`），範圍限定為：
    - `GoSource`：Go `rngSource` 的種子化（`seedrand`）、607 項加法延遲費氏產生器與 `Int63`／`Uint64`，以及 `rngCooked` 表。表格由容器內 Go 1.22.12 的 `$GOROOT/src/math/rand/rng.go` 機械轉出，不手抄；檔頭保留 Go 的 BSD 授權聲明。
    - `GoRandImpl`（名稱由 A 組定）：Go `(*rand.Rand).Intn`、`Int31n`、`Int63n`、`Int31` 的取樣，實作 `GoRand`。`battle` 只用 `Intn`，其他方法不移植。
    - 黃金差分：`remake/cmd/fd2-golden-gorand` 輸出多個種子（含負數、0、`seed` 迴圈用到的 0～999）在不同 `n`（含 2 的冪、1、`1<<31` 以上）的 `Intn` 序列，Rust 逐值比對。
@@ -148,6 +148,7 @@
 | 2026-11-14 | `State::commit_native_end_turn_recovery` 的 `&self` → `&mut self` | Go 透過計畫裡的 `*Unit` 寫回 HP 與 +5 bit7；Rust 的計畫只存索引，寫入要經過 `self.units`。呼叫端只有同檔的 `apply_native_end_turn_recovery` | F |
 | 2026-11-14 | `StateSnapshot::cost`：`Vec<i64>` → `Option<Vec<i64>>`；`StateSnapshot::opened_treasure`：`BTreeMap<i64, bool>` → `Option<BTreeMap<i64, bool>>` | `State` 的這兩個欄位已用 `Option` 區分 Go 的 nil 與空值（Go `cloneSlice`／`cloneMap` 保留這個差別），快照照樣保存才能往返相等 | F |
 | 2026-11-14 | F 組型別加 serde：`Scenario`、`NativeTurnEvent`、`NativeTurnDynamicGroup`、`NativeTurnProgression`、`NativeTurnPairMutation`、`NativeTurnStaging`、`NativeTurnStagingCall`、`InitialGroupAbsent`、`PartyMember`、`Event`、`When`、`Action`、`NativeStagingPlacement`、`NativeEventDialogue`、`NativeSpawnCall`、`NativeFollowingActing`、`NativeResultRule`、`StateSnapshot`、`SnapshotTreasure`、`FiredEventRef`；`fd2-formats` 的 `NativeMapSpriteCycleState`、`NativeBinaryTickState`、`NativeTerrainPhaseState` 加 serde（Go 欄位名 `Idle`、`Value`、`Phase`、`LastTimerTick` 等） | 欄位名對照 Go 標籤；`StateSnapshot` 用到的別組無 serde 型別（`Spell`、`Treasure`、`NativeChestControl`、`NativeFieldUnitControl`、`NativeRuntimeRecordState`、`NativeMapHUDRuntimeState`、`NativeMapViewState`）在 `snapshot.rs` 以鏡像結構轉換，沒有改那些組的檔 | F |
+| 2026-11-15 | `Unit` 的 `spells`、`inventory`、`equipped`、`inventory_slots`、`native_inventory_flags`：`Vec<_>` → `NilableVec<_>`；`State::flags`、`StateSnapshot::flags`：`BTreeMap<String, bool>` → `NilableMap<String, bool>`；`materialize_inventory` 回傳 `NilableVec` | Go 存檔裡這些欄位的 nil（`null`）與空值（`[]`／`{}`）都會出現，`Vec`／`BTreeMap` 讀回再寫出會改變位元組（#319）；`Deref` 讓讀寫端不用改，重新指定整個欄位的 19 處照 Go 原檔選 nil 或非 nil | 主代理 |
 
 ## A 組完成紀錄（2026-11-14）
 
@@ -233,3 +234,11 @@
 
 `cmd/fd2` 的發放（各指令家族在行動收尾呼叫 `AwardNativePlayerActionExperience`）屬於 R4 的 `fd2-game` 範圍，移植時一併處理。
 
+## Go nil 切片與 map（#319，2026-11-15）
+
+`src/battle/nilable.rs` 的 `NilableVec<T>`／`NilableMap<K, V>` 包住 `Vec`／`BTreeMap`，另記「是否為 nil」，以 `Deref` 當成原型別使用。
+零值、JSON 的 `null` 與缺欄是 nil，`[]`／`{}` 是非 nil 空值；寫出時 nil 寫 `null`。`PartialEq` 照 `reflect.DeepEqual` 連 nil 狀態一起比，
+和 `Vec`／`BTreeMap` 比較只比元素。重新指定整個欄位時照 Go 原檔選：`append([]T(nil), src...)` → `NilableVec::appended`，`make`／字面值 →
+`from_vec`（`From<Vec<T>>`），`= nil` → `nil()`。已知差異：經 `DerefMut` 加入元素再清空會回到 nil（Go 的 `append(nil, x)[:0]` 是非 nil），
+重製端沒有這種流程。只換了出現在存檔裡、Go 沒有 `omitempty` 的欄位；地圖 JSON 讀入端（`json:"spells"` 的兩個讀入結構）仍是 `Vec`，
+建構單位時照 Go 以 `appended` 轉換。測試字面值補 `.into()`（Go 的 `[]int{…}` 是非 nil）。

@@ -39,7 +39,7 @@ fn class_change_table_separates_current_and_target_indexes() {
 #[test]
 fn native_class_change_target_uses_original_overwrite_priority() {
     let Some(table) = class_change_fixture() else { return };
-    let mut u = unit! { portrait: 9, inventory: vec![0x5a, 0x58], };
+    let mut u = unit! { portrait: 9, inventory: vec![0x5a, 0x58].into(), };
     let (got, ok) = native_class_change_target(Some(&u), &table);
     assert!(
         ok && got.branch == "special"
@@ -48,7 +48,7 @@ fn native_class_change_target_uses_original_overwrite_priority() {
             && got.portrait == 0x34,
         "special override={got:?} ok={ok}"
     );
-    u.inventory = vec![0x58];
+    u.inventory = vec![0x58].into();
     let (got, ok) = native_class_change_target(Some(&u), &table);
     assert!(
         ok && got.branch == "optional"
@@ -57,7 +57,7 @@ fn native_class_change_target_uses_original_overwrite_priority() {
             && got.portrait == 0x3b,
         "optional override={got:?} ok={ok}"
     );
-    u.inventory = Vec::new();
+    u.inventory = Vec::new().into();
     let (got, ok) = native_class_change_target(Some(&u), &table);
     assert!(
         ok && got.branch == "default"

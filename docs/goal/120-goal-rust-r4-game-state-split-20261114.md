@@ -159,7 +159,7 @@ Go 的 `cmd/fd2` 是 `package main`，別的程式無法 import，所以 Go 側�
 | 呈現回報 | `src/game/present.rs` 的 `Game::acknowledge_present`：Go `Draw` 開頭的重設、結尾的白閃 defer，加 12 個分支（含第一章執行到的調色盤斜坡、END 回收、攻擊演出）；其餘 26 個分支停在 `todo!`（R5 3、R6 9、R8 14） |
 | 驅動端 | Go 章重播測試的 6 個檔移植成 crate 內測試，64 個函式；第一章以外的動作與其他章停在 `todo!`（R5 2、R8 14） |
 | 檢查點 | 40 筆與 Go 黃金逐位元組相同，SHA-256 `1c846f57…` |
-| 存檔 | `FD2.SAV` 逐位元組相同；`hotel-save.json` 只在 `fd2-rules` serde 子樹不同（整數值 `float64` 寫成 `0.0`、nil 切片寫成 `[]`），套 F 組 `NORMALIZATIONS` 相同 |
+| 存檔 | `FD2.SAV` 逐位元組相同；`hotel-save.json` 原本只在 `fd2-rules` serde 子樹不同（整數值 `float64` 寫成 `0.0`、nil 切片寫成 `[]`），#319 修正後逐位元組相同（`190b9f8f…`） |
 | 原版收據層 | `verify_chapter_parity.py` 判 Rust 與 Go 輸出的結論相同 |
 
 第一次完整重播就與 Go 黃金相同；整合時只修了一處共用型別：`Game::growth_roll_observer` 改成與戰場狀態的觀察者同型，照 Go `main.go:4087` 直接交給 `st`。

@@ -937,7 +937,7 @@ fn load_synthetic(ctx: &Ctx, name: &str, input: &Value, result: &Value, index: i
             let mut claimer = Unit::default();
             (claimer.hp, claimer.max_hp, claimer.on_field, claimer.x, claimer.y) = (1, 1, true, x, y);
             if full {
-                claimer.inventory = vec![1, 2, 3, 4, 5, 6, 7];
+                claimer.inventory = vec![1, 2, 3, 4, 5, 6, 7].into();
             }
             st.add_unit(claimer);
             let u = st.units.len() - 1;

@@ -130,8 +130,8 @@ fn map0_assets_anchor_native_ai1567_e_with_tracked_item79() {
         return;
     };
     let actor = 23usize;
-    st.units[actor].inventory_slots = vec![79, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
-    st.units[actor].native_inventory_flags = vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80];
+    st.units[actor].inventory_slots = vec![79, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into();
+    st.units[actor].native_inventory_flags = vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     for unit in &mut st.units {
         unit.materialize_native_map_presentation().unwrap();
     }

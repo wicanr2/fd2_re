@@ -25,8 +25,8 @@ pub(crate) fn complete_native_current_save_unit() -> Unit {
     (u.native_record_byte36, u.has_native_record_byte36) = (6, true);
     (u.native_record_byte3_d, u.has_native_record_byte3_d) = (7, true);
     (u.native_record_death_effect, u.has_native_record_death_effect) = ([8, 9, 10], true);
-    u.inventory_slots = vec![1, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
-    u.native_inventory_flags = vec![0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80];
+    u.inventory_slots = vec![1, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into();
+    u.native_inventory_flags = vec![0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into();
     (u.native_command_mask, u.native_transient) = ([1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]);
     (u.lv, u.mv, u.exp, u.dx) = (12, 5, 13.0, 14);
     (u.hp, u.max_hp, u.mp, u.max_mp, u.ap, u.dp, u.hit, u.ev) = (15, 16, 17, 18, 19, 20, 21, 22);

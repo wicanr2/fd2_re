@@ -158,7 +158,7 @@ fn ai_idle_recovery_test_game() -> (Game, battle::NativeAIIdleRecoveryDecision) 
     (u.native_record_byte6, u.camp) = (0, battle::ENEMY);
     (u.has_native_record_byte34, u.has_native_record_byte35, u.has_native_record_byte36) = (true, true, true);
     u.has_native_record_word46 = true;
-    (u.inventory_slots, u.native_inventory_flags) = (vec![0; 8], vec![0; 8]);
+    (u.inventory_slots, u.native_inventory_flags) = (vec![0; 8].into(), vec![0; 8].into());
     u.has_native_record_byte8 = true;
     let st = g.st.as_ref().unwrap();
     let records = battle::native_ai_scoring_records(&st.units).expect("records");

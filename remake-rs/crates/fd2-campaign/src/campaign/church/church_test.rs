@@ -198,9 +198,9 @@ fn apply_class_change_adds_growth_and_consumes_item() {
         dp: 88,
         dx: 77,
         mv: 5,
-        inventory: vec![0x5a, 0x20],
-        equipped: vec![true, false],
-        inventory_slots: vec![0x5a, 0x20],
+        inventory: vec![0x5a, 0x20].into(),
+        equipped: vec![true, false].into(),
+        inventory_slots: vec![0x5a, 0x20].into(),
     };
     let row = ClassChangeGrowth { ap: [10, 11], dp: [20, 21], dx: [30, 31], hp: [40, 41], mp: [50, 51] };
     let mut rng = GoMathRand::new(1);
@@ -260,7 +260,7 @@ fn apply_class_change_adds_growth_and_consumes_item() {
 /// Go：`TestApplyClassChangeRejectsInvalidRangeAtomically`
 #[test]
 fn apply_class_change_rejects_invalid_range_atomically() {
-    let mut u = unit! { lv: 20, ap: 7, inventory: vec![9], };
+    let mut u = unit! { lv: 20, ap: 7, inventory: vec![9].into(), };
     let mut rng = GoMathRand::new(1);
     let row = ClassChangeGrowth { ap: [2, 1], ..Default::default() };
     let err = apply_class_change(Some(&mut u), 0x20, 9, 1, row, Some(&mut rng), 0);

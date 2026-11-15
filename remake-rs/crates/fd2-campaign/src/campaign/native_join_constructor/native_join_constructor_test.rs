@@ -102,7 +102,7 @@ fn test_native_join_constructor_rejects_unknown_identity() {
 fn test_native_join_constructor_rejects_missing_equipped_item_row_atomically() {
     let Some(table) = join_table() else { return };
     let mut base = Unit::default();
-    (base.name, base.ap, base.inventory) = ("不可變".into(), 777, vec![9]);
+    (base.name, base.ap, base.inventory) = ("不可變".into(), 777, vec![9].into());
     let short = vec![0u8; battle::NATIVE_ITEM_EFFECT_ROW_SIZE as usize];
     if let Ok(unit) = table.materialize_persistent_unit(12, &base, &short) {
         panic!("short item table was accepted: {unit:?}");

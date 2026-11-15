@@ -14,10 +14,10 @@ fn apply_native_item_capacity_to_unit_preserves_current_and_exp() {
         exp: 73.0,
         equipment_base_set: true,
         base_mv: 255,
-        inventory: vec![96, 0x20],
-        equipped: vec![false, false],
-        inventory_slots: vec![96, 0x20, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![96, 0x20].into(),
+        equipped: vec![false, false].into(),
+        inventory_slots: vec![96, 0x20, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         ..Default::default()
     }];
     let (route, _) = native_item_capacity_step_route_for_type(19, 1);
@@ -46,9 +46,9 @@ fn apply_native_item_capacity_to_unit_adds_maximum_only() {
     let mut units = vec![Unit {
         hp: 40,
         max_hp: 100,
-        inventory: vec![94],
-        inventory_slots: vec![94, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory: vec![94].into(),
+        inventory_slots: vec![94, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         ..Default::default()
     }];
     let (route, _) = native_item_capacity_step_route_for_type(17, 20);

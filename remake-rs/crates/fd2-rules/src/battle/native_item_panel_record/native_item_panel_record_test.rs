@@ -30,8 +30,8 @@ fn native_item_panel_record_for_unit_uses_proven_raw_selectors() {
         dp: 98,
         hit: 76,
         ev: 54,
-        inventory_slots: vec![0, 79, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
-        native_inventory_flags: vec![0x40, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+        inventory_slots: vec![0, 79, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff].into(),
+        native_inventory_flags: vec![0x40, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80].into(),
         native_transient: [1, 2, 3, 4, 5, 6],
         ..Default::default()
     };
@@ -68,8 +68,8 @@ fn native_item_panel_record_for_unit_rejects_missing_raw_provenance() {
         native_identity: 2,
         has_native_identity: true,
         lv: 1,
-        inventory_slots: vec![0; 8],
-        native_inventory_flags: vec![0; 8],
+        inventory_slots: vec![0; 8].into(),
+        native_inventory_flags: vec![0; 8].into(),
         ..Default::default()
     };
     assert!(native_item_panel_record_for_unit(Some(&missing)).is_err(), "missing raw provenance accepted");
@@ -85,8 +85,8 @@ fn native_item_panel_record_for_unit_rejects_missing_raw_provenance() {
         has_native_record_class: true,
         lv: 1,
         exp: 1.5,
-        inventory_slots: vec![0; 8],
-        native_inventory_flags: vec![0; 8],
+        inventory_slots: vec![0; 8].into(),
+        native_inventory_flags: vec![0; 8].into(),
         ..Default::default()
     };
     assert!(native_item_panel_record_for_unit(Some(&fractional)).is_err(), "fractional EXP accepted");
