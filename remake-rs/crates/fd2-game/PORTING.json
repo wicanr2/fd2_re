@@ -25,8 +25,7 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 671,
-      "r5": 13,
+      "ported": 684,
       "r6": 59,
       "r8": 1179
     },
@@ -748,7 +747,7 @@
           "name": "drawNativeSystemEndTurn",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_system_end_turn",
-          "status": "r5",
+          "status": "ported",
           "go_line": 823
         },
         {
@@ -4130,7 +4129,7 @@
           "name": "drawRing",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_ring",
-          "status": "r5",
+          "status": "ported",
           "go_line": 10221
         },
         {
@@ -4252,21 +4251,21 @@
           "name": "drawSpellMenu",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_spell_menu",
-          "status": "r5",
+          "status": "ported",
           "go_line": 10537
         },
         {
           "name": "drawItemMenu",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_item_menu",
-          "status": "r5",
+          "status": "ported",
           "go_line": 10577
         },
         {
           "name": "drawNativeCommandGrid",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_command_grid",
-          "status": "r5",
+          "status": "ported",
           "go_line": 10617
         },
         {
@@ -4356,7 +4355,7 @@
         {
           "name": "drawCursor",
           "rust": "fd2_game::game::draw_cursor",
-          "status": "r5",
+          "status": "ported",
           "go_line": 11571
         },
         {
@@ -4529,7 +4528,7 @@
           "name": "drawPhaseBanner",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_phase_banner",
-          "status": "r5",
+          "status": "ported",
           "go_line": 12317
         },
         {
@@ -4556,7 +4555,7 @@
           "name": "drawNativeMapHUD",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_map_hud",
-          "status": "r5",
+          "status": "ported",
           "go_line": 12421
         },
         {
@@ -15767,7 +15766,7 @@
           "name": "drawNativeEndTurnRecovery",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_end_turn_recovery",
-          "status": "r5",
+          "status": "ported",
           "go_line": 162,
           "class": "畫面",
           "cover": 84.6,
@@ -16892,7 +16891,7 @@
           "name": "nativeActionOverlayInMapFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_action_overlay_in_map_frame",
-          "status": "r5",
+          "status": "ported",
           "go_line": 14
         },
         {
@@ -17492,7 +17491,7 @@
           "name": "drawNativePlayerStatus",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_player_status",
-          "status": "r5",
+          "status": "ported",
           "go_line": 214
         }
       ],
@@ -17546,7 +17545,7 @@
           "name": "drawNativeMovementPanel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_movement_panel",
-          "status": "r5",
+          "status": "ported",
           "go_line": 100
         },
         {
@@ -19700,7 +19699,7 @@
           "name": "drawNativeSystemInfoUI",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_system_info_ui",
-          "status": "r5",
+          "status": "ported",
           "go_line": 186
         }
       ],
@@ -22768,6 +22767,107 @@
         "rust": "fd2_game::game::Game::draw_native_physical_prelude",
         "todo_branches": [
           "r8:native_physical_scene.go:388..408 出發與捲動（分離背景；body 本體、HD lead 與 leadImages；開場與第一章沒有走到）"
+        ]
+      }
+    ]
+  },
+  "r5_stage2_r5h": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "action_overlay_runtime.go:823",
+        "func": "drawNativeSystemEndTurn",
+        "rust": "fd2_game::game::Game::draw_native_system_end_turn",
+        "todo_branches": [
+          "r6:modern_hd_system_confirmation.go:drawModernHDSystemConfirmation",
+          "r6:modern_hd_reward_message.go:drawModernHDRewardMessage",
+          "r6:modern_hd_full_reward.go:drawModernHDFullReward"
+        ]
+      },
+      {
+        "go": "main.go:10221",
+        "func": "drawRing",
+        "rust": "fd2_game::game::Game::draw_ring",
+        "todo_branches": [
+          "r6:modern_hd_map_gpu.go:drawModernHDMapRing",
+          "r6:modern_hd_action_icon.go:drawModernNativeMapRing",
+          "r8:main.go:10237..10303 actionOverlayAnchor、drawNativeActionOverlay 與重製端後備環（開場與第一章沒有走到）"
+        ]
+      },
+      {
+        "go": "main.go:10537",
+        "func": "drawSpellMenu",
+        "rust": "fd2_game::game::Game::draw_spell_menu",
+        "todo_branches": []
+      },
+      {
+        "go": "main.go:10577",
+        "func": "drawItemMenu",
+        "rust": "fd2_game::game::Game::draw_item_menu",
+        "todo_branches": [
+          "r8:main.go:10581..10609 drawNativeItemPanel 與 TTF 後備清單（開場與第一章沒有走到）"
+        ]
+      },
+      {
+        "go": "main.go:10617",
+        "func": "drawNativeCommandGrid",
+        "rust": "fd2_game::game::Game::draw_native_command_grid",
+        "todo_branches": [
+          "r8:main.go:10621..10634 localizedNativeCommandLabel 與格子文字（開場與第一章沒有走到）"
+        ]
+      },
+      {
+        "go": "main.go:11571",
+        "func": "drawCursor",
+        "rust": "fd2_game::game::draw_cursor",
+        "todo_branches": []
+      },
+      {
+        "go": "main.go:12317",
+        "func": "drawPhaseBanner",
+        "rust": "fd2_game::game::Game::draw_phase_banner",
+        "todo_branches": []
+      },
+      {
+        "go": "main.go:12421",
+        "func": "drawNativeMapHUD",
+        "rust": "fd2_game::game::Game::draw_native_map_hud",
+        "todo_branches": []
+      },
+      {
+        "go": "native_end_turn_recovery.go:162",
+        "func": "drawNativeEndTurnRecovery",
+        "rust": "fd2_game::game::Game::draw_native_end_turn_recovery",
+        "todo_branches": []
+      },
+      {
+        "go": "native_map_unit_window.go:14",
+        "func": "nativeActionOverlayInMapFrame",
+        "rust": "fd2_game::game::Game::native_action_overlay_in_map_frame",
+        "todo_branches": []
+      },
+      {
+        "go": "native_player_input.go:214",
+        "func": "drawNativePlayerStatus",
+        "rust": "fd2_game::game::Game::draw_native_player_status",
+        "todo_branches": [
+          "r6:modern_hd_panel_transition.go:drawModernBattlePlayerStatus、modern_hd_status_text.go:drawModernHDUnitStatus、drawModernHDStatusTransition"
+        ]
+      },
+      {
+        "go": "native_player_movement.go:100",
+        "func": "drawNativeMovementPanel",
+        "rust": "fd2_game::game::Game::draw_native_movement_panel",
+        "todo_branches": [
+          "r6:modern_hd_movement_panel.go:prepareModernHDMovementPanel"
+        ]
+      },
+      {
+        "go": "native_system_info_ui.go:186",
+        "func": "drawNativeSystemInfoUI",
+        "rust": "fd2_game::game::Game::draw_native_system_info_ui",
+        "todo_branches": [
+          "r6:modern_hd_system_info.go:drawModernHDSystemInfoUI"
         ]
       }
     ]

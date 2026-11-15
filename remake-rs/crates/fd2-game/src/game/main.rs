@@ -8303,39 +8303,14 @@ impl Game {
         if !modern_hd_requested {
             // main.go:9814..9950：正規化地圖層。FD2_UNIT_LABELS、F3 除錯字與 drawUnitHUD 在開場與第一章沒有走到（r8）。
             self.draw_normalized_world_layer(screen, legacy_viewport);
-            let (tw, th) = {
-                let m = self.m.as_ref().expect("draw_frame 已檢查 g.m");
-                (m.tile_w, m.tile_h)
-            };
-            // 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
-            // 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
-            let cur_px = (self.cur_x * tw) as f64 - self.cam_x;
-            let cur_py = (self.cur_y * th) as f64 - self.cam_y;
-            if !self.ring && !self.spell_open && !legacy_viewport && campaign_battle_view {
-                draw_cursor(screen, cur_px, cur_py, tw as f64, th as f64);
-            }
-            // HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
-            if self.st.is_some() && self.font.is_some() && !legacy_viewport {
-                let cursor_unit = self.st.as_ref().unwrap().unit_at(self.cur_x, self.cur_y);
-                if cursor_unit.is_some() && !self.draw_native_map_hud(screen) {
-                    todo!("r8:main.go:drawUnitHUD（原生左下面板畫不出來時的後備；開場與第一章沒有走到）");
-                }
-                if self.debug {
-                    todo!("r8:main.go:9939 F3 除錯字 ebitenutil.DebugPrintAt（開場與第一章沒有開）");
-                }
-            }
+            self.draw_field_cursor_hud(screen, legacy_viewport, campaign_battle_view);
         }
         if modern_hd_requested {
             todo!("r6:modern_hd_map_gpu.go:drawModernHDMapFrame");
         } else if self.native_map_frame_admission(self.story_bg, campaign_battle_view) {
             native_map_presented = self.draw_native_map_frame(screen);
         }
-        if native_map_presented {
-            self.draw_native_movement_panel(screen);
-        }
-        if !legacy_viewport && campaign_battle_view {
-            self.draw_phase_banner(screen);
-        }
+        self.draw_field_map_overlays(screen, native_map_presented, legacy_viewport, campaign_battle_view);
         let native_story_dialogue_drawn = self.draw_native_story_dialogue(screen);
         if self.font.is_some() {
             if let Some(st) = self.st.as_ref()
@@ -8363,11 +8338,81 @@ impl Game {
             }
         }
         self.draw_campaign_ui(screen);
-        if self.transient_ui && self.draw_native_class_ui_job(screen) {
+        if !self.draw_field_command_ui(screen, native_map_presented) {
             return;
+        }
+        self.draw_story_fade_overlay(screen);
+        self.draw_capture_shot_point(screen);
+    }
+
+    /// Go `Draw` 本體 `main.go:9923..9941`（`!modernHDRequested` 區塊內、正規化世界層之後）：游標白框與左下 HUD。
+    ///
+    /// R5 階段 2 r5h：從 [`Game::draw_field`] 拆出來，只為了讓局部黃金（`parity_replay/rust_golden_r5h_layers_test.rs`）
+    /// 呼叫同一份程式。`drawUnitHUD` 後備與 F3 除錯字在開場與第一章沒有走到（`r8`）。
+    pub(crate) fn draw_field_cursor_hud(
+        &mut self,
+        screen: &mut Picture,
+        legacy_viewport: bool,
+        campaign_battle_view: bool,
+    ) {
+        let (tw, th) = {
+            let m = self.m.as_ref().expect("draw_frame 已檢查 g.m");
+            (m.tile_w, m.tile_h)
+        };
+        // 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
+        // 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
+        let cur_px = (self.cur_x * tw) as f64 - self.cam_x;
+        let cur_py = (self.cur_y * th) as f64 - self.cam_y;
+        if !self.ring && !self.spell_open && !legacy_viewport && campaign_battle_view {
+            draw_cursor(screen, cur_px, cur_py, tw as f64, th as f64);
+        }
+        // HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
+        if self.st.is_some() && self.font.is_some() && !legacy_viewport {
+            let cursor_unit = self.st.as_ref().unwrap().unit_at(self.cur_x, self.cur_y);
+            if cursor_unit.is_some() && !self.draw_native_map_hud(screen) {
+                todo!("r8:main.go:drawUnitHUD（原生左下面板畫不出來時的後備；開場與第一章沒有走到）");
+            }
+            if self.debug {
+                todo!("r8:main.go:9939 F3 除錯字 ebitenutil.DebugPrintAt（開場與第一章沒有開）");
+            }
+        }
+    }
+
+    /// Go `Draw` 本體 `main.go:9964..9972`：原生整幀之後的移動面板與回合橫幅（TTF 後備）。
+    ///
+    /// R5 階段 2 r5h：從 [`Game::draw_field`] 拆出來，理由同 [`Game::draw_field_cursor_hud`]。
+    pub(crate) fn draw_field_map_overlays(
+        &mut self,
+        screen: &mut Picture,
+        native_map_presented: bool,
+        legacy_viewport: bool,
+        campaign_battle_view: bool,
+    ) {
+        if native_map_presented {
+            self.draw_native_movement_panel(screen);
+        }
+        // 回合橫幅(PLAYER/ENEMY PHASE，transient)必須畫在原生整幀之後：
+        // drawNativeMapFrame 是覆蓋全畫面的 320×200 blit，畫在它前面等於沒畫。
+        // 這一層是重製端的近似呈現，原版自己的回合字樣仍未解出，不宣稱一致。
+        if !legacy_viewport && campaign_battle_view {
+            self.draw_phase_banner(screen);
+        }
+    }
+
+    /// Go `Draw` 本體 `main.go:10156..10174`：設施／班級介面工作、END 對話、指令環、指令格、法術與物品選單、
+    /// 系統資訊與角色狀態。回 false 表示 Go 在 `transientUI && drawNativeClassUIJob` 成立時 `return` 出 `Draw`。
+    ///
+    /// R5 階段 2 r5h：從 [`Game::draw_field`] 拆出來，理由同 [`Game::draw_field_cursor_hud`]。
+    pub(crate) fn draw_field_command_ui(&mut self, screen: &mut Picture, native_map_presented: bool) -> bool {
+        // Command UI is an indexed-sprite layer; it must not depend on an optional
+        // Chinese font being available in the runtime environment.
+        if self.transient_ui && self.draw_native_class_ui_job(screen) {
+            return false;
         }
         if !self.draw_native_system_end_turn(screen) {
             if self.native_action_overlay_in_map_frame(native_map_presented) {
+                // The admitted indexed frame already owns icons then cursor unit.
+                // A second drawRing changes their placement and covers that unit.
                 self.mark_action_overlay_drawn();
             } else {
                 self.draw_ring(screen);
@@ -8376,10 +8421,10 @@ impl Game {
             self.draw_spell_menu(screen);
             self.draw_item_menu(screen);
         }
+        // 原版戰場資訊是 320×200 indexed 全畫面，最後覆蓋戰場與選單層。
         self.draw_native_system_info_ui(screen);
         self.draw_native_player_status(screen);
-        self.draw_story_fade_overlay(screen);
-        self.draw_capture_shot_point(screen);
+        true
     }
 
     /// Go `Draw` 本體 `main.go:9812..9919`：正規化世界層，到游標之前為止。
@@ -10654,6 +10699,10 @@ mod main_r5c_test;
 #[cfg(test)]
 #[path = "main/main_r5b_test.rs"]
 mod main_r5b_test;
+// R5 階段 2 r5h：HUD 與選單組的測試。
+#[cfg(test)]
+#[path = "main/main_r5h_test.rs"]
+mod main_r5h_test;
 
 // ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
 
@@ -10706,15 +10755,76 @@ impl Game {
     /// its catalog-verified action icons remain visible in local complete packages.
     ///
     /// Go：`main.go:10221`，`func (g *Game) drawRing(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h。開場與第一章只走到開頭的守門（階段 0 覆蓋率 8408／6355 次全部在守門返回；第一章指令環
+    /// 開著的幀都由 `nativeActionOverlayInMapFrame` 承認，不呼叫本函式）。守門之後：HD 指令環兩條是
+    /// `todo!("r6:…")`；原版 `drawNativeActionOverlay` 與 `actionOverlayAnchor`（`r8`）之後的重製端後備環
+    /// 標 `todo!("r8:…")`，不輸出近似畫面。
     pub(crate) fn draw_ring(&mut self, screen: &mut Picture) {
-        todo!("r5:main.go:drawRing")
+        if !self.ring || self.m.is_none() || (self.sel.is_none() && !self.native_system_cursor_overlay) {
+            return;
+        }
+        if self.modern_hd_world_visible && self.uses_modern_battle_action_icons() {
+            todo!("r6:modern_hd_map_gpu.go:drawModernHDMapRing");
+        }
+        if self.native_map_presented && self.uses_modern_battle_action_icons() {
+            todo!("r6:modern_hd_action_icon.go:drawModernNativeMapRing");
+        }
+        let _ = screen;
+        todo!(
+            "r8:main.go:10237..10303 actionOverlayAnchor、drawNativeActionOverlay 與重製端後備環（開場與第一章沒有走到）"
+        )
     }
 
     /// drawSpellMenu 法術選單(名稱 + MP;↑↓選、Enter 施放、ESC 回環)。
     ///
     /// Go：`main.go:10537`，`func (g *Game) drawSpellMenu(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h 逐行移植。開場與第一章只走到守門（`spellOpen` 都是 false），本體只由單元測試驗。
     pub(crate) fn draw_spell_menu(&mut self, screen: &mut Picture) {
-        todo!("r5:main.go:drawSpellMenu")
+        let Some(sel) = self.sel else {
+            return;
+        };
+        if !self.spell_open || self.font.is_none() {
+            return;
+        }
+        let (sel_mp, sel_spells) = {
+            let u = &self.st.as_ref().expect("g.sel 指向 g.st.Units").units[sel];
+            (u.mp, u.spells.clone())
+        };
+        let h = 44.0 + sel_spells.len() as f64 * 30.0;
+        let mut boxed = Picture::new_image(230, h as i64);
+        boxed.fill(ColorRgba { r: 0x10, g: 0x1c, b: 0x40, a: 0xee });
+        let mut op = DrawImageOptions::default();
+        op.geo_m.translate(20.0, 60.0);
+        screen.draw_image(&boxed, &op);
+        let (title, ok) = self.locale_message("battle.spell.menu_title", &[sel_mp.into()]);
+        if ok {
+            self.font.as_mut().unwrap().draw(
+                screen,
+                &title,
+                34.0,
+                68.0,
+                1.0,
+                ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff },
+            );
+        }
+        for (i, id) in sel_spells.iter().enumerate() {
+            let Some(sp) = self.spells.iter().find(|s| s.id == *id) else {
+                continue;
+            };
+            let mut c = ColorRgba { r: 0xd0, g: 0xd8, b: 0xe8, a: 0xff };
+            let mut pre = "　";
+            if i as i64 == self.spell_sel {
+                c = ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff };
+                pre = "▶";
+            }
+            if sel_mp < sp.mp {
+                c = ColorRgba { r: 0x80, g: 0x80, b: 0x90, a: 0xff }; // MP 不足變暗
+            }
+            let line = format!("{}{}  MP{}", pre, sp.name, sp.mp);
+            self.font.as_mut().unwrap().draw(screen, &line, 32.0, 96.0 + i as f64 * 30.0, 1.0, c);
+        }
     }
 
     /// drawItemMenu prefers the proven indexed native panel. The text shell below
@@ -10722,16 +10832,32 @@ impl Game {
     /// blocked when its 0x20c6f effect/target transaction is unavailable.
     ///
     /// Go：`main.go:10577`，`func (g *Game) drawItemMenu(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h。開場與第一章只走到守門（`itemOpen` 都是 false）；守門之後先呼叫的
+    /// `drawNativeItemPanel`（`native_item_panel_ui.go`）與後備用的 `nativeItemMenuSlot` 都是 `r8`，整段標
+    /// `todo!("r8:…")`。
     pub(crate) fn draw_item_menu(&mut self, screen: &mut Picture) {
-        todo!("r5:main.go:drawItemMenu")
+        if !self.item_open || self.sel.is_none() {
+            return;
+        }
+        let _ = screen;
+        todo!("r8:main.go:10581..10609 drawNativeItemPanel 與 TTF 後備清單（開場與第一章沒有走到）")
     }
 
     /// drawNativeCommandGrid renders the recovered 0x1ceed four-row layout only
     /// when its player-provided labels and VGA palette are both available.
     ///
     /// Go：`main.go:10617`，`func (g *Game) drawNativeCommandGrid(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h。開場與第一章只走到守門（`nativeCommandOpen` 都是 false）；格子文字要
+    /// `localizedNativeCommandLabel`（`native_command_locale.go`，`r8`），守門之後標 `todo!("r8:…")`。
     pub(crate) fn draw_native_command_grid(&mut self, screen: &mut Picture) {
-        todo!("r5:main.go:drawNativeCommandGrid")
+        if !self.native_command_open || self.sel.is_none() || self.font.is_none() || self.native_ui_palette.len() < 0xce
+        {
+            return;
+        }
+        let _ = screen;
+        todo!("r8:main.go:10621..10634 localizedNativeCommandLabel 與格子文字（開場與第一章沒有走到）")
     }
 
     /// drawCampaignUI campaign 節點 UI:choice 選單 / ending 結語 / game over。
@@ -10978,13 +11104,68 @@ impl Game {
     /// docs/data/ui-traces/fd2-phase-banner-glyph-parity-20260910.json)。
     ///
     /// Go：`main.go:12317`，`func (g *Game) drawPhaseBanner(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h 逐行移植。第一章每次都在 `phaseBannerGlyphsAvailable` 讓開（階段 0 覆蓋率 1999 次），TTF 後備
+    /// 只由單元測試驗。
     pub(crate) fn draw_phase_banner(&mut self, screen: &mut Picture) {
-        todo!("r5:main.go:drawPhaseBanner")
+        if self.banner_t <= 0 || self.banner.is_empty() || self.font.is_none() {
+            return;
+        }
+        if self.phase_banner_glyphs_available() {
+            // 原版字樣已經畫進索引畫面了，不要再疊一層自訂字型。
+            return;
+        }
+        let (offset, visible) = self.phase_banner_slide_offset();
+        if !visible {
+            return;
+        }
+        let banner = self.banner.clone();
+        let font = self.font.as_mut().unwrap();
+        let w = font.width(&banner, 2.2);
+        let c = ColorRgba { r: 0xff, g: 0xc8, b: 0x50, a: 0xff };
+        // 原版座標是 320 寬，重製端的邏輯畫布是它的兩倍。
+        let x = (LOGICAL_W as f64 - w) / 2.0 + (offset * LOGICAL_W / 320) as f64;
+        font.draw(screen, &banner, x, LOGICAL_H as f64 / 2.0 - 24.0, 2.2, c);
     }
 
     /// Go：`main.go:12421`，`func (g *Game) drawNativeMapHUD(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5h 逐行移植：`BlitNativeMapHUD` 畫進 `fdicon.NativeMapStride`×200 的工作緩衝，取每列前 320 個
+    /// 位元組成 320×200 索引畫格；調色盤索引 0 換成同色 alpha 0（`color.NRGBA`，`NewImageFromImage` 後是全透明），
+    /// 再 `GeoM.Scale(2, 2)` 疊上去。
     pub(crate) fn draw_native_map_hud(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:main.go:drawNativeMapHUD")
+        let (r#in, ok) = self.native_map_hud_input();
+        if !ok {
+            return false;
+        }
+        let a = self.native_map_assets.as_ref().expect("nativeMapHUDInput 成功時有 nativeMapAssets");
+        let st = self.st.as_ref().expect("nativeMapHUDInput 成功時有 g.st");
+        let stride = fdicon::NATIVE_MAP_STRIDE as usize;
+        let mut frame = vec![0u8; stride * 200];
+        if indexedmap::blit_native_map_hud(
+            &a.frames,
+            a.terrain.as_ref(),
+            a.units.as_ref(),
+            st.native_map_selector_cache.as_ref(),
+            &mut frame,
+            &r#in,
+        )
+        .is_err()
+        {
+            return false;
+        }
+        let mut overlay_palette = a.palette.clone();
+        // Go `color.NRGBA{R, G, B, A: 0}`：`color.RGBAModel` 轉換後四個通道都是 0。
+        overlay_palette[0] = ColorRgba::default();
+        let mut pix = vec![0u8; 320 * 200];
+        for y in 0..200 {
+            pix[y * 320..y * 320 + 320].copy_from_slice(&frame[y * stride..y * stride + 320]);
+        }
+        let img = IndexedFrame { width: 320, height: 200, pix, palette: overlay_palette };
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        true
     }
 
     /// drawNativeMapFrame is the production 0x11cac bridge for the currently
@@ -11079,8 +11260,20 @@ impl Game {
 }
 
 /// Go：`main.go:11571`，`func drawCursor(dst *ebiten.Image, x, y, w, h float64)`
+///
+/// R5 階段 2 r5h 逐行移植：四條 2 像素寬的白條（`image.White`，`Fill` 為 `0xff` 四通道），各自 `NewImage`
+/// 後以 `GeoM.Translate` 疊上去；`int(b.w)` 是 Go 的向零截斷。
 pub(crate) fn draw_cursor(dst: &mut Picture, x: f64, y: f64, w: f64, h: f64) {
-    todo!("r5:main.go:drawCursor")
+    let col = ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff };
+    let t = 2.0;
+    let bars = [(x, y, w, t), (x, y + h - t, w, t), (x, y, t, h), (x + w - t, y, t, h)];
+    for (bx, by, bw, bh) in bars {
+        let mut sub = Picture::new_image(bw as i64, bh as i64);
+        sub.fill(col);
+        let mut op = DrawImageOptions::default();
+        op.geo_m.translate(bx, by);
+        dst.draw_image(&sub, &op);
+    }
 }
 
 /// blitPhaseBannerGlyph 把一格字模畫在索引畫面的 y ＝ phaseBannerGlyphY 上，

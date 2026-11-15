@@ -144,7 +144,23 @@ impl Game {
 
 impl Game {
     /// Go：`native_player_input.go:214`，`func (g *Game) drawNativePlayerStatus(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h 逐行移植。開場與第一章只走到 `s == nil` 的守門。HD 的三條（`drawModernBattlePlayerStatus`、
+    /// `drawModernHDUnitStatus`、`drawModernHDStatusTransition`）在忠實模式（`modernStoryPortraits`、`modernHDText`
+    /// 都是 nil 且介面不是 HD）都回 false、沒有副作用；三者任一成立時 `todo!("r6:…")`。
     pub(crate) fn draw_native_player_status(&mut self, screen: &mut Picture) {
-        todo!("r5:native_player_input.go:drawNativePlayerStatus")
+        if self.native_player_status.is_none() {
+            return;
+        }
+        if self.facility_hd_draw_active() {
+            todo!(
+                "r6:modern_hd_panel_transition.go:drawModernBattlePlayerStatus、modern_hd_status_text.go:drawModernHDUnitStatus、drawModernHDStatusTransition"
+            );
+        }
+        let s = self.native_player_status.as_ref().unwrap();
+        let frame = if s.frames.is_empty() { s.steady.clone() } else { s.frames[s.frame as usize].clone() };
+        let palette = self.native_ui_palette.clone();
+        self.present_native_class_frame_with_palette(screen, &frame, &palette);
+        self.native_player_status.as_mut().unwrap().drawn = true;
     }
 }

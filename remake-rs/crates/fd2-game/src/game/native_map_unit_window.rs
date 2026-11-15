@@ -234,7 +234,14 @@ impl Game {
     ///
     /// Go：`native_map_unit_window.go:14`，`func (g *Game) nativeActionOverlayInMapFrame(presented bool) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    ///
+    /// R5 階段 2 r5h 逐行移植（`&&` 短路順序照 Go）。
     pub(crate) fn native_action_overlay_in_map_frame(&mut self, presented: bool) -> bool {
-        todo!("r5:native_map_unit_window.go:nativeActionOverlayInMapFrame")
+        presented
+            && self.ring
+            && self.sel.is_some()
+            && self.walk.is_none()
+            && self.native_action_cells_raw.len() as i64 == NATIVE_ACTION_OVERLAY_CELL_COUNT
+            && !self.uses_modern_battle_action_icons()
     }
 }

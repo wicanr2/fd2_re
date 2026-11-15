@@ -149,6 +149,11 @@ impl FrameCapture {
         self.captures
     }
 
+    /// R5 階段 2 r5h：`try_observe` 是否已停在未移植的 `todo!`（chapter 模式停下後不再擷取）。
+    pub(crate) fn is_stopped(&self) -> bool {
+        self.stopped.is_some()
+    }
+
     /// Go `goldenFrameRecorder.observe`：在一個 `update` 之後呼叫。
     ///
     /// R5 階段 2 r5b（階段 3 預備）：`Game::draw` 停在未移植的 `todo!` 時，先把已擷取的部分連同 `stopped` 寫進

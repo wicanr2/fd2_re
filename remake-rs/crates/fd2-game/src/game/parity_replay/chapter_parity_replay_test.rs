@@ -1602,6 +1602,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             r5c_layer_capture: R5cLayerCapture::from_env(),
             ttf_layer_capture: TtfLayerCapture::from_env(),
             r5b_layer_capture: R5bLayerCapture::from_env(),
+            r5h_layer_capture: R5hLayerCapture::from_env(),
         },
         out: out.to_path_buf(),
         run: run.to_path_buf(),
@@ -1643,6 +1644,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         || r.d.r5c_layer_capture.is_some()
         || r.d.ttf_layer_capture.is_some()
         || r.d.r5b_layer_capture.is_some()
+        || r.d.r5h_layer_capture.is_some()
     {
         pin_global_rand(&mut r.d.g);
     }
@@ -1701,6 +1703,9 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             capture.finish();
         }
         if let Some(capture) = r.d.r5b_layer_capture.take() {
+            capture.finish();
+        }
+        if let Some(capture) = r.d.r5h_layer_capture.take() {
             capture.finish();
         }
     }));

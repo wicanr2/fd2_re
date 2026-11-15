@@ -521,3 +521,45 @@ Update 之後、城鎮游標移動之後、酒店每次輸入之後，不推進�
 `Cargo.lock` 沒有改動。共用檔：`main.rs` 只換 `draw_battle_scene` 本體並登記測試模組，`Game::draw` 的分派沒有改；`present.rs` 共用本體畫面建立、兩個
 攻擊畫面 `todo!` 改標 R8；`parity_replay` 加擷取掛點，chapter 模式整張擷取停在 `todo!` 時先寫出已擷取的部分（新工具 `tools/rust_r5_chapter_frames.sh`）；
 `canvas.rs` 沒有改。chapter 整張比對停在第 24 次的 HUD 組 `drawNativeSystemEndTurn`，前 24 次與階段 0 相同。
+
+## 階段 2 結果：r5h HUD 與選單（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5h」。
+
+### 移植
+
+- 「HUD 與選單」留在 `r5` 的 13 個函式照 Go 逐行移植：`drawNativeSystemEndTurn`、`drawRing`、`drawSpellMenu`、`drawItemMenu`、
+  `drawNativeCommandGrid`、`drawCursor`、`drawPhaseBanner`、`drawNativeMapHUD`、`drawNativeEndTurnRecovery`、`nativeActionOverlayInMapFrame`、
+  `drawNativePlayerStatus`、`drawNativeMovementPanel`、`drawNativeSystemInfoUI`；`PORTING.json` 以 `tools/rust_r5_mark_ported.py` 改成 `ported`
+  （記在 `r5_stage2_r5h`），全 crate 剩 5 個 `r5`（戰鬥演出組）。`canvas.rs` 沒有改。
+- 指令環、物品選單與指令格在第一章只走到守門；守門之後要的 `drawNativeActionOverlay`、`drawNativeItemPanel`、`localizedNativeCommandLabel`
+  是 `r8`，標 `todo!("r8:…")`。HD 分支 `todo!("r6:…")`。
+- `drawNativeSystemInfoUI` 依「貼圖與語系分開」定案：原版美術時所有語系只畫原版外框的索引畫格，Go 非繁中語系的 6 倍 HD 合成
+  （`native_system_info_ui.go:208`..`229`）不照做，列為 KNOWN_DIFFERENCES `system-info-locale-hd-overlay`。
+- Go 測試 1 項移植（`chapter_parity_ring_open_test.go:35`），另加 8 項；其餘呼叫本組的 Go 測試走 HD（R6）或要另指定存檔。
+
+### 局部黃金
+
+新增只輸出資料的 `remake/cmd/fd2/rust_golden_r5h_layers_test.go`（未設 `FD2_GOLDEN_R5H_LAYERS_OUT` 時略過，既有 Go 檔沒有改）與 Rust 端
+`parity_replay/rust_golden_r5h_layers_test.rs`，由 `tools/rust_r5h_layers.sh` 驅動。掛點、時鐘與全域種子同階段 0 `chapter` 模式；END 回收分支
+呼叫整個 `Draw`，尾段把游標與左下 HUD、移動面板與回合橫幅、指令 UI（設施工作、END 對話、指令環、選單、系統資訊、角色狀態）三層各畫到全透明
+畫布。Go 端三層是 `main.go` 的逐字複本（每次核對），Rust 端呼叫從 `draw_field` 拆出的三個方法。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數（Go、Rust 相同） | 13751（early 7302、recovery 21、spawn 24、tail 6404） |
+| 逐擷取點 | 13751／13751 相同；序列雜湊兩邊都是 `c5e59e7b4d72f99cebfd01b6b6b608e0aeb818caacc513dc3df78f5590508fc7`；r1、r2 相同 |
+| 有畫的畫格 | 游標與 HUD 3837、指令 UI 39（END 對話）、END 回收 21；END 回收 21 張全部與階段 0 整張黃金同一擷取點相同 |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…` |
+| 竄改反向檢查 | 游標寬度改 3、HUD 索引 0 改不透明：游標與 HUD 6404 張只剩 2567 張相同，比對失敗 |
+
+- 沒有遮蔽像素。移動面板、回合橫幅後備、指令環、選單、系統資訊與角色狀態在第一章沒有畫，只由單元測試驗。
+
+### 整張比對
+
+| 模式 | 結果 |
+|---|---|
+| opening（`tools/rust_r5_opening_frames.sh`） | 10372／10372 相同，沒有停點；整段序列雜湊 `eeed99ea…0be771` 與階段 0 相同。r5c 時停在第 1940 次的 `drawNativeSystemEndTurn` |
+| chapter（階段 3 預備，`FD2_GOLDEN_FRAMES_MODE=chapter`） | 停在第 124 次擷取（`battle_ch01`）的 `drawBattleScene`（戰鬥演出組）；已比對 124 張全部相同，沒有不同的擷取 |
+
+chapter 模式的擷取改用 `try_observe`：停在未移植的 `todo!` 時記進 `frames.json` 的 `stopped`，重播照 R4 走完；沒有停下時行為不變。

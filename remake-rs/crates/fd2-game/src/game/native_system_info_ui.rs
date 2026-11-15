@@ -74,7 +74,39 @@ impl Game {
 
 impl Game {
     /// Go：`native_system_info_ui.go:186`，`func (g *Game) drawNativeSystemInfoUI(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5h 逐行移植到 `presentNativeClassFrameWithPalette` 與 `state.drawn = true`。開場與第一章只走到
+    /// `state == nil` 的守門。HD 介面時 `drawModernHDSystemInfoUI` 是 `todo!("r6:…")`。
+    ///
+    /// 刻意不照 Go（使用者 2026-11-15 定案，121「貼圖與語系分開」；KNOWN_DIFFERENCES
+    /// `system-info-locale-hd-overlay`）：Go 在非繁中語系不管 F2／F11，以 6 倍解析度合成含當地文字的 HD 圖，再縮成
+    /// 1/3 疊在原版外框上（`native_system_info_ui.go:208`..`229`）。Rust 在原版美術時所有語系都只畫原版外框的
+    /// 索引畫格，當地文字由畫格合成端（`prepareNativeSystemInfoUI`，`r8`）走該語系的一般文字路徑；HD 美術由 R6
+    /// 對所有語系一致處理。
     pub(crate) fn draw_native_system_info_ui(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_system_info_ui.go:drawNativeSystemInfoUI")
+        let Some(state) = self.native_system_info_ui.as_mut() else {
+            return false;
+        };
+        state.hd_presented = false;
+        if self.modern_hd_interface_enabled() {
+            todo!("r6:modern_hd_system_info.go:drawModernHDSystemInfoUI");
+        }
+        let state = self.native_system_info_ui.as_ref().unwrap();
+        let mut frame = &state.steady;
+        if state.phase == "opening" && state.frame < state.opening.len() as i64 {
+            frame = &state.opening[state.frame as usize];
+        } else if state.phase == "closing" && state.frame < state.closing.len() as i64 {
+            frame = &state.closing[state.frame as usize];
+        }
+        if frame.len() != fdother::NATIVE_SYSTEM_INFO_BYTES {
+            return false;
+        }
+        if state.palette.len() != 256 {
+            return false;
+        }
+        let (frame, palette) = (frame.clone(), state.palette.clone());
+        self.present_native_class_frame_with_palette(screen, &frame, &palette);
+        self.native_system_info_ui.as_mut().unwrap().drawn = true;
+        true
     }
 }

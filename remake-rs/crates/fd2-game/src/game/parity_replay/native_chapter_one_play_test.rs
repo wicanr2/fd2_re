@@ -29,6 +29,8 @@ pub(crate) struct Driver {
     pub(crate) ttf_layer_capture: Option<TtfLayerCapture>,
     /// R5 階段 2 r5b：戰鬥演出組的局部黃金（`rust_golden_r5b_layers_test.rs`），同一個掛點；預設 `None`。
     pub(crate) r5b_layer_capture: Option<R5bLayerCapture>,
+    /// R5 階段 2 r5h：HUD 與選單組的局部黃金（`rust_golden_r5h_layers_test.rs`），同一個掛點；預設 `None`。
+    pub(crate) r5h_layer_capture: Option<R5hLayerCapture>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。
@@ -50,8 +52,12 @@ impl Driver {
     /// 最後 `parityUpdateGame`。
     pub(crate) fn pump(&mut self, budget: i64, mut done: impl FnMut(&mut Game) -> bool) -> bool {
         for _ in 0..budget {
-            if let Some(capture) = self.frame_capture.as_mut() {
-                capture.observe(&mut self.g);
+            // R5 階段 2 r5h：`Game::draw` 停在未移植的 `todo!` 時記進 `frames.json` 的 `stopped`，之後不再擷取，
+            // 重播照 R4（只有呈現回報）走完；以前是 panic 中止整個重播、沒有 frames.json。
+            if let Some(capture) = self.frame_capture.as_mut()
+                && !capture.is_stopped()
+            {
+                capture.try_observe(&mut self.g);
             }
             if let Some(capture) = self.map_layer_capture.as_mut() {
                 capture.observe(&mut self.g);
@@ -69,6 +75,9 @@ impl Driver {
                 capture.observe(&mut self.g);
             }
             if let Some(capture) = self.r5b_layer_capture.as_mut() {
+                capture.observe(&mut self.g);
+            }
+            if let Some(capture) = self.r5h_layer_capture.as_mut() {
                 capture.observe(&mut self.g);
             }
             if done(&mut self.g) {

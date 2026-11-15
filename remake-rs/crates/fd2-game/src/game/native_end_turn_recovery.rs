@@ -199,11 +199,35 @@ impl Game {
     }
 
     /// Go：`native_end_turn_recovery.go:162`，`func (g *Game) drawNativeEndTurnRecovery(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5h 逐行移植。畫成才設 `job.drawn = true`（`draw` 路徑，與 Go `Draw` 相同）；畫不出來回 false，
+    /// `Game::draw_frame` 接著呼叫 `cancelNativeEndTurnRecovery`。無畫面重播仍由呈現回報設定（PORTING.md「C 組：
+    /// 呈現回報」），兩邊的前置條件相同。
     pub(crate) fn draw_native_end_turn_recovery(&mut self, screen: &mut Picture) -> bool {
-        // Go 在這裡把 `job.frames[job.frame]` 以 `nativeMapDAC` 轉出的調色盤畫上去，畫成才設 `job.drawn = true`；
-        // 畫不出來回 false，`Draw` 接著呼叫 `cancelNativeEndTurnRecovery`。Rust 的流程端不設 `drawn`，
-        // 由呈現回報設定（PORTING.md「C 組：呈現回報」）。
-        todo!("R5: native_end_turn_recovery.go:162 drawNativeEndTurnRecovery（畫面）")
+        let Some(job) = self.native_end_turn_recovery.as_ref() else {
+            return false;
+        };
+        if job.frame < 0
+            || job.frame >= job.frames.len() as i64
+            || job.frames[job.frame as usize].len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE
+            || self.native_map_dac.len() != 256 * 3
+        {
+            return false;
+        }
+        let Ok(palette) = fdother::vga_palette_from_dac(&self.native_map_dac) else {
+            return false;
+        };
+        let img = IndexedFrame {
+            width: 320,
+            height: 200,
+            pix: job.frames[job.frame as usize].clone(),
+            palette: color_palette_from_nrgba(&palette),
+        };
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        self.native_end_turn_recovery.as_mut().unwrap().drawn = true;
+        true
     }
 }
 

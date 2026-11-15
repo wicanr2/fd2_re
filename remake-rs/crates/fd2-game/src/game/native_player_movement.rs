@@ -160,7 +160,27 @@ pub(crate) fn go_copy<T: Copy>(dst: &mut [T], src: &[T]) -> usize {
 
 impl Game {
     /// Go：`native_player_movement.go:100`，`func (g *Game) drawNativeMovementPanel(screen *ebiten.Image)`
+    ///
+    /// R5 階段 2 r5h 逐行移植。開場與第一章只走到守門（`nativeMovePanel` 都是 nil）。HD 介面時
+    /// `prepareModernHDMovementPanel` 是 `todo!("r6:…")`。
     pub(crate) fn draw_native_movement_panel(&mut self, screen: &mut Picture) {
-        todo!("r5:native_player_movement.go:drawNativeMovementPanel")
+        self.movement_panel_draw = None;
+        if self.sel.is_none() || self.native_move_panel.is_none() {
+            return;
+        }
+        let rect = rect(self.native_move_panel_x * 2, 18, self.native_move_panel_x * 2 + 298, 102);
+        if self.modern_hd_interface_enabled() {
+            todo!("r6:modern_hd_movement_panel.go:prepareModernHDMovementPanel");
+        }
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        op.geo_m.translate((self.native_move_panel_x * 2) as f64, 18.0);
+        screen.draw_image(self.native_move_panel.as_ref().unwrap(), &op);
+        self.movement_panel_draw = Some(ModernHDMovementPanelDraw {
+            rect,
+            hd: false,
+            art_hd: self.modern_story_portraits.is_some(),
+            key: String::new(),
+        });
     }
 }

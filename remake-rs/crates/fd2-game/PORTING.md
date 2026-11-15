@@ -1462,14 +1462,14 @@ Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元�
 | `nativePalettePulse` | 9725 | 0 | r8 |
 | `spawnIntroTransition` | 9735 | 48 | `draw_native_spawn_intro`（r5） |
 | indexed 回合演出、事件 61 | 9745..9763 | 0 | r8 |
-| `nativeEndTurnRecovery` | 9765 | 42 | `draw_native_end_turn_recovery`（r5）；失敗時 `cancel_native_end_turn_recovery` 已移植，DebugPrint r8 |
+| `nativeEndTurnRecovery` | 9765 | 42 | `draw_native_end_turn_recovery`（R5 階段 2 `r5h` 已移植）；失敗時 `cancel_native_end_turn_recovery` 已移植，DebugPrint r8 |
 | `nativeAIIdleRecovery` | 9776 | 3 | `draw_native_ai_idle_recovery`（R5 階段 2 `r5b` 已移植）；失敗收尾與 `present.rs` 相同 |
 | `atk` → `drawBattleScene` | 9792 | 6488 | `draw_battle_scene`（R5 階段 2 `r5b` 已移植；6488 次都在原生前奏／本體返回，其後的近似畫面 r8） |
 | 尾段 `draw_field` | 9804..10188 | 14812 | 見下 |
 
 尾段：`modernHDMapFrameAdmission` 在 `modern_story_portraits` 為 `None` 時一律 false（忠實模式），否則 `todo!("r6:…")`；
 正規化地圖層 9814..9950（storyView 10941 次、圖塊、移動範圍格 135 次、單位、游標 3828 次、`drawNativeMapHUD` 3200 次）的
-世界層部分由 `r5p` 移植成 `draw_normalized_world_layer`（9812..9919），游標 `drawCursor` 與 `drawNativeMapHUD` 是 HUD 組；`drawNativeMapFrame` 6371 次；`drawNativeMovementPanel`、`drawPhaseBanner`、`drawNativeStoryDialogue`；
+世界層部分由 `r5p` 移植成 `draw_normalized_world_layer`（9812..9919），游標 `drawCursor` 與 `drawNativeMapHUD` 是 HUD 組（R5 階段 2 `r5h` 移植；這兩個與移動面板、回合橫幅、尾段的指令 UI 三段拆成 `draw_field_cursor_hud`、`draw_field_map_overlays`、`draw_field_command_ui`）；`drawNativeMapFrame` 6371 次；`drawNativeMovementPanel`、`drawPhaseBanner`、`drawNativeStoryDialogue`；
 TTF 短訊 2650 次與勝負字樣 1 次由 `r5f` 移植（`battle_text_draws` 列出、`Font::draw` 畫）；選中單位中文名與舊對話框 0 次（r8）；`drawCampaignUI`、
 `drawNativeClassUIJob`、`drawNativeSystemEndTurn`、`markActionOverlayDrawn`（10 次）或 `drawRing`、指令格、法術與物品選單、
 `drawNativeSystemInfoUI`、`drawNativePlayerStatus`；舊 fade 疊層 106 次由 `r5p` 移植成 `draw_story_fade_overlay`；`captureShot` 是 r8（截圖模式）。
@@ -1489,7 +1489,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 |---|---|---|---|---|
 | 城鎮與設施 | 28（0／28／0；`presentNativeClassFrame` 兩個由 r5d、其餘 14 個由 R5 階段 2 `r5c` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter（`r5c`：pump 13751 次加戰後迴圈、城鎮游標與酒店輸入的 gap 828 次，有畫的 80 張與 Go 相同） |
 | Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0；正規化地圖層與 fade 疊層由 `r5p` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | opening＋chapter（`r5p` 圖層級） |
-| HUD 與選單 | 35（13／22／0；回合橫幅 6 個由 r5m 移植，`shouldDrawTransientBattleMessage` 由 r5f 移植） | 491 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
+| HUD 與選單 | 35（0／35／0；回合橫幅 6 個由 r5m、`shouldDrawTransientBattleMessage` 由 r5f、其餘 13 個由 R5 階段 2 `r5h` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
 | 對話與文字 | 16（0／16／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個由 r5f 移植） | 0 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同；r5f：TTF 文字與外框，見「R5 階段 2：r5f」）、opening＋chapter |
 | 戰鬥演出 | 7（0／7／0；R5 階段 2 `r5b` 移植 5 個） | 0 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter（`r5b`：本組分支 4311 張整張 Draw 與 Go、階段 0 相同，見「R5 階段 2：r5b」） |
 | 地圖與單位 | 14（0／14／0；R5 階段 2 r5m） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
@@ -1517,26 +1517,26 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 城鎮與設施 | `native_shop_ui.go:1495..1541` | `drawNativeShopUIJob`（ported，r5c） | 47 | — | chapter＋FD2_SHOT_STATE |
 | 城鎮與設施 | `native_shop_ui.go:1543..1611` | `drawNativeShop`（ported，r5c） | 69 | — | chapter＋FD2_SHOT_STATE |
 | 城鎮與設施 | `native_town_ui.go:224..234` | `drawNativeTown`（ported，r5c） | 11 | — | chapter＋FD2_SHOT_STATE |
-| HUD 與選單 | `action_overlay_runtime.go:823..873` | `drawNativeSystemEndTurn` | 51 | — | opening＋chapter |
+| HUD 與選單 | `action_overlay_runtime.go:823..873` | `drawNativeSystemEndTurn`（ported，r5h） | 51 | — | opening＋chapter |
 | HUD 與選單 | `main.go:10194..10197` | `shouldDrawTransientBattleMessage`（ported，r5f：TTF 短訊的條件） | 4 | — | opening＋chapter |
-| HUD 與選單 | `main.go:10221..10303` | `drawRing` | 83 | DrawImage、平移、縮放、NewImage、Fill | opening＋chapter |
-| HUD 與選單 | `main.go:10537..10572` | `drawSpellMenu` | 36 | DrawImage、平移、NewImage、Fill | opening＋chapter |
-| HUD 與選單 | `main.go:10577..10613` | `drawItemMenu` | 37 | DrawImage、平移、NewImage、Fill | opening＋chapter |
-| HUD 與選單 | `main.go:10617..10635` | `drawNativeCommandGrid` | 19 | — | opening＋chapter |
-| HUD 與選單 | `main.go:11571..11584` | `drawCursor` | 14 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10221..10303` | `drawRing`（ported，r5h） | 83 | DrawImage、平移、縮放、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10537..10572` | `drawSpellMenu`（ported，r5h） | 36 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10577..10613` | `drawItemMenu`（ported，r5h） | 37 | DrawImage、平移、NewImage、Fill | opening＋chapter |
+| HUD 與選單 | `main.go:10617..10635` | `drawNativeCommandGrid`（ported，r5h） | 19 | — | opening＋chapter |
+| HUD 與選單 | `main.go:11571..11584` | `drawCursor`（ported，r5h） | 14 | DrawImage、平移、NewImage、Fill | opening＋chapter |
 | HUD 與選單 | `main.go:12148..12150` | `phaseBannerElapsedMillis`（ported，r5m） | 3 | — | chapter |
 | HUD 與選單 | `main.go:12154..12171` | `phaseBannerSlideOffset`（ported，r5m） | 18 | — | opening＋chapter |
 | HUD 與選單 | `main.go:12203..12217` | `blitPhaseBannerGlyphs`（ported，r5m） | 15 | — | chapter |
 | HUD 與選單 | `main.go:12225..12246` | `blitPhaseBannerGlyph`（ported，r5m） | 22 | — | chapter |
 | HUD 與選單 | `main.go:12249..12252` | `phaseBannerGlyphsAvailable`（ported，r5m） | 4 | — | chapter |
 | HUD 與選單 | `main.go:12268..12301` | `phaseBannerStep`（ported，r5m） | 34 | — | opening＋chapter |
-| HUD 與選單 | `main.go:12317..12334` | `drawPhaseBanner` | 18 | — | opening＋chapter |
-| HUD 與選單 | `main.go:12421..12444` | `drawNativeMapHUD` | 24 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
-| HUD 與選單 | `native_end_turn_recovery.go:162..179` | `drawNativeEndTurnRecovery` | 18 | DrawImage、縮放、NewImageFromImage | chapter |
-| HUD 與選單 | `native_map_unit_window.go:14..17` | `nativeActionOverlayInMapFrame` | 4 | — | opening＋chapter |
-| HUD 與選單 | `native_player_input.go:214..237` | `drawNativePlayerStatus` | 24 | — | opening＋chapter |
-| HUD 與選單 | `native_player_movement.go:100..118` | `drawNativeMovementPanel` | 19 | DrawImage、平移、縮放 | opening＋chapter |
-| HUD 與選單 | `native_system_info_ui.go:186..233` | `drawNativeSystemInfoUI` | 48 | DrawImage、平移、縮放、NewImageFromImage、SubImage | opening＋chapter |
+| HUD 與選單 | `main.go:12317..12334` | `drawPhaseBanner`（ported，r5h） | 18 | — | opening＋chapter |
+| HUD 與選單 | `main.go:12421..12444` | `drawNativeMapHUD`（ported，r5h） | 24 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| HUD 與選單 | `native_end_turn_recovery.go:162..179` | `drawNativeEndTurnRecovery`（ported，r5h） | 18 | DrawImage、縮放、NewImageFromImage | chapter |
+| HUD 與選單 | `native_map_unit_window.go:14..17` | `nativeActionOverlayInMapFrame`（ported，r5h） | 4 | — | opening＋chapter |
+| HUD 與選單 | `native_player_input.go:214..237` | `drawNativePlayerStatus`（ported，r5h） | 24 | — | opening＋chapter |
+| HUD 與選單 | `native_player_movement.go:100..118` | `drawNativeMovementPanel`（ported，r5h） | 19 | DrawImage、平移、縮放 | opening＋chapter |
+| HUD 與選單 | `native_system_info_ui.go:186..233` | `drawNativeSystemInfoUI`（ported，r5h） | 48 | DrawImage、平移、縮放、NewImageFromImage、SubImage | opening＋chapter |
 | 對話與文字 | `font.go:175..191` | `Font.Draw`（ported，r5f） | 17 | 平移、ColorScale、TTF | chapter |
 | 對話與文字 | `native_confirmation_mouth.go:71..81` | `composeNativeConfirmationMouth`（ported，r5d） | 11 | — | chapter |
 | 對話與文字 | `native_story_dialogue.go:339..351` | `nativeStoryOpeningFrameIndex`（ported，r5d） | 13 | — | opening＋chapter |
@@ -2447,3 +2447,148 @@ early-return 順序分支：
 `tools/rust_r5_chapter_frames.sh <主工作區>/work/r5-stage2-r5b-20261115/chapter-frames`：Rust chapter 模式整張擷取停在第 24 次（`update_frame` 1940，
 `story_ch00_handler`）的 `todo!("r5:action_overlay_runtime.go:drawNativeSystemEndTurn")`，屬 HUD 組（`r5h`）。前 24 次（登場轉場）與階段 0 黃金逐次相同，
 前綴序列雜湊兩邊都是 `b17f233a…`，沒有不同的擷取。本組的 4311 張在停點之後，由上節的局部黃金與階段 0 整張黃金逐張對照。
+
+## R5 階段 2：r5h（HUD 與選單，2026-11-15）
+
+代號 `r5h`，基準 `8cc5d394`（含前三批六組與 Go v.1.1.14 修正）。工作單是「R5 對照表」HUD 與選單組留在 `r5` 的 13 個函式。
+計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)。
+
+### r5h：移植結果
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py … r5h …` 把 13 個函式從 `r5` 改成 `ported`（記在 `r5_stage2_r5h`，未執行分支的
+`todo!` 逐筆在 `todo_branches`）；全 crate 狀態 ported 679、r5 5（戰鬥演出組）、r6 59、r8 1179。畫布只用 `canvas.rs` 既有的
+`new_image`、`fill`、`from_indexed`、`draw_image`（平移、`Scale(2, 2)`），`canvas.rs` 沒有改。
+
+分支是否走到依階段 0 覆蓋率（`cover-*.out` 對應 `go_source_commit_stage0` 的行號；次數是 opening／chapter）：
+
+| Go | Rust | 開場與第一章走到的部分 | 其餘 |
+|---|---|---|---|
+| `action_overlay_runtime.go:823` `drawNativeSystemEndTurn` | `Game::draw_native_system_end_turn` | 守門、HD 三個守門、`drawNativeClassUIJob`（開合幀 36 次）、死亡獎勵訊息等鍵時的最後一幀（3 次） | 確認框（`composeNativeConfirmationMouth`＋`ComposeNativeConfirmationChoices`）與回覆延遲／寶箱等鍵兩支照 Go 移植，只由單元測試驗；`hdPresentationEnabled` 成立且有 HD 描述時 `todo!("r6:…")` |
+| `main.go:10221` `drawRing` | `Game::draw_ring` | 只有守門（8408／6355 次全在守門返回；指令環開著的 10 幀由 `nativeActionOverlayInMapFrame` 承認） | HD 指令環兩條 `todo!("r6:…")`；`actionOverlayAnchor`、`drawNativeActionOverlay`（`r8`）與重製端後備環 `todo!("r8:…")` |
+| `main.go:10537` `drawSpellMenu` | `Game::draw_spell_menu` | 只有守門 | 本體照 Go 逐行移植（底框 `Fill`＋source-over、`localeMessage` 標題、每個法術一行 TTF），單元測試驗 |
+| `main.go:10577` `drawItemMenu` | `Game::draw_item_menu` | 只有守門 | `drawNativeItemPanel`、`nativeItemMenuSlot` 是 `r8`，整段 `todo!("r8:…")` |
+| `main.go:10617` `drawNativeCommandGrid` | `Game::draw_native_command_grid` | 只有守門 | `localizedNativeCommandLabel` 是 `r8`，守門之後 `todo!("r8:…")` |
+| `main.go:11571` `drawCursor` | `draw_cursor` | 全部（1／3827 次） | — |
+| `main.go:12317` `drawPhaseBanner` | `Game::draw_phase_banner` | 守門與 `phaseBannerGlyphsAvailable` 讓開（1999 次） | TTF 後備照 Go 移植，單元測試驗 |
+| `main.go:12421` `drawNativeMapHUD` | `Game::draw_native_map_hud` | 全部（1／3199 次） | — |
+| `native_end_turn_recovery.go:162` `drawNativeEndTurnRecovery` | `Game::draw_native_end_turn_recovery` | 全部（0／42 次，含 `ackPresents` 另外呼叫的 21 次） | 畫成才設 `job.drawn`（`draw` 路徑同 Go）；無畫面重播仍由呈現回報設 |
+| `native_map_unit_window.go:14` `nativeActionOverlayInMapFrame` | `Game::native_action_overlay_in_map_frame` | 全部 | — |
+| `native_player_input.go:214` `drawNativePlayerStatus` | `Game::draw_native_player_status` | 只有守門 | 穩態／轉場幀以 `nativeUIPalette` 貼上並設 `drawn`；HD 三條在 `facility_hd_draw_active()` 時 `todo!("r6:…")`（忠實模式下 Go 都回 false、沒有副作用） |
+| `native_player_movement.go:100` `drawNativeMovementPanel` | `Game::draw_native_movement_panel` | 只有守門 | 面板 `Scale(2,2)` 後平移到 `(x*2, 18)`、記 `movementPanelDraw`；HD 介面 `todo!("r6:…")` |
+| `native_system_info_ui.go:186` `drawNativeSystemInfoUI` | `Game::draw_native_system_info_ui` | 只有守門 | 依階段選幀、以 `state.palette` 貼上、設 `drawn`；HD 介面 `todo!("r6:…")`；非繁中語系的 6 倍 HD 合成不照做（KNOWN_DIFFERENCES `system-info-locale-hd-overlay`） |
+
+- `drawRing`、`drawItemMenu`、`drawNativeCommandGrid` 守門之後需要的 `r8` 函式不在本組，開場與第一章也沒有走到，沒有補移植。
+- `hdPresentationEnabled`（`player_interface.go:32`，`r6`）照 `modern_hd_transient_expiry.rs` 的寫法就地展開。
+- `drawSpellMenu` 的 `g.sel` 在 Rust 是 `st.units` 的索引；`MP` 與法術清單先複製出來，再借用 `font` 畫字。
+
+### r5h：測試
+
+`src/game/main/main_r5h_test.rs` 9 項：
+
+| Go 測試 | Rust |
+|---|---|
+| `chapter_parity_ring_open_test.go:35` `TestNativeActionOverlayMapAdmissionRequiresThisDrawAndFaithfulSource` | `test_native_action_overlay_map_admission_requires_this_draw_and_faithful_source`（Go 的 `sel: &battle.Unit{}` 寫成 `Some(0)`） |
+| Rust 新增 8 項 | 游標四條白條與小數平移；END 回收以 DAC 調色盤 2 倍貼上、`drawn` 與三個失敗條件；移動面板的縮放、平移、矩形與清除；角色狀態的穩態／轉場幀；系統資訊的開框／收框／穩態選幀與兩個失敗條件；END 對話的守門、死亡獎勵訊息與回覆延遲兩支；回合橫幅只在缺原版字模時以 TTF 畫（與直接以 Go 參數呼叫 `Font::draw` 逐位元組相同）；法術選單底框與每行文字（後兩項經 `cjk_font_available`，缺字型依 `FD2_REQUIRE_ORIGINAL` 失敗） |
+
+沒有移植：`modern_hd_full_reward_test.go`、`modern_hd_reward_message_test.go`、`modern_hd_status_text_test.go` 經 HD 呈現（R6）；
+`modern_hd_movement_panel_test.go` 三項要 `FD2_HD_MOVEMENT_PANEL_SAVE` 指定的完整存檔（未設時 Go 也 `t.Skip`），其中兩項是 HD；
+`phase_banner_glyph_test.go` 的字模部分 r5m 已移植。
+
+### r5h：局部黃金
+
+第一章畫格裡本組的圖層多半被原生整幀、對白或別組圖層蓋住（游標與左下 HUD 畫在原生整幀之前），所以照 r5m 的做法做圖層級比對：
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_r5h_layers_test.go` | `TestRustGoldenR5hLayers`，未設 `FD2_GOLDEN_R5H_LAYERS_OUT` 時 `t.Skip`；借用 `goldenFrameProbe`、`pinClock`、`goldenFrameNode`，既有 Go 檔沒有改。三段 `main.go` 逐字複本（`9925..9941`、`9964..9972`、`10156..10174`，現行 `main.go` 行號）以標記包住 |
+| `src/game/parity_replay/rust_golden_r5h_layers_test.rs` | Rust 端 `R5hLayerCapture`，掛在 `Driver::pump` 同一位置；呼叫從 `draw_field` 拆出的 `draw_field_cursor_hud`、`draw_field_map_overlays`、`draw_field_command_ui` |
+| `tools/rust_r5h_layers.sh` | Docker 驅動：先以 `--verbatim` 核對三段逐字複本，再跑 Go（`fd2-go-test-local`、Xvfb）與 Rust（`fd2-rust:1.99.1-r3`），最後比對 |
+| `tools/rust_r5h_layers_compare.py` | `--verbatim` 核對複本；比對模式逐擷取點比鍵，`--stage0` 另與階段 0 整張黃金對照 |
+
+擷取規則（兩邊相同）：
+
+- 掛點、60 Hz 虛擬時鐘與全域種子 4 同階段 0 `chapter` 模式；每一幀先照 `Draw` 開頭清三個本幀旗標，再依 `Draw` 的 early-return
+  順序分支（同 `goldenMapLayersBranch`，另把 END 回收分成 `recovery`）。
+- `recovery`：呼叫**整個** `Draw`（這個分支只有 `Fill` 黑、`drawNativeEndTurnRecovery`、`defer` 的 DAC 白／黑 `Fill`，沒有別組圖層），記幀索引、
+  `drawn` 與整張 640×400 雜湊。
+- `tail`：三層各畫到一張 `Clear` 的 640×400 畫布，記雜湊（全透明記 `0`）：
+  1. 游標白框與左下 HUD（第一段複本；Rust `draw_field_cursor_hud`）。
+  2. 照 `Draw` 把原生整幀（r5m）畫到另一張畫布，取 `nativeMapPresented` 與它對狀態的改動，鍵只記准入與成功與否；再畫移動面板與回合橫幅
+     （第二段；`draw_field_map_overlays`）。
+  3. TTF 段在語系缺鍵時 return 出 `Draw`，照同一條件判斷（Go 端以 `localeMessage` 重查三個鍵，Rust 端用 `battle_text_draws` 的第二個回傳值）；
+     沒有 return 時畫設施／班級工作、END 對話、指令環、指令格、法術與物品選單、系統資訊與角色狀態（第三段；`draw_field_command_ui`）。
+  鍵另記各層的前置條件（游標條件、游標格有單位、橫幅後備條件、`transientUI`、END 對話狀態、`nativeActionOverlayInMapFrame`、系統資訊與角色狀態
+  是否存在）與畫後的 `movementPanelDraw`、`actionOverlayDrawn`。
+- 正規化世界層（r5p）、對白（r5d）、TTF 短訊（r5f）與 `drawCampaignUI`（r5c）不畫：它們不改本組三層用到的狀態（`presentNativeClassFrame` 清的
+  `nativeMapPresented` 欄位只在 HD 指令環的條件裡讀）。
+
+結果（`tools/rust_r5h_layers.sh <主工作區>/work/r5-stage2-r5h-20261115/r1`、`r2`，輸出不進版控）：
+
+| 項目 | Go | Rust |
+|---|---|---|
+| `checkpoints.jsonl` | `1c846f57…`（R4 黃金） | `1c846f57…` |
+| 擷取數 | 13751（early 7302、recovery 21、spawn 24、tail 6404） | 同 |
+| 序列雜湊 | `c5e59e7b4d72f99cebfd01b6b6b608e0aeb818caacc513dc3df78f5590508fc7` | 同 |
+| 逐擷取點 | — | 13751／13751 相同 |
+
+- 有畫的畫格：游標與 HUD 3837 張（游標 3827 次、游標格有單位 3199 次，與階段 0 覆蓋率 `drawCursor` 3827 次、`drawNativeMapHUD` 3199 次相同；
+  Go 相異 125 張）、指令 UI 39 張（END 對話 39 次：班級工作開合 36、死亡獎勵訊息 3，與覆蓋率相同；相異 21 張）、END 回收 21 張（相異 11 張）。
+  移動面板、回合橫幅 TTF 後備、指令環、選單、系統資訊與角色狀態在第一章都沒有畫（`overlays` 6404 張全透明，`nativeActionOverlayInMapFrame` 承認 10 次）。
+- 階段 0 對照：recovery 21 張全部與同一擷取點的整張黃金相同（整個 `Draw`，比對要求相同）；指令 UI 39 張也剛好都與整張畫格相同（END 對話蓋滿畫面，
+  之後沒有別組圖層）。游標與 HUD 在整張畫格裡被原生整幀蓋住，0 張相同，只是參考。
+- 竄改反向檢查（`work/r5-stage2-r5h-20261115/tamper`，只重跑 Rust、沿用 r1 的 Go 端）：游標白條寬度改 3、左下 HUD 調色盤索引 0 改不透明，比對失敗：
+  游標與 HUD 6404 張只剩 2567 張相同（沒畫的那些），第一個不同在第 25 次；改回後 r2 相同。
+- 沒有遮蔽像素。涵蓋限制：確認框、回覆延遲、移動面板、回合橫幅後備、法術選單、系統資訊與角色狀態的像素只由單元測試驗。
+
+### r5h：opening 模式整張比對
+
+`tools/rust_r5_opening_frames.sh`（`work/r5-stage2-r5h-20261115/opening-frames`、`opening-frames-r2`）：10372 次擷取全部與 Go 黃金
+`work/r5-stage0-20261115/r1/opening/frames.json`（`7a9c8226…`）逐次相同，沒有停點（`stopped` 為 null），整段序列雜湊兩邊都是
+`eeed99ea185fa936fe7470db9149bd1f4268b158173e7ea857b561e4830be771`（即階段 0 opening 的序列雜湊）。r5c 時停在第 1940 次的
+`drawNativeSystemEndTurn`，本組移植後序章故事段與第一次進入 `battle_ch01` 都走完。
+
+### r5h：chapter 模式整張比對（階段 3 預備）
+
+`FD2_GOLDEN_FRAMES_MODE=chapter` 的章重播（`rust_golden_frames_test.rs`）與階段 0 Go 黃金 `work/r5-stage0-20261115/r1/chapter/frames.json`
+（`d71aad6a…`）逐次比對（`work/r5-stage2-r5h-20261115/chapter-frames`，比對工具 `tools/rust_r5_frames_compare.py`）：
+
+| 項目 | 結果 |
+|---|---|
+| 停點 | 第 124 次擷取（`update_frame` 10482，`battle_ch01`）：`todo!("R5: main.go:drawBattleScene…")`，屬戰鬥演出組（r5b） |
+| 已比對 | 124 張，124 張相同；前 124 次的序列雜湊兩邊都是 `66441ec489870e68c32ac226f96315e61060dd02c5c76e6cae5f7f43845599b8` |
+| 第一張不同 | 沒有 |
+| `checkpoints.jsonl` | 停下後重播照 R4 走完，仍是 `1c846f57…` |
+
+為了拿到停點，`Driver::pump` 的 chapter 模式擷取改用 `FrameCapture::try_observe`：`Game::draw` 停在未移植的 `todo!` 時記進 `frames.json` 的
+`stopped`，之後不再擷取，重播照 R4（只有呈現回報）走完。以前 panic 會中止整個重播、沒有 `frames.json`；沒有停下時行為不變。
+
+### r5h：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `main.rs` 的 `Game::draw_field` | 游標與左下 HUD、移動面板與回合橫幅、尾段的指令 UI 三段原樣拆成 `draw_field_cursor_hud`、`draw_field_map_overlays`、`draw_field_command_ui` 三個方法（理由同 r5p：局部黃金呼叫同一份程式）；分派骨架其他分支沒有動 |
+| `main.rs` | 本組 7 個函式的本體（`draw_ring`、`draw_spell_menu`、`draw_item_menu`、`draw_native_command_grid`、`draw_phase_banner`、`draw_native_map_hud`、`draw_cursor`）與測試模組 `main/main_r5h_test.rs` 的登記 |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `r5h_layer_capture`；`pump` 在 `ttf_layer_capture` 之後呼叫它的 `observe`；`frame_capture` 改用 `try_observe`（上節） |
+| `parity_replay/rust_golden_frames_test.rs` | 加 `FrameCapture::is_stopped` |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `R5hLayerCapture::from_env()`；它打開時也 `pin_global_rand`；`end` 之後 `finish` |
+| `parity_replay/rust_golden_frames_opening_test.rs`、`rust_golden_r5p_layers_test.rs` | `Driver` 字面值補 `r5h_layer_capture: None` |
+| `parity_replay.rs` | 掛新子模組、模組文件加一行 |
+| `canvas.rs` | 沒有改 |
+
+### r5h：KNOWN_DIFFERENCES
+
+| 名稱 | 內容 |
+|---|---|
+| `system-info-locale-hd-overlay` | 使用者 2026-11-15 定案（121「貼圖與語系分開」）的刻意差異：Go `drawNativeSystemInfoUI` 在非繁中語系不管 F2／F11，以 6 倍解析度合成含當地文字的 HD 圖，再縮成 1/3 疊在原版外框上（`native_system_info_ui.go:208`..`229`，失敗時寫 `loadErr`）。Rust 在原版美術時所有語系都只畫原版外框的索引畫格，當地文字由畫格合成端（`prepareNativeSystemInfoUI`，`r8`）走該語系的一般文字路徑；HD 美術由 R6 對所有語系一致處理。Go 黃金的非繁中系統資訊畫格不作為比對基準；第一章黃金是繁中，沒有打開系統資訊 |
+
+### r5h：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh`（字型掛入、`FD2_REQUIRE_ORIGINAL=1`） | fmt、clippy `-D warnings` 通過；372 passed、7 ignored（基準 363／7，加本組 9 項）；沒有「略過」 |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5h-20261115/r5h-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5h_layers.sh` | 上節；r1、r2 的 `rows` 逐筆相同，兩邊 `checkpoints.jsonl` 都是 `1c846f57…`；竄改檢查失敗 |
+| `tools/rust_r5_opening_frames.sh` | 10372／10372 相同，沒有停點；兩次相同 |
+| Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
+| `Cargo.lock` | 沒有改動；沒有新增套件 |

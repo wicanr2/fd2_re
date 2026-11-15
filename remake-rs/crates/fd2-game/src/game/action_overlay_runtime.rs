@@ -329,7 +329,66 @@ impl Game {
     /// 完整擁有320×200索引畫面，避免底下的重製指令層穿透。
     ///
     /// Go：`action_overlay_runtime.go:823`，`func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5h 逐行移植。第一章走到守門、`drawNativeClassUIJob`（開合幀 36 次）與死亡獎勵訊息的最後一幀
+    /// （3 次）；確認框（`nativeSystemEndTurnConfirm`）與回覆延遲／寶箱等鍵兩支沒有走到，照 Go 移植，只由單元測試驗。
+    /// HD 的三個 `drawModernHD*` 在忠實模式（`hdPresentationEnabled` 為 false，或對應的 HD 描述是 nil）都回 false；
+    /// 會往下做 HD 呈現時 `todo!("r6:…")`。
     pub(crate) fn draw_native_system_end_turn(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:action_overlay_runtime.go:drawNativeSystemEndTurn")
+        if self.native_system_end_turn_ui.is_none()
+            || self.native_class_ui.is_none()
+            || self.native_preparation_ui.is_none()
+        {
+            return false;
+        }
+        // Go `hdPresentationEnabled()`（`player_interface.go:32`，`r6`）：介面 HD 或美術 HD。
+        let hd_presentation =
+            self.modern_hd_interface_enabled() || self.modern_story_portraits.as_ref().is_some_and(|set| set.has_hd);
+        if hd_presentation {
+            let state = self.native_system_end_turn_ui.as_ref().unwrap();
+            if state.hd.is_some() {
+                todo!("r6:modern_hd_system_confirmation.go:drawModernHDSystemConfirmation");
+            }
+            if state.reward_message.is_some() && self.font.is_some() {
+                todo!("r6:modern_hd_reward_message.go:drawModernHDRewardMessage");
+            }
+            if state.death_reward.as_ref().is_some_and(|p| p.hd.is_some()) {
+                todo!("r6:modern_hd_full_reward.go:drawModernHDFullReward");
+            }
+        }
+        if self.draw_native_class_ui_job(screen) {
+            return true;
+        }
+        let state = self.native_system_end_turn_ui.as_ref().unwrap();
+        let frame = if self.native_system_end_turn_confirm {
+            let (question, ok) = self.compose_native_confirmation_mouth(&state.question, &state.portraits);
+            if !ok {
+                return false;
+            }
+            match campaign::compose_native_confirmation_choices(
+                &question,
+                &self.native_preparation_ui.as_ref().unwrap().choices,
+                state.choice,
+                self.native_class_ui_pulse / 2,
+            ) {
+                Ok(frame) => frame,
+                Err(_) => return false,
+            }
+        } else if let Some(message) = state.reward_message.as_ref() {
+            if !message.await_ack {
+                return false;
+            }
+            message.r#final.clone()
+        } else if self.native_system_end_turn_delay > 0 || state.treasure.as_ref().is_some_and(|t| t.await_ack) {
+            let frames = if state.accepted_outcome { &state.accepted } else { &state.canceled };
+            let Some(last) = frames.last() else {
+                return false;
+            };
+            last.clone()
+        } else {
+            return false;
+        };
+        self.present_native_class_frame(screen, &frame);
+        true
     }
 }
