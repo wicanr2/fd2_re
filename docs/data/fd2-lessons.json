@@ -5918,6 +5918,21 @@
       "rule": "產生或更新 PORTING.json 的移植狀態時，以 Go 檔加行號（或 recv.FuncName 全名）對應 Rust 的實際函式與本體，不只比函式名稱；本體只有 todo! 的函式不能標 ported。同名方法（例如 Game.Draw 與 Font.Draw）會互相套用狀態。",
       "why": "R5 階段 1 發現 R4 的狀態工具以名稱比對，把 Game.Draw 的 ported 套到 crate 裡根本不存在的 Font.Draw，另有 4 個本體只有 todo!(\"R5\") 的繪圖函式被標成 ported；逐筆更正記在 PORTING.json 的 r5_stage1.corrections。",
       "evidence": "remake-rs/crates/fd2-game/PORTING.json（r5_stage1.corrections）、tools/rust_r5_skeleton_apply.py"
+    },
+    {
+      "id": "hd-native-frame-covers-world-measure-whole-screen",
+      "date": "2026-11-15",
+      "area": "HD呈現",
+      "rule": "HD 美術下的原生 indexed 呈現只能疊合成器實際寫入的像素；直接呼叫 presentNativeClassFrame 會把整張 320×200 原版幀（含地圖與地圖人物）蓋在 HD 世界上。查玩家回報的「原版／HD 交替」時，逐幀量整個畫面（地圖區與頭像區），不只量回報點名的元件。",
+      "why": "v.1.1.11～v.1.1.13 的故事與戰場事件對白在 HD 下每句開框到收框都改畫完整原生幀，背景與地圖人物在句間 HD、句中原版交替；玩家回報成「頭像交替」，只量頭像區時 HD 頭像全程穩定，量地圖區才看到整張換回原版。",
+      "evidence": "remake/cmd/fd2/modern_hd_timed_dialogue.go（modernHDStoryDialogueMask）、remake/cmd/fd2/modern_hd_story_dialogue_mask_test.go",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_timed_dialogue.go"
+        ],
+        "pattern": "func \\(g \\*Game\\) modernHDStoryDialogueMask"
+      }
     }
   ]
 }

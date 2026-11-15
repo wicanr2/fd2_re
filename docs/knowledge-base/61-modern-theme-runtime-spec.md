@@ -2441,11 +2441,18 @@ raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣�
 
 沿已核准HD世界、原方格／對話位置、黑體與F2。既有`beginNativeTimedMessageDialogue`
 以FDTXT_000具型別頁面提供經驗、升級及中毒訊息；穩定文字已沿`modernHDStoryTextFrame`繪製。
-已證實的缺口是`drawNativeStoryDialogue`各階段透過完整indexed frame覆蓋已畫好的HD世界。
+`drawNativeStoryDialogue`各階段只疊原生對白實際寫入的像素，已畫好的HD世界留在底下。
 本切片不改訊息、翻頁、成長亂數、計時、保存或玩家路徑，不新增翻譯或美術。
 
-- 範圍只含`nativeLevelUpDialogue`持有的FFEC下框、MotionTargetY=0，沒有走行或回合橫幅。
-  其他故事對話與滑向游標的收框仍沿原路徑，另列後續驗收。
+- 計時對話（`nativeLevelUpDialogue`持有的FFEC下框、MotionTargetY=0，沒有走行或回合橫幅）
+  用本節格網覆蓋，並凍結HD世界快照。
+- 其他故事與戰場事件對白（FFEC／FFED／FFEE／FFEF、滑向游標的收框尾段）在HD美術時，
+  由[`freezeModernHDStoryDialogueMasks`](../../remake/cmd/fd2/modern_hd_timed_dialogue.go)
+  以0與255兩種字面背景重放同一組開框、逐字頁與收框合成器，兩次相同的位置即實際寫入，
+  含零色與FFEE超出格網的文字窗。底下有HD世界時只疊遮罩內像素，背景與地圖人物維持HD；
+  HD世界照常逐次重畫，不凍結快照。原版美術、沒有遮罩、重放失敗或非繁中分頁捲動時
+  仍畫完整原生幀；遮罩在每句預備時建立，句中才切到HD的那一句維持完整原生幀。回歸見
+  [`modern_hd_story_dialogue_mask_test.go`](../../remake/cmd/fd2/modern_hd_story_dialogue_mask_test.go)。
 - 格網覆蓋直接來自`nativeStoryOpeningGridSizes`／`nativeStoryClosingGridSizes`、
   `PlanNativeDialogueFrameGrid`及實際RawCell寬高；opaque複製包含零色，不從畫面色差猜遮罩。
   開框5階段、穩定19×5格網、收框4階段及純背景一階段均做來源／邊界驗證。
@@ -2468,7 +2475,7 @@ raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣�
 新`--report`及明示`--unit 4 --exp 99`保存原始／衍生SHA與唯一JSON pointer差異。
 [實際像素驗證](../../tools/verify_fd2_hd_timed_pixels.py)另以正式FDOTHER#5兩個邊角的18個原始像素，
 辨認實際開收框格網；再核對框外背景與144人物圖源。允許擷取索引跨相鄰幀，不把Draw觀測當GPU完成證明。
-CPU全控制碼格網開收框與FFEC穩定覆蓋通過；FFEE文字窗口超出格網，本切片不猜補。
+CPU全控制碼格網開收框與FFEC穩定覆蓋通過。
 37張主要GPU、6張計時對話、4張走行與兩主題／來源保存相同及新程序LOAD通過。
 正式兩邊角實際像素確認2張開框與2張收框，另1張跨呈現階段不可比；144圖源8296核心像素零差異。
 章前只改亞雷斯EXP0→99，正常攻擊確實升至Lv2／EXP30，不宣稱自然難度或原版oracle。

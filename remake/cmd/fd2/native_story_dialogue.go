@@ -107,6 +107,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueChrome = nil
 	g.nativeDialogueChromeBounds = nil
 	g.nativeDialogueGlyphSteps = nil
+	g.nativeDialogueHDMasks = nil
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		if len(g.dialog) > 0 && g.modernHDInterfaceEnabled() {
 			return g.prepareModernHDStoryDialogueChrome()
@@ -303,6 +304,25 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialoguePortraits = portraits
 	g.nativeDialogueLayout = layout
 	g.nativeDialogueGlyphSteps = glyphSteps
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
+		// 失敗只代表這一句沿用完整原生幀（現行行為），不擋對白。
+		g.nativeDialogueHDMasks = freezeModernHDStoryDialogueMasks(len(layout.Pages),
+			func(base []byte) ([][]byte, error) {
+				return campaign.ComposeNativeStoryDialogueOpeningFrames(base, g.nativeClassUI.dialogue, layout)
+			},
+			func(base []byte) ([][]byte, error) {
+				return campaign.ComposeNativeStoryDialogueClosingFrames(base, g.nativeClassUI.dialogue, layout,
+					motionTargetY, visibleCursorX, visibleCursorY)
+			},
+			func(base []byte, page int) ([][]byte, error) {
+				if g.localeID == "zh-Hant" {
+					return campaign.ComposeNativeStoryDialogueProgressiveFrames(base, g.nativeClassUI.dialogue,
+						portraits[0], g.nativeClassUI.font, g.nativeBattleGlyphs, layout, page)
+				}
+				return composeLocalizedNativeDialogueProgressiveFrames(base, g.nativeClassUI.dialogue,
+					portraits[0], g.font, layout, page)
+			})
+	}
 	return nil
 }
 

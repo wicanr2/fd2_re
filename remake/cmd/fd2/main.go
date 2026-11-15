@@ -648,6 +648,9 @@ type Game struct {
 	nativeConfirmationMouth      dato.ConfirmationMouthState
 	nativeConfirmationMouthOwner any
 	nativeConfirmationMouthRNG   *rand.Rand
+
+	// nativeDialogueHDMasks 是 HD 世界上只保留原生對白實際寫入像素的遮罩；nil 時沿用完整原生幀。
+	nativeDialogueHDMasks *modernHDStoryDialogueMasks
 }
 
 // atkAnim 是重製端 E1 全螢幕戰鬥演出；土台、角色、斬擊弧與血條使用
