@@ -413,7 +413,7 @@ F2／F11卡死已改為背景載入（ea7ef639），但載入仍一次解碼整�
 
 ### Rust改寫：fd2-rules存檔子樹的JSON寫法與Go逐位元組相同
 
-`rust-rules-serde-go-bytes` · 工作 · [#319](https://github.com/wicanr2/fd2_re/issues/319) · 仍未完成 · 自承還在 tools/rust_parity_compare.py
+`rust-rules-serde-go-bytes` · 工作 · [#319](https://github.com/wicanr2/fd2_re/issues/319) · **可能已完成，回去確認** · 找不到 battle 子樹：數字只比數值
 
 排程：R5 之前。R4 第一章無畫面重播的 `hotel-save.json` 與 Go 黃金位元組不同（Rust `baca933d…`、Go `190b9f8f…`），差異只在 `party_roster` 的 fd2-rules serde 子樹，套 `NORMALIZATIONS` 後內容相同；`checkpoints.jsonl` 與 `FD2.SAV` 已逐位元組相同。F 組存檔黃金另有 127 份存檔同樣只在這些子樹不同。
 
