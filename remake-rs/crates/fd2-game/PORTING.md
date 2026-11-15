@@ -1295,7 +1295,7 @@ R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 量寬／繪字，不在�
 
 - `Driver` 持有 `Game` 與 `VirtualFrameClock`；Go 每次 `g.Update()` 讀的牆鐘改成在 `update` 前以 `advance_virtual_frame`
   推進一個邏輯幀。
-- `ackPresents` 逐項照 Go：Go 呼叫 `g.Draw` 的三處（城鎮出發、有原生場景的攻擊演出、END 回收）改呼叫 `acknowledge_present`，
+- `ackPresents` 逐項照 Go：Go 呼叫 `g.Draw` 的三處（城鎮出發、有原生場景的攻擊演出、END 回收）呼叫 `Game::draw` 畫到暫存畫布（R5 階段 3 起；R4 時是 `acknowledge_present`），
   其餘照 Go 只設 `drawn`；地圖快取失效時照 Go 呼叫 `compose_native_map_frame`。
 - Go `t.Setenv` 的八個變數（`FD2_TITLE`、`FD2_SEED`、`FD2_MUTE`、`FD2_CAMPAIGN`、`FD2_SHOT_AI`、`FD2_NATIVE_SAVE`、
   `FD2_CUTSCENE_LOG`、`XDG_DATA_HOME`）以 F 組的 `f_child_env` 在子行程設定；父行程先把建構槽複製成 `<out>/FD2.SAV`。
