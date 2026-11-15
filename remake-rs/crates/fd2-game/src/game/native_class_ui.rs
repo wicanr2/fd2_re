@@ -82,17 +82,38 @@ mod native_class_ui_test;
 
 impl Game {
     /// Go：`native_class_ui.go:206`，`func (g *Game) presentNativeClassFrame(screen *ebiten.Image, frame []byte)`
-    pub(crate) fn present_native_class_frame(&mut self, screen: &mut Picture, frame: &mut [u8]) {
-        todo!("r5:native_class_ui.go:presentNativeClassFrame")
+    ///
+    /// R5 階段 2 r5d：`drawNativeStoryDialogue` 經 `presentNativeStoryDialogueFrame` 呼叫這裡（分組表列在「城鎮與設施」，
+    /// 本批沒有別組移植）。`frame` 改收 `&[u8]`：Go 只讀不寫。`g.nativeClassUI` 為 nil 時 Go 解參考 panic，Rust 同樣 panic。
+    pub(crate) fn present_native_class_frame(&mut self, screen: &mut Picture, frame: &[u8]) {
+        let palette =
+            self.native_class_ui.as_ref().expect("presentNativeClassFrame：nativeClassUI 為 nil").palette.clone();
+        self.present_native_class_frame_with_palette(screen, frame, &palette);
     }
 
     /// Go：`native_class_ui.go:210`，`func (g *Game) presentNativeClassFrameWithPalette( screen *ebiten.Image, frame []byte, palette color.Palette, )`
+    ///
+    /// R5 階段 2 r5d：`frame` 改收 `&[u8]`。`clearModernHDText`、`appendModernHDFacilityMoney` 在 `modernHDText` 為 nil
+    /// （忠實模式）時都不做事；HD 時 `todo!("r6:…")`。
     pub(crate) fn present_native_class_frame_with_palette(
         &mut self,
         screen: &mut Picture,
-        frame: &mut [u8],
+        frame: &[u8],
         palette: &ColorPalette,
     ) {
-        todo!("r5:native_class_ui.go:presentNativeClassFrameWithPalette")
+        self.native_interface_hud_visible = false;
+        self.native_map_presented = false;
+        if self.modern_hd_text.is_some() {
+            todo!("r6:modern_hd_text.go:clearModernHDText、modern_hd_facility_money.go:appendModernHDFacilityMoney");
+        }
+        // Go `image.NewPaletted(320×200)` 後 `copy(paletted.Pix, frame)`：只複製兩者較短的長度，其餘為 0。
+        let mut pix = vec![0u8; 320 * 200];
+        let n = pix.len().min(frame.len());
+        pix[..n].copy_from_slice(&frame[..n]);
+        let paletted = IndexedFrame { width: 320, height: 200, pix, palette: palette.clone() };
+        let native = Picture::from_indexed(&paletted);
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&native, &op);
     }
 }

@@ -3,7 +3,11 @@
 //! 骨架：Go 檔的 12 個函式中產生 9 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
 //!
 //! R4 B 組：9 個函式移植完。逐字、翻頁、嘴型與等鍵由 `update` 每個邏輯幀推進（`step_native_story_dialogue_progress`、
-//! `step_dialogue_mouth`），不讀牆鐘。繪圖函式 `drawNativeStoryDialogue` 是 `r8`，R5 再處理。
+//! `step_dialogue_mouth`），不讀牆鐘。
+//!
+//! R5 階段 2 r5d：繪圖函式 `drawNativeStoryDialogue`、`nativeStoryOpeningFrameIndex` 移植，呈現出口
+//! `presentNativeStoryDialogueFrame`（Go 在 HD 檔 `modern_hd_timed_dialogue.go`）只移植忠實模式路徑；畫格擷取打開時
+//! 嘴型改取 Go 全域亂數（`Game::go_global_rand`）。
 
 use super::*;
 
@@ -441,7 +445,14 @@ impl Game {
 
     /// R4 B 組新增：Go `rand.Intn(30)`（套件層全域來源）。惰性以 [`STORY_MOUTH_RNG_SEED`] 建立
     /// `story_mouth_rng`，與遊戲亂數 `rng` 分開（Go 的全域來源也不碰 `g.rng`）。
-    fn story_mouth_intn30(&mut self) -> i64 {
+    ///
+    /// R5 階段 2 r5d：`go_global_rand` 有值（畫格擷取打開）時改取它的 `Intn(30)`，與 Go 全域
+    /// `rand.Intn` 同一序列（Go 1.22 的全域 `Intn` 是 `(*Rand).Intn`，`Seed(4)` 後的來源與
+    /// `NewSource(4)` 相同）。
+    pub(crate) fn story_mouth_intn30(&mut self) -> i64 {
+        if let Some(global) = self.go_global_rand.as_mut() {
+            return global.intn(30);
+        }
         self.story_mouth_rng.get_or_insert_with(|| battle::GoMathRand::new(STORY_MOUTH_RNG_SEED)).intn(30)
     }
 
@@ -479,12 +490,190 @@ mod native_story_dialogue_test;
 impl Game {
     /// Go：`native_story_dialogue.go:485`，`func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    ///
+    /// R5 階段 2 r5d：逐行照 Go。`g.nativeClassUI` 為 nil 時 Go 解參考 panic，Rust 同樣 panic；`g.nativeDialogueLayout`
+    /// 為 nil 時 Go 的 `Validate` 回「lacks source provenance」，Rust 以空的 `NativeDialogueLayout`（`source_dat` 為空，
+    /// `validate` 回同一個錯誤）代入。HD 分支（`modernHDStoryTextFrame`、`nativeDialogueModernPortrait`、`modernHDText`）在
+    /// 忠實模式不成立，HD 時 `todo!("r6:…")`。
     pub(crate) fn draw_native_story_dialogue(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_story_dialogue.go:drawNativeStoryDialogue")
+        if self.dialog.last().is_none_or(|d| d.native_dialogue.is_none()) {
+            return false;
+        }
+        if self.native_dialogue_closing_live {
+            let mut index = self.native_dialogue_closing_t;
+            if index >= self.native_dialogue_closing.len() as i64 {
+                index = self.native_dialogue_closing.len() as i64 - 1;
+            }
+            if index >= 0 {
+                let frame = self.native_dialogue_closing[index as usize].clone();
+                if let Err(err) = self.present_native_story_dialogue_frame(
+                    screen,
+                    &frame,
+                    campaign::NATIVE_DIALOGUE_CLOSING,
+                    index,
+                    None,
+                    Rectangle::default(),
+                ) {
+                    self.load_err = err.to_string();
+                }
+            }
+            return true;
+        }
+        // caller-specific 開框、穩定頁與收框都只呈現完整預建的 indexed frame；
+        // 任一階段缺失時不回退到正規化對話介面。
+        if self.dlg_phase == 2 {
+            let index = native_story_opening_frame_index(self.dlg_t, self.native_dialogue_opening.len() as i64);
+            if index >= 0 {
+                let frame = self.native_dialogue_opening[index as usize].clone();
+                if let Err(err) = self.present_native_story_dialogue_frame(
+                    screen,
+                    &frame,
+                    campaign::NATIVE_DIALOGUE_OPENING,
+                    index,
+                    None,
+                    Rectangle::default(),
+                ) {
+                    self.load_err = err.to_string();
+                }
+            }
+            return true;
+        }
+        if self.dlg_phase != 0 {
+            return true;
+        }
+        if self.dlg_page < 0 || self.dlg_page >= self.native_dialogue_progressive.len() as i64 {
+            return true;
+        }
+        let page = self.dlg_page as usize;
+        let count = self.native_dialogue_progressive[page].len() as i64;
+        if count == 0 {
+            return true;
+        }
+        let mut progress = self.native_dialogue_progress;
+        if progress < 0 {
+            progress = 0;
+        }
+        if progress >= count {
+            progress = count - 1;
+        }
+        let mut frame = self.native_dialogue_progressive[page][progress as usize].clone();
+        // Go 的 nil `*NativeDialogueLayout`：`Validate` 對 nil 與空 SourceDAT 回同一個錯誤。
+        let no_layout = campaign::NativeDialogueLayout::default();
+        if self.locale_id == "zh-Hant"
+            && progress > 0
+            && progress < count - 1
+            && self.native_dialogue_speaking_frame > 0
+            && self.native_dialogue_portraits.len() == 4
+        {
+            let layout = self.native_dialogue_layout.as_ref().unwrap_or(&no_layout);
+            match campaign::compose_native_story_dialogue_mouth_frame(
+                &frame,
+                &self.native_dialogue_portraits[self.native_dialogue_speaking_frame as usize],
+                layout,
+            ) {
+                Ok(composed) => frame = composed,
+                Err(err) => {
+                    self.load_err = format!("native story dialogue: {err}");
+                    return true;
+                }
+            }
+        }
+        if self.mouth_open && progress == count - 1 && self.dlg_page < self.native_dialogue_mouth_open.len() as i64 {
+            frame = self.native_dialogue_mouth_open[page].clone();
+        }
+        // 最後一頁的箭頭：0x1E292 最後一欄的 FFFD 也等鍵（第七章 r4 seq 972 MHP 那一頁有箭頭）。
+        let last_page_arrow =
+            self.native_level_up_dialogue.as_ref().is_some_and(|d| d.await_last_key && d.close_timer == 0);
+        if self.native_story_dialogue_at_input_wait()
+            && (self.dlg_page + 1 < self.native_dialogue_progressive.len() as i64 || last_page_arrow)
+        {
+            let cells = &self.native_class_ui.as_ref().expect("drawNativeStoryDialogue：nativeClassUI 為 nil").dialogue;
+            let layout = self.native_dialogue_layout.as_ref().unwrap_or(&no_layout);
+            match campaign::compose_native_story_dialogue_wait_arrow(
+                &frame,
+                cells,
+                layout,
+                (self.native_dialogue_arrow_ticks / 6) % 2,
+            ) {
+                Ok(composed) => frame = composed,
+                Err(err) => {
+                    self.load_err = format!("native story dialogue: {err}");
+                    return true;
+                }
+            }
+        }
+        // Go `frame, hdText := g.modernHDStoryTextFrame(frame, progress)`：modernHDText 為 nil 時原樣回傳、沒有 HD 文字。
+        if self.modern_hd_text.is_some() {
+            todo!("r6:modern_hd_story_text.go:modernHDStoryTextFrame（HD 故事文字層）");
+        }
+        if self.native_dialogue_modern_portrait.is_some() {
+            todo!(
+                "r6:native_story_dialogue.go:drawNativeStoryDialogue nativeDialogueModernPortrait（HD 頭像疊層與 modernHDOverlay）"
+            );
+        }
+        if let Err(err) = self.present_native_story_dialogue_frame(
+            screen,
+            &frame,
+            campaign::NATIVE_DIALOGUE_STEADY,
+            0,
+            None,
+            Rectangle::default(),
+        ) {
+            self.load_err = err.to_string();
+            return true;
+        }
+        // Go `if g.modernHDText != nil { runs = append(runs, hdText...) }`：上面已對 HD 停下。
+        true
+    }
+
+    /// Go：`modern_hd_timed_dialogue.go:65`，`func (g *Game) presentNativeStoryDialogueFrame(screen *ebiten.Image, frame []byte, phase campaign.NativeDialogueFramePhase, index int, portrait image.Image, rect image.Rectangle) error`
+    ///
+    /// R5 階段 2 r5d 新增（Go 在 HD 檔，`PORTING.json` 狀態仍是 `r6`）：`drawNativeStoryDialogue` 的唯一呈現出口。
+    /// 只移植忠實模式的路徑：`modernHDWorldVisible` 為 false 時 `presentNativeClassFrame`；`portrait` 只有 HD 頭像會傳，
+    /// `modernHDText` 只在 HD 有值。HD 計時對白（`modernHDWorldVisible`）、RGBA 頭像疊層與 HD 框線面板 `todo!("r6:…")`。
+    pub(crate) fn present_native_story_dialogue_frame(
+        &mut self,
+        screen: &mut Picture,
+        frame: &[u8],
+        phase: campaign::NativeDialogueFramePhase,
+        index: i64,
+        portrait: Option<Arc<Picture>>,
+        rect: Rectangle,
+    ) -> Result<()> {
+        // phase、index 只給 HD 計時對白與框線面板用（下面 r6 分支）。
+        let _ = (phase, index);
+        if let Some(portrait) = portrait.as_ref()
+            && (portrait.width != rect.max.x - rect.min.x || portrait.height != rect.max.y - rect.min.y)
+        {
+            return Err(game_err!("native RGBA overlay geometry is invalid"));
+        }
+        if self.modern_hd_world_visible {
+            todo!(
+                "r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（HD 計時對白 modernHDTimedDialogueEligible）"
+            );
+        }
+        self.present_native_class_frame(screen, frame);
+        if portrait.is_some() {
+            todo!("r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（RGBA 頭像疊層）");
+        }
+        if self.modern_hd_text.is_some() && self.native_dialogue_layout.is_some() {
+            todo!("r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（HD 對白框線面板）");
+        }
+        Ok(())
     }
 }
 
 /// Go：`native_story_dialogue.go:339`，`func nativeStoryOpeningFrameIndex(tick, count int) int`
 pub(crate) fn native_story_opening_frame_index(tick: i64, count: i64) -> i64 {
-    todo!("r5:native_story_dialogue.go:nativeStoryOpeningFrameIndex")
+    if count <= 0 {
+        return -1;
+    }
+    let mut index = tick - 1;
+    if index < 0 {
+        index = 0;
+    }
+    if index >= count {
+        index = count - 1;
+    }
+    index
 }

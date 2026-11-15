@@ -919,6 +919,12 @@ pub struct Game {
     /// `rand.Intn(30)`（全域來源，每次啟動不同種子）；Rust 不用全域狀態，改由這個欄位以固定種子
     /// `STORY_MOUTH_RNG_SEED` 惰性建立（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`）。
     pub(crate) story_mouth_rng: Option<battle::GoMathRand>,
+    /// R5 階段 2 r5d 新增（沒有 Go 欄位）：Go `math/rand` 的套件層全域來源。只有畫格擷取打開時由驅動端設成
+    /// `GoMathRand::new(4)`（Go 黃金在測試開頭 `rand.Seed(4)`）；這時故事對白嘴型的 `rand.Intn(30)` 與確認框嘴型的
+    /// `rand.New(rand.NewSource(rand.Int63()))` 依 Go 的取用順序共用它（見 [`Game::story_mouth_intn30`]、
+    /// [`Game::sample_native_confirmation_mouth_random`]）。`None`（預設）時維持 R4 的兩個固定種子
+    /// （KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`）。
+    pub(crate) go_global_rand: Option<battle::GoMathRand>,
     /// Rust 新增（沒有 Go 對應）：本邏輯幀的輸入。取代 Go 直接查詢 `inpututil.IsKeyJustPressed`、
     /// `ebiten.IsKeyPressed`；驅動端（無畫面重播或 `fd2-app`）在每次 `update` 前設定。
     pub(crate) tick_input: TickInput,

@@ -1486,10 +1486,10 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 
 | 分組 | 函式（r5／ported／HD r6） | 行數（r5） | 畫布操作 | 局部黃金 |
 |---|---|---|---|---|
-| 城鎮與設施 | 28（16／12／0） | 859 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter、chapter＋FD2_SHOT_STATE、opening＋chapter |
+| 城鎮與設施 | 28（14／14／0；`presentNativeClassFrame` 兩個由 r5d 移植） | 842 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter、chapter＋FD2_SHOT_STATE、opening＋chapter |
 | Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | — |
 | HUD 與選單 | 35（14／21／0；回合橫幅 6 個由 r5m 移植） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
-| 對話與文字 | 16（5／11／0） | 205 | 平移、ColorScale、TTF | chapter、opening＋chapter |
+| 對話與文字 | 16（2／14／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個留 r5） | 79 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同）、opening＋chapter |
 | 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
 | 地圖與單位 | 14（0／14／0；R5 階段 2 r5m） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
 | 標題與開場 | 7（0／7／0；R5 階段 2 `r5t` 移植 4 個） | 0 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening（標題段 1940／1940 次與 Go 相同）、opening＋chapter |
@@ -1502,8 +1502,8 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 |---|---|---|---|---|---|
 | 城鎮與設施 | `main.go:10638..11123` | `drawCampaignUI` | 486 | DrawImage、平移、NewImage、Fill | opening＋chapter |
 | 城鎮與設施 | `native_church_ui.go:214..235` | `drawNativeChurchUIJob` | 22 | — | chapter＋FD2_SHOT_STATE |
-| 城鎮與設施 | `native_class_ui.go:206..208` | `presentNativeClassFrame` | 3 | — | opening＋chapter |
-| 城鎮與設施 | `native_class_ui.go:210..223` | `presentNativeClassFrameWithPalette` | 14 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| 城鎮與設施 | `native_class_ui.go:206..208` | `presentNativeClassFrame`（ported，r5d） | 3 | — | opening＋chapter |
+| 城鎮與設施 | `native_class_ui.go:210..223` | `presentNativeClassFrameWithPalette`（ported，r5d） | 14 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
 | 城鎮與設施 | `native_class_ui_lifecycle.go:179..240` | `drawNativeClassUIJob` | 62 | — | chapter |
 | 城鎮與設施 | `native_hotel_ui.go:82..102` | `composeNativeHotelStable` | 21 | — | chapter＋FD2_SHOT_STATE |
 | 城鎮與設施 | `native_hotel_ui.go:106..157` | `composeNativeHotelFrame` | 52 | — | chapter＋FD2_SHOT_STATE |
@@ -1536,11 +1536,11 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | HUD 與選單 | `native_player_input.go:214..237` | `drawNativePlayerStatus` | 24 | — | opening＋chapter |
 | HUD 與選單 | `native_player_movement.go:100..118` | `drawNativeMovementPanel` | 19 | DrawImage、平移、縮放 | opening＋chapter |
 | HUD 與選單 | `native_system_info_ui.go:186..233` | `drawNativeSystemInfoUI` | 48 | DrawImage、平移、縮放、NewImageFromImage、SubImage | opening＋chapter |
-| 對話與文字 | `font.go:175..191` | `Font.Draw` | 17 | 平移、ColorScale、TTF | chapter |
-| 對話與文字 | `native_confirmation_mouth.go:71..81` | `composeNativeConfirmationMouth` | 11 | — | chapter |
-| 對話與文字 | `native_story_dialogue.go:339..351` | `nativeStoryOpeningFrameIndex` | 13 | — | opening＋chapter |
-| 對話與文字 | `native_story_dialogue.go:485..586` | `drawNativeStoryDialogue` | 102 | — | opening＋chapter |
-| 對話與文字 | `native_story_dialogue_locale.go:160..221` | `drawIndexedLocalizedText` | 62 | — | chapter |
+| 對話與文字 | `font.go:175..191` | `Font.Draw`（r5：缺字型點陣化，見「R5 階段 2：r5d」） | 17 | 平移、ColorScale、TTF | chapter |
+| 對話與文字 | `native_confirmation_mouth.go:71..81` | `composeNativeConfirmationMouth`（ported，r5d） | 11 | — | chapter |
+| 對話與文字 | `native_story_dialogue.go:339..351` | `nativeStoryOpeningFrameIndex`（ported，r5d） | 13 | — | opening＋chapter |
+| 對話與文字 | `native_story_dialogue.go:485..586` | `drawNativeStoryDialogue`（ported，r5d） | 102 | — | opening＋chapter |
+| 對話與文字 | `native_story_dialogue_locale.go:160..221` | `drawIndexedLocalizedText`（r5：缺字型點陣化，見「R5 階段 2：r5d」） | 62 | — | chapter |
 | 戰鬥演出 | `main.go:11231..11387` | `drawBattleScene` | 157 | DrawImage、平移、縮放、Fill | chapter |
 | 戰鬥演出 | `native_ai_idle_recovery.go:328..350` | `drawNativeAIIdleRecovery` | 23 | DrawImage、縮放、NewImageFromImage | chapter |
 | 戰鬥演出 | `native_ch28_post_present.go:339..363` | `drawNativeCh28PostPresent` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
@@ -1579,7 +1579,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 |---|---|---|---|
 | 60 Hz 虛擬時鐘 | 第一次擷取時把 `playerClock.wall` 設在遠未來（`sample` 只回傳 `game`），`wall` 為零時 `game` 從 `time.Unix(1<<30, 0)` 起；之後每次擷取前把 `game` 推進 `Δg.frame × 16666666 ns × normalizePlayerSpeed(speed)`。pump 以外的 `Update` 期間遊戲時間凍結，到下一個 pump 幀才補上；pump 的 `Update` 看到的是上一次擷取的時間（比 `Draw` 晚一幀推進） | `FrameCapture::pin_clock` 照寫：`player_clock.wall = GameInstant(i64::MAX/2)`，`game += d × 16666666 × speed`。`VirtualFrameClock` 照舊每幀推進 `virtual_now`，但 `sample` 的差值為負，只回傳凍結的 `game`，與 Go 相同。擷取打開時遊戲時間改由擷取點推進，與 R4 重播（每個 `update` 前推進 1/60 秒，誤差小於 speed 奈秒）不同；Go 黃金在這個模型下檢查點仍是 `1c846f57…` | 已實作 |
 | 第一個 pump 之前 | Go 以真實牆鐘跑 `startFromNormalTitle`（`clock = "virtual-60hz-from-first-pump"`），只有差值影響畫面 | 以 R4 的 `VirtualFrameClock` 跑，`clock` 同名 | 同 |
-| 全域亂數 | 測試開頭 `rand.Seed(4)`，之後 `math/rand` 全域來源依程式順序被取用：故事對白嘴型 `rand.Intn(30)`（`native_story_dialogue.go:430`、`442`、`453`）、確認框嘴型第一次用到時 `rand.New(rand.NewSource(rand.Int63()))`（`native_confirmation_mouth.go:38`）、結局預覽（R8） | 擷取打開時要改成：`Game` 另存一個 `GoMathRand::new(4)` 代表全域來源，在重播開始前建立；`story_mouth_intn30` 改取它的 `intn(30)`；`native_confirmation_mouth_rng` 惰性建立時改用 `GoMathRand::new(global.int63())`；擷取關閉時維持 R4 的兩個固定種子（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`） | **未實作**；`frames.json` 的 `global_rand` 寫明，階段 3 比對前必須接上 |
+| 全域亂數 | 測試開頭 `rand.Seed(4)`，之後 `math/rand` 全域來源依程式順序被取用：故事對白嘴型 `rand.Intn(30)`（`native_story_dialogue.go:430`、`442`、`453`）、確認框嘴型第一次用到時 `rand.New(rand.NewSource(rand.Int63()))`（`native_confirmation_mouth.go:38`）、結局預覽（R8） | 擷取打開時要改成：`Game` 另存一個 `GoMathRand::new(4)` 代表全域來源，在重播開始前建立；`story_mouth_intn30` 改取它的 `intn(30)`；`native_confirmation_mouth_rng` 惰性建立時改用 `GoMathRand::new(global.int63())`；擷取關閉時維持 R4 的兩個固定種子（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`） | 已實作（R5 階段 2 r5d：`Game::go_global_rand`、`pin_global_rand`，見「R5 階段 2：r5d」） |
 | gaps | pump 以外迴圈的 `Update` 不擷取，記 `{after_capture, uncaptured_updates, from_update_frame, to_update_frame, node}`；第一章 7 段 9282 個（`driveStory` 8430、武器店直接迴圈 817、`closeRing`／`settleActionOverlay` 5 段各 7） | 同一格式記在 `gaps`；Rust 的迴圈結構照 Go 移植（R4），段數與長度應相同，階段 3 先比 `gaps` 再比畫格 | 已實作 |
 | 調色盤與像素格式 | `ReadPixels` 的預乘 RGBA8 | `Picture` 預乘（本節「CPU 畫布」） | 已實作 |
 
@@ -1805,4 +1805,121 @@ spawn 24、world 1796、map 2257、索引 2170。r1（Go 端用舊版掛載配�
 | `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；335 passed、4 ignored（階段 1 的 320 項加本組 15 項） |
 | `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
 | `tools/rust_parity_ch01.sh`（擷取關閉） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同（`work/r5-stage2-r5m-20261115/r5m-parity`） |
+| `Cargo.lock` | 沒有改動；沒有新增套件 |
+
+## R5 階段 2：r5d（全域亂數、對話與文字，2026-11-15）
+
+代號 `r5d`，基準 `4bcefc55`（含 r5t、r5m）。工作單是「R5 對照表」的「對話與文字」5 個 r5 函式，加上「畫格擷取介面」的全域亂數。
+
+### r5d：全域亂數
+
+| 項目 | 內容 |
+|---|---|
+| 欄位 | `Game::go_global_rand: Option<battle::GoMathRand>`（Rust 新增，代表 Go `math/rand` 的套件層全域來源）。沿用 `fd2-rules` 的 `GoMathRand`（`rust-port-no-go-stdlib` 的具名例外 `rng.rs`），沒有另寫一份 |
+| 設定 | `parity_replay::pin_global_rand`：`GoMathRand::new(4)`（Go 黃金 `rand.Seed(goldenFrameGlobalRandSeed)`；Go 1.22 的 `Seed` 對 `lockedSource` 重新播種，序列與 `NewSource(4)` 相同）。Go 在建立 `Game` 之前播種，`loadGame` 不取用全域來源，所以 Rust 在 `load_game` 之後、第一個 `update` 之前設定等價；設定前檢查兩個嘴型來源都還沒建立 |
+| 何時打開 | 章重播的 `frame_capture`、`map_layer_capture`、`dialogue_layer_capture` 任一個打開時；opening 模式一律打開。全部關閉時 `go_global_rand` 是 `None`，嘴型照 R4 的兩個固定種子（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed` 只剩擷取關閉時適用），第一章重播結果不變 |
+| 故事對白嘴型 | `story_mouth_intn30`：有全域來源時取它的 `intn(30)`（Go `rand.Intn(30)`，`native_story_dialogue.go:430`、`442`、`453`） |
+| 確認框嘴型 | `sample_native_confirmation_mouth_random`：私有來源還沒建立時，有全域來源就以它的 `int63()` 當種子（Go `rand.New(rand.NewSource(rand.Int63()))`，`native_confirmation_mouth.go:38`），之後只抽私有來源 |
+| 其他取用者 | `grep` `remake/` 非測試 Go 檔的全域 `rand.*(`：只有上面三處與結局預覽（`ending_preview.go:641`、`646`，R8） |
+
+`frames.json`、`map-layers.json`、`dialogue-layers.json` 的 `global_rand` 寫成實際模型。
+
+### r5d：移植結果
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py` 把 5 個函式從 `r5` 改成 `ported`（記在 `r5_stage2_r5d`）；全 crate 狀態 ported 648、r5 36、r6 59、r8 1179。
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `native_confirmation_mouth.go:71` `composeNativeConfirmationMouth` | `Game::compose_native_confirmation_mouth` | 不成立時 Go 回同一個切片，Rust 回複本 |
+| `native_story_dialogue.go:339` `nativeStoryOpeningFrameIndex` | `native_story_opening_frame_index` | 逐行 |
+| `native_story_dialogue.go:485` `drawNativeStoryDialogue` | `Game::draw_native_story_dialogue` | 收框、開框、穩定頁、說話嘴型、等鍵張嘴與等鍵箭頭照 Go 逐分支；`nativeClassUI` 為 nil 時 Go 解參考 panic，Rust 同樣 panic；`nativeDialogueLayout` 為 nil 時以空的 `NativeDialogueLayout` 代入，`validate` 回與 Go nil 相同的錯誤。`modernHDStoryTextFrame`、`nativeDialogueModernPortrait` 在忠實模式不成立，HD 時 `todo!("r6:…")` |
+| `native_class_ui.go:206` `presentNativeClassFrame`、`:210` `presentNativeClassFrameWithPalette` | 同名 snake_case | 分組表列在「城鎮與設施」，是 `drawNativeStoryDialogue` 的呈現出口；本批沒有別組移植它們。`clearModernHDText`、`appendModernHDFacilityMoney` 在 `modernHDText` 為 nil 時不做事，HD 時 `todo!("r6:…")` |
+| `modern_hd_timed_dialogue.go:65` `presentNativeStoryDialogueFrame` | `Game::present_native_story_dialogue_frame`（放在 `native_story_dialogue.rs`） | HD 檔，`PORTING.json` 狀態維持 `r6`（`rust_r5_mark_ported.py` 只收 `r5`）。只移植忠實模式路徑：`modernHDWorldVisible` 為 false 時 `presentNativeClassFrame`；HD 計時對白、RGBA 頭像疊層、HD 框線面板 `todo!("r6:…")` |
+
+畫布只用 `canvas.rs` 既有的 `from_indexed`、`draw_image`（`Scale(2, 2)`），沒有補語意。
+
+簽名變更：`present_native_class_frame`、`present_native_class_frame_with_palette` 的 `frame` 由 `&mut [u8]` 改成 `&[u8]`（Go 只讀）。
+
+### r5d：`Font.Draw` 與 `drawIndexedLocalizedText` 留在 r5
+
+兩個都要把 TTF 字形點陣化：`Font.Draw` 是 `text.DrawWithOptions`，`drawIndexedLocalizedText` 是 `font.Drawer` 畫 alpha 遮罩再以 A≥32 二值化。121 定案要用 `Cargo.lock` 已鎖定的套件，查到的情況：
+
+| 項目 | 現況 |
+|---|---|
+| `Cargo.lock` 已鎖定的點陣化套件 | `ab_glyph` 0.2.32（`ab_glyph_rasterizer` 0.1.10、`owned_ttf_parser` 0.25.1；由 `sctk-adwaita` 帶進）、`swash` 0.2.10 與 `skrifa` 0.44.0（由 `bevy_text`、`parley` 帶進）；原始碼都在 `work/rust-build/cargo` 的套件快取 |
+| 直接依賴 | `fd2-game`、`fd2-app` 都沒有。加 `ab_glyph = "=0.2.32"` 不新增套件版本，但 `Cargo.lock` 裡 `fd2-game` 的 `dependencies` 會多一行；`tools/rust_game_test.sh` 以 `--locked` 執行，不改 `Cargo.lock` 就建不起來。本輪規定 `Cargo.lock` 不變，所以沒有做 |
+| 字型檔 | Go 黃金的 `fd2-go-test-local` 裝了 `fonts-noto-cjk`，`load_font` 讀到 `/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`；`fd2-rust:1.99.1-r3` 只有 DejaVu，主工作區 `remake/assets/fonts` 也沒有 `cjk.ttc`。Rust 章重播的 `load_font` 回 `None`，`draw_field` 的 `font.is_some()` 文字層整段不走（Go 會畫 `g.msg`），也不會碰到 `Font::draw` 的 `todo!` |
+| 影響 | 階段 0 `chapter` 帶 `+ttf-msg` 的 5763 張在整張比對時會不同；繁中對白走原版點陣字模，不受影響 |
+| 需要決定 | (1) 是否同意 `fd2-game` 加 `ab_glyph`（或 `swash`）的依賴邊並更新 `Cargo.lock`；(2) Rust 測試映像是否加 `fonts-noto-cjk`，或唯讀掛入同一份 `NotoSansCJK-Regular.ttc`（雜湊寫進收據）。兩項都定了，`Font.Draw`、`drawIndexedLocalizedText` 與 `TextMeasure`（`face_for`、`width` 的 `todo!("R5…")`）可以一起接 |
+
+`drawIndexedLocalizedText` 在第一章 Go 執行 2 次，覆蓋率顯示都走 `displayFont.indexedHD` 的 HD 擷取分支（商店 HD 文字，R6），忠實模式繁中不經過。
+
+### r5d：測試
+
+| Go 測試 | Rust |
+|---|---|
+| `native_story_dialogue_progress_test.go:176` `TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder` | `test_native_story_opening_frame_index_preserves_five_stage_order` |
+| Rust 新增 3 項（`native_story_dialogue_test.rs`） | 穩定頁依進度選幀並 2 倍貼上、清本幀旗標、等鍵張嘴；開框與收框選幀、其他階段不畫；說話嘴型合成與沒有版面時的失敗訊息 |
+| Rust 新增 4 項（`native_confirmation_mouth/native_confirmation_mouth_test.rs`） | 確認框嘴型的原樣回傳分支、以第 3 幀合成與失敗條件；全域亂數依 Go 取用順序共用；擷取關閉時維持 R4 固定種子 |
+
+沒有移植：`native_confirmation_mouth_test.go` 3 項經 `newPreparationRecordTestGame`、`composeNativePreparationPromptFrame`（城鎮與設施，r5）與 `beginNativeSystemEndTurn`（crate 裡還沒有）驅動，留給主題組；`native_story_dialogue_locale_test.go:97`、`:123` 與 `native_shop_locale_test.go` 要真 TTF；`modern_hd_text_test.go:10` 是 HD（R6）。
+
+### r5d：局部黃金
+
+第一章 `chapter` 畫格的對白多半疊在正規化地圖層上（`r5p`），所以照 r5m 的做法做圖層級比對：
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_dialogue_layers_test.go` | `TestRustGoldenDialogueLayers`，未設 `FD2_GOLDEN_DIALOGUE_LAYERS_OUT` 時 `t.Skip`；借用 `goldenFrameProbe`、`pinClock`、`goldenMapLayersBranch`、`mapLayerSHA`，既有 Go 檔沒有改 |
+| `src/game/parity_replay/rust_golden_dialogue_layers_test.rs` | Rust 端 `DialogueLayerCapture`，掛在 `Driver::pump` 同一位置 |
+| `tools/rust_r5_dialogue_layers.sh` | Docker 驅動（同 `tools/rust_r5_map_layers.sh`）：Go（`fd2-go-test-local`、Xvfb）與 Rust（`fd2-rust:1.99.1-r3`）各跑一次第一章受控重播，再比對 |
+| `tools/rust_r5_dialogue_layers_compare.py` | 逐擷取點比對，印出嘴型、對白畫格的張數與相同數、各階段張數與第一個不同 |
+
+擷取規則（兩邊相同）：
+
+- 掛點與時鐘照階段 0 `chapter` 模式；Go `rand.Seed(4)`，Rust `pin_global_rand`。每一幀先照 `Draw` 開頭清三個本幀旗標，以 `goldenMapLayersBranch` 決定分支。
+- 每次擷取都記嘴型狀態：故事對白 `mouthState` 的 `Open`、`Countdown`，確認框嘴型的擁有者是否存在、`Open`、`Countdown`。兩者都取自全域亂數，逐幀相同才代表取用順序相同。
+- 尾段時 640×400 `Fill` 黑後呼叫 `drawNativeStoryDialogue`；回 true 時另記階段（收框、開框、穩定頁）、`closingT`、`dlgT`、頁、進度、說話幀與是否合成說話嘴型、是否換等鍵張嘴、是否疊等鍵箭頭與箭頭計數、本次新增的 `loadErr`、畫布 RGBA SHA-256。
+- 每一幀的結果組成一行比對鍵（`rows[].key`），`sequence_sha256` 是所有鍵加換行串接後的 SHA-256。
+
+結果（`tools/rust_r5_dialogue_layers.sh <主工作區>/work/r5-stage2-r5d-20261115/r1`、`r2`，輸出不進版控）：
+
+| 項目 | Go | Rust |
+|---|---|---|
+| `checkpoints.jsonl` | `1c846f57…`（R4 黃金） | `1c846f57…` |
+| 擷取數 | 13751（early 7323、spawn 24、tail 6404） | 同 |
+| 序列雜湊 | `967a046ce56677913083e427014740611823e2a6e2c1ec2f9d834158f1858363` | 同 |
+| 嘴型狀態 | 13751 次 | 13751 次相同 |
+| 對白畫格 | 2254 張（Go 相異 1630 張） | 2254 張相同（狀態與 RGBA） |
+
+對白畫格分類：收框 548、開框 364、穩定頁 1342；穩定頁中說話嘴型合成 789、等鍵張嘴 4、等鍵箭頭 7；`loadErr` 0。沒有遮蔽像素。
+
+- 竄改反向檢查（`work/r5-stage2-r5d-20261115/tamper`，只重跑 Rust 端、沿用 r1 的 Go 端）：全域種子暫改 5、說話嘴型改取前一幀頭像，比對失敗：嘴型狀態 13636／13751、對白畫格 1457／2254，第一個不同在第 469 次（說話嘴型的 RGBA）。改回後 r2 重跑相同。
+- 旁證：對照階段 0 `chapter` 整張黃金同一擷取點，對白 2254 張中 1037 張逐位元組相同（`presentNativeClassFrame` 蓋滿全畫面、之後沒有 TTF 短訊等別組圖層的那些）。這只是旁證，不取代上面的比對。
+- 涵蓋限制：等鍵張嘴只有 4 張、等鍵箭頭 7 張；序章（`driveStory`）的對白在 `chapter` 模式是 gaps，不擷取，要等 opening 模式整張比對（`r5p` 的正規化地圖層接上後）涵蓋。
+
+### r5d：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `main.rs` | `Game` 加欄位 `go_global_rand`；`Game::draw`、`draw_field` 沒有改 |
+| `parity_replay.rs` | 掛 `rust_golden_dialogue_layers_test` 子模組與 `pub(crate) use`；模組文件加一行 |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `dialogue_layer_capture`；`pump` 在 `map_layer_capture` 之後呼叫它的 `observe` |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `DialogueLayerCapture::from_env()`；任一擷取打開時 `pin_global_rand`；`end` checkpoint 之後 `finish` |
+| `parity_replay/rust_golden_frames_test.rs` | `GOLDEN_GLOBAL_RAND_SEED`、`pin_global_rand`，`GLOBAL_RAND_MODEL` 改寫成實際模型 |
+| `parity_replay/rust_golden_frames_opening_test.rs` | `Driver` 加新欄位；`load_game` 後 `pin_global_rand` |
+| `canvas.rs` | 沒有改 |
+
+### r5d：KNOWN_DIFFERENCES
+
+沒有新增。`cosmetic-mouth-rng-fixed-seed` 的適用範圍縮成擷取關閉時（正式執行與 R4 重播）。
+
+### r5d：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；346 passed、5 ignored（基準 338 項加本組 8 項） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5d-20261115/r5d-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5_dialogue_layers.sh` | 上節；r1、r2 兩次序列雜湊相同，兩邊的 `checkpoints.jsonl` 都是 `1c846f57…` |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |

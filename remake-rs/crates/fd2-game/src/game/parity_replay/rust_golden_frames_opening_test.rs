@@ -6,8 +6,8 @@
 //! `tools/rust_r5_opening_frames.sh` 以 `--ignored` 呼叫；沒設時印「略過」後返回（Go `t.Skip`）。
 //!
 //! `Game::draw` 停在未移植的 `todo!` 時，[`FrameCapture::try_observe`] 記下位置，這裡就結束並照常寫
-//! `frames.json`（`stopped` 欄位寫明停在哪一次擷取），比對工具只比停下之前的擷取。全域亂數同 chapter 模式還沒接上
-//! （`GLOBAL_RAND_MODEL`）；標題段不用嘴型亂數。
+//! `frames.json`（`stopped` 欄位寫明停在哪一次擷取），比對工具只比停下之前的擷取。全域亂數同 chapter 模式以
+//! [`pin_global_rand`] 接上（R5 階段 2 r5d）；標題段不用嘴型亂數。
 
 use super::*;
 use std::path::{Path, PathBuf};
@@ -72,7 +72,15 @@ fn run_golden_frames_opening(out: &Path) {
     if g.title_phase != "cutscene" {
         panic!("正常START未從開場動畫開始：{:?}", g.title_phase);
     }
-    let mut d = Driver { g, clock: VirtualFrameClock::default(), frame_capture: None, map_layer_capture: None };
+    let mut d = Driver {
+        g,
+        clock: VirtualFrameClock::default(),
+        frame_capture: None,
+        map_layer_capture: None,
+        dialogue_layer_capture: None,
+    };
+    // R5 階段 2 r5d：Go 黃金的 rand.Seed(4)。
+    pin_global_rand(&mut d.g);
     let mut phases = serde_json::Map::new();
     let mut extra = serde_json::Map::new();
     extra.insert(

@@ -1,7 +1,7 @@
 //! Go 來源：`remake/cmd/fd2/native_story_dialogue_progress_test.go`（R4 B 組，期望值不改）。
 //!
-//! `TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder` 測的是繪圖輔助 `nativeStoryOpeningFrameIndex`
-//! （`r8`，`drawNativeStoryDialogue` 才用），不在這裡移植。
+//! R5 階段 2 r5d：`TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder`（繪圖輔助 `nativeStoryOpeningFrameIndex`）
+//! 移植到這裡，另加 `drawNativeStoryDialogue` 的畫格測試（Go 沒有直接畫這個函式的測試）。
 
 use super::*;
 
@@ -238,4 +238,142 @@ fn test_story_mouth_rng_is_deterministic_and_separate_from_game_rng() {
     let first = run();
     assert_eq!(first, run(), "同一輸入序列的嘴型軌跡不同");
     assert!(first.iter().any(|&(open, _)| open), "200 幀內嘴型一次都沒張開");
+}
+
+/// Go：`native_story_dialogue_progress_test.go:176` `TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder`
+#[test]
+fn test_native_story_opening_frame_index_preserves_five_stage_order() {
+    let want = [0, 0, 1, 2, 3, 4, 4, 4];
+    for (tick, expected) in want.into_iter().enumerate() {
+        let got = native_story_opening_frame_index(tick as i64, 5);
+        assert_eq!(got, expected, "opening tick{tick}={got}, want {expected}");
+    }
+    let got = native_story_opening_frame_index(0, 0);
+    assert_eq!(got, -1, "missing opening frames returned index {got}");
+}
+
+/// R5 階段 2 r5d 夾具：每個索引一個可辨認的不透明色（預乘＝原值）。
+fn r5d_palette() -> ColorPalette {
+    (0..256).map(|i| ColorRgba { r: i as u8, g: 255 - i as u8, b: (i / 2) as u8, a: 0xff }).collect()
+}
+
+fn r5d_frame(seed: u8) -> Vec<u8> {
+    (0..320 * 200).map(|i: usize| ((i / 7) as u8).wrapping_add(seed)).collect()
+}
+
+fn r5d_dialogue_game() -> Game {
+    Game {
+        dialog: vec![native_line(&[&["甲"]])],
+        native_class_ui: Some(NativeClassUIAssets { palette: r5d_palette(), ..Default::default() }),
+        locale_id: String::from("zh-Hant"),
+        // 只有一頁：最後一張等鍵時不疊箭頭（箭頭要原版 FDOTHER 對話框格，由局部黃金涵蓋）。
+        native_dialogue_progressive: vec![vec![r5d_frame(1), r5d_frame(2), r5d_frame(3)]],
+        native_dialogue_opening: (10..15).map(r5d_frame).collect(),
+        native_dialogue_closing: (20..23).map(r5d_frame).collect(),
+        native_dialogue_mouth_open: vec![r5d_frame(30)],
+        native_map_presented: true,
+        native_interface_hud_visible: true,
+        ..Default::default()
+    }
+}
+
+/// `presentNativeClassFrame` 的期望：320×200 索引畫格配調色盤，`GeoM.Scale(2, 2)` 最近鄰貼滿 640×400。
+fn r5d_expect_2x(frame: &[u8]) -> Vec<u8> {
+    let palette = r5d_palette();
+    let mut out = vec![0u8; 640 * 400 * 4];
+    for y in 0..400 {
+        for x in 0..640 {
+            let c = palette[frame[(y / 2) * 320 + x / 2] as usize];
+            out[(y * 640 + x) * 4..(y * 640 + x) * 4 + 4].copy_from_slice(&[c.r, c.g, c.b, c.a]);
+        }
+    }
+    out
+}
+
+fn r5d_draw(g: &mut Game) -> (bool, Vec<u8>) {
+    let mut screen = Picture::new_image(LOGICAL_W, LOGICAL_H);
+    screen.fill(ColorRgba { r: 1, g: 2, b: 3, a: 0xff });
+    let drawn = g.draw_native_story_dialogue(&mut screen);
+    (drawn, screen.read_pixels().to_vec())
+}
+
+/// R5 階段 2 r5d：沒有原生對白時回 false、不畫；穩定頁以進度選預建畫格，經 `presentNativeClassFrame` 放大兩倍，
+/// 並清掉本幀的 HUD／原生地圖旗標。
+#[test]
+fn test_draw_native_story_dialogue_presents_progressive_frame_2x() {
+    let mut g = Game::default();
+    let (drawn, pix) = r5d_draw(&mut g);
+    assert!(!drawn, "沒有對白卻回 true");
+    assert_eq!(&pix[..4], &[1, 2, 3, 0xff], "沒有對白卻改了畫面");
+
+    let mut g = r5d_dialogue_game();
+    g.native_dialogue_progress = -5; // 夾到第 0 張
+    let (drawn, pix) = r5d_draw(&mut g);
+    assert!(drawn && pix == r5d_expect_2x(&r5d_frame(1)), "進度 <0 沒有呈現第 0 張");
+    assert!(!g.native_map_presented && !g.native_interface_hud_visible, "presentNativeClassFrame 沒有清本幀旗標");
+    g.native_dialogue_progress = 99; // 夾到最後一張
+    let (_, pix) = r5d_draw(&mut g);
+    assert!(pix == r5d_expect_2x(&r5d_frame(3)), "進度超出沒有呈現最後一張");
+    g.mouth_open = true; // 最後一張且張嘴：改用等鍵張嘴畫格
+    let (_, pix) = r5d_draw(&mut g);
+    assert!(pix == r5d_expect_2x(&r5d_frame(30)), "等鍵張嘴沒有換成 nativeDialogueMouthOpen");
+    g.native_dialogue_progress = 1; // 不是最後一張：張嘴不換
+    let (_, pix) = r5d_draw(&mut g);
+    assert!(pix == r5d_expect_2x(&r5d_frame(2)), "中間進度不該換成張嘴畫格");
+    assert!(g.load_err.is_empty(), "loadErr={}", g.load_err);
+}
+
+/// R5 階段 2 r5d：開框（`dlgPhase == 2`）以 `nativeStoryOpeningFrameIndex(dlgT)` 選幀，收框以 `closingT` 選幀並夾在
+/// 最後一張；其他非穩定階段回 true 而不畫。
+#[test]
+fn test_draw_native_story_dialogue_opening_closing_and_other_phases() {
+    let mut g = r5d_dialogue_game();
+    g.dlg_phase = 2;
+    for (tick, index) in [(0, 0), (1, 0), (3, 2), (9, 4)] {
+        g.dlg_t = tick;
+        let (drawn, pix) = r5d_draw(&mut g);
+        assert!(drawn && pix == r5d_expect_2x(&r5d_frame(10 + index)), "開框 tick{tick} 不是第 {index} 張");
+    }
+    g.dlg_phase = 1;
+    let (drawn, pix) = r5d_draw(&mut g);
+    assert!(drawn && pix[..4] == [1, 2, 3, 0xff], "dlgPhase=1 應回 true 且不畫");
+    g.native_dialogue_closing_live = true;
+    for (t, index) in [(0, 0), (2, 2), (7, 2)] {
+        g.native_dialogue_closing_t = t;
+        let (drawn, pix) = r5d_draw(&mut g);
+        assert!(drawn && pix == r5d_expect_2x(&r5d_frame(20 + index)), "收框 t{t} 不是第 {index} 張");
+    }
+    g.native_dialogue_closing.clear();
+    let (drawn, pix) = r5d_draw(&mut g);
+    assert!(drawn && pix[..4] == [1, 2, 3, 0xff], "沒有收框畫格時應回 true 且不畫");
+}
+
+/// R5 階段 2 r5d：繁中說話嘴型以 `ComposeNativeStoryDialogueMouthFrame` 合成；沒有版面時照 Go 的 nil `Validate`
+/// 失敗，寫 `loadErr` 並回 true（不回退到其他介面）。
+#[test]
+fn test_draw_native_story_dialogue_speaking_mouth_composes_or_fails_closed() {
+    let mut g = r5d_dialogue_game();
+    g.native_dialogue_progress = 1;
+    g.native_dialogue_speaking_frame = 2;
+    g.native_dialogue_portraits =
+        (0..4).map(|i| dato::Frame { width: 80, height: 80, pixels: vec![0x40 + i as u8; 80 * 80] }).collect();
+    let layout = campaign::NativeDialogueLayout {
+        source_dat: String::from("FDTXT.DAT"),
+        control: String::from("FFEE"),
+        pages: vec![vec![String::from("甲")]],
+        ..Default::default()
+    };
+    g.native_dialogue_layout = Some(layout.clone());
+    let want =
+        campaign::compose_native_story_dialogue_mouth_frame(&r5d_frame(2), &g.native_dialogue_portraits[2], &layout)
+            .expect("合成說話嘴型");
+    let (drawn, pix) = r5d_draw(&mut g);
+    assert!(drawn && pix == r5d_expect_2x(&want), "說話嘴型畫格不同（loadErr={}）", g.load_err);
+    g.native_dialogue_layout = None;
+    let (drawn, pix) = r5d_draw(&mut g);
+    assert!(drawn && pix[..4] == [1, 2, 3, 0xff], "沒有版面仍畫了畫面");
+    assert_eq!(
+        g.load_err, "native story dialogue: campaign: native dialogue layout lacks source provenance",
+        "沒有版面的錯誤訊息"
+    );
 }

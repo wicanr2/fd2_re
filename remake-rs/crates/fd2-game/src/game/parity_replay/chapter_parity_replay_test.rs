@@ -1574,6 +1574,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             clock: VirtualFrameClock::default(),
             frame_capture: FrameCapture::from_env(),
             map_layer_capture: MapLayerCapture::from_env(),
+            dialogue_layer_capture: DialogueLayerCapture::from_env(),
         },
         out: out.to_path_buf(),
         run: run.to_path_buf(),
@@ -1606,6 +1607,10 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
     }
     if chapter == 29 {
         todo!("R8: chapter_parity_replay_test.go:931 event79 turn pair RNG")
+    }
+    // R5 階段 2 r5d：畫格擷取打開時照 Go 黃金的 rand.Seed(4) 接上全域亂數；關閉時維持 R4 的固定種子。
+    if r.d.frame_capture.is_some() || r.d.map_layer_capture.is_some() || r.d.dialogue_layer_capture.is_some() {
+        pin_global_rand(&mut r.d.g);
     }
 
     // 執行期失敗即關閉（loadErr）會讓 pump 直接失敗；離開前把它記成最後一筆 checkpoint（Go 的 defer）。
@@ -1645,6 +1650,9 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             capture.finish(serde_json::Map::new());
         }
         if let Some(capture) = r.d.map_layer_capture.take() {
+            capture.finish();
+        }
+        if let Some(capture) = r.d.dialogue_layer_capture.take() {
             capture.finish();
         }
     }));

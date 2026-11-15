@@ -301,3 +301,53 @@ END 回收、AI 閒置回收、攻擊畫面、尾段地圖與介面）呼叫對�
 `tools/rust_game_test.sh` 335 passed、4 ignored（fmt、clippy 通過）；`tools/rust_campaign_test.sh` 530 passed、
 `tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl`、`FD2.SAV`、`hotel-save.json`
 與 Go 黃金逐位元組相同；`Cargo.lock` 沒有改動。
+
+## 階段 2 結果：r5d 全域亂數、對話與文字（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5d」。
+
+### 全域亂數
+
+- `Game::go_global_rand` 代表 Go `math/rand` 的全域來源。畫格擷取打開時（章重播的三種擷取任一個、opening 模式）由驅動端設成
+  `GoMathRand::new(4)`，對應 Go 黃金的 `rand.Seed(4)`；故事對白嘴型的 `rand.Intn(30)` 與確認框嘴型的
+  `rand.New(rand.NewSource(rand.Int63()))` 依 Go 的取用順序共用它。沿用 `fd2-rules` 既有的 `GoMathRand`。
+- 擷取關閉時維持 R4 的兩個固定種子（`cosmetic-mouth-rng-fixed-seed`），第一章重播結果不變。
+
+### 移植
+
+- `composeNativeConfirmationMouth`、`nativeStoryOpeningFrameIndex`、`drawNativeStoryDialogue` 照 Go 逐行移植；
+  `drawNativeStoryDialogue` 的呈現出口 `presentNativeClassFrame`、`presentNativeClassFrameWithPalette`（分組表列在「城鎮與設施」）一併移植。
+  `PORTING.json` 5 個函式 `r5` 改 `ported`（記在 `r5_stage2_r5d`）。HD 檔的 `presentNativeStoryDialogueFrame` 只移植忠實模式路徑，狀態維持 `r6`。
+  HD 分支（`modernHDStoryTextFrame`、`nativeDialogueModernPortrait`、HD 文字層）在忠實模式不成立，HD 時 `todo!("r6:…")`。
+  `canvas.rs` 沒有改。
+- `Font.Draw` 與 `drawIndexedLocalizedText` 留在 `r5`。`Cargo.lock` 已鎖定 `ab_glyph` 0.2.32 與 `swash` 0.2.10，但兩者都只是間接依賴；
+  `fd2-game` 要用就得在 `Cargo.lock` 的依賴清單加一行，而 `tools/rust_game_test.sh` 以 `--locked` 執行，本輪規定 `Cargo.lock` 不變。
+  另外 Rust 測試映像沒有 Go 黃金用的 `NotoSansCJK-Regular.ttc`，Rust 章重播的 `load_font` 回 `None`，`Draw` 尾段的 TTF 短訊整段不走，
+  階段 0 `chapter` 帶 `+ttf-msg` 的 5763 張在整張比對時會不同。這兩項要使用者決定。
+- Go 測試 1 項移植（`TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder`），另加 7 項；`native_confirmation_mouth_test.go` 3 項要整備夾具與
+  `beginNativeSystemEndTurn`，留給主題組。
+
+### 局部黃金
+
+新增只輸出資料的 `remake/cmd/fd2/rust_golden_dialogue_layers_test.go`（未設 `FD2_GOLDEN_DIALOGUE_LAYERS_OUT` 時略過，既有 Go 檔沒有改）與
+Rust 端 `parity_replay/rust_golden_dialogue_layers_test.rs`。兩邊照階段 0 `chapter` 模式的掛點、60 Hz 虛擬時鐘與全域種子 4 跑第一章受控重播，
+每個 pump 幀記嘴型狀態；走到 `Draw` 尾段時只呼叫 `drawNativeStoryDialogue`，畫到空白畫布取雜湊。驅動與比對是
+`tools/rust_r5_dialogue_layers.sh`、`tools/rust_r5_dialogue_layers_compare.py`。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數 | Go、Rust 都是 13751 |
+| 嘴型狀態 | 13751 次相同 |
+| 對白畫格 | 2254 張相同（收框 548、開框 364、穩定頁 1342；說話嘴型 789、等鍵張嘴 4、等鍵箭頭 7） |
+| 序列雜湊 | 兩邊都是 `967a046ce56677913083e427014740611823e2a6e2c1ec2f9d834158f1858363`；r1、r2 兩次相同 |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…` |
+| 竄改反向檢查 | 全域種子改 5、說話嘴型改取前一幀頭像：嘴型 13636／13751、對白 1457／2254，比對失敗 |
+
+- 沒有遮蔽像素。旁證：對白 2254 張中 1037 張與階段 0 整張黃金同一擷取點逐位元組相同。
+- 序章對白在 `chapter` 模式是 gaps，要等 opening 模式整張比對（正規化地圖層接上後）涵蓋；等鍵張嘴與箭頭在第一章只有 4 張與 7 張。
+
+### 驗證
+
+`tools/rust_game_test.sh` 346 passed、5 ignored（fmt、clippy 通過）；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；
+`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；
+`Cargo.lock` 沒有改動。共用檔只改 `Game` 的一個欄位與 `parity_replay` 的擷取器，`Game::draw`、`canvas.rs` 沒有改。

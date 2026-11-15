@@ -43,11 +43,19 @@ impl Game {
     ///
     /// R4 B 組：Go 以 `rand.Int63()`（全域來源）當種子建立私有亂數；Rust 用固定種子
     /// `CONFIRMATION_MOUTH_RNG_SEED`（KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`）。
+    ///
+    /// R5 階段 2 r5d：`go_global_rand` 有值（畫格擷取打開）時照 Go 以它的 `Int63()` 當種子，與故事對白嘴型
+    /// 共用同一個全域序列。
     pub(crate) fn sample_native_confirmation_mouth_random(&mut self) -> i64 {
-        // Cosmetic RNG stays independent of the native battle RNG and SAV.
-        self.native_confirmation_mouth_rng
-            .get_or_insert_with(|| battle::GoMathRand::new(CONFIRMATION_MOUTH_RNG_SEED))
-            .intn(30)
+        if self.native_confirmation_mouth_rng.is_none() {
+            // Cosmetic RNG stays independent of the native battle RNG and SAV.
+            let seed = match self.go_global_rand.as_mut() {
+                Some(global) => global.int63(),
+                None => CONFIRMATION_MOUTH_RNG_SEED,
+            };
+            self.native_confirmation_mouth_rng = Some(battle::GoMathRand::new(seed));
+        }
+        self.native_confirmation_mouth_rng.as_mut().unwrap().intn(30)
     }
 
     /// Go：`native_confirmation_mouth.go:43`，`func (g *Game) stepNativeConfirmationMouth(owner any, advanced bool)`
@@ -98,11 +106,26 @@ fn confirmation_owner_token(owner: &str) -> OwnerToken {
     OwnerToken(hash & !(1 << 63))
 }
 
+#[cfg(test)]
+mod native_confirmation_mouth_test;
+
 // ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
 
 impl Game {
     /// Go：`native_confirmation_mouth.go:71`，`func (g *Game) composeNativeConfirmationMouth(frame []byte, portraits []dato.Frame) ([]byte, bool)`
+    ///
+    /// R5 階段 2 r5d：Go 不成立時回傳同一個切片，Rust 回傳複本；`ok` 照 Go。
     pub(crate) fn compose_native_confirmation_mouth(&self, frame: &[u8], portraits: &[dato::Frame]) -> (Vec<u8>, bool) {
-        todo!("r5:native_confirmation_mouth.go:composeNativeConfirmationMouth")
+        let owner = self.native_confirmation_mouth_waiting_owner();
+        if owner.is_none() || owner != self.native_confirmation_mouth_owner || !self.native_confirmation_mouth.open {
+            return (frame.to_vec(), frame.len() == 320 * 200);
+        }
+        if portraits.len() <= 3 {
+            return (Vec::new(), false);
+        }
+        match campaign::compose_native_confirmation_portrait(frame, &portraits[3]) {
+            Ok(result) => (result, true),
+            Err(_) => (Vec::new(), false),
+        }
     }
 }

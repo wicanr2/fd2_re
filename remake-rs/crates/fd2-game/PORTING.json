@@ -25,8 +25,8 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 643,
-      "r5": 41,
+      "ported": 648,
+      "r5": 36,
       "r6": 59,
       "r8": 1179
     },
@@ -13183,14 +13183,14 @@
           "name": "presentNativeClassFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::present_native_class_frame",
-          "status": "r5",
+          "status": "ported",
           "go_line": 206
         },
         {
           "name": "presentNativeClassFrameWithPalette",
           "recv": "Game",
           "rust": "fd2_game::game::Game::present_native_class_frame_with_palette",
-          "status": "r5",
+          "status": "ported",
           "go_line": 210
         },
         {
@@ -15216,7 +15216,7 @@
           "name": "composeNativeConfirmationMouth",
           "recv": "Game",
           "rust": "fd2_game::game::Game::compose_native_confirmation_mouth",
-          "status": "r5",
+          "status": "ported",
           "go_line": 71
         }
       ],
@@ -19317,7 +19317,7 @@
         {
           "name": "nativeStoryOpeningFrameIndex",
           "rust": "fd2_game::game::native_story_opening_frame_index",
-          "status": "r5",
+          "status": "ported",
           "go_line": 339
         },
         {
@@ -19400,7 +19400,7 @@
           "name": "drawNativeStoryDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_story_dialogue",
-          "status": "r5",
+          "status": "ported",
           "go_line": 485
         }
       ],
@@ -22469,6 +22469,46 @@
         "func": "drawNativeSpawnIntro",
         "rust": "fd2_game::game::Game::draw_native_spawn_intro",
         "todo_branches": []
+      }
+    ]
+  },
+  "r5_stage2_r5d": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "native_class_ui.go:206",
+        "func": "presentNativeClassFrame",
+        "rust": "fd2_game::game::Game::present_native_class_frame",
+        "todo_branches": []
+      },
+      {
+        "go": "native_class_ui.go:210",
+        "func": "presentNativeClassFrameWithPalette",
+        "rust": "fd2_game::game::Game::present_native_class_frame_with_palette",
+        "todo_branches": [
+          "r6:modern_hd_text.go:clearModernHDText、modern_hd_facility_money.go:appendModernHDFacilityMoney"
+        ]
+      },
+      {
+        "go": "native_confirmation_mouth.go:71",
+        "func": "composeNativeConfirmationMouth",
+        "rust": "fd2_game::game::Game::compose_native_confirmation_mouth",
+        "todo_branches": []
+      },
+      {
+        "go": "native_story_dialogue.go:339",
+        "func": "nativeStoryOpeningFrameIndex",
+        "rust": "fd2_game::game::native_story_opening_frame_index",
+        "todo_branches": []
+      },
+      {
+        "go": "native_story_dialogue.go:485",
+        "func": "drawNativeStoryDialogue",
+        "rust": "fd2_game::game::Game::draw_native_story_dialogue",
+        "todo_branches": [
+          "r6:modern_hd_story_text.go:modernHDStoryTextFrame（HD 故事文字層）",
+          "r6:native_story_dialogue.go:drawNativeStoryDialogue nativeDialogueModernPortrait（HD 頭像疊層與 modernHDOverlay）"
+        ]
       }
     ]
   }

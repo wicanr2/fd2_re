@@ -17,6 +17,8 @@ pub(crate) struct Driver {
     pub(crate) frame_capture: Option<FrameCapture>,
     /// R5 階段 2 r5m：地圖與單位組的局部黃金（`rust_golden_map_layers_test.rs`），同一個掛點；預設 `None`。
     pub(crate) map_layer_capture: Option<MapLayerCapture>,
+    /// R5 階段 2 r5d：對話與文字組的局部黃金（`rust_golden_dialogue_layers_test.rs`），同一個掛點；預設 `None`。
+    pub(crate) dialogue_layer_capture: Option<DialogueLayerCapture>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。
@@ -42,6 +44,9 @@ impl Driver {
                 capture.observe(&mut self.g);
             }
             if let Some(capture) = self.map_layer_capture.as_mut() {
+                capture.observe(&mut self.g);
+            }
+            if let Some(capture) = self.dialogue_layer_capture.as_mut() {
                 capture.observe(&mut self.g);
             }
             if done(&mut self.g) {

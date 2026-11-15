@@ -8,7 +8,7 @@
 //!
 //! 沒設這兩個變數時不建立擷取器，重播與 R4 完全相同。R5 階段 1 的繪圖函式還是 `todo!`，所以打開時第一個
 //! 擷取點就會停在對應的 `todo!`；比對是階段 3 的工作。時鐘、全域亂數與 gaps 的規格見 `PORTING.md`
-//! 「R5 階段 1：畫格擷取介面」；全域亂數（Go `rand.Seed(4)`）還沒有接上，見 [`GLOBAL_RAND_MODEL`]。
+//! 「R5 階段 1：畫格擷取介面」；全域亂數（Go `rand.Seed(4)`）在 R5 階段 2 r5d 接上，見 [`pin_global_rand`]。
 //!
 //! R5 階段 2（`r5t`）：同一個擷取器也供 opening 模式（`rust_golden_frames_opening_test.rs`）使用：
 //! [`FrameCapture::new`] 指定模式，[`FrameCapture::try_observe`] 在 `Game::draw` 停在未移植的 `todo!` 時記下位置並
@@ -23,10 +23,25 @@ const GOLDEN_FRAME_TICK: i64 = 1_000_000_000 / 60;
 /// Go `goldenFrameFarFuture`：牆鐘設在遠未來，`PlayerGameClock::sample` 的差值恆為負，只回傳 `game`。
 const GOLDEN_FRAME_FAR_FUTURE: GameInstant = GameInstant(i64::MAX / 2);
 
-/// Go 黃金在測試開頭以 `rand.Seed(4)` 固定 `math/rand` 全域來源（嘴型動畫）。Rust 的嘴型目前是 R4 的兩個
-/// 固定種子來源（`story_mouth_rng`、`native_confirmation_mouth_rng`），還沒有改成共用 Go 全域來源；寫進
-/// `frames.json`，階段 3 比對前必須先接上（規格見 `PORTING.md`）。
-pub(crate) const GLOBAL_RAND_MODEL: &str = "未接上：嘴型仍用 R4 的固定種子（Go 黃金是 rand.Seed(4) 的全域來源）";
+/// Go 黃金在測試開頭以 `rand.Seed(4)` 固定 `math/rand` 全域來源（嘴型動畫；`goldenFrameGlobalRandSeed`）。
+pub(crate) const GOLDEN_GLOBAL_RAND_SEED: i64 = 4;
+
+/// R5 階段 2 r5d：擷取打開時 `Game::go_global_rand` 是 `GoMathRand::new(4)`（[`pin_global_rand`]），故事對白嘴型
+/// `rand.Intn(30)` 與確認框嘴型 `rand.New(rand.NewSource(rand.Int63()))` 依 Go 的取用順序共用它；寫進 `frames.json`。
+pub(crate) const GLOBAL_RAND_MODEL: &str =
+    "Go math/rand 全域來源：Game::go_global_rand = GoMathRand::new(4)（Go rand.Seed(4)），故事對白與確認框嘴型共用";
+
+/// R5 階段 2 r5d：Go 黃金的 `rand.Seed(goldenFrameGlobalRandSeed)`。Go 在建立 `Game` 之前呼叫，`loadGame` 不取用全域
+/// 來源，所以在 `load_game` 之後、第一個 `update` 之前設定等價。只在畫格擷取打開時呼叫；關閉時 `go_global_rand` 維持
+/// `None`，嘴型用 R4 的固定種子。
+pub(crate) fn pin_global_rand(g: &mut Game) {
+    assert!(g.go_global_rand.is_none(), "全域亂數只能在重播開始前設定一次");
+    assert!(
+        g.story_mouth_rng.is_none() && g.native_confirmation_mouth_rng.is_none(),
+        "設定全域亂數之前嘴型亂數已被取用"
+    );
+    g.go_global_rand = Some(battle::GoMathRand::new(GOLDEN_GLOBAL_RAND_SEED));
+}
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub(crate) struct FrameRow {
