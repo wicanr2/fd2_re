@@ -172,10 +172,30 @@ impl Game {
 
     /// Go：`native_palette_ramp.go:164`，`func (g *Game) drawNativePaletteRamp(screen *ebiten.Image) bool`
     ///
-    /// R4 B 組：純繪圖（R5）。Go 在這裡設 `j.drawn = true`，Rust 改由呈現回報設定；HD 實體戰鬥回場的
-    /// `publishModernHDBattle` 是 R6。
+    /// R5 階段 2 `r5p`：照 Go 逐行移植，`j.drawn = true` 與 Go 一樣在這裡設（擷取畫格時走 `Game::draw`；
+    /// 無畫面重播走 `acknowledge_present`，兩者不在同一幀呼叫）。HD 實體戰鬥回場的 `publishModernHDBattle`
+    /// 是 R6；忠實模式下 `modern_hd_battle_wanted` 為 false，不會走到。
     pub(crate) fn draw_native_palette_ramp(&mut self, screen: &mut Picture) -> bool {
-        todo!("R5: native_palette_ramp.go:drawNativePaletteRamp（繪圖；drawn 由呈現回報設定）")
+        let Some(j) = self.native_palette_ramp.as_ref() else {
+            return false;
+        };
+        if j.vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE || j.palette.len() != 256 {
+            return false;
+        }
+        // Go 的 `&&` 短路：`hdBattleSources` 為 nil 時不呼叫 `modernHDBattleWanted`。
+        if j.hd_battle_sources.is_some()
+            && self.atk.is_some()
+            && self.modern_hd_battle_wanted(self.atk.as_ref().and_then(|a| a.native_scene.as_ref()))
+        {
+            todo!("r6:native_palette_ramp.go:169 publishModernHDBattle（HD 物理演出返回 DAC）")
+        }
+        let j = self.native_palette_ramp.as_mut().unwrap();
+        let img = IndexedFrame { width: 320, height: 200, pix: j.vga.clone(), palette: j.palette.clone() };
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        j.drawn = true;
+        true
     }
 }
 

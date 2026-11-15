@@ -1457,7 +1457,7 @@ Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元�
 | `titlePhase` → `drawTitle` | 9406 | 1964 | `draw_title`（R5 階段 2 `r5t` 已移植） |
 | `nativeCh28PostPresent` | 9461 | 1064 | `draw_native_ch28_post_present`（r5）；失敗路徑 r8 |
 | `indexedTransition`、補血、修飾、AI 修飾、指令 0～35、AI 物品、`nativeTownDeparture` | 9490..9714 | 0 | `todo!("r8:…")` |
-| `nativePaletteRamp` | 9715 | 5934 | `draw_native_palette_ramp`（r5）；DebugPrint r8 |
+| `nativePaletteRamp` | 9715 | 5934 | `draw_native_palette_ramp`（R5 階段 2 `r5p` 已移植）；DebugPrint r8 |
 | `nativePalettePulse` | 9725 | 0 | r8 |
 | `spawnIntroTransition` | 9735 | 48 | `draw_native_spawn_intro`（r5） |
 | indexed 回合演出、事件 61 | 9745..9763 | 0 | r8 |
@@ -1467,11 +1467,11 @@ Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元�
 | 尾段 `draw_field` | 9804..10188 | 14812 | 見下 |
 
 尾段：`modernHDMapFrameAdmission` 在 `modern_story_portraits` 為 `None` 時一律 false（忠實模式），否則 `todo!("r6:…")`；
-正規化地圖層 9814..9950（storyView 10941 次、圖塊、移動範圍格 135 次、單位、游標 3828 次、`drawNativeMapHUD` 3200 次）是
-Draw 本體的 r5 `todo!`；`drawNativeMapFrame` 6371 次；`drawNativeMovementPanel`、`drawPhaseBanner`、`drawNativeStoryDialogue`；
+正規化地圖層 9814..9950（storyView 10941 次、圖塊、移動範圍格 135 次、單位、游標 3828 次、`drawNativeMapHUD` 3200 次）的
+世界層部分由 `r5p` 移植成 `draw_normalized_world_layer`（9812..9919），游標 `drawCursor` 與 `drawNativeMapHUD` 是 HUD 組；`drawNativeMapFrame` 6371 次；`drawNativeMovementPanel`、`drawPhaseBanner`、`drawNativeStoryDialogue`；
 TTF 短訊 2650 次與勝負字樣 1 次照 Go 寫好、呼叫 `Font::draw`（r5）；選中單位中文名與舊對話框 0 次（r8）；`drawCampaignUI`、
 `drawNativeClassUIJob`、`drawNativeSystemEndTurn`、`markActionOverlayDrawn`（10 次）或 `drawRing`、指令格、法術與物品選單、
-`drawNativeSystemInfoUI`、`drawNativePlayerStatus`；舊 fade 疊層 106 次是 Draw 本體的 r5 `todo!`；`captureShot` 是 r8（截圖模式）。
+`drawNativeSystemInfoUI`、`drawNativePlayerStatus`；舊 fade 疊層 106 次由 `r5p` 移植成 `draw_story_fade_overlay`；`captureShot` 是 r8（截圖模式）。
 
 Draw 裡改流程狀態的地方（R4 A 組表）在 `draw` 路徑由各 `draw*` 函式自己做，與 Go 相同；`acknowledge_present` 照舊是無畫面重播
 不擷取畫格時的版本。兩者不能在同一幀都呼叫（旗標會設兩次，Go 黃金是「pump 擷取點呼叫 Draw，`ackPresents` 另外只在三處呼叫
@@ -1481,19 +1481,19 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 
 依階段 0 分組；「局部黃金」是該函式在哪一種 Go 黃金畫格裡執行到：`opening`、`chapter` 是 `tools/rust_r5_golden_frames.sh` 的兩種
 模式；`FD2_SHOT_STATE` 表示城鎮與設施在 `chapter` 模式只擷到 1 到 21 幀（多半不經 `pump`），要照 121「驗證」第 2 點另補。
-畫布操作取自盤點的 `ebiten_api`（函式本體直接用到的）。表由 `PORTING.json` 狀態與盤點檔產生。`Game.Draw` 本體另有兩段 r5
-`todo!`（正規化地圖層 9814..9950 約 137 行、fade 疊層 12 行）。
+畫布操作取自盤點的 `ebiten_api`（函式本體直接用到的）。表由 `PORTING.json` 狀態與盤點檔產生。`Game.Draw` 本體原有兩段 r5
+`todo!`（正規化地圖層 9814..9950 約 137 行、fade 疊層 12 行），R5 階段 2 `r5p` 已移植（見「R5 階段 2：r5p」）。
 
 | 分組 | 函式（r5／ported／HD r6） | 行數（r5） | 畫布操作 | 局部黃金 |
 |---|---|---|---|---|
 | 城鎮與設施 | 28（14／14／0；`presentNativeClassFrame` 兩個由 r5d 移植） | 842 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter、chapter＋FD2_SHOT_STATE、opening＋chapter |
-| Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | — |
+| Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0；正規化地圖層與 fade 疊層由 `r5p` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | opening＋chapter（`r5p` 圖層級） |
 | HUD 與選單 | 35（14／21／0；回合橫幅 6 個由 r5m 移植） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
 | 對話與文字 | 16（2／14／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個留 r5） | 79 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同）、opening＋chapter |
 | 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
 | 地圖與單位 | 14（0／14／0；R5 階段 2 r5m） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
 | 標題與開場 | 7（0／7／0；R5 階段 2 `r5t` 移植 4 個） | 0 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening（標題段 1940／1940 次與 Go 相同）、opening＋chapter |
-| 轉場與調色盤 | 4（1／3／0） | 25 | DrawImage、縮放、NewImageFromImage | chapter |
+| 轉場與調色盤 | 4（0／4／0；R5 階段 2 `r5p`） | 0 | DrawImage、縮放、NewImageFromImage | chapter（`r5p`：調色盤斜坡 2967 次整張與 Go 相同） |
 | 素材路徑與時鐘（非繪圖） | 14（0／14／0） | 0 | — | — |
 | 共用與其他 | 1（0／1／0） | 0 | — | — |
 | HD 檔（原版模式下有執行，多為守門） | 69（0／27／42） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、WritePixels、TTF、Dispose | — |
@@ -1557,7 +1557,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 標題與開場 | `title.go:456..467` | `titlePublisherBrightness` | 12 | — | opening（`r5t` ported） |
 | 標題與開場 | `title.go:486..493` | `titleScrollUsesPulsePalette` | 8 | — | opening（`r5t` ported） |
 | 標題與開場 | `title.go:716..890` | `drawTitle` | 175 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening＋chapter（`r5t` ported；opening 標題段 1940 次相同） |
-| 轉場與調色盤 | `native_palette_ramp.go:164..188` | `drawNativePaletteRamp` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
+| 轉場與調色盤 | `native_palette_ramp.go:164..188` | `drawNativePaletteRamp`（ported，r5p） | 25 | DrawImage、縮放、NewImageFromImage | chapter（`r5p` ported） |
 
 ### R5 階段 1：畫格擷取介面
 
@@ -1922,4 +1922,117 @@ spawn 24、world 1796、map 2257、索引 2170。r1（Go 端用舊版掛載配�
 | `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
 | `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5d-20261115/r5d-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
 | `tools/rust_r5_dialogue_layers.sh` | 上節；r1、r2 兩次序列雜湊相同，兩邊的 `checkpoints.jsonl` 都是 `1c846f57…` |
+## R5 階段 2：r5p（轉場與調色盤＋Draw 本體兩段，2026-11-15）
+
+代號 `r5p`，基準 `4bcefc55`（含 r5t、r5m）。工作單是本檔「R5 對照表」的「轉場與調色盤」1 個 r5 函式，與 `Game::draw` 本體的
+兩段 r5 `todo!`（正規化地圖層、舊 fade 疊層）。計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)。
+
+### r5p：移植結果
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `native_palette_ramp.go:164` `drawNativePaletteRamp` | `Game::draw_native_palette_ramp` | 逐行；`j.drawn = true` 照 Go 在這裡設（`draw` 路徑），無畫面重播仍由呈現回報設定。HD 物理演出返回的 `publishModernHDBattle` 是 `todo!("r6:…")`，守門照 Go 的 `&&` 短路（`hdBattleSources` 為 nil 時不呼叫 `modernHDBattleWanted`） |
+| `main.go:9812..9919`（Draw 本體） | `Game::draw_normalized_world_layer` | storyView 離屏（第一次需要時建立、每幀 `Fill` 黑）、圖塊、移動範圍格、施法／攻擊射程格、單位（`draw_unit_sprite`）、storyActors、`GeoM.Scale(storyZoom)` 貼回。`FD2_UNIT_LABELS` 的 `DebugPrintAt` 是 `todo!("r8:…")` |
+| `main.go:9920..9950`（Draw 本體） | `Game::draw_field` 內 | 游標 `draw_cursor` 與左下 `draw_native_map_hud` 照 Go 條件呼叫，兩者屬 HUD 組（仍是 r5）；`drawUnitHUD` 後備與 F3 除錯字是 `todo!("r8:…")` |
+| `main.go:10173..10183`（Draw 本體） | `Game::draw_story_fade_overlay` | `uint8(alpha*0xff)` 寫成 `(alpha * 255.0) as i64 as u8`：amd64 的 Go 先截成 int64 再取低 8 位元，Rust 的 `as u8` 會飽和，範圍外結果不同（`t`、`total` 正常時都在 0..255） |
+
+- Draw 本體兩段拆成 `draw_normalized_world_layer`、`draw_story_fade_overlay` 兩個 `Game` 方法，`draw_field` 呼叫它們；理由只有一個：
+  讓局部黃金呼叫同一份程式，不在測試裡另抄一份 Rust。Go 沒有對應的函式邊界，`PORTING.json` 另記在 `r5_stage2_r5p_draw_body`。
+- `g.storyView` 在 Rust 是 `Option<Arc<Picture>>`：畫到它的期間暫時取出成區域變數，`&self` 的 `tile_at`／`draw_unit_sprite` 才能同時借用。
+- Go 走訪 `g.reach`（map）的順序不固定；每格位置不同、互不重疊，順序不影響像素，Rust 照 `BTreeMap` 順序。
+- 畫布：只用 `canvas.rs` 既有的 `new_image`、`fill`、`draw_image`（平移、`Scale(2, 2)`）、`from_indexed`，沒有補語意。
+- `PORTING.json`：`tools/rust_r5_mark_ported.py … r5p native_palette_ramp.go:164`，記在 `r5_stage2_r5p`；Draw 本體三段另記在
+  `r5_stage2_r5p_draw_body`（不是 Go 函式，標記工具不收）。全 crate 狀態 ported 644、r5 40、r6 59、r8 1179。
+
+### r5p：測試
+
+| Go 測試 | Rust |
+|---|---|
+| `native_palette_ramp_test.go:14` `TestNativePaletteRampExecutesExactOutAndInEndpoints` | `test_native_palette_ramp_executes_exact_out_and_in_endpoints`（B 組時等 C 組 fixture，現已在 crate 裡） |
+| `native_palette_ramp_test.go:53` `TestNativePaletteRampDrawAcknowledgesIndexedFrame` | `test_native_palette_ramp_draw_acknowledges_indexed_frame`（Go 比 16 位元 `RGBA()`，Rust 調色盤是 8 位元；另加整張畫面是索引 7 的顏色） |
+| Rust 新增 | `draw_native_palette_ramp_scales_and_fails_closed`（逐像素 2 倍貼上、`drawn`、兩個失敗條件） |
+| Rust 新增（`main/main_r5p_test.rs`） | storyView 建立與重用、鏡頭位移、2 倍貼回；直繪時移動範圍格與攻擊射程格的 source-over（期望值照 `mul255` 公式）、`ring` 時不畫射程；fade 疊層的 alpha 截斷與混色 |
+
+Go 對 Draw 本體這兩段沒有只看非 HD 像素的測試：`modern_hd_dialogue_chrome_layer_test.go` 的 fade 案例是 HD（R6），其餘呼叫整個
+`g.Draw` 的測試（`native_turn_staging_test.go`、`native_continue_handoff_test.go` 等）是第 23、29 章等 R8 流程。
+
+### r5p：opening 模式整張比對
+
+`tools/rust_r5_opening_frames.sh`（r5t 的工具）重跑：1940 次擷取，停在第 1940 次（`update_frame` 1940，`story_ch00_handler`）：`todo!("r5:native_story_dialogue.go:drawNativeStoryDialogue")`，屬對話與文字組（`r5d`）。r5t 時停在同一次擷取的正規化地圖層 `todo!`，現在走過本組的世界層後才停。前 1940 次與 Go 黃金逐次相同（序列雜湊 `8768d920…`），序章故事段一張也比不到，所以序章改由下節的圖層級比對涵蓋（`work/r5-stage2-r5p-20261115/opening-frames`）。
+
+### r5p：局部黃金
+
+整張畫格在序章與第一章幾乎都疊了對白、HUD、短訊等別組圖層，所以照 r5m 的做法做圖層級比對：
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_r5p_layers_test.go` | `TestRustGoldenR5pLayers`，未設 `FD2_GOLDEN_R5P_LAYERS_OUT` 時 `t.Skip`；`FD2_GOLDEN_R5P_LAYERS_MODE` 選 `opening`（照 `goldenFramesOpening` 的步驟）或 `chapter`（`ch01FrameObserver`）。借用 `goldenFrameProbe`、`pinClock`、`goldenMapLayersBranch`，既有 Go 檔沒有改 |
+| `src/game/parity_replay/rust_golden_r5p_layers_test.rs` | Rust 端 `R5pLayerCapture`：chapter 模式掛在 `Driver::pump`，opening 模式是 `test_rust_golden_r5p_layers_opening`（`#[ignore]`） |
+| `tools/rust_r5p_layers.sh` | Docker 驅動：先核對 Go 測試裡的逐字複本，再兩種模式各跑 Go（`fd2-go-test-local`、Xvfb）與 Rust（`fd2-rust:1.99.1-r3`），最後比對 |
+| `tools/rust_r5p_layers_compare.py` | 逐擷取點比對鍵；`--stage0` 另與階段 0 整張黃金對照；`--verbatim` 核對逐字複本 |
+
+擷取規則（兩邊相同）：
+
+- 掛點、步驟、60 Hz 虛擬時鐘與 Go `rand.Seed(4)` 同階段 0 黃金（Rust 的全域亂數仍未接上，只影響嘴型，不進本組圖層）。每次擷取先照
+  `Draw` 開頭清 `nativeMapPresented`、`movementPanelDraw`、`nativeInterfaceHUDVisible`，再依 `Draw` 的 early-return 順序分支：
+- `ramp`：`nativePaletteRamp` 之前的分支都沒有成立時，呼叫**整個** `Draw`（這個分支只有 `Fill` 黑、`drawNativePaletteRamp`、`defer` 的
+  DAC 白／黑 `Fill`，沒有別組圖層），記整張 640×400 雜湊與 `step`、`drawn`、DAC 白／黑旗標。
+- `tail`：640×400 `Fill` 黑後畫正規化世界層，記雜湊與 `sel`、`reach` 格數、施法／攻擊射程條件；再照 `Draw` 把原生整幀（r5m）畫到另一張
+  畫布，鍵只記成功與否；`g.fade` 非 nil 時在世界層那張畫布疊 fade 黑色疊層，記雜湊與 alpha。
+- Go 端的正規化世界層與 fade 疊層是 `main.go:9816..9919`、`10174..10183` 的逐字複本（標記包住）；`rust_r5p_layers.sh` 每次先以
+  `--verbatim` 核對兩段與 `main.go` 逐字相同（104 行、10 行）。Rust 端呼叫正式的 `draw_normalized_world_layer`／
+  `draw_story_fade_overlay`。
+
+原生整幀那一步的理由：第一版（`layers-r1`）沒有呼叫它，Go 與 Rust 每個擷取點仍相同，但 ramp 與階段 0 整張黃金只有 1961／2967 張相同。
+23 段斜坡（每段淡出 64 步、淡入 65 步）中 15 段的淡入第 3 步起不同，淡出全部相同。原因是 `drawNativeMapFrame` 先
+`composeNativeMapFrame`，依當下時間重建 `nativeMapVGA`；淡入的底圖取自它。階段 0 每幀都跑整個 `Draw`，沒呼叫時底圖停在較早的合成。
+加上這一步之後（`layers-r2`）ramp 2967 張全部與階段 0 相同，證實是這個 Draw 內的狀態改動，不是斜坡本身的差異。
+
+結果（`tools/rust_r5p_layers.sh <主工作區>/work/r5-stage2-r5p-20261115/layers-r2`，輸出不進版控）：
+
+| 項目 | opening | chapter |
+|---|---|---|
+| 擷取數（Go／Rust；與階段 0 相同） | 10372／10372 | 13751／13751 |
+| 分支 | early 1940、spawn 24、tail 8408 | early 4356、ramp 2967、spawn 24、tail 6404 |
+| world（正規化世界層） | 8408 張相同（其中 storyView 8407 張） | 6404 張相同（storyView 2534 張；選中單位 135 張） |
+| fade 疊層 | 72 張相同 | 34 張相同 |
+| ramp（整張 Draw） | — | 2967 張相同，且 2967 張都與階段 0 chapter 整張黃金同一擷取點相同 |
+| 原生整幀 `map_ok` | 1 次相同 | 6370 次相同 |
+| 序列雜湊（兩邊相同） | `40f0309d295e993f9c9a8c9fbafe4c95220c6883538e0f0ba486fa5f7a155ef0` | `75f4529073de5107b4ceae7b7a7d71db8e1a8f3102fc1980d54b4024e86cbc9a` |
+| `checkpoints.jsonl`（chapter） | — | Go、Rust 都是 R4 黃金 `1c846f57…` |
+
+- Go 的相異畫格數：opening world 1271、fade 71；chapter world 1796、fade 30、ramp 2756。沒有遮蔽像素。
+- 參考（不影響結論）：opening 的 fade 72 張全部、world 8408 張中 3129 張剛好等於階段 0 整張畫格（其餘疊了對白）；chapter 的 world 1 張、
+  fade 3 張。
+- 涵蓋限制：第一章選中單位的 135 張裡 `reach` 都是空的，施法與攻擊射程條件 0 次；移動範圍格與射程格的像素只由單元測試驗。storyView 以外的
+  直繪世界層在 chapter 有 3870 張。
+- 重跑：`layers-r3` 與 `layers-r2` 兩種模式、兩邊的 `rows` 逐筆相同，序列雜湊相同。
+- 竄改反向檢查：暫時把 storyView 貼回改成多平移 1 像素、fade 的 `alpha*255` 改成 `alpha*254`，只重跑 Rust opening（`tamper`）：world 8408 張只剩 1 張（唯一一張非 storyView）相同、fade 72 張全部不同，第一個不同在第 1940 次；改回後 `layers-r3` 相同。
+
+### r5p：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `main.rs` 的 `Game::draw_field` | 只改兩段 r5 `todo!`：正規化地圖層改成呼叫 `draw_normalized_world_layer` 再畫游標與 HUD；fade 改成呼叫 `draw_story_fade_overlay`。分派骨架其他分支沒有動 |
+| `main.rs` | 新增 `draw_normalized_world_layer`、`draw_story_fade_overlay` 兩個方法與測試模組 `main/main_r5p_test.rs` 的登記 |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `r5p_layer_capture: Option<R5pLayerCapture>`；`pump` 在 `map_layer_capture` 之後呼叫它的 `observe` |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `R5pLayerCapture::from_env()`；`end` checkpoint 之後 `finish` |
+| `parity_replay/rust_golden_frames_opening_test.rs` | `Driver` 字面值補 `r5p_layer_capture: None` |
+| `parity_replay.rs` | 掛新子模組、模組文件加一行 |
+| `canvas.rs` | 沒有改 |
+
+### r5p：KNOWN_DIFFERENCES
+
+沒有新增。`uint8(alpha*0xff)` 照 amd64 Go 的轉換寫，範圍內兩者相同。
+
+### r5p：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；344 passed、6 ignored（基準 338／5，加本組 6 項；ignored 多 1 個 opening 局部黃金） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5p-20261115/r5p-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5p_layers.sh` | 上節；`layers-r2`、`layers-r3` 相同；chapter 兩邊的 `checkpoints.jsonl` 都是 `1c846f57…` |
+| `tools/rust_r5_opening_frames.sh` | 1940／1940 相同，停在 `drawNativeStoryDialogue` |
+| Go 新檔 | `gofmt -l` 無輸出、`go vet ./cmd/fd2` 通過；未設環境變數時 `t.Skip` |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |

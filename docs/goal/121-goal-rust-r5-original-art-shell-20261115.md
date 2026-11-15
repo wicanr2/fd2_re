@@ -351,3 +351,40 @@ Rust 端 `parity_replay/rust_golden_dialogue_layers_test.rs`。兩邊照階段 0
 `tools/rust_game_test.sh` 346 passed、5 ignored（fmt、clippy 通過）；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；
 `tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；
 `Cargo.lock` 沒有改動。共用檔只改 `Game` 的一個欄位與 `parity_replay` 的擷取器，`Game::draw`、`canvas.rs` 沒有改。
+
+## 階段 2 結果：r5p 轉場與調色盤＋Draw 本體兩段（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5p」。
+
+### 移植
+
+- `native_palette_ramp.go` 的 `drawNativePaletteRamp` 照 Go 逐行移植，`PORTING.json` 以 `tools/rust_r5_mark_ported.py` 改成 `ported`；
+  HD 物理演出返回 DAC 是 `todo!("r6:…")`。
+- `Game::draw` 本體的兩段 r5 `todo!`：正規化地圖層（`main.go:9812..9919` 移成 `draw_normalized_world_layer`，游標與左下 HUD 照 Go 條件呼叫
+  HUD 組的函式）、舊 fade 黑色疊層（`main.go:10173..10183` 移成 `draw_story_fade_overlay`）。拆成方法只為了讓局部黃金呼叫同一份程式；
+  `FD2_UNIT_LABELS`、F3 除錯字、`drawUnitHUD` 後備在開場與第一章沒有走到，標 `todo!("r8:…")`。`canvas.rs` 沒有改。
+- Go 測試 2 項（`native_palette_ramp_test.go:14`、`:53`）移植，另加 4 項。
+
+### 局部黃金
+
+新增只輸出資料的 `remake/cmd/fd2/rust_golden_r5p_layers_test.go`（未設 `FD2_GOLDEN_R5P_LAYERS_OUT` 時略過，既有 Go 檔沒有改）與 Rust 端
+`parity_replay/rust_golden_r5p_layers_test.rs`，由 `tools/rust_r5p_layers.sh` 驅動。opening、chapter 兩種模式的掛點、步驟與時鐘同階段 0；
+每次擷取依 `Draw` 的分支順序只畫本組圖層：調色盤斜坡分支呼叫整個 `Draw`，尾段畫正規化世界層與 fade 疊層，並照 `Draw` 呼叫原生整幀以
+留下它對 `nativeMapVGA` 的重建。Go 端的世界層與 fade 是 `main.go` 的逐字複本，每次執行先核對。
+
+| 項目 | opening | chapter |
+|---|---|---|
+| 擷取數（Go、Rust、階段 0 相同） | 10372 | 13751 |
+| 正規化世界層 | 8408 張相同 | 6404 張相同 |
+| fade 疊層 | 72 張相同 | 34 張相同 |
+| 調色盤斜坡（整張 `Draw`） | — | 2967 張相同，且全部與階段 0 整張黃金同一擷取點相同 |
+| 序列雜湊（兩邊相同） | `40f0309d…7a155ef0` | `75f45290…e86cbc9a` |
+
+- 第一版沒有呼叫原生整幀時，Go 與 Rust 仍逐點相同，但斜坡只有 1961／2967 張等於階段 0：淡入的底圖取自 `drawNativeMapFrame` 在 `Draw`
+  裡重建的 `nativeMapVGA`。加上之後全部相同。
+- 第一章選中單位的畫格裡移動範圍格是空的，施法與攻擊射程沒有出現；這些格子的像素只由單元測試驗。
+- opening 模式整張比對（`tools/rust_r5_opening_frames.sh`）：標題段 1940／1940 次相同，停在第 1940 次的 `drawNativeStoryDialogue`（對話與文字組，r5d），序章故事段要等它移植後才能整張比。
+
+### 驗證
+
+`tools/rust_game_test.sh` 344 passed、6 ignored；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；局部黃金重跑兩次相同；`Cargo.lock` 沒有改動。共用檔：`Game::draw_field` 只改兩段 `todo!`（另加兩個方法），`parity_replay` 加擷取掛點，`canvas.rs` 沒有改。

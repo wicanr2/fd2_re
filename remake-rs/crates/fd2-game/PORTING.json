@@ -25,8 +25,8 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 648,
-      "r5": 36,
+      "ported": 649,
+      "r5": 35,
       "r6": 59,
       "r8": 1179
     },
@@ -17083,7 +17083,7 @@
           "name": "drawNativePaletteRamp",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_palette_ramp",
-          "status": "r5",
+          "status": "ported",
           "go_line": 164,
           "class": "畫面",
           "cover": 52.6,
@@ -22511,5 +22511,43 @@
         ]
       }
     ]
-  }
+  },
+  "r5_stage2_r5p": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "native_palette_ramp.go:164",
+        "func": "drawNativePaletteRamp",
+        "rust": "fd2_game::game::Game::draw_native_palette_ramp",
+        "todo_branches": [
+          "r6:native_palette_ramp.go:169 publishModernHDBattle（HD 物理演出返回 DAC）"
+        ]
+      }
+    ]
+  },
+  "r5_stage2_r5p_draw_body": [
+    {
+      "go": "main.go:9812..9919",
+      "what": "Game.Draw 本體的正規化世界層（storyView 離屏、圖塊、移動範圍格、施法／攻擊射程格、單位、storyActors、storyZoom 放大）",
+      "rust": "fd2_game::game::Game::draw_normalized_world_layer（draw_field 呼叫）",
+      "todo_branches": [
+        "r8:main.go:9911 FD2_UNIT_LABELS 的 ebitenutil.DebugPrintAt"
+      ]
+    },
+    {
+      "go": "main.go:9920..9950",
+      "what": "Game.Draw 本體的游標與左下 HUD 呼叫",
+      "rust": "fd2_game::game::Game::draw_field（呼叫 draw_cursor、draw_native_map_hud，兩者是 HUD 組的 r5）",
+      "todo_branches": [
+        "r8:main.go:drawUnitHUD",
+        "r8:main.go:9939 F3 除錯字"
+      ]
+    },
+    {
+      "go": "main.go:10173..10183",
+      "what": "Game.Draw 本體的舊 fade 黑色疊層",
+      "rust": "fd2_game::game::Game::draw_story_fade_overlay（draw_field 呼叫）",
+      "todo_branches": []
+    }
+  ]
 }

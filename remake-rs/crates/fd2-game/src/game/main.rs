@@ -8291,10 +8291,29 @@ impl Game {
         };
         let legacy_viewport = self.story_bg || self.battle_event.is_some();
         if !modern_hd_requested {
-            // main.go:9814..9950：storyView 離屏（storyZoom 放大）、圖塊、移動範圍格（(0x40,0x80,0xff,0x66)）、單位
-            // （drawUnitSprite、ColorScale 變暗）、storyActors、白框游標（drawCursor）與左下 HUD（drawNativeMapHUD）。
-            // 施法射程、攻擊射程、FD2_UNIT_LABELS、F3 除錯字、drawUnitHUD 在開場與第一章沒有走到（r8）。
-            todo!("r5:main.go:9814..9950 正規化地圖層（Draw 本體）");
+            // main.go:9814..9950：正規化地圖層。FD2_UNIT_LABELS、F3 除錯字與 drawUnitHUD 在開場與第一章沒有走到（r8）。
+            self.draw_normalized_world_layer(screen, legacy_viewport);
+            let (tw, th) = {
+                let m = self.m.as_ref().expect("draw_frame 已檢查 g.m");
+                (m.tile_w, m.tile_h)
+            };
+            // 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
+            // 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
+            let cur_px = (self.cur_x * tw) as f64 - self.cam_x;
+            let cur_py = (self.cur_y * th) as f64 - self.cam_y;
+            if !self.ring && !self.spell_open && !legacy_viewport && campaign_battle_view {
+                draw_cursor(screen, cur_px, cur_py, tw as f64, th as f64);
+            }
+            // HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
+            if self.st.is_some() && self.font.is_some() && !legacy_viewport {
+                let cursor_unit = self.st.as_ref().unwrap().unit_at(self.cur_x, self.cur_y);
+                if cursor_unit.is_some() && !self.draw_native_map_hud(screen) {
+                    todo!("r8:main.go:drawUnitHUD（原生左下面板畫不出來時的後備；開場與第一章沒有走到）");
+                }
+                if self.debug {
+                    todo!("r8:main.go:9939 F3 除錯字 ebitenutil.DebugPrintAt（開場與第一章沒有開）");
+                }
+            }
         }
         if modern_hd_requested {
             todo!("r6:modern_hd_map_gpu.go:drawModernHDMapFrame");
@@ -8370,11 +8389,157 @@ impl Game {
         }
         self.draw_native_system_info_ui(screen);
         self.draw_native_player_status(screen);
-        if self.fade.is_some() {
-            // main.go:10170..10181：ebiten.NewImage(640,400) Fill (0,0,0,uint8(alpha*0xff)) 後 DrawImage。
-            todo!("r5:main.go:10170 舊 fade 黑色疊層（Draw 本體）");
-        }
+        self.draw_story_fade_overlay(screen);
         self.draw_capture_shot_point(screen);
+    }
+
+    /// Go `Draw` 本體 `main.go:9812..9919`：正規化世界層，到游標之前為止。
+    ///
+    /// story 場景與原版阻塞 battle event 走 320×200 離屏（`g.storyView`）再放大 `storyZoom` 倍；一般可操作戰場在
+    /// 640×400 直繪。依序畫圖塊、移動範圍格、施法／攻擊射程格、單位（`drawUnitSprite`，已行動單位 `ColorScale`
+    /// 變暗）、storyActors，離屏時放大貼回 `screen`。R5 階段 2 `r5p` 逐行移植；從 [`Game::draw_field`] 拆出來，
+    /// 只是讓局部黃金（`parity_replay/rust_golden_r5p_layers_test.rs`）呼叫同一份程式。`g.storyView` 暫時取出成
+    /// 區域變數，讓畫到它時仍可呼叫 `&self` 的 `tile_at`／`draw_unit_sprite`。
+    pub(crate) fn draw_normalized_world_layer(&mut self, screen: &mut Picture, legacy_viewport: bool) {
+        let (tw, th) = {
+            let m = self.m.as_ref().expect("draw_frame 已檢查 g.m");
+            (m.tile_w, m.tile_h)
+        };
+        let (view_w, view_h) =
+            if legacy_viewport { (LOGICAL_W / STORY_ZOOM, LOGICAL_H / STORY_ZOOM) } else { (LOGICAL_W, LOGICAL_H) };
+        // Go `g.storyView` 只在第一次需要時建立，之後每幀 Fill 黑重用。
+        let mut story_view = if legacy_viewport {
+            let mut view = self
+                .story_view
+                .take()
+                .unwrap_or_else(|| Arc::new(Picture::new_image(LOGICAL_W / STORY_ZOOM, LOGICAL_H / STORY_ZOOM)));
+            Arc::make_mut(&mut view).fill(ColorRgba { r: 0, g: 0, b: 0, a: 0xff });
+            Some(view)
+        } else {
+            None
+        };
+        {
+            let target: &mut Picture = match story_view.as_mut() {
+                Some(view) => Arc::make_mut(view),
+                None => &mut *screen,
+            };
+            let m = self.m.as_ref().expect("draw_frame 已檢查 g.m");
+            // 只畫可見範圍
+            let x0 = (self.cam_x as i64) / tw;
+            let y0 = (self.cam_y as i64) / th;
+            let x1 = (self.cam_x as i64 + view_w) / tw + 1;
+            let y1 = (self.cam_y as i64 + view_h) / th + 1;
+            let mut cy = y0;
+            while cy <= y1 && cy < m.h {
+                let mut cx = x0;
+                while cx <= x1 && cx < m.w {
+                    if cy < 0 || cx < 0 {
+                        cx += 1;
+                        continue;
+                    }
+                    if let Some(t) = self.tile_at(m.tiles[(cy * m.w + cx) as usize]) {
+                        let mut op = DrawImageOptions::default();
+                        op.geo_m.translate((cx * tw) as f64 - self.cam_x, (cy * th) as f64 - self.cam_y);
+                        target.draw_image(&t, &op);
+                    }
+                    cx += 1;
+                }
+                cy += 1;
+            }
+            // 移動範圍高亮(已選單位:藍色半透明格)
+            if let Some(sel) = self.sel {
+                let mut hl = Picture::new_image(tw, th);
+                hl.fill(ColorRgba { r: 0x40, g: 0x80, b: 0xff, a: 0x66 });
+                // Go 走訪 map 的順序不固定；每格位置不同、互不重疊，順序不影響像素。
+                for c in self.reach.keys() {
+                    let mut op = DrawImageOptions::default();
+                    op.geo_m.translate((c.x * tw) as f64 - self.cam_x, (c.y * th) as f64 - self.cam_y);
+                    target.draw_image(&hl, &op);
+                }
+                let st = self.st.as_ref().expect("g.sel 非 nil 時有 g.st");
+                if let Some(sp) = self.cast_sp.as_ref() {
+                    // 施法射程高亮(紫)
+                    let mut ch = Picture::new_image(tw, th);
+                    ch.fill(ColorRgba { r: 0xa0, g: 0x50, b: 0xe0, a: 0x5c });
+                    for y in 0..m.h {
+                        for x in 0..m.w {
+                            if st.in_cast_range(sel, sp, x, y) {
+                                let mut op = DrawImageOptions::default();
+                                op.geo_m.translate((x * tw) as f64 - self.cam_x, (y * th) as f64 - self.cam_y);
+                                target.draw_image(&ch, &op);
+                            }
+                        }
+                    }
+                }
+                // 原生物品／command 0 目標 modal 只由完整的 0x11CAC 索引畫面
+                // 呈現。缺少 raw target field、LUT 或 range sprite 時，不畫沒有
+                // 原版證據的 RGBA 色塊作後備，避免把 renderer 失敗偽裝成成功。
+                // 攻擊射程高亮(紅;已移動、選攻擊、尚未選中目標的階段,doc32 武器攻擊距離接線)
+                if self.cast_sp.is_none() && self.moved && !self.ring && !self.spell_open {
+                    let mut ah = Picture::new_image(tw, th);
+                    ah.fill(ColorRgba { r: 0xe0, g: 0x30, b: 0x30, a: 0x5c });
+                    for y in 0..m.h {
+                        for x in 0..m.w {
+                            if st.in_attack_range(sel, x, y) {
+                                let mut op = DrawImageOptions::default();
+                                op.geo_m.translate((x * tw) as f64 - self.cam_x, (y * th) as f64 - self.cam_y);
+                                target.draw_image(&ah, &op);
+                            }
+                        }
+                    }
+                }
+            }
+            // 單位層(M1:FIGANI 待機動畫 sprite + 陣營腳標 + HP bar;無 sprite 退回色塊)
+            if let Some(st) = self.st.as_ref() {
+                for (i, u) in st.units.iter().enumerate() {
+                    if !u.on_field || !u.alive() {
+                        // 待命(未進場)單位不畫
+                        continue;
+                    }
+                    let ux = (u.x * tw) as f64 - self.cam_x;
+                    let uy = (u.y * th) as f64 - self.cam_y;
+                    if ux < -(tw as f64) || ux > view_w as f64 || uy < -(th as f64) || uy > view_h as f64 {
+                        continue;
+                    }
+                    self.draw_unit_sprite(target, ux, uy, tw as f64, th as f64, u, self.map_sprite_group(i));
+                }
+            }
+            // storyBG 場景靜態角色(doc23 §4:王座廳國王/王后/主角等 cutscene 擺位,同一 sprite 繪法無戰鬥邏輯)
+            for u in &self.story_actors {
+                if !u.on_field || !u.alive() {
+                    continue;
+                }
+                let ux = (u.x * tw) as f64 - self.cam_x;
+                let uy = (u.y * th) as f64 - self.cam_y;
+                self.draw_unit_sprite(target, ux, uy, tw as f64, th as f64, u, u.fig);
+            }
+        }
+        if let Some(view) = story_view {
+            // 離屏世界層放大貼回畫布(48px/格,原版取景)
+            let mut op = DrawImageOptions::default();
+            op.geo_m.scale(STORY_ZOOM as f64, STORY_ZOOM as f64);
+            screen.draw_image(&view, &op);
+            self.story_view = Some(view);
+            if self.unit_labels {
+                todo!("r8:main.go:9911 FD2_UNIT_LABELS 的 ebitenutil.DebugPrintAt（開場與第一章沒有開）");
+            }
+        }
+    }
+
+    /// Go `Draw` 本體 `main.go:10173..10183`：場景淡出/淡入轉場(doc46 §5.2)，全螢幕黑色疊層，alpha 隨 `fade.t`
+    /// 漸變。R5 階段 2 `r5p` 逐行移植；從 [`Game::draw_field`] 拆出來的理由同 [`Game::draw_normalized_world_layer`]。
+    pub(crate) fn draw_story_fade_overlay(&self, screen: &mut Picture) {
+        if let Some(fade) = self.fade.as_ref() {
+            let frac = fade.t as f64 / fade.total as f64;
+            let mut alpha = frac;
+            if !fade.out {
+                alpha = 1.0 - frac;
+            }
+            let mut ov = Picture::new_image(LOGICAL_W, LOGICAL_H);
+            // Go `uint8(alpha * 0xff)`：amd64 先截成 int64 再取低 8 位元（Rust 的 `as u8` 會飽和，範圍外結果不同）。
+            ov.fill(ColorRgba { r: 0, g: 0, b: 0, a: (alpha * 255.0) as i64 as u8 });
+            screen.draw_image(&ov, &DrawImageOptions::default());
+        }
     }
 
     /// Go：`main.go:11586`，`func (g *Game) Layout(outsideW, outsideH int) (int, int)`（`r8`：Ebiten 主迴圈的
@@ -10437,6 +10602,11 @@ mod main_d_test;
 #[cfg(test)]
 #[path = "main/main_r5m_test.rs"]
 mod main_r5m_test;
+
+// R5 階段 2 r5p：Draw 本體的正規化地圖層與舊 fade 疊層的測試。
+#[cfg(test)]
+#[path = "main/main_r5p_test.rs"]
+mod main_r5p_test;
 
 // ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
 

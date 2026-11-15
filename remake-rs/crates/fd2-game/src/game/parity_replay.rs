@@ -21,6 +21,8 @@
 //!   `FD2_GOLDEN_MAP_LAYERS_OUT` 才打開，預設關閉。
 //! - R5 階段 2 r5d：`rust_golden_dialogue_layers_test.rs` 是 Go `rust_golden_dialogue_layers_test.go` 的同一個掛點，設
 //!   `FD2_GOLDEN_DIALOGUE_LAYERS_OUT` 才打開，預設關閉；任一擷取打開時以 `pin_global_rand` 接上 Go 的全域亂數。
+//! - R5 階段 2 r5p：`rust_golden_r5p_layers_test.rs` 是 Go `rust_golden_r5p_layers_test.go`（chapter 模式同一個掛點，
+//!   設 `FD2_GOLDEN_R5P_LAYERS_*` 才打開；opening 模式 `#[ignore]`，由 `tools/rust_r5p_layers.sh` 執行）。
 //! - Go 以 `t.Setenv` 設的環境變數由父測試以子行程傳入（F 組 `f_child_env` 的做法），工作區禁用 `unsafe`。
 
 use super::*;
@@ -35,6 +37,7 @@ mod rust_golden_dialogue_layers_test;
 mod rust_golden_frames_opening_test;
 mod rust_golden_frames_test;
 mod rust_golden_map_layers_test;
+mod rust_golden_r5p_layers_test;
 
 pub(crate) use chapter_parity_hp_lock_test::*;
 pub(crate) use chapter_parity_legacy_end_test::*;
@@ -45,3 +48,4 @@ pub(crate) use native_title_to_town_test::*;
 pub(crate) use rust_golden_dialogue_layers_test::*;
 pub(crate) use rust_golden_frames_test::*;
 pub(crate) use rust_golden_map_layers_test::*;
+pub(crate) use rust_golden_r5p_layers_test::*;
