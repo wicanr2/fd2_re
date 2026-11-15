@@ -28,6 +28,8 @@
 //! - R5 階段 2 r5f：`rust_golden_ttf_layers_test.rs` 是 Go `rust_golden_ttf_layers_test.go`（chapter 模式同一個掛點，
 //!   設 `FD2_GOLDEN_TTF_LAYERS_OUT` 才打開；度量黃金 `#[ignore]`，由 `tools/rust_r5f_ttf_layers.sh` 執行）。驅動端在
 //!   `load_game` 之後以 `require_golden_font` 要求 Go 黃金同一份字型。
+//! - R5 階段 2 r5b：`rust_golden_r5b_layers_test.rs` 是 Go `rust_golden_r5b_layers_test.go`（chapter 模式同一個掛點，
+//!   設 `FD2_GOLDEN_R5B_LAYERS_OUT` 才打開，由 `tools/rust_r5b_layers.sh` 執行）。
 //! - Go 以 `t.Setenv` 設的環境變數由父測試以子行程傳入（F 組 `f_child_env` 的做法），工作區禁用 `unsafe`。
 
 use super::*;
@@ -42,6 +44,7 @@ mod rust_golden_dialogue_layers_test;
 mod rust_golden_frames_opening_test;
 mod rust_golden_frames_test;
 mod rust_golden_map_layers_test;
+mod rust_golden_r5b_layers_test;
 mod rust_golden_r5c_layers_test;
 mod rust_golden_r5p_layers_test;
 mod rust_golden_ttf_layers_test;
@@ -55,6 +58,7 @@ pub(crate) use native_title_to_town_test::*;
 pub(crate) use rust_golden_dialogue_layers_test::*;
 pub(crate) use rust_golden_frames_test::*;
 pub(crate) use rust_golden_map_layers_test::*;
+pub(crate) use rust_golden_r5b_layers_test::*;
 pub(crate) use rust_golden_r5c_layers_test::*;
 pub(crate) use rust_golden_r5p_layers_test::*;
 pub(crate) use rust_golden_ttf_layers_test::*;

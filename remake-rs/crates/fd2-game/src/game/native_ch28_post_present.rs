@@ -324,7 +324,28 @@ impl Game {
 
 impl Game {
     /// Go：`native_ch28_post_present.go:339`，`func (g *Game) drawNativeCh28PostPresent(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5b：逐行。`drawn`、`presentedFrame`、`presentedHD` 照 Go 在這裡設（`draw` 路徑）；HD 死亡素材
+    /// 的幀（`hasModernHDDeathBank`）是 `todo!("r6:…")`，忠實模式下 `prepare` 也不會建立 HD 幀。
     pub(crate) fn draw_native_ch28_post_present(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_ch28_post_present.go:drawNativeCh28PostPresent")
+        let Some(j) = self.native_ch28_post_present.as_ref() else {
+            return false;
+        };
+        if j.palette.len() != 256 || self.native_map_vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE {
+            return false;
+        }
+        if has_modern_hd_death_bank(self.modern_story_portraits.as_ref()) {
+            todo!("r6:native_ch28_post_present.go:344 drawPreparedModernHDMapFrame（HD 死亡素材的幀）")
+        }
+        // Go：image.NewPaletted(320×200, j.palette)，copy(img.Pix, g.nativeMapVGA)（長度已核對）。
+        let img =
+            IndexedFrame { width: 320, height: 200, pix: self.native_map_vga.clone(), palette: j.palette.clone() };
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        let j = self.native_ch28_post_present.as_mut().unwrap();
+        (j.presented_frame, j.presented_hd) = (j.frame, false);
+        j.drawn = true;
+        true
     }
 }

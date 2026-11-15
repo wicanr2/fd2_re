@@ -25,8 +25,8 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 666,
-      "r5": 18,
+      "ported": 671,
+      "r5": 13,
       "r6": 59,
       "r8": 1179
     },
@@ -4311,7 +4311,7 @@
           "name": "drawBattleScene",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_battle_scene",
-          "status": "r5",
+          "status": "ported",
           "go_line": 11231,
           "class": "畫面",
           "cover": 3.7,
@@ -11509,7 +11509,7 @@
           "name": "drawNativeAIIdleRecovery",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ai_idle_recovery",
-          "status": "r5",
+          "status": "ported",
           "go_line": 328
         }
       ],
@@ -12450,7 +12450,7 @@
           "name": "drawNativeCh28PostPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ch28_post_present",
-          "status": "r5",
+          "status": "ported",
           "go_line": 339
         }
       ],
@@ -17214,7 +17214,7 @@
           "name": "drawNativePhysicalBody",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_physical_body",
-          "status": "r5",
+          "status": "ported",
           "go_line": 414,
           "class": "畫面",
           "cover": 74.2,
@@ -17379,7 +17379,7 @@
           "name": "drawNativePhysicalPrelude",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_physical_prelude",
-          "status": "r5",
+          "status": "ported",
           "go_line": 372,
           "class": "畫面",
           "cover": 42.1,
@@ -22726,6 +22726,49 @@
       {
         "rust": "fd2_game::game::XImageMeasure",
         "note": "TextMeasure 的正式實作，含 Ebiten v2.6.6 text.BoundString／DrawWithOptions 的排版"
+      }
+    ]
+  },
+  "r5_stage2_r5b": {
+    "rule": "本體不再有 todo!(\"r5…\") 才改 ported；未執行分支的 todo!(\"r6…\")／todo!(\"r8…\") 列在 todo_branches",
+    "functions": [
+      {
+        "go": "main.go:11231",
+        "func": "drawBattleScene",
+        "rust": "fd2_game::game::Game::draw_battle_scene",
+        "todo_branches": [
+          "r8:main.go:11240..11391 drawBattleScene 原生前奏與本體之外的戰鬥畫面（drawNativePhysicalBase、TTF 狀態欄、FIGANI 圖層；開場與第一章沒有走到）"
+        ]
+      },
+      {
+        "go": "native_ai_idle_recovery.go:328",
+        "func": "drawNativeAIIdleRecovery",
+        "rust": "fd2_game::game::Game::draw_native_ai_idle_recovery",
+        "todo_branches": []
+      },
+      {
+        "go": "native_ch28_post_present.go:339",
+        "func": "drawNativeCh28PostPresent",
+        "rust": "fd2_game::game::Game::draw_native_ch28_post_present",
+        "todo_branches": [
+          "r6:native_ch28_post_present.go:344 drawPreparedModernHDMapFrame（HD 死亡素材的幀）"
+        ]
+      },
+      {
+        "go": "native_physical_body.go:414",
+        "func": "drawNativePhysicalBody",
+        "rust": "fd2_game::game::Game::draw_native_physical_body",
+        "todo_branches": [
+          "r6:modern_hd_battle_runtime.go:331 drawModernHDBattleBody（HD 戰鬥本體）"
+        ]
+      },
+      {
+        "go": "native_physical_scene.go:372",
+        "func": "drawNativePhysicalPrelude",
+        "rust": "fd2_game::game::Game::draw_native_physical_prelude",
+        "todo_branches": [
+          "r8:native_physical_scene.go:388..408 出發與捲動（分離背景；body 本體、HD lead 與 leadImages；開場與第一章沒有走到）"
+        ]
       }
     ]
   }

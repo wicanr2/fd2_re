@@ -8730,10 +8730,17 @@ impl Game {
     ///
     /// Go：`main.go:11231`，`func (g *Game) drawBattleScene(screen *ebiten.Image)`
     ///
-    /// 純繪圖（R5）。其中的狀態改寫：`drawNativePhysicalPrelude`（D 組）設前奏的 `preludeDrawn`、
-    /// `drawNativePhysicalBase` 失敗時寫 `loadErr`（`main.go:11280`），見 `PORTING.md`「Draw 中改狀態的位置」。
+    /// R5 階段 2 r5b：開場與第一章每次都在原生前奏／本體（`drawNativePhysicalPrelude`）返回（階段 0 覆蓋率 6488 次，
+    /// 其後 0 次）。其後的近似畫面（黑底、背景、`drawNativePhysicalBase` 與失敗時的 `loadErr`、TTF 狀態欄、FIGANI 守方／
+    /// 台座／攻方圖層、紅色剪影）用到的 `drawNativePhysicalBase`、`battleSceneLayerOrder`、`redSilhouette` 等都是 r8，
+    /// 整段 `todo!("r8:…")`。
     pub(crate) fn draw_battle_scene(&mut self, screen: &mut Picture) {
-        todo!("R5: main.go:drawBattleScene（全螢幕戰鬥演出繪製）")
+        if self.draw_native_physical_prelude(screen) {
+            return;
+        }
+        todo!(
+            "r8:main.go:11240..11391 drawBattleScene 原生前奏與本體之外的戰鬥畫面（drawNativePhysicalBase、TTF 狀態欄、FIGANI 圖層；開場與第一章沒有走到）"
+        )
     }
 }
 
@@ -10642,6 +10649,11 @@ mod main_r5p_test;
 #[cfg(test)]
 #[path = "main/main_r5c_test.rs"]
 mod main_r5c_test;
+
+// R5 階段 2 r5b：戰鬥演出組的測試。
+#[cfg(test)]
+#[path = "main/main_r5b_test.rs"]
+mod main_r5b_test;
 
 // ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
 

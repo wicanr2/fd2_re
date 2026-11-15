@@ -447,6 +447,25 @@ struct NativePhysicalBodyAssembly {
 }
 
 impl NativePhysicalBodyJob {
+    /// Go `drawNativePhysicalBody`（`native_physical_body.go:433..446`）在 `p.image == nil` 時建立快取畫面的那段
+    /// （Rust 拆出，`draw_native_physical_body` 與 `present.rs` 的呈現回報共用）。像素為空（cue-only）回 `None`。
+    pub(crate) fn present_image(&self, ui_palette: &[ColorRgba]) -> Result<Option<Picture>> {
+        let pixels = self.indexed()?;
+        if pixels.is_empty() {
+            return Ok(None);
+        }
+        let mut palette = ui_palette.to_vec();
+        if let Some(c) = self.palette0 {
+            // Go：palette[0] = *job.palette0（color.NRGBA），NewImageFromImage 以 color.RGBAModel 預乘。
+            palette[0] = c.premultiplied();
+        }
+        // Go：image.NewPaletted(320×200, palette)，copy(img.Pix, pixels)。
+        let mut pix = vec![0u8; 320 * 200];
+        let n = pix.len().min(pixels.len());
+        pix[..n].copy_from_slice(&pixels[..n]);
+        Ok(Some(Picture::from_indexed(&IndexedFrame { width: 320, height: 200, pix, palette })))
+    }
+
     /// Go：`native_physical_body.go:407`，`func (job *nativePhysicalBodyJob) indexed() ([]byte, error)`
     pub(crate) fn indexed(&self) -> Result<Vec<u8>> {
         let Some(present) = self.present.as_ref() else {
@@ -469,10 +488,37 @@ impl Game {
         screen: &mut Picture,
         scene: &mut NativePhysicalScene,
     ) -> Result<()> {
-        // 純繪圖（HD 呈現、索引色轉貼圖、`DrawImage`）在 R5。流程狀態只有 `p.drawn = true`，由呈現回報設定
-        // （見 PORTING.md「D 組：呈現回報」）。
-        let _ = (screen, scene);
-        todo!("R5: native_physical_body.go:414 drawNativePhysicalBody（繪圖；p.drawn 由呈現回報設）")
+        // R5 階段 2 r5b：逐行。`p.drawn` 與快取畫面 `p.image` 照 Go 在這裡設（`draw` 路徑）；無畫面重播由
+        // `present.rs` 的呈現回報做同樣的狀態改寫。
+        let hd_wanted = self.modern_hd_battle_wanted(Some(scene));
+        let ui_palette = &self.native_ui_palette;
+        let Some(p) = scene.body.as_mut() else {
+            return Err(game_err!("native physical body has no current present"));
+        };
+        let mut index = p.index;
+        if index == p.jobs.len() as i64 && p.return_wait_millis > 0.0 {
+            index = p.last_present; // caller等待保留最後影格，不重播cue或新增present。
+        }
+        if index < 0 || index >= p.jobs.len() as i64 {
+            return Err(game_err!("native physical body has no current present"));
+        }
+        let job = &p.jobs[index as usize];
+        // Go `drawModernHDBattleBody(screen, scene, job)`：`scene` 與 `job`（在 `scene.body.jobs` 裡）無法同時以
+        // `&mut` 借出，這裡照它的守門（`modernHDBattleWanted(scene)` 且 `job.hdSources` 非 nil）判斷；忠實模式回 false。
+        if hd_wanted && job.hd_sources.is_some() {
+            todo!("r6:modern_hd_battle_runtime.go:331 drawModernHDBattleBody（HD 戰鬥本體）")
+        }
+        if p.image.is_none() {
+            let Some(img) = job.present_image(ui_palette)? else {
+                return Ok(()); // cue-only項目由Update消費。
+            };
+            p.image = Some(Arc::new(img));
+        }
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(p.image.as_ref().unwrap(), &op);
+        p.drawn = true;
+        Ok(())
     }
 
     /// stepNativePhysicalBodyMillis 以60Hz來源播放20/40ms與BIOS等待。

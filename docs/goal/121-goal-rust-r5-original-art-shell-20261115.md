@@ -483,3 +483,41 @@ Update 之後、城鎮游標移動之後、酒店每次輸入之後，不推進�
 `hotel-save.json` `190b9f8f…` 與 Go 黃金相同，載入字型沒有改變第一章重播的流程；字型載入後重跑其他組的局部黃金（r5m、r5d、r5p 的 Rust 端）全部
 與 Go 相同，opening 整張比對 1940／1940 相同、停在 `drawCampaignUI`（r5c）。共用檔：`Game::draw_field` 只改 TTF 段，`parity_replay` 加擷取掛點與
 字型檢查，`canvas.rs` 沒有改。
+
+## 階段 2 結果：r5b 戰鬥演出（2026-11-15）
+
+逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5b」。
+
+### 移植
+
+- `drawBattleScene`、`drawNativePhysicalPrelude`、`drawNativePhysicalBody`、`drawNativeAIIdleRecovery`、`drawNativeCh28PostPresent` 照 Go 逐行移植，
+  `PORTING.json` 以 `tools/rust_r5_mark_ported.py` 改成 `ported`（記在 `r5_stage2_r5b`）。`canvas.rs` 沒有改。
+- 依階段 0 覆蓋率：`drawBattleScene` 在第一章 6488 次都在原生前奏／本體返回，其後的近似畫面（`drawNativePhysicalBase`、TTF 狀態欄、FIGANI 圖層）
+  `todo!("r8:…")`；前奏裡的出發與捲動 0 次，`todo!("r8:…")`；HD 前奏、HD 本體、HD 死亡幀 `todo!("r6:…")`。
+- 本體的快取畫面建立拆成 `NativePhysicalBodyJob::present_image`，`draw` 路徑與無畫面重播的呈現回報共用；`present.rs` 兩個攻擊畫面的 `todo!("R5…")`
+  依覆蓋率改標 R8。
+- Go 測試 2 項移植（`TestNativePhysicalPreludeGPU` 的前奏段、`TestNativeAIIdleRecoveryThreeDrawsBeforeHPCommit`），另加 4 項。以第八章原版收據為輸入的
+  物理演出測試沒有移植（夾具不在 crate 裡，D 組列為階段 3）。
+
+### 局部黃金
+
+本組三個分支在 `Draw` 裡是只有自己一層的全螢幕原生呈現，所以呼叫整個 `Draw`，直接與階段 0 整張黃金同一擷取點比。新增只輸出資料的
+`remake/cmd/fd2/rust_golden_r5b_layers_test.go`（未設 `FD2_GOLDEN_R5B_LAYERS_OUT` 時略過，既有 Go 檔沒有改）與 Rust 端
+`parity_replay/rust_golden_r5b_layers_test.rs`，由 `tools/rust_r5b_layers.sh` 驅動；其他分支只照 `Draw` 留下狀態改動（斜坡、登場轉場整個 `Draw`，
+尾段畫原生整幀）。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數（Go、Rust、階段 0 相同） | 13751 |
+| 本組分支 | 4311 張（物理演出 3244：前奏 230、本體 3014；死亡演出 1064；AI 閒置回收 3），Go 與 Rust 的狀態鍵與整張雜湊逐張相同，且全部與階段 0 整張黃金同一擷取點相同 |
+| 序列雜湊（兩邊相同） | `64e96cad…c357e5` |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…` |
+| 竄改反向檢查 | 本體貼上多平移 1 像素：物理演出 3244 張只剩前奏 230 張相同，比對失敗。AI 閒置回收改成不用目前 DAC：3 張仍相同（第一章那 3 幀的 DAC 調色盤與素材調色盤畫出相同像素），這條分支只由單元測試驗 |
+
+### 驗證
+
+`tools/rust_game_test.sh` 369 passed、7 ignored（fmt、clippy 通過，字型掛入且沒有略過）；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；
+`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；局部黃金重跑兩次相同；
+`Cargo.lock` 沒有改動。共用檔：`main.rs` 只換 `draw_battle_scene` 本體並登記測試模組，`Game::draw` 的分派沒有改；`present.rs` 共用本體畫面建立、兩個
+攻擊畫面 `todo!` 改標 R8；`parity_replay` 加擷取掛點，chapter 模式整張擷取停在 `todo!` 時先寫出已擷取的部分（新工具 `tools/rust_r5_chapter_frames.sh`）；
+`canvas.rs` 沒有改。chapter 整張比對停在第 24 次的 HUD 組 `drawNativeSystemEndTurn`，前 24 次與階段 0 相同。

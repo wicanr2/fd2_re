@@ -211,6 +211,43 @@ fn test_native_ai_idle_recovery_initial_mask_and_raw_restore() {
     );
 }
 
+/// Go：`native_ai_idle_recovery_test.go:74` `TestNativeAIIdleRecoveryThreeDrawsBeforeHPCommit`（R5 階段 2 r5b 移植：
+/// 以 `Game::draw` 畫到 CPU 畫布、`Game::update` 推進）。
+#[test]
+fn test_native_ai_idle_recovery_three_draws_before_hp_commit() {
+    if f_child_env(module_path!(), "test_native_ai_idle_recovery_three_draws_before_hp_commit", mute_env).is_none() {
+        return;
+    }
+    let (mut g, decision) = ai_idle_recovery_test_game();
+    let finished = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let flag = finished.clone();
+    g.begin_native_ai_idle_recovery(
+        Some(0),
+        decision,
+        Some(Box::new(move |_: &mut Game| flag.store(true, std::sync::atomic::Ordering::SeqCst))),
+    )
+    .expect("begin");
+    let done = || finished.load(std::sync::atomic::Ordering::SeqCst);
+    let mut screen = Picture::new_image(640, 400);
+    for stage in 0..3 {
+        g.step_native_ai_idle_recovery();
+        let frame = g.native_ai_idle_recovery.as_ref().map(|j| j.frame);
+        assert!(frame == Some(stage) && unit0(&mut g).hp == 5 && !done(), "未 Draw 就越過畫面或提交 HP");
+        g.draw(&mut screen);
+        g.update().expect("Update");
+        if stage < 2 {
+            assert!(unit0(&mut g).hp == 5 && !done(), "第三張發布前已提交 HP");
+        }
+    }
+    let hp = unit0(&mut g).hp;
+    assert!(
+        hp == 7 && done() && g.native_ai_idle_recovery.is_none() && g.load_err.is_empty(),
+        "第三張發布後的回復／continuation：hp={hp} finished={} loadErr={}",
+        done(),
+        g.load_err
+    );
+}
+
 /// Go：`native_ai_idle_recovery_test.go:101` `TestNativeAIIdleRecoveryMissingAssetsAndInvalidTupleLeaveHP`
 #[test]
 fn test_native_ai_idle_recovery_missing_assets_and_invalid_tuple_leave_hp() {

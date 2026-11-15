@@ -281,11 +281,13 @@ impl Game {
     }
 
     /// Go `main.go:11231` drawBattleScene 的流程部分：先走 `drawNativePhysicalPrelude`
-    /// （`native_physical_scene.go:372`），沒有原生場景時是重製端近似畫面（R5）。
+    /// （`native_physical_scene.go:372`），沒有原生場景時是重製端近似畫面（R8，與 `draw_battle_scene` 相同）。
     fn acknowledge_battle_scene(&mut self) {
         let wanted = self.modern_hd_battle_wanted(self.atk.as_ref().and_then(|a| a.native_scene.as_ref()));
         let Some(scene) = self.atk.as_mut().and_then(|a| a.native_scene.as_mut()) else {
-            todo!("R5: main.go:11236 沒有原生場景的攻擊畫面（drawNativePhysicalBase 失敗寫 loadErr）")
+            todo!(
+                "R8: main.go:11236 沒有原生場景的攻擊畫面（drawNativePhysicalBase 失敗寫 loadErr；R5 r5b 依階段 0 覆蓋率改標，開場與第一章沒有走到）"
+            )
         };
         if scene.prelude_frame < scene.prelude_images.len() as i64 {
             if wanted {
@@ -303,7 +305,9 @@ impl Game {
                 return;
             }
         } else if scene.body.is_none() {
-            todo!("R5: main.go:11236 原生前奏與本體之後的攻擊畫面（drawNativePhysicalBase）")
+            todo!(
+                "R8: main.go:11236 原生前奏與本體之後的攻擊畫面（drawNativePhysicalBase；R5 r5b 依階段 0 覆蓋率改標，開場與第一章沒有走到）"
+            )
         }
         if let Err(err) = self.acknowledge_native_physical_body(wanted) {
             self.load_err = format!("native physical body: {err}");
@@ -328,16 +332,11 @@ impl Game {
             todo!("R6: native_physical_body.go:426 drawModernHDBattleBody")
         }
         if p.image.is_none() {
-            let pixels = job.indexed()?;
-            if pixels.is_empty() {
+            // R5 r5b：與 `draw_native_physical_body` 共用 `present_image`（palette0 照 Go 預乘、像素照 `copy` 補足 320×200）。
+            let Some(img) = job.present_image(&ui_palette)? else {
                 return Ok(()); // cue-only項目由Update消費。
-            }
-            let mut palette = ui_palette;
-            if let Some(c) = job.palette0 {
-                palette[0] = ColorRgba { r: c.r, g: c.g, b: c.b, a: c.a };
-            }
-            let frame = IndexedFrame { width: 320, height: 200, pix: pixels, palette };
-            p.image = Some(Arc::new(picture_from_indexed(&frame)));
+            };
+            p.image = Some(Arc::new(img));
         }
         p.drawn = true;
         Ok(())

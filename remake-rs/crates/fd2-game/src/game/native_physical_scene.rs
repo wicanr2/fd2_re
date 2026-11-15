@@ -304,13 +304,58 @@ impl Game {
 
     /// Go：`native_physical_scene.go:372`，`func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool`
     ///
-    /// R4 D 組：純繪圖在 R5。Go 在這裡設的流程旗標 `preludeDrawn`、`leadDrawn` 與 body 的 `drawn` 由呈現回報設定，
-    /// 畫不出來時寫的 `loadErr` 也由外殼回報（PORTING.md「D 組：呈現回報」）。
+    /// R5 階段 2 r5b：逐行。`preludeDrawn`、body 的 `drawn` 與畫不出來時的 `loadErr` 照 Go 在這裡設（`draw` 路徑）；
+    /// 無畫面重播由 `present.rs` 的呈現回報做同樣的狀態改寫。
+    ///
+    /// Go 以 `scene := g.atk.nativeScene` 指標同時讀寫場景與 `g`；Rust 在本函式期間把場景從 `self.atk` 暫時取出，
+    /// 結束前放回。期間呼叫的 `drawModernHDBattlePrelude`／`drawNativePhysicalBody` 只經參數讀場景，不讀
+    /// `g.atk.nativeScene`。
+    ///
+    /// 出發與捲動（`leadFrame < len(leadImages)`）在開場與第一章沒有走到（階段 0 覆蓋率 0 次；`leadImages` 由
+    /// `prepareNativePhysicalDeparture` 建立，Rust 是 R8），`todo!("r8:…")`。
     pub(crate) fn draw_native_physical_prelude(&mut self, screen: &mut Picture) -> bool {
-        let _ = screen;
-        todo!(
-            "R5: native_physical_scene.go:372 drawNativePhysicalPrelude（繪圖；preludeDrawn／leadDrawn 由呈現回報設）"
-        )
+        let Some(mut scene) = self.atk.as_mut().and_then(|a| a.native_scene.take()) else {
+            return false;
+        };
+        // Go 的每個 `return` 寫成 `break 'draw`，離開後把場景放回。
+        let drawn = 'draw: {
+            let scene = &mut scene;
+            let img;
+            if scene.prelude_frame < scene.prelude_images.len() as i64 {
+                match self.draw_modern_hd_battle_prelude(screen, scene) {
+                    Err(err) => {
+                        self.load_err = format!("native physical HD prelude: {err}");
+                        break 'draw true;
+                    }
+                    Ok(true) => {
+                        scene.prelude_drawn = true;
+                        break 'draw true;
+                    }
+                    Ok(false) => {}
+                }
+                // Go 的 preludeImages 是 NewImageFromImage 之後的貼圖；Rust 保存索引色畫格，這裡轉成同一份畫面。
+                img = Picture::from_indexed(&scene.prelude_images[scene.prelude_frame as usize]);
+                scene.prelude_drawn = true;
+            } else if scene.lead_frame < scene.lead_images.len() as i64 {
+                todo!(
+                    "r8:native_physical_scene.go:388..408 出發與捲動（分離背景；body 本體、HD lead 與 leadImages；開場與第一章沒有走到）"
+                )
+            } else {
+                if scene.body.is_some() {
+                    if let Err(err) = self.draw_native_physical_body(screen, scene) {
+                        self.load_err = format!("native physical body: {err}");
+                    }
+                    break 'draw true;
+                }
+                break 'draw false;
+            }
+            let mut op = DrawImageOptions::default();
+            op.geo_m.scale(2.0, 2.0);
+            screen.draw_image(&img, &op);
+            true
+        };
+        self.atk.as_mut().expect("Draw 期間不會清掉 g.atk").native_scene = Some(scene);
+        drawn
     }
 }
 

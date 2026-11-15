@@ -386,7 +386,34 @@ impl Game {
 
 impl Game {
     /// Go：`native_ai_idle_recovery.go:328`，`func (g *Game) drawNativeAIIdleRecovery(screen *ebiten.Image) bool`
+    ///
+    /// R5 階段 2 r5b：逐行。`drawn` 照 Go 在這裡設（`draw` 路徑）；失敗收尾在 `Game::draw` 的分支（Go `main.go:9779..9783`）。
     pub(crate) fn draw_native_ai_idle_recovery(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_ai_idle_recovery.go:drawNativeAIIdleRecovery")
+        let Some(job) = self.native_ai_idle_recovery.as_ref() else {
+            return false;
+        };
+        if job.frame < 0
+            || job.frame >= job.frames.len() as i64
+            || self.native_map_assets.as_ref().is_none_or(|a| a.palette.len() != 256)
+        {
+            return false;
+        }
+        let mut palette = self.native_map_assets.as_ref().unwrap().palette.clone();
+        if self.native_map_dac.len() == 256 * 3
+            && let Ok(current) = fdother::vga_palette_from_dac(&self.native_map_dac)
+        {
+            palette = color_palette_from_nrgba(&current);
+        }
+        let frame = &job.frames[job.frame as usize];
+        if frame.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE {
+            return false;
+        }
+        // Go：image.NewPaletted(320×200, palette)，copy(img.Pix, frame)（長度已核對）。
+        let img = IndexedFrame { width: 320, height: 200, pix: frame.clone(), palette };
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        self.native_ai_idle_recovery.as_mut().unwrap().drawn = true;
+        true
     }
 }

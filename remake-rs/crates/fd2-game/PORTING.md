@@ -1271,7 +1271,7 @@ R5 測試清單（需要 `Draw`、GPU 圖片或真 TTF 量寬／繪字，不在�
 | `spawnIntroTransition` | `native_spawn_intro.go:360` | 同上 |
 | `nativeEndTurnRecovery` | `native_end_turn_recovery.go:162` | 幀索引、VGA 長度、768 位元組 DAC 與調色盤可解才 `drawn`；否則取消 |
 | `nativeAIIdleRecovery` | `native_ai_idle_recovery.go:328` | 幀索引、素材調色盤 256、VGA 長度；否則失敗收尾 |
-| `atk`（有原生場景） | `main.go:11231` → `native_physical_scene.go:372`、`native_physical_body.go:414` | 前奏 `prelude_drawn`、出發與捲動 `lead_drawn`、本體 `p.drawn` 與 `p.image`；cue-only 項目不設；本體錯誤寫 `loadErr`。前奏與本體之後、沒有原生場景的近似畫面 R5；HD R6 |
+| `atk`（有原生場景） | `main.go:11231` → `native_physical_scene.go:372`、`native_physical_body.go:414` | 前奏 `prelude_drawn`、出發與捲動 `lead_drawn`、本體 `p.drawn` 與 `p.image`；cue-only 項目不設；本體錯誤寫 `loadErr`。前奏與本體之後、沒有原生場景的近似畫面 R8（R5 階段 2 r5b 依覆蓋率改標，開場與第一章沒有走到）；HD R6 |
 | 結局、ch20／ch23／2189A／單位登場／ch28／24B4D、補血、修飾、AI 修飾、指令 0～35、AI 物品、indexed 回合演出、事件 61 | 見 `present.rs` 各 `todo!` 的 Go 行號 | R8：對應的 `fail*` 還沒移植，`drawn` 條件各自不同（例如補血的 FrontHold／DigitHold 不設 `drawn`、`drawn` 先於長度檢查），第一章重播沒有執行到 |
 
 涵蓋：開頭重設、結尾 defer 兩項加 12 個分支已移植；`todo!` 共 26 個（R5 3、R6 9、R8 14）。單元測試
@@ -1456,15 +1456,15 @@ Go 1.22.12、Ebiten v2.6.6、Xvfb 下 Mesa llvmpipe）。兩次輸出逐位元�
 |---|---|---|---|
 | `startupBlocked`、`nativeDefeat`、`nativeEnding`、ch20／ch23／2189A／單位登場、24B4D、`m == nil` | 9395..9488 | 0 | `todo!("r8:…")`（需要 Fill 的先 Fill 黑） |
 | `titlePhase` → `drawTitle` | 9406 | 1964 | `draw_title`（R5 階段 2 `r5t` 已移植） |
-| `nativeCh28PostPresent` | 9461 | 1064 | `draw_native_ch28_post_present`（r5）；失敗路徑 r8 |
+| `nativeCh28PostPresent` | 9461 | 1064 | `draw_native_ch28_post_present`（R5 階段 2 `r5b` 已移植）；失敗路徑 r8 |
 | `indexedTransition`、補血、修飾、AI 修飾、指令 0～35、AI 物品、`nativeTownDeparture` | 9490..9714 | 0 | `todo!("r8:…")` |
 | `nativePaletteRamp` | 9715 | 5934 | `draw_native_palette_ramp`（R5 階段 2 `r5p` 已移植）；DebugPrint r8 |
 | `nativePalettePulse` | 9725 | 0 | r8 |
 | `spawnIntroTransition` | 9735 | 48 | `draw_native_spawn_intro`（r5） |
 | indexed 回合演出、事件 61 | 9745..9763 | 0 | r8 |
 | `nativeEndTurnRecovery` | 9765 | 42 | `draw_native_end_turn_recovery`（r5）；失敗時 `cancel_native_end_turn_recovery` 已移植，DebugPrint r8 |
-| `nativeAIIdleRecovery` | 9776 | 3 | `draw_native_ai_idle_recovery`（r5）；失敗收尾與 `present.rs` 相同 |
-| `atk` → `drawBattleScene` | 9792 | 6488 | `draw_battle_scene`（r5） |
+| `nativeAIIdleRecovery` | 9776 | 3 | `draw_native_ai_idle_recovery`（R5 階段 2 `r5b` 已移植）；失敗收尾與 `present.rs` 相同 |
+| `atk` → `drawBattleScene` | 9792 | 6488 | `draw_battle_scene`（R5 階段 2 `r5b` 已移植；6488 次都在原生前奏／本體返回，其後的近似畫面 r8） |
 | 尾段 `draw_field` | 9804..10188 | 14812 | 見下 |
 
 尾段：`modernHDMapFrameAdmission` 在 `modern_story_portraits` 為 `None` 時一律 false（忠實模式），否則 `todo!("r6:…")`；
@@ -1491,7 +1491,7 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0；正規化地圖層與 fade 疊層由 `r5p` 移植） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | opening＋chapter（`r5p` 圖層級） |
 | HUD 與選單 | 35（13／22／0；回合橫幅 6 個由 r5m 移植，`shouldDrawTransientBattleMessage` 由 r5f 移植） | 491 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
 | 對話與文字 | 16（0／16／0；R5 階段 2 r5d 移植 3 個，TTF 的 2 個由 r5f 移植） | 0 | 平移、ColorScale、TTF | chapter（r5d：嘴型 13751 次、對白畫格 2254 張與 Go 相同；r5f：TTF 文字與外框，見「R5 階段 2：r5f」）、opening＋chapter |
-| 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
+| 戰鬥演出 | 7（0／7／0；R5 階段 2 `r5b` 移植 5 個） | 0 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter（`r5b`：本組分支 4311 張整張 Draw 與 Go、階段 0 相同，見「R5 階段 2：r5b」） |
 | 地圖與單位 | 14（0／14／0；R5 階段 2 r5m） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
 | 標題與開場 | 7（0／7／0；R5 階段 2 `r5t` 移植 4 個） | 0 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening（標題段 1940／1940 次與 Go 相同）、opening＋chapter |
 | 轉場與調色盤 | 4（0／4／0；R5 階段 2 `r5p`） | 0 | DrawImage、縮放、NewImageFromImage | chapter（`r5p`：調色盤斜坡 2967 次整張與 Go 相同） |
@@ -1542,11 +1542,11 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 對話與文字 | `native_story_dialogue.go:339..351` | `nativeStoryOpeningFrameIndex`（ported，r5d） | 13 | — | opening＋chapter |
 | 對話與文字 | `native_story_dialogue.go:485..586` | `drawNativeStoryDialogue`（ported，r5d） | 102 | — | opening＋chapter |
 | 對話與文字 | `native_story_dialogue_locale.go:160..221` | `drawIndexedLocalizedText`（ported，r5f） | 62 | — | chapter |
-| 戰鬥演出 | `main.go:11231..11387` | `drawBattleScene` | 157 | DrawImage、平移、縮放、Fill | chapter |
-| 戰鬥演出 | `native_ai_idle_recovery.go:328..350` | `drawNativeAIIdleRecovery` | 23 | DrawImage、縮放、NewImageFromImage | chapter |
-| 戰鬥演出 | `native_ch28_post_present.go:339..363` | `drawNativeCh28PostPresent` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
-| 戰鬥演出 | `native_physical_body.go:414..454` | `drawNativePhysicalBody` | 41 | DrawImage、縮放、NewImageFromImage | chapter |
-| 戰鬥演出 | `native_physical_scene.go:372..422` | `drawNativePhysicalPrelude` | 51 | DrawImage、縮放 | chapter |
+| 戰鬥演出 | `main.go:11231..11387` | `drawBattleScene`（ported，r5b；前奏之後 r8） | 157 | DrawImage、平移、縮放、Fill | chapter |
+| 戰鬥演出 | `native_ai_idle_recovery.go:328..350` | `drawNativeAIIdleRecovery`（ported，r5b） | 23 | DrawImage、縮放、NewImageFromImage | chapter |
+| 戰鬥演出 | `native_ch28_post_present.go:339..363` | `drawNativeCh28PostPresent`（ported，r5b） | 25 | DrawImage、縮放、NewImageFromImage | chapter |
+| 戰鬥演出 | `native_physical_body.go:414..454` | `drawNativePhysicalBody`（ported，r5b） | 41 | DrawImage、縮放、NewImageFromImage | chapter |
+| 戰鬥演出 | `native_physical_scene.go:372..422` | `drawNativePhysicalPrelude`（ported，r5b；出發與捲動 r8） | 51 | DrawImage、縮放 | chapter |
 | 地圖與單位 | `main.go:8363..8368` | `tileAt`（ported，r5m） | 6 | — | opening＋chapter |
 | 地圖與單位 | `main.go:9338..9353` | `nativeMapFrameAdmission`（ported，r5m） | 16 | — | opening＋chapter |
 | 地圖與單位 | `main.go:11514..11521` | `mapSpriteGroup`（ported，r5m） | 8 | — | opening＋chapter |
@@ -2331,3 +2331,119 @@ Rust 新增：
 做完前置檢查，到 HD 介面關閉的地方才回 `None`（E 組的 KNOWN_DIFFERENCES `facility-hd-precompute-faithful-skip`）。Go 忠實模式會往下做 HD 預檢
 （`captureModernFacilityListText` 覆蓋率 3 次、`drawIndexedLocalizedText` 的 `indexedHD` 分支 2 次）；Rust 仍跳過，結果不進節點、交易或延續，
 上表的重播收據相同。這是既有的 E 組決定，本組沒有改。
+
+## R5 階段 2：r5b（戰鬥演出，2026-11-15）
+
+代號 `r5b`，基準 `8cc5d394`（含前三批六組與 Go v.1.1.14 修正）。工作單是「R5 對照表」戰鬥演出組的 5 個 r5 函式。計畫見
+[121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)。本節的「目前 `main.go` 行號」比 `PORTING.json` 記的階段 0 行號多 4
+（`drawBattleScene` 階段 0 是 11231，目前是 11235）；`PORTING.json` 照舊用階段 0 行號。
+
+### r5b：移植結果
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py … r5b main.go:11231 native_ai_idle_recovery.go:328 native_ch28_post_present.go:339
+native_physical_body.go:414 native_physical_scene.go:372` 改 `ported`（記在 `r5_stage2_r5b`）；全 crate 狀態 ported 671、r5 13、r6 59、r8 1179。
+畫布只用 `canvas.rs` 既有的 `from_indexed`、`draw_image`（`Scale(2, 2)`），`canvas.rs` 沒有改。分支是否執行到依階段 0 覆蓋率
+（`work/r5-stage0-20261115/r1/cover-*.out`，opening 都是 0 次，下列是 chapter 次數，含 `ackPresents` 另外呼叫的 `Draw`）。
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `main.go:11231` `drawBattleScene` | `Game::draw_battle_scene` | 6488 次都在 `drawNativePhysicalPrelude` 回 true 時返回，其後 0 次。其後的近似畫面（黑底、背景、`drawNativePhysicalBase` 與失敗時的 `loadErr`、TTF 狀態欄 `drawBattlePanel`、`battleSceneLayerOrder` 的守方／台座／攻方圖層、`redSilhouette`）用到的函式都是 r8，整段 `todo!("r8:main.go:11240..11391 …")`（目前行號） |
+| `native_physical_scene.go:372` `drawNativePhysicalPrelude` | `Game::draw_native_physical_prelude` | 逐行；前奏 460 次、前奏之後畫本體 6028 次。Go 以 `scene` 指標同時改場景與 `g`，Rust 在函式期間把場景從 `self.atk` 取出、結束前放回（Go 的 `return` 寫成 `break 'draw`）；期間呼叫的 HD 前奏守門與本體只經參數讀場景。前奏的 `preludeImages` 在 Rust 是索引色畫格，這裡 `from_indexed` 成同一份畫面。出發與捲動（`leadFrame < len(leadImages)`，0 次；`leadImages` 由 R8 的 `prepareNativePhysicalDeparture` 建立）`todo!("r8:…")`；HD 前奏由 `draw_modern_hd_battle_prelude` 守門（忠實模式回 false，HD `todo!("r6:…")`） |
+| `native_physical_body.go:414` `drawNativePhysicalBody` | `Game::draw_native_physical_body` | 逐行；Go 的 `drawModernHDBattleBody(screen, scene, job)` 需要同時以 `&mut` 借出場景與其中的工作，Rust 照它的守門（`modernHDBattleWanted(scene)` 且 `job.hdSources` 非 nil）判斷，成立時 `todo!("r6:…")`。快取畫面 `p.image` 的建立拆成 `NativePhysicalBodyJob::present_image`，與 `present.rs` 的呈現回報共用：`palette0`（Go `*color.NRGBA`）照 `NewImageFromImage` 以 `color.RGBAModel` 預乘、像素照 `copy` 補足 320×200。R4 的 `present.rs` 原本直接拷貝 `palette0` 的四個位元組、不補長度，第一章的 `palette0` 都不透明、像素都是 64000，結果相同 |
+| `native_ai_idle_recovery.go:328` `drawNativeAIIdleRecovery` | `Game::draw_native_ai_idle_recovery` | 逐行（3 次）；`nativeMapDAC` 768 位元組且可解時改用目前 DAC 的調色盤 |
+| `native_ch28_post_present.go:339` `drawNativeCh28PostPresent` | `Game::draw_native_ch28_post_present` | 逐行（1064 次）；HD 死亡素材（`hasModernHDDeathBank`）`todo!("r6:…")`，忠實模式 `prepare` 也不建 HD 幀 |
+
+`drawn`、`preludeDrawn`、body 的 `drawn` 與 `p.image`、`presentedFrame`／`presentedHD`、畫不出來時的 `loadErr` 照 Go 在 `draw` 路徑設；無畫面重播
+仍由 `present.rs` 做同樣的狀態改寫。`present.rs` 的 `acknowledge_battle_scene` 兩個 `todo!("R5: main.go:11236 …")`（沒有原生場景、前奏與
+本體之後）依覆蓋率改標 `R8`，與 `draw_battle_scene` 一致。
+
+### r5b：測試
+
+| Go 測試 | Rust |
+|---|---|
+| `native_physical_scene_test.go:723` `TestNativePhysicalPreludeGPU` | `main/main_r5b_test.rs` `test_native_physical_prelude_gpu`：同一夾具建第八章 BG55／TAI55 場景，無 Draw 時 10 次 step 不前進；之後每格先 `step_attack_presentation_tick` 再 `draw_battle_scene`，9 幀逐像素等於該幀 DAC 調色盤的 2 倍貼上，最後一次回報前時間軸不前進，反擊不重播前奏。第 8 幀之後的 `drawNativePhysicalBase` 狀態欄段是 r8，沒有移植 |
+| `native_ai_idle_recovery_test.go:74` `TestNativeAIIdleRecoveryThreeDrawsBeforeHPCommit`（C 組 R5 測試清單） | `native_end_turn_recovery_test.rs` `test_native_ai_idle_recovery_three_draws_before_hp_commit`：`Game::draw` 畫到 CPU 畫布、`Game::update` 推進，三張發布前不提交 HP |
+| Rust 新增 4 項（`main/main_r5b_test.rs`） | 本體的 2 倍貼上、半透明 `palette0` 預乘、快取重用、cue-only 不畫不設 `drawn`、caller 等待取 `lastPresent`、沒有目前畫面時的錯誤；`Game::draw` 攻擊分支的前奏→本體→本體錯誤寫 `loadErr`、場景放回；ch28 的調色盤、`presentedFrame` 與三個失敗條件；AI 閒置回收的 DAC 調色盤與五個失敗條件 |
+
+沒有移植（D 組「R5 測試清單」其餘項目）：`TestNativePhysicalBodyGPU`、`TestNativePhysicalReturnClearsVGA`、`TestNativePhysicalReturnWaitSixBIOSTicks`、
+`TestNativePhysicalOwnerMapHandoffFromOracle` 以環境變數指定第八章原版收據（`work/parity-slot-ch08/…`），夾具 `physicalSettledBodyFromOracle` 等
+解碼原版 checkpoint 的單位紀錄，crate 裡沒有（D 組列為階段 3 的原版 oracle 測試）；`TestNativePhysicalDepartureGPU` 走分離背景的出發與捲動
+（R8）；`native_command10_12_presentation_test.go:166` 的 ch28 段要先跑 r8 的指令 10 演出。
+
+### r5b：局部黃金
+
+本組三個分支（`nativeCh28PostPresent`、`nativeAIIdleRecovery`、`atk`）在 `Draw` 裡都是 early-return 的全螢幕原生呈現：只有 `Fill` 黑、本組函式與
+`defer` 的 DAC 白／黑 `Fill`，沒有別組圖層。所以這三個分支呼叫**整個** `Draw`，同一擷取點可以直接與階段 0 整張黃金比。
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_r5b_layers_test.go` | `TestRustGoldenR5bLayers`，未設 `FD2_GOLDEN_R5B_LAYERS_OUT` 時 `t.Skip`；chapter 模式，掛點同階段 0（`ch01FrameObserver`）。借用 `goldenFrameProbe`、`pinClock`、`goldenFrameNode`，既有 Go 檔沒有改，沒有逐字複本 |
+| `src/game/parity_replay/rust_golden_r5b_layers_test.rs` | Rust 端 `R5bLayerCapture`，掛在 `Driver::pump` 同一位置；打開時 `pin_global_rand` |
+| `tools/rust_r5b_layers.sh` | Docker 驅動：Go（`fd2-go-test-local`、Xvfb）與 Rust（`fd2-rust:1.99.1-r3`）各跑一次第一章受控重播，再比對 |
+| `tools/rust_r5b_layers_compare.py` | 逐擷取點比對鍵；`--stage0` 把整個 Draw 的分支與階段 0 整張黃金同一擷取點對照 |
+
+擷取規則（兩邊相同）：掛點、60 Hz 虛擬時鐘與全域種子 4 同階段 0；每次擷取先照 `Draw` 開頭清三個本幀旗標，依 `Draw`（目前行號 9398..9805）的
+early-return 順序分支：
+
+- `ch28`／`idle`／`atk`：`Clear` 後呼叫整個 `Draw`，記整張 640×400 雜湊與工作狀態（ch28 的幀、`drawn`、`presentedFrame`／`HD`；閒置回收的幀、
+  DAC 長度、`drawn`；物理演出 Draw 前後的前奏幀、`preludeDrawn`、出發幀、`counterActive`、本體 index／`drawn`／`p.image` 有無／`lastPresent`／
+  等待／返回斜坡；`loadErr` 是否非空）。
+- `ramp`、`spawn`：調色盤斜坡（r5p）與登場轉場（r5m）也只有自己一層，同樣呼叫整個 `Draw`，為了留下 Draw 的狀態改動。
+- `tail`：照 `Draw` 把原生整幀（r5m）畫到另一張畫布，留下 `composeNativeMapFrame` 對 `nativeMapVGA`／`nativeMapDAC` 的重建（AI 閒置回收的調色盤取自
+  `nativeMapDAC`）；鍵只記成功與否。HUD、選單、對白、TTF 不畫。
+- `early`：其餘 early-return 分支（含 HUD 組的 END 回收），不畫。
+
+結果（`tools/rust_r5b_layers.sh <主工作區>/work/r5-stage2-r5b-20261115/layers-r1`，輸出不進版控）：
+
+| 項目 | 結果 |
+|---|---|
+| `checkpoints.jsonl` | Go、Rust 都是 R4 黃金 `1c846f57…` |
+| 擷取數 | 13751（與階段 0 相同）：atk 3244（前奏 230、本體 3014）、ch28 1064、idle 3、ramp 2967、spawn 24、tail 6404、early 45 |
+| 逐擷取點 | 13751／13751 相同；序列雜湊兩邊都是 `64e96cadd704d2cd2d192e5a8d46c15de3db10f1cc4fcd7e67f9abba15c357e5` |
+| 與階段 0 整張黃金 | 本組 4311 張（atk 3244、ch28 1064、idle 3）全部與同一擷取點相同；ramp 2967、spawn 24 也全部相同；兩邊都有列開頭的 4052 個擷取點 `update_frame` 相同 |
+| Go 相異畫格數 | atk 638、ch28 238、idle 2 |
+
+- 沒有遮蔽像素。階段 0 的 `draw_path` 把 ch28 與 idle 歸成 `battle-normalized`、atk 歸成 `fullscreen-native`，其中 1556 張 atk 與 228 張 ch28 標了
+  `+ttf-msg`；那是依 Draw 後狀態推定的分類，這些分支實際在 TTF 段之前就 return，整張雜湊相同證實沒有 TTF 圖層。
+- 重跑：`layers-r2`（只重跑 Rust、沿用 r1 的 Go）的 `rows` 與 r1 逐筆相同。
+- 竄改反向檢查（`tamper`，只重跑 Rust、沿用 r1 的 Go，改回後檔案與 r1 相同）：本體貼上多平移 1 像素、AI 閒置回收不用目前 DAC。物理演出 3244 張
+  只剩前奏 230 張相同，第一個不同在第 134 次（第一個本體幀），比對失敗。AI 閒置回收 3 張仍相同：第一章那 3 幀的 `nativeMapDAC` 是 768 位元組，
+  解出的調色盤與素材調色盤畫出相同像素，這條分支只由單元測試（`draw_native_ai_idle_recovery_prefers_current_dac_and_fails_closed`）驗。
+- 涵蓋限制：第一章的物理演出都是同一型（沒有分離背景、沒有 HD），出發與捲動、本體的錯誤路徑與 cue-only 幀只由單元測試驗；第一章的
+  `palette0` 都不透明；AI 閒置回收只有 3 張。
+
+### r5b：共用檔改動
+
+| 檔 | 改動 |
+|---|---|
+| `main.rs` | `draw_battle_scene` 本體、測試模組 `main/main_r5b_test.rs` 的登記；`Game::draw`／`draw_frame`／`draw_field` 的分派沒有改 |
+| `present.rs` | 本體快取畫面改呼叫 `present_image`；`acknowledge_battle_scene` 兩個 `todo!("R5…")` 改標 `R8` |
+| `native_physical_body.rs` | 新增 `NativePhysicalBodyJob::present_image` |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `r5b_layer_capture`；`pump` 在 `ttf_layer_capture` 之後呼叫它的 `observe` |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `R5bLayerCapture::from_env()`；它打開時也 `pin_global_rand`；`end` 之後 `finish` |
+| `parity_replay/rust_golden_frames_opening_test.rs`、`rust_golden_r5p_layers_test.rs` | `Driver` 字面值補 `r5b_layer_capture: None` |
+| `parity_replay/rust_golden_frames_test.rs` | chapter 模式 `observe` 改經 `try_observe`：停在未移植的 `todo!` 時先寫出已擷取部分的 `frames.json`（含 `stopped`），再照舊 panic；`finish` 的本體拆成 `write_manifest`。擷取都成功時輸出不變 |
+| `parity_replay.rs` | 掛新子模組、模組文件加一行 |
+| `tools/rust_r5_chapter_frames.sh`（新增） | chapter 模式整張畫格擷取與階段 0 黃金比對（`rust_r5_frames_compare.py`），供階段 3 用 |
+| `canvas.rs` | 沒有改 |
+
+### r5b：KNOWN_DIFFERENCES
+
+沒有新增。
+
+### r5b：驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；369 passed、7 ignored（基準 363／7，加本組 6 項）；沒有「略過」 |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉、字型已載入，`work/r5-stage2-r5b-20261115/r5b-parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
+| `tools/rust_r5b_layers.sh` | 上節；r1、r2 相同，兩邊的 `checkpoints.jsonl` 都是 `1c846f57…`；竄改檢查失敗 |
+| Go 新檔 | `gofmt -l` 無輸出；未設環境變數時 `t.Skip` |
+| `Cargo.lock` | 沒有改動；沒有新增套件 |
+
+### r5b：階段 3 預備（chapter 整張比對）
+
+`tools/rust_r5_chapter_frames.sh <主工作區>/work/r5-stage2-r5b-20261115/chapter-frames`：Rust chapter 模式整張擷取停在第 24 次（`update_frame` 1940，
+`story_ch00_handler`）的 `todo!("r5:action_overlay_runtime.go:drawNativeSystemEndTurn")`，屬 HUD 組（`r5h`）。前 24 次（登場轉場）與階段 0 黃金逐次相同，
+前綴序列雜湊兩邊都是 `b17f233a…`，沒有不同的擷取。本組的 4311 張在停點之後，由上節的局部黃金與階段 0 整張黃金逐張對照。

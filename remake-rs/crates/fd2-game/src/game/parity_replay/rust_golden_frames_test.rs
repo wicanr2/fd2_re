@@ -150,11 +150,14 @@ impl FrameCapture {
     }
 
     /// Go `goldenFrameRecorder.observe`：在一個 `update` 之後呼叫。
+    ///
+    /// R5 階段 2 r5b（階段 3 預備）：`Game::draw` 停在未移植的 `todo!` 時，先把已擷取的部分連同 `stopped` 寫進
+    /// `frames.json`，再照舊 panic 停下章重播（以前是直接 panic、沒有輸出）。擷取都成功時與以前相同。
     pub(crate) fn observe(&mut self, g: &mut Game) {
-        self.observe_with(g, |g, screen| {
-            g.draw(screen);
-            Ok(())
-        });
+        if !self.try_observe(g) {
+            self.write_manifest(serde_json::Map::new());
+            panic!("畫格擷取停在未移植的函式：{}", self.stopped.as_ref().map(|v| v.to_string()).unwrap_or_default());
+        }
     }
 
     /// opening 模式的 `observe`：`Game::draw` panic（停在未移植的 `todo!`）時不往外傳，把擷取序號、
@@ -228,7 +231,12 @@ impl FrameCapture {
 
     /// Go `goldenFrameRecorder.finish`：寫 `frames.json`。
     pub(crate) fn finish(self, extra: serde_json::Map<String, serde_json::Value>) {
-        let seq: String = self.seq.finalize().iter().map(|b| format!("{b:02x}")).collect();
+        self.write_manifest(extra);
+    }
+
+    /// `finish` 的本體（R5 r5b 拆出，讓 chapter 模式停在 `todo!` 時也能寫出已擷取的部分）。
+    fn write_manifest(&self, extra: serde_json::Map<String, serde_json::Value>) {
+        let seq: String = self.seq.clone().finalize().iter().map(|b| format!("{b:02x}")).collect();
         let distinct: BTreeSet<&str> = self.rows.iter().map(|r| r.rgba_sha256.as_str()).collect();
         let gap_updates: i64 = self.gaps.iter().map(|g| g.uncaptured_updates).sum();
         let mut manifest = serde_json::json!({
