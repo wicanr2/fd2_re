@@ -258,3 +258,46 @@ END 回收、AI 閒置回收、攻擊畫面、尾段地圖與介面）呼叫對�
 `tools/rust_game_test.sh` 323 passed、5 ignored；`tools/rust_campaign_test.sh` 530 passed、`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl`
 `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 黃金相同；`Cargo.lock` 沒有改動。共用檔只改
 `parity_replay` 的擷取器（`FrameCapture` 加 opening 模式與 `stopped`，chapter 模式行為不變），`Game::draw`、`canvas.rs` 沒有改。
+## 階段 2 結果：r5m（2026-11-15）
+
+地圖與單位組。逐項落地見 [`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 2：r5m 組」。
+
+### 移植
+
+- 分組表的 7 個函式（`tileAt`、`nativeMapFrameAdmission`、`mapSpriteGroup`、`drawUnitSprite`、`drawNativeMapFrame`、
+  `nativeMapFrameImage`、`drawNativeSpawnIntro`）照 Go 逐行移植，只用階段 1 的畫布操作，`canvas.rs` 沒有改。
+- `nativeMapFrameImage` 每次都呼叫回合橫幅的 `phaseBannerStep`、`phaseBannerSlideOffset`、`blitPhaseBannerGlyphs`
+  （連同 `phaseBannerElapsedMillis`、`blitPhaseBannerGlyph`、`phaseBannerGlyphsAvailable`），這 6 個列在「HUD 與選單」，
+  一併移植；`drawPhaseBanner` 的 TTF 後備沒有動。
+- `PORTING.json` 13 個函式 `r5` 改 `ported`（`tools/rust_r5_mark_ported.py`，記在 `r5_stage2_r5m`）。`drawUnitSprite` 缺
+  sprite 時的 `drawUnit` 色塊在開場與第一章沒有走到，留 `todo!("r8:…")`。
+- `drawUnitSprite` 的 `u` 改收 `&battle::Unit`：Go 也傳 `&g.storyActors[i]`，那不是 `st.units` 的索引。
+- Go 測試 11 項移植（回合橫幅 7 項、守門 3 項、`TestDrawNativeMapFramePresentsCorrectedVGABorder`），另加 4 項；
+  `tools/rust_game_test.sh` 335 passed、4 ignored。
+
+### 局部黃金
+
+`chapter` 整張畫格混有別組圖層，所以新增只輸出資料的 `remake/cmd/fd2/rust_golden_map_layers_test.go`（未設
+`FD2_GOLDEN_MAP_LAYERS_OUT` 時略過，既有 Go 檔沒有改）與 Rust 端 `parity_replay/rust_golden_map_layers_test.rs`。兩邊照
+階段 0 `chapter` 模式的掛點與 60 Hz 虛擬時鐘跑第一章受控重播（Go 另有 `rand.Seed(4)`；Rust 的全域亂數還沒接上，只影響嘴型，不進本組圖層），每個 pump 幀不呼叫整個 `Draw`，只照 `Draw`
+的分支順序呼叫本組函式：spawn intro 畫格、正規化世界層（圖塊、單位、storyActors）、`nativeMapFrameAdmission` 與原生地圖
+整幀（含 320×200 索引畫格與調色盤），各自畫到空白畫布取雜湊。驅動與比對是 `tools/rust_r5_map_layers.sh`、
+`tools/rust_r5_map_layers_compare.py`。
+
+| 項目 | 結果 |
+|---|---|
+| 擷取數 | Go、Rust 都是 13751（與階段 0 `chapter` 相同） |
+| 逐圖層比對 | spawn 24、world 6404、admission 6404、map 6370、索引畫格 6370，全部相同 |
+| 序列雜湊 | 兩邊都是 `bb359b4d5a0d0c69500b12adde78e4217ad3d45c3105fc7394c49b93c6eb1238`；r1、r2 兩次的 `rows` 逐筆相同 |
+| `checkpoints.jsonl` | 兩邊都是 R4 黃金 `1c846f57…` |
+
+- 涵蓋已行動單位 `ColorScale` 9071 次、回合橫幅馬賽克 1472 張與字樣 1999 張；沒有遮蔽像素。
+- 旁證：與階段 0 整張黃金同一擷取點對照，spawn 24 張全部相同，map 6370 張中 1407 張相同（其餘整張畫格上另有別組圖層）。
+- 正規化世界層的移動範圍格、`storyZoom` 放大、游標與 HUD 屬 `Draw` 本體與 HUD 組，不在這份比對裡；`Draw` 尾段的正規化
+  地圖層 `todo!`（`main.go:9814..9950`）沒有接上，整張畫格的比對在階段 3。
+
+### 驗證
+
+`tools/rust_game_test.sh` 335 passed、4 ignored（fmt、clippy 通過）；`tools/rust_campaign_test.sh` 530 passed、
+`tools/rust_rules_test.sh` 654 passed；`tools/rust_parity_ch01.sh`（擷取關閉）的 `checkpoints.jsonl`、`FD2.SAV`、`hotel-save.json`
+與 Go 黃金逐位元組相同；`Cargo.lock` 沒有改動。

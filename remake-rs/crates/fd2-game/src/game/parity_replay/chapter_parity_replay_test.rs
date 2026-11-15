@@ -1569,7 +1569,12 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
     }));
     let skip_frames = frame_setting == "0";
     let mut r = ParityReplay {
-        d: Driver { g, clock: VirtualFrameClock::default(), frame_capture: FrameCapture::from_env() },
+        d: Driver {
+            g,
+            clock: VirtualFrameClock::default(),
+            frame_capture: FrameCapture::from_env(),
+            map_layer_capture: MapLayerCapture::from_env(),
+        },
         out: out.to_path_buf(),
         run: run.to_path_buf(),
         log: log.clone(),
@@ -1638,6 +1643,9 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         r.checkpoint("end", 0, &ui, with_frame, &[]);
         if let Some(capture) = r.d.frame_capture.take() {
             capture.finish(serde_json::Map::new());
+        }
+        if let Some(capture) = r.d.map_layer_capture.take() {
+            capture.finish();
         }
     }));
     if let Err(panic) = outcome {

@@ -9066,6 +9066,29 @@ pub(crate) const PHASE_BANNER_PLAYER_HOLD_MILLIS: i64 = 150;
 
 pub(crate) const PHASE_BANNER_PLAYER_TEXT: &str = "PLAYER PHASE";
 
+/// Go `main.go:12142` `phaseBannerEnemyText`（R5 階段 2 補：測試與 `blitPhaseBannerGlyphs` 的對照用）。
+pub(crate) const PHASE_BANNER_ENEMY_TEXT: &str = "ENEMY PHASE";
+
+// 橫幅字樣的原版來源：FDOTHER #5 的 LMI1 cell。`sub_1F1CC` 由 `[0x53A81]`
+// （`0x25CE5` 以 `sub_111BA("FDOTHER.DAT", …, 5)` 載入）取三格——`0x50` PLAYER、
+// `0x51` PHASE、`0x52` ENEMY——再用 `sub_15F0E` 畫成兩塊。
+//
+// 兩塊的座標寫在 `sub_1F42D`（0x1F43F 起）：第一塊 x ＝ `0x55 − 參數`，第二塊
+// （固定 `0x51` PHASE）x ＝ `參數 + 0xA5`，兩塊 y 都是 `0x52`。**兩塊是相向
+// 移動的**——參數由 100 遞減到 0，第一塊由左往右、第二塊由右往左，在中間會合。
+// 那組座標是離屏緩衝區的（`sub_11EB0` 之後整塊複製到 VGA 的 `0xA0504`，也就是
+// (4,4)），換算成 VGA 就是停住時的 (0x59,0x56) 與 (0xA9,0x56)。
+//
+// 索引 0 是透明：字身用 2..9（落在 DAC 暗化不動的 0x00..0x0F），左下的投影
+// 陰影用 0xFE。所以走 BlitAtClipped 的透明語意，不是 BlitOpaqueAt。
+// Go：`main.go:12206`..`12213`（R5 階段 2 補）。
+pub(crate) const PHASE_BANNER_GLYPH_PLAYER: i64 = 0x50;
+pub(crate) const PHASE_BANNER_GLYPH_PHASE: i64 = 0x51;
+pub(crate) const PHASE_BANNER_GLYPH_ENEMY: i64 = 0x52;
+pub(crate) const PHASE_BANNER_GLYPH_FIRST_X: i64 = 0x59;
+pub(crate) const PHASE_BANNER_GLYPH_SECOND_X: i64 = 0xA9;
+pub(crate) const PHASE_BANNER_GLYPH_Y: i64 = 0x56;
+
 /// phaseBannerHoldMillis 回傳中段停留的毫秒數。未知字樣時採敵方回合的 20 毫秒，
 /// 這是兩者中較短的一個，不會憑空拉長演出。
 ///
@@ -10404,18 +10427,44 @@ mod main_b_test;
 #[path = "main/main_d_test.rs"]
 mod main_d_test;
 
+// R5 階段 2 r5m：地圖與單位組的測試。
+#[cfg(test)]
+#[path = "main/main_r5m_test.rs"]
+mod main_r5m_test;
+
 // ---- R5 階段 1 骨架（tools/rust_r5_skeleton.sh 產生；本體由 R5 階段 2 移植）----
 
 impl Game {
     /// Go：`main.go:8363`，`func (g *Game) tileAt(idx int) *ebiten.Image`
+    /// Go 的 `g.tiles[idx]` 可能是 nil（切圖失敗的格），Rust 是 `None`。
     pub(crate) fn tile_at(&self, idx: i64) -> Option<Arc<Picture>> {
-        todo!("r5:main.go:tileAt")
+        if idx < 0 || idx >= self.tiles.len() as i64 {
+            return None;
+        }
+        self.tiles[idx as usize].clone()
     }
 
     /// Go：`main.go:9338`，`func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn native_map_frame_admission(&self, legacy_viewport: bool, campaign_battle_view: bool) -> bool {
-        todo!("r5:main.go:nativeMapFrameAdmission")
+        if legacy_viewport || !campaign_battle_view {
+            return false;
+        }
+        // 現代主題由正規化 renderer 疊加真彩圖集與人物；原版完整索引幀會把它們
+        // 全部蓋掉，因此兩種呈現管線必須互斥。
+        if self.modern_story_portraits.is_some() {
+            return false;
+        }
+        if self.spell_open || self.item_open || self.cast_sp.is_some() {
+            return false;
+        }
+        self.sel.is_none()
+            || self.native_command0_targeting
+            || self.native_item_targeting
+            || self.native_item_relocating
+            || self.ring
+            || self.native_command_open
+            || self.native_move_plan.is_some()
     }
 
     /// shouldDrawTransientBattleMessage 不讓診斷／結果文字覆蓋已還原的原生目標選擇器。
@@ -10474,8 +10523,15 @@ impl Game {
     /// actors remain on their editable legacy Fig path by construction.
     ///
     /// Go：`main.go:11514`，`func (g *Game) mapSpriteGroup(u *battle.Unit) int`
+    /// 所有權：`u` 是 `self.st.units` 的索引（Go 傳 `*battle.Unit`，唯一的呼叫端只傳 `g.st.Units` 的單位）；
+    /// Go 在 `g.st == nil` 時直接讀 `u.Fig`，Rust 沒有 `st` 就沒有 `u`。
     pub(crate) fn map_sprite_group(&self, u: UnitIdx) -> i64 {
-        todo!("r5:main.go:mapSpriteGroup")
+        let st = self.st.as_ref().expect("Go：u 指向 g.st.Units");
+        let (key, ok) = st.native_map_sprite_key(Some(u));
+        if ok {
+            return key;
+        }
+        st.units[u].fig
     }
 
     /// drawUnitSprite 以 FDICON Q 版 sprite 呈現單位；正式 sprite 路徑不另加重製端
@@ -10485,24 +10541,51 @@ impl Game {
     /// this helper never infers one from the other.
     ///
     /// Go：`main.go:11528`，`func (g *Game) drawUnitSprite(screen *ebiten.Image, x, y, w, h float64, u *battle.Unit, spriteGroup int)`
+    ///
+    /// 簽名（R5 階段 2）：`u` 改成 `&battle::Unit`、接收者改成 `&self`。Go 的呼叫端傳 `g.st.Units` 的單位、
+    /// `&g.storyActors[i]`（`main.go:9894`、`9905`）與 `g.sel`（`main.go:10257`），storyActors 不是 `st.units`
+    /// 的索引；函式本身不改 `Game`。
+    #[allow(clippy::too_many_arguments)]
     pub(crate) fn draw_unit_sprite(
-        &mut self,
+        &self,
         screen: &mut Picture,
         x: f64,
         y: f64,
         w: f64,
         h: f64,
-        u: UnitIdx,
+        u: &battle::Unit,
         sprite_group: i64,
     ) {
-        todo!("r5:main.go:drawUnitSprite")
+        let x = x + u.off_x; // 行軍/移動位移
+        let y = y + u.off_y;
+        let frames = self.sprites.get(&sprite_group).map(Vec::as_slice).unwrap_or_default();
+        if frames.is_empty() {
+            // Go `drawUnit(screen, x, y, w, h, campColor(u.Camp), u)`：開場與第一章沒有走到（階段 0 覆蓋率 0）。
+            let _ = (w, h);
+            todo!("r8:main.go:drawUnit（fallback 色塊）");
+        }
+        // 方向走動幀:dir(0下1左2上3右)×3 + 走動相位;不足 12 幀(只導下方向)則退回
+        let f = (self.frame / 8) % 3;
+        let mut idx = u.dir * 3 + f;
+        if idx >= frames.len() as i64 {
+            idx = f % frames.len() as i64;
+        }
+        let frame = frames[usize::try_from(idx).expect("Go：frames[idx] 負索引會 panic")]
+            .as_ref()
+            .expect("Go：DrawImage(nil) 會 panic");
+        let mut op = DrawImageOptions::default();
+        op.geo_m.translate(x, y - 4.0); // 略上移讓單位「站」在格上
+        if u.acted {
+            op.color_scale.scale(0.55, 0.55, 0.6, 1.0); // 已行動變暗(對映原版灰階)
+        }
+        screen.draw_image(frame, &op);
     }
 
     /// phaseBannerElapsedMillis 是這一段橫幅已經走了多少毫秒。
     ///
     /// Go：`main.go:12148`，`func (g *Game) phaseBannerElapsedMillis() float64`
     pub(crate) fn phase_banner_elapsed_millis(&self) -> f64 {
-        todo!("r5:main.go:phaseBannerElapsedMillis")
+        (phase_banner_frames(&self.banner) - self.banner_t) as f64 * 1000.0 / 60.0
     }
 
     /// phaseBannerSlideOffset 回傳字樣相對停住位置的 x 偏移（原版像素），以及字樣
@@ -10511,7 +10594,28 @@ impl Game {
     /// Go：`main.go:12154`，`func (g *Game) phaseBannerSlideOffset() (int, bool)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn phase_banner_slide_offset(&self) -> (i64, bool) {
-        todo!("r5:main.go:phaseBannerSlideOffset")
+        if self.banner_t <= 0 || self.banner.is_empty() {
+            return (0, false);
+        }
+        let elapsed = self.phase_banner_elapsed_millis();
+        let slide_in = indexedmap::PHASE_BANNER_SLIDE_IN_STEPS as f64 * indexedmap::PHASE_BANNER_STEP_MILLIS;
+        if elapsed < slide_in {
+            return (
+                indexedmap::phase_banner_slide_in_offset((elapsed / indexedmap::PHASE_BANNER_STEP_MILLIS) as i64),
+                true,
+            );
+        }
+        let mosaic = indexedmap::PHASE_BANNER_STEPS as f64 * indexedmap::PHASE_BANNER_STEP_MILLIS
+            + phase_banner_hold_millis(&self.banner);
+        if elapsed < slide_in + mosaic {
+            return (0, true);
+        }
+        (
+            indexedmap::phase_banner_slide_out_offset(
+                ((elapsed - slide_in - mosaic) / indexedmap::PHASE_BANNER_STEP_MILLIS) as i64,
+            ),
+            true,
+        )
     }
 
     /// blitPhaseBannerGlyphs 把兩塊原版字樣畫進索引畫面，回傳是否畫成。缺分離素材時
@@ -10520,14 +10624,30 @@ impl Game {
     ///
     /// Go：`main.go:12203`，`func (g *Game) blitPhaseBannerGlyphs(dst []byte, offset int) bool`
     pub(crate) fn blit_phase_banner_glyphs(&self, dst: &mut [u8], offset: i64) -> bool {
-        todo!("r5:main.go:blitPhaseBannerGlyphs")
+        let Some(assets) = self.native_map_assets.as_ref() else {
+            return false;
+        };
+        if assets.command_heal_digits.len() as i64 <= PHASE_BANNER_GLYPH_ENEMY {
+            return false;
+        }
+        let mut first = PHASE_BANNER_GLYPH_ENEMY;
+        if self.banner == PHASE_BANNER_PLAYER_TEXT {
+            first = PHASE_BANNER_GLYPH_PLAYER;
+        }
+        // offset 是第一塊的偏移（負值＝還在左邊畫面外），第二塊取相反數往右退。
+        blit_phase_banner_glyph(dst, &assets.command_heal_digits[first as usize], PHASE_BANNER_GLYPH_FIRST_X + offset)
+            && blit_phase_banner_glyph(
+                dst,
+                &assets.command_heal_digits[PHASE_BANNER_GLYPH_PHASE as usize],
+                PHASE_BANNER_GLYPH_SECOND_X - offset,
+            )
     }
 
     /// phaseBannerGlyphsAvailable 回報這一輪橫幅會不會用原版字樣。
     ///
     /// Go：`main.go:12249`，`func (g *Game) phaseBannerGlyphsAvailable() bool`
     pub(crate) fn phase_banner_glyphs_available(&self) -> bool {
-        todo!("r5:main.go:phaseBannerGlyphsAvailable")
+        self.native_map_assets.as_ref().is_some_and(|a| a.command_heal_digits.len() as i64 > PHASE_BANNER_GLYPH_ENEMY)
     }
 
     /// phaseBannerStep 回傳目前的馬賽克步驟；沒有橫幅時回 -1。
@@ -10538,7 +10658,37 @@ impl Game {
     /// Go：`main.go:12268`，`func (g *Game) phaseBannerStep() int`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn phase_banner_step(&self) -> i64 {
-        todo!("r5:main.go:phaseBannerStep")
+        if self.banner_t <= 0 || self.banner.is_empty() {
+            return -1;
+        }
+        // 馬賽克夾在字樣滑入與滑出之間，滑動那兩段畫的是正常地圖。
+        let slide_in = indexedmap::PHASE_BANNER_SLIDE_IN_STEPS as f64 * indexedmap::PHASE_BANNER_STEP_MILLIS;
+        let elapsed = self.phase_banner_elapsed_millis() - slide_in;
+        if elapsed < 0.0 {
+            return -1;
+        }
+        // Go 的 `PhaseBannerEnterSteps * PhaseBannerStepMillis` 是無型別常數運算；16 是 2 的冪，與 f64 乘法結果相同。
+        let enter_millis = indexedmap::PHASE_BANNER_ENTER_STEPS as f64 * indexedmap::PHASE_BANNER_STEP_MILLIS;
+        let hold = phase_banner_hold_millis(&self.banner);
+        let mosaic = indexedmap::PHASE_BANNER_STEPS as f64 * indexedmap::PHASE_BANNER_STEP_MILLIS + hold;
+        if elapsed >= mosaic {
+            return -1;
+        }
+        let mut step = if elapsed < enter_millis {
+            (elapsed / indexedmap::PHASE_BANNER_STEP_MILLIS) as i64
+        } else if elapsed < enter_millis + hold {
+            indexedmap::PHASE_BANNER_ENTER_STEPS - 1
+        } else {
+            indexedmap::PHASE_BANNER_ENTER_STEPS
+                + ((elapsed - enter_millis - hold) / indexedmap::PHASE_BANNER_STEP_MILLIS) as i64
+        };
+        if step < 0 {
+            step = 0;
+        }
+        if step >= indexedmap::PHASE_BANNER_STEPS {
+            step = indexedmap::PHASE_BANNER_STEPS - 1;
+        }
+        step
     }
 
     /// drawPhaseBanner 是回合字樣的**後備路徑**：拿得到 FDOTHER #5 的三格字模時，
@@ -10573,7 +10723,20 @@ impl Game {
     ///
     /// Go：`main.go:12450`，`func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool`
     pub(crate) fn draw_native_map_frame(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:main.go:drawNativeMapFrame")
+        if self.compose_native_map_frame().is_err() {
+            return false;
+        }
+        let (img, ok) = self.native_map_frame_image();
+        if !ok {
+            return false;
+        }
+        let img = img.expect("nativeMapFrameImage 成功時有影像");
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        self.native_interface_hud_visible = self.native_interface_hud.is_some();
+        self.native_map_presented = true;
+        true
     }
 
     /// nativeMapFrameImage 把已組好的 nativeMapVGA 配上當前 DAC，再依橫幅狀態
@@ -10582,7 +10745,65 @@ impl Game {
     ///
     /// Go：`main.go:12469`，`func (g *Game) nativeMapFrameImage() (*image.Paletted, bool)`
     pub(crate) fn native_map_frame_image(&mut self) -> (Option<Arc<IndexedFrame>>, bool) {
-        todo!("r5:main.go:nativeMapFrameImage")
+        let size = indexedmap::NATIVE_MAP_VGA_SIZE as usize;
+        let Some(a) = self.native_map_assets.as_ref() else {
+            return (None, false);
+        };
+        if self.native_map_vga.len() < size {
+            return (None, false);
+        }
+        let mut palette = a.palette.clone();
+        if self.native_map_dac.len() == 256 * 3
+            && let Ok(current) = fdother::vga_palette_from_dac(&self.native_map_dac)
+        {
+            palette = color_palette_from_nrgba(&current);
+        }
+        // 回合橫幅期間，原版在 `sub_1F1CC` 開頭 memcpy 整幀螢幕，之後整段不重繪，
+        // 每一步都對那張快照重算馬賽克再整幀寫回。這裡照同一個模型：第一次繪製
+        // 時凍結一份，之後只從它取樣，不再跟著當前畫面走。
+        let step = self.phase_banner_step();
+        // 原版在 `sub_1F1CC` 一進來就 memcpy 螢幕，那是**字樣滑入之前**；滑入期間
+        // 地圖本身不重繪，所以在橫幅一開始就凍結與原版等價。
+        // Go `g.bannerFrame == nil` 在 Rust 是空 Vec（showBanner 設回空；這裡的複本至少一幀，不會是空）。
+        if self.banner_t > 0 && !self.banner.is_empty() && self.banner_frame.is_empty() {
+            self.banner_frame = self.native_map_vga.clone();
+        }
+        // 每一步另外把 DAC 索引 0x10..0xFF 減去「方塊邊長 − 1」(`sub_11D40`)，
+        // 索引 0x00..0x0F 不動，所以字樣不隨地圖變暗。
+        if step >= 0 {
+            let level = indexedmap::phase_banner_dim(step);
+            let a = self.native_map_assets.as_ref().expect("上面已確認 nativeMapAssets");
+            if level > 0 && self.native_map_dac.len() == 256 * 3 && a.palette_dac.len() == 256 * 3 {
+                let mut dimmed = self.native_map_dac.clone();
+                if fdother::apply_vga_palette_subtraction(
+                    &mut dimmed,
+                    &a.palette_dac,
+                    indexedmap::PHASE_BANNER_DIM_FIRST_INDEX,
+                    indexedmap::PHASE_BANNER_DIM_LAST_INDEX,
+                    level,
+                )
+                .is_ok()
+                    && let Ok(current) = fdother::vga_palette_from_dac(&dimmed)
+                {
+                    palette = color_palette_from_nrgba(&current);
+                }
+            }
+        }
+        let mut img = IndexedFrame { width: 320, height: 200, pix: vec![0; size], palette };
+        img.pix.copy_from_slice(&self.native_map_vga[..size]);
+        if step >= 0 {
+            let src = if self.banner_frame.len() < size { &self.native_map_vga } else { &self.banner_frame };
+            if indexedmap::mosaic_native_map_viewport(&mut img.pix, src, indexedmap::phase_banner_block(step)).is_err()
+            {
+                return (None, false);
+            }
+        }
+        // 字樣疊在馬賽克之後，與原版同序（`sub_4E809` 之後才 `sub_15F0E`）。
+        let (offset, visible) = self.phase_banner_slide_offset();
+        if visible {
+            self.blit_phase_banner_glyphs(&mut img.pix, offset);
+        }
+        (Some(Arc::new(img)), true)
     }
 }
 
@@ -10600,5 +10821,25 @@ pub(crate) fn draw_cursor(dst: &mut Picture, x: f64, y: f64, w: f64, h: f64) {
 ///
 /// Go：`main.go:12225`，`func blitPhaseBannerGlyph(dst []byte, cell fdother.LMI1Entry, x int) bool`
 pub(crate) fn blit_phase_banner_glyph(dst: &mut [u8], cell: &fdother::LMI1Entry, x: i64) -> bool {
-    todo!("r5:main.go:blitPhaseBannerGlyph")
+    if cell.width <= 0 || cell.height <= 0 || cell.pixels.len() as i64 != cell.width * cell.height {
+        return false;
+    }
+    for row in 0..cell.height {
+        let y = PHASE_BANNER_GLYPH_Y + row;
+        if !(indexedmap::NATIVE_MAP_VIEWPORT_Y0..=indexedmap::NATIVE_MAP_VIEWPORT_Y1).contains(&y) {
+            continue;
+        }
+        for col in 0..cell.width {
+            let dx = x + col;
+            if !(indexedmap::NATIVE_MAP_VIEWPORT_X0..=indexedmap::NATIVE_MAP_VIEWPORT_X1).contains(&dx) {
+                continue;
+            }
+            // 索引 0 是透明；字身 2..9 落在 DAC 暗化不動的 0x00..0x0F。
+            let v = cell.pixels[(row * cell.width + col) as usize];
+            if v != 0 {
+                dst[(y * 320 + dx) as usize] = v;
+            }
+        }
+    }
+    true
 }

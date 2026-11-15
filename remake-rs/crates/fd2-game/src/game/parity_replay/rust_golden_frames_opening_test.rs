@@ -72,7 +72,7 @@ fn run_golden_frames_opening(out: &Path) {
     if g.title_phase != "cutscene" {
         panic!("正常START未從開場動畫開始：{:?}", g.title_phase);
     }
-    let mut d = Driver { g, clock: VirtualFrameClock::default(), frame_capture: None };
+    let mut d = Driver { g, clock: VirtualFrameClock::default(), frame_capture: None, map_layer_capture: None };
     let mut phases = serde_json::Map::new();
     let mut extra = serde_json::Map::new();
     extra.insert(

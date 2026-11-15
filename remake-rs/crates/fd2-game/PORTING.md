@@ -1488,10 +1488,10 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 |---|---|---|---|---|
 | 城鎮與設施 | 28（16／12／0） | 859 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill | chapter、chapter＋FD2_SHOT_STATE、opening＋chapter |
 | Game.Draw 本體（分派、正規化地圖層、舊對話框與 fade） | 1（0／1／0） | 0 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、Set、DebugPrint | — |
-| HUD 與選單 | 35（20／15／0） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
+| HUD 與選單 | 35（14／21／0；回合橫幅 6 個由 r5m 移植） | 495 | DrawImage、平移、縮放、NewImageFromImage、NewImage、Fill、SubImage | chapter、opening＋chapter |
 | 對話與文字 | 16（5／11／0） | 205 | 平移、ColorScale、TTF | chapter、opening＋chapter |
 | 戰鬥演出 | 7（5／2／0） | 297 | DrawImage、平移、縮放、NewImageFromImage、Fill | chapter |
-| 地圖與單位 | 14（7／7／0） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
+| 地圖與單位 | 14（0／14／0；R5 階段 2 r5m） | 136 | DrawImage、平移、縮放、NewImageFromImage、ColorScale | opening＋chapter |
 | 標題與開場 | 7（0／7／0；R5 階段 2 `r5t` 移植 4 個） | 0 | DrawImage、平移、縮放、NewImage、Fill、Clear、ColorScale | opening（標題段 1940／1940 次與 Go 相同）、opening＋chapter |
 | 轉場與調色盤 | 4（1／3／0） | 25 | DrawImage、縮放、NewImageFromImage | chapter |
 | 素材路徑與時鐘（非繪圖） | 14（0／14／0） | 0 | — | — |
@@ -1523,12 +1523,12 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | HUD 與選單 | `main.go:10577..10613` | `drawItemMenu` | 37 | DrawImage、平移、NewImage、Fill | opening＋chapter |
 | HUD 與選單 | `main.go:10617..10635` | `drawNativeCommandGrid` | 19 | — | opening＋chapter |
 | HUD 與選單 | `main.go:11571..11584` | `drawCursor` | 14 | DrawImage、平移、NewImage、Fill | opening＋chapter |
-| HUD 與選單 | `main.go:12148..12150` | `phaseBannerElapsedMillis` | 3 | — | chapter |
-| HUD 與選單 | `main.go:12154..12171` | `phaseBannerSlideOffset` | 18 | — | opening＋chapter |
-| HUD 與選單 | `main.go:12203..12217` | `blitPhaseBannerGlyphs` | 15 | — | chapter |
-| HUD 與選單 | `main.go:12225..12246` | `blitPhaseBannerGlyph` | 22 | — | chapter |
-| HUD 與選單 | `main.go:12249..12252` | `phaseBannerGlyphsAvailable` | 4 | — | chapter |
-| HUD 與選單 | `main.go:12268..12301` | `phaseBannerStep` | 34 | — | opening＋chapter |
+| HUD 與選單 | `main.go:12148..12150` | `phaseBannerElapsedMillis`（ported，r5m） | 3 | — | chapter |
+| HUD 與選單 | `main.go:12154..12171` | `phaseBannerSlideOffset`（ported，r5m） | 18 | — | opening＋chapter |
+| HUD 與選單 | `main.go:12203..12217` | `blitPhaseBannerGlyphs`（ported，r5m） | 15 | — | chapter |
+| HUD 與選單 | `main.go:12225..12246` | `blitPhaseBannerGlyph`（ported，r5m） | 22 | — | chapter |
+| HUD 與選單 | `main.go:12249..12252` | `phaseBannerGlyphsAvailable`（ported，r5m） | 4 | — | chapter |
+| HUD 與選單 | `main.go:12268..12301` | `phaseBannerStep`（ported，r5m） | 34 | — | opening＋chapter |
 | HUD 與選單 | `main.go:12317..12334` | `drawPhaseBanner` | 18 | — | opening＋chapter |
 | HUD 與選單 | `main.go:12421..12444` | `drawNativeMapHUD` | 24 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
 | HUD 與選單 | `native_end_turn_recovery.go:162..179` | `drawNativeEndTurnRecovery` | 18 | DrawImage、縮放、NewImageFromImage | chapter |
@@ -1546,13 +1546,13 @@ Draw」，見下節）。`finish_present_frame` 改成 `pub(crate)` 讓 `draw_de
 | 戰鬥演出 | `native_ch28_post_present.go:339..363` | `drawNativeCh28PostPresent` | 25 | DrawImage、縮放、NewImageFromImage | chapter |
 | 戰鬥演出 | `native_physical_body.go:414..454` | `drawNativePhysicalBody` | 41 | DrawImage、縮放、NewImageFromImage | chapter |
 | 戰鬥演出 | `native_physical_scene.go:372..422` | `drawNativePhysicalPrelude` | 51 | DrawImage、縮放 | chapter |
-| 地圖與單位 | `main.go:8363..8368` | `tileAt` | 6 | — | opening＋chapter |
-| 地圖與單位 | `main.go:9338..9353` | `nativeMapFrameAdmission` | 16 | — | opening＋chapter |
-| 地圖與單位 | `main.go:11514..11521` | `mapSpriteGroup` | 8 | — | opening＋chapter |
-| 地圖與單位 | `main.go:11528..11548` | `drawUnitSprite` | 21 | DrawImage、平移、ColorScale | opening＋chapter |
-| 地圖與單位 | `main.go:12450..12464` | `drawNativeMapFrame` | 15 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
-| 地圖與單位 | `main.go:12469..12525` | `nativeMapFrameImage` | 57 | — | opening＋chapter |
-| 地圖與單位 | `native_spawn_intro.go:360..372` | `drawNativeSpawnIntro` | 13 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| 地圖與單位 | `main.go:8363..8368` | `tileAt`（ported，r5m） | 6 | — | opening＋chapter |
+| 地圖與單位 | `main.go:9338..9353` | `nativeMapFrameAdmission`（ported，r5m） | 16 | — | opening＋chapter |
+| 地圖與單位 | `main.go:11514..11521` | `mapSpriteGroup`（ported，r5m） | 8 | — | opening＋chapter |
+| 地圖與單位 | `main.go:11528..11548` | `drawUnitSprite`（ported，r5m） | 21 | DrawImage、平移、ColorScale | opening＋chapter |
+| 地圖與單位 | `main.go:12450..12464` | `drawNativeMapFrame`（ported，r5m） | 15 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
+| 地圖與單位 | `main.go:12469..12525` | `nativeMapFrameImage`（ported，r5m） | 57 | — | opening＋chapter |
+| 地圖與單位 | `native_spawn_intro.go:360..372` | `drawNativeSpawnIntro`（ported，r5m） | 13 | DrawImage、縮放、NewImageFromImage | opening＋chapter |
 | 標題與開場 | `title.go:45..47` | `titleMenuY` | 3 | — | opening＋chapter（`r5t` ported） |
 | 標題與開場 | `title.go:456..467` | `titlePublisherBrightness` | 12 | — | opening（`r5t` ported） |
 | 標題與開場 | `title.go:486..493` | `titleScrollUsesPulsePalette` | 8 | — | opening（`r5t` ported） |
@@ -1695,4 +1695,114 @@ RGBA 原樣寫出，供逐像素找差異（本輪沒有用到）。
 | `tools/rust_parity_ch01.sh`（擷取關閉，`work/r5-stage2-r5t-20261115/parity`） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同 |
 | `tools/rust_r5_opening_frames.sh` | 上節；三次（`opening-r1`..`r3`）的 `frames.json` 逐位元組相同 |
 | 竄改反向檢查 | 暫時拿掉 publisher 的 `ColorScale.Scale(s, s, s, 1)` 重跑（`opening-tamper`），比對失敗：1926／1940 相同，第一個不同在第 0 次（`cutscene` 的 publisher 淡入）；改回後重跑相同 |
+## R5 階段 2：r5m 組（地圖與單位，2026-11-15）
+
+代號 `r5m`，基準 `eb24e88b`（R5 階段 1 之後）。計畫見 [121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)。
+
+### 移植結果
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py`（重跑不改檔）把 13 個函式從 `r5` 改成 `ported`，清單記在 `r5_stage2_r5m`：
+
+| Go | Rust | 說明 |
+|---|---|---|
+| `main.go:8363` `tileAt` | `Game::tile_at` | nil 圖塊是 `None` |
+| `main.go:9338` `nativeMapFrameAdmission` | `Game::native_map_frame_admission` | |
+| `main.go:11514` `mapSpriteGroup` | `Game::map_sprite_group` | `u` 是 `st.units` 的索引（唯一呼叫端只傳 `g.st.Units`） |
+| `main.go:11528` `drawUnitSprite` | `Game::draw_unit_sprite` | 已行動單位 `ColorScale.Scale(0.55, 0.55, 0.6, 1)`；缺 sprite 的 `drawUnit` 色塊是 `todo!("r8:…")`（開場與第一章 0 次，局部黃金的 `world_fallback_units` 也是 0） |
+| `main.go:12450` `drawNativeMapFrame` | `Game::draw_native_map_frame` | `Picture::from_indexed` 後 `GeoM.Scale(2, 2)` |
+| `main.go:12469` `nativeMapFrameImage` | `Game::native_map_frame_image` | `bannerFrame == nil` 在 Rust 是空 `Vec` |
+| `native_spawn_intro.go:360` `drawNativeSpawnIntro` | `Game::draw_native_spawn_intro` | |
+| `main.go:12148` `phaseBannerElapsedMillis`、`:12154` `phaseBannerSlideOffset`、`:12203` `blitPhaseBannerGlyphs`、`:12225` `blitPhaseBannerGlyph`、`:12249` `phaseBannerGlyphsAvailable`、`:12268` `phaseBannerStep` | 同名 snake_case | 分組表列在「HUD 與選單」，但 `nativeMapFrameImage` 每次都呼叫前五個，沒有它們本組的函式畫不出來；另一組（r5t）不碰這幾個。`drawPhaseBanner` 本身（TTF 後備）沒有動 |
+
+補的常數：`PHASE_BANNER_ENEMY_TEXT`（`main.go:12142`）、`PHASE_BANNER_GLYPH_*` 六個（`main.go:12206`..`12213`）。
+
+畫布：只用到 `canvas.rs` 既有的 `draw_image`（平移、`Scale(2, 2)`、`ColorScale.Scale`）、`from_indexed`、`fill`、`clear`，沒有補新語意。
+
+### 簽名變更
+
+| 函式 | 骨架 | 改為 | 原因 |
+|---|---|---|---|
+| `draw_unit_sprite` | `&mut self`、`u: UnitIdx` | `&self`、`u: &battle::Unit` | Go 的呼叫端傳 `g.st.Units` 的單位、`&g.storyActors[i]`（`main.go:9894`、`9905`）與 `g.sel`（`drawRing`，`main.go:10257`），storyActors 不在 `st.units`；函式本身不改 `Game` |
+
+### 共用檔的改動
+
+`Game::draw`／`draw_field` 與 `canvas.rs` 沒有改。`parity_replay` 只加局部黃金的掛點：
+
+| 檔 | 改動 |
+|---|---|
+| `parity_replay.rs` | `mod rust_golden_map_layers_test` 與 `pub(crate) use`；模組文件加一行 |
+| `parity_replay/native_chapter_one_play_test.rs` | `Driver` 加 `map_layer_capture: Option<MapLayerCapture>`；`pump` 在 `frame_capture` 之後呼叫它的 `observe` |
+| `parity_replay/chapter_parity_replay_test.rs` | 建 `Driver` 時 `MapLayerCapture::from_env()`；`end` checkpoint 之後 `finish` |
+| `main.rs` | 本組 13 個函式的本體、7 個常數、測試模組 `main/main_r5m_test.rs` 的登記 |
+
+`FD2_GOLDEN_MAP_LAYERS_OUT` 沒設時 `MapLayerCapture` 是 `None`，重播與 R4 相同。
+
+### 局部黃金
+
+`chapter` 畫格混有 HUD、TTF 短訊與指令環，整張畫格不能單獨驗本組。做法是新增只輸出資料的 Go 測試，在同一個擷取點只呼叫本組
+的函式，Rust 端照同樣的順序呼叫，逐擷取點比對雜湊。
+
+| 檔案 | 用途 |
+|---|---|
+| `remake/cmd/fd2/rust_golden_map_layers_test.go` | `TestRustGoldenMapLayers`，未設 `FD2_GOLDEN_MAP_LAYERS_OUT` 時 `t.Skip`；借用 `rust_golden_frames_test.go` 的 `goldenFrameProbe` 與 `pinClock`，既有 Go 檔沒有改 |
+| `src/game/parity_replay/rust_golden_map_layers_test.rs` | Rust 端 `MapLayerCapture` |
+| `tools/rust_r5_map_layers.sh` | Docker 驅動：Go（`fd2-go-test-local`、Xvfb）與 Rust（`fd2-rust:1.99.1-r3`）各跑一次第一章受控重播，再比對 |
+| `tools/rust_r5_map_layers_compare.py` | 逐擷取點比對，印出各圖層的張數、相同數與第一個不同 |
+
+擷取規則（兩邊相同）：
+
+- 掛點、時鐘與亂數照階段 0 `chapter` 模式：`ch01FrameObserver`／`Driver::pump` 每一幀開頭、60 Hz 虛擬時鐘（`pinClock`）、Go
+  `rand.Seed(4)`（Rust 的全域亂數還沒接上，`GLOBAL_RAND_MODEL`；它只影響嘴型，不進本組圖層）。每一幀不呼叫整個 `Draw`，先照 `Draw` 開頭清 `nativeMapPresented`、`movementPanelDraw`、
+  `nativeInterfaceHUDVisible`，再以 `goldenMapLayersBranch`（`Draw` 的 early-return 順序，只讀欄位）決定分支。
+- `spawn` 分支：640×400 畫布 `Fill` 黑，`drawNativeSpawnIntro`，記成功與否與 RGBA 雜湊。
+- `tail` 分支：
+  - world：照 `Draw` 本體 `main.go:9817..9909` 的圖塊迴圈（`tileAt`）、單位迴圈（`mapSpriteGroup`＋`drawUnitSprite`）與
+    storyActors 迴圈，畫到 `Fill` 黑的目標（storyBG 或戰場事件時是 320×200，否則 640×400）；另記單位數、已行動數、缺 sprite 數。
+    移動範圍格、`storyZoom` 放大、游標與 HUD 是 Draw 本體與別組的，不畫。
+  - map：`nativeMapFrameAdmission` 的結果；通過時 640×400 `Fill` 黑後 `drawNativeMapFrame`，記成功與否、RGBA 雜湊、
+    `nativeInterfaceHUDVisible`，再呼叫一次 `nativeMapFrameImage` 記索引畫格與調色盤（每色 `color.RGBA()>>8`）的雜湊。
+- 每一幀的結果組成一行比對鍵（`rows[].key`，連續相同併成一列）；`sequence_sha256` 是所有鍵加換行串接後的 SHA-256。
+
+結果（命令 `tools/rust_r5_map_layers.sh <主工作區>/work/r5-stage2-r5m-20261115/r1`、`r2`，輸出不進版控）：
+
+| 項目 | Go | Rust |
+|---|---|---|
+| `checkpoints.jsonl` | `1c846f57…`（R4 黃金） | `1c846f57…` |
+| 擷取數 | 13751（與階段 0 `chapter` 相同） | 13751 |
+| 分支 | early 7323、spawn 24、tail 6404 | 同 |
+| 序列雜湊 | `bb359b4d5a0d0c69500b12adde78e4217ad3d45c3105fc7394c49b93c6eb1238` | 同 |
+
+逐圖層：spawn 24 張、world 6404 張、admission 6404 次、map 6370 張、索引畫格 6370 張，全部相同；沒有遮蔽像素。這些畫格涵蓋
+已行動單位變暗 9071 次（與階段 0 覆蓋率的 `main.go:11545` 次數相同）、回合橫幅馬賽克 1472 張與字樣 1999 張；Go 的相異畫格數是
+spawn 24、world 1796、map 2257、索引 2170。r1（Go 端用舊版掛載配置）與 r2（最終腳本）兩次的 `rows` 逐筆相同。
+
+參考：拿 Go 鍵裡畫成的畫格對照階段 0 `chapter` 黃金（整張 `Draw`）同一擷取點，spawn 24 張全部逐位元組相同，map 6370 張中
+1407 張相同（其餘的整張畫格上另有移動面板、指令環、TTF 短訊等別組圖層）。這只是旁證，不取代上面的比對。
+
+### 測試
+
+`src/game/main/main_r5m_test.rs` 15 項：
+
+| Go 測試 | 備註 |
+|---|---|
+| `phase_banner_test.go:13` 的逐幀部分、`:86` | 長度部分 D 組已移植（`main_d_test.rs`）；D 組「R5 測試清單」的這兩項與下一列 5 項到此移植 |
+| `phase_banner_glyph_test.go:14`、`:93`、`:126`、`:161`、`:186` | `:14` 讀分離素材包 `ui/fdother_005_lmi1_opaque`，缺檔依 `FD2_REQUIRE_ORIGINAL` 失敗 |
+| `native_action_overlay_test.go:119`、`modern_story_portrait_test.go:350`、`native_player_movement_test.go:57` | Go 的 `sel: &battle.Unit{}` 寫成 `Some(0)` |
+| `native_map_frame_input_test.go:179` | Go 的 `gameNow` 讀 `time.Now()`，Rust 讀虛擬時鐘，夾具設 `virtual_now: VIRTUAL_CLOCK_ORIGIN`；另加畫面是索引畫格 2 倍放大的檢查 |
+| Rust 新增 4 項 | `drawNativeSpawnIntro` 的 2 倍貼上與失敗條件、`tileAt` 邊界、`drawUnitSprite` 的分鏡選擇／位移／`ColorScale`（期望值照 `canvas.rs` 的 `u2f`／`f2u`）、`nativeMapFrameImage` 的橫幅快照 |
+
+`native_map_frame_input_test.go:246` `TestNativeItemTargetEntryOwnsIndexedMapFrameAndFailsClosed` 只有一行查守門，主體是
+`beginNativeTargetItem`（crate 裡還沒有），留給物品目標的移植。
+
+### KNOWN_DIFFERENCES
+
+沒有新增。
+
+### 驗證
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_game_test.sh` | fmt、clippy `-D warnings` 通過；335 passed、4 ignored（階段 1 的 320 項加本組 15 項） |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（兩個 crate 沒有改動） |
+| `tools/rust_parity_ch01.sh`（擷取關閉） | `checkpoints.jsonl` `1c846f57…`、`FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…`，與 Go 黃金逐位元組相同；`verify_chapter_parity.py` 兩份結論相同（`work/r5-stage2-r5m-20261115/r5m-parity`） |
 | `Cargo.lock` | 沒有改動；沒有新增套件 |

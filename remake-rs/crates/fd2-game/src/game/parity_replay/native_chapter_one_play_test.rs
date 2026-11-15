@@ -15,6 +15,8 @@ pub(crate) struct Driver {
     /// R5 階段 1：Go `ch01FrameObserver`（`native_chapter_one_play_test.go:300`）在 R5 黃金畫格的掛法；
     /// `None` 時（預設）與 R4 相同。
     pub(crate) frame_capture: Option<FrameCapture>,
+    /// R5 階段 2 r5m：地圖與單位組的局部黃金（`rust_golden_map_layers_test.rs`），同一個掛點；預設 `None`。
+    pub(crate) map_layer_capture: Option<MapLayerCapture>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。
@@ -37,6 +39,9 @@ impl Driver {
     pub(crate) fn pump(&mut self, budget: i64, mut done: impl FnMut(&mut Game) -> bool) -> bool {
         for _ in 0..budget {
             if let Some(capture) = self.frame_capture.as_mut() {
+                capture.observe(&mut self.g);
+            }
+            if let Some(capture) = self.map_layer_capture.as_mut() {
                 capture.observe(&mut self.g);
             }
             if done(&mut self.g) {

@@ -2,7 +2,8 @@
 //!
 //! 骨架：Go 檔的 13 個函式中產生 12 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
 //!
-//! R4 B 組：12 個函式移植完；`drawNativeSpawnIntro`（`r8`）的 `drawn = true` 改由呈現回報設定。
+//! R4 B 組：12 個函式移植完；R5 階段 2（r5m）移植 `drawNativeSpawnIntro`（畫格與 `drawn = true`）。無畫面重播不畫像素時，
+//! `drawn` 仍由呈現回報設定。
 
 use super::*;
 
@@ -418,6 +419,17 @@ impl Game {
 impl Game {
     /// Go：`native_spawn_intro.go:360`，`func (g *Game) drawNativeSpawnIntro(screen *ebiten.Image) bool`
     pub(crate) fn draw_native_spawn_intro(&mut self, screen: &mut Picture) -> bool {
-        todo!("r5:native_spawn_intro.go:drawNativeSpawnIntro")
+        let Some(j) = self.spawn_intro_transition.as_mut() else {
+            return false;
+        };
+        if j.vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE || j.palette.len() != 256 {
+            return false;
+        }
+        let img = IndexedFrame { width: 320, height: 200, pix: j.vga.clone(), palette: j.palette.clone() };
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &op);
+        j.drawn = true;
+        true
     }
 }
