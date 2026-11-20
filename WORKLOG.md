@@ -5685,3 +5685,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 版號 `v.1.1.15-20261116`，引擎來源提交 `231b5d98`。完整版 Windows 3748465841 位元組／`e4ae46e6…`、macOS 3757206723／`0ce460d6…`、Linux 3236579832／`b930a9ef…`；三包各 54581 份素材通過（多四個 `controls.json`），原版與 HD 素材清單與 v.1.1.14 相同；Linux 與 Wine 完整包自檢及受控截圖通過，截圖與 v.1.1.14 相同（`affb593a…`）。`finalize --promo-version v.1.1.10-20261112` 為 PASS-SCOPED。
 - 核對後刪除本輪組裝樹 163836 檔、11690887890 位元組，保留 `work/full-local-v.1.1.15-20261116` 的清冊與 staging.json，以及 `work/local-release-v.1.1.15-20261116` 的建置紀錄。v.1.1.14 的三個完整包仍在，是否刪除待使用者決定。
 - 下週接續：R5 音訊 C 案、Rust 照 Go 移植滑鼠／手把／設定面板、R5 階段 5 GPU 加速模式；#305 待 Windows 實機回報，#320 HD 缺頭像。
+
+## 2026-11-21 fd2 磁碟清理（使用者同意）
+
+- 刪除可重建的建置快取：`work/rust-build/target`、`target-main`、`target-figani`（33944 檔、25282927347 位元組），`work/gocache`（8246 檔、2539289101 位元組）。`work/rust-build/cargo` 套件快取與 `golden` 收據保留；下次跑 Rust／Go 測試會重新編譯。
+- 刪除發行組裝殘留 `work/release-v.1.0.0`～`v.1.1.15`（9031 檔、705696981 位元組），可由 `remake/packaging/build-local-release.sh` 與 `tools/build_fd2_full_local.py` 重生；建置紀錄 `work/local-release-*` 保留。
+- v.1.1.14 的三個完整包已由 v.1.1.15 取代，刪除（3 檔、10742085206 位元組，刪前核對大小與 VALIDATION 相同），`ASSET-SHA256.json`、`SHA256SUMS.json`、`VALIDATION.json` 保留。
+- 合計 39269998635 位元組。刪前確認沒有 FD2 容器使用這些目錄、檔案全屬目前使用者。另經使用者逐次同意，刪除 rich2 專案的懸空映像「API23 compatibility emulator」（`api23-20261102-r1`）：先後刪除重複建置的三份 `d562c71aa709`、`a00df789ea22`、`e1a3f34bb4fb`（後兩次因前一份與其共用父層，刪除後才浮出），再刪其 legacy builder 中間層 `07499922184d`、`ad3e69b6e8cb`、`7b6e8c40ea12`（最後一次由使用者自行執行）；刪前皆確認沒有容器使用，rich2 的已標記映像未動，磁碟可用由 316G 增至 318G。HD 各輪收據目錄（`work/promo-cadence-20261018/hd-fonts` 15 GB、`work/hd1-*` 約 10 GB）被 WORKLOG 與 61 引用為收據來源，未列入清理。
