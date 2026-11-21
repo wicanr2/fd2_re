@@ -27,6 +27,11 @@ type modernOpeningKey struct {
 type modernOpeningBank struct {
 	encoded [][]byte
 	hashes  []string
+	// 延後到第一次畫那一格才做的檢查：解碼後的尺寸與完全不透明。verified 依 PNG SHA 記錄已通過
+	// 的圖；rejected 非 nil 表示這組已退回原版。
+	verified map[string]bool
+	rejected error
+	notices  *modernThemeNotices
 }
 
 // Compressed pictures are preflighted before publication. Only the current
@@ -187,15 +192,17 @@ func loadModernOpeningHDAsset(set *modernStoryPortraitSet, asset modernThemeAsse
 			bank.encoded[i] = prior
 			continue
 		}
-		picture, err := png.Decode(bytes.NewReader(raw))
+		// 載入時只看 PNG 標頭尺寸；不透明度要解碼像素才看得到，延到第一次畫這一格時檢查（#317 後續）。
+		config, err := png.DecodeConfig(bytes.NewReader(raw))
 		if err != nil {
 			return err
 		}
-		if picture.Bounds() != image.Rect(0, 0, w, h) || !openingOpaque(picture) {
+		if config.Width != w || config.Height != h {
 			return errors.New("modern opening: frame geometry or opacity differs")
 		}
 		bank.encoded[i], shared[bank.hashes[i]] = raw, raw
 	}
+	bank.notices = set.themeNotices()
 	set.openingHD.banks[key] = bank
 	set.hasHD = true
 	return nil
@@ -217,15 +224,73 @@ func (h *modernOpeningHD) frame(archive string, resource, index int) (*ebiten.Im
 		return nil, errors.New("modern opening: frame outside admitted bank")
 	}
 	key := bank.hashes[index]
+	if bank.rejected != nil {
+		return nil, bank.rejected
+	}
 	if h.gpu != nil && h.gpuKey == key {
 		return h.gpu, nil
 	}
-	picture, err := png.Decode(bytes.NewReader(bank.encoded[index]))
+	picture, err := bank.decode(modernOpeningKey{archive, resource}, index)
 	if err != nil {
 		return nil, err
 	}
 	h.replaceGPU(key, picture)
 	return h.gpu, nil
+}
+
+// decode 解碼一格，第一次用到時順便檢查解碼後的尺寸與完全不透明（載入時延後的檢查）。沒通過時
+// 這組退回原版並提示一次，回傳的錯誤符合 errModernHDDeferredRejected。
+func (bank *modernOpeningBank) decode(key modernOpeningKey, index int) (image.Image, error) {
+	picture, err := png.Decode(bytes.NewReader(bank.encoded[index]))
+	hash := bank.hashes[index]
+	if err == nil && bank.verified[hash] {
+		return picture, nil
+	}
+	w, h, _ := modernOpeningShape(key)
+	if err == nil && (picture.Bounds() != image.Rect(0, 0, w, h) || !openingOpaque(picture)) {
+		err = errors.New("frame geometry or opacity differs")
+	}
+	if err != nil {
+		cause := fmt.Errorf("modern opening: %s #%d frame %d: %w", key.archive, key.resource, index, err)
+		bank.rejected = fmt.Errorf("%w: %v", errModernHDDeferredRejected, cause)
+		bank.notices.reject(cause)
+		return nil, bank.rejected
+	}
+	if bank.verified == nil {
+		bank.verified = map[string]bool{}
+	}
+	bank.verified[hash] = true
+	return picture, nil
+}
+
+// modernOpeningSource 回傳目前開場畫面要用的 HD 圖組（與 drawModernHDOpening 的選擇相同）。
+func (g *Game) modernOpeningSource() (archive string, resource int) {
+	archive, resource = "FDOTHER.DAT", 7
+	if g.titlePhase != "cutscene" || g.cutIdx < 0 || g.cutIdx >= len(cutScript) {
+		return
+	}
+	switch step := cutScript[g.cutIdx]; step.kind {
+	case "publisher":
+		resource = 74
+	case "static":
+		resource = []int{100, 75}[step.res]
+	case "scroll", "hold", "redfade":
+		resource = 69
+	case "afm":
+		archive, resource = "ANI.DAT", step.res
+	}
+	return
+}
+
+// modernOpeningRejected 判斷目前這一幕的 HD 圖組是否已因延後檢查退回原版。
+func (g *Game) modernOpeningRejected() bool {
+	set := g.modernStoryPortraits
+	archive, resource := g.modernOpeningSource()
+	if archive == "ANI.DAT" && resource == 0 {
+		return set.skyKeyANI.rejectedErr() != nil
+	}
+	bank := set.openingHD.banks[modernOpeningKey{archive, resource}]
+	return bank != nil && bank.rejected != nil
 }
 
 func (h *modernOpeningHD) replaceGPU(key string, picture image.Image) {
@@ -238,7 +303,7 @@ func (h *modernOpeningHD) replaceGPU(key string, picture image.Image) {
 func (g *Game) modernOpeningEnabled() bool {
 	return g.modernStoryPortraits != nil && g.modernStoryPortraits.openingHD != nil &&
 		g.titleAssets != nil && !g.helpVisible && !g.startupBlocked &&
-		(g.titlePhase == "cutscene" || g.titlePhase == "menu")
+		(g.titlePhase == "cutscene" || g.titlePhase == "menu") && !g.modernOpeningRejected()
 }
 
 func (p *modernHDPresentation) drawModernHDOpening(screen ebiten.FinalScreen, geometry ebiten.GeoM) {
@@ -297,6 +362,9 @@ func (p *modernHDPresentation) drawModernHDOpening(screen ebiten.FinalScreen, ge
 		picture = h.gpu
 	} else {
 		picture, err = h.frame(archive, resource, frame)
+	}
+	if errors.Is(err, errModernHDDeferredRejected) {
+		return // 這組已退回原版；下一幀起 modernOpeningEnabled 為假，改畫原版
 	}
 	if err != nil {
 		g.startupBlocked, g.loadErr = true, err.Error()

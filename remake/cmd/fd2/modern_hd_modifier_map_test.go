@@ -139,6 +139,8 @@ func modifierHDTestTheme(t *testing.T) *modernStoryPortraitSet {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// 這組測具直接讀各地圖的 terrainHD 圖片；先全部解碼並停用按需釋放。
+	terrainHDDecodeAll(t, set)
 	return set
 }
 

@@ -193,9 +193,13 @@ func TestModernBattleScenerySourcesGPU(t *testing.T) {
 			frame.X, frame.Y = 164, 157
 		}
 		if asset.SourceArchive == "BG.DAT" && (asset.SourceResource == 36 || asset.SourceResource == 37) {
+			entryPicture, err := entry.decodedPicture()
+			if err != nil {
+				t.Fatal(err)
+			}
 			for y := 0; y < frame.Height*6; y++ {
 				for x := 0; x < frame.Width*6; x++ {
-					_, _, _, alpha := entry.picture.At(x, y).RGBA()
+					_, _, _, alpha := entryPicture.At(x, y).RGBA()
 					if alpha != uint32(frame.Mask[(y/6)*frame.Width+x/6])*257 {
 						t.Fatal("partial BG lost exact native coverage", asset.SourceResource, x, y)
 					}
@@ -292,8 +296,11 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 		t.Fatal(err)
 	}
 	entry := set.battleSurfaces[archive][surfaceTestIndex(t)]
-	if entry == nil || entry.picture.Bounds() != image.Rect(0, 0, asset.Width, asset.Height) || !set.hasHD {
-		t.Fatal("real background not loaded")
+	if entry == nil || entry.picture != nil || !set.hasHD {
+		t.Fatal("real background not admitted without decoding")
+	}
+	if picture, err := entry.decodedPicture(); err != nil || picture.Bounds() != image.Rect(0, 0, asset.Width, asset.Height) {
+		t.Fatal("real background not decoded on first use", err)
 	}
 	if err := loadModernBattleSurfaceHD(set, asset, pack); err == nil {
 		t.Fatal("duplicate background accepted")
@@ -343,8 +350,26 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 			}
 			bad := asset
 			bad.SHA256 = fmt.Sprintf("%x", sha256.Sum256(encoded.Bytes()))
-			if err := loadModernBattleSurfaceHD(&modernStoryPortraitSet{}, bad, root); err == nil {
-				t.Fatal("invalid PNG alpha or dimensions accepted")
+			probe := &modernStoryPortraitSet{}
+			err := loadModernBattleSurfaceHD(probe, bad, root)
+			if kind == "geometry" {
+				if err == nil {
+					t.Fatal("invalid PNG dimensions accepted")
+				}
+				return
+			}
+			// 透明度是延後到第一次使用的檢查：載入通過，第一次取用時這張背景退回原版並提示一次，
+			// 交易不失敗。
+			if err != nil {
+				t.Fatal("header-valid PNG rejected before use", err)
+			}
+			source := modernHDBattleSource{Archive: archive, Resource: surfaceTestIndex(t), Frame: probe.battleSurfaces[archive][surfaceTestIndex(t)].native, Fill: -1}
+			got, key, err := probe.battleSurfaceHD(source)
+			if err != nil || got != nil || key != "" || probe.battleSurfaces[archive][surfaceTestIndex(t)] != nil {
+				t.Fatal("invalid PNG alpha published or failed the transaction", err)
+			}
+			if notices := probe.notices.take(); len(notices) != 1 {
+				t.Fatal("deferred rejection was not reported once", notices)
 			}
 		})
 	}
@@ -366,7 +391,7 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 			case "resource":
 				source.Resource = 56
 			case "image":
-				local.picture = nil
+				local.picture, local.path = nil, "" // 沒有可解碼的來源
 			}
 			if _, _, err := copySet.battleSurfaceHD(source); err == nil {
 				t.Fatal("invalid producer identity accepted")

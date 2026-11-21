@@ -619,7 +619,7 @@ func TestModernHDSplitStrikeSceneryNativeAndAtomic(t *testing.T) {
 				for _, source := range wanted {
 					bad := *set
 					entry := *set.battleSurfaces[source.archive][source.index]
-					entry.picture = nil
+					entry.picture, entry.path = nil, "" // 沒有可解碼的來源
 					bad.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{source.archive: {source.index: &entry}}
 					state := func() string {
 						units, _ := json.Marshal(g.st.Units)

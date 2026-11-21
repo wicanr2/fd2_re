@@ -184,7 +184,10 @@ func (g *Game) prepareModernHDMapFrameStageLayout(in indexedmap.NativeFrameInput
 			return nil, errors.New("modern HD terrain: native assets missing")
 		}
 		mapID := g.nativeMapAssets.MapIndex
-		terrainAssets = g.modernStoryPortraits.terrainHD[mapID]
+		terrainAssets, err = g.modernStoryPortraits.terrainHDMap(mapID)
+		if err != nil {
+			return nil, err
+		}
 		if len(terrainAssets) != 0 {
 			if err = g.modernStoryPortraits.validateTerrainHD(mapID, frame.TerrainBank); err != nil {
 				return nil, err

@@ -9,16 +9,131 @@ import (
 	"image"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
-// 靜態場景圖完整解碼後才發布。原始像素保留供同次 producer 身分核對。
+// 靜態場景圖。原始像素保留供同次 producer 身分核對。載入時只核對路徑、SHA-256 與 PNG 標頭
+// 尺寸（#317 後續）；第一次用到時才解碼，同時檢查透明度條件，只有最近用過的幾張留在記憶體。
+// picture 為 nil 且 path 非空，表示還沒解碼或已被釋放；path 為空的項目沒有可解碼的來源。
 type modernBattleSurfaceHD struct {
-	native  figani.Frame
-	picture image.Image
-	hash    string
+	native   figani.Frame
+	picture  image.Image
+	hash     string
+	path     string
+	fullMask bool
+	cache    *modernBattleSurfaceCache
+}
+
+// modernBattleSurfaceCacheSize 是同時保留的已解碼戰鬥背景數。一場戰鬥最多用到基底背景、台座、
+// 三張轉場背景與目標側背景共六張；超過時釋放最久沒用的一張，下次用到再解碼。
+const modernBattleSurfaceCacheSize = 12
+
+type modernBattleSurfaceCache struct {
+	mu      sync.Mutex
+	decoded []*modernBattleSurfaceHD // 目前持有解碼圖的項目，最久沒用的在前
+	notices *modernThemeNotices
+}
+
+func (set *modernStoryPortraitSet) battleSurfaceDecodeCache() *modernBattleSurfaceCache {
+	if set.surfaceCache == nil {
+		set.surfaceCache = &modernBattleSurfaceCache{notices: set.themeNotices()}
+	}
+	return set.surfaceCache
+}
+
+// decodedPicture 回傳解碼後的圖，必要時讀檔、核對 SHA-256、解碼並檢查透明度條件。檔案在載入後
+// 不見或被改是硬性錯誤；解不開或透明度條件不符時回傳符合 errModernHDDeferredRejected 的錯誤，
+// 呼叫端把這張背景當成包內沒有登錄。
+func (entry *modernBattleSurfaceHD) decodedPicture() (image.Image, error) {
+	c := entry.cache
+	if c == nil {
+		if entry.picture == nil {
+			return nil, errors.New("modern HD battle surface: producer source differs")
+		}
+		return entry.picture, nil
+	}
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	for n, held := range c.decoded {
+		if held == entry {
+			c.decoded = append(append(c.decoded[:n:n], c.decoded[n+1:]...), entry)
+			break
+		}
+	}
+	if entry.picture != nil {
+		return entry.picture, nil
+	}
+	if entry.path == "" {
+		return nil, errors.New("modern HD battle surface: producer source differs")
+	}
+	raw, err := os.ReadFile(entry.path)
+	if err != nil {
+		return nil, err
+	}
+	digest := sha256.Sum256(raw)
+	if hex.EncodeToString(digest[:]) != entry.hash {
+		return nil, errors.New("modern HD battle surface: PNG changed before use")
+	}
+	picture, _, err := image.Decode(bytes.NewReader(raw))
+	if err == nil {
+		err = modernBattleSurfaceCoverage(picture, entry.fullMask)
+	}
+	if err != nil {
+		cause := fmt.Errorf("modern HD battle surface %s: %w", filepath.Base(entry.path), err)
+		c.notices.reject(cause)
+		return nil, fmt.Errorf("%w: %v", errModernHDDeferredRejected, cause)
+	}
+	entry.picture = picture
+	c.decoded = append(c.decoded, entry)
+	if len(c.decoded) > modernBattleSurfaceCacheSize {
+		c.decoded[0].picture = nil
+		c.decoded = append(c.decoded[:0:0], c.decoded[1:]...)
+	}
+	return picture, nil
+}
+
+// modernBattleSurfaceCoverage 是載入時延後的透明度條件：原生遮罩全滿的來源必須完全不透明，
+// 其餘必須同時有完全不透明與完全透明的像素。與逐點 At().RGBA() 的判斷相同。
+func modernBattleSurfaceCoverage(picture image.Image, fullMask bool) error {
+	opaque, transparent, partial := false, false, false
+	var pix []byte
+	stride := 0
+	switch p := picture.(type) {
+	case *image.NRGBA:
+		pix, stride = p.Pix, p.Stride
+	case *image.RGBA:
+		pix, stride = p.Pix, p.Stride
+	}
+	rect := picture.Bounds()
+	if pix != nil {
+		for y := 0; y < rect.Dy(); y++ {
+			row := pix[y*stride : y*stride+rect.Dx()*4]
+			for x := 3; x < len(row); x += 4 {
+				opaque = opaque || row[x] == 0xff
+				transparent = transparent || row[x] == 0
+				partial = partial || row[x] != 0xff
+			}
+		}
+	} else {
+		for y := rect.Min.Y; y < rect.Max.Y; y++ {
+			for x := rect.Min.X; x < rect.Max.X; x++ {
+				_, _, _, alpha := picture.At(x, y).RGBA()
+				opaque = opaque || alpha == 0xffff
+				transparent = transparent || alpha == 0
+				partial = partial || alpha != 0xffff
+			}
+		}
+	}
+	if fullMask && partial {
+		return errors.New("opaque source requires opaque HD")
+	}
+	if !opaque || (!fullMask && !transparent) {
+		return errors.New("missing coverage endpoints")
+	}
+	return nil
 }
 
 func loadModernBattleSurfaceHD(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
@@ -83,24 +198,7 @@ func loadModernBattleSurfaceHDWithNative(set *modernStoryPortraitSet, asset mode
 	if err != nil || config.Width != asset.Width || config.Height != asset.Height {
 		return errors.New("modern HD battle surface: PNG geometry mismatch")
 	}
-	picture, _, err := image.Decode(bytes.NewReader(raw))
-	if err != nil {
-		return err
-	}
-	opaque, transparent := false, false
-	for y := 0; y < asset.Height; y++ {
-		for x := 0; x < asset.Width; x++ {
-			_, _, _, alpha := picture.At(x, y).RGBA()
-			if fullMask && alpha != 0xffff {
-				return errors.New("modern HD battle surface: opaque source requires opaque HD")
-			}
-			opaque = opaque || alpha == 0xffff
-			transparent = transparent || alpha == 0
-		}
-	}
-	if !opaque || (!fullMask && !transparent) {
-		return errors.New("modern HD battle surface: missing coverage endpoints")
-	}
+	// 解碼與透明度檢查延到第一次使用（decodedPicture）。
 	// 唯一的發布點。失敗不建立 map 或改已載入圖源。
 	if set.battleSurfaces == nil {
 		set.battleSurfaces = make(map[string]map[int]*modernBattleSurfaceHD)
@@ -110,7 +208,8 @@ func loadModernBattleSurfaceHDWithNative(set *modernStoryPortraitSet, asset mode
 	}
 	frame.Pixels = append([]byte(nil), frame.Pixels...)
 	frame.Mask = append([]byte(nil), frame.Mask...)
-	set.battleSurfaces[asset.SourceArchive][asset.SourceResource] = &modernBattleSurfaceHD{native: frame, picture: picture, hash: asset.SHA256}
+	set.battleSurfaces[asset.SourceArchive][asset.SourceResource] = &modernBattleSurfaceHD{native: frame, hash: asset.SHA256,
+		path: filepath.Join(root, asset.File), fullMask: fullMask, cache: set.battleSurfaceDecodeCache()}
 	set.hasHD = true
 	return nil
 }
@@ -127,11 +226,23 @@ func (set *modernStoryPortraitSet) battleSurfaceHD(source modernHDBattleSource) 
 		return nil, "", nil
 	}
 	f := source.Frame
-	if entry.picture == nil || entry.hash == "" || entry.picture.Bounds() != image.Rect(0, 0, f.Width*6, f.Height*6) || f.Width != entry.native.Width || f.Height != entry.native.Height ||
+	if entry.hash == "" || f.Width != entry.native.Width || f.Height != entry.native.Height ||
 		!bytes.Equal(f.Pixels, entry.native.Pixels) || !bytes.Equal(f.Mask, entry.native.Mask) {
 		return nil, "", errors.New("modern HD battle surface: producer source differs")
 	}
-	return entry.picture, entry.hash, nil
+	picture, err := entry.decodedPicture()
+	if errors.Is(err, errModernHDDeferredRejected) {
+		// 延後的檢查沒通過：這張背景退回原版（等同包內沒有登錄它），呼叫端的交易照常。
+		delete(set.battleSurfaces[source.Archive], source.Resource)
+		return nil, "", nil
+	}
+	if err != nil {
+		return nil, "", err
+	}
+	if picture == nil || picture.Bounds() != image.Rect(0, 0, f.Width*6, f.Height*6) {
+		return nil, "", errors.New("modern HD battle surface: producer source differs")
+	}
+	return picture, entry.hash, nil
 }
 
 func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysicalScene) error {

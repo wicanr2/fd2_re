@@ -156,7 +156,10 @@ func (g *Game) prepareModernHDRadialMap(spec modernHDRadialMapSpec, set *modernS
 			luts[count][n] = v
 		}
 	}
-	assets := set.terrainHD[g.nativeMapAssets.MapIndex]
+	assets, err := set.terrainHDMap(g.nativeMapAssets.MapIndex)
+	if err != nil {
+		return nil, err
+	}
 	for _, tile := range normal.Terrain {
 		if tile.Stage {
 			picture, err := g.prepareModernHDRadialStage(spec, set, tc, luts)

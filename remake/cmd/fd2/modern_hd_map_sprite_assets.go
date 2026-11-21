@@ -57,6 +57,9 @@ func loadModernHDMapSpriteAsset(set *modernStoryPortraitSet, asset modernThemeAs
 		}
 		frames = append(frames, decoded)
 	}
+	if set.mapSpritesHD == nil {
+		set.mapSpritesHD = make(map[int][]image.Image) // 分組載入的暫存集合從空的開始
+	}
 	set.mapSpritesHD[asset.SourceGroup] = frames
 	if asset.VisualScalePercent != 0 {
 		if set.mapSpriteVisualScale == nil {

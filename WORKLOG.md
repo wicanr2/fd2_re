@@ -5705,3 +5705,11 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 照 Go v.1.1.15（`7c710b34`）把輸入對應層、滑鼠指向、手把與 F12 按鍵設定面板移植到 `fd2-game`，`fd2-app` 接上 Bevy 的滑鼠右鍵、滾輪、焦點與手把；`controls-settings.json` 與 Go 版互通。新增只輸出資料的 Go 測試 `remake/cmd/fd2/rust_golden_r5i_controls_test.go` 與驅動腳本 `tools/rust_r5i_controls.sh`。
 - 上一工作階段的子代理在 worktree 完成實作與驗證但沒寫文件；本輪重定基底到 r5v（`81e5abdd`）後重跑：局部黃金全部相同（面板像素差異只在 TTF 文字外框內）、`fd2-game` 413 passed、外殼逐幀相同、`fd2-app` 49 passed。收據在 `work/r5i-20261121/`（`rebased/` 是本輪）。
 - 使用者 2026-11-21 同意把 `go_ebiten_keys.rs`（Ebiten 鍵名與編號）登記為 `rust-port-no-go-stdlib` 的第十一項具名例外。
+
+## 2026-11-21 Go 第五次凍結例外：HD 主題包按需解碼（使用者定為最後一次）
+
+- 使用者 2026-11-21 同意，並定為 Go 版最後一次修正。上一工作階段的子代理在 worktree 完成：戰鬥畫格、天空之鑰、開場、地形與戰鬥背景改為第一次使用時才解碼，延後的像素檢查未通過時只讓該單位退回原版；規格與量測見 61「HD主題包按需解碼」，收據在 `work/gho2-20261121/`。
+- 驗證：`cmd/fd2` 全套失敗名單與 v.1.1.15 逐項相同（19 項，`suite-after2.fail` 對 `work/gmp-20261116/logs/suite-after2.fail`）；原版模式第一章 `checkpoints.jsonl` 仍是 `1c846f57…`；四類按需資源 4438 格經消費端取得的像素雜湊修改前後相同；正式包 287 筆戰鬥資源與按需資源的延後檢查全部通過；字串盤點已重綁。
+- 子代理的「真實包全套」修改後一輪被 `killed` 中斷，且多出 6 個失敗。本輪以相同的真實包（私人庫 `fd2-modern-handpainted-a`、原版分離包）在修改前的 main 跑同樣 6 項，失敗訊息逐字相同（`six-main.log`），確認是既有失敗、不是這次的回歸。修改前那輪的真實包全套在第 318 個測試因缺 `hd1-gold-dialogue-frame-reference.png`（當時複製的來源樹缺檔）panic，沒有可比的完整基準，記為未完成項目。
+- `remake-rs` 的 `PORTING.json` 內 HD 函式的 Go 行號隨本次修改漂移；它們都在 R6 才移植，屆時照新版 Go 重新對照。
+- AGENTS.md 改為 Go 版完全凍結。是否發 `v.1.1.16` 另行決定。

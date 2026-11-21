@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"sync"
 
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -38,13 +39,67 @@ type modernSkyKeyPlan struct {
 	Frames      []modernSkyKeyRow `json:"frames"`
 }
 
+// 天空之鑰兩個圖庫載入時只核對每格 PNG 的路徑、SHA-256 與標頭尺寸，不解碼（#317 後續）。
+// 畫格在第一次使用時才解碼，只保留最近用到的幾張；透明度與原生黑幕條件在每格第一次解碼時
+// 檢查，位元組已由 SHA-256 釘住，結果不會變。沒通過時整個圖庫退回原版並提示一次。
 type modernSkyKeyHDBank struct {
-	pictures   []*image.RGBA
-	pictureSHA []string
-	asset      modernThemeAsset
-	plan       modernSkyKeyPlan
-	root       string
-	offset     int
+	asset  modernThemeAsset
+	plan   modernSkyKeyPlan
+	root   string
+	offset int
+	lazy   *modernSkyKeyDecoded // 按需解碼的狀態；複製 bank 時共用同一份
+}
+
+// modernSkyKeyCacheSize 是同時保留的已解碼畫格數。兩個消費端（第二十章演出與開場 ANI0）都是
+// 依序播放，同一格會連續用好幾個 tick，換格時才需要解碼新的一張。
+const modernSkyKeyCacheSize = 3
+
+type modernSkyKeyDecoded struct {
+	mu       sync.Mutex
+	recent   []modernSkyKeyCached // 依使用先後排列，最舊的在前
+	pixelSHA map[string]string    // PNG SHA-256 → 第一次解碼的像素 SHA-256；快取命中與重解都必須相同
+	summary  map[string]modernSkyKeyCoverage
+	verified []bool // 依畫格：延後的透明度／黑幕條件已通過
+	rejected error
+	notices  *modernThemeNotices
+}
+
+type modernSkyKeyCached struct {
+	hash    string
+	picture *image.RGBA
+}
+
+// modernSkyKeyCoverage 摘要一張解碼圖的 alpha 範圍與是否有非黑像素。
+type modernSkyKeyCoverage struct {
+	low, high uint8
+	nonblack  bool
+}
+
+func (b *modernSkyKeyHDBank) decodedState() *modernSkyKeyDecoded {
+	if b.lazy == nil {
+		b.lazy = &modernSkyKeyDecoded{}
+	}
+	d := b.lazy
+	if d.pixelSHA == nil {
+		d.pixelSHA = map[string]string{}
+	}
+	if d.summary == nil {
+		d.summary = map[string]modernSkyKeyCoverage{}
+	}
+	if len(d.verified) != len(b.asset.Files) {
+		d.verified = make([]bool, len(b.asset.Files))
+	}
+	return d
+}
+
+// rejectedErr 回報延後檢查是否已讓這個圖庫退回原版。
+func (b *modernSkyKeyHDBank) rejectedErr() error {
+	if b == nil || b.lazy == nil {
+		return nil
+	}
+	b.lazy.mu.Lock()
+	defer b.lazy.mu.Unlock()
+	return b.lazy.rejected
 }
 
 func skyKeySHA(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToString(sum[:]) }
@@ -59,7 +114,7 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 		len(asset.SourceFiles) == 0 || len(asset.SourceFiles) != len(asset.SourceSHA256) || !skyKeySafeFile(asset.MasterFile) {
 		return errors.New("modern sky key: invalid bank contract")
 	}
-	b := &modernSkyKeyHDBank{asset: asset, root: root}
+	b := &modernSkyKeyHDBank{asset: asset, root: root, lazy: &modernSkyKeyDecoded{notices: set.themeNotices()}}
 	metadata := ""
 	kind := ""
 	rows := 0
@@ -120,9 +175,6 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 	if !master || plans != 1 || b.plan.Schema != 1 || b.plan.Kind != kind || b.plan.MetadataSHA != asset.SourceMetadataSHA256 || len(b.plan.Frames) != rows {
 		return errors.New("modern sky key: source plan absent or changed")
 	}
-	pictures := make([]*image.RGBA, asset.FrameCount)
-	pictureSHA := make([]string, asset.FrameCount)
-	shared := make(map[string]*image.RGBA)
 	maxW, maxH := 0, 0
 	for i, row := range b.plan.Frames {
 		if row.Index != i || len(row.Colours) == 0 || len(row.Colours) > 256 {
@@ -151,17 +203,14 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 		if desc.Height*6 > maxH {
 			maxH = desc.Height * 6
 		}
-		picture, err := b.pictureWithSharedStorage(i, shared)
-		if err != nil {
+		if _, err := b.frameBytes(i); err != nil {
 			return err
 		}
-		pictures[i-b.offset] = picture
-		pictureSHA[i-b.offset] = skyKeySHA(picture.Pix)
 	}
 	if asset.Width != maxW || asset.Height != maxH {
 		return errors.New("modern sky key: bank bounds changed")
 	}
-	b.pictures, b.pictureSHA = pictures, pictureSHA
+	b.decodedState()
 	if b.offset == 1 {
 		set.skyKeyFD34 = b
 	} else {
@@ -171,20 +220,13 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 	return nil
 }
 
-// Return a validated immutable frame. Cold decoding uses private storage and
-// publishes only after the complete bank passes. Callers copy before editing.
-func (b *modernSkyKeyHDBank) picture(index int) (*image.RGBA, error) {
-	return b.pictureWithSharedStorage(index, nil)
-}
-
-// Only a cold loader owns shared; every path is still read and hashed, and
-// every descriptor/coverage condition is checked before sharing is published.
-func (b *modernSkyKeyHDBank) pictureWithSharedStorage(index int, shared map[string]*image.RGBA) (*image.RGBA, error) {
+// frameBytes 讀取一格 PNG，核對路徑、SHA-256 與標頭尺寸；不解碼。
+func (b *modernSkyKeyHDBank) frameBytes(index int) ([]byte, error) {
 	if b == nil {
 		return nil, errors.New("modern sky key: bank absent")
 	}
 	i := index - b.offset
-	if b == nil || i < 0 || i >= len(b.asset.Files) || i >= len(b.asset.NativeFrames) || i >= len(b.asset.FrameSHA256) {
+	if i < 0 || i >= len(b.asset.Files) || i >= len(b.asset.NativeFrames) || i >= len(b.asset.FrameSHA256) {
 		return nil, errors.New("modern sky key: frame outside bank")
 	}
 	name := b.asset.Files[i]
@@ -203,46 +245,95 @@ func (b *modernSkyKeyHDBank) pictureWithSharedStorage(index int, shared map[stri
 	if w <= 0 || h <= 0 || w > 1920 || h > 1200 {
 		return nil, errors.New("modern sky key: PNG geometry changed")
 	}
-	if len(b.pictures) > 0 {
-		if i >= len(b.pictures) || i >= len(b.pictureSHA) || b.pictures[i] == nil || b.pictures[i].Bounds() != image.Rect(0, 0, w, h) || skyKeySHA(b.pictures[i].Pix) != b.pictureSHA[i] {
-			return nil, errors.New("modern sky key: decoded frame changed")
-		}
-		return b.pictures[i], nil
-	}
-	out := shared[b.asset.FrameSHA256[i]]
-	if out == nil {
-		c, _, err := image.DecodeConfig(bytes.NewReader(raw))
-		if err != nil || c.Width != w || c.Height != h {
-			return nil, errors.New("modern sky key: PNG geometry changed")
-		}
-		im, _, err := image.Decode(bytes.NewReader(raw))
-		if err != nil {
-			return nil, err
-		}
-		out = image.NewRGBA(image.Rect(0, 0, w, h))
-		draw.Draw(out, out.Bounds(), im, image.Point{}, draw.Src)
-	} else if out.Bounds() != image.Rect(0, 0, w, h) {
+	c, _, err := image.DecodeConfig(bytes.NewReader(raw))
+	if err != nil || c.Width != w || c.Height != h {
 		return nil, errors.New("modern sky key: PNG geometry changed")
 	}
-	low, high := uint8(255), uint8(0)
-	nonblack := false
-	for n := 0; n < len(out.Pix); n += 4 {
-		a := out.Pix[n+3]
-		if a < low {
-			low = a
-		}
-		if a > high {
-			high = a
-		}
-		nonblack = nonblack || out.Pix[n] != 0 || out.Pix[n+1] != 0 || out.Pix[n+2] != 0
+	return raw, nil
+}
+
+// picture 回傳一格已驗證、不可修改的畫格；呼叫端要改像素前先複製。每次呼叫都重新讀檔核對
+// SHA-256。畫格第一次使用時才解碼，最近用到的幾張留在快取，命中時核對像素 SHA-256 沒被改過。
+// 延後的透明度／黑幕條件沒有通過時，整個圖庫退回原版：回傳的錯誤符合
+// errModernHDDeferredRejected，呼叫端改用原版畫格，不讓交易失敗。
+func (b *modernSkyKeyHDBank) picture(index int) (*image.RGBA, error) {
+	raw, err := b.frameBytes(index)
+	if err != nil {
+		return nil, err
 	}
-	if b.offset == 1 && (low != 0 || high != 255) || b.offset == 0 && (low != 255 || high != 255 || b.plan.Frames[index].Blank == nonblack) {
-		return nil, errors.New("modern sky key: coverage or native black frame changed")
+	i := index - b.offset
+	hash := b.asset.FrameSHA256[i]
+	d := b.asset.NativeFrames[i]
+	bounds := image.Rect(0, 0, d.Width*6, d.Height*6)
+	s := b.decodedState()
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.rejected != nil {
+		return nil, s.rejected
 	}
-	if shared != nil {
-		shared[b.asset.FrameSHA256[i]] = out
+	var out *image.RGBA
+	for n, cached := range s.recent {
+		if cached.hash != hash {
+			continue
+		}
+		if cached.picture.Bounds() != bounds || skyKeySHA(cached.picture.Pix) != s.pixelSHA[hash] {
+			return nil, errors.New("modern sky key: decoded frame changed")
+		}
+		out = cached.picture
+		s.recent = append(append(s.recent[:n:n], s.recent[n+1:]...), cached)
+		break
+	}
+	if out == nil {
+		im, _, err := image.Decode(bytes.NewReader(raw))
+		if err != nil {
+			return nil, s.reject(fmt.Errorf("modern sky key: frame %d cannot be decoded: %w", index, err))
+		}
+		out = image.NewRGBA(bounds)
+		draw.Draw(out, out.Bounds(), im, image.Point{}, draw.Src)
+		pixels := skyKeySHA(out.Pix)
+		if prior, ok := s.pixelSHA[hash]; ok && prior != pixels {
+			return nil, errors.New("modern sky key: decoded frame changed")
+		}
+		s.pixelSHA[hash] = pixels
+		if _, ok := s.summary[hash]; !ok {
+			s.summary[hash] = skyKeyCoverageOf(out)
+		}
+		s.recent = append(s.recent, modernSkyKeyCached{hash: hash, picture: out})
+		if len(s.recent) > modernSkyKeyCacheSize {
+			s.recent = append(s.recent[:0:0], s.recent[len(s.recent)-modernSkyKeyCacheSize:]...)
+		}
+	}
+	if !s.verified[i] {
+		c := s.summary[hash]
+		if b.offset == 1 && (c.low != 0 || c.high != 255) || b.offset == 0 && (c.low != 255 || c.high != 255 || b.plan.Frames[index].Blank == c.nonblack) {
+			return nil, s.reject(fmt.Errorf("modern sky key: frame %d coverage or native black frame changed", index))
+		}
+		s.verified[i] = true
 	}
 	return out, nil
+}
+
+func skyKeyCoverageOf(picture *image.RGBA) modernSkyKeyCoverage {
+	c := modernSkyKeyCoverage{low: 255}
+	for n := 0; n < len(picture.Pix); n += 4 {
+		a := picture.Pix[n+3]
+		if a < c.low {
+			c.low = a
+		}
+		if a > c.high {
+			c.high = a
+		}
+		c.nonblack = c.nonblack || picture.Pix[n] != 0 || picture.Pix[n+1] != 0 || picture.Pix[n+2] != 0
+	}
+	return c
+}
+
+// reject 讓整個圖庫退回原版並提示一次；呼叫時已持有 s.mu。
+func (s *modernSkyKeyDecoded) reject(cause error) error {
+	s.rejected = fmt.Errorf("%w: %v", errModernHDDeferredRejected, cause)
+	s.recent = nil
+	s.notices.reject(cause)
+	return s.rejected
 }
 
 func (b *modernSkyKeyHDBank) recheckFiles() error {
@@ -276,12 +367,11 @@ func (b *modernSkyKeyHDBank) recheckFiles() error {
 			return errors.New("modern sky key: frame changed")
 		}
 	}
-	if len(b.pictures) != len(b.asset.Files) || len(b.pictureSHA) != len(b.asset.Files) {
-		return errors.New("modern sky key: decoded bank incomplete")
-	}
-	for i, picture := range b.pictures {
-		d := b.asset.NativeFrames[i]
-		if picture == nil || picture.Bounds() != image.Rect(0, 0, d.Width*6, d.Height*6) || skyKeySHA(picture.Pix) != b.pictureSHA[i] {
+	s := b.decodedState()
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for _, cached := range s.recent {
+		if cached.picture == nil || skyKeySHA(cached.picture.Pix) != s.pixelSHA[cached.hash] {
 			return errors.New("modern sky key: decoded bank changed")
 		}
 	}
@@ -352,6 +442,9 @@ func (g *Game) modernSkyKeyPair(set *modernStoryPortraitSet) (*modernSkyKeyHDBan
 	}
 	if set.skyKeyFD34 == nil || set.skyKeyANI == nil || len(set.mapSpritesHD) != 125 {
 		return nil, nil, errors.New("modern sky key: incomplete animation or HD world")
+	}
+	if set.skyKeyFD34.rejectedErr() != nil || set.skyKeyANI.rejectedErr() != nil {
+		return nil, nil, nil // 延後檢查已退回原版：整段演出改用原版畫格
 	}
 	return set.skyKeyFD34, set.skyKeyANI, nil
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
@@ -119,7 +120,23 @@ func TestModernHDOpeningAdmission(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			if loadModernOpeningHDAsset(target, asset, directory) == nil {
+			err := loadModernOpeningHDAsset(target, asset, directory)
+			if kind == "transparent" {
+				// 不透明度是延後到第一次畫那一格的檢查：載入通過，第一次解碼時這組退回原版並提示一次。
+				key := modernOpeningKey{asset.SourceArchive, asset.SourceResource}
+				if err != nil || target.openingHD.banks[key] == nil {
+					t.Fatal("header-valid opening frame rejected before use", err)
+				}
+				h := target.openingHD
+				if _, err := h.frame(key.archive, key.resource, 0); !errors.Is(err, errModernHDDeferredRejected) || h.banks[key].rejected == nil || h.gpu != nil {
+					t.Fatal("transparent opening frame published", err)
+				}
+				if notices := target.notices.take(); len(notices) != 1 {
+					t.Fatal("deferred rejection was not reported once", notices)
+				}
+				return
+			}
+			if err == nil {
 				t.Fatal("invalid opening asset admitted")
 			}
 		})

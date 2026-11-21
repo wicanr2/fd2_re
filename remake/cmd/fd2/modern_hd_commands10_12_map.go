@@ -88,7 +88,10 @@ func (g *Game) commandHDSampledTerrain(in indexedmap.NativeFrameInput, xOrigin, 
 	if increment <= 0 || f.MapWidth <= 0 || len(f.Cells)%f.MapWidth != 0 {
 		return nil, errors.New("modern HD sampled terrain: invalid geometry")
 	}
-	assets := set.terrainHD[g.nativeMapAssets.MapIndex]
+	assets, err := set.terrainHDMap(g.nativeMapAssets.MapIndex)
+	if err != nil {
+		return nil, err
+	}
 	colours, err := terrainColourContext(g.nativeMapAssets.MapIndex, g.nativeMapAssets.Palette, palette, f.LUT)
 	if err != nil {
 		return nil, err
@@ -219,7 +222,10 @@ func (g *Game) prepareModernHDCommandPrelude(j *native2189AJob, set *modernStory
 		return nil, err
 	}
 	result := make([]*modernHDMapFrame, 0, 11)
-	assets := set.terrainHD[g.nativeMapAssets.MapIndex]
+	assets, err := set.terrainHDMap(g.nativeMapAssets.MapIndex)
+	if err != nil {
+		return nil, err
+	}
 	for i, spec := range j.hdRadial {
 		work, vga := append([]byte(nil), j.hdTerrain...), append([]byte(nil), j.vgaFrames[i]...)
 		if err := fdother.ApplyRadialLUTRemap(work[0x8088:], 456, j.hdLUTs[i], spec); err != nil {

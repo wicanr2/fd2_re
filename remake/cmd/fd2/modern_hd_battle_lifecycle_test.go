@@ -446,7 +446,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if background != "" {
 		badSurface := *set
 		entry := *set.battleSurfaces["BG.DAT"][surfaceIndex]
-		entry.picture = nil
+		entry.picture, entry.path = nil, "" // 沒有可解碼的來源
 		badSurface.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": {surfaceIndex: &entry}}
 		before := probe.stable()
 		if err := g.applyTheme(&badSurface); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
@@ -454,7 +454,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		}
 		if probe.requiredPedestalHash != "" {
 			entry := *set.battleSurfaces["TAI.DAT"][surfaceIndex]
-			entry.picture = nil
+			entry.picture, entry.path = nil, "" // 沒有可解碼的來源
 			badTAI := *set
 			badTAI.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": set.battleSurfaces["BG.DAT"], "TAI.DAT": {surfaceIndex: &entry}}
 			if err := g.applyTheme(&badTAI); err == nil || g.modernStoryPortraits != set || probe.stable() != before {

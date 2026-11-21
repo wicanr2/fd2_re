@@ -24,6 +24,103 @@ func terrainTestImage(value color.RGBA) *image.RGBA {
 	return img
 }
 
+// terrainHDDecodeAll 把按需解碼的地形圖全部解碼並停用釋放，給直接讀 terrainHD 圖片的測具用。
+func terrainHDDecodeAll(t *testing.T, set *modernStoryPortraitSet) {
+	t.Helper()
+	if set == nil || set.terrainLazy == nil {
+		return
+	}
+	for mapID, frames := range set.terrainHD {
+		rejected, err := decodeModernTerrainHDMap(frames)
+		if err != nil || rejected != nil {
+			t.Fatal("terrain map", mapID, err, rejected)
+		}
+	}
+	set.terrainLazy = nil
+}
+
+func TestModernHDTerrainDeferredAlphaRejectsWholeMap(t *testing.T) {
+	root := t.TempDir()
+	write := func(name string, picture image.Image) string {
+		var encoded bytes.Buffer
+		if err := png.Encode(&encoded, picture); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(root, name), encoded.Bytes(), 0600); err != nil {
+			t.Fatal(err)
+		}
+		return fmt.Sprintf("%x", sha256.Sum256(encoded.Bytes()))
+	}
+	good := write("good.png", terrainTestImage(color.RGBA{10, 20, 30, 255}))
+	soft := terrainTestImage(color.RGBA{10, 20, 30, 255})
+	soft.Pix[3] = 128
+	bad := write("soft.png", soft)
+	asset := func(mapID int, files []string, hashes []string) modernThemeAsset {
+		ids := make([]int, len(files))
+		roles := make([]string, len(files))
+		for i := range files {
+			ids[i], roles[i] = i, "terrain"
+		}
+		return modernThemeAsset{Role: "native_terrain_hd_set", Status: "runtime_candidate", ConsumerContract: "fdshap_native_hd_sparse_v1",
+			MapID: mapID, Width: 144, Height: 144, AlphaContract: "native_mask_nearest_6", CyclePolicy: "native_selector", FrameCount: len(files),
+			FrameIDs: ids, Files: files, FrameSHA256: hashes, Semantics: roles}
+	}
+	set := &modernStoryPortraitSet{}
+	for _, a := range []modernThemeAsset{
+		asset(0, []string{"good.png", "good.png"}, []string{good, good}),
+		asset(1, []string{"good.png", "soft.png"}, []string{good, bad}),
+		asset(2, []string{"good.png"}, []string{good}),
+		asset(3, []string{"good.png"}, []string{good}),
+	} {
+		if err := loadModernTerrainHDAsset(set, a, root); err != nil {
+			t.Fatal("header-valid terrain rejected before use", err)
+		}
+	}
+	for _, frames := range set.terrainHD {
+		for _, a := range frames {
+			if a.Image != nil {
+				t.Fatal("terrain decoded during load")
+			}
+		}
+	}
+	frames, err := set.terrainHDMap(0)
+	if err != nil || len(frames) != 2 || frames[0].Image == nil || frames[0].Image != frames[1].Image ||
+		frames[0].Image.RGBAAt(0, 0) != (color.RGBA{10, 20, 30, 255}) {
+		t.Fatal("identical terrain sources were not decoded once and shared", err)
+	}
+	if frames, err := set.terrainHDMap(1); err != nil || frames != nil || set.terrainHD[1][0].Image != nil {
+		t.Fatal("soft-alpha map was not rejected as a whole", err)
+	}
+	if notices := set.notices.take(); len(notices) != 1 {
+		t.Fatal("deferred rejection was not reported once", notices)
+	}
+	if frames, err := set.terrainHDMap(1); err != nil || frames != nil || len(set.notices.take()) != 0 {
+		t.Fatal("rejected map retried or reported twice", err)
+	}
+	for _, id := range []int{2, 3} {
+		if _, err := set.terrainHDMap(id); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if set.terrainHD[0][0].Image != nil || set.terrainHD[2][0].Image == nil || set.terrainHD[3][0].Image == nil {
+		t.Fatal("least recently used map was not released")
+	}
+	again, err := set.terrainHDMap(0)
+	if err != nil || again[0].Image == nil || again[0].Image.RGBAAt(0, 0) != (color.RGBA{10, 20, 30, 255}) {
+		t.Fatal("released map was not decoded again", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "good.png"), []byte("changed"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	// 目前留在記憶體的是地圖 3 與 0；地圖 2 已釋放，要重讀檔案。
+	if _, err := set.terrainHDMap(3); err != nil {
+		t.Fatal("decoded map should not be re-read", err)
+	}
+	if _, err := set.terrainHDMap(2); err == nil {
+		t.Fatal("source changed after load was accepted")
+	}
+}
+
 func TestModernHDTerrainCatalogAtomicAndNativeMask(t *testing.T) {
 	root := t.TempDir()
 	var encoded bytes.Buffer

@@ -108,6 +108,9 @@ func (g *Game) prepareModernHDSkyKey(j *nativeCh20SkyKeyJob, set *modernStoryPor
 			return nil, errors.New("modern sky key: ANI framebuffer changed")
 		}
 		picture, err := a.picture(index)
+		if errors.Is(err, errModernHDDeferredRejected) {
+			return nil, nil // 這格延後檢查沒通過，圖庫已退回原版
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -189,6 +192,9 @@ func (g *Game) prepareModernHDSkyKey(j *nativeCh20SkyKeyJob, set *modernStoryPor
 	}
 	frame.Overlays = append(frame.Overlays, modernHDMapOverlayDraw{Image: floor, Rect: floor.Bounds().Add(image.Pt(d.X*6, d.Y*6))})
 	picture, err := f.picture(j.frame)
+	if errors.Is(err, errModernHDDeferredRejected) {
+		return nil, nil // 這格延後檢查沒通過，圖庫已退回原版
+	}
 	if err != nil {
 		return nil, err
 	}

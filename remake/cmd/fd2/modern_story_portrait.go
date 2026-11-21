@@ -43,11 +43,13 @@ type modernStoryPortraitSet struct {
 	mapTilesets          map[int]image.Image
 	terrainHD            map[int]map[int]*modernTerrainHDAsset
 	terrainHDBanks       map[int]*fdicon.Bank
+	terrainLazy          *modernTerrainHDLazy // 地形圖按需解碼的狀態；nil 表示 terrainHD 已全部解碼
 	battleHUDPanel       image.Image
 	battleActionIcons    []image.Image
 	battleAnimations     map[int]*modernBattleHDResource
 	battleEffects        map[int]*modernBattleHDResource
 	battleSurfaces       map[string]map[int]*modernBattleSurfaceHD
+	surfaceCache         *modernBattleSurfaceCache // 戰鬥背景按需解碼後保留的最近幾張
 	mapOverlays          *modernMapOverlayHDResource
 	mapEffects           *modernMapOverlayHDResource
 	facilityScenes       map[int]*modernFacilityScene
@@ -132,7 +134,7 @@ func loadModernStoryPortraitSetWithProgress(catalogPath, packRoot string, progre
 		mapTilesets:  make(map[int]image.Image),
 	}
 	hdPortraits := make(map[int]image.Image)
-	groups := startModernThemeAssetGroups(catalog.Assets, packRoot, progress)
+	groups := startModernThemeAssetGroups(catalog.Assets, packRoot, progress, set.themeNotices())
 	mainIndex := -1
 	mainErr := func() error {
 		for assetIndex, asset := range catalog.Assets {
@@ -144,7 +146,7 @@ func loadModernStoryPortraitSetWithProgress(catalogPath, packRoot string, progre
 			}
 			mainIndex = assetIndex
 			groups.advance()
-			if !asset.VisualScalePercent.valid() || (asset.VisualScalePercent != 0 && asset.Role != "map_sprite_hd_set" && asset.Role != "battle_animation_hd_set") {
+			if !modernThemeVisualScaleAllowed(asset) {
 				return errors.New("modern theme catalog: visual scale requires an HD character asset")
 			}
 			if asset.Role == modernBattlePresentationRole {
@@ -188,30 +190,11 @@ func loadModernStoryPortraitSetWithProgress(catalogPath, packRoot string, progre
 				}
 				continue
 			}
-			if asset.Role == "facility_scene_hd" {
-				if err := loadModernFacilityScene(set, asset, packRoot); err != nil {
-					return err
-				}
-				continue
-			}
 			if asset.Role == "map_overlay_hd_set" {
 				if err := loadModernMapOverlayHDAsset(set, asset, packRoot); err != nil {
 					return err
 				}
 				set.hasHD = true
-				continue
-			}
-			if asset.Role == "battle_animation_hd_set" || asset.Role == "battle_effect_hd_set" {
-				if err := loadModernBattleHDAsset(set, asset, packRoot); err != nil {
-					return err
-				}
-				set.hasHD = true
-				continue
-			}
-			if asset.Role == "map_sprite_hd_set" {
-				if err := loadModernHDMapSpriteAsset(set, asset, packRoot); err != nil {
-					return err
-				}
 				continue
 			}
 			if asset.Role == "battle_action_icon_set" {

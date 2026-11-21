@@ -333,7 +333,7 @@ func TestModernScrollSceneryNativeAndAtomic(t *testing.T) {
 					}
 				}
 				entry := *bad.battleSurfaces[source.archive][int(source.index)]
-				entry.picture = nil
+				entry.picture, entry.path = nil, "" // 沒有可解碼的來源
 				bad.battleSurfaces[source.archive][int(source.index)] = &entry
 				g.modernStoryPortraits = &bad
 				beforeActor, beforeTarget, beforeRNG := *actor, *target, g.nativeRNGState

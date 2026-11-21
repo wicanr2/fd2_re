@@ -225,7 +225,11 @@ func (g *Game) prepareModernHDMapHUDPanel(in indexedmap.NativeFrameInput, palett
 	hd := false
 	if g.modernStoryPortraits != nil && g.nativeMapAssets != nil {
 		mapID := g.nativeMapAssets.MapIndex
-		if asset := g.modernStoryPortraits.terrainHD[mapID][tile]; asset != nil {
+		frames, err := g.modernStoryPortraits.terrainHDMap(mapID)
+		if err != nil {
+			return nil, err
+		}
+		if asset := frames[tile]; asset != nil {
 			if err := g.modernStoryPortraits.validateTerrainHD(mapID, in.HUDTerrain); err != nil {
 				return nil, err
 			}

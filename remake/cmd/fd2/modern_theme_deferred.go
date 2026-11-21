@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"image"
 	"log"
 	"sync"
@@ -9,6 +10,10 @@ import (
 // 主題包載入時延後到用到才做的檢查（#317）。載入仍逐檔核對存在、路徑、SHA-256 與 PNG 標頭
 // 尺寸，缺件或雜湊不符照舊整包拒收；只有必須解碼像素才能判斷的透明度條件延到第一次預備。
 // 延後的檢查若失敗，該筆資源退回原版畫格並由 Update 顯示訊息，不 panic、不發布半組圖。
+
+// errModernHDDeferredRejected 標示延後到第一次使用的檢查沒有通過。符合這個錯誤時，呼叫端把那筆
+// 資源當成包內沒有登錄，改用原版畫格；其他錯誤（檔案在載入後不見或被改）照舊讓交易失敗。
+var errModernHDDeferredRejected = errors.New("HD 素材延後檢查未通過")
 
 // modernHDAlphaCoverage 摘要一張圖的透明度：有沒有完全透明、完全不透明與任何非零 alpha 的像素。
 type modernHDAlphaCoverage struct {

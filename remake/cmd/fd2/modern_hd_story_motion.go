@@ -84,7 +84,10 @@ func (view *Game) prepareModernHDStoryMotion(source *Game, frame *modernHDMapFra
 	}
 	viewport := modernHDMapViewport()
 	backdropRect := image.Rect(viewport.Min.X, viewport.Min.Y, viewport.Min.X+cols*144, viewport.Min.Y+rows*144).Add(shift)
-	assets := set.terrainHD[view.nativeMapAssets.MapIndex]
+	assets, err := set.terrainHDMap(view.nativeMapAssets.MapIndex)
+	if err != nil {
+		return err
+	}
 	colours, err := terrainColourContext(view.nativeMapAssets.MapIndex, view.nativeMapAssets.Palette, palette, in.LUT)
 	if err != nil {
 		return err

@@ -1,8 +1,15 @@
 package main
 
 import (
+	"bytes"
+	"crypto/sha256"
 	"errors"
+	"fmt"
 	"image"
+	"image/color"
+	"image/png"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -227,5 +234,53 @@ func TestModernThemeLoadShowsProgress(t *testing.T) {
 	g.pollModernThemeLoad()
 	if g.msg != "攻擊！" {
 		t.Fatalf("progress overwrote another message: %q", g.msg)
+	}
+}
+
+// 地形按需解碼：主題包載入完成後、發布前，先在背景解好目前這張地圖的地形，再補做切換；載入期間
+// 換了地圖也一樣（#317 後續）。
+func TestModernThemeLoadWarmsCurrentMapTerrainBeforePublishing(t *testing.T) {
+	isolateThemeSettings(t)
+	root := t.TempDir()
+	var encoded bytes.Buffer
+	if err := png.Encode(&encoded, terrainTestImage(color.RGBA{30, 60, 90, 255})); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "tile.png"), encoded.Bytes(), 0600); err != nil {
+		t.Fatal(err)
+	}
+	hash := fmt.Sprintf("%x", sha256.Sum256(encoded.Bytes()))
+	set := &modernStoryPortraitSet{}
+	for _, mapID := range []int{5, 6} {
+		asset := modernThemeAsset{Role: "native_terrain_hd_set", Status: "runtime_candidate", ConsumerContract: "fdshap_native_hd_sparse_v1",
+			MapID: mapID, Width: 144, Height: 144, AlphaContract: "native_mask_nearest_6", CyclePolicy: "native_selector", FrameCount: 1,
+			FrameIDs: []int{0}, Files: []string{"tile.png"}, FrameSHA256: []string{hash}, Semantics: []string{"terrain"}}
+		if err := loadModernTerrainHDAsset(set, asset, root); err != nil {
+			t.Fatal(err)
+		}
+	}
+	release := make(chan struct{})
+	g := &Game{nativeMapAssets: &nativeMapAssets{MapIndex: 5},
+		modernThemeLoader: func() (*modernStoryPortraitSet, error) { <-release; return set, nil }}
+	g.requestModernThemeLoad(modernThemePendingInterfaceAuto)
+	g.nativeMapAssets = &nativeMapAssets{MapIndex: 6} // 載入期間換了地圖
+	load := g.modernThemeLoading
+	close(release)
+	<-load.done
+	if !set.terrainHDMapReady(5) || set.terrainHDMapReady(6) {
+		t.Fatal("request-time map was not decoded in the loader goroutine")
+	}
+	g.pollModernThemeLoad()
+	if g.modernThemeCache != nil || load.warming == nil {
+		t.Fatal("published before the current map terrain was decoded")
+	}
+	select {
+	case <-load.warming:
+	case <-time.After(10 * time.Second):
+		t.Fatal("terrain warm-up did not finish")
+	}
+	g.pollModernThemeLoad()
+	if g.modernThemeCache != set || g.modernThemeLoading != nil || !set.terrainHDMapReady(6) || set.terrainHD[6][0].Image == nil {
+		t.Fatal("warmed theme was not published")
 	}
 }

@@ -12,6 +12,8 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"sort"
+	"sync"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 )
@@ -31,10 +33,172 @@ type modernTerrainHDAsset struct {
 	Shades       map[[33]byte]*image.RGBA
 	ShadeOrder   [][33]byte
 	WeightsBasis [32]byte
+	// path／hash 是清冊登錄的 PNG；Image 為 nil 時由 terrainHDMap 解碼（#317 後續）。
+	path, hash string
 }
 
 func (a *modernTerrainHDAsset) supports(role string) bool {
 	return a != nil && (a.Role == role || a.Role == "both")
+}
+
+// 地形圖載入時只核對路徑、SHA-256 與 PNG 標頭尺寸，不解碼（#317 後續）。一張地圖的圖在第一次
+// 用到時整組解碼，同時檢查 alpha 只有 0／255；最近用過的 modernTerrainHDMapsKept 張地圖留在記憶體，
+// 更早的釋放像素與調色快取，下次用到再解碼。延後的檢查沒通過時，這張地圖整組退回原版並提示一次。
+const modernTerrainHDMapsKept = 2
+
+type modernTerrainHDLazy struct {
+	mu       sync.Mutex
+	recent   []int // 已解碼的地圖，最久沒用的在前
+	rejected map[int]bool
+	notices  *modernThemeNotices
+}
+
+func (s *modernStoryPortraitSet) terrainHDLazyState() *modernTerrainHDLazy {
+	if s.terrainLazy == nil {
+		s.terrainLazy = &modernTerrainHDLazy{notices: s.themeNotices()}
+	}
+	return s.terrainLazy
+}
+
+// terrainHDMap 回傳一張地圖的 HD 地形圖（frame → 圖），必要時先解碼。消費端一律經由這裡取用，
+// 不直接讀 terrainHD。檔案在載入後不見或被改是硬性錯誤；延後的檢查沒通過時回傳 nil（原版）。
+func (s *modernStoryPortraitSet) terrainHDMap(mapID int) (map[int]*modernTerrainHDAsset, error) {
+	if s == nil {
+		return nil, nil
+	}
+	frames := s.terrainHD[mapID]
+	if len(frames) == 0 || s.terrainLazy == nil {
+		return frames, nil
+	}
+	lazy := s.terrainLazy
+	lazy.mu.Lock()
+	defer lazy.mu.Unlock()
+	if lazy.rejected[mapID] {
+		return nil, nil
+	}
+	for n, id := range lazy.recent {
+		if id == mapID {
+			lazy.recent = append(append(lazy.recent[:n:n], lazy.recent[n+1:]...), mapID)
+			return frames, nil
+		}
+	}
+	rejected, err := decodeModernTerrainHDMap(frames)
+	if err != nil {
+		return nil, err
+	}
+	if rejected != nil {
+		if lazy.rejected == nil {
+			lazy.rejected = map[int]bool{}
+		}
+		lazy.rejected[mapID] = true
+		lazy.notices.reject(fmt.Errorf("modern HD terrain map %d: %w", mapID, rejected))
+		return nil, nil
+	}
+	lazy.recent = append(lazy.recent, mapID)
+	if len(lazy.recent) > modernTerrainHDMapsKept {
+		for _, asset := range s.terrainHD[lazy.recent[0]] {
+			if asset.path != "" {
+				asset.Image, asset.Shades, asset.ShadeOrder, asset.Weights = nil, nil, nil, nil
+			}
+		}
+		lazy.recent = append(lazy.recent[:0:0], lazy.recent[1:]...)
+	}
+	return frames, nil
+}
+
+// terrainHDMapReady 回傳 terrainHDMap(mapID) 是否不必再解碼（已解碼、已退回原版或沒有登錄）。
+func (s *modernStoryPortraitSet) terrainHDMapReady(mapID int) bool {
+	if s == nil || len(s.terrainHD[mapID]) == 0 || s.terrainLazy == nil {
+		return true
+	}
+	lazy := s.terrainLazy
+	lazy.mu.Lock()
+	defer lazy.mu.Unlock()
+	if lazy.rejected[mapID] {
+		return true
+	}
+	for _, id := range lazy.recent {
+		if id == mapID {
+			return true
+		}
+	}
+	return false
+}
+
+// decodeModernTerrainHDMap 解碼一張地圖所有還沒解碼的圖；相同 SHA-256 的圖共用同一份像素。
+// 全部成功才寫回，任何一張失敗都不改動。err 是硬性錯誤，rejected 是延後的檢查沒通過。
+func decodeModernTerrainHDMap(frames map[int]*modernTerrainHDAsset) (rejected, err error) {
+	type job struct {
+		frame int
+		asset *modernTerrainHDAsset
+	}
+	var jobs []job
+	byHash := map[string]int{}
+	for frame, asset := range frames {
+		if asset.Image == nil && asset.path != "" {
+			jobs = append(jobs, job{frame, asset})
+		}
+	}
+	sort.Slice(jobs, func(i, j int) bool { return jobs[i].frame < jobs[j].frame })
+	var unique []job
+	for _, j := range jobs {
+		if _, ok := byHash[j.asset.hash]; !ok {
+			byHash[j.asset.hash] = len(unique)
+			unique = append(unique, j)
+		}
+	}
+	pictures := make([]*image.RGBA, len(unique))
+	hard := make([]error, len(unique))
+	soft := make([]error, len(unique))
+	workers := modernThemeLoadWorkers()
+	var wg sync.WaitGroup
+	for w := 0; w < workers; w++ {
+		wg.Add(1)
+		go func(w int) {
+			defer wg.Done()
+			for n := w; n < len(unique); n += workers {
+				pictures[n], soft[n], hard[n] = decodeModernTerrainHDFrame(unique[n].frame, unique[n].asset)
+			}
+		}(w)
+	}
+	wg.Wait()
+	for n := range unique {
+		if hard[n] != nil {
+			return nil, hard[n]
+		}
+	}
+	for n := range unique {
+		if soft[n] != nil {
+			return soft[n], nil
+		}
+	}
+	for _, j := range jobs {
+		j.asset.Image = pictures[byHash[j.asset.hash]]
+	}
+	return nil, nil
+}
+
+func decodeModernTerrainHDFrame(frame int, asset *modernTerrainHDAsset) (picture *image.RGBA, rejected, err error) {
+	raw, err := os.ReadFile(asset.path)
+	if err != nil {
+		return nil, nil, fmt.Errorf("modern HD terrain frame %d: %w", frame, err)
+	}
+	digest := sha256.Sum256(raw)
+	if hex.EncodeToString(digest[:]) != asset.hash {
+		return nil, nil, fmt.Errorf("modern HD terrain frame %d: changed before use", frame)
+	}
+	decoded, format, err := image.Decode(bytes.NewReader(raw))
+	if err != nil || format != "png" || decoded.Bounds() != image.Rect(0, 0, 144, 144) {
+		return nil, fmt.Errorf("frame %d: invalid PNG geometry", frame), nil
+	}
+	picture = image.NewRGBA(decoded.Bounds())
+	draw.Draw(picture, picture.Bounds(), decoded, image.Point{}, draw.Src)
+	for offset := 3; offset < len(picture.Pix); offset += 4 {
+		if picture.Pix[offset] != 0 && picture.Pix[offset] != 255 {
+			return nil, fmt.Errorf("frame %d: non-binary alpha", frame), nil
+		}
+	}
+	return picture, nil, nil
 }
 
 func loadModernTerrainHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
@@ -57,7 +221,8 @@ func loadModernTerrainHDAsset(set *modernStoryPortraitSet, asset modernThemeAsse
 		if filepath.Base(name) != name || filepath.Ext(name) != ".png" {
 			return errors.New("modern HD terrain: unsafe file path")
 		}
-		raw, err := os.ReadFile(filepath.Join(root, name))
+		path := filepath.Join(root, name)
+		raw, err := os.ReadFile(path)
 		if err != nil {
 			return fmt.Errorf("modern HD terrain frame %d: %w", frame, err)
 		}
@@ -65,19 +230,14 @@ func loadModernTerrainHDAsset(set *modernStoryPortraitSet, asset modernThemeAsse
 		if hex.EncodeToString(digest[:]) != asset.FrameSHA256[i] {
 			return fmt.Errorf("modern HD terrain frame %d: sha256 mismatch", frame)
 		}
-		decoded, format, err := image.Decode(bytes.NewReader(raw))
-		if err != nil || format != "png" || decoded.Bounds() != image.Rect(0, 0, 144, 144) {
+		// 解碼與 alpha 檢查延到這張地圖第一次用到（terrainHDMap）。
+		config, format, err := image.DecodeConfig(bytes.NewReader(raw))
+		if err != nil || format != "png" || config.Width != 144 || config.Height != 144 {
 			return fmt.Errorf("modern HD terrain frame %d: invalid PNG geometry", frame)
 		}
-		picture := image.NewRGBA(decoded.Bounds())
-		draw.Draw(picture, picture.Bounds(), decoded, image.Point{}, draw.Src)
-		for offset := 3; offset < len(picture.Pix); offset += 4 {
-			if picture.Pix[offset] != 0 && picture.Pix[offset] != 255 {
-				return fmt.Errorf("modern HD terrain frame %d: non-binary alpha", frame)
-			}
-		}
-		frames[frame] = &modernTerrainHDAsset{Image: picture, Role: role}
+		frames[frame] = &modernTerrainHDAsset{Role: role, path: path, hash: asset.FrameSHA256[i]}
 	}
+	set.terrainHDLazyState()
 	if set.terrainHD == nil {
 		set.terrainHD = make(map[int]map[int]*modernTerrainHDAsset)
 	}
@@ -91,7 +251,10 @@ func loadModernTerrainHDAsset(set *modernStoryPortraitSet, asset modernThemeAsse
 }
 
 func (s *modernStoryPortraitSet) validateTerrainHD(mapID int, bank *fdicon.Bank) error {
-	frames := s.terrainHD[mapID]
+	frames, err := s.terrainHDMap(mapID)
+	if err != nil {
+		return err
+	}
 	if len(frames) == 0 || s.terrainHDBanks[mapID] == bank && bank != nil {
 		return nil
 	}

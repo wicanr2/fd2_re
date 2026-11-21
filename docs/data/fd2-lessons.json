@@ -5963,6 +5963,29 @@
         ],
         "pattern": "same = new_by_id.get\\(old_id\\)"
       }
+    },
+    {
+      "id": "theme-assets-decode-on-use-through-accessor",
+      "date": "2026-11-21",
+      "area": "重製端",
+      "rule": "主題包裡只在少數場景用到的大圖（天空之鑰、開場、地形、戰鬥背景）載入時只核對檔案與 PNG 標頭，第一次用到才解碼，只留最近用過的幾份。消費端一律經由取用函式拿圖（modernSkyKeyHDBank.picture、modernOpeningBank.decode、terrainHDMap、battleSurfaceHD），不直接讀欄位；釋放只清掉集合自己的參照，已交給繪製端的圖仍有效。延後的檢查以整組為單位退回原版（圖庫、開場圖組、一張地圖的地形、一張背景），回傳符合 errModernHDDeferredRejected 的錯誤，呼叫端當成沒有登錄。改了儲存方式要以 TestHDThemeLoadMeasureResourceDigest 在修改前後各跑一次，證明消費端拿到的像素相同。",
+      "why": "#317 後續（2026-11-21）：v.1.1.13 之後以真實 HD 包剖析載入器，95 秒 CPU 裡天空之鑰 22 秒、開場 22 秒、地形 13 秒、戰鬥背景 12 秒，幾乎都是 PNG 解碼；載入後常駐 1.83 GB 中天空之鑰 0.76、地形 0.33、戰鬥背景 0.25。地形 3983 格只有 2246 種 SHA，卻每格各解一份。",
+      "evidence": "remake/cmd/fd2/modern_hd_sky_key_assets.go、modern_hd_opening.go、modern_hd_terrain.go、modern_hd_battle_surface.go、hd_theme_load_resource_digest_test.go；收據 work/gho2-20261121/",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_terrain.go"
+        ],
+        "pattern": "func \\(s \\*modernStoryPortraitSet\\) terrainHDMap"
+      }
+    },
+    {
+      "id": "go-gomaxprocs-ignores-docker-cpu-quota",
+      "date": "2026-11-21",
+      "area": "驗證",
+      "rule": "Go 1.22 的 GOMAXPROCS 取主機處理器數，不看 docker --cpus 的 cgroup 配額。在容器裡量並行載入或幀時間時，收據同時記 gomaxprocs 與 --cpus；依 GOMAXPROCS 決定的並行數在容器裡和同樣配額的實機不同，兩邊的數字不能直接互推。",
+      "why": "2026-11-21 gho2 量測：--cpus 4 的容器裡 runtime.GOMAXPROCS(0) 是 14，Go 執行期以 14 條執行緒排程，被 cgroup 節流到 4 顆的份量；modernThemeLoadWorkers 照 14 算出上限三條。",
+      "evidence": "work/gho2-20261121/b0/loader.json 的 gomaxprocs；remake/cmd/fd2/modern_theme_parallel.go modernThemeLoadWorkers"
     }
   ]
 }

@@ -40,7 +40,8 @@ type modernThemeLoad struct {
 	startup                         bool
 	startupThemeID, startupIfaceSet string
 	progressDone, progressTotal     atomic.Int64
-	artMessage                      string // 上一幀補做美術切換時的訊息，與介面切換的訊息合併顯示
+	artMessage                      string        // 上一幀補做美術切換時的訊息，與介面切換的訊息合併顯示
+	warming                         chan struct{} // 發布前在背景解碼目前地圖的地形；關閉表示完成
 }
 
 // modernThemeLoadMessage 是載入期間顯示的訊息；有進度時改為 modernThemeLoadProgressMessage。
@@ -86,8 +87,17 @@ func (g *Game) requestModernThemeLoad(pending string) bool {
 		if loader == nil {
 			loader = func() (*modernStoryPortraitSet, error) { return loadPlayerModernThemeWithProgress(load.progress) }
 		}
+		currentMap := -1
+		if g.nativeMapAssets != nil {
+			currentMap = g.nativeMapAssets.MapIndex
+		}
 		go func() {
 			load.set, load.err = loader()
+			if load.err == nil && currentMap >= 0 {
+				// 地形圖按需解碼；先在背景解好目前這張地圖，補做切換的那一幀就不用等（#317 後續）。
+				// 地圖若在載入期間換了，切換時照常按需解碼。錯誤留給切換時的正式路徑回報。
+				_, _ = load.set.terrainHDMap(currentMap)
+			}
 			close(load.done)
 		}()
 	}
@@ -138,6 +148,9 @@ func (g *Game) pollModernThemeLoad() {
 		}
 		return
 	}
+	if load.err == nil && g.modernThemeCache == nil && g.warmModernThemeTerrain(load) {
+		return // 目前這張地圖的地形還在背景解碼；解完才切換，切換那一幀不必等（#317 後續）
+	}
 	g.modernThemeLoading = nil
 	if load.err != nil {
 		g.msg = "現代主題不可用：" + load.err.Error()
@@ -159,6 +172,28 @@ func (g *Game) pollModernThemeLoad() {
 		if strings.HasPrefix(g.msg, "介面：") && strings.HasPrefix(load.artMessage, "主題：") {
 			g.msg = load.artMessage + "　" + g.msg
 		}
+	}
+}
+
+// warmModernThemeTerrain 在主題集合發布前，於背景解碼目前這張地圖的地形（地形按需解碼）；回傳 true
+// 表示還在解碼，這次 Update 先不切換。集合尚未發布，背景 goroutine 是唯一的使用者。
+func (g *Game) warmModernThemeTerrain(load *modernThemeLoad) bool {
+	if load.warming == nil {
+		if load.set == nil || g.nativeMapAssets == nil || load.set.terrainHDMapReady(g.nativeMapAssets.MapIndex) {
+			return false
+		}
+		warming, set, mapID := make(chan struct{}), load.set, g.nativeMapAssets.MapIndex
+		load.warming = warming
+		go func() {
+			_, _ = set.terrainHDMap(mapID) // 錯誤留給切換時的正式路徑回報
+			close(warming)
+		}()
+	}
+	select {
+	case <-load.warming:
+		return false
+	default:
+		return true
 	}
 }
 

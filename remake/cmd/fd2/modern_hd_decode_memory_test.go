@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"image"
 	"image/color"
 	"image/png"
@@ -60,23 +61,26 @@ func distinctSharingSource(t *testing.T, b *modernSkyKeyHDBank) {
 func TestModernHDSkyKeyDecodedSharing(t *testing.T) {
 	t.Run("identical-pixels-and-storage", func(t *testing.T) {
 		b := decodedSharingFixture(t)
-		pool := map[string]*image.RGBA{}
-		a, err := b.pictureWithSharedStorage(0, pool)
+		a, err := b.picture(0)
 		if err != nil {
 			t.Fatal(err)
 		}
-		z, err := b.pictureWithSharedStorage(1, pool)
-		if err != nil || a != z || len(pool) != 1 || a.RGBAAt(0, 0) != (color.RGBA{R: 34, G: 86, B: 140, A: 255}) {
+		z, err := b.picture(1)
+		if err != nil || a != z || len(b.lazy.recent) != 1 || a.RGBAAt(0, 0) != (color.RGBA{R: 34, G: 86, B: 140, A: 255}) {
 			t.Fatal("verified duplicate was not shared intact", err)
 		}
 		distinctSharingSource(t, b)
-		other, err := b.pictureWithSharedStorage(2, pool)
-		if err != nil || other == a || other.RGBAAt(0, 0) != (color.RGBA{R: 120, G: 30, B: 80, A: 255}) {
+		other, err := b.picture(2)
+		if err != nil || other == a || len(b.lazy.recent) != 2 || other.RGBAAt(0, 0) != (color.RGBA{R: 120, G: 30, B: 80, A: 255}) {
 			t.Fatal("distinct verified source was coalesced", err)
 		}
-		b.pictures = []*image.RGBA{a, z, other}
-		b.pictureSHA = []string{skyKeySHA(a.Pix), skyKeySHA(z.Pix), skyKeySHA(other.Pix)}
+		if err := b.recheckFiles(); err != nil {
+			t.Fatal("untouched decoded cache rejected", err)
+		}
 		a.Pix[0] ^= 1 // Deliberate violation of the immutable-picture contract.
+		if err := b.recheckFiles(); err == nil {
+			t.Fatal("cached decoded pixel corruption passed the file recheck")
+		}
 		if _, err := b.picture(1); err == nil {
 			t.Fatal("shared decoded pixel corruption accepted")
 		}
@@ -87,8 +91,7 @@ func TestModernHDSkyKeyDecodedSharing(t *testing.T) {
 	for _, fault := range []string{"missing-path", "changed-bytes", "wrong-shape", "wrong-black-frame", "wrong-coverage"} {
 		t.Run(fault, func(t *testing.T) {
 			b := decodedSharingFixture(t)
-			pool := map[string]*image.RGBA{}
-			if _, err := b.pictureWithSharedStorage(0, pool); err != nil {
+			if _, err := b.picture(0); err != nil {
 				t.Fatal(err)
 			}
 			index := 1
@@ -108,8 +111,17 @@ func TestModernHDSkyKeyDecodedSharing(t *testing.T) {
 			case "wrong-coverage":
 				b.offset, index = 1, 2 // FDOTHER coverage needs transparent and opaque endpoints.
 			}
-			if _, err := b.pictureWithSharedStorage(index, pool); err == nil {
+			_, err := b.picture(index)
+			if err == nil {
 				t.Fatal("duplicate hash bypassed per-frame validation")
+			}
+			// 透明度與黑幕是延後的檢查：沒通過時整個圖庫退回原版，之後的畫格也不再提供。
+			deferred := fault == "wrong-black-frame" || fault == "wrong-coverage"
+			if errors.Is(err, errModernHDDeferredRejected) != deferred {
+				t.Fatal("wrong failure class", fault, err)
+			}
+			if _, err := b.picture(b.offset); deferred && !errors.Is(err, errModernHDDeferredRejected) {
+				t.Fatal("rejected bank still publishes frames", err)
 			}
 		})
 	}
@@ -224,21 +236,33 @@ func TestModernHDDecodedImageMemory(t *testing.T) {
 	}
 	groups := map[string][]image.Image{}
 	hashes := map[string][]string{}
+	rows := map[string]any{}
+	// 天空之鑰畫格按需解碼，只保留最近用過的幾張：逐格取用一次（同時完成延後檢查），記錄取用後
+	// 仍留在記憶體的解碼圖。
 	for name, bank := range map[string]*modernSkyKeyHDBank{"sky-fdother34": set.skyKeyFD34, "sky-ani0": set.skyKeyANI} {
+		logicalBytes := int64(0)
+		for i := range bank.asset.Files {
+			picture, err := bank.picture(i + bank.offset)
+			if err != nil {
+				t.Fatal(name, i, err)
+			}
+			logicalBytes += int64(len(picture.Pix))
+		}
 		if err := bank.recheckFiles(); err != nil {
 			t.Fatal(err)
 		}
-		for _, picture := range bank.pictures {
-			groups[name] = append(groups[name], picture)
+		retainedBytes := int64(0)
+		for _, cached := range bank.lazy.recent {
+			retainedBytes += int64(len(cached.picture.Pix))
 		}
-		hashes[name] = bank.asset.FrameSHA256
+		rows[name] = map[string]any{"frames": len(bank.asset.Files), "logical_rgba_bytes": logicalBytes,
+			"retained_after_use_rgba_bytes": retainedBytes, "cached_decoded_images": len(bank.lazy.recent)}
 	}
 	for _, resource := range []int{0, 1, 288, 289} {
 		entry := set.battleAnimations[resource]
 		groups["physical"] = append(groups["physical"], entry.Frames...)
 		hashes["physical"] = append(hashes["physical"], entry.hashes...)
 	}
-	rows := map[string]any{}
 	for name, frames := range groups {
 		pointers := map[image.Image]bool{}
 		identities := map[string]image.Image{}

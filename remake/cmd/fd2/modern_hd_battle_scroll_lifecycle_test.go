@@ -84,7 +84,7 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		}
 		for _, source := range wanted {
 			entry := *set.battleSurfaces[source.archive][int(source.index)]
-			entry.picture = nil
+			entry.picture, entry.path = nil, "" // 沒有可解碼的來源
 			bad := *set
 			bad.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{source.archive: {int(source.index): &entry}}
 			before := probe.stable()

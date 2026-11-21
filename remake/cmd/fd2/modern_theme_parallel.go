@@ -9,20 +9,25 @@ import (
 	"sync/atomic"
 )
 
-// 主題包載入的分組並行（#317）。戰鬥畫格延後解碼後，剩下的載入時間集中在開場、地形、
-// 天空之鑰與戰鬥背景四類（以真實 HD 包剖析，約佔剩餘時間的四分之三，幾乎都在 PNG 解碼）。
-// 這四類的載入函式只寫自己的欄位（另外可能設 hasHD），也不讀其他角色的結果，所以各在一個
-// goroutine 依清冊順序載入到私有的暫存集合，全部成功後併回；其餘角色仍在呼叫端依原順序載入。
+// 主題包載入的分組並行（#317）。下列各類的載入函式只寫自己的欄位（另外可能設 hasHD），也不讀
+// 其他角色的結果，所以各在一個 goroutine 依清冊順序載入到私有的暫存集合，全部成功後併回；其餘
+// 角色仍在呼叫端依原順序載入。開場、地形、天空之鑰與戰鬥背景載入時只核對檔案與 PNG 標頭、不
+// 解碼（#317 後續），剩下的時間多半是讀檔與 SHA-256；戰鬥畫格、HD 地圖人物與設施場景也分組，
+// 呼叫端那一條就不再是最長的一條。
 //
 // 每一條載入流都依清冊順序處理，遇錯即停；回報的錯誤取清冊索引最小的那一個，和逐項依序
 // 載入時回報的錯誤相同。任一項失敗整包拒收，不併回任何暫存結果。
 
 // modernThemeParallelRoles 是分組並行載入的角色，值是分組名稱。
 var modernThemeParallelRoles = map[string]string{
-	modernOpeningRole:        "opening",
-	"native_terrain_hd_set":  "terrain",
-	"story_animation_hd_set": "sky-key",
-	"battle_surface_hd":      "battle-surface",
+	modernOpeningRole:         "opening",
+	"native_terrain_hd_set":   "terrain",
+	"story_animation_hd_set":  "sky-key",
+	"battle_surface_hd":       "battle-surface",
+	"battle_animation_hd_set": "battle-animation",
+	"battle_effect_hd_set":    "battle-effect",
+	"map_sprite_hd_set":       "map-sprite-hd",
+	"facility_scene_hd":       "facility-scene",
 }
 
 func loadModernThemeGroupedAsset(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
@@ -35,6 +40,16 @@ func loadModernThemeGroupedAsset(set *modernStoryPortraitSet, asset modernThemeA
 		return loadModernSkyKeyHDAsset(set, asset, root)
 	case "battle_surface_hd":
 		return loadModernBattleSurfaceHD(set, asset, root)
+	case "battle_animation_hd_set", "battle_effect_hd_set":
+		if err := loadModernBattleHDAsset(set, asset, root); err != nil {
+			return err
+		}
+		set.hasHD = true
+		return nil
+	case "map_sprite_hd_set":
+		return loadModernHDMapSpriteAsset(set, asset, root)
+	case "facility_scene_hd":
+		return loadModernFacilityScene(set, asset, root)
 	}
 	return errors.New("modern theme catalog: role is not grouped")
 }
@@ -45,7 +60,7 @@ func mergeModernThemeGroup(set, scratch *modernStoryPortraitSet) {
 		set.openingHD = scratch.openingHD
 	}
 	if scratch.terrainHD != nil {
-		set.terrainHD = scratch.terrainHD
+		set.terrainHD, set.terrainLazy = scratch.terrainHD, scratch.terrainLazy
 	}
 	if scratch.skyKeyFD34 != nil {
 		set.skyKeyFD34 = scratch.skyKeyFD34
@@ -54,9 +69,29 @@ func mergeModernThemeGroup(set, scratch *modernStoryPortraitSet) {
 		set.skyKeyANI = scratch.skyKeyANI
 	}
 	if scratch.battleSurfaces != nil {
-		set.battleSurfaces = scratch.battleSurfaces
+		set.battleSurfaces, set.surfaceCache = scratch.battleSurfaces, scratch.surfaceCache
+	}
+	if scratch.battleAnimations != nil {
+		set.battleAnimations = scratch.battleAnimations
+	}
+	if scratch.battleEffects != nil {
+		set.battleEffects = scratch.battleEffects
+	}
+	if scratch.mapSpritesHD != nil {
+		set.mapSpritesHD = scratch.mapSpritesHD
+	}
+	if scratch.mapSpriteVisualScale != nil {
+		set.mapSpriteVisualScale = scratch.mapSpriteVisualScale
+	}
+	if scratch.facilityScenes != nil {
+		set.facilityScenes = scratch.facilityScenes
 	}
 	set.hasHD = set.hasHD || scratch.hasHD
+}
+
+// modernThemeVisualScaleAllowed 是清冊對 visual_scale_percent 的限制，分組與呼叫端共用。
+func modernThemeVisualScaleAllowed(asset modernThemeAsset) bool {
+	return asset.VisualScalePercent.valid() && (asset.VisualScalePercent == 0 || asset.Role == "map_sprite_hd_set" || asset.Role == "battle_animation_hd_set")
 }
 
 // modernThemeLoadWorkersOverride 只給量測測試指定載入流數；0 表示依處理器數決定。
@@ -95,12 +130,14 @@ type modernThemeAssetGroups struct {
 	done      atomic.Int64
 	total     int
 	progress  func(done, total int)
+	notices   *modernThemeNotices
 }
 
 // startModernThemeAssetGroups 啟動分組載入。呼叫端的主迴圈佔一個名額，直到 wait 才釋放。
-func startModernThemeAssetGroups(assets []modernThemeAsset, root string, progress func(done, total int)) *modernThemeAssetGroups {
+// notices 是主集合的延後檢查訊息；各組的暫存集合共用它，延後檢查拒收時才會提示到玩家。
+func startModernThemeAssetGroups(assets []modernThemeAsset, root string, progress func(done, total int), notices *modernThemeNotices) *modernThemeAssetGroups {
 	userDataDir() // assetPath 會讀這個快取；先在呼叫端填好，goroutine 只讀
-	gs := &modernThemeAssetGroups{total: len(assets), progress: progress, slots: make(chan struct{}, modernThemeLoadWorkers())}
+	gs := &modernThemeAssetGroups{total: len(assets), progress: progress, notices: notices, slots: make(chan struct{}, modernThemeLoadWorkers())}
 	gs.minFailed.Store(math.MaxInt64)
 	byName := map[string]*modernThemeAssetGroup{}
 	for index, asset := range assets {
@@ -133,14 +170,14 @@ func startModernThemeAssetGroups(assets []modernThemeAsset, root string, progres
 }
 
 func (gs *modernThemeAssetGroups) run(group *modernThemeAssetGroup, assets []modernThemeAsset, root string) {
-	scratch := &modernStoryPortraitSet{}
+	scratch := &modernStoryPortraitSet{notices: gs.notices}
 	for _, index := range group.indexes {
 		if gs.failedBefore(index) {
 			return
 		}
 		asset := assets[index]
 		err := error(nil)
-		if !asset.VisualScalePercent.valid() || asset.VisualScalePercent != 0 {
+		if !modernThemeVisualScaleAllowed(asset) {
 			err = errors.New("modern theme catalog: visual scale requires an HD character asset")
 		} else {
 			err = loadModernThemeGroupedAsset(scratch, asset, root)

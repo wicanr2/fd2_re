@@ -181,12 +181,19 @@ func hdLoadRetainedBytes(set *modernStoryPortraitSet) map[string]int64 {
 	return out
 }
 
-// hdLoadSetDigestSkip 是 #317 新增、只記錄延後檢查狀態的欄位，不屬於載入內容，比對修正前後時略過。
-var hdLoadSetDigestSkip = map[string]bool{"coverage": true, "verified": true, "notices": true}
+// hdLoadSetDigestSkip 是只記錄延後檢查或按需解碼狀態的欄位，不屬於載入內容，比對修正前後時略過。
+// 「型別.欄位」只略過該型別的欄位：地形圖的 PNG 路徑與雜湊是按需解碼的來源（#317 後續）。
+var hdLoadSetDigestSkip = map[string]bool{"coverage": true, "verified": true, "notices": true,
+	"modernTerrainHDAsset.path": true, "modernTerrainHDAsset.hash": true}
 
 // hdLoadSetDigest 以固定順序（map 依鍵排序）把整個主題集合的內容雜湊成一個值：所有純量、
 // 字串與 []byte（含圖片像素與壓縮 PNG）。修正前後載入同一份包，這個值相同即內容相同。
 func hdLoadSetDigest(set *modernStoryPortraitSet) string {
+	return hdLoadValueDigest(reflect.ValueOf(set).Elem())
+}
+
+// hdLoadValueDigest 是 hdLoadSetDigest 的走訪，可用在集合的單一欄位。
+func hdLoadValueDigest(root reflect.Value) string {
 	h := sha256.New()
 	seen := map[uintptr]bool{}
 	var walk func(v reflect.Value)
@@ -222,7 +229,7 @@ func hdLoadSetDigest(set *modernStoryPortraitSet) string {
 			walk(v.Elem())
 		case reflect.Struct:
 			for i := 0; i < v.NumField(); i++ {
-				if hdLoadSetDigestSkip[v.Type().Field(i).Name] {
+				if hdLoadSetDigestSkip[v.Type().Field(i).Name] || hdLoadSetDigestSkip[v.Type().Name()+"."+v.Type().Field(i).Name] {
 					continue
 				}
 				fmt.Fprint(h, v.Type().Field(i).Name, "=")
@@ -262,7 +269,7 @@ func hdLoadSetDigest(set *modernStoryPortraitSet) string {
 			fmt.Fprint(h, fmt.Sprint(v), ";")
 		}
 	}
-	walk(reflect.ValueOf(set).Elem())
+	walk(root)
 	return hex.EncodeToString(h.Sum(nil))
 }
 

@@ -235,13 +235,18 @@ func TestModernHDSkyKeyThemeTransactionRejects(t *testing.T) {
 				bank.asset.Files[95] = "missing-future.png"
 				bad.skyKeyANI = &bank
 			case "cached-pixels":
+				// 另建一份按需解碼狀態，快取一張被改過像素的第 95 格；不動共用範本的快取。
 				bank := *set.skyKeyANI
-				bank.pictures = append([]*image.RGBA(nil), bank.pictures...)
-				original := bank.pictures[95]
+				original, err := set.skyKeyANI.picture(95)
+				if err != nil {
+					t.Fatal(err)
+				}
 				picture := image.NewRGBA(original.Bounds())
 				copy(picture.Pix, original.Pix)
 				picture.Pix[0] ^= 1
-				bank.pictures[95] = picture
+				hash := bank.asset.FrameSHA256[95]
+				bank.lazy = &modernSkyKeyDecoded{recent: []modernSkyKeyCached{{hash: hash, picture: picture}},
+					pixelSHA: map[string]string{hash: skyKeySHA(original.Pix)}}
 				bad.skyKeyANI = &bank
 			case "partial":
 				bad.skyKeyANI = nil
