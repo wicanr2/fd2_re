@@ -1,6 +1,6 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-Rust R6 開場、天空之鑰共用圖庫與地形資料層為 DATA-READY。地形已核對清冊、原版 FDSHAP 遮罩與 Go 取圖。開場取圖已接共用 ANI #0。完整主題交易、地圖合成、第二十章演出及 F2／F11 驗證仍待接入。[119 的 R6 進度](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形清冊與按需解碼data-ready2026-11-22)
+Rust R6 開場、天空之鑰共用圖庫與地形資料層為 DATA-READY。地形已核對清冊、原版 FDSHAP 遮罩與 Go 取圖，調色及繪圖計畫通過靜止、北移和裁切的 Go 差分。開場取圖已接共用 ANI #0。完整主題交易、地圖合成、第二十章演出及 F2／F11 驗證仍待接入。[119 的 R6 進度](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形調色與座標投影go-對照通過2026-11-22)
 
 原版像素手繪地表與相依背景刷新已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，保留完整HD物件輪廓。範圍、來源與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)，唯一收據見[玩家回饋現況](../data/fd2-hd1-feedback-20261104.json)的map_pixel_material_refresh_20261106；不外推全部獨立圖集、原版parity或Windows60fps。
 

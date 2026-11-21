@@ -5738,3 +5738,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 依凍結 Go `697c0913` 移植清冊核對、地圖整批解碼與原版 FDSHAP 遮罩驗證。每張地圖交付像素、用途和索引色，圖庫保留最近兩張解碼結果。冷載入時每條檔案路徑各自驗 SHA-256，再依相同內容共用解碼。
 - `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-terrain-20261122` 通過。33 張地圖共 3,983 格與 Go 相同。開場和天空之鑰差分、格式、Clippy 與 431 項 Rust 回歸通過。新輸出已核對擁有權，FD2 驗證容器已清除。
 - 此切片達 DATA-READY。地圖合成、調色與 F2／F11 待接。[119 的 R6 地形驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形清冊與按需解碼data-ready2026-11-22)
+
+## 2026-11-22 Rust R6 HD1 地形調色與座標投影
+
+- 依凍結 Go `697c0913` 移植原生色盤重映射、調色快取與地形繪圖計畫。畫格選取和北移節拍沿用原生選格器與工作位址。
+- `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-terrain-plan-20261122` 通過。以三張地圖的正式 HD1 畫格及固定測試輸入取得 2,385 筆投影，Go／Rust 的像素雜湊、工作位址及矩形逐筆一致。33 張地圖取圖、開場、天空之鑰、格式、Clippy 與 433 項 Rust 回歸通過。輸出擁有權已核對，FD2 驗證容器已清除。
+- 本次收據涵蓋地形繪圖計畫。完整地圖合成及 F2／F11 待接，工單 #312 保持開啟。[119 的地形調色驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形調色與座標投影go-對照通過2026-11-22)

@@ -3094,4 +3094,6 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 
 ## R6 地形清冊與按需解碼
 
-`game/modern_hd_terrain.rs` 移植 `modern_hd_terrain.go` 的清冊預檢、地圖按需解碼及原版遮罩核對。每個來源路徑驗過雜湊後，等同內容共用像素。交付的地圖附畫格用途與原版索引色，快取最近兩張。調色與繪圖計畫待接。[119 的 R6 地形驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形清冊與按需解碼data-ready2026-11-22)
+`game/modern_hd_terrain.rs` 移植 `modern_hd_terrain.go` 的清冊預檢、地圖按需解碼及原版遮罩核對。每個來源路徑驗過雜湊後，等同內容共用像素。交付的地圖附畫格用途與原版索引色，快取最近兩張。[119 的 R6 地形驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形清冊與按需解碼data-ready2026-11-22)
+
+`game/modern_hd_terrain_colour.rs` 移植原生色盤重映射與 HD 像素調色。快取由已驗證的地圖持有，畫格以 `Arc<Picture>` 共用，每格保留三種調色結果。`game/modern_hd_terrain_plan.rs` 依原生選格、北移工作位址及視窗範圍產生地形繪圖計畫，供 HD 地圖合成接入。

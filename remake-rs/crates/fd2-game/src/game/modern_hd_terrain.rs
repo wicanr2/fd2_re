@@ -3,14 +3,18 @@
 use std::collections::VecDeque;
 use std::io::Cursor;
 use std::path::{Path, PathBuf};
-use std::sync::Weak;
+use std::sync::{Mutex, Weak};
 
 use serde::Deserialize;
 
 use super::*;
 
-const NATIVE_SIDE: usize = 24;
-const SCALE: usize = 6;
+#[path = "modern_hd_terrain_colour.rs"]
+mod colour;
+pub(crate) use colour::TerrainColourContext;
+
+pub(crate) const NATIVE_SIDE: usize = 24;
+pub(crate) const SCALE: usize = 6;
 const HD_SIDE: usize = NATIVE_SIDE * SCALE;
 const MAPS_KEPT: usize = 2;
 
@@ -83,6 +87,7 @@ pub(crate) struct TerrainFrame {
 pub(crate) struct TerrainMap {
     pub(crate) frames: BTreeMap<u16, TerrainFrame>,
     pub(crate) colours: Arc<BTreeMap<u16, Vec<u8>>>,
+    shades: Mutex<BTreeMap<u16, colour::TerrainShades>>,
 }
 
 #[derive(Debug, Default)]
@@ -182,7 +187,7 @@ impl ModernTerrain {
                 colours
             }
         };
-        let prepared = Arc::new(TerrainMap { frames, colours });
+        let prepared = Arc::new(TerrainMap { frames, colours, shades: Mutex::default() });
         if let Some(i) = existing {
             self.recent.remove(i);
         } else if self.recent.len() == MAPS_KEPT {

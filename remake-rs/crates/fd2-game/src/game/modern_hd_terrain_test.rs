@@ -39,6 +39,71 @@ fn bank(mask: u8) -> Arc<fdicon::Bank> {
 }
 
 #[test]
+fn shade_keeps_transparency_and_evicts_the_oldest_palette() {
+    let picture = Arc::new(Picture::from_nrgba(2, 1, &[45, 55, 65, 255, 1, 2, 3, 0]));
+    let map = TerrainMap {
+        frames: BTreeMap::from([(0, TerrainFrame { role: TerrainRole::Both, image: picture.clone() })]),
+        colours: Arc::new(BTreeMap::from([(0, vec![42])])),
+        shades: Mutex::default(),
+    };
+    let (mut base, mut current, mut lut) = fixture_palettes();
+    base[42] = ColorRgba { r: 40, g: 50, b: 60, a: 255 };
+    assert!(TerrainColourContext::new(0, &base[..255], &current, &lut).is_err());
+    let identity = TerrainColourContext::new(0, &base, &base, &lut).unwrap();
+    assert!(Arc::ptr_eq(&picture, &map.shade(0, &identity, true).unwrap().unwrap()));
+    lut[42] = 0;
+    current[0] = ColorRgba { r: 0, g: 0, b: 0, a: 255 };
+    current[42] = ColorRgba { r: 50, g: 70, b: 90, a: 255 };
+    let context = TerrainColourContext::new(0, &base, &current, &lut).unwrap();
+    let changed = map.shade(0, &context, true).unwrap().unwrap();
+    assert_eq!(changed.read_pixels(), &[55, 75, 95, 255, 0, 0, 0, 0]);
+    assert_eq!(map.shade(0, &context, false).unwrap().unwrap().read_pixels(), &[0, 0, 0, 255, 0, 0, 0, 0]);
+    assert!(Arc::ptr_eq(&changed, &map.shade(0, &context, true).unwrap().unwrap()));
+
+    current[0] = ColorRgba { r: 255, g: 255, b: 255, a: 255 };
+    let other = TerrainColourContext::new(0, &base, &current, &lut).unwrap();
+    assert_eq!(map.shade(0, &other, false).unwrap().unwrap().read_pixels(), &[255, 255, 255, 255, 0, 0, 0, 0]);
+    map.shade(0, &other, true).unwrap();
+    assert!(!Arc::ptr_eq(&changed, &map.shade(0, &context, true).unwrap().unwrap()));
+}
+
+#[test]
+fn terrain_plan_reuses_native_selector_and_rejects_invalid_work_ranges() {
+    let picture = Arc::new(Picture::new_image(1, 1));
+    let map = TerrainMap {
+        frames: BTreeMap::from([
+            (2, TerrainFrame { role: TerrainRole::Terrain, image: picture.clone() }),
+            (3, TerrainFrame { role: TerrainRole::Foreground, image: picture.clone() }),
+        ]),
+        colours: Arc::new(BTreeMap::from([(2, vec![]), (3, vec![])])),
+        shades: Mutex::default(),
+    };
+    let (base, current, lut) = fixture_palettes();
+    let colours = TerrainColourContext::new(0, &base, &current, &lut).unwrap();
+    let mut input = indexedmap::FrameInput {
+        map_width: 4,
+        flip: 1,
+        terrain_cycle: 2,
+        controls: &[8, 0, 0, 0, 16, 0, 0, 0, 4, 0, 0, 0, 4],
+        cells: [0x8000, 1, 2, 3].map(|tile| fdicon::NativeTerrainCell { tile, blit_mode: 0 }).to_vec(),
+        ..Default::default()
+    };
+    let plan = |input: &indexedmap::FrameInput, terrain_base, rows| {
+        let region = TerrainRegion { terrain_base, camera_y: 0, cols: 4, rows, viewport_base: 0x8088 };
+        build_modern_hd_terrain_region_plan(input, region, modern_hd_map_viewport(), &map, &colours)
+    };
+    let draws = plan(&input, 0x8088, 1).unwrap();
+    assert_eq!(draws.len(), 2);
+    assert!(draws.iter().all(|d| d.frame == 2 && Arc::ptr_eq(&picture, &d.image)));
+    assert_eq!(draws[0].rect, rect(24, 24, 168, 168));
+    assert_eq!(draws[1].work_offset, 0x8088 + 24);
+    assert!(plan(&input, indexedmap::NATIVE_UNIT_PRESENT_WORK_SIZE - 1, 1).is_err());
+    assert!(plan(&input, 0x8088, i64::MAX).is_err());
+    input.controls = &[];
+    assert!(plan(&input, 0x8088, 1).is_err());
+}
+
+#[test]
 fn cold_maps_check_every_path_before_sharing_and_keep_two() {
     let root = temp_dir("hd-terrain-recent");
     let sha = write_png(&root, "one.png", 255);
@@ -107,6 +172,7 @@ fn real_terrain_matches_go() {
     assert_eq!(terrain.maps.len(), 33);
     assert!(terrain.recent.is_empty());
     let mut report = String::new();
+    let mut projected = String::new();
     for id in 0..33 {
         let (bank, _) = fdicon::load_separated_fdshap_bank(original.join("tilesets/fdshap"), id).unwrap();
         let map = terrain.map(id as u8, &Arc::new(bank)).unwrap_or_else(|err| panic!("地圖 {id}：{err}")).unwrap();
@@ -124,6 +190,9 @@ fn real_terrain_matches_go() {
             )
             .unwrap();
         }
+        if matches!(id, 0 | 9 | 20) {
+            export_terrain_plan(&mut projected, id as u8, &map);
+        }
         assert!(terrain.recent.len() <= 2);
     }
     assert!(terrain.take_notices().is_empty());
@@ -131,5 +200,80 @@ fn real_terrain_matches_go() {
     let output = env_path("FD2_R6_OPENING_OUT");
     std::fs::write(output.join("rust-terrain.txt"), &report).unwrap();
     assert_eq!(report, std::fs::read_to_string(output.join("go-terrain.txt")).unwrap());
+    std::fs::write(output.join("rust-terrain-plan.txt"), &projected).unwrap();
+    let expected = std::fs::read_to_string(output.join("go-terrain-plan.txt")).unwrap();
+    assert_eq!(projected.lines().count(), expected.lines().count());
+    for (rust, go) in projected.lines().zip(expected.lines()) {
+        assert_eq!(rust, go);
+    }
     println!("33 張地圖、3983 格與 Go 相同，序列 SHA-256 {:x}", Sha256::digest(report.as_bytes()));
+    println!(
+        "{} 筆地形投影與 Go 相同，序列 SHA-256 {:x}",
+        projected.lines().count(),
+        Sha256::digest(projected.as_bytes())
+    );
+}
+
+fn export_terrain_plan(report: &mut String, id: u8, map: &TerrainMap) {
+    let tiles: Vec<_> = map
+        .frames
+        .iter()
+        .filter(|(_, frame)| frame.role.supports(TerrainRole::Terrain))
+        .map(|(&id, _)| id)
+        .take(4)
+        .collect();
+    assert_eq!(tiles.len(), 4, "map {id}");
+    let (base, current, lut) = fixture_palettes();
+    let colours = TerrainColourContext::new(id, &base, &current, &lut).unwrap();
+    let controls = [0; 4096];
+    let input = indexedmap::FrameInput {
+        map_width: 15,
+        camera_x: 1,
+        camera_y: 2,
+        controls: &controls,
+        cells: (0..15 * 12)
+            .map(|i| fdicon::NativeTerrainCell {
+                tile: tiles[i % 4] | 0x8000,
+                blit_mode: if (i / 4) % 2 == 1 { 0xff } else { 0 },
+            })
+            .collect(),
+        ..Default::default()
+    };
+    let mut emit = |label: &str, draws: Vec<ModernHDTerrainDraw>| {
+        assert!(!draws.is_empty(), "map {id}: empty plan {label}");
+        for draw in draws {
+            let Rectangle { min, max } = draw.rect;
+            writeln!(
+                report,
+                "{id}/{label} {} {} {} {} {} {} {:x}",
+                draw.frame,
+                draw.work_offset,
+                min.x,
+                min.y,
+                max.x,
+                max.y,
+                Sha256::digest(draw.image.read_pixels())
+            )
+            .unwrap();
+        }
+    };
+    let base = 0x8088;
+    emit("steady", build_modern_hd_terrain_plan(&input, (base, input.camera_y, 8, base), map, &colours).unwrap());
+    for motion in 1..=6 {
+        let layout = indexedmap::native_up_step_layout(&input, input.camera_y, motion).unwrap();
+        emit(&format!("up{motion}"), build_modern_hd_terrain_plan(&input, layout, map, &colours).unwrap());
+    }
+    let region = TerrainRegion { terrain_base: base, camera_y: input.camera_y, cols: 3, rows: 2, viewport_base: base };
+    emit("clip", build_modern_hd_terrain_region_plan(&input, region, rect(100, 150, 168, 200), map, &colours).unwrap());
+}
+
+fn fixture_palettes() -> (ColorPalette, ColorPalette, Vec<u8>) {
+    let (mut base, mut current, mut lut) = (Vec::new(), Vec::new(), Vec::new());
+    for i in 0..=255_u8 {
+        let (r, g, b) = (i, i.wrapping_mul(3), i.wrapping_mul(7));
+        base.push(ColorRgba { r, g, b, a: 255 });
+        current.push(ColorRgba { r: g, g: b, b: r, a: 255 });
+        lut.push(255 - i);
+    }
+    (base, current, lut)
 }
