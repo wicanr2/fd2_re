@@ -3078,3 +3078,12 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 | `tools/rust_parity_ch01.sh` | `FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 逐位元組相同，`verify_chapter_parity.py` 兩份結論相同（重定基底前；r5v 沒有改 `fd2-game`） |
 | `tools/rust_r5_app_frames.sh` | `letterbox-1500x850` 433 幀、`opening-ch01-1280x800` 2319 幀，外殼與無畫面驅動逐幀相同（`7808b6b4…`、`cc82070f…`），13 張截圖不同像素 0 |
 | `fd2-app`（含 r5v 音訊） | fmt、`fd2-app`／`fd2-game` clippy `-D warnings` 通過；單元測試 49 passed |
+
+## R5 階段 5：GPU 合成與主視窗音訊
+
+- `game/canvas/display_list.rs` 錄製畫面目標的繪圖操作。無畫面測具可透過 `r5g_gpu_exec` 執行同一批清單，或用 CPU 逐項重播。顯示清單格式供測具在本機程序間傳輸。
+- `fd2-app/src/gpu.rs` 由 CPU 準備 32×32 區塊的指令索引，GPU 依序做整數取樣與混色。原生 `wgpu` 以 `std` 功能隔離各執行緒的錯誤範圍。
+- `fd2-app/src/gpu_shell.rs` 透過 Bevy 渲染排程執行清單，成功後直接更新顯示貼圖。CPU 合成仍是預設值及 GPU 合成不可用時的後備。
+- `fd2-app/src/shell.rs` 把 `Fd2AudioPlugin` 接到 `PlayerRunner`，讓主視窗消費遊戲的播放請求。測具以 `summary.json` 的 `audio_sinks` 記錄腳本結束前的播放器數量。
+
+實作驗證與量測見 [121 階段 5](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md#階段-5-接手2026-11-21)。

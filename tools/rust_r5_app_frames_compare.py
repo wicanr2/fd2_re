@@ -103,7 +103,8 @@ def main():
     ap.add_argument("--app", required=True)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    ok = True
+    with open(os.path.join(a.app, "summary.json"), encoding="utf-8") as f:
+        summary = json.load(f)
     with open(a.headless, encoding="utf-8") as f:
         hl = f.read().splitlines()
     with open(os.path.join(a.app, "frames.jsonl"), encoding="utf-8") as f:
@@ -114,10 +115,11 @@ def main():
               "headless_sha256": hashlib.sha256("\n".join(hl).encode()).hexdigest(),
               "app_sha256": hashlib.sha256("\n".join(al).encode()).hexdigest(),
               "distinct_frames": len({json.loads(x)["rgba_sha256"] for x in al})}
-    ok &= frames["equal"]
+    ok = frames["equal"] and len(al) > 0 and summary["frames"] == len(al) and summary["shot_failures"] == 0
     shots = []
     with open(os.path.join(a.app, "shots.jsonl"), encoding="utf-8") as f:
         app_shots = [json.loads(x) for x in f.read().splitlines()]
+    ok &= len(app_shots) == summary["shots"]
     for rec in app_shots:
         name = rec["name"]
         w, h, shot = png_rgba(os.path.join(a.app, "shots", name + ".png"))

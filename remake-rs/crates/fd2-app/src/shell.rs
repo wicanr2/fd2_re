@@ -12,14 +12,18 @@
 //!
 //! R5 階段 4（r5i）：滑鼠右鍵、滾輪、視窗焦點與手把（Bevy 內建的 gilrs 支援）也放進 [`PhysicalSnapshot`]；F12 設定面板
 //! 開著時，把 `fd2-game` 畫好的 1920×1200 疊層以線性濾鏡縮成畫格大小，疊在畫格上（Go `drawControlsPanel` 的最後一步）。
+//!
+//! R5 階段 5（r5g）：`--renderer=gpu` 或 `FD2_RENDERER=gpu` 時畫格改由 GPU 合成（[`crate::gpu_shell`]），預設 CPU。腳本模式
+//! 在 GPU 模式下照樣寫 `frames.jsonl`（雜湊取自 GPU 讀回），另寫 `timing.jsonl`（兩種模式都寫）。
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, VecDeque};
 use std::io::Write as _;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
 use bevy::asset::RenderAssetUsages;
+use bevy::audio::{AudioPlayer, AudioSink};
 use bevy::image::ImageSampler;
 use bevy::input::ButtonState;
 use bevy::input::gamepad::{AxisSettings, Gamepad, GamepadAxis, GamepadSettings};
@@ -31,12 +35,14 @@ use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::render::view::screenshot::{Screenshot, ScreenshotCaptured, save_to_disk};
 use bevy::window::{MonitorSelection, PresentMode, PrimaryWindow, WindowMode, WindowResolution};
 use bevy::winit::{UpdateMode, WinitSettings};
-use fd2_game::game::{Key as GameKey, Picture, RawDevices};
+use fd2_game::game::{AudioVoice, Key as GameKey, Picture, RawDevices, VoiceSlot, display_list};
 use fd2_game::{PlayerRunner, RunnerStep};
 use serde_json::json;
 use sha2::{Digest, Sha256};
 
+use crate::audio::{Fd2AudioPlugin, Fd2Sound, GameAudioHost};
 use crate::clock::EbitenClock;
+use crate::gpu_shell::{Renderer, ShellGpu, requested_renderer};
 use crate::input::{Bindings, PhysicalInput, PhysicalSnapshot, gamepad_snapshot};
 use crate::script::{Script, frame_record};
 use crate::video::{LOGICAL_H, LOGICAL_W, Letterbox, expected_window, letterbox, opaque_rgba};
@@ -62,6 +68,26 @@ struct Shell {
     /// 上一個顯示幀畫好的 CPU 畫格（截圖核對用）。
     last_frame: Vec<u8>,
     fullscreen: bool,
+    /// R5 r5g：要求 GPU 合成時的狀態。
+    gpu: Option<ShellGpu>,
+    /// 上一個 `drive` 開始的時間（`timing.jsonl` 的幀間隔）。
+    last_drive: Option<Instant>,
+}
+
+impl GameAudioHost for Shell {
+    fn audio_voices(&mut self) -> Vec<(VoiceSlot, &mut AudioVoice)> {
+        self.runner.audio_voices_mut()
+    }
+}
+
+/// R5 r5g：GPU 模式下還沒讀回的顯示幀（讀回後照順序寫 `frames.jsonl`）。
+struct PendingFrame {
+    id: u64,
+    index: usize,
+    updates: u32,
+    game_frame: i64,
+    progress: (String, String),
+    timing: serde_json::Value,
 }
 
 struct ScriptRun {
@@ -75,6 +101,9 @@ struct ScriptRun {
     frames: std::fs::File,
     shots: std::fs::File,
     shot_failures: usize,
+    /// R5 r5g：每個顯示幀的時間（毫秒）。
+    timing: std::fs::File,
+    pending: VecDeque<PendingFrame>,
 }
 
 enum ShotState {
@@ -110,6 +139,7 @@ pub fn run() -> AppExit {
     let script = script.map(|(script, out)| ScriptRun {
         frames: std::fs::File::create(out.join("frames.jsonl")).expect("frames.jsonl"),
         shots: std::fs::File::create(out.join("shots.jsonl")).expect("shots.jsonl"),
+        timing: std::fs::File::create(out.join("timing.jsonl")).expect("timing.jsonl"),
         script,
         out,
         next: 0,
@@ -118,7 +148,11 @@ pub fn run() -> AppExit {
         injected_keys: BTreeSet::new(),
         injected_touches: BTreeSet::new(),
         shot_failures: 0,
+        pending: VecDeque::new(),
     });
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    let renderer =
+        requested_renderer(&args, std::env::var("FD2_RENDERER").ok().as_deref()).unwrap_or_else(|e| panic!("{e}"));
     let shell = Shell {
         runner,
         bindings: Bindings::ebiten(),
@@ -132,6 +166,8 @@ pub fn run() -> AppExit {
         script,
         last_frame: Vec::new(),
         fullscreen: false,
+        gpu: None,
+        last_drive: None,
     };
     // 腳本模式不等垂直同步、視窗沒有焦點也連續更新：顯示幀與牆鐘無關（每幀的 Update 次數由腳本決定），
     // 只影響跑完腳本要多久。一般模式照 Bevy 預設（垂直同步，同 Ebiten 預設）。
@@ -142,21 +178,27 @@ pub fn run() -> AppExit {
     } else {
         WinitSettings::default()
     };
-    App::new()
-        .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()).set(WindowPlugin {
-            primary_window: Some(Window {
-                // Go `main.go:13482`：`炎龍騎士團2 重製 (fd2_re <版本>)`。
-                title: format!("炎龍騎士團2 重製 (fd2_re rust {})", env!("CARGO_PKG_VERSION")),
-                // Go `main.go:13481`：`SetWindowSize(logicalW*2, height*2)`，可調整大小。
-                resolution: WindowResolution::new(w, h),
-                resizable: true,
-                present_mode,
-                ..default()
-            }),
+    let mut app = App::new();
+    app.add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()).set(WindowPlugin {
+        primary_window: Some(Window {
+            // Go `main.go:13482`：`炎龍騎士團2 重製 (fd2_re <版本>)`。
+            title: format!("炎龍騎士團2 重製 (fd2_re rust {})", env!("CARGO_PKG_VERSION")),
+            // Go `main.go:13481`：`SetWindowSize(logicalW*2, height*2)`，可調整大小。
+            resolution: WindowResolution::new(w, h),
+            resizable: true,
+            present_mode,
             ..default()
-        }))
-        .insert_resource(ClearColor(Color::BLACK))
-        .insert_resource(winit)
+        }),
+        ..default()
+    }))
+    .insert_resource(ClearColor(Color::BLACK))
+    .insert_resource(winit);
+    // R5 r5g：GPU 模式接到渲染世界（不可用時 ShellGpu 記下原因，退回 CPU）。
+    let mut shell = shell;
+    if renderer == Renderer::Gpu {
+        shell.gpu = Some(ShellGpu::install(&mut app));
+    }
+    app.add_plugins(Fd2AudioPlugin::<Shell>::default())
         .insert_non_send(shell)
         .add_systems(Startup, setup)
         .add_systems(First, inject_script_input)
@@ -174,6 +216,9 @@ fn setup(mut commands: Commands, mut images: ResMut<Assets<Image>>, mut shell: N
         RenderAssetUsages::MAIN_WORLD | RenderAssetUsages::RENDER_WORLD,
     );
     shell.image = images.add(image);
+    if let Some(gpu) = &shell.gpu {
+        gpu.set_target(shell.image.id());
+    }
     shell.sprite = Some(commands.spawn(Sprite::from_image(shell.image.clone())).id());
     // r5i：設定面板疊層（Go 以 `ebiten.FilterLinear` 縮 1/3 疊到內容區）。
     let mut panel = Image::new_fill(
@@ -273,6 +318,7 @@ fn drive(
     mut key_events: MessageReader<KeyboardInput>,
     mut wheel_events: MessageReader<MouseWheel>,
     gamepads: Query<(Entity, &Gamepad, Option<&Name>)>,
+    audio_sinks: Query<&AudioSink, With<AudioPlayer<Fd2Sound>>>,
     mut exit: MessageWriter<AppExit>,
 ) {
     let Ok(mut window) = windows.single_mut() else {
@@ -322,13 +368,33 @@ fn drive(
         devices,
     };
 
+    // R5 r5g：先收 GPU 讀回的畫格（腳本模式照順序寫紀錄）。
+    if let Err(e) = collect_gpu_results(shell) {
+        eprintln!("{e}");
+        exit.write(AppExit::from_code(4));
+        return;
+    }
+
     // 本顯示幀的 Update 次數。
+    let use_gpu = shell.gpu.as_mut().is_some_and(ShellGpu::poll_status);
     let updates = match shell.script.as_mut() {
         None => {
             let tps = shell.runner.ticks_per_second();
             shell.clock.update_count(tps, now_ns(shell.started))
         }
-        Some(run) => match step_script_state(run, &mut commands, shell.last_frame.as_slice(), &mut exit) {
+        Some(run) => match step_script_state(
+            run,
+            &mut commands,
+            shell.last_frame.as_slice(),
+            &mut exit,
+            shell.gpu.as_ref().is_none_or(ShellGpu::settled),
+            || {
+                let renderer =
+                    shell.gpu.as_ref().map_or_else(|| json!({"requested": "cpu", "used": "cpu"}), ShellGpu::summary);
+                // 測試以實際建立的播放裝置數核對音訊接線。
+                (renderer, audio_sinks.iter().count())
+            },
+        ) {
             Some(updates) => updates,
             None => return,
         },
@@ -336,6 +402,7 @@ fn drive(
 
     let mut raw = shell.bindings.logical_state(&snap, lb);
     let runner = &mut shell.runner;
+    let t_frame = Instant::now();
     for i in 0..updates {
         // Ebiten `readInputState` 讀完就把滾輪歸零（`internal/ui/input.go`）：同一顯示幀只有第一次 Update 看得到滾輪。
         if i == 1 {
@@ -362,25 +429,79 @@ fn drive(
             WindowMode::Windowed
         };
     }
-    // Ebiten 每幀清空畫面後呼叫 Draw（`IsScreenClearedEveryFrame` 預設 true）。
-    let mut screen = Picture::new_image(LOGICAL_W as i64, LOGICAL_H as i64);
-    runner.draw(&mut screen);
+    let t_update = Instant::now();
+    // Ebiten 每幀清空畫面後呼叫 Draw（`IsScreenClearedEveryFrame` 預設 true）。R5 r5g：GPU 模式錄成顯示清單（畫面目標
+    // 同樣從全透明開始），交給渲染世界合成，不上傳 CPU 畫格。
+    let (pix, gpu_id) = if use_gpu {
+        let list = display_list::record(LOGICAL_W as i64, LOGICAL_H as i64, |screen| runner.draw(screen));
+        let id = shell.gpu.as_mut().unwrap().submit(list, shell.script.is_some());
+        (None, Some(id))
+    } else {
+        let mut screen = Picture::new_image(LOGICAL_W as i64, LOGICAL_H as i64);
+        runner.draw(&mut screen);
+        if let Some(mut image) = images.get_mut(&shell.image) {
+            image.data = Some(opaque_rgba(&screen.pix));
+        }
+        (Some(screen.pix), None)
+    };
+    let t_draw = Instant::now();
     let progress = runner.progress();
     let game_frame = runner.game_frame();
-    if let Some(mut image) = images.get_mut(&shell.image) {
-        image.data = Some(opaque_rgba(&screen.pix));
-    }
     place_controls_panel(shell, &mut images, &mut sprites);
+    let interval = shell.last_drive.map(|t| (t_frame - t).as_secs_f64() * 1e3);
+    shell.last_drive = Some(t_frame);
     if let Some(run) = shell.script.as_mut() {
         let index = run.next;
-        writeln!(run.frames, "{}", frame_record(index, updates, &screen.pix, game_frame, &progress))
-            .expect("frames.jsonl");
+        let timing = json!({
+            "frame": index, "updates": updates, "renderer": if use_gpu { "gpu" } else { "cpu" },
+            "update_ms": (t_update - t_frame).as_secs_f64() * 1e3,
+            "draw_ms": (t_draw - t_update).as_secs_f64() * 1e3, "interval_ms": interval,
+        });
+        let pending = PendingFrame { id: gpu_id.unwrap_or(u64::MAX), index, updates, game_frame, progress, timing };
+        match &pix {
+            Some(pix) => write_frame(run, pending, pix, None),
+            None => run.pending.push_back(pending),
+        }
         if let Some(name) = run.script.frames[index].shot.clone() {
             run.shot = ShotState::Settle { name, frames: SHOT_SETTLE_FRAMES };
         }
         run.next += 1;
     }
-    shell.last_frame = screen.pix;
+    if let Some(pix) = pix {
+        shell.last_frame = pix;
+    }
+}
+
+/// 寫一個顯示幀的 `frames.jsonl` 與 `timing.jsonl`。
+fn write_frame(run: &mut ScriptRun, f: PendingFrame, pix: &[u8], gpu_ms: Option<f64>) {
+    writeln!(run.frames, "{}", frame_record(f.index, f.updates, pix, f.game_frame, &f.progress)).expect("frames.jsonl");
+    let mut timing = f.timing;
+    timing["gpu_ms"] = json!(gpu_ms);
+    writeln!(run.timing, "{timing}").expect("timing.jsonl");
+}
+
+/// R5 r5g：收 GPU 讀回的畫格，照順序寫紀錄。腳本模式下 GPU 合成失敗回錯誤（驗證不退回 CPU）；一般模式失敗時
+/// `ShellGpu` 下一幀起改用 CPU。
+fn collect_gpu_results(shell: &mut Shell) -> Result<(), String> {
+    let Some(gpu) = shell.gpu.as_ref() else {
+        return Ok(());
+    };
+    for result in gpu.take_results() {
+        let Some(run) = shell.script.as_mut() else {
+            if let Err(e) = result.pix {
+                eprintln!("GPU 合成失敗，改用 CPU 合成：{e}");
+            }
+            continue;
+        };
+        let pix = result.pix.map_err(|e| format!("GPU 合成第 {} 份清單：{e}", result.id))?;
+        let pending = run.pending.pop_front().ok_or("GPU 讀回沒有對應的顯示幀")?;
+        if pending.id != result.id {
+            return Err(format!("GPU 讀回順序不對：預期 {}，收到 {}", pending.id, result.id));
+        }
+        write_frame(run, pending, &pix, Some(result.gpu_ms));
+        shell.last_frame = pix;
+    }
+    Ok(())
 }
 
 /// 腳本模式的每幀狀態：回傳本幀要跑的 `Update` 次數；`None` 表示本幀不前進（暖機、截圖中或已結束）。
@@ -389,15 +510,23 @@ fn step_script_state(
     commands: &mut Commands,
     last_frame: &[u8],
     exit: &mut MessageWriter<AppExit>,
+    gpu_settled: bool,
+    diagnostics: impl FnOnce() -> (serde_json::Value, usize),
 ) -> Option<u32> {
-    if run.warmup < SCRIPT_WARMUP_FRAMES {
-        run.warmup += 1;
+    // R5 r5g：GPU 模式等合成器狀態確定（可用或退回 CPU）才開始腳本。
+    if run.warmup < SCRIPT_WARMUP_FRAMES || !gpu_settled {
+        run.warmup = run.warmup.saturating_add(1);
         return None;
     }
     match std::mem::replace(&mut run.shot, ShotState::Idle) {
         ShotState::Idle => {}
         ShotState::Settle { name, frames } if frames > 0 => {
             run.shot = ShotState::Settle { name, frames: frames - 1 };
+            return None;
+        }
+        // R5 r5g：GPU 模式等這一幀讀回（`last_frame` 更新）才截圖。
+        ShotState::Settle { name, frames } if !run.pending.is_empty() => {
+            run.shot = ShotState::Settle { name, frames };
             return None;
         }
         ShotState::Settle { name, .. } => {
@@ -425,9 +554,15 @@ fn step_script_state(
         }
     }
     if run.next >= run.script.frames.len() {
+        if !run.pending.is_empty() {
+            return None;
+        }
+        let (renderer, audio_sinks) = diagnostics();
         let summary = json!({
             "schema": "fd2-app-run/1", "frames": run.next,
             "shots": run.script.frames.iter().filter(|f| f.shot.is_some()).count(), "shot_failures": run.shot_failures,
+            "renderer": renderer,
+            "audio_sinks": audio_sinks,
         });
         std::fs::write(run.out.join("summary.json"), serde_json::to_vec_pretty(&summary).unwrap())
             .expect("summary.json");

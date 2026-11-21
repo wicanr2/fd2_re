@@ -11,7 +11,8 @@
 # 輸入（唯讀掛載）：建構槽 $FD2_WORK/ch01-flow-20261017/input/FD2.SAV（SHA-256 6d14f2c2…，與 R5 opening 黃金同一個）、
 #   分離素材包、remake/assets、TTF 字型（tools/rust_ttf_font.sh）。
 # 環境變數：FD2_WORK／FD2_ASSET_PACK／FD2_REMAKE_ASSETS／FD2_RUST_BUILD／FD2_RUST_TARGET 同 tools/rust_parity_ch01.sh；
-#   FD2_PYTHON_IMAGE 比對用映像（預設 python:3.13-slim）。
+#   FD2_PYTHON_IMAGE 比對用映像（預設 python:3.13-slim）；FD2_R5G_RENDERER 外殼的合成方式（R5 r5g，預設 cpu）。
+#   FD2_R5_APP_MUTE 預設為 1。設為空字串可用開場腳本檢查 Bevy 音訊接線（ALSA null）。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
 source "$root/tools/rust_ttf_font.sh"
@@ -55,7 +56,14 @@ common=(--rm --network none --pids-limit 1024 --log-opt max-size=10m --log-opt m
 
 echo "== 建置 fd2-app（release）"
 timeout 3600s docker run "${common[@]}" --name "fd2-r5w-build-$$" --memory 8g --cpus 4 fd2-rust:1.99.1-r3 \
-  bash -euo pipefail -c 'cargo build --offline --locked --release -p fd2-app --bins 2>&1 | tail -3'
+  cargo build --offline --locked --release -p fd2-app --bins
+
+# R5 階段 5（r5g）：FD2_R5G_RENDERER=gpu 時外殼以 GPU 模式合成（無畫面驅動端仍是 CPU，兩邊雜湊逐幀比對）；
+# tools/rust_r5g_gpu_frames.sh 用。沒設時與以前相同。
+renderer_env=()
+if [ -n "${FD2_R5G_RENDERER:-}" ]; then
+  renderer_env=(-e "FD2_RENDERER=$FD2_R5G_RENDERER")
+fi
 
 status=0
 for s in "${scripts[@]}"; do
@@ -67,7 +75,7 @@ for s in "${scripts[@]}"; do
   cp "$slot/FD2.SAV" "$dir/state-headless/FD2.SAV"
   cp "$slot/FD2.SAV" "$dir/state-app/FD2.SAV"
   game_env=(-e FD2_ASSET_PACK=/pack -e FD2_REMAKE_ASSETS=/assets -e FD2_CAMPAIGN=canonical -e FD2_SEED=4
-    -e FD2_MUTE=1 -e FD2_NATIVE_SAVE=/state/FD2.SAV -e XDG_DATA_HOME=/state/xdg
+    -e "FD2_MUTE=${FD2_R5_APP_MUTE-1}" -e FD2_NATIVE_SAVE=/state/FD2.SAV -e XDG_DATA_HOME=/state/xdg
     --mount "type=bind,source=$pack,target=/pack,readonly"
     --mount "type=bind,source=$packsrc,target=/packsrc,readonly"
     --mount "type=bind,source=$assets,target=/assets,readonly"
@@ -83,7 +91,7 @@ for s in "${scripts[@]}"; do
   timeout 3600s docker run "${common[@]}" --init --name "fd2-r5w-app-$$" --memory 6g --cpus 4 "${game_env[@]}" \
     --mount "type=bind,source=$dir/state-app,target=/state" \
     --mount "type=bind,source=$dir/app,target=/app-out" \
-    -e FD2_APP_SCRIPT=/script/script.json -e FD2_APP_OUT=/app-out \
+    -e FD2_APP_SCRIPT=/script/script.json -e FD2_APP_OUT=/app-out "${renderer_env[@]}" \
     -e WGPU_BACKEND=vulkan -e LIBGL_ALWAYS_SOFTWARE=1 -e RUST_LOG=warn fd2-rust:1.99.1-r3 \
     bash -euo pipefail -c '
       Xvfb :95 -screen 0 1920x1200x24 -nolisten tcp >/app-out/xvfb.log 2>&1 &

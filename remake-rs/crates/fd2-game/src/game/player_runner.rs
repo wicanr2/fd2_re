@@ -133,6 +133,11 @@ impl PlayerRunner {
         self.game.draw(screen);
     }
 
+    /// 交給外殼同步播放，並接收一次性音效的播放完成狀態。
+    pub fn audio_voices_mut(&mut self) -> Vec<(VoiceSlot, &mut AudioVoice)> {
+        self.game.audio_voices_mut()
+    }
+
     /// R5 階段 4（r5i）：設定面板開著時的 1920×1200 疊層（Go `drawControlsPanel` 畫進 `controlsSurface` 的內容；外殼以線性
     /// 濾鏡縮成內容區大小疊上去，Go `op.GeoM.Scale(1.0/3, 1.0/3)`＋`Concat(geometry)`）。面板沒開時回 `None`。面板狀態
     /// 沒變時沿用上次畫好的疊層；第一個回傳值是決定內容的面板狀態（外殼據此判斷要不要重新上傳貼圖）。

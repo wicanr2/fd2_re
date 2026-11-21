@@ -14,6 +14,9 @@ pub mod go_ebiten_audio;
 pub mod go_io;
 pub mod go_oggvorbis;
 pub mod go_vorbis;
+// R5 階段 5（r5g）：GPU 加速模式（顯示清單的 GPU 合成器與外殼接線）。
+pub mod gpu;
+pub mod gpu_shell;
 pub mod input;
 pub mod script;
 pub mod shell;

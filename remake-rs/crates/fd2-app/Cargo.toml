@@ -21,3 +21,6 @@ fd2-game = { path = "../fd2-game" }
 # IMDCT 與重取樣的查表）；sha2 給 r5o_audio_pcm 的 PCM 雜湊。只增減 workspace 內 crate 對 Cargo.lock 已鎖定套件的依賴邊。
 fd2-formats = { path = "../fd2-formats" }
 sha2 = "=0.10.9"
+# GPU 加速模式沿用 Bevy 鎖定的 wgpu。std 讓原生後端的錯誤範圍依執行緒隔離，
+# 避免 FD2 的合成器與 Bevy 的著色器編譯同時使用同一個錯誤堆疊。
+wgpu = { version = "=30.0.2", default-features = false, features = ["std", "wgsl"] }

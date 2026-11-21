@@ -2672,6 +2672,7 @@ dependencies = [
  "fd2-game",
  "serde_json",
  "sha2",
+ "wgpu",
 ]
 
 [[package]]
@@ -5879,6 +5880,7 @@ dependencies = [
  "smallvec",
  "static_assertions",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "web-sys",
  "wgpu-core",
  "wgpu-hal",

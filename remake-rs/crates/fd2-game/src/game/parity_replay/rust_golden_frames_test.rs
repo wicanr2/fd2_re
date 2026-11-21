@@ -82,6 +82,19 @@ pub(crate) struct FrameCapture {
     dump: BTreeSet<i64>,
     /// R5 階段 3（`r5s`）：`FD2_GOLDEN_FRAMES_DUMP_DIFF=<Go 黃金 frames.json>`，見 [`DiffDump`]。
     diff_dump: Option<DiffDump>,
+    /// R5 階段 5（`r5g`）：`FD2_GOLDEN_FRAMES_GPU_EXECUTOR=<r5g_gpu_exec 路徑>` 時，每次擷取把 `Game::draw` 錄成顯示清單
+    /// 交給 GPU 執行器，讀回的畫格取代 CPU 畫布（其餘雜湊、傾印與 `frames.json` 不變）。
+    gpu: Option<GpuCapture>,
+}
+
+/// R5 r5g：GPU 模式擷取的執行器與統計。
+pub(crate) struct GpuCapture {
+    exec: display_list::ExternalExecutor,
+    ops: u64,
+    src_bytes: u64,
+    target_reads: u64,
+    record_ns: u128,
+    gpu_ns: u128,
 }
 
 /// R5 階段 3（`r5s`）：與參考 `frames.json`（Go 黃金；`rows[].capture／count／rgba_sha256` 展開成每次擷取的雜湊）
@@ -160,6 +173,11 @@ impl FrameCapture {
                 .filter_map(|v| v.trim().parse().ok())
                 .collect(),
             diff_dump: DiffDump::from_env("FD2_GOLDEN_FRAMES_DUMP_DIFF", &out),
+            gpu: std::env::var("FD2_GOLDEN_FRAMES_GPU_EXECUTOR").ok().filter(|p| !p.is_empty()).map(|path| {
+                let exec = display_list::ExternalExecutor::spawn(&path).unwrap_or_else(|e| panic!("{e}"));
+                eprintln!("GPU 模式擷取：{}", exec.adapter);
+                GpuCapture { exec, ops: 0, src_bytes: 0, target_reads: 0, record_ns: 0, gpu_ns: 0 }
+            }),
             out,
         }
     }
@@ -240,7 +258,27 @@ impl FrameCapture {
             });
         }
         self.screen.clear();
-        if let Err(message) = draw(g, &mut self.screen) {
+        let drawn = match self.gpu.as_mut() {
+            None => draw(g, &mut self.screen),
+            Some(gpu) => {
+                // R5 r5g：錄成顯示清單（畫面目標從全透明開始，同上一行的 clear），交給 GPU 執行器。
+                let t0 = std::time::Instant::now();
+                let mut result = Ok(());
+                let dl = display_list::record(LOGICAL_W, LOGICAL_H, |screen| result = draw(g, screen));
+                let t1 = std::time::Instant::now();
+                result.map(|()| {
+                    let pix =
+                        gpu.exec.render(&dl).unwrap_or_else(|e| panic!("GPU 模式擷取第 {} 次：{e}", self.captures));
+                    gpu.gpu_ns += t1.elapsed().as_nanos();
+                    gpu.record_ns += (t1 - t0).as_nanos();
+                    gpu.ops += dl.ops.len() as u64;
+                    gpu.src_bytes += dl.src.len() as u64;
+                    gpu.target_reads += dl.target_reads as u64;
+                    self.screen.write_pixels(&pix);
+                })
+            }
+        };
+        if let Err(message) = drawn {
             eprintln!("畫格擷取停在第 {} 次（update_frame={}）：{message}", self.captures, g.frame);
             self.stopped = Some(serde_json::json!({
                 "capture": self.captures,
@@ -312,6 +350,15 @@ impl FrameCapture {
             "gaps": self.gaps,
         });
         manifest.as_object_mut().unwrap().extend(extra);
+        if let Some(gpu) = &self.gpu {
+            // R5 r5g：只在 GPU 模式加這一欄；CPU 模式的 frames.json 不變。
+            manifest["renderer"] = serde_json::json!({
+                "mode": "gpu-display-list",
+                "adapter": serde_json::from_str::<serde_json::Value>(&gpu.exec.adapter).unwrap_or(gpu.exec.adapter.clone().into()),
+                "ops": gpu.ops, "src_bytes": gpu.src_bytes, "target_reads": gpu.target_reads,
+                "record_ms": gpu.record_ns as f64 / 1e6, "gpu_roundtrip_ms": gpu.gpu_ns as f64 / 1e6,
+            });
+        }
         std::fs::create_dir_all(&self.out).expect("建立畫格輸出目錄");
         let mut raw = serde_json::to_vec_pretty(&manifest).unwrap();
         raw.push(b'\n');

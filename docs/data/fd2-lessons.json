@@ -5986,6 +5986,21 @@
       "rule": "Go 1.22 的 GOMAXPROCS 取主機處理器數，不看 docker --cpus 的 cgroup 配額。在容器裡量並行載入或幀時間時，收據同時記 gomaxprocs 與 --cpus；依 GOMAXPROCS 決定的並行數在容器裡和同樣配額的實機不同，兩邊的數字不能直接互推。",
       "why": "2026-11-21 gho2 量測：--cpus 4 的容器裡 runtime.GOMAXPROCS(0) 是 14，Go 執行期以 14 條執行緒排程，被 cgroup 節流到 4 顆的份量；modernThemeLoadWorkers 照 14 算出上限三條。",
       "evidence": "work/gho2-20261121/b0/loader.json 的 gomaxprocs；remake/cmd/fd2/modern_theme_parallel.go modernThemeLoadWorkers"
+    },
+    {
+      "id": "native-wgpu-error-scopes-use-thread-ids",
+      "date": "2026-11-21",
+      "area": "Rust 繪圖",
+      "rule": "原生 Bevy 外殼與 FD2 的 GPU 合成器共用 wgpu 裝置時，在 remake-rs/crates/fd2-app/Cargo.toml 保留 wgpu 的 std 功能。wgpu 30 用它取得執行緒 ID，讓各自的錯誤範圍依執行緒管理。",
+      "why": "wgpu 30 遇到 no_std 建置時，用相同的空值代表所有執行緒。Bevy 的著色器編譯與 FD2 的合成驗證可同時推入錯誤範圍，其中一方先結束時就可能因關閉順序不符而當機。",
+      "evidence": "wgpu 30.0.2 src/backend/wgpu_core/thread_id.rs；work/r5g-20261121/rebased/app-gpu/letterbox-1500x850/app.log",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake-rs/crates/fd2-app/Cargo.toml"
+        ],
+        "pattern": "wgpu = .*features = \\[\"std\", \"wgsl\"\\]"
+      }
     }
   ]
 }

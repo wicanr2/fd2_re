@@ -46,6 +46,13 @@ for e in "$packsrc"/*; do
 done
 ln -s /assets/locales "$pack/locales"
 
+# R5 階段 5（r5g）：設 FD2_R5G_GPU_EXECUTOR=<容器內 r5g_gpu_exec 路徑> 時改用 GPU 模式擷取（顯示清單交給 GPU 執行器，
+# Mesa lavapipe）；tools/rust_r5g_gpu_frames.sh 用。沒設時與以前相同。
+gpu_env=()
+if [ -n "${FD2_R5G_GPU_EXECUTOR:-}" ]; then
+  gpu_env=(-e "FD2_GOLDEN_FRAMES_GPU_EXECUTOR=$FD2_R5G_GPU_EXECUTOR" -e WGPU_BACKEND=vulkan)
+fi
+
 echo "== Rust opening 模式擷取"
 status=0
 timeout 3000s docker run --rm --name "fd2-r5o-$$" --network none --memory 6g --cpus 4 --pids-limit 1024 \
@@ -53,7 +60,7 @@ timeout 3000s docker run --rm --name "fd2-r5o-$$" --network none --memory 6g --c
   -e CARGO_HOME=/build/cargo -e CARGO_TARGET_DIR=/build/target-x \
   -e FD2_ASSET_PACK=/pack -e FD2_REMAKE_ASSETS=/assets \
   -e FD2_GOLDEN_FRAMES_MODE=opening -e FD2_GOLDEN_FRAMES_OUT=/frames-out -e FD2_PARITY_SLOT=/slot/FD2.SAV \
-  -e "FD2_GOLDEN_FRAMES_DUMP=${FD2_GOLDEN_FRAMES_DUMP:-}" \
+  -e "FD2_GOLDEN_FRAMES_DUMP=${FD2_GOLDEN_FRAMES_DUMP:-}" "${gpu_env[@]}" \
   --mount "type=bind,source=$slot,target=/slot,readonly" \
   --mount "type=bind,source=$out/rust,target=/frames-out" \
   --mount "type=bind,source=$pack,target=/pack,readonly" \

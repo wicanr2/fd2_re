@@ -33,8 +33,16 @@
 //! 每一步都明寫 `f32`，Rust 不會把乘加融合成 FMA。這是 llvmpipe 的行為；換 GPU 驅動可能不同，CPU 畫格是
 //! 之後 GPU 模式的黃金。子集以外的操作（旋轉、負縮放、`ColorM`、線性濾鏡、其他混色模式）不實作，
 //! 用到時 panic，不以近似值輸出。測試向量在 `canvas/ebiten_vectors.json`（`tools/rust_r5_canvas_vectors.sh`）。
+//!
+//! # GPU 模式（R5 階段 5，`r5g`）
+//!
+//! [`display_list::record`] 執行期間，畫到畫面目標的操作不寫 CPU 像素，改錄成顯示清單（幾何與 `ColorScale` 仍由本模組
+//! 以同一段程式算好），由 `fd2-app` 在 GPU 上以整數運算執行。沒有錄製時本模組的行為與位元組完全不變。
 
 use super::*;
+
+#[path = "canvas/display_list.rs"]
+pub mod display_list;
 
 // ---------------- 矩形 ----------------
 
@@ -306,18 +314,29 @@ impl Picture {
         if x < 0 || y < 0 || x >= self.width || y >= self.height {
             return;
         }
+        if display_list::is_target(self) {
+            display_list::record_fill(rect(x, y, x + 1, y + 1), c);
+            return;
+        }
         let at = ((y * self.width + x) * 4) as usize;
         self.pix[at..at + 4].copy_from_slice(&[c.r, c.g, c.b, c.a]);
     }
 
     /// Ebiten `img.WritePixels(pix)`：長度必須是 `4*w*h`（Ebiten 會 panic）。
     pub fn write_pixels(&mut self, pix: &[u8]) {
+        if display_list::is_target(self) {
+            let want = (self.width * self.height * 4) as usize;
+            assert_eq!(pix.len(), want, "ebiten: len(pix) was {} but must be {want}", pix.len());
+            display_list::record_copy(self.width, self.height, pix);
+            return;
+        }
         assert_eq!(pix.len(), self.pix.len(), "ebiten: len(pix) was {} but must be {}", pix.len(), self.pix.len());
         self.pix.copy_from_slice(pix);
     }
 
-    /// Ebiten `img.ReadPixels`：預乘 alpha 的 RGBA8。
+    /// Ebiten `img.ReadPixels`：預乘 alpha 的 RGBA8。GPU 模式錄製中讀畫面目標會 panic（失敗即關閉）。
     pub fn read_pixels(&self) -> &[u8] {
+        assert!(!display_list::is_target(self), "GPU 模式錄製中不能 ReadPixels 畫面目標");
         &self.pix
     }
 
@@ -386,6 +405,10 @@ fn fill_rect(dst: &mut Picture, r: Rectangle, c: ColorRgba) {
     // Ebiten Fill 是 BlendCopy：著色器輸出 `float32(v*0x101)/0xffff`，llvmpipe 寫回時 f2u 恰為 v
     // （256 個值都相同，見測試 `fill_float_roundtrip_is_identity`），所以直接寫位元組。
     let r = rect_intersect(r, dst.bounds());
+    if display_list::is_target(dst) {
+        display_list::record_fill(r, c);
+        return;
+    }
     for y in r.min.y..r.max.y {
         for x in r.min.x..r.max.x {
             let at = ((y * dst.width + x) * 4) as usize;
@@ -400,6 +423,14 @@ fn draw_quad(dst: &mut Picture, clip: Rectangle, src: &Picture, src_r: Rectangle
     if rect_empty(&src_r) {
         return;
     }
+    // GPU 模式：畫面目標當成來源時，先在 CPU 重建目前內容。
+    let replayed;
+    let src = if display_list::is_target(src) {
+        replayed = display_list::target_snapshot();
+        &replayed
+    } else {
+        src
+    };
     let (a, b, c, d, tx, ty) = op.geo_m.elements32();
     assert!(b == 0.0 && c == 0.0, "fd2-game 畫布只實作平移與縮放（GeoM b={b} c={c}）");
     assert!(a >= 0.0 && d >= 0.0, "fd2-game 畫布不實作負縮放（GeoM a={a} d={d}）");
@@ -426,6 +457,10 @@ fn draw_quad(dst: &mut Picture, clip: Rectangle, src: &Picture, src_r: Rectangle
             let f: f32 = u2f(v as u8) * k[ch];
             *out = f2u(f);
         }
+    }
+    if display_list::is_target(dst) {
+        display_list::record_draw(src, clip, &xs, &ys, &lut);
+        return;
     }
     for (j, sy) in ys.iter().enumerate() {
         let Some(sy) = *sy else { continue };
