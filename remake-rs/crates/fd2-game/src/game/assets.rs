@@ -284,15 +284,42 @@ pub(crate) fn indexed_frame(width: i64, height: i64, pixels: &[u8], palette: Col
 /// `NewImageFromImage` 都是 `uint8((v*a*0x101/0xff)>>8)`，與這裡相同；不透明的像素不變。16 位元 PNG 這裡先去掉
 /// 低位元組再預乘，Go 在 16 位元預乘後才取高位元組，半透明時可能差 1（原版美術模式沒有 16 位元 PNG，未實測）。
 pub(crate) fn decode_png_picture(data: &[u8]) -> Option<Picture> {
+    decode_png(data, false)
+}
+
+pub(crate) fn decode_opaque_png_picture(data: &[u8]) -> Option<Picture> {
+    decode_png(data, true)
+}
+
+fn decode_png(data: &[u8], require_opaque: bool) -> Option<Picture> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(data));
-    decoder.set_transformations(
-        png::Transformations::EXPAND | png::Transformations::STRIP_16 | png::Transformations::ALPHA,
-    );
+    let mut transformations = png::Transformations::EXPAND | png::Transformations::ALPHA;
+    if !require_opaque {
+        transformations |= png::Transformations::STRIP_16;
+    }
+    decoder.set_transformations(transformations);
     let mut reader = decoder.read_info().ok()?;
     let mut buf = vec![0u8; reader.output_buffer_size()?];
     let info = reader.next_frame(&mut buf).ok()?;
     let (w, h) = (info.width as usize, info.height as usize);
     let mut pix = Vec::with_capacity(w * h * 4);
+    if info.bit_depth == png::BitDepth::Sixteen {
+        // 完全不透明需要 0xffff。先去掉低位元組會把 0xff00 誤認成不透明。
+        let channels = match info.color_type {
+            png::ColorType::Rgba => 4,
+            png::ColorType::GrayscaleAlpha => 2,
+            _ => return None,
+        };
+        let bytes_per_pixel = channels * 2;
+        for px in buf[..info.buffer_size()].chunks_exact(bytes_per_pixel) {
+            if px[bytes_per_pixel - 2..] != [255, 255] {
+                return None;
+            }
+            let rgb = if channels == 4 { [px[0], px[2], px[4]] } else { [px[0]; 3] };
+            pix.extend_from_slice(&[rgb[0], rgb[1], rgb[2], 255]);
+        }
+        return Some(Picture { width: w as i64, height: h as i64, pix });
+    }
     match info.color_type {
         png::ColorType::Rgba => pix.extend_from_slice(&buf[..w * h * 4]),
         png::ColorType::GrayscaleAlpha => {
@@ -305,6 +332,9 @@ pub(crate) fn decode_png_picture(data: &[u8]) -> Option<Picture> {
     for px in pix.as_chunks_mut::<4>().0 {
         let a = px[3];
         if a != 255 {
+            if require_opaque {
+                return None;
+            }
             for v in &mut px[..3] {
                 *v = premultiply_channel(*v, a);
             }

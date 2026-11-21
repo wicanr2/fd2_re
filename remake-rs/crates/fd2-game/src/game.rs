@@ -139,6 +139,7 @@ mod modern_hd_text;
 mod modern_hd_title_interface;
 mod modern_hd_transient_expiry;
 mod modern_hd_unit_present;
+mod modern_opening;
 mod modern_story_portrait;
 mod native_action_death_present;
 mod native_ai_idle_recovery;

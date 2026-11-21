@@ -5720,3 +5720,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - GPU 合成依 32×32 區塊取用相交的繪圖指令，上傳直接借用來源位元組。沿用 CPU 畫格及既有 Go 黃金。實作與驗證依 [121 階段 5](docs/goal/121-goal-rust-r5-original-art-shell-20261115.md#階段-5-接手2026-11-21)。
 - 收據在 `work/r5g-20261121/codex-final/`。開場 10,372 幀和第一章 13,751 幀均通過 CPU／GPU 比對，第一章流程及存檔與 Go 相同。基準量測複本的 SHA-256 為 `a6cb706d453b837e012f25172bb831d72a54a1119c18e3c16663b5760989ab20`，保留逐幀量測與摘要後已核對雜湊並刪除複本。
 - `FD2_RUST_TARGET=target-r5g bash tools/rust_r5g_gpu_frames.sh work/r5g-20261121/codex-final` 結束碼為 0。兩種視窗尺寸在 CPU 與 GPU 各通過 13 張逐像素截圖。另以 `FD2_R5_APP_MUTE=` 重跑 1500×850 開場，確認主視窗建立 1 個 Bevy 播放器。新輸出由目前使用者持有，FD2 驗證容器已清除。
+
+## 2026-11-21 Rust R6 開場清冊與逐格解碼
+
+- 依凍結 Go `697c0913` 移植 12 組 HD 開場清冊。入場核對原始來源、製圖計畫與每條檔案路徑的雜湊，第一次取圖才核對像素，並保留目前一格的解碼結果。
+- `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-opening-20261121` 通過。173 格的 Go／Rust 像素雜湊逐格相同。格式、Clippy、427 項 Rust 測試及 Go 開場清冊反例通過。私人素材唯讀掛載，僅保留本機雜湊與測試紀錄。新輸出由目前使用者持有，FD2 驗證容器已清除。
+- 此切片達 DATA-READY。共用 ANI #0、完整主題交易與播放器繪製待接。規格與收據見 [119](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-開場-hd-清冊與逐格解碼data-ready2026-11-21)。

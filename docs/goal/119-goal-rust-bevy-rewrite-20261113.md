@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 開場 HD 清冊與逐格解碼（DATA-READY，2026-11-21）
+
+依 [61 的按需解碼契約](../knowledge-base/61-modern-theme-runtime-spec.md) 和凍結 Go 提交 `697c0913` 的 `modern_hd_opening.go`。清冊 SHA-256 為 `ea41e4b9a9d656f707a4f05c7eb64ddf36f0bbbeaee55ea1ff085b2f067988f1`。本切片涵蓋 `opening_presentation_hd_set` 的 12 組、173 格。共用的 ANI #0 另有圖庫與黑幕契約，整套主題要等該圖庫及其餘角色驗證後才可發布。
+
+載入端核對清冊身分、圖組來源、形狀、檔名、來源雜湊、製圖計畫與 PNG 標頭。每條登錄路徑都讀檔並驗 SHA-256。組內相同 SHA 共用壓縮位元組。取圖時才解碼，檢查尺寸和全不透明，保留目前一格。延後檢查失敗時整組退回原版並通知一次。驗收以 Go 正式取圖所解出的像素比對整套清冊，另驗缺件、錯誤雜湊、路徑、重複圖組、截斷圖及非全不透明的拒收邊界。此載入層不改存檔或 DOS 原版行為。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-opening-20261121` 通過。Go 與 Rust 的 173 格像素雜湊逐格相同，序列 SHA-256 為 `02baa600964a9fcf88db55b6d5c169593979d094a8d539a0fdce7a9e224c1f2a`。Rust 的三項邊界測試與 Go 的八項清冊反例通過。16 位元 PNG 以完整 alpha 判斷不透明。`tools/rust_game_test.sh` 的格式、Clippy 與 427 項測試通過。收據只保存雜湊及測試紀錄，私人素材以唯讀掛載。
+
+Rust 開場載入與取圖已可由測具驗證。播放器仍須接入共用 ANI #0、完整主題交易及開場繪製，驗收再走 F2 和視窗畫面。
+
 ### 2026-11-13 R0 起步、R1 第一個切片：`fdsave`
 
 | 項目 | 結果 |

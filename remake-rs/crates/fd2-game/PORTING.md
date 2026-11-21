@@ -3087,3 +3087,7 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 - `fd2-app/src/shell.rs` 把 `Fd2AudioPlugin` 接到 `PlayerRunner`，讓主視窗消費遊戲的播放請求。測具以 `summary.json` 的 `audio_sinks` 記錄腳本結束前的播放器數量。
 
 實作驗證與量測見 [121 階段 5](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md#階段-5-接手2026-11-21)。
+
+## R6 開場清冊與逐格解碼
+
+`game/modern_opening.rs` 移植 `modern_hd_opening.go` 的圖組形狀、原版來源雜湊、清冊預檢與取圖。開場持有壓縮檔與目前一格的 `Picture`。共用 ANI #0、畫面選擇和 F2 切換留給播放器接線。[119 的 R6 驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-開場-hd-清冊與逐格解碼data-ready2026-11-21)
