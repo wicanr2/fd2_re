@@ -180,9 +180,21 @@ pub struct TickInput {
     pub mouse_left_just_released: bool,
     /// R5 階段 4（r5w）：Go `ebiten.AppendInputChars(nil)`（數值編輯器的文字輸入，R6）。
     pub input_chars: Vec<char>,
+    /// R5 階段 4（r5i）：[`Key`] 沒有列出、按住中的鍵的按住時間，鍵是 [`RawInputState::other_keys`] 的編號（外殼以
+    /// Ebiten 的 `ebiten.Key` 數值當編號，見 `go_ebiten_keys.rs`）。按鍵設定面板與自訂綁定（例如把確認改成 Q）讀它。
+    pub other_press_duration: std::collections::BTreeMap<u32, i64>,
+    /// R5 階段 4（r5i）：輸入對應層（`player_input.rs`）打開時，本幀的實體輸入；這時本結構的鍵是邏輯鍵（Go
+    /// `keyJustPressed` 等）。`None` 表示沒有對應層（測試、重播，Go `activeInput == nil`），鍵就是實體鍵。
+    pub physical: Option<Box<TickInput>>,
 }
 
 impl TickInput {
+    /// R5 階段 4（r5i）：實體輸入（Go 直接查 `inpututil`／`ebiten.IsKeyPressed` 的地方：Alt+Enter、修飾鍵秘密商店、
+    /// Ctrl+F12）。沒有輸入對應層時就是自己。
+    pub fn physical(&self) -> &TickInput {
+        self.physical.as_deref().unwrap_or(self)
+    }
+
     /// Go `inpututil.IsKeyJustPressed(k)`。
     pub fn is_just_pressed(&self, k: Key) -> bool {
         self.pressed.contains(&k)
@@ -260,7 +272,10 @@ impl Key {
 /// - `touches`：按住中的觸控點 `(id, x, y)`，座標已換成 Ebiten 邏輯座標（`int(...)` 向零截斷）。
 /// - `cursor`、`mouse_left`：滑鼠游標的 Ebiten 邏輯座標與左鍵是否按住。
 /// - `input_chars`：本幀輸入的文字（Go `ebiten.AppendInputChars`）。
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+///
+/// R5 階段 4（r5i）：`other_keys` 的編號由外殼定為 Ebiten 的 `ebiten.Key` 數值（Ebiten 沒有的鍵用大於 `KeyMax` 的編號）；
+/// `devices` 是滑鼠右鍵、滾輪、焦點與手把（`player_input.rs` 的 [`RawDevices`]）。
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct RawInputState {
     pub keys: BTreeSet<Key>,
     pub other_keys: BTreeSet<u32>,
@@ -268,6 +283,7 @@ pub struct RawInputState {
     pub cursor: (i64, i64),
     pub mouse_left: bool,
     pub input_chars: Vec<char>,
+    pub devices: super::player_input::RawDevices,
 }
 
 /// R5 階段 4（r5w）：Ebiten v2.6.6 `inpututil` 的每幀狀態（`inpututil/inpututil.go` 的 `inputState.update`，
@@ -321,6 +337,7 @@ impl EbitenInputState {
             input.other_just_pressed |= now == 1;
             others.insert(code, now);
         }
+        input.other_press_duration = others.clone();
         self.other_durations = others;
         let mut touches = std::collections::BTreeMap::new();
         for &(id, x, y) in &raw.touches {

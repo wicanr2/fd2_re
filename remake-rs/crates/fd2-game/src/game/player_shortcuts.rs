@@ -5,7 +5,7 @@
 
 use super::*;
 
-/// Go `drawPlayerHelp` 的說明文字（`player_shortcuts.go:340`..`351`），逐字保留。
+/// Go `drawPlayerHelp` 的說明文字（`player_shortcuts.go:340`..`351`），逐字保留。F12 那一行照 Go v.1.1.15（`7c710b34`，r5i）。
 const PLAYER_HELP_LINES: [&str; 12] = [
     "操作說明",
     "方向鍵／WASD：移動游標",
@@ -16,7 +16,7 @@ const PLAYER_HELP_LINES: [&str; 12] = [
     "F5：快速存檔　F6：開啟／關閉音樂",
     "F7：字級大小　F8：遊戲加速　F9：快速讀檔",
     "F10：海報　F11：原版／HD介面　Alt+Enter：全螢幕",
-    "F12：開發除錯資訊",
+    "F12／手把 Start：按鍵設定　Ctrl+F12：開發除錯資訊",
     "戰場系統選單也可控制音樂、音效、速度與狀態欄。",
     "秘密商店：章節指定的修飾鍵＋F1..F10。",
 ];

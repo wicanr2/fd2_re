@@ -560,6 +560,7 @@ impl Game {
                 if down {
                     self.apply_title_menu_event(TITLE_MENU_DOWN);
                 }
+                self.apply_pointer_to_title_menu(); // Go `title.go:688`（r5i）
                 if confirm {
                     self.apply_title_menu_event(TITLE_MENU_CONFIRM);
                 }
@@ -579,6 +580,7 @@ impl Game {
                 if event {
                     todo!("R8: title.go:applyTitleSlotEvent（標題 LOAD 讀檔槽）")
                 }
+                self.apply_pointer_to_title_slots(); // Go `title.go:703`（r5i）
                 true
             }
             _ => false,

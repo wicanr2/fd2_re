@@ -5699,3 +5699,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第一次執行（`work/r5v-20261121/run1`）音檔全部相同，但 `lookup1Values` 13546 筆中 108 筆與 Go 不同：Go 的 `math.Pow` 在 dim ≥ 3 的完全次方少 1，glibc 不會。改以整數根加 231 組 Go 例外表（在本機 Go 1.22.12 窮舉取得）。
 - 第二次執行（`work/r5v-20261121/run2`）：227 檔 final／native 逐樣本相同、30 首 BGM 循環兩圈相同、`lookup1` 全部相同、`fd2-app` 47 passed、播放驗證 passed；`summary.json` `5a1e62c3…`。詳見 121「階段 4 結果：r5v」。四個 `go_*` 模組登記為 `rust-port-no-go-stdlib` 的具名例外。
 - 本工作階段曾在主工作區重寫同一套移植，發現上一階段的子代理 worktree 已完成大半後全部還原，以 worktree 版本為準；結束時沒有 FD2 容器殘留。
+
+## 2026-11-21 R5 階段 4 滑鼠、手把與按鍵設定面板（r5i）
+
+- 照 Go v.1.1.15（`7c710b34`）把輸入對應層、滑鼠指向、手把與 F12 按鍵設定面板移植到 `fd2-game`，`fd2-app` 接上 Bevy 的滑鼠右鍵、滾輪、焦點與手把；`controls-settings.json` 與 Go 版互通。新增只輸出資料的 Go 測試 `remake/cmd/fd2/rust_golden_r5i_controls_test.go` 與驅動腳本 `tools/rust_r5i_controls.sh`。
+- 上一工作階段的子代理在 worktree 完成實作與驗證但沒寫文件；本輪重定基底到 r5v（`81e5abdd`）後重跑：局部黃金全部相同（面板像素差異只在 TTF 文字外框內）、`fd2-game` 413 passed、外殼逐幀相同、`fd2-app` 49 passed。收據在 `work/r5i-20261121/`（`rebased/` 是本輪）。
+- 使用者 2026-11-21 同意把 `go_ebiten_keys.rs`（Ebiten 鍵名與編號）登記為 `rust-port-no-go-stdlib` 的第十一項具名例外。

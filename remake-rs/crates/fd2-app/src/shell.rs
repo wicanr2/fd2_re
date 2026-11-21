@@ -7,7 +7,11 @@
 //! 設 `FD2_APP_SCRIPT=<腳本>`、`FD2_APP_OUT=<目錄>` 時改由腳本驅動（[`crate::script`]）：每個顯示幀的 `Update` 次數與
 //! 按鍵由腳本決定，按鍵與觸控以 Bevy 的 `KeyboardInput`／`TouchInput` 訊息注入，走與實體鍵盤相同的路徑；每個顯示幀的
 //! CPU 畫格雜湊寫到 `frames.jsonl`，腳本的 `shot` 截取視窗並逐像素核對（結果寫到 `shots.jsonl`）。截圖期間不前進遊戲、
-//! 不重畫，視窗持續顯示同一張畫格。
+//! 不重畫，視窗持續顯示同一張畫格。腳本只有按鍵與觸控，所以腳本模式不讀實體滑鼠與手把（視窗焦點當成沒有），
+//! 兩個驅動端的輸入相同。
+//!
+//! R5 階段 4（r5i）：滑鼠右鍵、滾輪、視窗焦點與手把（Bevy 內建的 gilrs 支援）也放進 [`PhysicalSnapshot`]；F12 設定面板
+//! 開著時，把 `fd2-game` 畫好的 1920×1200 疊層以線性濾鏡縮成畫格大小，疊在畫格上（Go `drawControlsPanel` 的最後一步）。
 
 use std::collections::BTreeSet;
 use std::io::Write as _;
@@ -16,21 +20,24 @@ use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
 use bevy::asset::RenderAssetUsages;
+use bevy::image::ImageSampler;
 use bevy::input::ButtonState;
+use bevy::input::gamepad::{AxisSettings, Gamepad, GamepadAxis, GamepadSettings};
 use bevy::input::keyboard::{Key as BevyKey, KeyboardInput, NativeKey};
+use bevy::input::mouse::{MouseScrollUnit, MouseWheel};
 use bevy::input::touch::{TouchInput, TouchPhase};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::render::view::screenshot::{Screenshot, ScreenshotCaptured, save_to_disk};
 use bevy::window::{MonitorSelection, PresentMode, PrimaryWindow, WindowMode, WindowResolution};
 use bevy::winit::{UpdateMode, WinitSettings};
-use fd2_game::game::{Key as GameKey, Picture};
+use fd2_game::game::{Key as GameKey, Picture, RawDevices};
 use fd2_game::{PlayerRunner, RunnerStep};
 use serde_json::json;
 use sha2::{Digest, Sha256};
 
 use crate::clock::EbitenClock;
-use crate::input::{Bindings, PhysicalInput, PhysicalSnapshot};
+use crate::input::{Bindings, PhysicalInput, PhysicalSnapshot, gamepad_snapshot};
 use crate::script::{Script, frame_record};
 use crate::video::{LOGICAL_H, LOGICAL_W, Letterbox, expected_window, letterbox, opaque_rgba};
 
@@ -47,6 +54,10 @@ struct Shell {
     started: Instant,
     image: Handle<Image>,
     sprite: Option<Entity>,
+    /// r5i：設定面板疊層的貼圖、精靈與目前上傳的面板狀態。
+    panel_image: Handle<Image>,
+    panel_sprite: Option<Entity>,
+    panel_key: Option<String>,
     script: Option<ScriptRun>,
     /// 上一個顯示幀畫好的 CPU 畫格（截圖核對用）。
     last_frame: Vec<u8>,
@@ -115,6 +126,9 @@ pub fn run() -> AppExit {
         started,
         image: Handle::default(),
         sprite: None,
+        panel_image: Handle::default(),
+        panel_sprite: None,
+        panel_key: None,
         script,
         last_frame: Vec::new(),
         fullscreen: false,
@@ -146,7 +160,7 @@ pub fn run() -> AppExit {
         .insert_non_send(shell)
         .add_systems(Startup, setup)
         .add_systems(First, inject_script_input)
-        .add_systems(Update, drive)
+        .add_systems(Update, (raw_gamepad_axes, drive).chain())
         .run()
 }
 
@@ -161,6 +175,35 @@ fn setup(mut commands: Commands, mut images: ResMut<Assets<Image>>, mut shell: N
     );
     shell.image = images.add(image);
     shell.sprite = Some(commands.spawn(Sprite::from_image(shell.image.clone())).id());
+    // r5i：設定面板疊層（Go 以 `ebiten.FilterLinear` 縮 1/3 疊到內容區）。
+    let mut panel = Image::new_fill(
+        Extent3d { width: 1920, height: 1200, depth_or_array_layers: 1 },
+        TextureDimension::D2,
+        &[0, 0, 0, 0],
+        TextureFormat::Rgba8UnormSrgb,
+        RenderAssetUsages::MAIN_WORLD | RenderAssetUsages::RENDER_WORLD,
+    );
+    panel.sampler = ImageSampler::linear();
+    shell.panel_image = images.add(panel);
+    shell.panel_sprite = Some(
+        commands
+            .spawn((
+                Sprite::from_image(shell.panel_image.clone()),
+                Transform::from_xyz(0.0, 0.0, 1.0),
+                Visibility::Hidden,
+            ))
+            .id(),
+    );
+}
+
+/// r5i：手把接上時把 Bevy 的搖桿死區與重新映射關掉（Bevy 預設 ±5% 死區、區間外線性放大），讀到的值與 Ebiten 的
+/// `StandardGamepadAxisValue` 一樣是原值；防飄移死區由 `fd2-game` 照 Go 的 `stickDirection` 處理。
+fn raw_gamepad_axes(mut pads: Query<&mut GamepadSettings, Added<Gamepad>>) {
+    for mut settings in &mut pads {
+        if let Ok(raw) = AxisSettings::new(-1.0, 0.0, 0.0, 1.0, 0.0) {
+            settings.default_axis_settings = raw;
+        }
+    }
 }
 
 /// 腳本模式：把本顯示幀要按住的鍵與觸控寫成 Bevy 輸入訊息（`PreUpdate` 的輸入系統會讀）。按住的鍵每幀都重送
@@ -222,12 +265,14 @@ fn drive(
     mut commands: Commands,
     mut shell: NonSendMut<Shell>,
     mut images: ResMut<Assets<Image>>,
-    mut sprites: Query<(&mut Sprite, &mut Transform)>,
+    mut sprites: Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
     mut windows: Query<&mut Window, With<PrimaryWindow>>,
     keys: Res<ButtonInput<KeyCode>>,
     mouse: Res<ButtonInput<MouseButton>>,
     touches: Res<Touches>,
     mut key_events: MessageReader<KeyboardInput>,
+    mut wheel_events: MessageReader<MouseWheel>,
+    gamepads: Query<(Entity, &Gamepad, Option<&Name>)>,
     mut exit: MessageWriter<AppExit>,
 ) {
     let Ok(mut window) = windows.single_mut() else {
@@ -237,6 +282,30 @@ fn drive(
     let lb = letterbox(w, h);
     let shell = &mut *shell;
     place_sprite(shell, &mut sprites, lb, w, h, sf);
+
+    // r5i：滾輪（Ebiten `Wheel()`：一格是 1，上為正）、焦點與手把。Bevy 的像素單位（觸控板）以 100 像素當一格
+    // （KNOWN_DIFFERENCES `wheel-pixel-unit`）。腳本模式不讀（見模組文件）。
+    let wheel_y: f64 = wheel_events
+        .read()
+        .map(|e| match e.unit {
+            MouseScrollUnit::Line => e.y as f64,
+            MouseScrollUnit::Pixel => e.y as f64 / 100.0,
+        })
+        .sum();
+    let devices = if shell.script.is_some() {
+        RawDevices::default()
+    } else {
+        let mut pads: Vec<_> = gamepads
+            .iter()
+            .map(|(entity, pad, name)| {
+                let stick =
+                    (pad.get(GamepadAxis::LeftStickX).unwrap_or(0.0), pad.get(GamepadAxis::LeftStickY).unwrap_or(0.0));
+                gamepad_snapshot(entity.to_bits(), name.map_or("", |n| n.as_str()), |b| pad.pressed(b), stick)
+            })
+            .collect();
+        pads.sort_by_key(|p| p.id);
+        RawDevices { focused: window.focused, mouse_right: mouse.pressed(MouseButton::Right), wheel_y, pads }
+    };
 
     // 實體輸入（座標換成實體像素）。
     let snap = PhysicalSnapshot {
@@ -250,6 +319,7 @@ fn drive(
             .filter_map(|e| e.text.as_ref())
             .flat_map(|t| t.chars().filter(|c| !c.is_control()).collect::<Vec<_>>())
             .collect(),
+        devices,
     };
 
     // 本顯示幀的 Update 次數。
@@ -264,9 +334,13 @@ fn drive(
         },
     };
 
-    let raw = shell.bindings.logical_state(&snap, lb);
+    let mut raw = shell.bindings.logical_state(&snap, lb);
     let runner = &mut shell.runner;
-    for _ in 0..updates {
+    for i in 0..updates {
+        // Ebiten `readInputState` 讀完就把滾輪歸零（`internal/ui/input.go`）：同一顯示幀只有第一次 Update 看得到滾輪。
+        if i == 1 {
+            raw.devices.wheel_y = 0.0;
+        }
         match runner.update(&raw) {
             Ok(RunnerStep::Continue) => {}
             Ok(RunnerStep::Terminated) => {
@@ -296,6 +370,7 @@ fn drive(
     if let Some(mut image) = images.get_mut(&shell.image) {
         image.data = Some(opaque_rgba(&screen.pix));
     }
+    place_controls_panel(shell, &mut images, &mut sprites);
     if let Some(run) = shell.script.as_mut() {
         let index = run.next;
         writeln!(run.frames, "{}", frame_record(index, updates, &screen.pix, game_frame, &progress))
@@ -402,17 +477,70 @@ fn record_shot(run: &mut ScriptRun, name: &str, image: &Image, last_frame: &[u8]
     writeln!(run.shots, "{line}").expect("shots.jsonl");
 }
 
+/// r5i：設定面板開著時，把疊層上傳成貼圖（面板狀態變了才重傳；預乘 alpha 換成 Bevy 精靈用的直接 alpha），擺在畫格
+/// 同一個位置與大小、畫在畫格上面；面板關著時隱藏。
+fn place_controls_panel(
+    shell: &mut Shell,
+    images: &mut Assets<Image>,
+    sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
+) {
+    let game = shell.sprite.and_then(|e| sprites.get(e).ok()).map(|(s, t, _)| (s.custom_size, t.translation));
+    let Some((mut sprite, mut transform, mut visibility)) = shell.panel_sprite.and_then(|e| sprites.get_mut(e).ok())
+    else {
+        return;
+    };
+    let Some((key, surface)) = shell.runner.controls_panel_surface() else {
+        if *visibility != Visibility::Hidden {
+            *visibility = Visibility::Hidden;
+        }
+        shell.panel_key = None;
+        return;
+    };
+    if shell.panel_key.as_deref() != Some(key) {
+        if let Some(mut image) = images.get_mut(&shell.panel_image) {
+            image.data = Some(straight_alpha(&surface.pix));
+        }
+        shell.panel_key = Some(key.to_string());
+    }
+    if let Some((size, translation)) = game {
+        if sprite.custom_size != size {
+            sprite.custom_size = size;
+        }
+        let t = Vec3::new(translation.x, translation.y, 1.0);
+        if transform.translation != t {
+            transform.translation = t;
+        }
+    }
+    if *visibility != Visibility::Visible {
+        *visibility = Visibility::Visible;
+    }
+}
+
+/// 預乘 alpha 的 RGBA → 直接 alpha（Bevy 精靈的混色是 `src*a + dst*(1-a)`）。
+fn straight_alpha(pix: &[u8]) -> Vec<u8> {
+    let mut out = pix.to_vec();
+    for px in out.as_chunks_mut::<4>().0 {
+        let a = px[3] as u32;
+        if a != 0 && a != 255 {
+            for c in &mut px[..3] {
+                *c = ((*c as u32 * 255 + a / 2) / a).min(255) as u8;
+            }
+        }
+    }
+    out
+}
+
 /// 依視窗實體大小擺放畫格：倍率 `lb.scale`、左上角在 `(ox, oy)`。Bevy 的 2D 座標以視窗中心為原點、y 向上、
 /// 單位是邏輯像素，所以先換算成邏輯像素（除以 `sf`）。
 fn place_sprite(
     shell: &Shell,
-    sprites: &mut Query<(&mut Sprite, &mut Transform)>,
+    sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
     lb: Letterbox,
     w: u32,
     h: u32,
     sf: f32,
 ) {
-    let Some((mut sprite, mut transform)) = shell.sprite.and_then(|e| sprites.get_mut(e).ok()) else {
+    let Some((mut sprite, mut transform, _)) = shell.sprite.and_then(|e| sprites.get_mut(e).ok()) else {
         return;
     };
     let (sw, sh) = ((LOGICAL_W * lb.scale) as f32, (LOGICAL_H * lb.scale) as f32);

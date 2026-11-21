@@ -12,6 +12,7 @@
 #![allow(unused, dead_code, unreachable_code, clippy::todo)]
 
 pub mod game;
+pub mod go_ebiten_keys;
 mod go_json_float;
 mod go_unicode;
 mod go_x_image_font;

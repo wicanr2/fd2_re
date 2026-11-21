@@ -934,6 +934,13 @@ pub struct Game {
     /// R4 A 組新增（共用變更需求，沒有 Go 對應）：Go `Update` 在 Alt+Enter 或工具列請求時直接呼叫
     /// `ebiten.SetFullscreen(!ebiten.IsFullscreen())`；`fd2-game` 不碰視窗，改設這個旗標，外殼讀取後清除。
     pub(crate) fullscreen_toggle_requested: bool,
+    /// R5 階段 4（r5i）：Go `g.input`（`main.go` 新增欄位，`player_input.go`）。正式執行（[`PlayerRunner`]）時建立；
+    /// 測試與重播是 `None`，或在 F12 開面板時才由 `open_controls_panel` 建立（同 Go）。
+    pub(crate) player_input: Option<PlayerInput>,
+    /// R5 階段 4（r5i）：Go `g.pointer`：這一次 Update 的滑鼠指向（`sample_input` 寫入）。
+    pub(crate) pointer: PointerTick,
+    /// R5 階段 4（r5i）：Go `g.controls`：F12 按鍵設定面板（`player_controls_panel.rs`）。
+    pub(crate) controls: ControlsPanel,
 }
 
 /// atkAnim 是重製端 E1 全螢幕戰鬥演出；土台、角色、斬擊弧與血條使用
@@ -5133,6 +5140,8 @@ impl Game {
                     if just(Key::ArrowLeft) {
                         self.move_native_town_selection(1);
                     }
+                    // Go `main.go:5083`（r5i）：`*n.NativeTownVariant`。
+                    self.apply_pointer_to_native_town(n.native_town_variant.unwrap_or_default());
                     if enter {
                         let sel = self.camp_sel;
                         if self.camp.as_mut().unwrap().confirm_native_town_secret(sel) {
@@ -5154,6 +5163,7 @@ impl Game {
                 if just(Key::ArrowDown) {
                     self.step_campaign_menu(campaign::MENU_DOWN);
                 }
+                self.apply_pointer_to_choice_menu(); // Go `main.go:5103`（r5i）
                 let (mut selected, mut confirm) = self.step_campaign_menu(campaign::MENU_TICK);
                 if enter {
                     (selected, confirm) = self.step_campaign_menu(campaign::MENU_CONFIRM);
@@ -5350,6 +5360,7 @@ impl Game {
     ///
     /// Go：`main.go:5614`，`func (g *Game) ringInput() bool`
     pub(crate) fn ring_input(&mut self) -> bool {
+        self.pointer_overlay_rejects_click(); // Go `main.go:5623`（r5i）：作廢點在不可用方向上的 Enter
         let input = self.tick_input.clone();
         let just = |k: Key| input.is_just_pressed(k);
         let enter = just(Key::Enter) || just(Key::Space);
@@ -7325,12 +7336,21 @@ impl Game {
             self.player_poster_cycle_requested = true;
             return Ok(()); // Presentation input must not also advance a dialogue or map.
         }
+        // Alt+Enter 讀實體鍵（Go `inpututil.IsKeyJustPressed(ebiten.KeyEnter)`，r5i 起不經輸入對應層）。
+        let physical = input.physical();
         if self.player_fullscreen_requested
-            || (just(Key::Enter)
-                && (input.is_pressed(Key::Alt) || input.is_pressed(Key::AltLeft) || input.is_pressed(Key::AltRight)))
+            || (physical.is_just_pressed(Key::Enter)
+                && (physical.is_pressed(Key::Alt)
+                    || physical.is_pressed(Key::AltLeft)
+                    || physical.is_pressed(Key::AltRight)))
         {
             // Go `ebiten.SetFullscreen(!ebiten.IsFullscreen())`：視窗是外殼的事，這裡只留請求。
             self.fullscreen_toggle_requested = true;
+            return Ok(());
+        }
+        if !native_modifier_held(&input) && just(Key::F12) {
+            // 全域：按鍵設定面板（手把 Start 預設對應 F12；Go `main.go:8399`，r5i）
+            self.open_controls_panel();
             return Ok(());
         }
         if self.native_defeat.is_some() {
@@ -7406,8 +7426,9 @@ impl Game {
             // 全域：音樂開關（Go `toggleNativeSystemOption(0)`，`r8`）
             todo!("R8: action_overlay_runtime.go:toggleNativeSystemOption（F6 音樂開關）")
         }
-        if global && just(Key::F12) {
-            // 全域：開發除錯 HUD 開關
+        let physical = input.physical();
+        if self.native_ending.is_none() && physical.is_pressed(Key::Control) && physical.is_just_pressed(Key::F12) {
+            // 全域：Ctrl+F12 開發除錯 HUD 開關（實體鍵；Go `main.go:8472`，r5i）
             self.debug = !self.debug;
         }
         if self.banner_t > 0 {
@@ -7760,6 +7781,7 @@ impl Game {
                 self.move_map_cursor(0, -1);
             }
         }
+        self.follow_pointer_on_map(); // 滑鼠：移動或點下時游標跟到指向的格子（Go `main.go:9136`，r5i）
         // 邊界
         if self.cur_x < 0 {
             self.cur_x = 0;

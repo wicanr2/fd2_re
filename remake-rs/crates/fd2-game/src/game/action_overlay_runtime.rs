@@ -270,6 +270,7 @@ impl Game {
                 self.ring_sel = direction as i64;
             }
         }
+        self.apply_pointer_to_overlay(state.availability); // Go `action_overlay_runtime.go:890`（r5i）
     }
 
     /// beginBattleActionOverlay 依 sub_173E7（0x18E53／0x18ED6 各呼叫一次）挑起始

@@ -3039,3 +3039,42 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 | 播放驗證 `r5o_audio_play` | `passed`（ALSA null 裝置，沒有人耳聽辨） |
 
 `fd2-game`、`fd2-rules`、`fd2-campaign` 的原始碼沒有改，只有 `Cargo.lock` 的 `fd2-app` 依賴邊變動，本輪沒有重跑三者的測試套件與第一章重播。
+
+## R5 階段 4：r5i（滑鼠、手把與按鍵設定面板，2026-11-21）
+
+代號 `r5i`。照 Go v.1.1.15（`7c710b34`，使用者 2026-11-16 同意的第四次凍結例外）移植遊戲內滑鼠、手把與 F12 按鍵設定面板
+（[121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)「階段 4 使用者定案」）。
+
+### r5i：模組
+
+| Rust | Go 來源 | 內容 |
+|---|---|---|
+| `game/player_input.rs` | `player_input.go` | 輸入對應層：實體輸入 → `PlayerInput` → 邏輯按鍵；滑鼠與手把每次 `Update` 前取樣一次換成「虛擬按住」的邏輯鍵，滑鼠另產生 `PointerTick` |
+| `game/player_input_bindings.rs` | `player_input_bindings.go` | 可設定動作、鍵盤鍵與手把按鈕的綁定，`controls-settings.json` 讀寫（寫出位元組與 Go `MarshalIndent` 相同，兩版互通） |
+| `game/player_input_pointer.rs` | `player_input_pointer.go` | 滑鼠指向換算成游標格或選單列，走方向鍵同一條路；左鍵轉 Enter，點到不可用的指令環方向時作廢 |
+| `game/player_controls_panel.rs` | `player_controls_panel.go` | F12 設定面板（版面依 mm3 核可的分組表格）：CPU 畫 1920×1200 疊層，縮放與疊合由外殼做 |
+| `game/player_controls_locale.rs` | `player_controls_locale.go` | `assets/locales/<語系>/controls.json` 的精確鍵集合契約（不進 `pack.json`） |
+| `go_ebiten_keys.rs` | Ebiten v2.6.6 `internal/ui/keys.go` | `ebiten.Key` 數值、鍵名與別名；設定檔鍵名與面板取鍵順序照 Ebiten。`rust-port-no-go-stdlib` 的具名例外（使用者 2026-11-21 同意），Apache 2.0 聲明在模組內 |
+| `fd2-app/src/input.rs`、`shell.rs` | — | 實體快照加滑鼠右鍵、滾輪、視窗焦點與手把（Bevy gamepad），設定面板疊層的呈現 |
+
+`PORTING.json` 以 `tools/rust_r5_mark_ported.py` 重算，74 個 Go 函式標 `r5_stage4_r5i`。
+
+### r5i：KNOWN_DIFFERENCES
+
+| 名稱 | 內容 | 影響 |
+|---|---|---|
+| `controls-settings-json-decoder` | Go `encoding/json` 欄位名不分大小寫、重複鍵取最後一個；serde 分大小寫、重複鍵拒收 | 只影響手改過的設定檔；兩版寫出的檔案互通 |
+| `controls-panel-final-filter` | 面板疊層在 CPU 畫，最後的縮放與疊合由 Bevy 在 GPU 做，濾波取整與 Ebiten 不同 | 只在面板開著時的視窗輸出；疊層本身逐項比對 |
+| `wheel-pixel-unit` | Bevy 的像素單位滾輪（觸控板）以 100 像素當一格，Ebiten 由平台換算 | 觸控板捲動速度 |
+
+### r5i：驗證（2026-11-21，重定基底到 r5v `81e5abdd` 之後）
+
+| 檢查 | 結果 |
+|---|---|
+| `tools/rust_r5i_controls.sh`（Go 端 `remake/cmd/fd2/rust_golden_r5i_controls_test.go` 只輸出資料，manifest `4ab2beb8…` 兩輪相同） | 鍵名 593、設定 618、輸入序列 14400、指向換算 120372、面板 744 項全部相同；面板 60 張 1920×1200 疊層的 179077 個不同像素全在 TTF 文字外框內（外框外 0，同 `ttf-raster-coverage`） |
+| 負向對照（竄改黃金） | 測試如預期失敗 |
+| `tools/rust_game_test.sh` | 413 passed、8 ignored |
+| `tools/rust_campaign_test.sh`、`tools/rust_rules_test.sh` | 530 passed、654 passed（重定基底前；r5v 沒有改這兩個套件） |
+| `tools/rust_parity_ch01.sh` | `FD2.SAV` `f3942ff2…`、`hotel-save.json` `190b9f8f…` 與 Go 逐位元組相同，`verify_chapter_parity.py` 兩份結論相同（重定基底前；r5v 沒有改 `fd2-game`） |
+| `tools/rust_r5_app_frames.sh` | `letterbox-1500x850` 433 幀、`opening-ch01-1280x800` 2319 幀，外殼與無畫面驅動逐幀相同（`7808b6b4…`、`cc82070f…`），13 張截圖不同像素 0 |
+| `fd2-app`（含 r5v 音訊） | fmt、`fd2-app`／`fd2-game` clippy `-D warnings` 通過；單元測試 49 passed |

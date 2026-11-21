@@ -22953,5 +22953,544 @@
         "todo_branches": []
       }
     ]
+  },
+  "r5_stage4_r5i": {
+    "rule": "Go v.1.1.15（7c710b34）新增的五個檔不在 go_source_commit_stage0 的 files 表內，另列於此；行號是 7c710b34 的。player_controls_panel.go 的工具列入口（player_toolbar.go 的「按鍵」）在 R6，沒有列。",
+    "go_commit": "7c710b34d9b03149925dd47a23986b080119de99",
+    "functions": [
+      {
+        "go": "player_input.go:29",
+        "func": "keyPressDuration",
+        "rust": "（併入）fd2_game::game::PlayerInput::logical_tick",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:36",
+        "func": "keyJustPressed",
+        "rust": "（併入）fd2_game::game::PlayerInput::logical_tick",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:44",
+        "func": "appendJustPressedKeys",
+        "rust": "（併入）fd2_game::game::PlayerInput::logical_tick",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:59",
+        "func": "newControlKeyTable",
+        "rust": "fd2_game::game::ControlKeyTable::new",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:121",
+        "func": "newPlayerInput",
+        "rust": "fd2_game::game::PlayerInput::new",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:127",
+        "func": "setBindings",
+        "rust": "fd2_game::game::PlayerInput::set_bindings",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:133",
+        "func": "keyboardDuration",
+        "rust": "fd2_game::game::PlayerInput::keyboard_duration",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:146",
+        "func": "virtualDuration",
+        "rust": "fd2_game::game::PlayerInput::virtual_duration",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:156",
+        "func": "duration",
+        "rust": "fd2_game::game::PlayerInput::duration",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:164",
+        "func": "appendJustPressed",
+        "rust": "fd2_game::game::PlayerInput::append_just_pressed",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:194",
+        "func": "suppressVirtual",
+        "rust": "fd2_game::game::PlayerInput::suppress_virtual",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:201",
+        "func": "step",
+        "rust": "fd2_game::game::PlayerInput::step",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:228",
+        "func": "stepMouse",
+        "rust": "fd2_game::game::PlayerInput::step_mouse",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:272",
+        "func": "stepGamepads",
+        "rust": "fd2_game::game::PlayerInput::step_gamepads",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:315",
+        "func": "stickDirection",
+        "rust": "fd2_game::game::stick_direction",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:333",
+        "func": "readInputDevices",
+        "rust": "fd2_app::shell（Bevy 輸入）＋fd2_game::game::DeviceInputState::update",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:359",
+        "func": "sampleInput",
+        "rust": "fd2_game::game::Game::sample_input",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input.go:371",
+        "func": "pointerIn",
+        "rust": "fd2_game::game::pointer_in",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:83",
+        "func": "parsePadButton",
+        "rust": "fd2_game::game::parse_pad_button",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:128",
+        "func": "controlActionIndex",
+        "rust": "fd2_game::game::control_action_index",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:153",
+        "func": "defaultControlBindings",
+        "rust": "fd2_game::game::default_control_bindings",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:175",
+        "func": "bindableKey",
+        "rust": "fd2_game::game::bindable_key",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:189",
+        "func": "keyboardOwner",
+        "rust": "fd2_game::game::ControlBindings::keyboard_owner",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:198",
+        "func": "gamepadOwner",
+        "rust": "fd2_game::game::ControlBindings::gamepad_owner",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:209",
+        "func": "setKeyboard",
+        "rust": "fd2_game::game::ControlBindings::set_keyboard",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:216",
+        "func": "setGamepad",
+        "rust": "fd2_game::game::ControlBindings::set_gamepad",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:224",
+        "func": "clearAction",
+        "rust": "fd2_game::game::ControlBindings::clear_action",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:229",
+        "func": "resetAction",
+        "rust": "fd2_game::game::ControlBindings::reset_action",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:239",
+        "func": "resetConflict",
+        "rust": "fd2_game::game::ControlBindings::reset_conflict",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:251",
+        "func": "normalizeStickDeadzone",
+        "rust": "fd2_game::game::normalize_stick_deadzone",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:271",
+        "func": "controlsSettingsPath",
+        "rust": "fd2_game::game::controls_settings_path",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:282",
+        "func": "loadControlsSettings",
+        "rust": "fd2_game::game::load_controls_settings",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:286",
+        "func": "loadControlsSettingsFrom",
+        "rust": "fd2_game::game::load_controls_settings_from",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:343",
+        "func": "settingsFile",
+        "rust": "fd2_game::game::ControlBindings::settings_file",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:371",
+        "func": "saveControlsSettings",
+        "rust": "fd2_game::game::save_controls_settings",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_bindings.go:376",
+        "func": "saveControlsSettingsTo",
+        "rust": "fd2_game::game::save_controls_settings_to",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:26",
+        "func": "floorDiv",
+        "rust": "fd2_game::game::floor_div",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:35",
+        "func": "pointerMapCell",
+        "rust": "fd2_game::game::Game::pointer_map_cell",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:62",
+        "func": "followPointerOnMap",
+        "rust": "fd2_game::game::Game::follow_pointer_on_map",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:90",
+        "func": "pointerOverlayDirection",
+        "rust": "fd2_game::game::Game::pointer_overlay_direction",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:121",
+        "func": "applyPointerToOverlay",
+        "rust": "fd2_game::game::Game::apply_pointer_to_overlay",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:128",
+        "func": "pointerOverlayRejectsClick",
+        "rust": "fd2_game::game::Game::pointer_overlay_rejects_click",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:144",
+        "func": "titleMenuRects",
+        "rust": "fd2_game::game::Game::title_menu_rects",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:163",
+        "func": "applyPointerToTitleMenu",
+        "rust": "fd2_game::game::Game::apply_pointer_to_title_menu",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:178",
+        "func": "titleSlotRects",
+        "rust": "fd2_game::game::title_slot_rects",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:187",
+        "func": "applyPointerToTitleSlots",
+        "rust": "fd2_game::game::Game::apply_pointer_to_title_slots",
+        "status": "ported",
+        "todo_branches": [
+          "todo!(\"R8: title.go:applyTitleSlotEvent\")"
+        ]
+      },
+      {
+        "go": "player_input_pointer.go:202",
+        "func": "nativeTownSelectionRects",
+        "rust": "fd2_game::game::native_town_selection_rects",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:216",
+        "func": "applyPointerToNativeTown",
+        "rust": "fd2_game::game::Game::apply_pointer_to_native_town",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:237",
+        "func": "choiceMenuRects",
+        "rust": "fd2_game::game::choice_menu_rects",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_input_pointer.go:245",
+        "func": "applyPointerToChoiceMenu",
+        "rust": "fd2_game::game::Game::apply_pointer_to_choice_menu",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_locale.go:20",
+        "func": "controlsLocaleContract",
+        "rust": "fd2_game::game::controls_locale_contract",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_locale.go:58",
+        "func": "loadControlsLocale",
+        "rust": "fd2_game::game::load_controls_locale",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_locale.go:62",
+        "func": "loadControlsLocaleFrom",
+        "rust": "fd2_game::game::load_controls_locale_from",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_locale.go:91",
+        "func": "text",
+        "rust": "fd2_game::game::ControlsLocale::text",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:64",
+        "func": "noControlsPanelInput",
+        "rust": "fd2_game::game::no_controls_panel_input",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:90",
+        "func": "controlsLines",
+        "rust": "fd2_game::game::controls_lines",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:103",
+        "func": "controlsLineOf",
+        "rust": "fd2_game::game::controls_line_of",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:112",
+        "func": "openControlsPanel",
+        "rust": "fd2_game::game::Game::open_controls_panel",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:133",
+        "func": "closeControlsPanel",
+        "rust": "fd2_game::game::Game::close_controls_panel",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:137",
+        "func": "actionName",
+        "rust": "fd2_game::game::ControlsPanel::action_name",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:141",
+        "func": "ensureVisible",
+        "rust": "fd2_game::game::ControlsPanel::ensure_visible",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:159",
+        "func": "clampScroll",
+        "rust": "fd2_game::game::ControlsPanel::clamp_scroll",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:170",
+        "func": "commitControls",
+        "rust": "fd2_game::game::Game::commit_controls",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:181",
+        "func": "stepControlsPanel",
+        "rust": "fd2_game::game::Game::step_controls_panel",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:276",
+        "func": "controlsPanelPoint",
+        "rust": "fd2_game::game::Game::controls_panel_point",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:318",
+        "func": "captureControlsKey",
+        "rust": "fd2_game::game::Game::capture_controls_key",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:335",
+        "func": "captureControlsButton",
+        "rust": "fd2_game::game::Game::capture_controls_button",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:348",
+        "func": "applyControlsConflict",
+        "rust": "fd2_game::game::Game::apply_controls_conflict",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:367",
+        "func": "controlKeyLabel",
+        "rust": "fd2_game::game::control_key_label",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:390",
+        "func": "padLabel",
+        "rust": "fd2_game::game::ControlsPanel::pad_label",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:408",
+        "func": "repeatTick",
+        "rust": "fd2_game::game::repeat_tick",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:412",
+        "func": "readControlsPanelInput",
+        "rust": "fd2_game::game::Game::read_controls_panel_input",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:510",
+        "func": "updateControlsPanel",
+        "rust": "fd2_game::game::Game::update_controls_panel",
+        "status": "ported",
+        "todo_branches": []
+      },
+      {
+        "go": "player_controls_panel.go:536",
+        "func": "drawControlsPanel",
+        "rust": "fd2_game::game::Game::draw_controls_panel_surface（疊層）＋ fd2_app::shell::place_controls_panel（縮放疊合）",
+        "status": "ported",
+        "todo_branches": []
+      }
+    ],
+    "call_sites": [
+      "main.go:8399 F12 開面板 → main.rs update_frame",
+      "main.go:8472 Ctrl+F12 除錯 HUD（實體鍵） → main.rs update_frame",
+      "main.go:8395 Alt+Enter 讀實體鍵 → main.rs update_frame（TickInput::physical）",
+      "native_town_secret_input.go 修飾鍵與 F1..F10 讀實體鍵 → native_town_secret_input.rs",
+      "main.go:5083 applyPointerToNativeTown、main.go:5103 applyPointerToChoiceMenu → main.rs camp_input",
+      "main.go:5623 pointerOverlayRejectsClick → main.rs ring_input",
+      "main.go:9136 followPointerOnMap → main.rs update_frame",
+      "action_overlay_runtime.go:890 applyPointerToOverlay → action_overlay_runtime.rs",
+      "title.go:688 applyPointerToTitleMenu、title.go:703 applyPointerToTitleSlots → title.rs title_update",
+      "modern_hd_presentation.go:38..41、:70 updateControlsPanel／sampleInput → player_runner.rs update",
+      "player_shortcuts.go:349 說明畫面 F12 行 → player_shortcuts.rs"
+    ]
   }
 }

@@ -767,3 +767,14 @@ Go 的 BGM 循環點靜音（最多約 98 ms）是否照做，也一併決定。
 結果：227 個音檔（BGM 30、音效 OGG 100、WAV 97）解碼後與 Go 逐樣本相同，30 首 BGM 循環兩圈與 Go 相同，播放驗證通過。
 `lookup1Values` 的 `math.Pow` 在 dim ≥ 3 的完全次方與 glibc 不同，改以整數根加 Go 例外表重現。四個 `go_*` 模組登記為
 `rust-port-no-go-stdlib` 的具名例外（使用者 11-16 定案 C 案時同意）。r5o 一節的逐樣本差異數字是 A 案當時的紀錄，已被本節取代。
+
+## 階段 4 結果：r5i 滑鼠、手把與按鍵設定面板（2026-11-21）
+
+照 Go v.1.1.15 移植遊戲內滑鼠、手把與 F12 按鍵設定面板：輸入對應層把實體輸入換成邏輯按鍵，遊戲只讀邏輯按鍵；
+滑鼠指向地圖格與選單列、左鍵確認、右鍵返回；手把 A＝Enter、B＝Esc、X＝Space、Start＝設定；`controls-settings.json`
+與 Go 版互通。工具列的「按鍵」入口照定案延到 R6。逐項落地見
+[`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 4：r5i」。
+
+結果：Go 局部黃金（鍵名、設定檔、輸入序列、指向換算、面板）全部相同，面板像素差異只在 TTF 文字外框內；`fd2-game`
+全套測試與第一章重播不變；外殼與無畫面驅動逐幀相同。`go_ebiten_keys.rs` 經使用者同意登記為 `rust-port-no-go-stdlib`
+的具名例外。R5 階段 4 剩下的只有 GPU 加速模式（階段 5）。

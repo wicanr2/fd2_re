@@ -27,15 +27,19 @@ pub(crate) fn native_bios_function_scan(modifier: i64, function: i64) -> (i64, b
 
 /// Go：`native_town_secret_input.go:22`，`func nativeModifierHeld() bool`
 ///
-/// 簽名改寫：Go 讀全域鍵盤狀態，Rust 讀本幀輸入 `input`。
+/// 簽名改寫：Go 讀全域鍵盤狀態，Rust 讀本幀輸入 `input`。Go 讀實體鍵（`ebiten.IsKeyPressed`，不經 r5i 的輸入
+/// 對應層），Rust 讀 `input.physical()`。
 pub(crate) fn native_modifier_held(input: &TickInput) -> bool {
+    let input = input.physical();
     input.is_pressed(Key::Shift) || input.is_pressed(Key::Control) || input.is_pressed(Key::Alt)
 }
 
 /// Go：`native_town_secret_input.go:28`，`func pressedNativeTownSecretScan() (int, bool)`
 ///
-/// 簽名改寫：同 [`native_modifier_held`]，讀本幀輸入 `input`。
+/// 簽名改寫：同 [`native_modifier_held`]，讀本幀輸入 `input` 的實體鍵（Go `inpututil.IsKeyJustPressed`，不經 r5i 的
+/// 輸入對應層）。
 pub(crate) fn pressed_native_town_secret_scan(input: &TickInput) -> (i64, bool) {
+    let input = input.physical();
     let mut modifier: i64 = -1;
     for (index, key) in [Key::Shift, Key::Control, Key::Alt].into_iter().enumerate() {
         if input.is_pressed(key) {
