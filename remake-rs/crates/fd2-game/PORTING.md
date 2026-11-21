@@ -3091,3 +3091,7 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 ## R6 開場清冊與逐格解碼
 
 `game/modern_opening.rs` 移植 `modern_hd_opening.go` 的圖組形狀、原版來源雜湊、清冊預檢與取圖。開場持有壓縮檔與目前一格的 `Picture`。`game/modern_hd_sky_key_assets.rs` 移植共用 ANI #0 與 FDOTHER #34 的入場、取圖、三格快取與原版來源預檢。開場的 ANI #0 走同一圖庫。畫面選擇和 F2 切換留給播放器接線。[119 的 R6 驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-天空之鑰共用圖庫data-ready2026-11-21)
+
+## R6 地形清冊與按需解碼
+
+`game/modern_hd_terrain.rs` 移植 `modern_hd_terrain.go` 的清冊預檢、地圖按需解碼及原版遮罩核對。每個來源路徑驗過雜湊後，等同內容共用像素。交付的地圖附畫格用途與原版索引色，快取最近兩張。調色與繪圖計畫待接。[119 的 R6 地形驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形清冊與按需解碼data-ready2026-11-22)

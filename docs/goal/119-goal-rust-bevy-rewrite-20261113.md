@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 地形清冊與按需解碼（DATA-READY，2026-11-22）
+
+依 [61 的按需解碼契約](../knowledge-base/61-modern-theme-runtime-spec.md) 與 Go `697c0913` 的 `modern_hd_terrain.go`。清冊 SHA-256 為 `ea41e4b9a9d656f707a4f05c7eb64ddf36f0bbbeaee55ea1ff085b2f067988f1`，其中 492 筆地形登錄涵蓋 33 張地圖、3,983 個畫格。每格保留地圖 ID、原生畫格索引及地形或前景用途。
+
+載入清冊時核對身分、索引、重複登錄、逐檔 SHA-256 和 144×144 PNG 標頭。首次取用以最多三條工作流解碼，同 SHA-256 共用像素，驗過原版 FDSHAP 遮罩與索引色後才交付整張地圖。每個來源路徑在首次使用及快取淘汰後都重驗。解碼或透明度異常讓該地圖退回原版，檔案變動和原版遮罩不符回報硬性錯誤。最近兩張地圖保留解碼結果。驗收比對全部 Go 畫格與原版遮罩，另驗地圖整批拒收、共用與淘汰。畫面調色、地圖合成及 F2／F11 仍屬後續執行期接線。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-terrain-20261122` 通過。33 張地圖的 3,983 格畫面、用途與原版索引色集合逐格相同，序列 SHA-256 為 `fbbffed2e8cafd31ca8c9ff65f3a38e285e308a134dc91acd50534c393a8e974`。原版資料由 `load_separated_fdshap_bank` 核對 `FDSHAP.DAT` 識別與來源雜湊，再驗各格透明像素及分離遮罩。開場 173 格與天空之鑰 196 格重跑通過。格式、Clippy 和 431 項 Rust 回歸通過。
+
+同內容但不同檔名在首次解碼及重載時各自驗 SHA-256。Go 的冷載入只重驗各 SHA 群組的代表檔，兩版正式素材輸出相同。快取淘汰會釋出地形圖庫持有的像素，原版圖庫仍為同一份時重用已驗索引色集合。
+
 ### R6 天空之鑰共用圖庫（DATA-READY，2026-11-21）
 
 依 [61 的按需解碼契約](../knowledge-base/61-modern-theme-runtime-spec.md)及 Go 提交 `697c0913` 的 `modern_hd_sky_key_assets.go`。同一份正式清冊登錄 ANI #0 的 96 格和 FDOTHER #34 的 100 格。分離素材的原始中繼資料 SHA-256 分別是 `7822c022…6313`、`49b732cb…e25c`。FDOTHER 原版第 0 格只核對來源，HD 從第 1 格開始。

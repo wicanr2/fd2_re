@@ -5,11 +5,28 @@
 
 use std::path::{Component, Path};
 
+use serde::{Deserialize, de::DeserializeOwned};
 use sha2::{Digest as _, Sha256};
 
 use super::*;
 
 pub(crate) const MODERN_HANDPAINTED_THEME_ID: &str = "modern-handpainted-a";
+
+#[derive(Deserialize)]
+struct ThemeCatalog<T> {
+    schema_version: u32,
+    theme_id: String,
+    assets: Vec<T>,
+}
+
+pub(crate) fn read_theme_catalog<T: DeserializeOwned>(path: &Path) -> Result<Vec<T>> {
+    let catalog: ThemeCatalog<T> =
+        serde_json::from_slice(&read_theme_file(path)?).map_err(|err| game_err!("modern theme catalog: {err}"))?;
+    if catalog.schema_version != 1 || catalog.theme_id != MODERN_HANDPAINTED_THEME_ID {
+        return Err(game_err!("modern theme catalog: unsupported identity"));
+    }
+    Ok(catalog.assets)
+}
 
 pub(crate) fn theme_file_extension(name: &str) -> Option<&str> {
     let path = Path::new(name);

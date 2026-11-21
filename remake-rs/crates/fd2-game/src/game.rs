@@ -135,6 +135,7 @@ mod modern_hd_split_strike;
 mod modern_hd_status_text;
 mod modern_hd_system_confirmation;
 mod modern_hd_system_info;
+mod modern_hd_terrain;
 mod modern_hd_terrain_plan;
 mod modern_hd_text;
 mod modern_hd_title_interface;

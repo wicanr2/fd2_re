@@ -5732,3 +5732,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 依凍結 Go `697c0913` 移植 ANI #0 和 FDOTHER #34 的預檢、按需解碼與三格快取。開場取圖使用共用 ANI #0。第二十章預檢核對索引畫格、遮罩與色盤。
 - `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-sky-key-20261121` 通過。開場 173 格及共用圖庫 196 格的像素雜湊均與 Go 相同。格式、Clippy 與 429 項 Rust 回歸通過。新輸出由目前使用者持有，FD2 驗證容器已清除。
 - 此切片達 DATA-READY。完整主題交易、F2、開場及第二十章畫面待接到播放器。[119 的 R6 驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-天空之鑰共用圖庫data-ready2026-11-21)
+
+## 2026-11-22 Rust R6 HD1 地形清冊與按需解碼
+
+- 依凍結 Go `697c0913` 移植清冊核對、地圖整批解碼與原版 FDSHAP 遮罩驗證。每張地圖交付像素、用途和索引色，圖庫保留最近兩張解碼結果。冷載入時每條檔案路徑各自驗 SHA-256，再依相同內容共用解碼。
+- `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-terrain-20261122` 通過。33 張地圖共 3,983 格與 Go 相同。開場和天空之鑰差分、格式、Clippy 與 431 項 Rust 回歸通過。新輸出已核對擁有權，FD2 驗證容器已清除。
+- 此切片達 DATA-READY。地圖合成、調色與 F2／F11 待接。[119 的 R6 地形驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-地形清冊與按需解碼data-ready2026-11-22)

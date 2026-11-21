@@ -77,13 +77,6 @@ impl OpeningSource {
 }
 
 #[derive(Deserialize)]
-struct Catalog {
-    schema_version: u32,
-    theme_id: String,
-    assets: Vec<CatalogEntry>,
-}
-
-#[derive(Deserialize)]
 #[serde(tag = "role")]
 enum CatalogEntry {
     #[serde(rename = "opening_presentation_hd_set")]
@@ -226,13 +219,8 @@ impl OpeningAsset {
 
 impl ModernOpening {
     pub(crate) fn load(catalog: &Path, root: &Path, original: &Path) -> Result<Option<Self>> {
-        let catalog: Catalog = serde_json::from_slice(&read_theme_file(catalog)?)
-            .map_err(|err| game_err!("modern theme catalog: {err}"))?;
-        if catalog.schema_version != 1 || catalog.theme_id != MODERN_HANDPAINTED_THEME_ID {
-            return Err(game_err!("modern theme catalog: unsupported identity"));
-        }
         let mut opening = Self::default();
-        for entry in catalog.assets {
+        for entry in read_theme_catalog(catalog)? {
             match entry {
                 CatalogEntry::Opening(asset) => {
                     if opening.banks.contains_key(&asset.source) {
