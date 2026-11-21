@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 天空之鑰共用圖庫（DATA-READY，2026-11-21）
+
+依 [61 的按需解碼契約](../knowledge-base/61-modern-theme-runtime-spec.md)及 Go 提交 `697c0913` 的 `modern_hd_sky_key_assets.go`。同一份正式清冊登錄 ANI #0 的 96 格和 FDOTHER #34 的 100 格。分離素材的原始中繼資料 SHA-256 分別是 `7822c022…6313`、`49b732cb…e25c`。FDOTHER 原版第 0 格只核對來源，HD 從第 1 格開始。
+
+入場驗證來源、製圖計畫、幾何和每格 PNG 雜湊。取圖時再讀同一路徑並核對雜湊，每庫保留最近使用的三張，以內容雜湊共用已解碼的唯讀畫格。ANI #0 的全不透明與黑幕條件、FDOTHER #34 的透明與不透明像素覆蓋均逐格驗證。像素檢查不符時退回該庫的原版畫格，檔案缺失或改動屬硬性錯誤。原版驗證使用分離素材的索引畫格、遮罩與 VGA 色盤。完成條件是兩庫逐格比對 Go 取圖、核對原版來源與測通錯誤邊界。這次接到開場資料入口，畫面與 F2 依完整主題交易接線。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-sky-key-20261121` 重跑開場 173 格與共用圖庫 196 格。兩份序列分別與 Go 一致，共用圖庫序列 SHA-256 為 `983e940824caf698cd8ef0fc9389982a80cac298651fb6c6f7157c29cbceb729`。原版核對涵蓋 FDOTHER #34 的 101 格和 ANI #0 的 96 份索引畫格及色盤。負向測試覆蓋快取命中時缺檔、超出索引、快取淘汰、同一 PNG 對應不同黑幕條件與原生資料改動。
+
+開場取圖直接使用天空之鑰的 ANI #0 圖庫。Rust 以共享的唯讀 `Arc<Picture>` 保護快取像素，持有者修改時會複製。重新解碼時仍核對先前的像素雜湊。第二十章繪製和 HD 世界預檢待接入播放器。
+
 ### R6 開場 HD 清冊與逐格解碼（DATA-READY，2026-11-21）
 
 依 [61 的按需解碼契約](../knowledge-base/61-modern-theme-runtime-spec.md) 和凍結 Go 提交 `697c0913` 的 `modern_hd_opening.go`。清冊 SHA-256 為 `ea41e4b9a9d656f707a4f05c7eb64ddf36f0bbbeaee55ea1ff085b2f067988f1`。本切片涵蓋 `opening_presentation_hd_set` 的 12 組、173 格。共用的 ANI #0 另有圖庫與黑幕契約，整套主題要等該圖庫及其餘角色驗證後才可發布。
@@ -129,7 +139,7 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-opening-20261121` 通過。Go 與 Rust 的 173 格像素雜湊逐格相同，序列 SHA-256 為 `02baa600964a9fcf88db55b6d5c169593979d094a8d539a0fdce7a9e224c1f2a`。Rust 的三項邊界測試與 Go 的八項清冊反例通過。16 位元 PNG 以完整 alpha 判斷不透明。`tools/rust_game_test.sh` 的格式、Clippy 與 427 項測試通過。收據只保存雜湊及測試紀錄，私人素材以唯讀掛載。
 
-Rust 開場載入與取圖已可由測具驗證。播放器仍須接入共用 ANI #0、完整主題交易及開場繪製，驗收再走 F2 和視窗畫面。
+Rust 開場載入與取圖已可由測具驗證。共用 ANI #0 已接到取圖端。完整主題交易及開場繪製接線後，再驗證 F2 和視窗畫面。
 
 ### 2026-11-13 R0 起步、R1 第一個切片：`fdsave`
 

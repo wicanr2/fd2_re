@@ -24,6 +24,7 @@ fn opacity_uses_the_complete_sixteen_bit_alpha() {
     assert_eq!(decode_opaque_png_picture(&opaque).unwrap().read_pixels(), &[8, 16, 32, 255]);
     assert!(decode_opaque_png_picture(&partial).is_none());
     assert_eq!(decode_png_picture(&partial).unwrap().read_pixels(), &[8, 16, 32, 255]);
+    assert_eq!(decode_precise_png_picture(&partial).unwrap().read_pixels(), &[7, 15, 31, 255]);
 }
 
 #[test]

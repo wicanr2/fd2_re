@@ -5726,3 +5726,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 依凍結 Go `697c0913` 移植 12 組 HD 開場清冊。入場核對原始來源、製圖計畫與每條檔案路徑的雜湊，第一次取圖才核對像素，並保留目前一格的解碼結果。
 - `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-opening-20261121` 通過。173 格的 Go／Rust 像素雜湊逐格相同。格式、Clippy、427 項 Rust 測試及 Go 開場清冊反例通過。私人素材唯讀掛載，僅保留本機雜湊與測試紀錄。新輸出由目前使用者持有，FD2 驗證容器已清除。
 - 此切片達 DATA-READY。共用 ANI #0、完整主題交易與播放器繪製待接。規格與收據見 [119](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-開場-hd-清冊與逐格解碼data-ready2026-11-21)。
+
+## 2026-11-21 Rust R6 天空之鑰與開場共用圖庫
+
+- 依凍結 Go `697c0913` 移植 ANI #0 和 FDOTHER #34 的預檢、按需解碼與三格快取。開場取圖使用共用 ANI #0。第二十章預檢核對索引畫格、遮罩與色盤。
+- `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-sky-key-20261121` 通過。開場 173 格及共用圖庫 196 格的像素雜湊均與 Go 相同。格式、Clippy 與 429 項 Rust 回歸通過。新輸出由目前使用者持有，FD2 驗證容器已清除。
+- 此切片達 DATA-READY。完整主題交易、F2、開場及第二十章畫面待接到播放器。[119 的 R6 驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-天空之鑰共用圖庫data-ready2026-11-21)

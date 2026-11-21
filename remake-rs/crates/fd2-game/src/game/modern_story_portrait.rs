@@ -3,9 +3,34 @@
 //! 骨架：Go 檔的 1 個函式中產生 0 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
 //! HD 檔：型別只保留第一章忠實模式執行到的欄位，其餘欄位與函式在 R6。
 
+use std::path::{Component, Path};
+
+use sha2::{Digest as _, Sha256};
+
 use super::*;
 
 pub(crate) const MODERN_HANDPAINTED_THEME_ID: &str = "modern-handpainted-a";
+
+pub(crate) fn theme_file_extension(name: &str) -> Option<&str> {
+    let path = Path::new(name);
+    let mut parts = path.components();
+    match (parts.next(), parts.next()) {
+        (Some(Component::Normal(base)), None) if base == name && !name.contains('\\') => path.extension()?.to_str(),
+        _ => None,
+    }
+}
+
+pub(crate) fn read_theme_file(path: &Path) -> Result<Vec<u8>> {
+    std::fs::read(path).map_err(|err| game_err!("modern theme: {}: {err}", path.display()))
+}
+
+pub(crate) fn read_verified_theme_file(path: &Path, sha256: &str) -> Result<Vec<u8>> {
+    let bytes = read_theme_file(path)?;
+    if format!("{:x}", Sha256::digest(&bytes)) != sha256 {
+        return Err(game_err!("modern theme: SHA-256 differs for {}", path.display()));
+    }
+    Ok(bytes)
+}
 
 /// Go：`modern_story_portrait.go:21`
 ///

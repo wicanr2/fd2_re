@@ -3090,4 +3090,4 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 
 ## R6 開場清冊與逐格解碼
 
-`game/modern_opening.rs` 移植 `modern_hd_opening.go` 的圖組形狀、原版來源雜湊、清冊預檢與取圖。開場持有壓縮檔與目前一格的 `Picture`。共用 ANI #0、畫面選擇和 F2 切換留給播放器接線。[119 的 R6 驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-開場-hd-清冊與逐格解碼data-ready2026-11-21)
+`game/modern_opening.rs` 移植 `modern_hd_opening.go` 的圖組形狀、原版來源雜湊、清冊預檢與取圖。開場持有壓縮檔與目前一格的 `Picture`。`game/modern_hd_sky_key_assets.rs` 移植共用 ANI #0 與 FDOTHER #34 的入場、取圖、三格快取與原版來源預檢。開場的 ANI #0 走同一圖庫。畫面選擇和 F2 切換留給播放器接線。[119 的 R6 驗證](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-天空之鑰共用圖庫data-ready2026-11-21)

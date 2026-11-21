@@ -130,6 +130,7 @@ mod modern_hd_service_menu_transition;
 mod modern_hd_shop_comparison;
 mod modern_hd_shop_digits;
 mod modern_hd_sky_key;
+mod modern_hd_sky_key_assets;
 mod modern_hd_split_strike;
 mod modern_hd_status_text;
 mod modern_hd_system_confirmation;

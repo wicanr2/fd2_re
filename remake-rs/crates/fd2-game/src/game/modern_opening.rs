@@ -2,11 +2,12 @@
 //! ANI #0 由天空之鑰圖庫提供，完整主題載入時需另外驗證。
 
 use std::io::Cursor;
-use std::path::{Component, Path};
+use std::path::Path;
 
 use serde::Deserialize;
 use sha2::{Digest as _, Sha256};
 
+use super::modern_hd_sky_key_assets::{SkyKeyAsset, SkyKeyAssets};
 use super::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
@@ -68,7 +69,7 @@ impl OpeningSource {
         };
         let mut digest = Sha256::new();
         for path in paths {
-            let raw = read_opening_file(&original.join(&path))?;
+            let raw = read_theme_file(&original.join(&path))?;
             digest.update(format!("{path} {:x}\n", Sha256::digest(raw)));
         }
         Ok(format!("{:x}", digest.finalize()))
@@ -87,6 +88,8 @@ struct Catalog {
 enum CatalogEntry {
     #[serde(rename = "opening_presentation_hd_set")]
     Opening(Box<OpeningAsset>),
+    #[serde(rename = "story_animation_hd_set")]
+    SkyKey(Box<SkyKeyAsset>),
     #[serde(other)]
     Other,
 }
@@ -138,29 +141,9 @@ struct OpeningBank {
 #[derive(Debug, Default)]
 pub(crate) struct ModernOpening {
     banks: BTreeMap<OpeningSource, OpeningBank>,
+    pub(crate) sky_key: SkyKeyAssets,
     current: Option<(String, Arc<Picture>)>,
     notices: Vec<String>,
-}
-
-fn asset_extension(name: &str) -> Option<&str> {
-    let path = Path::new(name);
-    let mut parts = path.components();
-    match (parts.next(), parts.next()) {
-        (Some(Component::Normal(base)), None) if base == name && !name.contains('\\') => path.extension()?.to_str(),
-        _ => None,
-    }
-}
-
-fn read_opening_file(path: &Path) -> Result<Vec<u8>> {
-    std::fs::read(path).map_err(|err| game_err!("modern opening: {}: {err}", path.display()))
-}
-
-fn read_verified(path: &Path, sha256: &str) -> Result<Vec<u8>> {
-    let bytes = read_opening_file(path)?;
-    if format!("{:x}", Sha256::digest(&bytes)) != sha256 {
-        return Err(game_err!("modern opening: SHA-256 differs for {}", path.display()));
-    }
-    Ok(bytes)
 }
 
 impl OpeningAsset {
@@ -190,10 +173,10 @@ impl OpeningAsset {
         let mut shared: BTreeMap<String, Arc<[u8]>> = BTreeMap::new();
         let mut frames = Vec::with_capacity(count);
         for (name, sha256) in self.files.into_iter().zip(self.frame_sha256) {
-            if asset_extension(&name) != Some("png") || !paths.insert(name.clone()) {
+            if theme_file_extension(&name) != Some("png") || !paths.insert(name.clone()) {
                 return Err(game_err!("modern opening: unsafe or duplicate frame path"));
             }
-            let bytes = read_verified(&root.join(&name), &sha256)?;
+            let bytes = read_verified_theme_file(&root.join(&name), &sha256)?;
             let bytes = match shared.entry(sha256.clone()) {
                 std::collections::btree_map::Entry::Occupied(entry) => entry.get().clone(),
                 std::collections::btree_map::Entry::Vacant(entry) => {
@@ -215,11 +198,11 @@ impl OpeningAsset {
         let mut seen = BTreeSet::new();
         let mut plans = 0;
         for (name, sha256) in self.source_files.iter().zip(&self.source_sha256) {
-            let extension = asset_extension(name);
+            let extension = theme_file_extension(name);
             if !matches!(extension, Some("json" | "png")) || !seen.insert(name) {
                 return Err(game_err!("modern opening: unsafe or duplicate provenance"));
             }
-            let bytes = read_verified(&root.join(name), sha256)?;
+            let bytes = read_verified_theme_file(&root.join(name), sha256)?;
             if extension == Some("json") {
                 plans += 1;
                 let plan: Derivation =
@@ -243,29 +226,41 @@ impl OpeningAsset {
 
 impl ModernOpening {
     pub(crate) fn load(catalog: &Path, root: &Path, original: &Path) -> Result<Option<Self>> {
-        let catalog: Catalog = serde_json::from_slice(&read_opening_file(catalog)?)
+        let catalog: Catalog = serde_json::from_slice(&read_theme_file(catalog)?)
             .map_err(|err| game_err!("modern theme catalog: {err}"))?;
         if catalog.schema_version != 1 || catalog.theme_id != MODERN_HANDPAINTED_THEME_ID {
             return Err(game_err!("modern theme catalog: unsupported identity"));
         }
         let mut opening = Self::default();
         for entry in catalog.assets {
-            if let CatalogEntry::Opening(asset) = entry {
-                if opening.banks.contains_key(&asset.source) {
-                    return Err(game_err!("modern opening: duplicate source"));
+            match entry {
+                CatalogEntry::Opening(asset) => {
+                    if opening.banks.contains_key(&asset.source) {
+                        return Err(game_err!("modern opening: duplicate source"));
+                    }
+                    opening.banks.insert(asset.source, asset.admit(root, original)?);
                 }
-                opening.banks.insert(asset.source, asset.admit(root, original)?);
+                CatalogEntry::SkyKey(asset) => opening.sky_key.admit(*asset, root, original)?,
+                CatalogEntry::Other => {}
             }
         }
         match opening.banks.len() {
             0 => Ok(None),
-            12 => Ok(Some(opening)),
+            12 if opening.sky_key.ani0.is_some() => Ok(Some(opening)),
             _ => Err(game_err!("modern opening: scene group incomplete")),
         }
     }
 
     /// `None` 表示整組的像素檢查曾失敗。上層可以畫同一格原版圖。
     pub(crate) fn frame(&mut self, source: OpeningSource, index: usize) -> Result<Option<Arc<Picture>>> {
+        if source.source_archive == OpeningArchive::Ani && source.source_resource == 0 {
+            return self
+                .sky_key
+                .ani0
+                .as_mut()
+                .ok_or_else(|| game_err!("modern opening: shared ANI0 unavailable"))?
+                .picture(index);
+        }
         let bank =
             self.banks.get_mut(&source).ok_or_else(|| game_err!("modern opening: source outside admitted banks"))?;
         let frame = bank.frames.get(index).ok_or_else(|| game_err!("modern opening: frame outside admitted bank"))?;
@@ -299,7 +294,9 @@ impl ModernOpening {
     }
 
     pub(crate) fn take_notices(&mut self) -> Vec<String> {
-        std::mem::take(&mut self.notices)
+        let mut notices = std::mem::take(&mut self.notices);
+        notices.extend(self.sky_key.ani0.as_mut().and_then(|bank| bank.take_notice()));
+        notices
     }
 }
 

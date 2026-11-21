@@ -284,17 +284,29 @@ pub(crate) fn indexed_frame(width: i64, height: i64, pixels: &[u8], palette: Col
 /// `NewImageFromImage` 都是 `uint8((v*a*0x101/0xff)>>8)`，與這裡相同；不透明的像素不變。16 位元 PNG 這裡先去掉
 /// 低位元組再預乘，Go 在 16 位元預乘後才取高位元組，半透明時可能差 1（原版美術模式沒有 16 位元 PNG，未實測）。
 pub(crate) fn decode_png_picture(data: &[u8]) -> Option<Picture> {
-    decode_png(data, false)
+    decode_png(data, PngAlpha::Legacy)
 }
 
 pub(crate) fn decode_opaque_png_picture(data: &[u8]) -> Option<Picture> {
-    decode_png(data, true)
+    decode_png(data, PngAlpha::Opaque)
 }
 
-fn decode_png(data: &[u8], require_opaque: bool) -> Option<Picture> {
+/// 對應 Go 先預乘 16 位元通道，再寫入 8 位元 RGBA。
+pub(crate) fn decode_precise_png_picture(data: &[u8]) -> Option<Picture> {
+    decode_png(data, PngAlpha::Precise)
+}
+
+#[derive(PartialEq, Eq)]
+enum PngAlpha {
+    Legacy,
+    Opaque,
+    Precise,
+}
+
+fn decode_png(data: &[u8], alpha: PngAlpha) -> Option<Picture> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(data));
     let mut transformations = png::Transformations::EXPAND | png::Transformations::ALPHA;
-    if !require_opaque {
+    if alpha == PngAlpha::Legacy {
         transformations |= png::Transformations::STRIP_16;
     }
     decoder.set_transformations(transformations);
@@ -312,11 +324,14 @@ fn decode_png(data: &[u8], require_opaque: bool) -> Option<Picture> {
         };
         let bytes_per_pixel = channels * 2;
         for px in buf[..info.buffer_size()].chunks_exact(bytes_per_pixel) {
-            if px[bytes_per_pixel - 2..] != [255, 255] {
+            let channel = |i: usize| u32::from(u16::from_be_bytes([px[2 * i], px[2 * i + 1]]));
+            let a = channel(channels - 1);
+            if alpha == PngAlpha::Opaque && a != 65535 {
                 return None;
             }
-            let rgb = if channels == 4 { [px[0], px[2], px[4]] } else { [px[0]; 3] };
-            pix.extend_from_slice(&[rgb[0], rgb[1], rgb[2], 255]);
+            let scaled = |i| ((channel(i) * a / 65535) >> 8) as u8;
+            let rgb = if channels == 4 { [scaled(0), scaled(1), scaled(2)] } else { [scaled(0); 3] };
+            pix.extend_from_slice(&[rgb[0], rgb[1], rgb[2], (a >> 8) as u8]);
         }
         return Some(Picture { width: w as i64, height: h as i64, pix });
     }
@@ -332,7 +347,7 @@ fn decode_png(data: &[u8], require_opaque: bool) -> Option<Picture> {
     for px in pix.as_chunks_mut::<4>().0 {
         let a = px[3];
         if a != 255 {
-            if require_opaque {
+            if alpha == PngAlpha::Opaque {
                 return None;
             }
             for v in &mut px[..3] {
