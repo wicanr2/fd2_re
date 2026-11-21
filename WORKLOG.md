@@ -5692,3 +5692,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 刪除發行組裝殘留 `work/release-v.1.0.0`～`v.1.1.15`（9031 檔、705696981 位元組），可由 `remake/packaging/build-local-release.sh` 與 `tools/build_fd2_full_local.py` 重生；建置紀錄 `work/local-release-*` 保留。
 - v.1.1.14 的三個完整包已由 v.1.1.15 取代，刪除（3 檔、10742085206 位元組，刪前核對大小與 VALIDATION 相同），`ASSET-SHA256.json`、`SHA256SUMS.json`、`VALIDATION.json` 保留。
 - 合計 39269998635 位元組。刪前確認沒有 FD2 容器使用這些目錄、檔案全屬目前使用者。另經使用者逐次同意，刪除 rich2 專案的懸空映像「API23 compatibility emulator」（`api23-20261102-r1`）：先後刪除重複建置的三份 `d562c71aa709`、`a00df789ea22`、`e1a3f34bb4fb`（後兩次因前一份與其共用父層，刪除後才浮出），再刪其 legacy builder 中間層 `07499922184d`、`ad3e69b6e8cb`、`7b6e8c40ea12`（最後一次由使用者自行執行）；刪前皆確認沒有容器使用，rich2 的已標記映像未動，磁碟可用由 316G 增至 318G。HD 各輪收據目錄（`work/promo-cadence-20261018/hd-fonts` 15 GB、`work/hd1-*` 約 10 GB）被 WORKLOG 與 61 引用為收據來源，未列入清理。
+
+## 2026-11-21 R5 階段 4 音訊 C 案（r5v）
+
+- 依使用者 2026-11-16 定案，把 Go 的解碼鏈（`jfreymuth/vorbis` v1.0.2、`jfreymuth/oggvorbis` v1.0.5、Ebiten v2.6.6 `audio/vorbis`、`audio/wav`、`convert.Resampling`）逐行移植成 `fd2-app` 的正式播放路徑，移除 lewton 與 rodio 重取樣；上游 Go 測試照搬，授權原檔與測試資料放在 `fd2-app/third_party/`。新增只輸出資料的 Go 工具 `remake/cmd/fd2-r5v-audio-loop`（BGM 循環兩圈、`lookup1Values` 對照表）。
+- 第一次執行（`work/r5v-20261121/run1`）音檔全部相同，但 `lookup1Values` 13546 筆中 108 筆與 Go 不同：Go 的 `math.Pow` 在 dim ≥ 3 的完全次方少 1，glibc 不會。改以整數根加 231 組 Go 例外表（在本機 Go 1.22.12 窮舉取得）。
+- 第二次執行（`work/r5v-20261121/run2`）：227 檔 final／native 逐樣本相同、30 首 BGM 循環兩圈相同、`lookup1` 全部相同、`fd2-app` 47 passed、播放驗證 passed；`summary.json` `5a1e62c3…`。詳見 121「階段 4 結果：r5v」。四個 `go_*` 模組登記為 `rust-port-no-go-stdlib` 的具名例外。
+- 本工作階段曾在主工作區重寫同一套移植，發現上一階段的子代理 worktree 已完成大半後全部還原，以 worktree 版本為準；結束時沒有 FD2 容器殘留。

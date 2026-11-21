@@ -756,3 +756,14 @@ Go 的 BGM 循環點靜音（最多約 98 ms）是否照做，也一併決定。
 - Go 版 BGM 循環點每圈 8～98 ms 的靜音（結尾補零到最後 granule）照 Go 保留。
 - 工具列與速度選單延到 R6（含新的「按鍵設定」入口）；r5w 新增的四項 KNOWN_DIFFERENCES（`window-integer-scale-letterbox`、`player-toolbar-deferred-r6`、`bevy-keycode-universe`、`packaged-defaults-reexec`）接受。
 - 遊戲內滑鼠、手把與 F12 按鍵設定面板先在 Go 版實作（v.1.1.15），Rust 版照 Go 行為移植，排在 R5 階段 4 的後續工作。
+
+## 階段 4 結果：r5v 音訊 C 案（2026-11-21）
+
+照使用者 11-16 的定案，把 Go 實際走的解碼鏈逐行移植成 `fd2-app` 的正式路徑：`go_vorbis`（`jfreymuth/vorbis` v1.0.2）、
+`go_oggvorbis`（`jfreymuth/oggvorbis` v1.0.5）、`go_ebiten_audio`（Ebiten v2.6.6 `audio/vorbis`、`audio/wav`、`convert.Resampling`）
+與共用的 `go_io`；lewton 與 rodio 的重取樣移除。BGM 循環點的靜音照 Go 保留。逐項落地與移植限制見
+[`fd2-game/PORTING.md`](../../remake-rs/crates/fd2-game/PORTING.md)「R5 階段 4：r5v」。
+
+結果：227 個音檔（BGM 30、音效 OGG 100、WAV 97）解碼後與 Go 逐樣本相同，30 首 BGM 循環兩圈與 Go 相同，播放驗證通過。
+`lookup1Values` 的 `math.Pow` 在 dim ≥ 3 的完全次方與 glibc 不同，改以整數根加 Go 例外表重現。四個 `go_*` 模組登記為
+`rust-port-no-go-stdlib` 的具名例外（使用者 11-16 定案 C 案時同意）。r5o 一節的逐樣本差異數字是 A 案當時的紀錄，已被本節取代。

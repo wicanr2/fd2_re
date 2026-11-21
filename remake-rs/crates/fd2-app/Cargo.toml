@@ -16,9 +16,8 @@ bevy = "0.20.1"
 serde_json = "1"
 # R5 階段 4（r5w）：遊戲狀態與 CPU 畫格；sha2 用 Cargo.lock 已鎖定的版本（與 fd2-game 同一版）記畫格雜湊。
 fd2-game = { path = "../fd2-game" }
-# 音訊（R5 階段 4 r5o）：只多出 fd2-app 對 Cargo.lock 已鎖定套件的依賴邊；feature 照 bevy_audio 已啟用的
-# （rodio 的 playback、tracing、lewton；lewton 預設的 ogg）。lewton 解 OGG，rodio 的 SampleRateConverter 重取樣，
-# sha2 給 r5o_audio_pcm 的 PCM 雜湊。
-lewton = "=0.10.2"
-rodio = { version = "=0.22.2", default-features = false, features = ["playback", "tracing", "lewton"] }
+# 音訊（R5 階段 4 r5v）：解碼改用照 Go 移植的 go_vorbis／go_oggvorbis／go_ebiten_audio，r5o 的 lewton 與 rodio
+# 依賴邊拿掉（Bevy 播放用的 rodio 型別經 bevy::audio 取得）。fd2-formats 提供 go_math（Go math.Sin／Cos，
+# IMDCT 與重取樣的查表）；sha2 給 r5o_audio_pcm 的 PCM 雜湊。只增減 workspace 內 crate 對 Cargo.lock 已鎖定套件的依賴邊。
+fd2-formats = { path = "../fd2-formats" }
 sha2 = "=0.10.9"

@@ -1,25 +1,25 @@
-//! 音訊：解碼 BGM 與音效，依 `fd2-game` 的 [`AudioVoice`] 狀態以 Bevy 播放（R5 階段 4，代號 r5o）。
+//! 音訊：解碼 BGM 與音效，依 `fd2-game` 的 [`AudioVoice`] 狀態以 Bevy 播放（R5 階段 4，代號 r5o；解碼改寫 r5v）。
 //!
 //! Go 對照：`remake/cmd/fd2/audio.go`。Go 在 `audio.NewContext(44100)` 下把 OGG（`vorbis.DecodeWithSampleRate`）與
 //! WAV（`wav.DecodeWithSampleRate`）解成 44.1 kHz、16 位元、雙聲道交錯的 PCM，BGM 以 `audio.NewInfiniteLoop`
-//! 循環，音效以 `audio.NewPlayerFromBytes` 一次性播放。`fd2-game` 只記錄播放請求（見其 `audio.rs` 模組文件），
-//! 本模組負責：
+//! 循環，音效以 `io.ReadAll` 後 `audio.NewPlayerFromBytes` 一次性播放。`fd2-game` 只記錄播放請求（見其
+//! `audio.rs` 模組文件），本模組負責：
 //!
-//! - **解碼**（[`open_stream`]、[`decode_pcm`]）：輸出格式與 Go 相同（44.1 kHz、雙聲道、`i16`）。OGG 以 `lewton`
-//!   解碼，WAV 以本模組的 RIFF 解析器（只收 Go `wav` 套件接受的線性 PCM 8／16 位元、單／雙聲道）。取樣率不是
-//!   44.1 kHz 時以 `rodio` 的 `SampleRateConverter` 轉換。浮點轉 16 位元照 Go（Ebiten `convert`）：夾到 ±1 後乘
-//!   32767、向零取整；單聲道複製成雙聲道。與 Go 的逐樣本差異與原因見 `fd2-game/PORTING.md`「R5 階段 4：r5o」，
-//!   接受與否由使用者定案，本模組的重取樣與取整順序在定案前不照 Go 改。
+//! - **解碼**（[`open_stream`]、[`decode_pcm`]）：照 Go 的解碼鏈逐行移植（使用者 2026-11-16 定案 C 案），與 Go
+//!   逐樣本相同。OGG 走 [`crate::go_ebiten_audio::vorbis`]（Ebiten v2.6.6）→ [`crate::go_oggvorbis`]
+//!   （jfreymuth/oggvorbis v1.0.5）→ [`crate::go_vorbis`]（jfreymuth/vorbis v1.0.2），WAV 走
+//!   [`crate::go_ebiten_audio::wav`]；取樣率不是 44.1 kHz 時經 [`crate::go_ebiten_audio::convert::Resampling`]
+//!   （Ebiten 的加窗 sinc）。BGM 結尾補零到最後 granule 的靜音照 Go 保留。採串流解碼，BGM 不必整首先解完。
 //! - **播放**（[`VoiceSync`]、[`Fd2AudioPlugin`]）：每幀讀 `Game::audio_voices_mut`，以 [`AudioVoice::serial`]
 //!   分辨播放器。新序號開始播放（BGM `looping` 用 `PlaybackSettings::LOOP`，其餘 `ONCE`）；不在清單、已
 //!   `closed` 或 `playing == false` 的序號停止；一次性播放的 sink 播完時把 `playing` 設回 `false`（Go `IsPlaying()`），
 //!   `fd2-game` 的 `stepSFXVoices` 再回收。音量照 Go 一律 1.0（Go 沒有呼叫 `SetVolume`）；`FD2_MUTE`、截圖模式與
-//!   系統設定的音樂／音效開關由 `fd2-game` 在建立請求時判斷，與 Go 相同。
+//!   系統設定的音樂／音效開關由 `fd2-game` 在建立請求時判斷，與 Go 相同。BGM 的 Go `InfiniteLoop` 每圈與第一圈
+//!   逐位元組相同（見 [`crate::go_ebiten_audio`] 模組文件），`LOOP` 重播同一串樣本即可。
 //! - 解碼失敗：Go 的 BGM 解不開就不換曲，音效庫解不開整批拒收；Rust 在 `fd2-game` 只檢查編碼位元組非空
 //!   （KNOWN_DIFFERENCES `audio-decode-deferred`），外殼解不開時不播放並把 `playing` 設成 `false`。
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::io::Cursor;
 use std::num::NonZero;
 use std::sync::Arc;
 use std::time::Duration;
@@ -28,8 +28,9 @@ use bevy::audio::{AddAudioSource, AudioPlayer, AudioSink, AudioSinkPlayback, Dec
 use bevy::prelude::*;
 use bevy::transform::TransformSystems;
 use fd2_game::game::{AudioVoice, VoiceSlot};
-use lewton::inside_ogg::OggStreamReader;
-use lewton::samples::InterleavedSamples;
+
+use crate::go_ebiten_audio::{self, Stream};
+use crate::go_io::{self, IoError, Read};
 
 /// Go `audio.NewContext(44100)`。
 pub const OUTPUT_RATE: u32 = 44100;
@@ -39,26 +40,23 @@ pub const OUTPUT_CHANNELS: u16 = 2;
 /// 解碼失敗的原因。
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DecodeError {
-    /// 不是 `OggS` 也不是 `RIFF`。
+    /// 不是 `OggS` 也不是 `RIFF`（Go 依呼叫端選解碼器，Rust 的外殼依開頭位元組選）。
     UnknownFormat,
-    /// `lewton` 回報的錯誤。
-    Ogg(String),
-    /// WAV 標頭不合 Go `wav` 套件的要求（訊息照 Go）。
-    Wav(&'static str),
-    /// Go `vorbis: number of channels must be 1 or 2 but was %d`。
-    Channels(u16),
-    /// 取樣率為 0。
-    SampleRate,
+    /// Go 解碼鏈的錯誤，文字照 Go（例如 `vorbis: decoding error`、`wav: invalid header`、`unexpected EOF`）。
+    Go(String),
+}
+
+impl From<IoError> for DecodeError {
+    fn from(e: IoError) -> DecodeError {
+        DecodeError::Go(e.to_string())
+    }
 }
 
 impl std::fmt::Display for DecodeError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             DecodeError::UnknownFormat => write!(f, "audio: unknown format"),
-            DecodeError::Ogg(e) => write!(f, "vorbis: {e}"),
-            DecodeError::Wav(e) => write!(f, "wav: {e}"),
-            DecodeError::Channels(n) => write!(f, "number of channels must be 1 or 2 but was {n}"),
-            DecodeError::SampleRate => write!(f, "sample rate is zero"),
+            DecodeError::Go(e) => f.write_str(e),
         }
     }
 }
@@ -81,182 +79,98 @@ pub fn sniff(bytes: &[u8]) -> Option<Format> {
     }
 }
 
-/// 原始取樣率與聲道數下的樣本（重取樣之前）。
-pub struct NativeStream {
-    pub channels: u16,
-    pub sample_rate: u32,
-    /// 交錯樣本；OGG 是 `lewton` 的浮點輸出，WAV 是整數樣本除以 32767。
-    pub samples: Box<dyn Iterator<Item = f32> + Send>,
-    /// WAV 的整數樣本（不經浮點）；OGG 為 `None`。
-    pub integer: Option<Vec<i16>>,
+/// Ebiten 的解碼串流：`resample == true` 是 `DecodeWithSampleRate(44100, …)`（播放路徑），`false` 是
+/// `DecodeWithoutResampling`（原始取樣率、已轉 16 位元雙聲道；比對工具用來分辨差異來自解碼還是重取樣）。
+pub fn open_go_stream(bytes: Arc<[u8]>, resample: bool) -> Result<Stream, DecodeError> {
+    let rate = i64::from(OUTPUT_RATE);
+    let stream = match (sniff(&bytes).ok_or(DecodeError::UnknownFormat)?, resample) {
+        (Format::Ogg, true) => go_ebiten_audio::vorbis::decode_with_sample_rate(rate, bytes)?,
+        (Format::Ogg, false) => go_ebiten_audio::vorbis::decode_without_resampling(bytes)?,
+        (Format::Wav, true) => go_ebiten_audio::wav::decode_with_sample_rate(rate, bytes)?,
+        (Format::Wav, false) => go_ebiten_audio::wav::decode_without_resampling(bytes)?,
+    };
+    Ok(stream)
 }
 
-/// 以 `lewton` 逐封包解碼的浮點樣本串流。
-struct OggSamples {
-    reader: OggStreamReader<Cursor<Arc<[u8]>>>,
-    packet: Vec<f32>,
-    next: usize,
-    done: bool,
-}
+/// 每次向解碼鏈要的位元組數（不影響輸出，見 [`crate::go_ebiten_audio`] 模組文件）。
+const PCM_CHUNK: usize = 16384;
 
-impl Iterator for OggSamples {
-    type Item = f32;
-
-    fn next(&mut self) -> Option<f32> {
-        while self.next >= self.packet.len() {
-            if self.done {
-                return None;
-            }
-            match self.reader.read_dec_packet_generic::<InterleavedSamples<f32>>() {
-                Ok(Some(p)) => {
-                    self.packet = p.samples;
-                    self.next = 0;
-                }
-                // 解到一半出錯：Go 的 `io.ReadAll` 會回傳錯誤；這裡在錯誤處結束串流（只可能出現在損壞檔）。
-                Ok(None) | Err(_) => self.done = true,
-            }
-        }
-        let s = self.packet[self.next];
-        self.next += 1;
-        Some(s)
-    }
-}
-
-/// 開啟原始取樣率的樣本串流（不重取樣、不轉 16 位元）。
-pub fn open_native(bytes: Arc<[u8]>) -> Result<NativeStream, DecodeError> {
-    match sniff(&bytes) {
-        Some(Format::Ogg) => {
-            let reader = OggStreamReader::new(Cursor::new(bytes)).map_err(|e| DecodeError::Ogg(e.to_string()))?;
-            let channels = u16::from(reader.ident_hdr.audio_channels);
-            let sample_rate = reader.ident_hdr.audio_sample_rate;
-            if channels != 1 && channels != 2 {
-                return Err(DecodeError::Channels(channels));
-            }
-            if sample_rate == 0 {
-                return Err(DecodeError::SampleRate);
-            }
-            let samples = OggSamples { reader, packet: Vec::new(), next: 0, done: false };
-            Ok(NativeStream { channels, sample_rate, samples: Box::new(samples), integer: None })
-        }
-        Some(Format::Wav) => {
-            let wav = parse_wav(&bytes)?;
-            let floats: Vec<f32> = wav.samples.iter().map(|&s| f32::from(s) / 32767.0).collect();
-            Ok(NativeStream {
-                channels: wav.channels,
-                sample_rate: wav.sample_rate,
-                samples: Box::new(floats.into_iter()),
-                integer: Some(wav.samples),
-            })
-        }
-        None => Err(DecodeError::UnknownFormat),
-    }
-}
-
-/// Ebiten `convert` 的浮點轉 16 位元：夾到 ±1、乘 32767、向零取整（Go `int16(f * (1<<15 - 1))`）。
-pub fn quantize(f: f32) -> i16 {
-    (f.clamp(-1.0, 1.0) * 32767.0) as i16
-}
-
-/// 44.1 kHz、雙聲道交錯 `i16` 的串流。
+/// 44.1 kHz、雙聲道交錯 `i16` 的串流（讀 Ebiten 串流的小端位元組）。解碼中途出錯時結束，錯誤留在 [`Self::error`]。
 pub struct PcmStream {
-    inner: Box<dyn Iterator<Item = i16> + Send>,
+    inner: Stream,
+    buf: Vec<u8>,
+    start: usize,
+    end: usize,
+    done: bool,
+    error: Option<IoError>,
+}
+
+impl PcmStream {
+    fn new(inner: Stream) -> PcmStream {
+        PcmStream { inner, buf: vec![0; PCM_CHUNK], start: 0, end: 0, done: false, error: None }
+    }
+
+    /// Ebiten 串流宣告的總位元組數（Go `Length()`）。
+    pub fn length_bytes(&self) -> i64 {
+        self.inner.length()
+    }
+
+    /// 解碼中途的錯誤（Go `io.ReadAll` 回傳的錯誤）。
+    pub fn error(&self) -> Option<&IoError> {
+        self.error.as_ref()
+    }
 }
 
 impl Iterator for PcmStream {
     type Item = i16;
 
     fn next(&mut self) -> Option<i16> {
-        self.inner.next()
+        loop {
+            if self.end - self.start >= 2 {
+                let s = i16::from_le_bytes([self.buf[self.start], self.buf[self.start + 1]]);
+                self.start += 2;
+                return Some(s);
+            }
+            if self.done {
+                return None;
+            }
+            let left = self.end - self.start;
+            self.buf.copy_within(self.start..self.end, 0);
+            self.start = 0;
+            self.end = left;
+            let (n, err) = self.inner.read(&mut self.buf[left..]);
+            self.end += n;
+            match err {
+                None => {}
+                Some(IoError::Eof) => self.done = true,
+                Some(e) => {
+                    self.error = Some(e);
+                    self.done = true;
+                }
+            }
+        }
     }
 }
 
-/// 以 fd2-app 的解碼路徑開啟串流：原始樣本 →（取樣率不同時）`rodio` 重取樣 → 轉 16 位元 → 單聲道複製成雙聲道。
-/// 取樣率相同的 WAV 直接用整數樣本（與 Go 一樣不經浮點）。
+/// 以 Go 的播放路徑開啟串流（`DecodeWithSampleRate(44100, …)`）。
 pub fn open_stream(bytes: Arc<[u8]>) -> Result<PcmStream, DecodeError> {
-    let native = open_native(bytes)?;
-    let channels = native.channels;
-    let samples: Box<dyn Iterator<Item = i16> + Send> = match (native.integer, native.sample_rate == OUTPUT_RATE) {
-        (Some(integer), true) => Box::new(integer.into_iter()),
-        (_, true) => Box::new(native.samples.map(quantize)),
-        (_, false) => {
-            let from = NonZero::new(native.sample_rate).ok_or(DecodeError::SampleRate)?;
-            let to = NonZero::new(OUTPUT_RATE).unwrap();
-            let ch = NonZero::new(channels).unwrap();
-            Box::new(rodio::conversions::SampleRateConverter::new(native.samples, from, to, ch).map(quantize))
-        }
-    };
-    let inner: Box<dyn Iterator<Item = i16> + Send> =
-        if channels == 1 { Box::new(samples.flat_map(|s| [s, s])) } else { samples };
-    Ok(PcmStream { inner })
+    Ok(PcmStream::new(open_go_stream(bytes, true)?))
 }
 
-/// 整檔解碼（[`open_stream`] 收集成 `Vec`）。
+/// 小端位元組轉 `i16`（多出的單一位元組捨去；Ebiten 串流的長度都是 4 的倍數）。
+pub fn bytes_to_i16(bytes: &[u8]) -> Vec<i16> {
+    bytes.as_chunks::<2>().0.iter().map(|c| i16::from_le_bytes(*c)).collect()
+}
+
+/// 整檔解碼：Go `io.ReadAll(DecodeWithSampleRate(44100, …))`。解碼中途出錯時與 Go 一樣回報錯誤（Go 的音效庫
+/// 因此整批拒收）。
 pub fn decode_pcm(bytes: &[u8]) -> Result<Vec<i16>, DecodeError> {
-    Ok(open_stream(Arc::from(bytes))?.collect())
-}
-
-/// WAV 解析結果：整數樣本（8 位元已照 Go 轉成 16 位元）。
-pub struct Wav {
-    pub channels: u16,
-    pub sample_rate: u32,
-    pub samples: Vec<i16>,
-}
-
-/// 照 Ebiten `audio/wav` 的 `decode`：RIFF／WAVE 標頭、`fmt ` 必須是線性 PCM（格式 1）、1 或 2 聲道、8 或 16 位元，
-/// 遇到 `data` 區塊就停。8 位元無號樣本照 Ebiten `convert.Stereo16` 轉成 `int16(int(b)*0x101 - 32768)`。
-/// `data` 宣告長度超過檔案時只讀到檔尾（Go 的 `stream.Read` 讀到 EOF 為止）。
-pub fn parse_wav(bytes: &[u8]) -> Result<Wav, DecodeError> {
-    let header = bytes.get(..12).ok_or(DecodeError::Wav("invalid header"))?;
-    if &header[0..4] != b"RIFF" {
-        return Err(DecodeError::Wav("invalid header: 'RIFF' not found"));
+    let mut stream = open_go_stream(Arc::from(bytes), true)?;
+    let (pcm, err) = go_io::read_all(&mut stream);
+    if let Some(e) = err {
+        return Err(e.into());
     }
-    if &header[8..12] != b"WAVE" {
-        return Err(DecodeError::Wav("invalid header: 'WAVE' not found"));
-    }
-    let mut pos = 12usize;
-    let (mut channels, mut bits, mut rate) = (0u16, 0u16, 0u32);
-    let le16 = |b: &[u8], at: usize| u16::from_le_bytes([b[at], b[at + 1]]);
-    let le32 = |b: &[u8], at: usize| u32::from_le_bytes([b[at], b[at + 1], b[at + 2], b[at + 3]]);
-    let data = loop {
-        let chunk = bytes.get(pos..pos + 8).ok_or(DecodeError::Wav("invalid header"))?;
-        let size = le32(chunk, 4) as usize;
-        pos += 8;
-        match &chunk[0..4] {
-            b"fmt " => {
-                if size < 16 {
-                    return Err(DecodeError::Wav("invalid header: maybe non-PCM file?"));
-                }
-                let fmt = bytes.get(pos..pos + size).ok_or(DecodeError::Wav("invalid header"))?;
-                if le16(fmt, 0) != 1 {
-                    return Err(DecodeError::Wav("format must be linear PCM"));
-                }
-                channels = le16(fmt, 2);
-                if channels != 1 && channels != 2 {
-                    return Err(DecodeError::Channels(channels));
-                }
-                bits = le16(fmt, 14);
-                if bits != 8 && bits != 16 {
-                    return Err(DecodeError::Wav("bits per sample must be 8 or 16"));
-                }
-                rate = le32(fmt, 4);
-                pos += size;
-            }
-            b"data" => break &bytes[pos..bytes.len().min(pos + size)],
-            _ => {
-                bytes.get(pos..pos + size).ok_or(DecodeError::Wav("invalid header"))?;
-                pos += size;
-            }
-        }
-    };
-    if rate == 0 {
-        return Err(DecodeError::SampleRate);
-    }
-    let samples = if bits == 8 {
-        data.iter().map(|&b| (i32::from(b) * 0x101 - 32768) as i16).collect()
-    } else {
-        data.as_chunks::<2>().0.iter().map(|c| i16::from_le_bytes(*c)).collect()
-    };
-    Ok(Wav { channels, sample_rate: rate, samples })
+    Ok(bytes_to_i16(&pcm))
 }
 
 // ---------------- Bevy 播放 ----------------

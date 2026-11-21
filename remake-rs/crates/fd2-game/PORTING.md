@@ -2980,3 +2980,62 @@ null 裝置消耗樣本比實際時間快（20 幀內 BGM 位置到 8.5 秒）�
 ### r5o：驗證
 
 見 [`docs/goal/121`](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)「階段 4 結果：r5o」。
+
+## R5 階段 4：r5v（音訊 C 案：照 Go 移植解碼鏈，2026-11-21）
+
+代號 `r5v`，基準 `3d96186e`。使用者 2026-11-16 定案音訊採 C 案（[121](../../../docs/goal/121-goal-rust-r5-original-art-shell-20261115.md)
+「階段 4 使用者定案」）：Ebiten 的重取樣與 Go 實際用的 vorbis 解碼器都照 Go 移植成正式路徑，目標與 Go 逐樣本相同；BGM 循環點的
+靜音照 Go 保留。r5o 的 lewton＋rodio 路徑（A 案）已移除。命令：
+`FD2_DATA_ROOT=<主工作區> FD2_GOCACHE=… FD2_RUST_BUILD=… FD2_RUST_TARGET=… tools/rust_r5o_audio_pcm.sh <輸出目錄>`
+（腳本與 `r5o_audio_pcm` 沿用 r5o 的名稱，內容改成比對 C 案；r5o 一節的數字是 A 案當時的紀錄）。
+
+### r5v：模組（`fd2-app`，`rust-port-no-go-stdlib` 的具名例外）
+
+| 模組 | Go 來源 | 授權 | 內容 |
+|---|---|---|---|
+| `go_vorbis`（含 `codebook`、`floor`、`residue`、`imdct`、`inverse_db_table`） | `github.com/jfreymuth/vorbis` v1.0.2 | MIT，原檔 `third_party/jfreymuth-vorbis-v1.0.2-LICENSE` | 標頭、codebook／Huffman、floor0／floor1、殘差、IMDCT、視窗與重疊相加 |
+| `go_oggvorbis` | `github.com/jfreymuth/oggvorbis` v1.0.5 | MIT，`third_party/jfreymuth-oggvorbis-v1.0.5-LICENSE` | Ogg 頁與封包、CRC、`LastPosition`、`SeekPageBefore`、`Reader`（`Read`、`SetPosition`、結尾截斷）、`ReadAll`／`GetFormat`／`GetLength` |
+| `go_ebiten_audio` | Ebiten v2.6.6 `audio/vorbis`、`audio/wav`、`audio/internal/convert` | Apache 2.0，全文 `third_party/ebiten-v2.6.6-LICENSE` | `decoded`（含先讀 65536 位元組再 `Seek(0)`）、`f32Reader`、`Stereo16`、`Resampling`（加窗 sinc，cos 查表）、WAV 標頭與 `stream` |
+| `go_io` | Go `io.Reader`／`io.Seeker` 契約、`bytes.Reader`、`io.ReadFull`／`ReadAtLeast` | — | 解碼鏈依 `(n, err)` 同時回傳的契約決定停止、補零與重新定位，不是標準函式庫移植 |
+
+運算照 Go：無號整數環繞、Go 對 32 位元以上位移得 0（`shl32`）、`f32` 運算順序逐項照寫（Go 在 amd64 `GOAMD64=v1` 不合併乘加）、
+IMDCT／視窗／重取樣的三角函數用 `fd2_formats::go_math`（Go `math.Sin`／`Cos`）、amd64 的浮點轉整數（`go_float_to_i16`）。
+照 Go 保留的非規格行為：殘差型別 2 只看第一個聲道的 `doNotDecode`、`init` 以值數切 `-offset`、floor0 的 `q = 1 / 4`（整數 0）。
+
+`Cargo.lock`：`fd2-app` 拿掉 `lewton`、`rodio` 兩條依賴邊，多出 `fd2-formats`（workspace crate）一條；沒有改版本、沒有新增套件。
+Bevy 播放用的 rodio 型別經 `bevy::audio` 取得。
+
+### r5v：已知的移植限制
+
+| 項目 | 內容 | 影響 |
+|---|---|---|
+| `lookup1Values` | Go `math.Pow` 在 amd64 經組語 `Exp`／`Log`，dim ≥ 3 的完全次方比整數根少 1（例如 27、dim 3 得 2）；glibc 的 `powf` 得整數根，第一次比對 13546 筆中 108 筆不同 | 改成整數根加 231 組 Go 例外表（產生 Go 黃金的主機窮舉 dim 1..24、`r^dim ≤ 2^24` 的完全次方 ±1 取得），不依賴平台數學函式庫；Go 工具的 dim 1..16 × entries 1..65536 表雜湊與整數次方逐筆值全部相同 |
+| floor0 | `math.Exp`、`math.Atan` 用 Rust 的 `f64::exp`、`atan`，末位可能與 Go 不同 | 素材只用 floor1（比對工具記錄 floor 型別），floor0 沒有逐樣本驗證 |
+| floor1 排序 | Go `sort.Sort` 不穩定，Rust 用穩定排序 | 只在 X 座標重複時可能不同；Vorbis I 要求互不相同 |
+| 取樣率 0 | Go 的 `Resampling.Length()` 是 `int64(+Inf)`，讀取時中止 | Rust 建立串流時回報 `sample rate is zero` |
+| 損壞輸入的 panic | Go 解碼器遇到越界會 panic，Rust 照樣中止 | 與 Go 相同；素材由比對工具全部解過 |
+
+### r5v：測試
+
+Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封包，改從同一段音訊的 `test.ogg` 拆封包，參考輸出 `test.raw`
+相同）、`TestIMDCT`（Go 用未設種子的亂數，改成固定序列）；`jfreymuth/oggvorbis` 的 `TestRead`（可定位與不可定位）、`TestFormat`、
+`TestLength`、`TestLengthForUnexpectedEof`、`TestSeek`、`TestEmpty`；Ebiten 的 `TestResampling`、`TestFloat32Reader`、`TestMono`、
+`TestTooShort`、`TestNonSeeker`。測試檔複本在 `fd2-app/third_party/testdata/`（`.gitignore` 對 `*.ogg` 加了這個目錄的例外），
+驅動腳本以 `cmp` 核對與 Go 模組快取的原檔相同。Rust 新增：位元讀取、位移語意、`float32Unpack`、標頭錯誤文字、CRC 錯誤、
+讀取大小不影響樣本、`Seek(0)` 後第二圈相同、WAV 標頭錯誤文字、串流與整檔解碼相同。
+
+### r5v：驗證（2026-11-21）
+
+`FD2_DATA_ROOT=<主工作區> FD2_GOCACHE=<主工作區>/work/gocache-r5v FD2_RUST_TARGET=target-r5v tools/rust_r5o_audio_pcm.sh work/r5v-20261121/run2`：
+
+| 檢查 | 結果 |
+|---|---|
+| Go 兩次相同 | `go-pcm.jsonl` `441e3463…`（與 r5o 相同）、`loop.jsonl` `97c945a6…`、`lookup1.json` `52348373…` |
+| 逐樣本比對（`final`、`native`、`resample_on_go_native`） | BGM 30、音效 OGG 100、WAV 97 檔全部整檔相同、長度相同，不同樣本 0；`summary.json` `5a1e62c3…`，結論 `identical` |
+| BGM 循環兩圈 | 30／30 與 Go `audio.NewInfiniteLoop` 相同（含循環點的靜音） |
+| `lookup1Values` | 表相同；整數次方 13546 筆不同 0 筆（第一次執行 `run1` 是 108 筆，見上表） |
+| floor 型別 | 全部 floor1（160 個），floor0 0 |
+| `fd2-app` | fmt、clippy `-D warnings` 通過；單元測試 47 passed |
+| 播放驗證 `r5o_audio_play` | `passed`（ALSA null 裝置，沒有人耳聽辨） |
+
+`fd2-game`、`fd2-rules`、`fd2-campaign` 的原始碼沒有改，只有 `Cargo.lock` 的 `fd2-app` 依賴邊變動，本輪沒有重跑三者的測試套件與第一章重播。

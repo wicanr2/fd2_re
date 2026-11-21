@@ -57,6 +57,8 @@ docs/figures/animations/
 *.ROM
 music_mt32/
 *.ogg
+# 例外：Go 音訊解碼套件（jfreymuth/oggvorbis、Ebiten）自帶的 MIT／Apache 測試檔，不是遊戲音樂（R5 r5v）。
+!remake-rs/crates/fd2-app/third_party/testdata/*.ogg
 music_ogg/
 video/
 # 只允許影片驗證 metadata；實際影片仍由上列規則排除。
