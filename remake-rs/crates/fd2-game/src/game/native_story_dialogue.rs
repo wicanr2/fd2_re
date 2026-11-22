@@ -6,7 +6,7 @@
 //! `step_dialogue_mouth`），不讀牆鐘。
 //!
 //! R5 階段 2 r5d：繪圖函式 `drawNativeStoryDialogue`、`nativeStoryOpeningFrameIndex` 移植，呈現出口
-//! `presentNativeStoryDialogueFrame`（Go 在 HD 檔 `modern_hd_timed_dialogue.go`）只移植忠實模式路徑；畫格擷取打開時
+//! `presentNativeStoryDialogueFrame` 依 `modern_hd_timed_dialogue.go` 分流普通對白與凍結背景的計時對白。畫格擷取打開時
 //! 嘴型改取 Go 全域亂數（`Game::go_global_rand`）。
 
 use super::*;
@@ -762,15 +762,36 @@ impl Game {
         {
             return Err(game_err!("native RGBA overlay geometry is invalid"));
         }
-        if self.modern_hd_world_visible
-            && self.modern_hd_map_gpu.is_some()
-            && let Some(ui) = &self.native_class_ui
-            && let Some(mask) = self.story_dialogue_mask(phase, index)
-        {
+        let hd_world = self.modern_hd_world_visible && self.modern_hd_map_gpu.is_some();
+        let timed = self
+            .native_level_up_dialogue
+            .as_ref()
+            .filter(|dialogue| hd_world && dialogue.hd_world.is_some() && self.modern_hd_timed_dialogue_eligible());
+        let mask = if let Some(dialogue) = timed {
+            let mask = dialogue
+                .hd_coverage
+                .get(&phase)
+                .and_then(|masks| masks.get(index as usize))
+                .ok_or_else(|| game_err!("modern HD dialogue: coverage unavailable"))?;
+            Some(mask.as_slice())
+        } else if hd_world {
+            self.story_dialogue_mask(phase, index)
+        } else {
+            None
+        };
+        if let (Some(mask), Some(ui)) = (mask, &self.native_class_ui) {
             let picture = masked_dialogue_picture(frame, mask, &ui.palette)?;
+            if let Some(text) = &mut self.modern_hd_text {
+                text.runs.clear();
+            }
             let mut op = DrawImageOptions::default();
             op.geo_m.scale(2.0, 2.0);
             screen.draw_image(&picture, &op);
+            if timed.is_some() {
+                self.modern_hd_timed_dialogue_visible = true;
+                self.modern_hd_timed_dialogue_phase = phase;
+                self.modern_hd_timed_dialogue_index = index;
+            }
         } else {
             self.present_native_class_frame(screen, frame);
         }

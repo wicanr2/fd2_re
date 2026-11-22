@@ -157,9 +157,21 @@ impl Game {
         let result = self.compose_native_map_frame();
         self.modern_hd_map_composing = false;
         result?;
-        let frame = self.modern_hd_map_frame.as_ref().ok_or_else(|| game_err!("modern HD map: missing frame"))?;
-        let theme = self.modern_story_portraits.as_ref().ok_or_else(|| game_err!("modern HD map: missing theme"))?;
         let step = self.phase_banner_step();
+        let timed_dialogue = self.modern_hd_timed_dialogue_eligible();
+        let frame = self.modern_hd_map_frame.as_ref().ok_or_else(|| game_err!("modern HD map: missing frame"))?;
+        let frame = if timed_dialogue {
+            let cells = &self.native_class_ui.as_ref().unwrap().dialogue;
+            let control = &self.native_dialogue_layout.as_ref().unwrap().control;
+            self.native_level_up_dialogue
+                .as_mut()
+                .unwrap()
+                .freeze_hd_world(frame, cells, control)
+                .inspect_err(|_| screen.clear())?
+        } else {
+            frame
+        };
+        let theme = self.modern_story_portraits.as_ref().ok_or_else(|| game_err!("modern HD map: missing theme"))?;
         let banner = (self.banner_t > 0 && !self.banner.is_empty()).then_some((self.banner.as_str(), step));
         let renderer = self.modern_hd_map_gpu.get_or_insert_with(ModernHDMapGPU::default);
         let ui = renderer.compose(frame, theme, banner)?;

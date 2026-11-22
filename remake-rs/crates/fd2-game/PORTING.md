@@ -1835,7 +1835,7 @@ spawn 24、world 1796、map 2257、索引 2170。r1（Go 端用舊版掛載配�
 | `native_story_dialogue.go:339` `nativeStoryOpeningFrameIndex` | `native_story_opening_frame_index` | 逐行 |
 | `native_story_dialogue.go:485` `drawNativeStoryDialogue` | `Game::draw_native_story_dialogue` | 收框、開框、穩定頁、說話嘴型、等鍵張嘴與等鍵箭頭照 Go 逐分支；`nativeClassUI` 為 nil 時 Go 解參考 panic，Rust 同樣 panic；`nativeDialogueLayout` 為 nil 時以空的 `NativeDialogueLayout` 代入，`validate` 回與 Go nil 相同的錯誤。`modernHDStoryTextFrame`、`nativeDialogueModernPortrait` 在忠實模式不成立，HD 時 `todo!("r6:…")` |
 | `native_class_ui.go:206` `presentNativeClassFrame`、`:210` `presentNativeClassFrameWithPalette` | 同名 snake_case | 分組表列在「城鎮與設施」，是 `drawNativeStoryDialogue` 的呈現出口；本批沒有別組移植它們。`clearModernHDText`、`appendModernHDFacilityMoney` 在 `modernHDText` 為 nil 時不做事，HD 時 `todo!("r6:…")` |
-| `modern_hd_timed_dialogue.go:65` `presentNativeStoryDialogueFrame` | `Game::present_native_story_dialogue_frame`（放在 `native_story_dialogue.rs`） | HD 檔，`PORTING.json` 狀態維持 `r6`（`rust_r5_mark_ported.py` 只收 `r5`）。只移植忠實模式路徑：`modernHDWorldVisible` 為 false 時 `presentNativeClassFrame`；HD 計時對白、RGBA 頭像疊層、HD 框線面板 `todo!("r6:…")` |
+| `modern_hd_timed_dialogue.go:65` `presentNativeStoryDialogueFrame` | `Game::present_native_story_dialogue_frame`（放在 `native_story_dialogue.rs`） | R5 移植忠實模式路徑。R6 已補 RGBA 頭像、普通遮罩及計時遮罩。HD 框線面板仍在 R6。 |
 
 畫布只用 `canvas.rs` 既有的 `from_indexed`、`draw_image`（`Scale(2, 2)`），沒有補語意。
 
@@ -3107,3 +3107,5 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 `game/modern_story_portrait.rs` 核對故事頭像清冊、靜態畫格、80×80／480×480 講者配對及完整不透明，全部成功才更新候選主題。`game/native_story_dialogue.rs` 在穩定對白頁依原生頭像矩形畫 80×80 圖，並交付 480×480 最終呈現描述。
 
 `game/native_story_dialogue.rs` 以兩種底色重播原生合成器，為 HD 世界建立開框、分頁和收框遮罩。索引 0 的實寫依舊不透明。`game/modern_hd_presentation.rs` 提供最終頭像及顯示矩形。Bevy 於介面上方呈現原尺寸頭像，同一來源及亮度重用貼圖。
+
+計時 `FFEC` 對白的處理器保存首次 HD 戰場繪圖計畫。`modern_hd_map_gpu.rs` 照常提交原生繪製交易，再畫快照。對白呈現優先取計時處理器的原生格網遮罩，並記錄本幀的呈現階段與索引。

@@ -45,7 +45,48 @@ pub(crate) struct NativeLevelUpDialogueState {
     pub(crate) then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
 }
 
+impl NativeLevelUpDialogueState {
+    /// 保存第一次 HD 繪製的背景，後續原生幀仍照常提交。
+    pub(crate) fn freeze_hd_world<'a>(
+        &'a mut self,
+        frame: &ModernHDMapFrame,
+        cells: &[fdother::RawCell],
+        control: &str,
+    ) -> Result<&'a ModernHDMapFrame> {
+        if self.hd_world.is_none() {
+            let mut coverage = BTreeMap::new();
+            for (phase, count) in [
+                (campaign::NATIVE_DIALOGUE_OPENING, 5),
+                (campaign::NATIVE_DIALOGUE_STEADY, 1),
+                (campaign::NATIVE_DIALOGUE_CLOSING, 5),
+            ] {
+                let masks = (0..count)
+                    .map(|index| campaign::native_story_dialogue_coverage(cells, control, phase, index))
+                    .collect::<std::result::Result<Vec<_>, _>>()?;
+                coverage.insert(phase, masks);
+            }
+            self.hd_coverage = coverage;
+            self.hd_world = Some(frame.clone());
+        }
+        Ok(self.hd_world.as_ref().unwrap())
+    }
+}
+
 impl Game {
+    /// Go：`modern_hd_timed_dialogue.go:13`，`modernHDTimedDialogueEligible`。
+    pub(crate) fn modern_hd_timed_dialogue_eligible(&self) -> bool {
+        self.native_level_up_dialogue.is_some()
+            && !self.story_bg
+            && self.walk.is_none()
+            && self.banner_t <= 0
+            && self.native_dialogue_layout.is_some()
+            && self.native_class_ui.is_some()
+            && self.native_dialogue_closing.len() == 5
+            && matches!(self.dialog.as_slice(), [line] if line.native_dialogue.as_ref().is_some_and(|layout| {
+                layout.control == "FFEC" && layout.has_motion_target_y && layout.motion_target_y == 0
+            }))
+    }
+
     /// queueNativeLevelUpDialogue 在原生 caller 收下經驗時排一則。0x29F72的+6==2
     /// 是累計writer閘門，不是0x1E292的consumer閘門；敵人也可能承接前值（#81）。
     ///

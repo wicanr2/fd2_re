@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 戰場計時對白（RUNTIME-E1，2026-11-22）
+
+沿 [61 的計時戰場對話規格](../knowledge-base/61-modern-theme-runtime-spec.md#2026-10-19-計時戰場對話透明圖層conformed-scoped限runtime-e1及明示槽普通輸入)及其 `timed_dialogue_followup_20261019` 收據。移植基準為 Go `697c0913` 的 `freezeModernHDTimedDialogue` 與 `drawModernHDMapFrame`。FDTXT_000 的經驗、升級及中毒訊息已由原生計時對白處理器供應。
+
+戰場只有在唯一一則原生 `FFEC` 下框、已知零位移、五格收框且沒有走行或回合橫幅時才凍結 HD 背景。首次合成從當幀取世界與介面繪圖計畫，由對白處理器保有，接續畫格仍提交當次的原生戰場時鐘與工作區。五張開框、一張穩定格網及五張收框全部通過原生格網覆蓋預檢才發布。對白只疊覆蓋區內的索引像素。缺錯格網時回報錯誤，處理器離場時釋放快照。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-timed-dialogue-20261122` 通過。以正式 FDTXT_000 及 FDOTHER #5 比對五張開框、三頁升級訊息與五張收框。13 張 RGBA 畫格與 Go 逐位元組相同，序列 SHA-256 為 `89e33c5ff45025dce851f1c79aa4d64b931250f3f180356e6e6090a53af73b0f`。Rust 戰場繪製入口證實原生時鐘及候選背景更新時仍沿用首次 HD 畫面，收框後恢復即時戰場。錯誤格網不發布快照。格式、Clippy、445 項 Rust 回歸與九項差分通過。
+
+本輪驗證使用原版介面與受控的升級狀態。完整 HD 主題、F2／F11、普通輸入與原版 DOS 對拍依各自閘門。
+
 ### R6 HD1 對白遮罩與頭像視窗呈現（RUNTIME-E1，2026-11-22）
 
 依 Go `697c0913` 的 `freezeModernHDStoryDialogueMasks` 與 `DrawFinalScreen`。原生對白合成器在索引 0 及 255 的底圖各重跑一次。同座標輸出相同即保留該處覆寫，可辨認索引 0 的真實寫入。開框與收框逐格保存遮罩。穩定頁包含全部逐字畫格的寫入聯集。遮罩依階段、頁碼及畫格選用。分頁捲動或缺少遮罩時沿用完整原生幀。
@@ -129,7 +139,7 @@ Bevy 將已驗證的 480×480 頭像以線性取樣疊在邏輯介面之上，�
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-dialogue-masks-20261122-r2` 通過。以正式對白綁定的四種控制碼及兩個收框位移（0、37），核對 138 張開框、穩定頁與收框的 RGBA 遮罩。Go 與 Rust 逐張相同，序列 SHA-256 為 `faeffaa87a7bc375195894532290d6d6e6fe9e5173b9f10f820266d29b088922`。兩側使用 HD 美術與原版介面。Rust 另核對索引 0 的不透明寫入、背景保留及分頁捲動的完整原生畫格。格式、Clippy、444 項 Rust 回歸與八項差分通過。
 
-`FD2_RUST_TARGET=target-r5i bash tools/rust_r5_app_frames.sh work/r6-dialogue-app-20261122 tools/rust_r5_app_scripts/letterbox-1500x850.json` 通過。原版美術的 433 個畫格與無畫面端相同，五張 1500×850 視窗截圖逐像素相同。480×480 圖源、原生頭像矩形、淡出及遮蔽另由執行期測試核對。HD 主題啟用後的視窗截圖、升級計時對白、其他語系與 F2／F11 仍待驗收。
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r5_app_frames.sh work/r6-dialogue-app-20261122 tools/rust_r5_app_scripts/letterbox-1500x850.json` 通過。原版美術的 433 個畫格與無畫面端相同，五張 1500×850 視窗截圖逐像素相同。480×480 圖源、原生頭像矩形、淡出及遮蔽另由執行期測試核對。HD 主題啟用後的視窗截圖、其他語系與 F2／F11 仍待驗收。
 
 ### R6 HD1 故事頭像清冊與對白接線（RUNTIME-E1，2026-11-22）
 

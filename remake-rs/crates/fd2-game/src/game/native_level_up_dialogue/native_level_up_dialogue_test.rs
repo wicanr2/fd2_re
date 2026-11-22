@@ -36,6 +36,24 @@ fn level_up_fixture_strings() -> FakeLevelUpStrings {
     ]))
 }
 
+#[test]
+fn timed_dialogue_freeze_keeps_the_first_frame_and_rejects_invalid_coverage() {
+    let mut cells = vec![fdother::RawCell { width: 1, height: 1, pixels: vec![0] }; 20];
+    let first = ModernHDMapFrame { palette_add6: 1, ..Default::default() };
+    let next = ModernHDMapFrame { palette_add6: 2, ..Default::default() };
+    let mut state = NativeLevelUpDialogueState::default();
+    assert_eq!(state.freeze_hd_world(&first, &cells, "FFEC").unwrap(), &first);
+    assert_eq!(state.freeze_hd_world(&next, &cells, "FFEC").unwrap(), &first);
+    let closing = &state.hd_coverage[&campaign::NATIVE_DIALOGUE_CLOSING];
+    assert!(closing[3].iter().any(|&covered| covered));
+    assert!(closing[4].iter().all(|&covered| !covered));
+
+    let mut state = NativeLevelUpDialogueState::default();
+    cells[13] = fdother::RawCell { width: 320, height: 200, pixels: vec![0; 320 * 200] };
+    assert!(state.freeze_hd_world(&next, &cells, "FFEC").is_err());
+    assert!(state.hd_world.is_none() && state.hd_coverage.is_empty());
+}
+
 /// Go：`native_level_up_dialogue_test.go:36`
 #[test]
 fn test_native_level_up_dialogue_lines_split_pages_at_fffd_and_skip_zero_growth() {

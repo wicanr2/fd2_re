@@ -460,6 +460,122 @@ fn real_dialogue_masks_match_go() {
     println!("{} 張對白遮罩與 Go 相同，序列 SHA-256 {:x}", report.lines().count(), Sha256::digest(report.as_bytes()));
 }
 
+#[test]
+#[ignore = "正式對白素材與 Go 黃金由 tools/rust_r6_opening.sh 安排"]
+fn real_timed_dialogue_matches_go() {
+    use crate::game::native_map_frame_input::native_map_frame_input_test::complete_native_map_frame_fixture;
+    use sha2::{Digest, Sha256};
+    use std::fmt::Write as _;
+
+    let (assets, field, mut state) = complete_native_map_frame_fixture();
+    state.units[0].has_native_map_presentation = true;
+    let ui = load_native_class_ui_assets().unwrap().unwrap();
+    let pending = PendingNativeLevelUp {
+        unit: Some(0),
+        exp: 12,
+        ups: vec![battle::LevelUpEvent { new_lv: 2, ap_gain: 2, hp_gain: 4, ..Default::default() }],
+    };
+    let (pages, last_wait) = native_level_up_dialogue_lines(ui.strings.as_ref().unwrap(), &pending).unwrap();
+    assert!(last_wait);
+    let mut game = Game {
+        native_map_assets: Some(assets),
+        m: Some(field),
+        st: Some(state),
+        native_class_ui: Some(ui),
+        virtual_now: VIRTUAL_CLOCK_ORIGIN,
+        locale_id: "zh-Hant".into(),
+        interface_mode: PLAYER_INTERFACE_ORIGINAL.into(),
+        modern_hd_separate_world: true,
+        ..Default::default()
+    };
+    game.begin_native_timed_message_dialogue(
+        pending.unit,
+        NATIVE_LEVEL_UP_EXP_TEXT_INDEX,
+        &pages,
+        last_wait,
+        NATIVE_LEVEL_UP_CLOSE_FRAMES,
+        None,
+    )
+    .unwrap();
+    let sprite = Arc::new(Picture::from_nrgba(144, 144, &[60, 90, 120, 255].repeat(144 * 144)));
+    game.modern_story_portraits = Some(ModernStoryPortraitSet {
+        has_hd: true,
+        map_sprites_hd: (0..125).map(|group| (group, vec![Some(sprite.clone()); 12])).collect(),
+        ..Default::default()
+    });
+
+    let mut screen = Picture::new_image(640, 400);
+    game.dlg_phase = 2;
+    game.dlg_t = 1;
+    game.begin_present_frame();
+    game.draw_field(&mut screen);
+    assert!(game.load_err.is_empty(), "{}", game.load_err);
+    assert!(game.modern_hd_world_visible && game.modern_hd_timed_dialogue_visible);
+    assert_eq!(game.modern_hd_timed_dialogue_phase, campaign::NATIVE_DIALOGUE_OPENING);
+    assert_eq!(game.modern_hd_timed_dialogue_index, 0);
+    let first_world = game.modern_hd_map_gpu.as_ref().unwrap().world.as_ref().unwrap().clone();
+    let first_clock = game.native_map_clock;
+    let snapshot = game.modern_hd_map_presented.clone().unwrap();
+    let dialogue = game.native_level_up_dialogue.as_ref().unwrap();
+    assert_eq!(dialogue.hd_coverage.values().map(Vec::len).sum::<usize>(), 11);
+    assert!(dialogue.hd_world.as_ref() == Some(&snapshot));
+
+    for rgb in game.native_map_dac.as_chunks_mut::<3>().0 {
+        *rgb = [63, 0, 0];
+    }
+    game.virtual_now = game.virtual_now + GoDuration::SECOND;
+    game.dlg_phase = 0;
+    game.begin_present_frame();
+    game.draw_field(&mut screen);
+    assert!(game.modern_hd_timed_dialogue_visible, "{}", game.load_err);
+    assert_eq!(game.modern_hd_timed_dialogue_phase, campaign::NATIVE_DIALOGUE_STEADY);
+    assert_ne!(game.native_map_clock, first_clock);
+    assert!(game.modern_hd_map_frame.as_ref().unwrap().background != snapshot.background);
+    assert!(game.modern_hd_map_presented.as_ref() == Some(&snapshot));
+    assert!(game.modern_hd_map_gpu.as_ref().unwrap().world.as_deref() == Some(first_world.as_ref()));
+
+    let mut report = String::new();
+    for (name, phase, frames) in [
+        ("opening", campaign::NATIVE_DIALOGUE_OPENING, game.native_dialogue_opening.clone()),
+        ("page", campaign::NATIVE_DIALOGUE_STEADY, game.native_dialogue_frames.clone()),
+        ("closing", campaign::NATIVE_DIALOGUE_CLOSING, game.native_dialogue_closing.clone()),
+    ] {
+        for (i, frame) in frames.iter().enumerate() {
+            let index = if phase == campaign::NATIVE_DIALOGUE_STEADY { 0 } else { i as i64 };
+            screen.clear();
+            game.present_native_story_dialogue_frame(&mut screen, frame, phase, index, None, Rectangle::default())
+                .unwrap();
+            assert_eq!((game.modern_hd_timed_dialogue_phase, game.modern_hd_timed_dialogue_index), (phase, index));
+            let mut digest = Sha256::new();
+            for row in screen.read_pixels().as_chunks::<{ 640 * 4 }>().0.iter().step_by(2) {
+                for pixel in row.as_chunks::<4>().0.iter().step_by(2) {
+                    digest.update(pixel);
+                }
+            }
+            writeln!(report, "{name} {i} {:x}", digest.finalize()).unwrap();
+        }
+    }
+    let out = std::path::PathBuf::from(std::env::var_os("FD2_R6_OPENING_OUT").unwrap());
+    let expected = std::fs::read_to_string(out.join("go-timed-dialogue.txt")).unwrap();
+    std::fs::write(out.join("rust-timed-dialogue.txt"), &report).unwrap();
+    assert_eq!(report, expected);
+
+    assert!(game.begin_native_story_dialogue_closing());
+    game.native_dialogue_closing_t = 4;
+    game.begin_present_frame();
+    game.draw_field(&mut screen);
+    assert!(game.modern_hd_timed_dialogue_visible, "{}", game.load_err);
+    assert_eq!(game.modern_hd_timed_dialogue_phase, campaign::NATIVE_DIALOGUE_CLOSING);
+    assert_eq!(game.modern_hd_timed_dialogue_index, 4);
+    game.step_native_story_dialogue_progress();
+    assert!(game.native_level_up_dialogue.is_none() && game.dialog.is_empty());
+    game.begin_present_frame();
+    game.draw_field(&mut screen);
+    assert!(game.modern_hd_world_visible && !game.modern_hd_timed_dialogue_visible);
+    assert!(game.modern_hd_map_gpu.as_ref().unwrap().world.as_deref() != Some(first_world.as_ref()));
+    println!("{} 張計時對白與 Go 相同，序列 SHA-256 {:x}", report.lines().count(), Sha256::digest(report.as_bytes()));
+}
+
 /// R5 階段 2 r5d：沒有原生對白時回 false、不畫；穩定頁以進度選預建畫格，經 `presentNativeClassFrame` 放大兩倍，
 /// 並清掉本幀的 HUD／原生地圖旗標。
 #[test]

@@ -2,13 +2,70 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"fmt"
 	"image"
 	"image/color"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func TestRustGoldenR6TimedDialogue(t *testing.T) {
+	out := os.Getenv("FD2_R6_OPENING_OUT")
+	if out == "" {
+		t.Skip("set FD2_R6_OPENING_OUT to export the Rust golden")
+	}
+	g := storyMaskTestGame(t, "zh-Hant")
+	g.interfaceMode = playerInterfaceOriginal
+	g.nativeMapAssets, g.m, g.st = completeNativeMapFrameFixture(t)
+	g.nativeMapFrozenNow = func() time.Time { return time.Unix(1, 0) }
+	unit := g.st.Units[0]
+	unit.HasNativeMapPresentation = true
+	pages, lastWait, err := nativeLevelUpDialogueLines(g.nativeClassUI.strings, pendingNativeLevelUp{
+		unit: unit, exp: 12, ups: []battle.LevelUpEvent{{NewLv: 2, ApGain: 2, HpGain: 4}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.beginNativeTimedMessageDialogue(unit, nativeLevelUpExpTextIndex, pages, lastWait, nativeLevelUpCloseFrames, nil); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := g.freezeModernHDTimedDialogue(&modernHDMapFrame{}); err != nil {
+		t.Fatal(err)
+	}
+	var report strings.Builder
+	for _, phase := range []struct {
+		name   string
+		kind   campaign.NativeDialogueFramePhase
+		frames [][]byte
+	}{
+		{"opening", campaign.NativeDialogueOpening, g.nativeDialogueOpening},
+		{"page", campaign.NativeDialogueSteady, g.nativeDialogueFrames},
+		{"closing", campaign.NativeDialogueClosing, g.nativeDialogueClosing},
+	} {
+		for i, frame := range phase.frames {
+			index := i
+			if phase.kind == campaign.NativeDialogueSteady {
+				index = 0
+			}
+			mask := g.nativeLevelUpDialogue.hdCoverage[phase.kind][index]
+			picture, err := modernHDTimedDialoguePixels(frame, mask, g.nativeClassUI.palette)
+			if err != nil {
+				t.Fatal(err)
+			}
+			fmt.Fprintf(&report, "%s %d %x\n", phase.name, i, sha256.Sum256(picture.Pix))
+		}
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-timed-dialogue.txt"), []byte(report.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+}
 
 func TestModernHDTimedDialogueCoverageMatchesNativeSnapshots(t *testing.T) {
 	assets, err := loadNativeClassUIAssets()
