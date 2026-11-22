@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -89,7 +90,7 @@ func TestRustGoldenR6MapArt(t *testing.T) {
 	chosen := catalog.Assets[:0]
 	for _, asset := range catalog.Assets {
 		switch asset.Role {
-		case "map_sprite_set", "map_sprite_hd_set", "story_portrait_frame", "story_portrait_hd_frame", "facility_scene_hd":
+		case "map_sprite_set", "map_sprite_hd_set", "story_portrait_frame", "story_portrait_hd_frame", "facility_scene_hd", "native_terrain_hd_set":
 			chosen = append(chosen, asset)
 		}
 	}
@@ -142,6 +143,34 @@ func TestRustGoldenR6MapArt(t *testing.T) {
 	}
 	if err := os.WriteFile(filepath.Join(out, "go-story-portraits.txt"), []byte(report.String()), 0600); err != nil {
 		t.Fatal(err)
+	}
+	writeRustGoldenHDStoryMap(t, out, set)
+}
+
+func writeRustGoldenHDStoryMap(t *testing.T, out string, set *modernStoryPortraitSet) {
+	t.Helper()
+	clock := func() time.Time { return time.Unix(1, 0) }
+	g := &Game{nativeMapFrozenNow: clock, localeID: "zh-Hant"}
+	modernHDChibiStaticStoryFixture(t, g)
+	g.modernStoryPortraits = set
+	g.interfaceMode = playerInterfaceOriginal
+	for _, cameraX := range []int{0, 1} {
+		g.storyNativeMapView.CameraX = cameraX
+		g.storyNativeMapView.VisibleCursorX = g.storyNativeMapView.CursorX - cameraX
+		g.camX = float64(cameraX * 24)
+		frame, err := g.prepareModernHDStoryMapFrame(set)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(frame.Terrain) == 0 || len(frame.Units) < 2 || frame.Range != nil || frame.HUDUnit != nil {
+			t.Fatal("incomplete story planes or battle UI was admitted")
+		}
+		if err := os.WriteFile(filepath.Join(out, fmt.Sprintf("go-story-map-%d.rgba", cameraX)), healHDCPUWorld(frame, set).Pix, 0600); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(out, fmt.Sprintf("go-story-map-%d-ui.rgba", cameraX)), frame.UI.Pix, 0600); err != nil {
+			t.Fatal(err)
+		}
 	}
 }
 

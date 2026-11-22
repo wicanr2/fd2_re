@@ -140,4 +140,86 @@ fn real_map_art_matches_go() {
         .unwrap();
     }
     std::fs::write(out.join("rust-map-art-runtime.txt"), rendered).unwrap();
+    verify_aligned_hd_story_map(theme, &out);
+}
+
+fn verify_aligned_hd_story_map(theme: ModernStoryPortraitSet, out: &std::path::Path) {
+    let mut game = Game { virtual_now: VIRTUAL_CLOCK_ORIGIN, ..Default::default() };
+    game.load_map("assets/maps/map32").unwrap();
+    game.reset_battle("assets/maps/map32/map32_units.json", "");
+    assert!(game.load_err.is_empty(), "{}", game.load_err);
+    let source = game.st.take().unwrap();
+    game.story_actors = source.units.clone();
+    game.story_bg = true;
+    game.has_story_native_map_view = true;
+    game.story_native_map_view = battle::NativeMapViewState {
+        camera_x: 0,
+        camera_y: 2,
+        cursor_x: 7,
+        cursor_y: 5,
+        visible_cursor_x: 7,
+        visible_cursor_y: 3,
+    };
+    (game.cam_x, game.cam_y, game.cur_x, game.cur_y) = (0.0, 48.0, 7, 5);
+    game.materialize_native_story_map_state(Some(&source)).unwrap();
+    game.interface_mode = PLAYER_INTERFACE_ORIGINAL.into();
+    game.modern_story_portraits = Some(theme);
+    game.modern_hd_separate_world = true;
+    let mut ui = Picture::new_image(LOGICAL_W, LOGICAL_H);
+    let mut report = String::new();
+    for camera_x in [0, 1] {
+        game.story_native_map_view.camera_x = camera_x;
+        game.story_native_map_view.visible_cursor_x = 7 - camera_x;
+        game.cam_x = (camera_x * 24) as f64;
+        let clock = game.native_map_clock;
+        let dac = game.native_map_dac.clone();
+        let work = game.native_map_work.clone();
+        let vga = game.native_map_vga.clone();
+        let actors = game.story_actors.clone();
+        let state = game.story_native_map_state.as_ref().unwrap().clone();
+        for _ in 0..2 {
+            assert!(game.modern_hd_map_frame_admission(true, false));
+            game.draw(&mut ui);
+            assert!(game.modern_hd_world_visible, "{}", game.load_err);
+            let frame = game.modern_hd_map_presented.as_ref().unwrap();
+            assert!(!frame.terrain.is_empty() && frame.units.len() >= 2 && frame.range.is_none());
+            assert!(frame.units.iter().any(|unit| unit.group == 48));
+            assert!(game.st.is_none() && game.story_actors == actors);
+            assert!(game.native_map_work == work && game.native_map_vga == vga && game.native_map_dac == dac);
+            assert_eq!(game.native_map_clock, clock);
+            let displayed = game.story_native_map_state.as_ref().unwrap();
+            assert_eq!(displayed.native_map_view_state, state.native_map_view_state);
+            assert_eq!(displayed.native_map_cycle_state, state.native_map_cycle_state);
+            assert_eq!(displayed.native_map_selector_cache, state.native_map_selector_cache);
+        }
+        let world = game.modern_hd_map_gpu.as_ref().unwrap().world.as_ref().unwrap();
+        let expected = std::fs::read(out.join(format!("go-story-map-{camera_x}.rgba"))).unwrap();
+        assert_eq!(world.read_pixels().len(), expected.len());
+        let max_diff = world.read_pixels().iter().zip(&expected).map(|(a, b)| u8::abs_diff(*a, *b)).max().unwrap();
+        assert!(max_diff <= 1, "map32 camera {camera_x}: colour difference {max_diff}");
+        let expected_ui = std::fs::read(out.join(format!("go-story-map-{camera_x}-ui.rgba"))).unwrap();
+        assert_eq!(expected_ui.len(), 320 * 200 * 4);
+        assert!(expected_ui.iter().all(|&byte| byte == 0) && ui.read_pixels().iter().all(|&byte| byte == 0));
+        writeln!(
+            report,
+            "{camera_x} {max_diff} {:x} {:x}",
+            Sha256::digest(&expected),
+            Sha256::digest(world.read_pixels())
+        )
+        .unwrap();
+    }
+    game.cam_x += 0.5;
+    assert!(!game.modern_hd_map_frame_admission(true, false));
+    game.cam_x -= 0.5;
+    game.story_walks.push(StoryWalkJob::default());
+    assert!(!game.modern_hd_map_frame_admission(true, false));
+    game.story_walks.clear();
+    let previous = game.modern_hd_map_frame.clone();
+    let frame = previous.as_ref().unwrap().units.iter().find(|unit| unit.group == 48).unwrap();
+    game.modern_story_portraits.as_mut().unwrap().map_sprites_hd.get_mut(&48).unwrap()[frame.frame as usize] = None;
+    game.draw(&mut ui);
+    assert!(!game.modern_hd_world_visible && game.load_err.contains("invalid group 48"));
+    assert!(game.modern_hd_map_frame == previous);
+    std::fs::write(out.join("rust-story-map.txt"), &report).unwrap();
+    println!("皇城兩個固定鏡頭對照 Go：\n{report}");
 }

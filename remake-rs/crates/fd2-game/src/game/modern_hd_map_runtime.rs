@@ -279,9 +279,13 @@ pub(crate) fn prepare_modern_hd_map_frame(
 
 impl Game {
     pub(crate) fn modern_hd_map_frame_admission(&self, legacy_viewport: bool, battle_view: bool) -> bool {
-        !legacy_viewport
-            && battle_view
-            && self.modern_story_portraits.as_ref().is_some_and(|set| set.map_sprites_hd.len() == 125)
+        if !self.modern_story_portraits.as_ref().is_some_and(|set| set.map_sprites_hd.len() == 125) {
+            return false;
+        }
+        if legacy_viewport {
+            return self.has_aligned_hd_story_map_source();
+        }
+        battle_view
             && native_map_assets_available(self.native_map_assets.as_ref())
             && self.st.as_ref().is_some_and(|state| state.has_native_map_view_state)
             && !self.spell_open

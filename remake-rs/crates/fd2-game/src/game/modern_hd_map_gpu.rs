@@ -153,10 +153,15 @@ fn mosaic_world(source: &Picture, step: i64) -> Picture {
 
 impl Game {
     pub(crate) fn draw_modern_hd_map_frame(&mut self, screen: &mut Picture) -> Result<()> {
-        self.modern_hd_map_composing = true;
-        let result = self.compose_native_map_frame();
-        self.modern_hd_map_composing = false;
-        result?;
+        if self.has_aligned_hd_story_map_source() {
+            let frame = self.prepare_hd_story_map().inspect_err(|_| screen.clear())?;
+            self.modern_hd_map_frame = Some(frame);
+        } else {
+            self.modern_hd_map_composing = true;
+            let result = self.compose_native_map_frame();
+            self.modern_hd_map_composing = false;
+            result?;
+        }
         let step = self.phase_banner_step();
         let timed_dialogue = self.modern_hd_timed_dialogue_eligible();
         let frame = self.modern_hd_map_frame.as_ref().ok_or_else(|| game_err!("modern HD map: missing frame"))?;

@@ -175,21 +175,7 @@ impl Game {
         // 因而沒有 0x129EC gate 的 raw race/class。99% 玩家可見模式只在本次
         // 背景合成的私有 clone 採保守前景重畫；不可污染 storyActors、戰鬥或存檔。
         let mut frame_state = state.clone();
-        for clone in &mut frame_state.units {
-            if !clone.has_native_record_race || !clone.has_native_record_class {
-                if !clone.has_native_map_presentation || !clone.has_native_record_byte5 || !clone.has_battle_fig {
-                    return Err(GameError::new(
-                        "native story map: approximate foreground gate lacks required provenance",
-                    ));
-                }
-                if !clone.has_native_record_race {
-                    (clone.native_record_race, clone.has_native_record_race) = (0, true);
-                }
-                if !clone.has_native_record_class {
-                    (clone.native_record_class, clone.has_native_record_class) = (0, true);
-                }
-            }
-        }
+        approximate_story_foreground(&mut frame_state.units)?;
         let previous = self.st.replace(frame_state);
         let err = self.compose_native_map_frame();
         // composeNativeMapFrame 會更新時序全域值，但私有角色clone只供畫面使用；
@@ -205,6 +191,82 @@ impl Game {
         state.has_native_map_binary_timing_state = frame.has_native_map_binary_timing_state;
         err
     }
+
+    pub(crate) fn has_aligned_hd_story_map_source(&self) -> bool {
+        self.st.is_none()
+            && self.story_bg
+            && self.has_story_native_map_view
+            && self.story_native_map_state.is_some()
+            && native_map_assets_available(self.native_map_assets.as_ref())
+            && self.story_walks.is_empty()
+            && self.m.as_ref().is_some_and(|map| {
+                (map.tile_w, map.tile_h) == (24, 24)
+                    && self.cam_x == (self.story_native_map_view.camera_x * map.tile_w) as f64
+                    && self.cam_y == (self.story_native_map_view.camera_y * map.tile_h) as f64
+            })
+    }
+
+    /// 沿原生場景載體準備固定鏡頭的 HD 圖層。這次取樣只更新私有候選，Draw 不推進劇情狀態。
+    pub(crate) fn prepare_hd_story_map(&self) -> Result<ModernHDMapFrame> {
+        let assets = self.native_map_assets.as_ref().ok_or_else(|| game_err!("modern HD story: missing assets"))?;
+        let mut state = self
+            .story_native_map_state
+            .as_ref()
+            .filter(|state| state.native_map_selector_cache.is_some())
+            .cloned()
+            .ok_or_else(|| game_err!("modern HD story: selector cache absent"))?;
+        state.units.clone_from(&self.story_actors);
+        approximate_story_foreground(&mut state.units)?;
+        state.materialize_native_map_view_state(self.story_native_map_view)?;
+        let mut player_clock = self.player_clock;
+        let mut map_clock = self.native_map_clock;
+        if !sample_native_map_timing(&mut state, &mut map_clock, player_clock.sample(self.virtual_now)) {
+            return Err(game_err!("modern HD story: native map timing unavailable"));
+        }
+        let (raw_tick, sampled) = map_clock.current();
+        if !sampled {
+            return Err(game_err!("modern HD story: auxiliary timing unavailable"));
+        }
+        let mut dac =
+            if self.native_map_dac.is_empty() { assets.palette_dac.clone() } else { self.native_map_dac.clone() };
+        fdother::advance_native_dac_palette_cycle_e0ef(
+            &mut dac,
+            self.native_fdother_palette_phase,
+            self.native_fdother_palette_tick,
+            raw_tick,
+        )?;
+        let runtime = NativeMapFrameRuntime {
+            hud: indexedmap::NativeMapHUDInput::default(),
+            chapter_aux_phase: self.native_chapter_aux_phase_override.unwrap_or(raw_tick) & 15,
+        };
+        let mut input = build_native_map_frame_input(Some(assets), self.m.as_ref(), Some(&state), runtime)?;
+        // LOADCH 的劇情畫面只顯示世界。原生對白稍後在獨立介面上畫。
+        input.hud.display_gate_a = false;
+        input.hud.display_gate_b = false;
+        input.frame.range_mode = 0;
+        let stage = self.prepare_native_ch23_steady_stage(raw_tick)?;
+        let motion =
+            if self.banner_t > 0 || self.walk.is_some() { ModernHDMapMotion::Step } else { ModernHDMapMotion::Steady };
+        self.prepare_hd_battle_map(&input, stage.as_ref(), &dac, motion)
+    }
+}
+
+fn approximate_story_foreground(units: &mut [battle::Unit]) -> Result<()> {
+    for unit in units {
+        if unit.has_native_record_race && unit.has_native_record_class {
+            continue;
+        }
+        if !unit.has_native_map_presentation || !unit.has_native_record_byte5 || !unit.has_battle_fig {
+            return Err(game_err!("native story map: approximate foreground gate lacks required provenance"));
+        }
+        if !unit.has_native_record_race {
+            (unit.native_record_race, unit.has_native_record_race) = (0, true);
+        }
+        if !unit.has_native_record_class {
+            (unit.native_record_class, unit.has_native_record_class) = (0, true);
+        }
+    }
+    Ok(())
 }
 
 /// R4 B 組新增：`appendNativeStoryMapActors` 對載體與角色陣列的部分；`prepareNativeStoryMapSpawnState`

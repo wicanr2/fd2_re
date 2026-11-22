@@ -80,23 +80,27 @@ impl Game {
     /// Go：`native_bios_clock.go:82`，`func (g *Game) advanceNativeMapClock(now time.Time) bool`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn advance_native_map_clock(&mut self, now: GameInstant) -> bool {
-        match self.st.as_ref() {
-            Some(st)
-                if st.has_native_map_cycle_state
-                    && st.has_native_terrain_phase_state
-                    && st.has_native_map_binary_timing_state
-                    && st.has_native_map_view_state => {}
-            _ => return false,
-        }
-        let raw_tick = self.native_map_clock.sample(now);
-        let Some(st) = self.st.as_mut() else {
-            return false;
-        };
-        st.advance_native_map_presentation_cycles(raw_tick)
-            && st.advance_native_terrain_phase(raw_tick, -1)
-            && st.advance_native_terrain_flip(raw_tick)
-            && st.advance_native_unit_pixel_shift(raw_tick)
+        self.st.as_mut().is_some_and(|state| sample_native_map_timing(state, &mut self.native_map_clock, now))
     }
+}
+
+pub(crate) fn sample_native_map_timing(
+    state: &mut battle::State,
+    clock: &mut NativeBIOSClock,
+    now: GameInstant,
+) -> bool {
+    if !state.has_native_map_cycle_state
+        || !state.has_native_terrain_phase_state
+        || !state.has_native_map_binary_timing_state
+        || !state.has_native_map_view_state
+    {
+        return false;
+    }
+    let raw_tick = clock.sample(now);
+    state.advance_native_map_presentation_cycles(raw_tick)
+        && state.advance_native_terrain_phase(raw_tick, -1)
+        && state.advance_native_terrain_flip(raw_tick)
+        && state.advance_native_unit_pixel_shift(raw_tick)
 }
 
 #[cfg(test)]
