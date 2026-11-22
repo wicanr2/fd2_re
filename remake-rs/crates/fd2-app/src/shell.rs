@@ -471,7 +471,10 @@ fn drive(
         } else {
             hd_world = runner.draw_window_layers(&mut screen);
         }
-        if let Some(mut image) = images.get_mut(&shell.image) {
+        // HD 世界與介面是兩張貼圖。世界變動時，同一張介面仍可沿用。
+        // 進出 HD 的當幀要重傳，因為兩側的 alpha 處理不同。
+        let reuse_hd_ui = hd_world.is_some() && shell.hd_world_source.is_some() && screen.pix == shell.last_frame;
+        if !reuse_hd_ui && let Some(mut image) = images.get_mut(&shell.image) {
             image.data = Some(if hd_world.is_some() { straight_alpha(&screen.pix) } else { opaque_rgba(&screen.pix) });
         }
         (Some(screen.pix), None)
@@ -674,9 +677,16 @@ fn place_hd_world(
         image.data = Some(opaque_rgba(world.read_pixels()));
         shell.hd_world_source = Some(world.clone());
     }
-    sprite.custom_size = size;
-    transform.translation = Vec3::new(translation.x, translation.y, -1.0);
-    *visibility = Visibility::Visible;
+    if sprite.custom_size != size {
+        sprite.custom_size = size;
+    }
+    let position = Vec3::new(translation.x, translation.y, -1.0);
+    if transform.translation != position {
+        transform.translation = position;
+    }
+    if *visibility != Visibility::Visible {
+        *visibility = Visibility::Visible;
+    }
 }
 
 fn place_hd_portrait(

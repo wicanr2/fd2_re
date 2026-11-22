@@ -1,6 +1,6 @@
 #!/bin/bash
-# 在正常 Bevy 視窗送 X11 鍵盤事件，驗證 F2、設定冷啟動及缺包回退。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄>
+# 在正常 Bevy 視窗送 X11 鍵盤事件，驗證 F2、設定冷啟動、缺包回退及序章對白。
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -18,14 +18,16 @@ timeout 20s docker run "${common[@]}" --memory 128m --cpus 1 \
   --mount "type=bind,source=$root/work,target=/work" fd2-rust:1.99.1-r3 \
   mkdir -p "/work/$relative/socket" "/work/$relative/profile" "/work/$relative/rejected"
 hd="$(cd "$hd" && pwd -P)"
-name="fd2-r6-theme-window-$$"
+name=
 stop_window() {
+  test -n "$name" || return 0
   docker stop -t 3 "$name" >/dev/null 2>&1 || true
 }
 trap stop_window EXIT
 
 window() {
   local mode="$1" profile="$2" pack="$3"
+  name="fd2-r6-theme-window-$$-$mode"
   docker run -d "${common[@]}" --init --name "$name" --memory 6g --cpus 4 \
     --mount "type=bind,source=$build/release,target=/bins,readonly" \
     --mount "type=bind,source=$root/remake/assets,target=/assets,readonly" \
@@ -64,13 +66,18 @@ drive() {
       done
       test -n "$wid"
       xdotool windowfocus --sync "$wid"
-      key() { xdotool keydown "$1"; sleep 0.45; xdotool keyup "$1"; }
+      key() {
+        xdotool windowfocus --sync "$wid"
+        xdotool keydown "$1"
+        sleep 0.45
+        xdotool keyup "$1"
+      }
       capture() { import -window "$wid" -depth 8 -define png:exclude-chunks=date,time "$1"; }
       same() { compare -metric AE "$1" "$2" null: 2>/dev/null; }
       different() {
-        local changed
-        changed="$(compare -metric AE "$1" "$2" null: 2>&1)" || test "$?" -eq 1
-        test "$changed" -gt 0
+        local status=0
+        compare -metric AE "$1" "$2" null: 2>/dev/null || status=$?
+        test "$status" -eq 1
       }
       first_visible_frame() {
         for _ in $(seq 1 60); do
@@ -86,7 +93,7 @@ drive() {
           capture "$2"
           if different "$1" "$2"; then return; fi
         done
-        echo "開場停在同一張圖：$1" >&2
+        echo "畫面未變更：$1" >&2
         return 1
       }
       wait_for_event() {
@@ -119,12 +126,13 @@ drive() {
         echo "逾時等候美術設定 $1" >&2
         return 1
       }
-      wait_for_art() {
+      wait_for_picture() {
         for _ in $(seq 1 100); do
           sleep 0.6
           capture "$1"
-          if same "$1" title-hd.png; then return; fi
+          if same "$1" "$2"; then return; fi
         done
+        echo "逾時等候相同畫面 $1 與 $2" >&2
         return 1
       }
       case "$MODE" in
@@ -140,7 +148,7 @@ drive() {
           first_visible_frame cold-open.png
           wait_for_change cold-open.png cold-loading.png
           wait_for_menu title-hd-cold.png
-          wait_for_art title-hd-cold.png
+          wait_for_picture title-hd-cold.png title-hd.png
           grep -Fq "[theme] 主題：現代手繪" cold.log
           ;;
         missing)
@@ -151,23 +159,72 @@ drive() {
           different title-hd.png title-missing-pack.png
           test ! -e rejected/fd2_re/fd2_settings.json
           ;;
+        toggle)
+          first_visible_frame toggle-opening.png
+          wait_for_menu title-before-toggle.png
+          wait_for_picture title-before-toggle.png title-hd.png
+          key Down
+          wait_for_change title-before-toggle.png title-load-selected.png
+          convert title-before-toggle.png -crop 1280x656+0+0 +repage title-background.png
+          convert title-load-selected.png -crop 1280x656+0+0 +repage title-load-background.png
+          same title-background.png title-load-background.png
+          key Up
+          wait_for_picture title-start-selected.png title-before-toggle.png
+          key F2
+          wait_for_setting faithful
+          wait_for_picture title-original-toggle.png title-missing-pack.png
+          key F2
+          wait_for_setting modern-handpainted-a
+          wait_for_picture title-hd-toggle.png title-hd.png
+          key Return
+          wait_for_event "beat op=dialog "
+          sleep 1
+          first_visible_frame story-hd.png
+          different title-hd-toggle.png story-hd.png
+          key F2
+          wait_for_setting faithful
+          sleep 1
+          first_visible_frame story-original.png
+          different story-hd.png story-original.png
+          key F2
+          wait_for_setting modern-handpainted-a
+          sleep 1
+          first_visible_frame story-hd-restored.png
+          different story-original.png story-hd-restored.png
+          test "$(grep -c "beat op=dialog " toggle.log)" -eq 1
+          ;;
       esac
-      ! grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"
+      if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
       echo "$MODE PASS"
     '
 }
 
-timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 \
+baseline=()
+if [[ -n "${2:-}" ]]; then
+  test -f "$2/title-hd.png" && test -f "$2/title-missing-pack.png"
+  baseline=(--mount "type=bind,source=$(cd "$2" && pwd -P),target=/baseline,readonly")
+fi
+timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
   --mount "type=bind,source=$out,target=/out" fd2-rust:1.99.1-r3 bash -euc '
     mkdir -p /out/profile/fd2_re
-    printf "{\"theme_id\":\"faithful\",\"interface_mode\":\"original\"}\n" > /out/profile/fd2_re/fd2_settings.json
+    theme=faithful
+    if test -d /baseline; then
+      cp /baseline/title-hd.png /baseline/title-missing-pack.png /out/
+      theme=modern-handpainted-a
+    fi
+    printf "{\"theme_id\":\"%s\",\"interface_mode\":\"original\"}\n" "$theme" > /out/profile/fd2_re/fd2_settings.json
   '
-window f2 profile /hd
-drive f2
-stop_window
-window cold profile /hd
-drive cold
-stop_window
-window missing rejected /missing
-drive missing
+if [[ ${#baseline[@]} -eq 0 ]]; then
+  window f2 profile /hd
+  drive f2
+  stop_window
+  window cold profile /hd
+  drive cold
+  stop_window
+  window missing rejected /missing
+  drive missing
+  stop_window
+fi
+window toggle profile /hd
+drive toggle
 stop_window

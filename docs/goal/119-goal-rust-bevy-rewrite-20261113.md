@@ -131,6 +131,10 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/r6-theme-window-20261122-r6` 通過 Linux Bevy 視窗驗證。首次 F2 後開場持續更新，美術偏好落盤並保留原介面偏好。冷啟動以保存的設定進入相同 HD 標題畫面，兩張 X11 擷取逐像素相同，PNG 的 SHA-256 為 `99edd3b6e1f2b359fe3a8cb305baf1a2816f95f3c71a5b039ecf109600396d57`。缺包時拒收並抵達原版標題，設定檔沒有寫入。視窗測試使用正常 Escape 略過開場。標題上的再次 F2 曾等候逾時，普通 START 後的對白切換仍待視窗驗證。
 
+標題重驗在 Bevy 視窗等到選單就緒。切換 START／LOAD 時，選單上方 1280×656 像素完全相同。F2 切回原版及再切回 HD，各自逐像素重現原版及 HD 標題基準。此前逾時保留在舊收據。Bevy 只在 HD 分層模式及介面像素連續相同時，沿用上一張介面貼圖。進出 HD 都會重新上傳介面，套用對應的透明度。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/r6-theme-toggle-20261122-r3 work/r6-theme-toggle-20261122` 通過標題及序章重驗。普通 START 進入皇城首句對白，F2 來回切換地圖、人物及頭像，原版對白框與同一句台詞持續顯示。首次 F2、冷啟動及缺包驗證在同一執行檔的 `work/r6-theme-toggle-20261122` 通過。F11 與完整 HD 清冊仍依 #312 追蹤。
+
 ### R6 HD1 劇情走行與鏡頭滑動（RUNTIME-E1，2026-11-22）
 
 沿 Go `697c0913` 的 `modern_hd_story_motion.go` 及規格 61。使用現行劇情控制器的座標、偏移、面向和節拍。HD 鏡頭投影到私有地格視圖，保留小數像素位移及原生角色落腳點。地形補足右側一欄與下側一列，再裁切到原生視窗。視差採原生每格水平 3 像素與垂直 2 像素的比例。地形與前景的原生索引色映射各照來源遮罩執行。
