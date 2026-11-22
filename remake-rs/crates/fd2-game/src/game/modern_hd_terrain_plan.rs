@@ -71,8 +71,6 @@ pub(crate) fn build_modern_hd_terrain_region_plan(
     }
     let stride = fdicon::NATIVE_MAP_STRIDE;
     let side = NATIVE_SIDE as i64;
-    let scale = SCALE as i64;
-    let view = modern_hd_map_viewport();
     let mut draws = Vec::new();
     for row in 0..rows {
         for col in 0..cols {
@@ -92,11 +90,9 @@ pub(crate) fn build_modern_hd_terrain_region_plan(
                 .checked_mul(side * stride)
                 .and_then(|offset| offset.checked_add(terrain_base))
                 .and_then(|offset| col.checked_mul(side).and_then(|x| offset.checked_add(x)))
-                .filter(|&offset| offset <= limit - (side - 1) * stride - side)
+                .filter(|&offset| hd_map_tile_fits_work(offset))
                 .ok_or_else(|| game_err!("modern HD terrain: work destination out of bounds"))?;
-            let x = view.min.x + (work_offset % stride - viewport_base % stride) * scale;
-            let y = view.min.y + (work_offset / stride - viewport_base / stride) * scale;
-            let area = rect(x, y, x + side * scale, y + side * scale);
+            let area = hd_map_tile_rect(work_offset, viewport_base);
             if rect_empty(&rect_intersect(area, clip)) {
                 continue;
             }

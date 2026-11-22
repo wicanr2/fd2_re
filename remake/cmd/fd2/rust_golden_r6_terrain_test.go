@@ -140,3 +140,75 @@ func exportRustR6TerrainPlan(t *testing.T, out *strings.Builder, id int, frames 
 		image.Rect(100, 150, 168, 200), frames, colours)
 	emit("clip", draws, err)
 }
+
+func TestRustGoldenR6MapGeometry(t *testing.T) {
+	out := os.Getenv("FD2_R6_OPENING_OUT")
+	if out == "" {
+		t.Skip("set FD2_R6_OPENING_OUT to export the Rust golden")
+	}
+	var report strings.Builder
+	rect := func(r image.Rectangle) string {
+		return fmt.Sprintf("%d %d %d %d", r.Min.X, r.Min.Y, r.Max.X, r.Max.Y)
+	}
+	const base = 0x8088
+	in, counts := hdUnitPlanFixture(t)
+	positions := [][2]int{{-1, -1}, {0, 0}, {12, 8}, {13, 0}, {0, 9}, {-2, 0}, {4, 3}}
+	for _, viewport := range []int{base, base - 12*fdicon.NativeMapStride} {
+		for pose := 0; pose < 4; pose++ {
+			for motion := 0; motion <= 6; motion++ {
+				for force := 0; force < 2; force++ {
+					for shift := 0; shift < 2; shift++ {
+						in.PixelShift = shift
+						for _, pos := range positions {
+							in.Units = []fdicon.NativeUnitLayerEntry{{
+								X: in.CameraX + pos[0], Y: in.CameraY + pos[1], Slot: 1, Pose: pose,
+								MotionOffset: motion, ForceBase: force != 0, Flags: 0x80,
+							}}
+							plan, err := buildModernHDMapUnitPlan(in, viewport, counts)
+							if err != nil {
+								t.Fatal(err)
+							}
+							fmt.Fprintf(&report, "unit %d %d %d %d %d %d %d %d\n",
+								viewport, pose, motion, force, shift, pos[0], pos[1], len(plan))
+							for _, draw := range plan {
+								fmt.Fprintf(&report, "%d %d %d %t %s\n", draw.Group, draw.Frame, draw.WorkOffset, draw.PaletteBand, rect(draw.Rect))
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	in, palette := hdForegroundPlanFixture()
+	for pose := byte(0); pose < 4; pose++ {
+		for _, motion := range []int{0, 3, 6} {
+			for flip := 0; flip < 2; flip++ {
+				in.Flip = flip
+				for _, mode := range []byte{0, 0xff} {
+					for i := range in.Cells {
+						in.Cells[i].BlitMode = mode
+					}
+					for suppressed := 0; suppressed < 2; suppressed++ {
+						in.ForegroundUnits = []fdicon.NativeForegroundLayerEntry{
+							{X: 4, Y: 4, Pose: pose, MotionOffset: motion, Race: byte(4 * suppressed)},
+							{X: 1, Y: 1}, {X: 14, Y: 10}, {X: 16, Y: 12}, {X: -1, Y: -1}, {X: 3, Y: 3, Inactive: true},
+						}
+						plan, err := buildModernHDMapForegroundPlan(in, base, palette)
+						if err != nil {
+							t.Fatal(err)
+						}
+						fmt.Fprintf(&report, "foreground %d %d %d %d %d %d\n", pose, motion, flip, mode, suppressed, len(plan))
+						for _, draw := range plan {
+							fmt.Fprintf(&report, "%d %d %d %s %x\n", draw.SourceFrame, draw.WorkOffset, draw.BlitMode,
+								rect(draw.Rect), sha256.Sum256(draw.Image.Pix))
+						}
+					}
+				}
+			}
+		}
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-map-geometry.txt"), []byte(report.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+}

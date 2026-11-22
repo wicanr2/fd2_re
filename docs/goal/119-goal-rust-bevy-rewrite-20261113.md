@@ -121,6 +121,14 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 地圖人物與前景繪圖計畫（Go 對照通過，2026-11-22）
+
+依 Go `697c0913` 的 `buildModernHDMapUnitRegionPlan`、`buildModernHDMapForegroundRegionPlan` 與 `prepareModernHDMapFrameStageLayout`。人物沿用 fdicon 的槽位、動作畫格、位移與原生寫入遮罩，空畫格不產生命令。前景沿用原生重繪資格、相鄰格、原生選格與透明遮罩。遮罩中的同色寫入仍遮擋下層，目的地重映射區維持透明。原生前景與 HD 前景共用工作位址、六倍矩形與色盤路徑。
+
+地圖繪圖計畫依繪製階段分別讀取範圍模式改寫前的地形和改寫後的前景地格。前景只取與用途相符的 HD 畫格，缺件沿用已解碼的 24×24 原生前景。人物 HD 畫格缺件或尺寸錯誤、前景來源不完整、色盤或位址異常均拒收整份計畫。驗收對照 Go 的人物與前景計畫，另與 Rust 原生寫入逐像素比對。正式視窗仍須接上主題交易與圖層合成。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-map-geometry-20261122` 通過。固定輸入涵蓋 1,568 組人物與 96 組前景，包括動作、鏡頭位移、色帶、前景資格、查色表和工作區邊界。Go 與 Rust 的指令序列與前景像素雜湊逐筆相同，序列 SHA-256 為 `1b96cbc30c193340809a2a36fbbd2f6b428465f8c6c9addec1c470f7900e00fb`。Rust 原生工作區的寫入對照、改寫前後地格及 HD 用途後備通過。格式、Clippy、436 項 Rust 回歸及前批正式素材差分也通過。
+
 ### R6 HD1 地形調色與座標投影（Go 對照通過，2026-11-22）
 
 依凍結 Go 版 `697c0913` 的 `terrainColourContext`、`modernTerrainHDAsset.shade`、`buildModernHDTerrainRegionPlan` 與 `prepareModernHDMapFrameStageLayout`，沿用已核對的 FDSHAP 畫格、遮罩、索引色、地形選格器及原生工作位址。色盤與查色表須各有 256 項。`BlitMode == 0xff` 使用目前色盤，其餘經查色表取色。以四個最近原版色的加權 RGB 差值調整 HD 像素，保留透明像素、同色免重算及全黑／全白收斂。RGB 插值屬現代美術規則。每格保留三種調色結果，原始色盤變更時重建權重。

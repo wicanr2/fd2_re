@@ -104,6 +104,55 @@ fn terrain_plan_reuses_native_selector_and_rejects_invalid_work_ranges() {
 }
 
 #[test]
+fn world_geometry_uses_original_terrain_and_updated_foreground_cells() {
+    let picture = Arc::new(Picture::new_image(144, 144));
+    let map = TerrainMap {
+        frames: BTreeMap::from([
+            (0, TerrainFrame { role: TerrainRole::Terrain, image: picture.clone() }),
+            (1, TerrainFrame { role: TerrainRole::Terrain, image: picture.clone() }),
+            (3, TerrainFrame { role: TerrainRole::Foreground, image: picture.clone() }),
+        ]),
+        colours: Arc::new(BTreeMap::from([(0, vec![]), (1, vec![]), (3, vec![])])),
+        shades: Mutex::default(),
+    };
+    let (palette, _, _) = fixture_palettes();
+    let lut: Vec<u8> = (0..=255).collect();
+    let colours = TerrainColourContext::new(0, &palette, &palette, &lut).unwrap();
+    let bank = fdicon::Bank {
+        sprites: vec![fdicon::Sprite { pixels: vec![1; 576], mask: vec![1; 576], remap_mask: vec![0; 576] }; 4],
+    };
+    let cache = fdicon::NativeSelectorCache::default();
+    let before = indexedmap::FrameInput {
+        map_width: 15,
+        camera_x: 1,
+        camera_y: 2,
+        controls: &[0x80, 0, 0, 0, 0, 0, 0, 0, 0x80],
+        cells: vec![fdicon::NativeTerrainCell { tile: 0, blit_mode: 0xff }; 15 * 12],
+        foreground_units: vec![fdicon::NativeForegroundLayerEntry { x: 3, y: 3, ..Default::default() }],
+        unit_bank: Some(&bank),
+        foreground_bank: Some(&bank),
+        selector_cache: Some(&cache),
+        ..Default::default()
+    };
+    let mut after = before.clone();
+    after.cells[3 * 15 + 3].tile = 2;
+    let base = NATIVE_MAP_STEADY_BASE;
+    let layout = (base, before.camera_y, 8, base);
+    let sprites = BTreeMap::new();
+    let geometry =
+        prepare_modern_hd_map_geometry(&before, &after, layout, &palette, &sprites, Some((&map, &colours))).unwrap();
+    assert_eq!(geometry.terrain.len(), 104);
+    assert!(geometry.terrain.iter().all(|d| d.frame == 0));
+    assert_eq!(geometry.foreground.len(), 2);
+    let hd = geometry.foreground.iter().find(|d| d.source_frame == 3).unwrap();
+    assert!(Arc::ptr_eq(hd.hd_image.as_ref().unwrap(), &picture));
+    let native = geometry.foreground.iter().find(|d| d.source_frame == 1).unwrap();
+    assert!(native.hd_image.is_none());
+    assert_eq!(native.image.width, 24);
+    assert_eq!(before.cells[3 * 15 + 3].tile, 0);
+}
+
+#[test]
 fn cold_maps_check_every_path_before_sharing_and_keep_two() {
     let root = temp_dir("hd-terrain-recent");
     let sha = write_png(&root, "one.png", 255);
