@@ -41,6 +41,29 @@ impl WindowPortrait {
 impl Game {
     pub(crate) fn window_portrait(&self) -> Option<WindowPortrait> {
         let overlay = self.modern_hd_overlay.as_ref()?;
+        let image = overlay.portrait.as_ref()?.hd_image.clone()?;
+        if rect_empty(&overlay.rect) {
+            return None;
+        }
+        Some(WindowPortrait {
+            image,
+            rect: overlay.rect,
+            brightness: self.window_overlay_brightness()?,
+            mirror_x: overlay.mirror_x,
+        })
+    }
+
+    pub(crate) fn window_dialogue_border(&self) -> Option<WindowPortrait> {
+        let (image, rect) = self.window_dialogue_border.as_ref()?;
+        Some(WindowPortrait {
+            image: image.clone(),
+            rect: *rect,
+            brightness: self.window_overlay_brightness()?,
+            mirror_x: false,
+        })
+    }
+
+    fn window_overlay_brightness(&self) -> Option<f32> {
         let black = self.native_defeat.is_none()
             && self.title_phase.is_empty()
             && self.native_palette_ramp.is_none()
@@ -52,11 +75,9 @@ impl Game {
             || self.native_full_dac_white
             || self.native_full_dac_black
             || black
-            || rect_empty(&overlay.rect)
         {
             return None;
         }
-        let image = overlay.portrait.as_ref()?.hd_image.clone()?;
         let mut brightness = 1.0;
         if self.title_phase.is_empty()
             && let Some(fade) = &self.fade
@@ -67,12 +88,7 @@ impl Game {
                 brightness = 1.0 - brightness;
             }
         }
-        Some(WindowPortrait {
-            image,
-            rect: overlay.rect,
-            brightness: brightness.clamp(0.0, 1.0) as f32,
-            mirror_x: overlay.mirror_x,
-        })
+        Some(brightness.clamp(0.0, 1.0) as f32)
     }
 }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples]
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples|gold-dialogue]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -204,6 +204,14 @@ drive() {
         capture "$1"
       }
       locale_text_region() { convert "$1" -crop 850x240+398+464 +repage "$2"; }
+      check_dialogue_border() {
+        convert "$1" -crop 1240x12+20+448 +repage /tmp/border-before.png
+        convert "$2" -crop 1240x12+20+448 +repage /tmp/border-after.png
+        different /tmp/border-before.png /tmp/border-after.png
+        locale_text_region "$1" /tmp/text-before.png
+        locale_text_region "$2" /tmp/text-after.png
+        same /tmp/text-before.png /tmp/text-after.png
+      }
       case "$MODE" in
         f2)
           first_visible_frame opening-before.png
@@ -396,6 +404,31 @@ drive() {
           locale_text_region locale-en.png /tmp/locale-en.png
           different /tmp/locale-actual.png /tmp/locale-en.png
           ;;
+        gold-dialogue)
+          wait_for_menu gold-title.png
+          toolbar 180
+          wait_for_preference interface_mode hd
+          capture_locale_dialogue gold-original-art.png en
+          toolbar 180
+          wait_for_preference interface_mode original
+          capture original-original-art.png
+          check_dialogue_border gold-original-art.png original-original-art.png
+          toolbar 105
+          wait_for_setting modern-handpainted-a
+          capture original-hd-art.png
+          toolbar 180
+          wait_for_preference interface_mode hd
+          capture gold-hd-art.png
+          check_dialogue_border original-hd-art.png gold-hd-art.png
+          convert gold-original-art.png -crop 1240x12+20+448 +repage /tmp/gold-first.png
+          same /tmp/gold-first.png /tmp/border-after.png
+          key Return
+          wait_for_event "locale page ready: en page=1"
+          sleep 1
+          capture gold-hd-art-page2.png
+          convert gold-hd-art-page2.png -crop 1240x12+20+448 +repage /tmp/gold-second.png
+          same /tmp/gold-first.png /tmp/gold-second.png
+          ;;
       esac
       if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
       echo "$MODE PASS"
@@ -418,7 +451,7 @@ elif [[ "$mode" == "no-font" ]]; then
   test -f "${2:?需要標題基準}/title-missing-pack.png"
 elif [[ "$mode" == "locale-samples" ]]; then
   test -f "${2:?需要英文視窗基準}/locale-en.png"
-elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" && "$mode" != "locales" ]]; then
+elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" && "$mode" != "locales" && "$mode" != "gold-dialogue" ]]; then
   test "$mode" = toggle
 fi
 timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
@@ -436,6 +469,9 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       interface=hd
     fi
     printf "{\"theme_id\":\"%s\",\"interface_mode\":\"%s\"}\n" "$theme" "$interface" > /out/profile/fd2_re/fd2_settings.json
+    if [[ "$CHECK_MODE" == gold-dialogue ]]; then
+      printf "{\"theme_id\":\"faithful\",\"locale_id\":\"en\",\"game_speed\":4}\n" > /out/profile/fd2_re/fd2_settings.json
+    fi
     mkdir -p /out/no-font/fd2_re
     printf "{\"theme_id\":\"faithful\",\"interface_mode\":\"hd\"}\n" > /out/no-font/fd2_re/fd2_settings.json
     if [[ "$CHECK_MODE" == poster* ]]; then
@@ -455,6 +491,12 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       fi
     fi
   '
+if [[ "$mode" == "gold-dialogue" ]]; then
+  window gold-dialogue profile /hd
+  drive gold-dialogue
+  stop_window
+  exit 0
+fi
 if [[ "$mode" == "locales" || "$mode" == "locale-samples" ]]; then
   phases=(locale-cold locale-ja locale-hans)
   if [[ "$mode" == "locales" ]]; then phases=(locale-cycle "${phases[@]}"); fi

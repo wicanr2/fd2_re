@@ -35,7 +35,7 @@ use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::render::view::screenshot::{Screenshot, ScreenshotCaptured, save_to_disk};
 use bevy::window::{MonitorSelection, PresentMode, PrimaryWindow, WindowMode, WindowResolution};
 use bevy::winit::{UpdateMode, WinitSettings};
-use fd2_game::game::{AudioVoice, Key as GameKey, Picture, RawDevices, VoiceSlot, display_list};
+use fd2_game::game::{AudioVoice, Key as GameKey, Picture, RawDevices, VoiceSlot, WindowPortrait, display_list};
 use fd2_game::{PlayerRunner, RunnerStep};
 use serde_json::json;
 use sha2::{Digest, Sha256};
@@ -63,9 +63,8 @@ struct Shell {
     hd_world_image: Handle<Image>,
     hd_world_sprite: Option<Entity>,
     hd_world_source: Option<Arc<Picture>>,
-    hd_portrait_image: Handle<Image>,
-    hd_portrait_sprite: Option<Entity>,
-    hd_portrait_source: Option<(Arc<Picture>, f32)>,
+    hd_portrait: Option<WindowOverlaySprite>,
+    dialogue_border: Option<WindowOverlaySprite>,
     /// r5i：設定面板疊層的貼圖、精靈與目前上傳的面板狀態。
     panel_image: Handle<Image>,
     panel_sprite: Option<Entity>,
@@ -88,6 +87,12 @@ struct PosterSprite {
     front: Entity,
     background: Entity,
     cached: Option<Arc<Picture>>,
+}
+
+struct WindowOverlaySprite {
+    image: Handle<Image>,
+    entity: Entity,
+    cached: Option<(Arc<Picture>, f32)>,
 }
 
 impl GameAudioHost for Shell {
@@ -179,9 +184,8 @@ pub fn run() -> AppExit {
         hd_world_image: Handle::default(),
         hd_world_sprite: None,
         hd_world_source: None,
-        hd_portrait_image: Handle::default(),
-        hd_portrait_sprite: None,
-        hd_portrait_source: None,
+        hd_portrait: None,
+        dialogue_border: None,
         panel_image: Handle::default(),
         panel_sprite: None,
         panel_key: None,
@@ -232,6 +236,7 @@ pub fn run() -> AppExit {
 }
 
 fn setup(mut commands: Commands, mut images: ResMut<Assets<Image>>, mut shell: NonSendMut<Shell>) {
+    let shell = &mut *shell;
     commands.spawn(Camera2d);
     let image = Image::new_fill(
         Extent3d { width: LOGICAL_W, height: LOGICAL_H, depth_or_array_layers: 1 },
@@ -253,9 +258,13 @@ fn setup(mut commands: Commands, mut images: ResMut<Assets<Image>>, mut shell: N
         RenderAssetUsages::MAIN_WORLD | RenderAssetUsages::RENDER_WORLD,
     );
     world.sampler = ImageSampler::linear();
-    shell.hd_portrait_image = images.add(world.clone());
-    shell.hd_portrait_sprite =
-        Some(commands.spawn((Sprite::from_image(shell.hd_portrait_image.clone()), Visibility::Hidden)).id());
+    let mut border = world.clone();
+    border.sampler = ImageSampler::nearest();
+    for (overlay, texture) in [(&mut shell.hd_portrait, world.clone()), (&mut shell.dialogue_border, border)] {
+        let image = images.add(texture);
+        let entity = commands.spawn((Sprite::from_image(image.clone()), Visibility::Hidden)).id();
+        *overlay = Some(WindowOverlaySprite { image, entity, cached: None });
+    }
     shell.hd_world_image = images.add(world);
     shell.hd_world_sprite =
         Some(commands.spawn((Sprite::from_image(shell.hd_world_image.clone()), Visibility::Hidden)).id());
@@ -525,7 +534,7 @@ fn drive(
     let lb = centered_game(w, h, shell.runner.poster_side_width());
     place_sprite(shell, &mut sprites, lb, w, h, sf);
     place_hd_world(shell, hd_world.as_ref(), &mut images, &mut sprites);
-    place_hd_portrait(shell, &mut images, &mut sprites);
+    place_window_overlays(shell, &mut images, &mut sprites);
     place_controls_panel(shell, &mut images, &mut sprites);
     place_posters(shell, &mut images, &mut sprites);
     let interval = shell.last_drive.map(|t| (t_frame - t).as_secs_f64() * 1e3);
@@ -815,46 +824,63 @@ fn place_hd_world(
     }
 }
 
-fn place_hd_portrait(
+fn place_window_overlays(
     shell: &mut Shell,
     images: &mut Assets<Image>,
     sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
 ) {
-    let game = shell.sprite.and_then(|e| sprites.get(e).ok()).map(|(sprite, t, _)| (sprite.custom_size, t.translation));
-    let Some((mut sprite, mut transform, mut visibility)) =
-        shell.hd_portrait_sprite.and_then(|e| sprites.get_mut(e).ok())
-    else {
-        return;
-    };
+    let game = shell
+        .sprite
+        .and_then(|e| sprites.get(e).ok())
+        .and_then(|(sprite, t, _)| Some((sprite.custom_size?, t.translation)));
     let portrait = shell.script.is_none().then(|| shell.runner.window_portrait()).flatten();
-    let (Some(portrait), Some((Some(size), origin))) = (portrait, game) else {
+    let border = shell.script.is_none().then(|| shell.runner.window_dialogue_border()).flatten();
+    for (target, overlay, depth) in
+        [(&mut shell.hd_portrait, portrait, 0.5), (&mut shell.dialogue_border, border, 0.25)]
+    {
+        if let Some(target) = target {
+            place_window_overlay(target, overlay, depth, game, images, sprites);
+        }
+    }
+}
+
+fn place_window_overlay(
+    target: &mut WindowOverlaySprite,
+    overlay: Option<WindowPortrait>,
+    depth: f32,
+    game: Option<(Vec2, Vec3)>,
+    images: &mut Assets<Image>,
+    sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
+) {
+    let Ok((mut sprite, mut transform, mut visibility)) = sprites.get_mut(target.entity) else { return };
+    let (Some(overlay), Some((size, origin))) = (overlay, game) else {
         if *visibility != Visibility::Hidden {
             *visibility = Visibility::Hidden;
         }
         return;
     };
-    if shell
-        .hd_portrait_source
+    if target
+        .cached
         .as_ref()
-        .is_none_or(|(source, brightness)| !Arc::ptr_eq(source, &portrait.image) || *brightness != portrait.brightness)
-        && let Some(mut image) = images.get_mut(&shell.hd_portrait_image)
+        .is_none_or(|(source, brightness)| !Arc::ptr_eq(source, &overlay.image) || *brightness != overlay.brightness)
+        && let Some(mut image) = images.get_mut(&target.image)
     {
         image.texture_descriptor.size = Extent3d {
-            width: portrait.image.width as u32,
-            height: portrait.image.height as u32,
+            width: overlay.image.width as u32,
+            height: overlay.image.height as u32,
             depth_or_array_layers: 1,
         };
-        image.data = Some(straight_alpha(&portrait.rgba()));
-        shell.hd_portrait_source = Some((portrait.image.clone(), portrait.brightness));
+        image.data = Some(straight_alpha(&overlay.rgba()));
+        target.cached = Some((overlay.image.clone(), overlay.brightness));
     }
-    let (min, max) = (portrait.rect.min, portrait.rect.max);
+    let (min, max) = (overlay.rect.min, overlay.rect.max);
     let scale = size / Vec2::new(LOGICAL_W as f32, LOGICAL_H as f32);
     let dimensions = Vec2::new((max.x - min.x) as f32, (max.y - min.y) as f32);
     let x = (min.x + max.x - LOGICAL_W as i64) as f32 * 0.5;
     let y = (LOGICAL_H as i64 - min.y - max.y) as f32 * 0.5;
     sprite.custom_size = Some(dimensions * scale);
-    sprite.flip_x = portrait.mirror_x;
-    transform.translation = Vec3::new(origin.x + x * scale.x, origin.y + y * scale.y, 0.5);
+    sprite.flip_x = overlay.mirror_x;
+    transform.translation = Vec3::new(origin.x + x * scale.x, origin.y + y * scale.y, depth);
     *visibility = Visibility::Visible;
 }
 

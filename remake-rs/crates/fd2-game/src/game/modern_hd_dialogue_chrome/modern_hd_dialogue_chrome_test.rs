@@ -68,3 +68,19 @@ fn freeze_modern_hd_dialogue_chrome_rejects_bad_sources() {
     assert!(freeze_modern_hd_dialogue_chrome(&cells, &translucent).is_err(), "missing source color accepted");
     assert!(freeze_modern_hd_dialogue_chrome(&cells[..13], &palette).is_err());
 }
+#[test]
+fn gold_border_matches_reference_pixels_and_reuses_size() {
+    let Some(path) = crate::test_support::docs_file("figures/hd1-gold-dialogue-frame-reference.png") else { return };
+    let reference = decode_png_picture(&std::fs::read(path).unwrap()).unwrap();
+    let mut chrome = ModernHDDialogueChrome {
+        gold: decode_png_picture(&MODERN_HD_GOLD_DIALOGUE_TILE).map(Arc::new),
+        ..Default::default()
+    };
+    let area = rect(5, 112, 315, 198);
+    let border = chrome.gold_border(area).unwrap();
+    assert_eq!((border.width, border.height), (1860, 516));
+    assert!(border.read_pixels() == reference.read_pixels());
+    let shifted = rect(5, 6, 315, 92);
+    assert!(Arc::ptr_eq(&border, &chrome.gold_border(shifted).unwrap()));
+    assert!(chrome.gold_border(Rectangle::default()).is_none());
+}

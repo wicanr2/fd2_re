@@ -340,6 +340,7 @@ pub struct Game {
     pub(crate) native_dialogue_hd_masks: Option<ModernStoryDialogueMasks>,
     pub(crate) native_dialogue_mask_motion: (i64, i64, i64),
     pub(crate) native_dialogue_chrome: Option<ModernHDDialogueChrome>,
+    pub(crate) window_dialogue_border: Option<(Arc<Picture>, Rectangle)>,
     pub(crate) native_dialogue_chrome_bounds: BTreeMap<campaign::NativeDialogueFramePhase, Vec<Rectangle>>,
     pub(crate) native_dialogue_glyph_steps: Vec<Vec<bool>>,
     /// caller-specific sub_165AC五階段格網

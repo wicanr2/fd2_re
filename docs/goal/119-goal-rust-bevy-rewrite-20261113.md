@@ -149,9 +149,15 @@ Linux Bevy（RUNTIME-E1）以 `tools/rust_r6_theme_window.sh` 的 `locales` 模�
 
 `work/r6-poster-scenery-20261122` 用 `poster-scenery` 測具模式，從標題 START 走到皇城首句對白。以側欄內緣取樣確認標題沿深藍底，皇城在原版與 HD 美術下都改用乾淨地形，對白和人物仍在中央。此為 Linux Bevy 的正常玩家路徑抽樣（RUNTIME-E1）。其他平台與戰役場景未納入本次抽樣。
 
+### R6 原生劇情古金對白框
+
+沿 [61 的古金色對白框規格](../knowledge-base/61-modern-theme-runtime-spec.md#hd1古金色對話框conformed-scopedruntime-e1normal-start)共用工具列的介面偏好。選擇 HD 前先驗證既有 FDOTHER 格網、色盤及 48×48 材質。開框、穩定頁、收框各按原生格網界線定位，游標尾段不畫框。Bevy 以獨立邊帶疊在對白底圖上、HD 頭像下，沿既有畫面淡出與遮擋條件。地圖與頭像繼續由美術設定控制。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> '' gold-dialogue` 在 Linux Bevy 正常 START 到皇城。`work/r6-gold-dialogue-20261123` 驗證同一句的四種美術與介面組合。切換介面時文字區為零像素差異，兩種美術及英文翻頁後的對白上框像素相同。樣本為 1280×800、`FD2_SEED=4`、遊戲四倍速。獨立 1860×516 參考圖逐像素核對通過，450 項 Rust 回歸通過。本輪視窗驗證限皇城穩定頁及翻頁（RUNTIME-E1）。
+
 ### R6 F11 標題介面（RUNTIME-E1，2026-11-22）
 
-沿凍結 Go `modern_hd_title_interface.go` 的 FDOTHER #7 六個原生選單格、原生色盤與字型配置。預先驗證來源與字型，保留兩側選取標記、定位和閃爍，於選單中間以三倍畫布排繪 START、LOAD、CONTINUE。F11 保存 `interface_mode`，F2 保有獨立美術偏好。這個設定先由已移植的標題主選單消費，讀檔槽、對白框與戰場介面另行接線。用正常 Bevy 視窗核對四種組合、缺字型、設定保存與冷啟動。
+沿凍結 Go `modern_hd_title_interface.go` 的 FDOTHER #7 六個原生選單格、原生色盤與字型配置。預先驗證來源與字型，保留兩側選取標記、定位和閃爍，於選單中間以三倍畫布排繪 START、LOAD、CONTINUE。初版用 F11 保存 `interface_mode`，F2 保有獨立美術偏好。現行入口為工具列。讀檔槽與戰場介面另行接線。用正常 Bevy 視窗核對四種組合、缺字型、設定保存與冷啟動。
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/r6-f11-title-20261122 work/r6-theme-toggle-20261122-r3` 通過 Linux Bevy 視窗測試。四種美術與介面組合通過，F11 切換前後的上方背景逐像素相同，兩種偏好冷啟動重現相同畫面。缺字型時原版標題像素相同且未寫設定。普通 START 與序章首句的 F2 切換仍通過。此輪使用 Noto Sans CJK 基底字型，區域字型家族仍待移植。
 

@@ -24,6 +24,43 @@ pub(crate) struct ModernHDDialogueChrome {
     pub(crate) gold_gpu: BTreeMap<Point, Option<Arc<Picture>>>,
 }
 
+impl ModernHDDialogueChrome {
+    pub(crate) fn gold_border(&mut self, area: Rectangle) -> Option<Arc<Picture>> {
+        let size = Point { x: 6 * (area.max.x - area.min.x), y: 6 * (area.max.y - area.min.y) };
+        if size.x < 36 || size.y < 36 {
+            return None;
+        }
+        let tile = self.gold.as_ref()?;
+        self.gold_gpu
+            .entry(size)
+            .or_insert_with(|| {
+                let axis = |at, size| {
+                    if at < 18 {
+                        at
+                    } else if at >= size - 18 {
+                        48 - size + at
+                    } else {
+                        24
+                    }
+                };
+                let source = tile.read_pixels().as_chunks::<4>().0;
+                let mut pixels = vec![[0; 4]; (size.x * size.y) as usize];
+                for y in 0..size.y {
+                    for x in 0..size.x {
+                        if x < 18 || x >= size.x - 18 || y < 18 || y >= size.y - 18 {
+                            let from = axis(y, size.y) * 48 + axis(x, size.x);
+                            pixels[(y * size.x + x) as usize] = source[from as usize];
+                        }
+                    }
+                }
+                let mut border = Picture::new_image(size.x, size.y);
+                border.write_pixels(pixels.as_flattened());
+                Some(Arc::new(border))
+            })
+            .clone()
+    }
+}
+
 /// Go：`modern_hd_dialogue_chrome.go:30`
 ///
 /// HD 型別：只保留第一章忠實模式下執行到的函式用到的欄位（120「階段 1 骨架的對應規則」），其餘欄位在 R6 補上。

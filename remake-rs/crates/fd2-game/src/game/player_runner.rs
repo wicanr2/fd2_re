@@ -191,6 +191,10 @@ impl PlayerRunner {
         self.game.window_portrait()
     }
 
+    pub fn window_dialogue_border(&self) -> Option<WindowPortrait> {
+        self.game.window_dialogue_border()
+    }
+
     /// 交給外殼同步播放，並接收一次性音效的播放完成狀態。
     pub fn audio_voices_mut(&mut self) -> Vec<(VoiceSlot, &mut AudioVoice)> {
         self.game.audio_voices_mut()

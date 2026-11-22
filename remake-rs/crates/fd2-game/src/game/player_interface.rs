@@ -10,7 +10,12 @@ pub(crate) const PLAYER_INTERFACE_HD: &str = "hd";
 
 impl Game {
     pub(crate) fn enable_hd_title_interface(&mut self) -> Result<()> {
-        self.hd_title_menu = Some(self.prepare_hd_title_interface()?);
+        let menu = self.prepare_hd_title_interface()?;
+        if self.native_dialogue_chrome.is_none() {
+            let assets = load_native_class_ui_assets()?.ok_or_else(|| game_err!("HD dialogue: source unavailable"))?;
+            self.native_dialogue_chrome = freeze_modern_hd_dialogue_chrome(&assets.dialogue, &assets.palette)?;
+        }
+        self.hd_title_menu = Some(menu);
         Ok(())
     }
 
@@ -32,7 +37,7 @@ impl Game {
         };
         settings.interface_mode = mode.into();
         save_settings(&settings);
-        self.msg = format!("標題介面：{label}");
+        self.msg = format!("介面：{label}");
     }
 
     /// Empty mode retains compatibility with isolated legacy render fixtures. A

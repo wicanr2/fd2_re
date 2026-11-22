@@ -195,7 +195,6 @@ impl Game {
         self.native_dialogue_portraits = Vec::new();
         self.native_dialogue_layout = None;
         self.native_dialogue_hd_masks = None;
-        self.native_dialogue_chrome = None;
         self.native_dialogue_chrome_bounds = BTreeMap::new();
         self.native_dialogue_glyph_steps = Vec::new();
         if self.dialog.last().is_none_or(|d| d.native_dialogue.is_none()) {
@@ -378,7 +377,7 @@ impl Game {
         if self.modern_hd_interface_enabled() {
             todo!("R6: modern_hd_dialogue_chrome.go:freezeModernHDDialogueChrome（HD 介面）")
         }
-        (self.native_dialogue_chrome, self.native_dialogue_chrome_bounds) = (None, bounds);
+        self.native_dialogue_chrome_bounds = bounds;
         self.native_dialogue_frames = frames;
         self.native_dialogue_progressive = progressive;
         self.native_dialogue_mouth_open = mouth_open;
@@ -832,6 +831,17 @@ impl Game {
             op.geo_m.scale(2.0, 2.0);
             op.geo_m.translate((rect.min.x * 2) as f64, (rect.min.y * 2) as f64);
             screen.draw_image(&portrait, &op);
+        }
+        if self.hd_title_menu.is_some()
+            && self.native_dialogue_layout.is_some()
+            && let (Some(area), Some(chrome)) = (
+                self.native_dialogue_chrome_bounds.get(&phase).and_then(|bounds| bounds.get(index as usize)),
+                self.native_dialogue_chrome.as_mut(),
+            )
+            && let Some(border) = chrome.gold_border(*area)
+        {
+            let extent = canvas::rect(area.min.x * 2, area.min.y * 2, area.max.x * 2, area.max.y * 2);
+            self.window_dialogue_border = Some((border, extent));
         }
         if self.modern_hd_text.is_some() && self.native_dialogue_layout.is_some() {
             todo!("r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（HD 對白框線面板）");
