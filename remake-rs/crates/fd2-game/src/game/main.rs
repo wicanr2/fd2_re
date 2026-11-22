@@ -98,6 +98,8 @@ pub struct Game {
     /// Published with the successful steady snapshot.
     pub(crate) native_map_frame_source: Option<indexedmap::NativeFrameInput<'static>>,
     pub(crate) modern_hd_map_frame: Option<ModernHDMapFrame>,
+    pub(crate) modern_hd_map_tiles: Option<(i64, Arc<super::modern_hd_terrain::TerrainMap>)>,
+    pub(crate) modern_hd_separate_world: bool,
     pub(crate) modern_hd_map_gpu: Option<ModernHDMapGPU>,
     pub(crate) modern_hd_map_hud_art: Option<ModernHDMapHUDArt>,
     pub(crate) modern_hd_battle_gpu: Option<ModernHDBattleGPU>,
@@ -6176,6 +6178,9 @@ impl Game {
         // an all-or-nothing bundle. The indexed presentation bridge consumes this
         // field later; no partial resource is allowed to affect gameplay.
         self.native_map_assets = None;
+        self.modern_hd_map_tiles = None;
+        self.modern_hd_map_frame = None;
+        self.modern_hd_map_terrain.clear();
         self.native_map_dac = Vec::new();
         self.native_palette_ramp = None;
         self.native_palette_pulse = None;
@@ -8347,19 +8352,21 @@ impl Game {
         let campaign_battle_view =
             self.camp.is_none() || self.camp.as_ref().and_then(|c| c.node()).is_some_and(|n| n.r#type == "battle");
         // Go modernHDMapFrameAdmission（HD 守門）：modernStoryPortraits 為 nil 時兩條路徑都回 false。
-        let modern_hd_requested = if self.modern_story_portraits.is_some() {
-            todo!("r6:modern_hd_map_runtime.go:modernHDMapFrameAdmission")
-        } else {
-            false
-        };
         let legacy_viewport = self.story_bg || self.battle_event.is_some();
+        let modern_hd_requested = self.modern_hd_map_frame_admission(legacy_viewport, campaign_battle_view);
         if !modern_hd_requested {
             // main.go:9814..9950：正規化地圖層。FD2_UNIT_LABELS、F3 除錯字與 drawUnitHUD 在開場與第一章沒有走到（r8）。
             self.draw_normalized_world_layer(screen, legacy_viewport);
             self.draw_field_cursor_hud(screen, legacy_viewport, campaign_battle_view);
         }
         if modern_hd_requested {
-            todo!("r6:modern_hd_map_gpu.go:drawModernHDMapFrame");
+            match self.draw_modern_hd_map_frame(screen) {
+                Ok(()) => native_map_presented = true,
+                Err(err) => {
+                    self.load_err = err.to_string();
+                    return;
+                }
+            }
         } else if self.native_map_frame_admission(self.story_bg, campaign_battle_view) {
             native_map_presented = self.draw_native_map_frame(screen);
         }
@@ -9687,10 +9694,11 @@ impl Game {
             overlay,
             modern_icons,
             raw_tick,
+            &candidate_dac,
             &mut work,
             &mut vga,
         );
-        let (new_work, new_vga, stage) = match composed {
+        let (new_work, new_vga, stage, modern) = match composed {
             Ok(outcome) => outcome,
             Err(err) => {
                 // Go 的 `work`／`vga` 與 `g.nativeMapWork`／`g.nativeMapVGA` 是同一塊記憶體（除非長度不對或要複製），
@@ -9701,6 +9709,10 @@ impl Game {
         };
         if let Some(stage) = stage {
             self.native_ch23_state = Some(stage);
+        }
+        if let Some(frame) = modern {
+            self.modern_hd_map_terrain.clone_from(&frame.terrain_seed);
+            self.modern_hd_map_frame = Some(frame);
         }
         self.native_interface_hud = None;
         self.native_map_work = new_work.unwrap_or(work);
@@ -9729,9 +9741,10 @@ impl Game {
         overlay: Result<Option<NativeMapSelectionOverlay>>,
         modern_icons: bool,
         raw_tick: i64,
+        candidate_dac: &[u8],
         work: &mut Vec<u8>,
         vga: &mut Vec<u8>,
-    ) -> Result<(Option<Vec<u8>>, Option<Vec<u8>>, Option<NativeCh23AdapterState>)> {
+    ) -> Result<(Option<Vec<u8>>, Option<Vec<u8>>, Option<NativeCh23AdapterState>, Option<ModernHDMapFrame>)> {
         let overlay_fn;
         let mut in_ = build_native_map_frame_input(
             self.native_map_assets.as_ref(),
@@ -9777,15 +9790,24 @@ impl Game {
         // 緩衝區（地形、單位、前景）整塊搬到 VGA (4,4)，蓋掉左下 HUD；游標白框也不
         // 在裡面（第四章 r9 收據 seq 636／913：全員行動完自動換手，橫幅下沒有白框
         // 與地形面板）。橫幅本身對這張快照做馬賽克，之後不重繪。
-        if let (unit_y, motion, true) = self.native_ch12_up_walk_frame() {
-            indexedmap::compose_native_up_step_frame(work_buf, vga_buf, &in_.frame, unit_y, motion)?;
+        let motion = if let (unit_y, phase, true) = self.native_ch12_up_walk_frame() {
+            ModernHDMapMotion::North { unit_y, phase }
         } else if self.walk.is_some() || self.banner_t > 0 {
-            indexedmap::compose_native_step_frame(work_buf, vga_buf, &in_.frame)?;
+            ModernHDMapMotion::Step
         } else {
-            indexedmap::compose_native_frame(work_buf, vga_buf, &mut in_)?;
-        }
-        if self.modern_hd_map_composing {
-            todo!("R6: main.go:12719 prepareModernHDMapFrameStageLayout（HD 地圖合成）");
+            ModernHDMapMotion::Steady
+        };
+        let modern = if self.modern_hd_map_composing {
+            Some(self.prepare_hd_battle_map(&in_, stage.as_ref(), candidate_dac, motion)?)
+        } else {
+            None
+        };
+        match motion {
+            ModernHDMapMotion::North { unit_y, phase } => {
+                indexedmap::compose_native_up_step_frame(work_buf, vga_buf, &in_.frame, unit_y, phase)?
+            }
+            ModernHDMapMotion::Step => indexedmap::compose_native_step_frame(work_buf, vga_buf, &in_.frame)?,
+            ModernHDMapMotion::Steady => indexedmap::compose_native_frame(work_buf, vga_buf, &mut in_)?,
         }
         if self.modern_story_portraits.is_none()
             && self.modern_hd_interface_enabled()
@@ -9795,7 +9817,7 @@ impl Game {
         {
             todo!("R6: main.go:12731 prepareModernHDMapHUDPanel（HD 介面 HUD）");
         }
-        Ok((own_work, own_vga, stage))
+        Ok((own_work, own_vga, stage, modern))
     }
 
     /// endTurn 是 0x1A30B 的入口（系統選單 END／YES、全員行動完的 0x13565、全軍移動收尾

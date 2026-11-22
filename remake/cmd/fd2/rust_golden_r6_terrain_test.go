@@ -12,9 +12,95 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
+
+type rustR6LayersProbe struct {
+	game   *Game
+	frame  *modernHDMapFrame
+	report strings.Builder
+	phase  int
+	failed bool
+}
+
+func (p *rustR6LayersProbe) Update() error {
+	if p.failed || p.phase == 2 {
+		return ebiten.Termination
+	}
+	return nil
+}
+
+func (p *rustR6LayersProbe) Layout(int, int) (int, int) { return 640, 400 }
+
+func (p *rustR6LayersProbe) Draw(screen *ebiten.Image) {
+	if p.failed || p.phase == 2 {
+		return
+	}
+	p.frame.OverlaysAboveUI = p.phase == 1
+	if !p.game.drawPreparedModernHDMapFrame(screen, p.frame, false) {
+		p.failed = true
+		return
+	}
+	for _, picture := range []*ebiten.Image{p.game.modernHDMapGPU.World, screen} {
+		pixels := make([]byte, picture.Bounds().Dx()*picture.Bounds().Dy()*4)
+		picture.ReadPixels(pixels)
+		fmt.Fprintf(&p.report, "%x\n", sha256.Sum256(pixels))
+	}
+	p.phase++
+}
+
+func TestRustGoldenR6MapLayers(t *testing.T) {
+	out := os.Getenv("FD2_R6_OPENING_OUT")
+	if out == "" {
+		t.Skip("set FD2_R6_OPENING_OUT to export the Rust golden")
+	}
+	paint := func(w, h int, area image.Rectangle, c color.RGBA) *image.RGBA {
+		p := image.NewRGBA(image.Rect(0, 0, w, h))
+		for y := area.Min.Y; y < area.Max.Y; y++ {
+			for x := area.Min.X; x < area.Max.X; x++ {
+				p.SetRGBA(x, y, c)
+			}
+		}
+		return p
+	}
+	rect := image.Rect
+	unit := paint(144, 144, rect(5, 8, 111, 129), color.RGBA{120, 100, 60, 255})
+	hud := modernHDMapUnitDraw{Group: 0, Rect: rect(66, 56, 210, 200)}
+	p := &rustR6LayersProbe{
+		game: &Game{modernStoryPortraits: &modernStoryPortraitSet{mapSpritesHD: map[int][]image.Image{0: {unit}}}},
+		frame: &modernHDMapFrame{
+			Background: paint(320, 200, rect(0, 0, 320, 200), color.RGBA{12, 24, 36, 255}),
+			UI:         paint(320, 200, rect(13, 12, 20, 20), color.RGBA{30, 20, 150, 255}),
+			Viewport:   rect(31, 33, 148, 150),
+			Terrain: []modernHDTerrainDraw{{Rect: rect(15, 20, 159, 164),
+				Image: paint(144, 144, rect(0, 0, 135, 120), color.RGBA{21, 92, 52, 255})}},
+			Range: paint(320, 200, rect(6, 9, 14, 21), color.RGBA{100, 10, 49, 255}),
+			Units: []modernHDMapUnitDraw{{Group: 0, Rect: rect(48, 44, 192, 188), PaletteBand: true}},
+			Foreground: []modernHDMapForegroundDraw{
+				{Rect: rect(25, 70, 169, 214), Image: paint(24, 24, rect(3, 0, 9, 21), color.RGBA{99, 40, 21, 255})},
+				{Rect: rect(60, 30, 204, 174), HDImage: paint(144, 144, rect(6, 10, 33, 120), color.RGBA{10, 24, 52, 128})},
+			},
+			Overlays: []modernHDMapOverlayDraw{{Rect: rect(79, 67, 105, 119), ScaleToRect: true,
+				Image: paint(13, 26, rect(0, 0, 13, 26), color.RGBA{75, 91, 0, 255})}},
+			HUDUnit: &modernHDMapHUDUnit{Unit: hud,
+				Base:  paint(24, 24, rect(2, 0, 8, 21), color.RGBA{35, 22, 86, 255}),
+				Above: paint(24, 24, rect(9, 3, 12, 15), color.RGBA{121, 18, 90, 255})},
+		},
+	}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err := ebiten.RunGame(p); err != nil {
+		t.Fatal(err)
+	}
+	if p.failed || p.phase != 2 {
+		t.Fatalf("layer composition stopped at %d", p.phase)
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-map-layers.txt"), []byte(p.report.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+}
 
 // TestRustGoldenR6Terrain 輸出 Go 正式地形取用與原版來源核對的結果。
 func TestRustGoldenR6Terrain(t *testing.T) {

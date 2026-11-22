@@ -121,6 +121,18 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 戰場圖層合成（RUNTIME-E1，2026-11-22）
+
+依凍結 Go `697c0913` 的 `prepareModernHDMapFrameStageLayout` 和 `drawPreparedModernHDMapFrame`。戰場使用同一批候選時鐘、色盤、地格及單位。底圖讀獨立的地形工作區，原生整幀和 HD 圖層一同通過後發布。普通步進、北移和靜止沿各自的原生排程。範圍與介面使用兩種底色辨認覆寫，保留零索引與同色寫入，拒收目的地相依的寫入。
+
+完整解析度畫布依序畫底圖、HD 地形、範圍、人物、前景與場景覆蓋。普通介面使用獨立的 640×400 畫布。指定在介面上方的覆蓋則在世界畫布合成 HUD 後再畫。所有物件依照原視窗裁切。驗收以 Go 正式繪圖讀回 RGBA 比對兩種覆蓋順序，並確認正常戰場合成的原生狀態與失敗交易。主題載入、畫質衍生圖與各劇情演出依各自的 R6 入口驗收。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-map-layers-20261122` 通過。以固定圖層、非整格裁切、半透明前景及 HUD 圖片跑 Go 正式繪製。兩種覆蓋順序的 1920×1200 世界及 640×400 介面全畫布 RGBA 逐位元組相同，雜湊序列 SHA-256 為 `bc09a12b106d95872dca48787509c2b57540a627553869cd0188a05d12ba654e`。以固定戰場素材走 Rust `draw_field`，核對 DAC、時鐘、循環、工作區與 VGA，並驗缺件時保留前一畫格及原生狀態。格式、Clippy、438 項 Rust 回歸與五項差分通過。
+
+Bevy 以線性取樣顯示世界，再疊 640×400 介面。目前 HD 地圖合成採完整解析度 CPU 路徑，固定尺寸的原版 GPU 合成照原設定運作。此收據涵蓋受控畫格及戰場入口。主題載入、F2／F11、兩種衍生畫質、獨立 HD HUD 圖源與劇情演出另依 R6 驗收。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r5_app_frames.sh work/r6-map-layers-app-20261122 tools/rust_r5_app_scripts/letterbox-1500x850.json` 通過發行建置以及原版美術視窗回歸。無畫面驅動端與 Bevy 的 433 幀雜湊相同，五張視窗截圖逐像素相同。
+
 ### R6 HD1 地圖人物與前景繪圖計畫（Go 對照通過，2026-11-22）
 
 依 Go `697c0913` 的 `buildModernHDMapUnitRegionPlan`、`buildModernHDMapForegroundRegionPlan` 與 `prepareModernHDMapFrameStageLayout`。人物沿用 fdicon 的槽位、動作畫格、位移與原生寫入遮罩，空畫格不產生命令。前景沿用原生重繪資格、相鄰格、原生選格與透明遮罩。遮罩中的同色寫入仍遮擋下層，目的地重映射區維持透明。原生前景與 HD 前景共用工作位址、六倍矩形與色盤路徑。

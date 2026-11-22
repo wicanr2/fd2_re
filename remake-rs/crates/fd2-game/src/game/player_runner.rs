@@ -133,6 +133,18 @@ impl PlayerRunner {
         self.game.draw(screen);
     }
 
+    /// 保留 HD 世界的原尺寸。呼叫端把世界放在 640×400 介面下方。
+    pub fn draw_window_layers(&mut self, ui: &mut Picture) -> Option<Arc<Picture>> {
+        self.game.modern_hd_separate_world = true;
+        self.game.draw(ui);
+        self.game.modern_hd_separate_world = false;
+        self.game.modern_hd_world_visible.then(|| self.game.modern_hd_map_gpu.as_ref()?.world.clone()).flatten()
+    }
+
+    pub fn has_hd_map_theme(&self) -> bool {
+        self.game.modern_story_portraits.as_ref().is_some_and(|set| set.map_sprites_hd.len() == 125)
+    }
+
     /// 交給外殼同步播放，並接收一次性音效的播放完成狀態。
     pub fn audio_voices_mut(&mut self) -> Vec<(VoiceSlot, &mut AudioVoice)> {
         self.game.audio_voices_mut()

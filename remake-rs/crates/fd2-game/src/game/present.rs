@@ -80,8 +80,10 @@ impl Game {
         self.sync_modern_hd_battle_owner();
         self.modern_hd_world_visible = false;
         self.modern_hd_timed_dialogue_visible = false;
-        if self.modern_hd_map_gpu.is_some() && self.banner_t <= 0 {
-            todo!("R6: main.go:9369 modernHDMapGPU.BannerName 清除（HD 地圖 GPU）")
+        if self.banner_t <= 0
+            && let Some(renderer) = &mut self.modern_hd_map_gpu
+        {
+            renderer.clear_banner();
         }
         // Go `defer g.beginModernHDText(screen)()`：忠實模式回傳的收尾是空函式。
         self.modern_hd_text = None;

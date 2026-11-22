@@ -3099,3 +3099,5 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 `game/modern_hd_terrain_colour.rs` 移植原生色盤重映射與 HD 像素調色。快取由已驗證的地圖持有，畫格以 `Arc<Picture>` 共用，每格保留三種調色結果。`game/modern_hd_terrain_plan.rs` 依原生選格、北移工作位址及視窗範圍產生地形繪圖計畫，供 HD 地圖合成接入。
 
 `game/modern_hd_map_unit_plan.rs` 和 `game/modern_hd_map_foreground_plan.rs` 沿用原生的畫格及遮罩語意。人物計畫把 Go 執行期的 HD 尺寸驗證併入選格，前景在單次計畫內依畫格及查色路徑共用像素。`prepare_modern_hd_map_geometry` 接收原生合成前後的地格，回傳地形、人物與前景，供正式合成交易取用。
+
+`game/modern_hd_map_runtime.rs` 在原生地圖交易內建立獨立底圖、範圍與介面，繪圖來源與候選時鐘和色盤一起發布。`game/modern_hd_map_gpu.rs` 沿 Go 的圖層順序用 `Picture` 合成世界。Bevy 直接收 1920×1200 世界與 640×400 介面。受控世界與介面的 Go 比對見 [119 的圖層驗收](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-戰場圖層合成runtime-e12026-11-22)。
