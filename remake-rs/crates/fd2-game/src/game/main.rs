@@ -337,6 +337,7 @@ pub struct Game {
     pub(crate) native_dialogue_speaking_frame: i64,
     pub(crate) native_dialogue_portraits: Vec<dato::Frame>,
     pub(crate) native_dialogue_layout: Option<campaign::NativeDialogueLayout>,
+    pub(crate) native_dialogue_hd_masks: Option<ModernStoryDialogueMasks>,
     pub(crate) native_dialogue_chrome: Option<ModernHDDialogueChrome>,
     pub(crate) native_dialogue_chrome_bounds: BTreeMap<campaign::NativeDialogueFramePhase, Vec<Rectangle>>,
     pub(crate) native_dialogue_glyph_steps: Vec<Vec<bool>>,

@@ -62,6 +62,9 @@ struct Shell {
     sprite: Option<Entity>,
     hd_world_image: Handle<Image>,
     hd_world_sprite: Option<Entity>,
+    hd_portrait_image: Handle<Image>,
+    hd_portrait_sprite: Option<Entity>,
+    hd_portrait_source: Option<(Arc<Picture>, f32)>,
     /// r5i：設定面板疊層的貼圖、精靈與目前上傳的面板狀態。
     panel_image: Handle<Image>,
     panel_sprite: Option<Entity>,
@@ -164,6 +167,9 @@ pub fn run() -> AppExit {
         sprite: None,
         hd_world_image: Handle::default(),
         hd_world_sprite: None,
+        hd_portrait_image: Handle::default(),
+        hd_portrait_sprite: None,
+        hd_portrait_source: None,
         panel_image: Handle::default(),
         panel_sprite: None,
         panel_key: None,
@@ -232,6 +238,9 @@ fn setup(mut commands: Commands, mut images: ResMut<Assets<Image>>, mut shell: N
         RenderAssetUsages::MAIN_WORLD | RenderAssetUsages::RENDER_WORLD,
     );
     world.sampler = ImageSampler::linear();
+    shell.hd_portrait_image = images.add(world.clone());
+    shell.hd_portrait_sprite =
+        Some(commands.spawn((Sprite::from_image(shell.hd_portrait_image.clone()), Visibility::Hidden)).id());
     shell.hd_world_image = images.add(world);
     shell.hd_world_sprite =
         Some(commands.spawn((Sprite::from_image(shell.hd_world_image.clone()), Visibility::Hidden)).id());
@@ -469,6 +478,7 @@ fn drive(
     let progress = runner.progress();
     let game_frame = runner.game_frame();
     place_hd_world(shell, hd_world.as_deref(), &mut images, &mut sprites);
+    place_hd_portrait(shell, &mut images, &mut sprites);
     place_controls_panel(shell, &mut images, &mut sprites);
     let interval = shell.last_drive.map(|t| (t_frame - t).as_secs_f64() * 1e3);
     shell.last_drive = Some(t_frame);
@@ -660,6 +670,49 @@ fn place_hd_world(
     }
     sprite.custom_size = size;
     transform.translation = Vec3::new(translation.x, translation.y, -1.0);
+    *visibility = Visibility::Visible;
+}
+
+fn place_hd_portrait(
+    shell: &mut Shell,
+    images: &mut Assets<Image>,
+    sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
+) {
+    let game = shell.sprite.and_then(|e| sprites.get(e).ok()).map(|(sprite, t, _)| (sprite.custom_size, t.translation));
+    let Some((mut sprite, mut transform, mut visibility)) =
+        shell.hd_portrait_sprite.and_then(|e| sprites.get_mut(e).ok())
+    else {
+        return;
+    };
+    let portrait = shell.script.is_none().then(|| shell.runner.window_portrait()).flatten();
+    let (Some(portrait), Some((Some(size), origin))) = (portrait, game) else {
+        if *visibility != Visibility::Hidden {
+            *visibility = Visibility::Hidden;
+        }
+        return;
+    };
+    if shell
+        .hd_portrait_source
+        .as_ref()
+        .is_none_or(|(source, brightness)| !Arc::ptr_eq(source, &portrait.image) || *brightness != portrait.brightness)
+        && let Some(mut image) = images.get_mut(&shell.hd_portrait_image)
+    {
+        image.texture_descriptor.size = Extent3d {
+            width: portrait.image.width as u32,
+            height: portrait.image.height as u32,
+            depth_or_array_layers: 1,
+        };
+        image.data = Some(portrait.rgba());
+        shell.hd_portrait_source = Some((portrait.image.clone(), portrait.brightness));
+    }
+    let (min, max) = (portrait.rect.min, portrait.rect.max);
+    let scale = size / Vec2::new(LOGICAL_W as f32, LOGICAL_H as f32);
+    let dimensions = Vec2::new((max.x - min.x) as f32, (max.y - min.y) as f32);
+    let x = (min.x + max.x - LOGICAL_W as i64) as f32 * 0.5;
+    let y = (LOGICAL_H as i64 - min.y - max.y) as f32 * 0.5;
+    sprite.custom_size = Some(dimensions * scale);
+    sprite.flip_x = portrait.mirror_x;
+    transform.translation = Vec3::new(origin.x + x * scale.x, origin.y + y * scale.y, 0.5);
     *visibility = Visibility::Visible;
 }
 

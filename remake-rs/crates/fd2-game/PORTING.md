@@ -3105,3 +3105,5 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 `game/modern_hd_map_sprite_assets.rs` 將已驗過的 24×24 與 144×144 人物圖庫裝入同一候選主題。透明度檢查讀原 PNG 位深，圖格用雜湊共用解碼。115% 角色沿 24×24 圖的落腳點放大。主題持有按需解碼的地形圖庫，戰場合成直接用當前原版 FDSHAP 的共享參考核對遮罩。
 
 `game/modern_story_portrait.rs` 核對故事頭像清冊、靜態畫格、80×80／480×480 講者配對及完整不透明，全部成功才更新候選主題。`game/native_story_dialogue.rs` 在穩定對白頁依原生頭像矩形畫 80×80 圖，並交付 480×480 最終呈現描述。
+
+`game/native_story_dialogue.rs` 以兩種底色重播原生合成器，為 HD 世界建立開框、分頁和收框遮罩。索引 0 的實寫依舊不透明。`game/modern_hd_presentation.rs` 提供最終頭像及顯示矩形。Bevy 於介面上方呈現原尺寸頭像，同一來源及亮度重用貼圖。

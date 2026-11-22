@@ -2,7 +2,7 @@
 
 Rust R6 戰場合成及圖源接線達 RUNTIME-E1。正式人物 1,455 對圖格與 Go 一致，人物和按需地形已通過兩張受控戰場的繪製入口。兩種覆蓋順序已通過 Go 世界及介面全畫布差分。開場與天空之鑰共用圖庫為 DATA-READY，開場已使用共用 ANI #0。主題交易、F2／F11、衍生畫質及第二十章演出仍待接入。[119 的 R6 進度](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-戰場圖源接線runtime-e12026-11-22)
 
-Rust R6 故事頭像達 RUNTIME-E1。正式 44 對頭像與 Go 逐格一致，80×80 圖已接入受控原生對白的上下框。480×480 最終繪製與 HD 世界對白遮罩待接。[119 的故事頭像驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-故事頭像清冊與對白接線runtime-e12026-11-22)
+Rust R6 故事頭像及一般繁中對白的 HD 戰場遮罩達 RUNTIME-E1。正式 44 對頭像與 Go 逐格一致，80×80 圖沿原生上下框定位，480×480 圖已接入 Bevy 最終畫面。四種正式對白控制碼共 138 張遮罩與 Go 相同。HD 主題啟用後的視窗截圖、升級計時對白及 F2／F11 仍待驗收。[119 的對白合成驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-對白遮罩與頭像視窗呈現runtime-e12026-11-22)
 
 原版像素手繪地表與相依背景刷新已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，保留完整HD物件輪廓。範圍、來源與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)，唯一收據見[玩家回饋現況](../data/fd2-hd1-feedback-20261104.json)的map_pixel_material_refresh_20261106；不外推全部獨立圖集、原版parity或Windows60fps。
 

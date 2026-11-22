@@ -14,9 +14,64 @@ import (
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
+
+func TestRustGoldenR6DialogueMasks(t *testing.T) {
+	out := os.Getenv("FD2_R6_OPENING_OUT")
+	if out == "" {
+		t.Skip("set FD2_R6_OPENING_OUT to export the Rust golden")
+	}
+	layouts := storyMaskBindingLayouts(t)
+	g := storyMaskTestGame(t, "zh-Hant")
+	g.interfaceMode = playerInterfaceOriginal
+	base := make([]byte, 320*200)
+	for i := range base {
+		base[i] = byte(i*7 + i/320)
+	}
+	selected := make([]*campaign.NativeDialogueLayout, 0, 4)
+	var report strings.Builder
+	for _, control := range []string{"FFEC", "FFED", "FFEE", "FFEF"} {
+		layout := layouts[control]
+		selected = append(selected, layout)
+		for _, motion := range []int{0, 37} {
+			prepareStoryMaskUtterance(t, g, layout, base, motion, true)
+			masks := g.nativeDialogueHDMasks
+			if masks == nil {
+				t.Fatalf("%s/%d: missing masks", control, motion)
+			}
+			for _, phase := range []struct {
+				name   string
+				frames [][]byte
+				masks  [][]bool
+			}{
+				{"opening", g.nativeDialogueOpening, masks.opening},
+				{"page", g.nativeDialogueFrames, masks.pages},
+				{"closing", g.nativeDialogueClosing, masks.closing},
+			} {
+				for i, frame := range phase.frames {
+					picture, err := modernHDTimedDialoguePixels(frame, phase.masks[i], g.nativeClassUI.palette)
+					if err != nil {
+						t.Fatal(err)
+					}
+					fmt.Fprintf(&report, "%s/%d %s %d %x\n", control, motion, phase.name, i, sha256.Sum256(picture.Pix))
+				}
+			}
+		}
+	}
+	raw, err := json.Marshal(selected)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(out, "dialogue-mask-layouts.json"), raw, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-dialogue-masks.txt"), []byte(report.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+}
 
 func TestRustGoldenR6MapArt(t *testing.T) {
 	out := os.Getenv("FD2_R6_OPENING_OUT")

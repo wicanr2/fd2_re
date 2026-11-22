@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 對白遮罩與頭像視窗呈現（RUNTIME-E1，2026-11-22）
+
+依 Go `697c0913` 的 `freezeModernHDStoryDialogueMasks` 與 `DrawFinalScreen`。原生對白合成器在索引 0 及 255 的底圖各重跑一次。同座標輸出相同即保留該處覆寫，可辨認索引 0 的真實寫入。開框與收框逐格保存遮罩。穩定頁包含全部逐字畫格的寫入聯集。遮罩依階段、頁碼及畫格選用。分頁捲動或缺少遮罩時沿用完整原生幀。
+
+Bevy 將已驗證的 480×480 頭像以線性取樣疊在邏輯介面之上，沿原生 160×160 顯示位置及視窗縮放。全黑／全白、說明或模態狀態依 Go 抑制頭像。畫面淡出以相同的亮度縮放頭像。驗收比較 Go 的遮罩像素與最終座標，再核對 Rust 的對白畫布與視窗回歸。本切片的對白遮罩驗收範圍為一般繁中原生對白。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-dialogue-masks-20261122-r2` 通過。以正式對白綁定的四種控制碼及兩個收框位移（0、37），核對 138 張開框、穩定頁與收框的 RGBA 遮罩。Go 與 Rust 逐張相同，序列 SHA-256 為 `faeffaa87a7bc375195894532290d6d6e6fe9e5173b9f10f820266d29b088922`。兩側使用 HD 美術與原版介面。Rust 另核對索引 0 的不透明寫入、背景保留及分頁捲動的完整原生畫格。格式、Clippy、444 項 Rust 回歸與八項差分通過。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r5_app_frames.sh work/r6-dialogue-app-20261122 tools/rust_r5_app_scripts/letterbox-1500x850.json` 通過。原版美術的 433 個畫格與無畫面端相同，五張 1500×850 視窗截圖逐像素相同。480×480 圖源、原生頭像矩形、淡出及遮蔽另由執行期測試核對。HD 主題啟用後的視窗截圖、升級計時對白、其他語系與 F2／F11 仍待驗收。
+
 ### R6 HD1 故事頭像清冊與對白接線（RUNTIME-E1，2026-11-22）
 
 依 Go `697c0913` 的 `loadModernStoryPortraitSetWithProgress`、`drawNativeStoryDialogue` 和 `presentNativeStoryDialogueFrame`。候選主題核對 80×80 與 480×480 頭像的講者 ID、靜態閉嘴畫格、清冊契約、PNG 幾何、SHA-256 與完全不透明。480×480 選配集合若存在，講者須與 80×80 集合一一配對，整批驗過才交付。

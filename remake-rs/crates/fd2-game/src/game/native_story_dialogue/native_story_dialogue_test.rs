@@ -333,6 +333,133 @@ fn modern_story_portrait_uses_native_anchor_and_only_the_steady_page() {
     assert!(game.modern_hd_overlay.is_none());
 }
 
+#[test]
+fn masked_dialogue_draw_keeps_hd_world_and_writes_index_zero() {
+    let frame = |base: &[u8], at: usize, value: u8| {
+        let mut frame = base.to_vec();
+        frame[at] = value;
+        frame
+    };
+    let mut game = r5d_dialogue_game();
+    game.modern_hd_world_visible = true;
+    game.modern_hd_map_gpu = Some(ModernHDMapGPU::default());
+    game.native_dialogue_hd_masks = Some(
+        freeze_story_dialogue_masks(
+            1,
+            |base| Ok(vec![frame(base, 4, 0)]),
+            |base| Ok(vec![base.to_vec()]),
+            |base, _| Ok(vec![frame(base, 1, 0), frame(base, 2, 7)]),
+        )
+        .unwrap(),
+    );
+    let mut screen = Picture::new_image(640, 400);
+    screen.fill(ColorRgba { r: 1, g: 2, b: 3, a: 255 });
+    let data = frame(&vec![0; DIALOGUE_FRAME_SIZE], 2, 7);
+    game.present_native_story_dialogue_frame(
+        &mut screen,
+        &data,
+        campaign::NATIVE_DIALOGUE_STEADY,
+        0,
+        None,
+        Rectangle::default(),
+    )
+    .unwrap();
+    let pixels = screen.read_pixels();
+    assert_eq!(&pixels[..4], &[1, 2, 3, 255]);
+    assert_eq!(&pixels[8..12], &[0, 255, 0, 255]);
+    assert_eq!(&pixels[16..20], &[7, 248, 3, 255]);
+    assert_eq!(&pixels[24..28], &[1, 2, 3, 255]);
+    assert!(game.story_dialogue_mask(campaign::NATIVE_DIALOGUE_OPENING, 1).is_none());
+    game.dlg_scroll_t = 1;
+    assert!(game.story_dialogue_mask(campaign::NATIVE_DIALOGUE_STEADY, 0).is_none());
+    game.present_native_story_dialogue_frame(
+        &mut screen,
+        &data,
+        campaign::NATIVE_DIALOGUE_STEADY,
+        0,
+        None,
+        Rectangle::default(),
+    )
+    .unwrap();
+    assert_eq!(&screen.read_pixels()[..4], &[0, 255, 0, 255]);
+}
+
+#[test]
+#[ignore = "正式對白素材與 Go 黃金由 tools/rust_r6_opening.sh 安排"]
+fn real_dialogue_masks_match_go() {
+    use sha2::{Digest, Sha256};
+    use std::fmt::Write as _;
+
+    let out = std::path::PathBuf::from(std::env::var_os("FD2_R6_OPENING_OUT").unwrap());
+    let layouts: Vec<campaign::NativeDialogueLayout> =
+        serde_json::from_slice(&std::fs::read(out.join("dialogue-mask-layouts.json")).unwrap()).unwrap();
+    assert_eq!(layouts.len(), 4);
+    let mut game = Game {
+        locale_id: "zh-Hant".into(),
+        interface_mode: PLAYER_INTERFACE_ORIGINAL.into(),
+        modern_story_portraits: Some(ModernStoryPortraitSet {
+            has_hd: true,
+            portraits: BTreeMap::from([(0, ModernStoryPortraitFrame::default())]),
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    let base: Vec<u8> = (0..DIALOGUE_FRAME_SIZE).map(|i| (i * 7 + i / 320) as u8).collect();
+    let mut report = String::new();
+    for layout in layouts {
+        for motion in [0, 37] {
+            game.dialog = vec![battle::DialogLine {
+                speaker: 0,
+                upper: Some(matches!(layout.control.as_str(), "FFED" | "FFEF")),
+                native_dialogue: Some(battle::NativeDialogueLayout {
+                    source_dat: layout.source_dat.clone(),
+                    string_index: layout.string_index,
+                    utterance: layout.utterance,
+                    control: layout.control.clone(),
+                    operand: layout.operand,
+                    pages: layout.pages.clone(),
+                    glyph_pages: layout.glyph_pages.clone(),
+                    glyph_ids: layout.glyph_ids.clone(),
+                    motion_target_y: motion,
+                    has_motion_target_y: true,
+                }),
+                ..Default::default()
+            }];
+            game.native_map_vga.clone_from(&base);
+            game.has_story_native_map_view = motion != 0;
+            game.story_native_map_view.visible_cursor_x = 3;
+            game.story_native_map_view.visible_cursor_y = 2;
+            game.prepare_native_dialogue_frames().unwrap();
+            let masks = game.native_dialogue_hd_masks.as_ref().unwrap();
+            let palette = &game.native_class_ui.as_ref().unwrap().palette;
+            for (name, frames, masks) in [
+                ("opening", &game.native_dialogue_opening, &masks.opening),
+                ("page", &game.native_dialogue_frames, &masks.pages),
+                ("closing", &game.native_dialogue_closing, &masks.closing),
+            ] {
+                assert_eq!(frames.len(), masks.len());
+                for (index, (frame, mask)) in frames.iter().zip(masks).enumerate() {
+                    let picture = masked_dialogue_picture(frame, mask, palette).unwrap();
+                    writeln!(
+                        report,
+                        "{}/{motion} {name} {index} {:x}",
+                        layout.control,
+                        Sha256::digest(picture.read_pixels())
+                    )
+                    .unwrap();
+                }
+            }
+        }
+    }
+    let expected = std::fs::read_to_string(out.join("go-dialogue-masks.txt")).unwrap();
+    std::fs::write(out.join("rust-dialogue-masks.txt"), &report).unwrap();
+    assert_eq!(report.lines().count(), expected.lines().count());
+    for (a, b) in report.lines().zip(expected.lines()) {
+        assert_eq!(a, b);
+    }
+    println!("{} 張對白遮罩與 Go 相同，序列 SHA-256 {:x}", report.lines().count(), Sha256::digest(report.as_bytes()));
+}
+
 /// R5 階段 2 r5d：沒有原生對白時回 false、不畫；穩定頁以進度選預建畫格，經 `presentNativeClassFrame` 放大兩倍，
 /// 並清掉本幀的 HUD／原生地圖旗標。
 #[test]

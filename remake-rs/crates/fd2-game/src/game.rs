@@ -459,5 +459,6 @@ pub(crate) use title_menu_state::*;
 // crate 外使用的入口
 pub use main::Game;
 // R5 階段 4（r5w）：fd2-app 的主迴圈入口。
+pub use modern_hd_presentation::WindowPortrait;
 pub use player_input::{GamepadSnapshot, InputDeviceSnapshot, RawDevices};
 pub use player_runner::{PlayerRunner, RunnerStep};

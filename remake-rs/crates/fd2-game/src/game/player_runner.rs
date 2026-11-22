@@ -145,6 +145,10 @@ impl PlayerRunner {
         self.game.modern_story_portraits.as_ref().is_some_and(|set| set.map_sprites_hd.len() == 125)
     }
 
+    pub fn window_portrait(&self) -> Option<WindowPortrait> {
+        self.game.window_portrait()
+    }
+
     /// 交給外殼同步播放，並接收一次性音效的播放完成狀態。
     pub fn audio_voices_mut(&mut self) -> Vec<(VoiceSlot, &mut AudioVoice)> {
         self.game.audio_voices_mut()

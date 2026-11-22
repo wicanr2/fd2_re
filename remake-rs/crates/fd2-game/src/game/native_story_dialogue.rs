@@ -15,7 +15,86 @@ use super::*;
 /// KNOWN_DIFFERENCES `cosmetic-mouth-rng-fixed-seed`）。與遊戲亂數 `rng` 的預設種子錯開。
 pub(crate) const STORY_MOUTH_RNG_SEED: i64 = VIRTUAL_CLOCK_ORIGIN.0 + 1;
 
+const DIALOGUE_FRAME_SIZE: usize = 320 * 200;
+
+#[derive(Debug)]
+pub(crate) struct ModernStoryDialogueMasks {
+    opening: Vec<Vec<bool>>,
+    closing: Vec<Vec<bool>>,
+    pages: Vec<Vec<bool>>,
+}
+
+fn dialogue_marker_masks(compose: impl Fn(&[u8]) -> Result<Vec<Vec<u8>>>) -> Result<Vec<Vec<bool>>> {
+    let low = compose(&vec![0; DIALOGUE_FRAME_SIZE])?;
+    let high = compose(&vec![255; DIALOGUE_FRAME_SIZE])?;
+    if low.is_empty() || low.len() != high.len() {
+        return Err(game_err!("modern HD dialogue: marker replay changed frame count"));
+    }
+    low.into_iter()
+        .zip(high)
+        .map(|(a, b)| {
+            if a.len() != DIALOGUE_FRAME_SIZE || b.len() != DIALOGUE_FRAME_SIZE {
+                return Err(game_err!("modern HD dialogue: marker replay frame is incomplete"));
+            }
+            Ok(a.into_iter().zip(b).map(|(a, b)| a == b).collect())
+        })
+        .collect()
+}
+
+fn freeze_story_dialogue_masks(
+    pages: usize,
+    opening: impl Fn(&[u8]) -> Result<Vec<Vec<u8>>>,
+    closing: impl Fn(&[u8]) -> Result<Vec<Vec<u8>>>,
+    page: impl Fn(&[u8], usize) -> Result<Vec<Vec<u8>>>,
+) -> Result<ModernStoryDialogueMasks> {
+    let opening = dialogue_marker_masks(opening)?;
+    let closing = dialogue_marker_masks(closing)?;
+    let mut page_masks = Vec::with_capacity(pages);
+    for index in 0..pages {
+        let masks = dialogue_marker_masks(|base| page(base, index))?;
+        let mut union = vec![false; DIALOGUE_FRAME_SIZE];
+        for mask in masks {
+            for (saved, covered) in union.iter_mut().zip(mask) {
+                *saved |= covered;
+            }
+        }
+        page_masks.push(union);
+    }
+    Ok(ModernStoryDialogueMasks { opening, closing, pages: page_masks })
+}
+
+fn masked_dialogue_picture(frame: &[u8], mask: &[bool], palette: &[ColorRgba]) -> Result<Picture> {
+    if frame.len() != DIALOGUE_FRAME_SIZE || mask.len() != frame.len() || palette.len() != 256 {
+        return Err(game_err!("modern HD dialogue: incomplete pixels"));
+    }
+    let pixels: Vec<_> = frame
+        .iter()
+        .zip(mask)
+        .map(|(&index, &covered)| {
+            if covered {
+                let c = palette[index as usize];
+                [c.r, c.g, c.b, 255]
+            } else {
+                [0; 4]
+            }
+        })
+        .collect();
+    let mut picture = Picture::new_image(320, 200);
+    picture.write_pixels(pixels.as_flattened());
+    Ok(picture)
+}
+
 impl Game {
+    fn story_dialogue_mask(&self, phase: campaign::NativeDialogueFramePhase, index: i64) -> Option<&[bool]> {
+        let masks = self.native_dialogue_hd_masks.as_ref()?;
+        let (frames, index) = match phase {
+            campaign::NATIVE_DIALOGUE_OPENING => (&masks.opening, index),
+            campaign::NATIVE_DIALOGUE_CLOSING => (&masks.closing, index),
+            campaign::NATIVE_DIALOGUE_STEADY if self.dlg_scroll_t == 0 => (&masks.pages, self.dlg_page),
+            _ => return None,
+        };
+        frames.get(index as usize).map(Vec::as_slice)
+    }
     /// startNativeDialogueFrames 接回 0x165D6 的開框前聚焦；背景須在聚焦後保存。
     ///
     /// Go：`native_story_dialogue.go:16`，`func (g *Game) startNativeDialogueFrames() error`
@@ -116,6 +195,7 @@ impl Game {
         self.native_dialogue_speaking_frame = 0;
         self.native_dialogue_portraits = Vec::new();
         self.native_dialogue_layout = None;
+        self.native_dialogue_hd_masks = None;
         self.native_dialogue_chrome = None;
         self.native_dialogue_chrome_bounds = BTreeMap::new();
         self.native_dialogue_glyph_steps = Vec::new();
@@ -290,6 +370,34 @@ impl Game {
         }
         if self.modern_hd_interface_enabled() {
             todo!("R6: modern_hd_dialogue_chrome.go:freezeModernHDDialogueChrome（HD 介面）")
+        }
+        if self.modern_story_portraits.as_ref().is_some_and(|theme| theme.has_hd) {
+            self.native_dialogue_hd_masks = freeze_story_dialogue_masks(
+                pages,
+                |base| Ok(campaign::compose_native_story_dialogue_opening_frames(base, &class_ui.dialogue, &layout)?),
+                |base| {
+                    Ok(campaign::compose_native_story_dialogue_closing_frames(
+                        base,
+                        &class_ui.dialogue,
+                        &layout,
+                        motion_target_y,
+                        visible_cursor_x,
+                        visible_cursor_y,
+                    )?)
+                },
+                |base, page| {
+                    Ok(campaign::compose_native_story_dialogue_progressive_frames(
+                        base,
+                        &class_ui.dialogue,
+                        &portraits[0],
+                        class_ui.font.as_ref(),
+                        Some(&self.native_battle_glyphs),
+                        &layout,
+                        page as i64,
+                    )?)
+                },
+            )
+            .ok();
         }
         (self.native_dialogue_chrome, self.native_dialogue_chrome_bounds) = (None, bounds);
         self.native_dialogue_frames = frames;
@@ -649,19 +757,23 @@ impl Game {
         portrait: Option<Arc<Picture>>,
         rect: Rectangle,
     ) -> Result<()> {
-        // phase、index 只給 HD 計時對白與框線面板用（下面 r6 分支）。
-        let _ = (phase, index);
         if let Some(portrait) = portrait.as_ref()
             && (portrait.width != rect.max.x - rect.min.x || portrait.height != rect.max.y - rect.min.y)
         {
             return Err(game_err!("native RGBA overlay geometry is invalid"));
         }
-        if self.modern_hd_world_visible {
-            todo!(
-                "r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（HD 計時對白 modernHDTimedDialogueEligible）"
-            );
+        if self.modern_hd_world_visible
+            && self.modern_hd_map_gpu.is_some()
+            && let Some(ui) = &self.native_class_ui
+            && let Some(mask) = self.story_dialogue_mask(phase, index)
+        {
+            let picture = masked_dialogue_picture(frame, mask, &ui.palette)?;
+            let mut op = DrawImageOptions::default();
+            op.geo_m.scale(2.0, 2.0);
+            screen.draw_image(&picture, &op);
+        } else {
+            self.present_native_class_frame(screen, frame);
         }
-        self.present_native_class_frame(screen, frame);
         if let Some(portrait) = portrait {
             let mut op = DrawImageOptions::default();
             op.geo_m.scale(2.0, 2.0);
