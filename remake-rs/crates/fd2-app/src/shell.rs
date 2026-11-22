@@ -427,6 +427,9 @@ fn drive(
     };
 
     let mut raw = shell.bindings.logical_state(&snap, lb);
+    if snap.cursor.is_none() {
+        raw.cursor = (-1, -1);
+    }
     let runner = &mut shell.runner;
     let t_frame = Instant::now();
     for i in 0..updates {

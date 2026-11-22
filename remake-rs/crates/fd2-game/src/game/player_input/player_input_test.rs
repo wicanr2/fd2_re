@@ -495,15 +495,18 @@ fn test_pointer_selects_title_menu_slots_and_town() {
     );
 }
 
-/// Go：`player_input_test.go:505` `TestF12OpensControlsPanelAndKeepsDebugHUD`
+/// 設定入口移到工具列後，手把 Start 的 F12 不再開啟面板。實體 Ctrl+F12 保留開發用途。
 #[test]
-fn test_f12_opens_controls_panel_and_keeps_debug_hud() {
+fn test_f12_requires_control_for_debug_hud() {
     let mut input = active(default_control_bindings());
     input.step(&pad(&[]), true, None);
     input.step(&pad(&[PAD_START]), true, None);
     let mut g = Game { tick_input: input.logical_tick(none()), player_input: Some(input), ..Default::default() };
     g.update().unwrap();
-    assert!(g.controls.open && !g.debug, "Start → F12 opens the panel, not the debug HUD");
+    assert!(!g.controls.open && !g.debug);
+    g.tick_input = TickInput { held: [Key::Control].into(), pressed: [Key::F12].into(), ..Default::default() };
+    g.update().unwrap();
+    assert!(!g.controls.open && g.debug);
 }
 
 /// Rust 新增：預設綁定、沒有滑鼠與手把時，邏輯輸入與實體輸入相同（只多了 `physical`）。第一章重播與外殼驅動不經

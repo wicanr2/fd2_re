@@ -80,7 +80,7 @@ impl PlayerRunner {
     /// r5i：Go 的 `activeInput`（輸入對應層）在這裡打開：`Game::tick_input` 是 [`PlayerInput::logical_tick`] 換算後的
     /// 邏輯鍵，實體的那一份留在 `tick_input.physical`。設定面板開著時吃掉這一次 `Update`（`updateControlsPanel`）。
     pub fn update(&mut self, raw: &RawInputState) -> std::result::Result<RunnerStep, String> {
-        let physical = self.input.update(raw);
+        let mut physical = self.input.update(raw);
         let devices = self.devices.update(&raw.devices, &physical);
         self.game.tick_input = physical.clone();
         let now = self.game.advance_virtual_frame(&mut self.clock);
@@ -94,10 +94,20 @@ impl PlayerRunner {
         if self.game.balance_ui.open {
             todo!("r6:player_balance.go:412 updateBalanceEditor（數值編輯器由工具列開啟，R6）")
         }
-        // modern_hd_presentation.go:57：沒有海報選單與速度選單，`playerOverlayBlock` 是空矩形。
         self.game.player_overlay_block = Rectangle::default();
-        // modern_hd_presentation.go:70：`poster.consumeInput` 與 `balanceUI.open` 都是 false，面板沒開（上面已返回）。
-        self.game.sample_input(true, &devices.snapshot);
+        let toolbar_pointer = self.game.update_toolbar(&physical, raw.devices.focused);
+        if self.game.player_toolbar_touch_blocked {
+            physical.just_pressed_touches.retain(|&(_, y)| !(0..PLAYER_TOOLBAR_HEIGHT).contains(&y));
+        }
+        if toolbar_pointer {
+            physical.mouse_left_held = false;
+            physical.mouse_left_just_pressed = false;
+            physical.mouse_left_just_released = false;
+        }
+        self.game.sample_input(!toolbar_pointer && !self.game.controls.open, &devices.snapshot);
+        if self.game.controls.open {
+            return Ok(RunnerStep::Continue);
+        }
         if let Some(input) = self.game.player_input.as_ref() {
             self.game.tick_input = input.logical_tick(physical);
         }
@@ -167,14 +177,19 @@ impl PlayerRunner {
     /// 濾鏡縮成內容區大小疊上去，Go `op.GeoM.Scale(1.0/3, 1.0/3)`＋`Concat(geometry)`）。面板沒開時回 `None`。面板狀態
     /// 沒變時沿用上次畫好的疊層；第一個回傳值是決定內容的面板狀態（外殼據此判斷要不要重新上傳貼圖）。
     pub fn controls_panel_surface(&mut self) -> Option<(&str, &Picture)> {
-        if !self.game.controls.open {
+        let controls = self.game.controls.open;
+        if !controls && self.game.toolbar_ticks <= 0 {
             self.controls_surface = None;
             return None;
         }
-        let key = self.game.controls_panel_render_key();
+        let key = if controls { self.game.controls_panel_render_key() } else { self.game.toolbar_render_key() };
         if self.controls_surface.as_ref().is_none_or(|(k, _)| *k != key) {
             let mut s = Picture::new_image(CONTROLS_SURFACE_W, CONTROLS_SURFACE_H);
-            self.game.draw_controls_panel_surface(&mut s, None, true);
+            if controls {
+                self.game.draw_controls_panel_surface(&mut s, None, true);
+            } else {
+                self.game.draw_toolbar(&mut s);
+            }
             self.controls_surface = Some((key, s));
         }
         self.controls_surface.as_ref().map(|(k, s)| (k.as_str(), s))

@@ -270,13 +270,12 @@ fn test_native_nested_system_exit_publishes_ebiten_termination() {
     assert!(err.is(&ERR_TERMINATION), "Update error={err}");
 }
 
-/// `Update` 的 `defer` 在提早返回時照樣執行：F10 請求海報切換後，玩家面板請求旗標被清除。
+/// `Update` 處理全螢幕請求後提早返回，仍會清除玩家面板請求旗標。
 #[test]
 fn update_runs_deferred_cleanup_on_early_return() {
-    let mut g = Game { player_theme_requested: true, ..Default::default() };
-    g.tick_input.pressed.insert(Key::F10);
+    let mut g = Game { player_theme_requested: true, player_fullscreen_requested: true, ..Default::default() };
     g.update().unwrap();
-    assert!(g.player_poster_cycle_requested && !g.player_theme_requested);
+    assert!(g.fullscreen_toggle_requested && !g.player_theme_requested);
     assert_eq!(g.frame, 1);
 }
 

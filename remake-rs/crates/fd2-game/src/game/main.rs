@@ -882,6 +882,7 @@ pub struct Game {
     pub(crate) prep_native_cursor_unit_hd: Option<ModernPreparationNativeCursorUnit>,
     pub(crate) modern_hd_panel_portraits: Vec<ModernHDOverlay>,
     pub(crate) player_theme_requested: bool,
+    pub(crate) toolbar_ticks: i64,
     pub(crate) player_interface_requested: bool,
     pub(crate) interface_mode: String,
     pub(crate) player_speed: i64,
@@ -7339,25 +7340,17 @@ impl Game {
         let just = |k: Key| input.is_just_pressed(k);
         let enter_or_space = just(Key::Enter) || just(Key::Space);
         self.frame += 1;
-        if self.player_poster_controls_allowed() && just(Key::F10) {
-            self.player_poster_cycle_requested = true;
-            return Ok(()); // Presentation input must not also advance a dialogue or map.
-        }
-        // Alt+Enter 讀實體鍵（Go `inpututil.IsKeyJustPressed(ebiten.KeyEnter)`，r5i 起不經輸入對應層）。
-        let physical = input.physical();
-        if self.player_fullscreen_requested
-            || (physical.is_just_pressed(Key::Enter)
-                && (physical.is_pressed(Key::Alt)
-                    || physical.is_pressed(Key::AltLeft)
-                    || physical.is_pressed(Key::AltRight)))
-        {
+        if self.player_fullscreen_requested {
             // Go `ebiten.SetFullscreen(!ebiten.IsFullscreen())`：視窗是外殼的事，這裡只留請求。
             self.fullscreen_toggle_requested = true;
             return Ok(());
         }
-        if !native_modifier_held(&input) && just(Key::F12) {
-            // 全域：按鍵設定面板（手把 Start 預設對應 F12；Go `main.go:8399`，r5i）
-            self.open_controls_panel();
+        let physical = input.physical();
+        if physical.is_just_pressed(Key::Enter)
+            && (physical.is_pressed(Key::Alt)
+                || physical.is_pressed(Key::AltLeft)
+                || physical.is_pressed(Key::AltRight))
+        {
             return Ok(());
         }
         if self.native_defeat.is_some() {
@@ -7407,32 +7400,24 @@ impl Game {
         self.step_native_preparation_ui_lifecycle(now);
         self.poll_modern_theme_load();
         let global = self.native_ending.is_none() && !native_modifier_held(&input);
-        if global && (self.player_theme_requested || just(Key::F2)) {
+        if global && self.player_theme_requested {
             self.player_theme_requested = false;
             self.cycle_theme_art();
         }
-        if global && (self.player_interface_requested || just(Key::F11)) {
+        if global && self.player_interface_requested {
             self.player_interface_requested = false;
             self.cycle_hd_title_interface();
         }
-        if global && just(Key::F3) {
-            // 全域：切換音源
-            todo!("R8: settings.go:cycleBGMSource（F3 音源切換）")
-        }
-        if global && (self.player_locale_requested || just(Key::F4)) {
+        if global && self.player_locale_requested {
             // 全域：切換官方語系
             todo!("R8: settings.go:cycleLocale（F4 語系切換）")
         }
-        if global && (self.player_font_requested || just(Key::F7)) {
+        if global && self.player_font_requested {
             // 全域：切換字級
             todo!("R8: settings.go:cycleFontScale（F7 字級切換）")
         }
-        if global && (self.player_speed_requested || just(Key::F8)) {
+        if global && self.player_speed_requested {
             todo!("R8: player_game_clock.go:cyclePlayerSpeed（F8 遊戲速度）")
-        }
-        if global && just(Key::F6) {
-            // 全域：音樂開關（Go `toggleNativeSystemOption(0)`，`r8`）
-            todo!("R8: action_overlay_runtime.go:toggleNativeSystemOption（F6 音樂開關）")
         }
         let physical = input.physical();
         if self.native_ending.is_none() && physical.is_pressed(Key::Control) && physical.is_just_pressed(Key::F12) {
@@ -9360,10 +9345,10 @@ pub(crate) fn load_game() -> Option<Game> {
         }
     }
     if g.load_err.is_empty() {
-        if mode == PLAYER_INTERFACE_HD || (mode.is_empty() && configured.interface_mode == PLAYER_INTERFACE_HD) {
-            if let Err(err) = g.enable_hd_title_interface() {
-                g.msg = format!("介面切換失敗：{err}");
-            }
+        if (mode == PLAYER_INTERFACE_HD || (mode.is_empty() && configured.interface_mode == PLAYER_INTERFACE_HD))
+            && let Err(err) = g.enable_hd_title_interface()
+        {
+            g.msg = format!("介面切換失敗：{err}");
         }
         if modern_art {
             if modern_theme_startup_deferred() {

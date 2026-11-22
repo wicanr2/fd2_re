@@ -1,6 +1,6 @@
 #!/bin/bash
-# 在正常 Bevy 視窗送 X11 鍵盤事件，驗證 F2、設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄]
+# 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄] [interface-cold]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -52,15 +52,16 @@ window() {
       trap "kill $xvfb 2>/dev/null || true" EXIT
       for _ in $(seq 1 60); do test ! -S /tmp/.X11-unix/X96 || break; sleep 0.1; done
       test -S /tmp/.X11-unix/X96
-      timeout 240s /bins/fd2 >"/out/$MODE.log" 2>&1
+      timeout 420s /bins/fd2 >"/out/$MODE.log" 2>&1
     ' >/dev/null
 }
 
 drive() {
-  timeout 220s docker run "${common[@]}" --name "$name-driver" --memory 512m --cpus 1 \
+  timeout 400s docker run "${common[@]}" --name "$name-driver" --memory 512m --cpus 1 \
     --mount "type=bind,source=$out,target=/out" \
     --mount "type=bind,source=$out/socket,target=/tmp/.X11-unix,readonly" \
     -e DISPLAY=:96 -e "MODE=$1" -w /out fd2-promo-local:latest bash -euc '
+      trap "echo \"視窗測試 $MODE 失敗，腳本第 \$LINENO 行\" >&2" ERR
       for _ in $(seq 1 200); do
         wid="$(xdotool search --onlyvisible --name "fd2_re rust" 2>/dev/null | head -1)"
         test -z "$wid" || break
@@ -73,6 +74,22 @@ drive() {
         xdotool keydown "$1"
         sleep 0.45
         xdotool keyup "$1"
+      }
+      toolbar() {
+        local x=$((2 * $1))
+        xdotool windowfocus --sync "$wid"
+        xdotool mousemove --window "$wid" "$x" 2
+        sleep 0.6
+        xdotool mousemove --window "$wid" "$x" 24 mousedown 1
+        sleep 0.35
+        xdotool mouseup 1 mousemove --window "$wid" 640 400
+        for _ in $(seq 1 60); do
+          capture /tmp/fd2-toolbar.png
+          if test "$(convert /tmp/fd2-toolbar.png -format "%[pixel:p{0,0}]" info:)" != "srgb(17,24,37)"; then
+            return
+          fi
+          sleep 0.2
+        done
       }
       capture() { import -window "$wid" -depth 8 -define png:exclude-chunks=date,time "$1"; }
       same() { compare -metric AE "$1" "$2" null: 2>/dev/null; }
@@ -113,7 +130,7 @@ drive() {
           key Escape
           sleep 0.3
         done
-        grep -Fq "[cutscene] title menu ready" "$MODE.log"
+        grep -Fq "[cutscene] title menu ready" "$MODE.log" || { echo "未抵達標題選單：$MODE" >&2; return 1; }
         sleep 1
         capture "$1"
       }
@@ -148,7 +165,7 @@ drive() {
       case "$MODE" in
         f2)
           first_visible_frame opening-before.png
-          key F2
+          toolbar 105
           wait_for_change opening-before.png opening-loading.png
           wait_for_setting modern-handpainted-a
           grep -q "\"interface_mode\": \"original\"" profile/fd2_re/fd2_settings.json
@@ -163,7 +180,7 @@ drive() {
           ;;
         missing)
           first_visible_frame missing-opening.png
-          key F2
+          toolbar 105
           wait_for_event "[theme] 現代主題不可用"
           wait_for_menu title-missing-pack.png
           different title-hd.png title-missing-pack.png
@@ -180,22 +197,26 @@ drive() {
           same title-background.png title-load-background.png
           key Up
           wait_for_picture title-start-selected.png title-before-toggle.png
+          key F2
           key F11
+          sleep 1
+          wait_for_picture title-shortcuts-retired.png title-start-selected.png
+          toolbar 180
           wait_for_preference interface_mode hd
           wait_for_change title-start-selected.png title-hd-interface-hd-art.png
           check_title_art title-hd-interface-hd-art.png title-hd.png
-          key F2
+          toolbar 45
           wait_for_setting faithful
           wait_for_change title-hd-interface-hd-art.png title-hd-interface-original-art.png
           check_title_art title-hd-interface-original-art.png title-missing-pack.png
           different title-hd-interface-original-art.png title-missing-pack.png
-          key F11
+          toolbar 180
           wait_for_preference interface_mode original
           wait_for_picture title-original-toggle.png title-missing-pack.png
-          key F2
+          toolbar 105
           wait_for_setting modern-handpainted-a
           wait_for_picture title-hd-toggle.png title-hd.png
-          key F11
+          toolbar 180
           wait_for_preference interface_mode hd
           wait_for_picture title-both-restored.png title-hd-interface-hd-art.png
           key Return
@@ -203,12 +224,12 @@ drive() {
           sleep 1
           first_visible_frame story-hd.png
           different title-hd-toggle.png story-hd.png
-          key F2
+          toolbar 45
           wait_for_setting faithful
           sleep 1
           first_visible_frame story-original.png
           different story-hd.png story-original.png
-          key F2
+          toolbar 105
           wait_for_setting modern-handpainted-a
           sleep 1
           first_visible_frame story-hd-restored.png
@@ -220,12 +241,21 @@ drive() {
           first_visible_frame interface-opening.png
           wait_for_menu title-interface-cold.png
           wait_for_picture title-interface-cold.png title-hd-interface-hd-art.png
+          toolbar 590
+          wait_for_change title-interface-cold.png controls-from-toolbar.png
+          key Escape
+          wait_for_picture title-controls-closed.png title-interface-cold.png
+          toolbar 270
+          wait_for_preference bgm_source mt32
+          toolbar 345
+          grep -q "\"font_scale\": 1.1" profile/fd2_re/fd2_settings.json
+          toolbar 400
+          grep -q "\"game_speed\": 2" profile/fd2_re/fd2_settings.json
           ;;
         no-font)
           first_visible_frame no-font-opening.png
           wait_for_menu title-no-font.png
-          key F11
-          wait_for_event "[theme] 介面切換失敗：modern HD title: font unavailable"
+          toolbar 180
           wait_for_picture title-no-font.png title-missing-pack.png
           test ! -e rejected/fd2_re/fd2_settings.json
           ;;
@@ -240,16 +270,34 @@ if [[ -n "${2:-}" ]]; then
   test -f "$2/title-hd.png" && test -f "$2/title-missing-pack.png"
   baseline=(--mount "type=bind,source=$(cd "$2" && pwd -P),target=/baseline,readonly")
 fi
+mode="${3:-toggle}"
+if [[ "$mode" == "interface-cold" ]]; then
+  test -f "${2:?需要標題基準}/title-hd-interface-hd-art.png"
+else
+  test "$mode" = toggle
+fi
 timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
+  -e "CHECK_MODE=$mode" \
   --mount "type=bind,source=$out,target=/out" fd2-rust:1.99.1-r3 bash -euc '
     mkdir -p /out/profile/fd2_re
     theme=faithful
+    interface=original
     if test -d /baseline; then
       cp /baseline/title-hd.png /baseline/title-missing-pack.png /out/
       theme=modern-handpainted-a
     fi
-    printf "{\"theme_id\":\"%s\",\"interface_mode\":\"original\"}\n" "$theme" > /out/profile/fd2_re/fd2_settings.json
+    if test "$CHECK_MODE" = interface-cold; then
+      cp /baseline/title-hd-interface-hd-art.png /out/
+      interface=hd
+    fi
+    printf "{\"theme_id\":\"%s\",\"interface_mode\":\"%s\"}\n" "$theme" "$interface" > /out/profile/fd2_re/fd2_settings.json
   '
+if [[ "$mode" == "interface-cold" ]]; then
+  window interface-cold profile /hd
+  drive interface-cold
+  stop_window
+  exit 0
+fi
 if [[ ${#baseline[@]} -eq 0 ]]; then
   window f2 profile /hd
   drive f2
