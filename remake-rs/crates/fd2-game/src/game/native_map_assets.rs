@@ -12,7 +12,7 @@ use super::*;
 pub(crate) struct NativeMapAssets {
     pub(crate) map_index: i64,
     pub(crate) frames: indexedmap::NativeMapHUDFrames,
-    pub(crate) terrain: Option<fdicon::Bank>,
+    pub(crate) terrain: Option<Arc<fdicon::Bank>>,
     pub(crate) range: Option<fdicon::Bank>,
     pub(crate) units: Option<fdicon::Bank>,
     pub(crate) controls: Vec<u8>,
@@ -77,7 +77,7 @@ pub(crate) fn load_native_map_assets(map_dir: &str) -> Result<Option<NativeMapAs
     Ok(Some(NativeMapAssets {
         map_index,
         frames,
-        terrain: Some(terrain),
+        terrain: Some(Arc::new(terrain)),
         range: Some(range_bank),
         units: Some(units),
         controls,

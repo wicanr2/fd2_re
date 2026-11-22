@@ -1,6 +1,6 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-Rust R6 戰場圖層合成達 RUNTIME-E1。固定輸入的兩種覆蓋順序通過 Go 世界及介面全畫布差分，原生畫格與 HD 圖層在同一交易發布。開場、天空之鑰共用圖庫與地形資料層為 DATA-READY，開場已使用共用 ANI #0。主題交易、F2／F11、衍生畫質及第二十章演出仍待接入。[119 的 R6 進度](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-戰場圖層合成runtime-e12026-11-22)
+Rust R6 戰場合成及圖源接線達 RUNTIME-E1。正式人物 1,455 對圖格與 Go 一致，人物和按需地形已通過兩張受控戰場的繪製入口。兩種覆蓋順序已通過 Go 世界及介面全畫布差分。開場與天空之鑰共用圖庫為 DATA-READY，開場已使用共用 ANI #0。主題交易、F2／F11、衍生畫質及第二十章演出仍待接入。[119 的 R6 進度](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-戰場圖源接線runtime-e12026-11-22)
 
 原版像素手繪地表與相依背景刷新已達CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，保留完整HD物件輪廓。範圍、來源與重跑入口見[61](61-modern-theme-runtime-spec.md#hd1-pixel-terrain-refresh)，唯一收據見[玩家回饋現況](../data/fd2-hd1-feedback-20261104.json)的map_pixel_material_refresh_20261106；不外推全部獨立圖集、原版parity或Windows60fps。
 

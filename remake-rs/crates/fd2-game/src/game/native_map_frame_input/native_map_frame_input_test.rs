@@ -55,7 +55,7 @@ pub(crate) fn native_frame_test_hud_frames() -> indexedmap::NativeMapHUDFrames {
 pub(crate) fn complete_native_map_frame_fixture() -> (NativeMapAssets, MapData, battle::State) {
     let controls = vec![0u8; 4];
     let mut assets = NativeMapAssets {
-        terrain: Some(native_frame_test_bank(2, 1)),
+        terrain: Some(Arc::new(native_frame_test_bank(2, 1))),
         range: Some(native_frame_test_bank(20, 2)),
         units: Some(native_frame_test_bank(96, 3)),
         controls: controls.clone(),
@@ -119,7 +119,7 @@ fn test_build_native_map_frame_input_uses_only_raw_materialized_state() {
             && f.flip == 1
             && f.pixel_shift == 1
             && f.range_mode == 1
-            && std::ptr::eq(f.foreground_bank.unwrap(), assets.terrain.as_ref().unwrap())
+            && std::ptr::eq(f.foreground_bank.unwrap(), assets.terrain.as_deref().unwrap())
             && std::ptr::eq(f.selector_cache.unwrap(), state.native_map_selector_cache.as_ref().unwrap())
             && f.units.len() == 1
             && f.foreground_units.len() == 1
@@ -207,7 +207,7 @@ fn available_assets(map_index: i64) -> NativeMapAssets {
     }
     NativeMapAssets {
         map_index,
-        terrain: Some(fdicon::Bank::default()),
+        terrain: Some(Arc::new(fdicon::Bank::default())),
         range: Some(fdicon::Bank::default()),
         units: Some(fdicon::Bank::default()),
         controls: vec![0],

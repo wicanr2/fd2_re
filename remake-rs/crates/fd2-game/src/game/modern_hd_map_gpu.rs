@@ -58,7 +58,8 @@ impl ModernHDMapGPU {
                 .and_then(|frames| frames.get(unit.frame as usize))
                 .and_then(Option::as_ref)
                 .ok_or_else(|| game_err!("modern HD map: missing unit picture"))?;
-            draw_layer(&mut world, image, unit.rect, clip, unit.palette_band);
+            let area = theme.map_sprite_visual_rect(unit.group, unit.frame, unit.rect);
+            draw_layer(&mut world, image, area, clip, unit.palette_band);
         }
         for foreground in &frame.foreground {
             let image = foreground.hd_image.as_ref().unwrap_or(&foreground.image);

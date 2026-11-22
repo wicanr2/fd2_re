@@ -296,6 +296,10 @@ pub(crate) fn decode_precise_png_picture(data: &[u8]) -> Option<Picture> {
     decode_png(data, PngAlpha::Precise)
 }
 
+pub(crate) fn decode_sprite_png(data: &[u8], side: u32, observe_alpha: impl FnMut(i64, i64, u16)) -> Option<Picture> {
+    decode_png_checked(data, PngAlpha::Precise, Some(side), observe_alpha)
+}
+
 #[derive(PartialEq, Eq)]
 enum PngAlpha {
     Legacy,
@@ -304,6 +308,15 @@ enum PngAlpha {
 }
 
 fn decode_png(data: &[u8], alpha: PngAlpha) -> Option<Picture> {
+    decode_png_checked(data, alpha, None, |_, _, _| {})
+}
+
+fn decode_png_checked(
+    data: &[u8],
+    alpha: PngAlpha,
+    side: Option<u32>,
+    mut observe_alpha: impl FnMut(i64, i64, u16),
+) -> Option<Picture> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(data));
     let mut transformations = png::Transformations::EXPAND | png::Transformations::ALPHA;
     if alpha == PngAlpha::Legacy {
@@ -311,6 +324,9 @@ fn decode_png(data: &[u8], alpha: PngAlpha) -> Option<Picture> {
     }
     decoder.set_transformations(transformations);
     let mut reader = decoder.read_info().ok()?;
+    if side.is_some_and(|side| (reader.info().width, reader.info().height) != (side, side)) {
+        return None;
+    }
     let mut buf = vec![0u8; reader.output_buffer_size()?];
     let info = reader.next_frame(&mut buf).ok()?;
     let (w, h) = (info.width as usize, info.height as usize);
@@ -323,9 +339,10 @@ fn decode_png(data: &[u8], alpha: PngAlpha) -> Option<Picture> {
             _ => return None,
         };
         let bytes_per_pixel = channels * 2;
-        for px in buf[..info.buffer_size()].chunks_exact(bytes_per_pixel) {
+        for (index, px) in buf[..info.buffer_size()].chunks_exact(bytes_per_pixel).enumerate() {
             let channel = |i: usize| u32::from(u16::from_be_bytes([px[2 * i], px[2 * i + 1]]));
             let a = channel(channels - 1);
+            observe_alpha((index % w) as i64, (index / w) as i64, a as u16);
             if alpha == PngAlpha::Opaque && a != 65535 {
                 return None;
             }
@@ -344,8 +361,9 @@ fn decode_png(data: &[u8], alpha: PngAlpha) -> Option<Picture> {
         }
         _ => return None,
     }
-    for px in pix.as_chunks_mut::<4>().0 {
+    for (index, px) in pix.as_chunks_mut::<4>().0.iter_mut().enumerate() {
         let a = px[3];
+        observe_alpha((index % w) as i64, (index / w) as i64, u16::from(a) * 257);
         if a != 255 {
             if alpha == PngAlpha::Opaque {
                 return None;

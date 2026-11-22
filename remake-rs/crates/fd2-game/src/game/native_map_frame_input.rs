@@ -71,10 +71,10 @@ pub(crate) fn build_native_map_frame_input<'a>(
         _ => return Err(game_err!("native map frame: terrain phase LUT is incomplete")),
     };
     let frame = indexedmap::FrameInput {
-        terrain_bank: assets.terrain.as_ref(),
+        terrain_bank: assets.terrain.as_deref(),
         range_bank: assets.range.as_ref(),
         unit_bank: assets.units.as_ref(),
-        foreground_bank: assets.terrain.as_ref(),
+        foreground_bank: assets.terrain.as_deref(),
         selector_cache: state.native_map_selector_cache.as_ref(),
         cells,
         controls: &assets.controls,
@@ -105,7 +105,7 @@ pub(crate) fn build_native_map_frame_input<'a>(
         frame,
         hud,
         frames: assets.frames.clone(),
-        hud_terrain: assets.terrain.as_ref(),
+        hud_terrain: assets.terrain.as_deref(),
         hud_units: assets.units.as_ref(),
         hud_cache: state.native_map_selector_cache.as_ref(),
     })

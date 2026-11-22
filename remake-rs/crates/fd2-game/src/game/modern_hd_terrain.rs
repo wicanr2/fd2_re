@@ -97,6 +97,28 @@ pub(crate) struct ModernTerrain {
     notices: Vec<String>,
 }
 
+/// Theme clones retain the identity of their lazily decoded terrain pack.
+#[derive(Debug, Clone)]
+pub(crate) struct ModernTerrainArt(Arc<Mutex<ModernTerrain>>);
+
+impl PartialEq for ModernTerrainArt {
+    fn eq(&self, other: &Self) -> bool {
+        Arc::ptr_eq(&self.0, &other.0)
+    }
+}
+
+impl Eq for ModernTerrainArt {}
+
+impl ModernTerrainArt {
+    pub(crate) fn load(catalog: &Path, root: &Path) -> Result<Self> {
+        Ok(Self(Arc::new(Mutex::new(ModernTerrain::load(catalog, root)?))))
+    }
+
+    pub(crate) fn map(&self, id: u8, bank: &Arc<fdicon::Bank>) -> Result<Option<Arc<TerrainMap>>> {
+        self.0.lock().map_err(|_| game_err!("modern HD terrain: map cache poisoned"))?.map(id, bank)
+    }
+}
+
 impl ModernTerrain {
     pub(crate) fn load(catalog: &Path, root: &Path) -> Result<Self> {
         let mut terrain = Self::default();

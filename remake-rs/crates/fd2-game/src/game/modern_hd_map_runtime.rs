@@ -307,13 +307,16 @@ impl Game {
         let assets =
             self.native_map_assets.as_ref().ok_or_else(|| game_err!("modern HD map: missing native assets"))?;
         let palette = color_palette_from_nrgba(&fdother::vga_palette_from_dac(dac)?);
-        let tiles = self.modern_hd_map_tiles.as_ref().filter(|(id, _)| *id == assets.map_index);
+        let tiles = match (&theme.terrain_hd, &assets.terrain, u8::try_from(assets.map_index)) {
+            (Some(pack), Some(bank), Ok(id)) => pack.map(id, bank)?,
+            _ => None,
+        };
         let colours = if tiles.is_some() {
             Some(TerrainColourContext::new(assets.map_index as u8, &assets.palette, &palette, input.frame.lut)?)
         } else {
             None
         };
-        let tiles = tiles.zip(colours.as_ref()).map(|((_, map), colours)| (map.as_ref(), colours));
+        let tiles = tiles.as_deref().zip(colours.as_ref());
         let size = indexedmap::NATIVE_UNIT_PRESENT_WORK_SIZE as usize;
         let mut seed =
             if self.modern_hd_map_terrain.len() == size { self.modern_hd_map_terrain.clone() } else { vec![0; size] };

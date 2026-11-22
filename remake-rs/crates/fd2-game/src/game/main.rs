@@ -98,7 +98,6 @@ pub struct Game {
     /// Published with the successful steady snapshot.
     pub(crate) native_map_frame_source: Option<indexedmap::NativeFrameInput<'static>>,
     pub(crate) modern_hd_map_frame: Option<ModernHDMapFrame>,
-    pub(crate) modern_hd_map_tiles: Option<(i64, Arc<super::modern_hd_terrain::TerrainMap>)>,
     pub(crate) modern_hd_separate_world: bool,
     pub(crate) modern_hd_map_gpu: Option<ModernHDMapGPU>,
     pub(crate) modern_hd_map_hud_art: Option<ModernHDMapHUDArt>,
@@ -6178,7 +6177,6 @@ impl Game {
         // an all-or-nothing bundle. The indexed presentation bridge consumes this
         // field later; no partial resource is allowed to affect gameplay.
         self.native_map_assets = None;
-        self.modern_hd_map_tiles = None;
         self.modern_hd_map_frame = None;
         self.modern_hd_map_terrain.clear();
         self.native_map_dac = Vec::new();
@@ -11219,7 +11217,7 @@ impl Game {
         let mut frame = vec![0u8; stride * 200];
         if indexedmap::blit_native_map_hud(
             &a.frames,
-            a.terrain.as_ref(),
+            a.terrain.as_deref(),
             a.units.as_ref(),
             st.native_map_selector_cache.as_ref(),
             &mut frame,

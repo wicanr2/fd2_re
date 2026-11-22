@@ -111,6 +111,7 @@ mod modern_hd_map_gpu;
 mod modern_hd_map_hud_panel;
 mod modern_hd_map_overlay_assets;
 mod modern_hd_map_runtime;
+mod modern_hd_map_sprite_assets;
 mod modern_hd_map_unit_plan;
 mod modern_hd_movement_panel;
 mod modern_hd_ordinary;

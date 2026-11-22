@@ -67,6 +67,8 @@ pub(crate) struct ModernStoryPortraitSet {
     pub(crate) portraits: BTreeMap<i64, ModernStoryPortraitFrame>,
     pub(crate) map_sprites: BTreeMap<i64, Vec<Option<Arc<Picture>>>>,
     pub(crate) map_sprites_hd: BTreeMap<i64, Vec<Option<Arc<Picture>>>>,
+    pub(crate) map_sprite_feet: BTreeMap<i64, Vec<i64>>,
+    pub(crate) terrain_hd: Option<super::modern_hd_terrain::ModernTerrainArt>,
     pub(crate) map_tilesets: BTreeMap<i64, Option<Arc<Picture>>>,
     pub(crate) battle_action_icons: Vec<Option<Arc<Picture>>>,
     pub(crate) battle_animations: BTreeMap<i64, ModernBattleHDResource>,

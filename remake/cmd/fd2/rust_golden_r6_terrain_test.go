@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
 	"os"
 	"path/filepath"
 	"sort"
@@ -16,6 +17,68 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
+
+func TestRustGoldenR6MapArt(t *testing.T) {
+	out := os.Getenv("FD2_R6_OPENING_OUT")
+	if out == "" {
+		t.Skip("set FD2_R6_OPENING_OUT to export the Rust golden")
+	}
+	raw, err := os.ReadFile(os.Getenv("FD2_TEST_OPENING_CATALOG"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var catalog modernThemeCatalog
+	if err := json.Unmarshal(raw, &catalog); err != nil {
+		t.Fatal(err)
+	}
+	onePortrait := false
+	chosen := catalog.Assets[:0]
+	for _, asset := range catalog.Assets {
+		switch asset.Role {
+		case "map_sprite_set", "map_sprite_hd_set":
+			chosen = append(chosen, asset)
+		case "story_portrait_frame":
+			if !onePortrait {
+				chosen = append(chosen, asset)
+				onePortrait = true
+			}
+		}
+	}
+	catalog.Assets = chosen
+	raw, err = json.Marshal(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(t.TempDir(), "map-catalog.json")
+	if err := os.WriteFile(path, raw, 0600); err != nil {
+		t.Fatal(err)
+	}
+	set, err := loadModernStoryPortraitSet(path, os.Getenv("FD2_TEST_OPENING_PACK"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var report strings.Builder
+	total := 0
+	for group := 0; group < fdicon.NativeSourceGroupCount; group++ {
+		for frame, parent := range set.mapSprites[group] {
+			pixels := func(source image.Image) [32]byte {
+				pic := image.NewRGBA(source.Bounds())
+				draw.Draw(pic, pic.Bounds(), source, source.Bounds().Min, draw.Src)
+				return sha256.Sum256(pic.Pix)
+			}
+			area := set.mapSpriteVisualRect(group, frame, image.Rect(-15, 7, 129, 151))
+			fmt.Fprintf(&report, "%d/%d %x %x %d %d %d %d\n", group, frame, pixels(parent),
+				pixels(set.mapSpritesHD[group][frame]), area.Min.X, area.Min.Y, area.Max.X, area.Max.Y)
+			total++
+		}
+	}
+	if len(set.mapSpritesHD) != 125 || total != 1455 {
+		t.Fatalf("image count %d / %d", len(set.mapSpritesHD), total)
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-map-art.txt"), []byte(report.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+}
 
 type rustR6LayersProbe struct {
 	game   *Game

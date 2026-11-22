@@ -3101,3 +3101,5 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 `game/modern_hd_map_unit_plan.rs` 和 `game/modern_hd_map_foreground_plan.rs` 沿用原生的畫格及遮罩語意。人物計畫把 Go 執行期的 HD 尺寸驗證併入選格，前景在單次計畫內依畫格及查色路徑共用像素。`prepare_modern_hd_map_geometry` 接收原生合成前後的地格，回傳地形、人物與前景，供正式合成交易取用。
 
 `game/modern_hd_map_runtime.rs` 在原生地圖交易內建立獨立底圖、範圍與介面，繪圖來源與候選時鐘和色盤一起發布。`game/modern_hd_map_gpu.rs` 沿 Go 的圖層順序用 `Picture` 合成世界。Bevy 直接收 1920×1200 世界與 640×400 介面。受控世界與介面的 Go 比對見 [119 的圖層驗收](../../../docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-戰場圖層合成runtime-e12026-11-22)。
+
+`game/modern_hd_map_sprite_assets.rs` 將已驗過的 24×24 與 144×144 人物圖庫裝入同一候選主題。透明度檢查讀原 PNG 位深，圖格用雜湊共用解碼。115% 角色沿 24×24 圖的落腳點放大。主題持有按需解碼的地形圖庫，戰場合成直接用當前原版 FDSHAP 的共享參考核對遮罩。
