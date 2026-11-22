@@ -29,7 +29,7 @@ timeout 900s docker run "${common[@]}" --name "fd2-r6-opening-go-$$" --init \
   --mount "type=bind,source=$gocache,target=/gocache" -e GOCACHE=/gocache -w /src \
   fd2-go-test-local:latest with-xvfb bash -euo pipefail -c '
     test -z "$(gofmt -l cmd/fd2/rust_golden_r6_opening_test.go cmd/fd2/rust_golden_r6_terrain_test.go)"
-    go test ./cmd/fd2 -run "^(TestModernHDOpeningAdmission|TestRustGoldenR6(Opening|SkyKey|Terrain|MapGeometry|MapLayers|MapArt)|TestModernHDTerrain(DeferredAlphaRejectsWholeMap|CatalogAtomicAndNativeMask)|TestModernHDMapUnitPlan.*|TestModernHDForegroundPlan.*)$" -count=1 -v
+    go test ./cmd/fd2 -run "^(TestModernHDOpeningAdmission|TestRustGoldenR6(Opening|SkyKey|Terrain|MapGeometry|MapLayers|MapArt)|TestModernHDTerrain(DeferredAlphaRejectsWholeMap|CatalogAtomicAndNativeMask)|TestModernHDMapUnitPlan.*|TestModernHDForegroundPlan.*|TestLoadModernStoryPortraitSet(ValidatesIdentityGeometryAndOpacity|RejectsTransparentFrame|RejectsDigestMismatch|AdmitsMultipleSpeakersAtomically))$" -count=1 -v
   ' 2>&1 | tee "$out/go.log"
 
 timeout 900s docker run "${common[@]}" --name "fd2-r6-opening-rust-$$" \
@@ -39,6 +39,6 @@ timeout 900s docker run "${common[@]}" --name "fd2-r6-opening-rust-$$" \
   --mount "type=bind,source=$build/$target,target=/build/target-x" \
   -e CARGO_HOME=/build/cargo -e CARGO_TARGET_DIR=/build/target-x -w /src \
   fd2-rust:1.99.1-r3 bash -euo pipefail -c '
-    cargo test --offline --locked -p fd2-game --lib -- game::modern_opening::tests game::modern_hd_sky_key_assets::tests game::modern_hd_terrain::tests game::modern_hd_map_runtime::tests game::modern_hd_map_sprite_assets::tests
-    cargo test --offline --locked -p fd2-game --lib -- --ignored --nocapture real_opening_matches_go real_sky_key_matches_go real_terrain_matches_go map_geometry_matches_go map_layers_match_go real_map_art_matches_go
+    cargo test --offline --locked -p fd2-game --lib -- game::modern_opening::tests game::modern_hd_sky_key_assets::tests game::modern_hd_terrain::tests game::modern_hd_map_runtime::tests game::modern_hd_map_sprite_assets::tests game::modern_story_portrait::tests
+    cargo test --offline --locked -p fd2-game --lib -- --ignored --nocapture real_opening_matches_go real_sky_key_matches_go real_terrain_matches_go map_geometry_matches_go map_layers_match_go real_map_art_matches_go real_story_portraits_match_go
   ' 2>&1 | tee "$out/rust.log"

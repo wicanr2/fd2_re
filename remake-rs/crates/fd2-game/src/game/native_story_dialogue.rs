@@ -493,8 +493,7 @@ impl Game {
     ///
     /// R5 階段 2 r5d：逐行照 Go。`g.nativeClassUI` 為 nil 時 Go 解參考 panic，Rust 同樣 panic；`g.nativeDialogueLayout`
     /// 為 nil 時 Go 的 `Validate` 回「lacks source provenance」，Rust 以空的 `NativeDialogueLayout`（`source_dat` 為空，
-    /// `validate` 回同一個錯誤）代入。HD 分支（`modernHDStoryTextFrame`、`nativeDialogueModernPortrait`、`modernHDText`）在
-    /// 忠實模式不成立，HD 時 `todo!("r6:…")`。
+    /// `validate` 回同一個錯誤）代入。穩定頁可疊現代靜態頭像。
     pub(crate) fn draw_native_story_dialogue(&mut self, screen: &mut Picture) -> bool {
         if self.dialog.last().is_none_or(|d| d.native_dialogue.is_none()) {
             return false;
@@ -606,21 +605,32 @@ impl Game {
         if self.modern_hd_text.is_some() {
             todo!("r6:modern_hd_story_text.go:modernHDStoryTextFrame（HD 故事文字層）");
         }
-        if self.native_dialogue_modern_portrait.is_some() {
-            todo!(
-                "r6:native_story_dialogue.go:drawNativeStoryDialogue nativeDialogueModernPortrait（HD 頭像疊層與 modernHDOverlay）"
-            );
-        }
+        let portrait = self.native_dialogue_modern_portrait.clone();
+        let portrait_rect = if portrait.is_some() {
+            let layout = self.dialog.last().unwrap().native_dialogue.as_ref().unwrap();
+            let Ok(rect) = campaign::native_story_dialogue_portrait_rect(&layout.control) else { return true };
+            rect
+        } else {
+            Rectangle::default()
+        };
         if let Err(err) = self.present_native_story_dialogue_frame(
             screen,
             &frame,
             campaign::NATIVE_DIALOGUE_STEADY,
             0,
-            None,
-            Rectangle::default(),
+            portrait.as_ref().and_then(|frame| frame.image.clone()),
+            portrait_rect,
         ) {
             self.load_err = err.to_string();
             return true;
+        }
+        if portrait.as_ref().is_some_and(|frame| frame.hd_image.is_some()) {
+            let Rectangle { min, max } = portrait_rect;
+            self.modern_hd_overlay = Some(ModernHDOverlay {
+                portrait,
+                rect: rect(min.x * 2, min.y * 2, max.x * 2, max.y * 2),
+                mirror_x: false,
+            });
         }
         // Go `if g.modernHDText != nil { runs = append(runs, hdText...) }`：上面已對 HD 停下。
         true
@@ -629,8 +639,7 @@ impl Game {
     /// Go：`modern_hd_timed_dialogue.go:65`，`func (g *Game) presentNativeStoryDialogueFrame(screen *ebiten.Image, frame []byte, phase campaign.NativeDialogueFramePhase, index int, portrait image.Image, rect image.Rectangle) error`
     ///
     /// R5 階段 2 r5d 新增（Go 在 HD 檔，`PORTING.json` 狀態仍是 `r6`）：`drawNativeStoryDialogue` 的唯一呈現出口。
-    /// 只移植忠實模式的路徑：`modernHDWorldVisible` 為 false 時 `presentNativeClassFrame`；`portrait` 只有 HD 頭像會傳，
-    /// `modernHDText` 只在 HD 有值。HD 計時對白（`modernHDWorldVisible`）、RGBA 頭像疊層與 HD 框線面板 `todo!("r6:…")`。
+    /// 原生索引背景透過 `presentNativeClassFrame` 呈現，再疊上候選主題提供的 80×80 頭像。
     pub(crate) fn present_native_story_dialogue_frame(
         &mut self,
         screen: &mut Picture,
@@ -653,8 +662,11 @@ impl Game {
             );
         }
         self.present_native_class_frame(screen, frame);
-        if portrait.is_some() {
-            todo!("r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（RGBA 頭像疊層）");
+        if let Some(portrait) = portrait {
+            let mut op = DrawImageOptions::default();
+            op.geo_m.scale(2.0, 2.0);
+            op.geo_m.translate((rect.min.x * 2) as f64, (rect.min.y * 2) as f64);
+            screen.draw_image(&portrait, &op);
         }
         if self.modern_hd_text.is_some() && self.native_dialogue_layout.is_some() {
             todo!("r6:modern_hd_timed_dialogue.go:presentNativeStoryDialogueFrame（HD 對白框線面板）");

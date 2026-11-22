@@ -31,17 +31,11 @@ func TestRustGoldenR6MapArt(t *testing.T) {
 	if err := json.Unmarshal(raw, &catalog); err != nil {
 		t.Fatal(err)
 	}
-	onePortrait := false
 	chosen := catalog.Assets[:0]
 	for _, asset := range catalog.Assets {
 		switch asset.Role {
-		case "map_sprite_set", "map_sprite_hd_set":
+		case "map_sprite_set", "map_sprite_hd_set", "story_portrait_frame", "story_portrait_hd_frame", "facility_scene_hd":
 			chosen = append(chosen, asset)
-		case "story_portrait_frame":
-			if !onePortrait {
-				chosen = append(chosen, asset)
-				onePortrait = true
-			}
 		}
 	}
 	catalog.Assets = chosen
@@ -58,14 +52,14 @@ func TestRustGoldenR6MapArt(t *testing.T) {
 		t.Fatal(err)
 	}
 	var report strings.Builder
+	pixels := func(source image.Image) [32]byte {
+		pic := image.NewRGBA(source.Bounds())
+		draw.Draw(pic, pic.Bounds(), source, source.Bounds().Min, draw.Src)
+		return sha256.Sum256(pic.Pix)
+	}
 	total := 0
 	for group := 0; group < fdicon.NativeSourceGroupCount; group++ {
 		for frame, parent := range set.mapSprites[group] {
-			pixels := func(source image.Image) [32]byte {
-				pic := image.NewRGBA(source.Bounds())
-				draw.Draw(pic, pic.Bounds(), source, source.Bounds().Min, draw.Src)
-				return sha256.Sum256(pic.Pix)
-			}
 			area := set.mapSpriteVisualRect(group, frame, image.Rect(-15, 7, 129, 151))
 			fmt.Fprintf(&report, "%d/%d %x %x %d %d %d %d\n", group, frame, pixels(parent),
 				pixels(set.mapSpritesHD[group][frame]), area.Min.X, area.Min.Y, area.Max.X, area.Max.Y)
@@ -76,6 +70,22 @@ func TestRustGoldenR6MapArt(t *testing.T) {
 		t.Fatalf("image count %d / %d", len(set.mapSpritesHD), total)
 	}
 	if err := os.WriteFile(filepath.Join(out, "go-map-art.txt"), []byte(report.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+	var speakers []int
+	for id := range set.portraits {
+		speakers = append(speakers, id)
+	}
+	sort.Ints(speakers)
+	report.Reset()
+	for _, id := range speakers {
+		portrait := set.portraits[id]
+		if portrait.hdImage == nil {
+			t.Fatalf("missing formal HD portrait for speaker %d", id)
+		}
+		fmt.Fprintf(&report, "%d %x %x\n", id, pixels(portrait.image), pixels(portrait.hdImage))
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-story-portraits.txt"), []byte(report.String()), 0600); err != nil {
 		t.Fatal(err)
 	}
 }

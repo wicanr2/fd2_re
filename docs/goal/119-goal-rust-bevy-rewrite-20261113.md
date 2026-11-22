@@ -121,6 +121,14 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 故事頭像清冊與對白接線（RUNTIME-E1，2026-11-22）
+
+依 Go `697c0913` 的 `loadModernStoryPortraitSetWithProgress`、`drawNativeStoryDialogue` 和 `presentNativeStoryDialogueFrame`。候選主題核對 80×80 與 480×480 頭像的講者 ID、靜態閉嘴畫格、清冊契約、PNG 幾何、SHA-256 與完全不透明。480×480 選配集合若存在，講者須與 80×80 集合一一配對，整批驗過才交付。
+
+穩定對白依原生 control 取得頭像矩形。在原生索引背景上疊 80×80 頭像，並交付同位置的 480×480 最終呈現描述。開框、收框與對話進度沿既有原生排程。驗收逐格比對 Go 的正式圖包，並抽樣上下框的疊圖與透明度拒收。HD 世界遮罩、480×480 最終呈現與主題啟用依各自 R6 接線。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-story-portrait-20261122-r2` 通過。正式圖包 44 對頭像在兩種解析度的 RGBA 雜湊逐格相同，序列 SHA-256 為 `c9001c9ade4ebbe1e28a0b3fa9de71399670879e297611a5cdf9771b330fda49`。Go 測具同時讀取旅館與教會場景，保留正式場景與頭像的配對驗證。Rust 以受控對白驗上框、下框、開框與收框的像素，並驗清冊缺件、重複、雜湊、尺寸及透明度拒收。格式、Clippy、442 項 Rust 回歸及七項差分通過。
+
 ### R6 HD1 戰場圖源接線（RUNTIME-E1，2026-11-22）
 
 依凍結 Go `697c0913`、[61 的 FDICON 契約](../knowledge-base/61-modern-theme-runtime-spec.md#fdicon-地圖人物-12-格契約)與既有地形按需解碼。正式人物清冊須為每個有原版來源覆寫的圖組提供 24×24 與 144×144 圖格。核對角色清冊的大小、透明度、SHA-256、三拍／十二格規則、重複關係、置中與落腳點。115% 的角色沿原落腳點放大，平手取偶數。使用原生 FDICON 選格的空白畫格規則。

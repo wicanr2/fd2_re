@@ -297,6 +297,42 @@ fn r5d_draw(g: &mut Game) -> (bool, Vec<u8>) {
     (drawn, screen.read_pixels().to_vec())
 }
 
+#[test]
+fn modern_story_portrait_uses_native_anchor_and_only_the_steady_page() {
+    let mut game = r5d_dialogue_game();
+    let rgba = [220, 10, 60, 255];
+    let base = Arc::new(Picture::from_nrgba(80, 80, &rgba.repeat(80 * 80)));
+    let hd = Arc::new(Picture::new_image(480, 480));
+    game.native_dialogue_modern_portrait =
+        Some(ModernStoryPortraitFrame { image: Some(base), hd_image: Some(hd.clone()) });
+    for control in ["FFEF", "FFEC"] {
+        game.dialog[0].native_dialogue.as_mut().unwrap().control = control.into();
+        game.native_dialogue_progress = 0;
+        let Rectangle { min, max } = campaign::native_story_dialogue_portrait_rect(control).unwrap();
+        let region = rect(min.x * 2, min.y * 2, max.x * 2, max.y * 2);
+        let mut expected = r5d_expect_2x(&r5d_frame(1));
+        for y in region.min.y..region.max.y {
+            for x in region.min.x..region.max.x {
+                let index = ((y * 640 + x) * 4) as usize;
+                expected[index..index + 4].copy_from_slice(&rgba);
+            }
+        }
+        let (drawn, actual) = r5d_draw(&mut game);
+        assert!(drawn && actual == expected, "{control}");
+        let overlay = game.modern_hd_overlay.as_ref().unwrap();
+        assert_eq!(overlay.rect, region);
+        let image = overlay.portrait.as_ref().unwrap().hd_image.as_ref().unwrap();
+        assert!(Arc::ptr_eq(image, &hd));
+    }
+    game.begin_present_frame();
+    game.dlg_phase = 2;
+    assert!(r5d_draw(&mut game).1 == r5d_expect_2x(&r5d_frame(10)));
+    assert!(game.modern_hd_overlay.is_none());
+    game.native_dialogue_closing_live = true;
+    assert!(r5d_draw(&mut game).1 == r5d_expect_2x(&r5d_frame(20)));
+    assert!(game.modern_hd_overlay.is_none());
+}
+
 /// R5 階段 2 r5d：沒有原生對白時回 false、不畫；穩定頁以進度選預建畫格，經 `presentNativeClassFrame` 放大兩倍，
 /// 並清掉本幀的 HUD／原生地圖旗標。
 #[test]

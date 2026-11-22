@@ -77,3 +77,86 @@ pub(crate) struct ModernStoryPortraitSet {
     pub(crate) physical_sfx: BTreeMap<[i64; 2], Vec<u8>>,
     pub(crate) battle_presentation: Option<ModernBattlePresentationProfile>,
 }
+
+#[derive(Deserialize)]
+#[serde(tag = "role")]
+enum PortraitCatalogEntry {
+    #[serde(rename = "story_portrait_frame")]
+    Base(PortraitAsset),
+    #[serde(rename = "story_portrait_hd_frame")]
+    Hd(PortraitAsset),
+    #[serde(other)]
+    Other,
+}
+
+#[derive(Deserialize)]
+struct PortraitAsset {
+    #[serde(default)]
+    speaker_id: i64,
+    #[serde(default)]
+    frame: i64,
+    mouth_state: String,
+    status: String,
+    consumer_contract: String,
+    width: u32,
+    height: u32,
+    file: String,
+    sha256: String,
+}
+
+impl ModernStoryPortraitSet {
+    pub(crate) fn load_story_portraits(&mut self, catalog: &Path, root: &Path) -> Result<()> {
+        let mut base = BTreeMap::new();
+        let mut hd = BTreeMap::new();
+        for entry in read_theme_catalog(catalog)? {
+            let (asset, target, side, contract) = match entry {
+                PortraitCatalogEntry::Base(asset) => (asset, &mut base, 80, "native_story_dialogue_rgba_overlay_v1"),
+                PortraitCatalogEntry::Hd(asset) => (asset, &mut hd, 480, "native_story_dialogue_rgba_overlay_hd6_v1"),
+                PortraitCatalogEntry::Other => continue,
+            };
+            let PortraitAsset {
+                speaker_id,
+                frame,
+                mouth_state,
+                status,
+                consumer_contract,
+                width,
+                height,
+                file,
+                sha256,
+            } = asset;
+            if speaker_id < 0
+                || frame != 0
+                || mouth_state != "closed"
+                || !matches!(status.as_str(), "runtime_candidate" | "runtime_ready")
+                || consumer_contract != contract
+                || (width, height) != (side, side)
+            {
+                return Err(game_err!("modern theme portrait {speaker_id} violates the static frame contract"));
+            }
+            if target.contains_key(&speaker_id) || theme_file_extension(&file) != Some("png") {
+                return Err(game_err!("modern theme portrait {speaker_id} is duplicated or has an unsafe path"));
+            }
+            let bytes = read_verified_theme_file(&root.join(file), &sha256)?;
+            let picture = decode_opaque_square_png(&bytes, side)
+                .ok_or_else(|| game_err!("modern theme portrait {speaker_id}: invalid PNG geometry or opacity"))?;
+            target.insert(speaker_id, Arc::new(picture));
+        }
+        if base.is_empty() {
+            return Err(game_err!("modern theme catalog has no story portrait"));
+        }
+        if !hd.is_empty() && !hd.keys().eq(base.keys()) {
+            return Err(game_err!("modern HD portrait group is incomplete"));
+        }
+        self.has_hd |= !hd.is_empty();
+        self.portraits = base
+            .into_iter()
+            .map(|(id, image)| (id, ModernStoryPortraitFrame { image: Some(image), hd_image: hd.remove(&id) }))
+            .collect();
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+#[path = "modern_story_portrait_test.rs"]
+mod tests;

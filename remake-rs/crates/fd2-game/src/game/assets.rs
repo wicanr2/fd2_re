@@ -291,6 +291,10 @@ pub(crate) fn decode_opaque_png_picture(data: &[u8]) -> Option<Picture> {
     decode_png(data, PngAlpha::Opaque)
 }
 
+pub(crate) fn decode_opaque_square_png(data: &[u8], side: u32) -> Option<Picture> {
+    decode_png_checked(data, PngAlpha::Opaque, Some(side), |_, _, _| {})
+}
+
 /// 對應 Go 先預乘 16 位元通道，再寫入 8 位元 RGBA。
 pub(crate) fn decode_precise_png_picture(data: &[u8]) -> Option<Picture> {
     decode_png(data, PngAlpha::Precise)
