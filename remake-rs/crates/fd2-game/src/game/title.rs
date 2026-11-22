@@ -606,7 +606,7 @@ impl Game {
     ///
     /// Go 在 `titleAssets` 為 nil、或該幕影像為 nil 時解參考會 panic；Rust 與 `title_update` 相同，把缺少的
     /// 素材當作不畫（`loadGame` 在素材不全時失敗即關閉，正式路徑不會走到）。HD 開場由獨立畫布供應背景，
-    /// `drawModernHDTitleMenuItem` 仍待移植。`ColorM` 後備
+    /// F11 的標題介面使用預備好的選單疊層。`ColorM` 後備
     /// （`titlePaletteBlend`，預建調色盤幀缺漏時）與讀檔槽畫面（`drawNativeLoadSlots`）在開場與第一章沒有走到，
     /// 標 `todo!("r8:…")`。
     pub(crate) fn draw_title(&mut self, screen: &mut Picture) {
@@ -735,6 +735,16 @@ impl Game {
                 op.geo_m.scale(2.0, 2.0);
                 if !modern && let Some(title) = ta.and_then(|t| t.title.as_ref()) {
                     screen.draw_image(title, &op);
+                }
+                if let Some(menu) = self.hd_title_interface_picture() {
+                    if !self.modern_hd_separate_world {
+                        let rect = title_interface_rect();
+                        let mut op = DrawImageOptions::default();
+                        op.geo_m.scale(1.0 / 3.0, 1.0 / 3.0);
+                        op.geo_m.translate(rect.min.x as f64, rect.min.y as f64);
+                        screen.draw_image(menu, &op);
+                    }
+                    return;
                 }
                 // 選單項(置中;y 位置對照原版標題畫面下半)
                 for i in 0..3i64 {

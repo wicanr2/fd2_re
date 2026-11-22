@@ -863,6 +863,8 @@ pub struct Game {
     pub(crate) modern_story_portraits: Option<ModernStoryPortraitSet>,
     pub(crate) modern_opening: Option<super::modern_opening::ModernOpening>,
     pub(crate) modern_opening_view: Option<Arc<Picture>>,
+    /// F11 的標題選單畫面，三種選取與一個全未選狀態。
+    pub(crate) hd_title_menu: Option<[Arc<Picture>; 4]>,
     /// 切回原版時留存已通過預檢的 HD 美術。
     pub(crate) modern_theme_cache: Option<ModernThemeArt>,
     /// 第一次切到 HD 的背景載入；nil 表示沒有進行中的載入
@@ -7411,7 +7413,7 @@ impl Game {
         }
         if global && (self.player_interface_requested || just(Key::F11)) {
             self.player_interface_requested = false;
-            self.msg = "HD 介面尚未接通".into();
+            self.cycle_hd_title_interface();
         }
         if global && just(Key::F3) {
             // 全域：切換音源
@@ -9358,14 +9360,17 @@ pub(crate) fn load_game() -> Option<Game> {
         }
     }
     if g.load_err.is_empty() {
+        if mode == PLAYER_INTERFACE_HD || (mode.is_empty() && configured.interface_mode == PLAYER_INTERFACE_HD) {
+            if let Err(err) = g.enable_hd_title_interface() {
+                g.msg = format!("介面切換失敗：{err}");
+            }
+        }
         if modern_art {
             if modern_theme_startup_deferred() {
                 g.request_modern_theme_art(false);
             } else if let Err(err) = g.load_startup_modern_theme() {
                 g.load_err = format!("modern theme: {err}");
             }
-        } else if mode == PLAYER_INTERFACE_HD || (mode.is_empty() && configured.interface_mode == PLAYER_INTERFACE_HD) {
-            g.msg = "HD 介面尚未接通".into();
         }
     }
     Some(g)

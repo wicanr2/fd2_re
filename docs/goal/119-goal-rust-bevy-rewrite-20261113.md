@@ -121,6 +121,12 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 F11 標題介面（RUNTIME-E1，2026-11-22）
+
+沿凍結 Go `modern_hd_title_interface.go` 的 FDOTHER #7 六個原生選單格、原生色盤與字型配置。預先驗證來源與字型，保留兩側選取標記、定位和閃爍，於選單中間以三倍畫布排繪 START、LOAD、CONTINUE。F11 保存 `interface_mode`，F2 保有獨立美術偏好。這個設定先由已移植的標題主選單消費，讀檔槽、對白框與戰場介面另行接線。用正常 Bevy 視窗核對四種組合、缺字型、設定保存與冷啟動。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/r6-f11-title-20261122 work/r6-theme-toggle-20261122-r3` 通過 Linux Bevy 視窗測試。四種美術與介面組合通過，F11 切換前後的上方背景逐像素相同，兩種偏好冷啟動重現相同畫面。缺字型時原版標題像素相同且未寫設定。普通 START 與序章首句的 F2 切換仍通過。此輪使用 Noto Sans CJK 基底字型，區域字型家族仍待移植。
+
 ### R6 HD1 美術啟用與背景載入（RUNTIME-E1，2026-11-22）
 
 依 Go `697c0913` 的 `player_theme_loader.go`、`player_shortcuts.go` 與 61 的 HD 主題包契約。第一個 F2 和 HD 美術設定啟動共用背景載入。繪製及輸入照常，成功後由遊戲更新套用，失敗留在原版並回報原因。切回原版時保留已驗證圖庫，重切不讀檔。F2 只寫美術設定，保留既有 F11 介面偏好。

@@ -1,5 +1,7 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
+Rust R6 標題 F11 達 RUNTIME-E1。Linux Bevy 視窗驗證四種美術與介面組合、偏好冷啟動和缺字型回退。讀檔槽、對白框及戰場介面的 F11 呈現仍由 #312 追蹤。[119 的標題介面驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-f11-標題介面runtime-e12026-11-22)
+
 Rust R6 美術啟用達 RUNTIME-E1。Linux Bevy 視窗通過首次 F2、保存 HD 美術後冷啟動、缺包回退，以及標題與普通 START 後皇城首句對白的美術來回切換。F11 與完整主題清冊仍由 #312 追蹤。[119 的美術啟用驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-美術啟用與背景載入runtime-e12026-11-22)
 
 Rust R6 戰場合成及圖源接線達 RUNTIME-E1。正式人物 1,455 對圖格與 Go 一致，人物和按需地形已通過兩張受控戰場的繪製入口。兩種覆蓋順序已通過 Go 世界及介面全畫布差分。天空之鑰共用圖庫為 DATA-READY。F11、衍生畫質及第二十章演出仍待接入。[119 的 R6 進度](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-戰場圖源接線runtime-e12026-11-22)

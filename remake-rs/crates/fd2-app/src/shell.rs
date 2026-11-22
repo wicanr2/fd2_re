@@ -718,7 +718,7 @@ fn place_hd_portrait(
             height: portrait.image.height as u32,
             depth_or_array_layers: 1,
         };
-        image.data = Some(portrait.rgba());
+        image.data = Some(straight_alpha(&portrait.rgba()));
         shell.hd_portrait_source = Some((portrait.image.clone(), portrait.brightness));
     }
     let (min, max) = (portrait.rect.min, portrait.rect.max);

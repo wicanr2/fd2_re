@@ -27,13 +27,15 @@ trap stop_window EXIT
 
 window() {
   local mode="$1" profile="$2" pack="$3"
+  local -a fonts=(--mount "type=bind,source=$ttf,target=/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc,readonly")
+  if [[ "$mode" == "no-font" ]]; then fonts=(); fi
   name="fd2-r6-theme-window-$$-$mode"
   docker run -d "${common[@]}" --init --name "$name" --memory 6g --cpus 4 \
     --mount "type=bind,source=$build/release,target=/bins,readonly" \
     --mount "type=bind,source=$root/remake/assets,target=/assets,readonly" \
     --mount "type=bind,source=$orig,target=/original,readonly" \
     --mount "type=bind,source=$hd,target=/hd,readonly" \
-    --mount "type=bind,source=$ttf,target=/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc,readonly" \
+    "${fonts[@]}" \
     --mount "type=bind,source=$out,target=/out" \
     --mount "type=bind,source=$out/socket,target=/tmp/.X11-unix" \
     -e "PROFILE=$profile" -e "MODE=$mode" -e "FD2_MODERN_THEME_PACK=$pack" \
@@ -115,16 +117,24 @@ drive() {
         sleep 1
         capture "$1"
       }
-      wait_for_setting() {
+      wait_for_preference() {
+        local field="$1" value="$2"
         for _ in $(seq 1 160); do
-          if test -f profile/fd2_re/fd2_settings.json && grep -q "\"theme_id\": \"$1\"" profile/fd2_re/fd2_settings.json; then
-            echo "設定已寫入 $1"
+          if test -f profile/fd2_re/fd2_settings.json && grep -q "\"$field\": \"$value\"" profile/fd2_re/fd2_settings.json; then
+            echo "設定已寫入 $field=$value"
             return
           fi
           sleep 0.5
         done
-        echo "逾時等候美術設定 $1" >&2
+        echo "逾時等候 $field=$value" >&2
         return 1
+      }
+      wait_for_setting() { wait_for_preference theme_id "$1"; }
+      check_title_art() {
+        local actual="$1" expected="$2"
+        convert "$actual" -crop 1280x656+0+0 +repage /tmp/title-actual.png
+        convert "$expected" -crop 1280x656+0+0 +repage /tmp/title-expected.png
+        same /tmp/title-actual.png /tmp/title-expected.png
       }
       wait_for_picture() {
         for _ in $(seq 1 100); do
@@ -170,12 +180,24 @@ drive() {
           same title-background.png title-load-background.png
           key Up
           wait_for_picture title-start-selected.png title-before-toggle.png
+          key F11
+          wait_for_preference interface_mode hd
+          wait_for_change title-start-selected.png title-hd-interface-hd-art.png
+          check_title_art title-hd-interface-hd-art.png title-hd.png
           key F2
           wait_for_setting faithful
+          wait_for_change title-hd-interface-hd-art.png title-hd-interface-original-art.png
+          check_title_art title-hd-interface-original-art.png title-missing-pack.png
+          different title-hd-interface-original-art.png title-missing-pack.png
+          key F11
+          wait_for_preference interface_mode original
           wait_for_picture title-original-toggle.png title-missing-pack.png
           key F2
           wait_for_setting modern-handpainted-a
           wait_for_picture title-hd-toggle.png title-hd.png
+          key F11
+          wait_for_preference interface_mode hd
+          wait_for_picture title-both-restored.png title-hd-interface-hd-art.png
           key Return
           wait_for_event "beat op=dialog "
           sleep 1
@@ -192,6 +214,20 @@ drive() {
           first_visible_frame story-hd-restored.png
           different story-original.png story-hd-restored.png
           test "$(grep -c "beat op=dialog " toggle.log)" -eq 1
+          wait_for_preference interface_mode hd
+          ;;
+        interface-cold)
+          first_visible_frame interface-opening.png
+          wait_for_menu title-interface-cold.png
+          wait_for_picture title-interface-cold.png title-hd-interface-hd-art.png
+          ;;
+        no-font)
+          first_visible_frame no-font-opening.png
+          wait_for_menu title-no-font.png
+          key F11
+          wait_for_event "[theme] 介面切換失敗：modern HD title: font unavailable"
+          wait_for_picture title-no-font.png title-missing-pack.png
+          test ! -e rejected/fd2_re/fd2_settings.json
           ;;
       esac
       if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
@@ -227,4 +263,10 @@ if [[ ${#baseline[@]} -eq 0 ]]; then
 fi
 window toggle profile /hd
 drive toggle
+stop_window
+window interface-cold profile /hd
+drive interface-cold
+stop_window
+window no-font rejected /hd
+drive no-font
 stop_window

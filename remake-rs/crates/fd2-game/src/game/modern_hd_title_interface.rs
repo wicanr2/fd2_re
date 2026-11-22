@@ -174,6 +174,106 @@ pub(crate) fn freeze_modern_hd_title_menu_item(
     Ok(Some(h))
 }
 
+/// 與原生選單的中心位置及最後一列下緣相同，座標以 640×400 為基準。
+pub(crate) fn title_interface_rect() -> Rectangle {
+    rect(258, 328, 382, 380)
+}
+
+impl ModernHDTitleMenuItem {
+    fn render(
+        &self,
+        font: &mut Font,
+        scale: f64,
+        item: usize,
+        state: usize,
+        original: &Arc<Picture>,
+    ) -> Result<Picture> {
+        let picture = self
+            .picture
+            .as_ref()
+            .zip(self.picture_identity.as_ref())
+            .filter(|(p, identity)| Arc::ptr_eq(p, identity))
+            .map(|(p, _)| p)
+            .filter(|_| {
+                (self.item, self.state) == (item as i64, state as i64)
+                    && self.original.as_ref().is_some_and(|p| Arc::ptr_eq(p, original))
+                    && self.seal == title_menu_hd_seal(Some(self))
+            })
+            .ok_or_else(|| game_err!("modern HD title: source unavailable or changed"))?;
+        let measure = font.measure.0.clone().ok_or_else(|| game_err!("modern HD title: font unavailable"))?;
+        let label = ["START", "LOAD", "CONTINUE"][item];
+        let (width, height) = ((picture.width - 14) * 6, picture.height * 6);
+        let mut ink = Picture::new_image(width, height);
+        let size = (54.0 * normalize_font_scale(scale)).round() as i64;
+        let (face, bounds) = (6..=size)
+            .rev()
+            .find_map(|size| {
+                let (face, _) = font.face_for(size);
+                let face = face?;
+                let bounds = measure.bound_string(&face, label);
+                (rect_dx(&bounds) <= width && rect_dy(&bounds) <= height).then_some((face, bounds))
+            })
+            .ok_or_else(|| game_err!("modern HD title: text does not fit"))?;
+        let x = (width - rect_dx(&bounds)) / 2 - bounds.min.x;
+        let y = (height - rect_dy(&bounds)) / 2 - bounds.min.y;
+        for (offset, color) in [(1, self.shadow), (0, self.foreground)] {
+            let mut op = DrawImageOptions::default();
+            op.geo_m.translate((x + offset) as f64, (y + offset) as f64);
+            op.color_scale.scale_with_color(color);
+            measure.draw_text(&face, &mut ink, label, &op);
+        }
+        let mut row = Picture::new_image(picture.width * 6, height);
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(6.0, 6.0);
+        row.draw_image(picture, &op);
+        let mut op = DrawImageOptions::default();
+        op.geo_m.translate(42.0, 0.0);
+        row.draw_image(&ink, &op);
+        Ok(row)
+    }
+}
+
+impl Game {
+    pub(crate) fn prepare_hd_title_interface(&self) -> Result<[Arc<Picture>; 4]> {
+        let assets = self.title_assets.as_ref().ok_or_else(|| game_err!("modern HD title: missing menu"))?;
+        let font = self.font.as_ref().ok_or_else(|| game_err!("modern HD title: font unavailable"))?;
+        let mut font = font.hd_fonts.get(&self.locale_id).unwrap_or(font).clone();
+        let mut rows = Vec::with_capacity(3);
+        for (item, entries) in assets.hd_items.iter().enumerate() {
+            let mut render = |state: usize| {
+                let original = assets.items[item][state]
+                    .as_ref()
+                    .ok_or_else(|| game_err!("modern HD title: missing original item"))?;
+                entries[state].render(&mut font, self.font_scale, item, state, original)
+            };
+            rows.push([render(0)?, render(1)?]);
+        }
+        let rect = title_interface_rect();
+        Ok(std::array::from_fn(|selection| {
+            let mut menu = Picture::new_image(rect_dx(&rect) * 3, rect_dy(&rect) * 3);
+            for (item, states) in rows.iter().enumerate() {
+                let row = &states[usize::from(item == selection)];
+                let mut op = DrawImageOptions::default();
+                op.geo_m.translate(
+                    ((320 - row.width / 6) / 2 * 6 - rect.min.x * 3) as f64,
+                    ((title_menu_y(item as i64) * 2 - rect.min.y) * 3) as f64,
+                );
+                menu.draw_image(row, &op);
+            }
+            Arc::new(menu)
+        }))
+    }
+
+    pub(crate) fn hd_title_interface_picture(&self) -> Option<&Arc<Picture>> {
+        if self.help_visible || self.native_full_dac_black || self.native_full_dac_white || self.title_phase != "menu" {
+            return None;
+        }
+        let selected = (0..3).contains(&self.title_sel) && (self.title_flash == 0 || self.title_flash / 3 % 2 == 0);
+        let index = if selected { self.title_sel as usize } else { 3 };
+        self.hd_title_menu.as_ref().map(|pictures| &pictures[index])
+    }
+}
+
 /// Go：`modern_hd_title_interface.go:167`
 ///
 /// HD 型別：只保留第一章忠實模式下執行到的函式用到的欄位（120「階段 1 骨架的對應規則」），其餘欄位在 R6 補上。

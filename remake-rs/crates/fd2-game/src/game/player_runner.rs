@@ -139,12 +139,22 @@ impl PlayerRunner {
     }
 
     pub fn has_hd_window_layers(&self) -> bool {
-        self.game.modern_story_portraits.as_ref().is_some_and(|set| {
-            set.map_sprites_hd.len() == 125 || (self.game.modern_opening.is_some() && !self.game.title_phase.is_empty())
-        })
+        self.game.hd_title_interface_picture().is_some()
+            || self.game.modern_story_portraits.as_ref().is_some_and(|set| {
+                set.map_sprites_hd.len() == 125
+                    || (self.game.modern_opening.is_some() && !self.game.title_phase.is_empty())
+            })
     }
 
     pub fn window_portrait(&self) -> Option<WindowPortrait> {
+        if let Some(image) = self.game.hd_title_interface_picture() {
+            return Some(WindowPortrait {
+                image: image.clone(),
+                rect: title_interface_rect(),
+                brightness: 1.0,
+                mirror_x: false,
+            });
+        }
         self.game.window_portrait()
     }
 

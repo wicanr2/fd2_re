@@ -9,6 +9,32 @@ pub(crate) const PLAYER_INTERFACE_ORIGINAL: &str = "original";
 pub(crate) const PLAYER_INTERFACE_HD: &str = "hd";
 
 impl Game {
+    pub(crate) fn enable_hd_title_interface(&mut self) -> Result<()> {
+        self.hd_title_menu = Some(self.prepare_hd_title_interface()?);
+        Ok(())
+    }
+
+    pub(crate) fn cycle_hd_title_interface(&mut self) {
+        if self.hd_title_menu.is_some() {
+            self.hd_title_menu = None;
+        } else if let Err(err) = self.enable_hd_title_interface() {
+            self.msg = format!("介面切換失敗：{err}");
+            if self.cutscene_log {
+                eprintln!("[theme] {}", self.msg);
+            }
+            return;
+        }
+        let mut settings = load_settings();
+        let (mode, label) = if self.hd_title_menu.is_some() {
+            (PLAYER_INTERFACE_HD, "HD")
+        } else {
+            (PLAYER_INTERFACE_ORIGINAL, "原版")
+        };
+        settings.interface_mode = mode.into();
+        save_settings(&settings);
+        self.msg = format!("標題介面：{label}");
+    }
+
     /// Empty mode retains compatibility with isolated legacy render fixtures. A
     /// normal game resolves it once at startup, then F2 and F11 stay independent.
     ///
