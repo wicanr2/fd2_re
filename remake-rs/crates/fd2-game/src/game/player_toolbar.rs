@@ -13,6 +13,7 @@ enum ToolbarAction {
     Art(bool),
     Interface,
     Audio,
+    Locale,
     Music,
     Font,
     Speed,
@@ -21,11 +22,12 @@ enum ToolbarAction {
     Posters,
 }
 
-const BUTTONS: [(i64, i64, ToolbarAction); 10] = [
+const BUTTONS: [(i64, i64, ToolbarAction); 11] = [
     (8, 78, ToolbarAction::Art(false)),
     (82, 130, ToolbarAction::Art(true)),
     (134, 226, ToolbarAction::Interface),
-    (230, 314, ToolbarAction::Audio),
+    (230, 282, ToolbarAction::Audio),
+    (286, 314, ToolbarAction::Locale),
     (318, 376, ToolbarAction::Font),
     (380, 424, ToolbarAction::Speed),
     (428, 482, ToolbarAction::Music),
@@ -115,12 +117,17 @@ impl Game {
             }
             ToolbarAction::Fullscreen => self.fullscreen_toggle_requested = true,
             ToolbarAction::Controls => self.open_controls_panel(),
+            ToolbarAction::Locale => {
+                if self.dialog.is_empty() && self.player_poster_controls_allowed() {
+                    self.cycle_player_locale();
+                }
+            }
             ToolbarAction::Posters if self.player_poster_controls_allowed() => self.posters.toggle_menu(),
             ToolbarAction::Posters => {}
         }
     }
 
-    fn toolbar_labels(&self) -> [String; 10] {
+    fn toolbar_labels(&self) -> [String; 11] {
         let interface = if self.hd_title_menu.is_some() { "HD" } else { "原版" };
         let audio = if self.bgm_source == "mt32" { "MT-32" } else { "FM" };
         [
@@ -128,6 +135,13 @@ impl Game {
             if self.modern_theme_loading.is_some() { "載入中".into() } else { "HD".into() },
             format!("介面 {interface}"),
             format!("音源 {audio}"),
+            match self.locale_id.as_str() {
+                "zh-Hans" => "简中",
+                "ja" => "日本語",
+                "en" => "EN",
+                _ => "繁中",
+            }
+            .into(),
             format!("字級 {:.0}%", self.font_scale * 100.0),
             format!("{}×", self.player_speed),
             if self.current_native_system_options().music_enabled() { "音樂 開" } else { "音樂 關" }.into(),

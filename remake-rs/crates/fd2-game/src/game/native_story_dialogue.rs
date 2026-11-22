@@ -179,8 +179,7 @@ impl Game {
     /// Go：`native_story_dialogue.go:93`，`func (g *Game) prepareNativeDialogueFrames() error`
     ///
     /// R4 B 組：HD 介面開啟時的兩個分支（`prepareModernHDStoryDialogueChrome`、`freezeModernHDDialogueChrome`）
-    /// 停在 `todo!("R6: …")`；非繁中語系的逐字合成（`composeLocalizedNativeDialogueProgressiveFrames`，依 TTF 量寬）
-    /// 與第 28 章戰後的視圖繼承是 `r8`。
+    /// 停在 `todo!("R6: …")`。R6 非繁中對白依 TTF 字寬排版，沿共用索引畫格逐字顯示。第 28 章戰後的視圖繼承是 `r8`。
     pub(crate) fn prepare_native_dialogue_frames(&mut self) -> Result<()> {
         self.native_dialogue_frames = Vec::new();
         self.native_dialogue_progressive = Vec::new();
@@ -320,34 +319,42 @@ impl Game {
         let mut glyph_steps: Vec<Vec<bool>> = vec![Vec::new(); pages];
         let zh_hant = self.locale_id == "zh-Hant";
         for page in 0..pages {
-            if !zh_hant {
-                todo!(
-                    "R8: native_story_dialogue_locale.go:composeLocalizedNativeDialogueProgressiveFrames（非繁中，依 TTF 量寬）"
-                )
-            }
-            progressive[page] = campaign::compose_native_story_dialogue_progressive_frames(
-                &self.native_map_vga,
-                &class_ui.dialogue,
-                &portraits[0],
-                class_ui.font.as_ref(),
-                Some(&self.native_battle_glyphs),
-                &layout,
-                page as i64,
-            )
-            .map_err(|err| game_err!("native story dialogue: page {} progressive frames: {err}", page))?;
-            match campaign::native_story_dialogue_glyph_steps(&layout, page as i64) {
-                Ok(steps) if steps.len() == progressive[page].len() => glyph_steps[page] = steps,
-                Ok(_) => {
-                    return Err(GameError::new("native story dialogue: glyph timeline mismatch: <nil>"));
+            progressive[page] = if zh_hant {
+                let frames = campaign::compose_native_story_dialogue_progressive_frames(
+                    &self.native_map_vga,
+                    &class_ui.dialogue,
+                    &portraits[0],
+                    class_ui.font.as_ref(),
+                    Some(&self.native_battle_glyphs),
+                    &layout,
+                    page as i64,
+                )?;
+                let steps = campaign::native_story_dialogue_glyph_steps(&layout, page as i64)?;
+                if steps.len() != frames.len() {
+                    return Err(GameError::new("native story dialogue: glyph timeline mismatch"));
                 }
-                Err(err) => {
-                    return Err(game_err!("native story dialogue: glyph timeline mismatch: {err}"));
-                }
-            }
-            frames[page] = progressive[page].last().cloned().expect("Go：progressive 為空時索引 panic");
-            mouth_open[page] =
+                glyph_steps[page] = steps;
+                frames
+            } else {
+                compose_localized_native_dialogue_progressive_frames(
+                    &self.native_map_vga,
+                    &class_ui.dialogue,
+                    &portraits[0],
+                    self.font.as_mut(),
+                    &layout,
+                    page,
+                )?
+            };
+            frames[page] = progressive[page]
+                .last()
+                .cloned()
+                .ok_or_else(|| game_err!("native story dialogue: empty page {page}"))?;
+            mouth_open[page] = if zh_hant {
                 campaign::compose_native_story_dialogue_mouth_frame(&frames[page], &portraits[3], &layout)
-                    .map_err(|err| game_err!("native story dialogue: page {} mouth frame: {err}", page))?;
+                    .map_err(|err| game_err!("native story dialogue: page {} mouth frame: {err}", page))?
+            } else {
+                frames[page].clone()
+            };
         }
         // Freeze the native grid geometry once per utterance, including cursor-only
         // closing tails. No timer, glyph progression or save state is advanced here.
@@ -409,6 +416,16 @@ impl Game {
                 )?)
             },
             |base, page| {
+                if self.locale_id != "zh-Hant" {
+                    return compose_localized_native_dialogue_progressive_frames(
+                        base,
+                        &ui.dialogue,
+                        portrait,
+                        self.font.clone().as_mut(),
+                        layout,
+                        page,
+                    );
+                }
                 Ok(campaign::compose_native_story_dialogue_progressive_frames(
                     base,
                     &ui.dialogue,
@@ -454,6 +471,9 @@ impl Game {
         if frames > 0 && self.native_dialogue_progress < frames - 1 {
             self.native_dialogue_progress += 1;
             let progress = self.native_dialogue_progress;
+            if progress == frames - 1 && self.cutscene_log && self.locale_id != "zh-Hant" {
+                eprintln!("[cutscene] locale page ready: {} page={page}", self.locale_id);
+            }
             let glyph_step = self
                 .native_dialogue_glyph_steps
                 .get(page)

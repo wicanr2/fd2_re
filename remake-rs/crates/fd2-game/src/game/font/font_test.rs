@@ -279,3 +279,25 @@ fn font_draw_places_glyphs_inside_bound_string() {
     assert!(opaque > 0);
     assert!(min_x >= b.min.x + ox && min_y >= b.min.y + oy && max_x <= b.max.x + ox && max_y <= b.max.y + oy);
 }
+#[test]
+fn localized_native_dialogue_reflows_without_changing_source_identity() {
+    if !crate::test_support::cjk_font_available() {
+        return;
+    }
+    let mut font = load_font().unwrap();
+    let source = campaign::NativeDialogueLayout {
+        source_dat: "FDTXT_033".into(),
+        string_index: 12,
+        utterance: 1,
+        control: "FFEE".into(),
+        operand: 48,
+        ..Default::default()
+    };
+    let text = "The captain entered the palace. ".repeat(12);
+    let output = localized_native_dialogue_layout(&text, &source, Some(&mut font)).unwrap();
+    assert_eq!(output.source_dat, source.source_dat);
+    assert_eq!((output.string_index, output.utterance, output.operand), (12, 1, 48));
+    assert_eq!(output.control, source.control);
+    assert!(output.pages.len() > 1);
+    assert_eq!(output.pages.into_iter().flatten().collect::<String>(), text);
+}

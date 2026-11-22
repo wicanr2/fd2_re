@@ -1,6 +1,6 @@
 #!/bin/bash
 # 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄] [interface-cold|no-font|posters|poster-scenery]
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -118,7 +118,7 @@ drive() {
         return 1
       }
       wait_for_event() {
-        for _ in $(seq 1 220); do
+        for _ in $(seq 1 "${2:-220}"); do
           if grep -Fq "$1" "$MODE.log"; then return; fi
           sleep 0.5
         done
@@ -196,6 +196,14 @@ drive() {
         convert poster-off.png -crop 1280x656+264+0 +repage /tmp/poster-baseline.png
         same /tmp/poster-center.png /tmp/poster-baseline.png
       }
+      capture_locale_dialogue() {
+        key Return
+        wait_for_event "beat op=dialog source=0x32382" 400
+        wait_for_event "locale page ready: $2 page=0"
+        sleep 1
+        capture "$1"
+      }
+      locale_text_region() { convert "$1" -crop 850x240+398+464 +repage "$2"; }
       case "$MODE" in
         f2)
           first_visible_frame opening-before.png
@@ -354,23 +362,63 @@ drive() {
           test "$(convert poster-hd-scenery.png -crop 1x400+263+0 -format "%k" info:)" -gt 4
           different poster-native-scenery.png poster-hd-scenery.png
           ;;
+        locale-cycle)
+          wait_for_menu locale-title.png
+          toolbar 300
+          wait_for_preference locale_id zh-Hans
+          toolbar 300
+          wait_for_preference locale_id ja
+          toolbar 300
+          wait_for_preference locale_id en
+          key F4
+          grep -q "\"locale_id\": \"en\"" profile/fd2_re/fd2_settings.json
+          capture_locale_dialogue locale-en.png en
+          for _ in $(seq 1 30); do
+            if test "$(grep -Fc "beat op=dialog source=" "$MODE.log")" -ge 2; then break; fi
+            key Return
+            sleep 0.6
+          done
+          test "$(grep -Fc "beat op=dialog source=" "$MODE.log")" -ge 2
+          ;;
+        locale-cold)
+          wait_for_menu locale-cold-title.png
+          capture_locale_dialogue locale-en-cold.png en
+          locale_text_region locale-en.png /tmp/locale-en.png
+          locale_text_region locale-en-cold.png /tmp/locale-en-cold.png
+          same /tmp/locale-en.png /tmp/locale-en-cold.png
+          ;;
+        locale-ja|locale-hans)
+          wait_for_menu "$MODE-title.png"
+          locale=ja
+          if [[ "$MODE" == locale-hans ]]; then locale=zh-Hans; fi
+          capture_locale_dialogue "$MODE.png" "$locale"
+          locale_text_region "$MODE.png" /tmp/locale-actual.png
+          locale_text_region locale-en.png /tmp/locale-en.png
+          different /tmp/locale-actual.png /tmp/locale-en.png
+          ;;
       esac
       if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
       echo "$MODE PASS"
     '
 }
 
+mode="${3:-toggle}"
 baseline=()
 if [[ -n "${2:-}" ]]; then
-  test -f "$2/title-hd.png" && test -f "$2/title-missing-pack.png"
+  if [[ "$mode" == "locale-samples" ]]; then
+    test -f "$2/locale-en.png" && test -f "$2/profile/fd2_re/fd2_settings.json"
+  else
+    test -f "$2/title-hd.png" && test -f "$2/title-missing-pack.png"
+  fi
   baseline=(--mount "type=bind,source=$(cd "$2" && pwd -P),target=/baseline,readonly")
 fi
-mode="${3:-toggle}"
 if [[ "$mode" == "interface-cold" ]]; then
   test -f "${2:?需要標題基準}/title-hd-interface-hd-art.png"
 elif [[ "$mode" == "no-font" ]]; then
   test -f "${2:?需要標題基準}/title-missing-pack.png"
-elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" ]]; then
+elif [[ "$mode" == "locale-samples" ]]; then
+  test -f "${2:?需要英文視窗基準}/locale-en.png"
+elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" && "$mode" != "locales" ]]; then
   test "$mode" = toggle
 fi
 timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
@@ -379,7 +427,7 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
     mkdir -p /out/profile/fd2_re
     theme=faithful
     interface=original
-    if test -d /baseline; then
+    if test -d /baseline && test "$CHECK_MODE" != locale-samples; then
       cp /baseline/title-hd.png /baseline/title-missing-pack.png /out/
       theme=modern-handpainted-a
     fi
@@ -396,7 +444,29 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       mkdir -p /out/scenery/fd2_re
       cp /out/rejected/fd2_re/fd2_settings.json /out/scenery/fd2_re/fd2_settings.json
     fi
+    if [[ "$CHECK_MODE" == locale* ]]; then
+      mkdir -p /out/locale-ja/fd2_re /out/locale-hans/fd2_re
+      printf "{\"locale_id\":\"ja\",\"game_speed\":4}\n" > /out/locale-ja/fd2_re/fd2_settings.json
+      printf "{\"locale_id\":\"zh-Hans\",\"game_speed\":4}\n" > /out/locale-hans/fd2_re/fd2_settings.json
+      if [[ "$CHECK_MODE" == locale-samples ]]; then
+        cp /baseline/locale-en.png /out/
+        sed -E "s/\"game_speed\":[[:space:]]*[0-9]+/\"game_speed\": 4/" \
+          /baseline/profile/fd2_re/fd2_settings.json > /out/profile/fd2_re/fd2_settings.json
+      fi
+    fi
   '
+if [[ "$mode" == "locales" || "$mode" == "locale-samples" ]]; then
+  phases=(locale-cold locale-ja locale-hans)
+  if [[ "$mode" == "locales" ]]; then phases=(locale-cycle "${phases[@]}"); fi
+  for phase in "${phases[@]}"; do
+    profile=profile
+    if [[ "$phase" == locale-ja || "$phase" == locale-hans ]]; then profile="$phase"; fi
+    window "$phase" "$profile" /hd
+    drive "$phase"
+    stop_window
+  done
+  exit 0
+fi
 if [[ "$mode" == "poster-scenery" ]]; then
   window poster-scenery scenery /hd
   drive poster-scenery

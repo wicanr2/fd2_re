@@ -3113,7 +3113,7 @@ impl Game {
     /// Go：`main.go:2625`，`func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool, nativeOverride *campaign.NativeDialogueLayout) (battle.DialogLine, error)`
     ///
     /// R4 B 組：`upperOverride *bool` 改收值（Go 只讀、再存進 `DialogLine.Upper`），`nativeOverride` 改收
-    /// `Option<&_>`（Go 可傳 nil）。非繁中語系的 `localizedNativeDialogueLayout` 是 `r8`。
+    /// `Option<&_>`（Go 可傳 nil）。R6 的非繁中斷行只替換顯示頁面。
     pub(crate) fn resolve_campaign_dialog_line(
         &mut self,
         line: &campaign::Line,
@@ -3145,11 +3145,14 @@ impl Game {
             upper = upper_override;
         }
         let mut native: Option<battle::NativeDialogueLayout> = None;
-        let layout = native_override;
-        if layout.is_some() && self.locale_id != "zh-Hant" {
-            todo!("R8: native_story_dialogue_locale.go:localizedNativeDialogueLayout（第一章只跑繁中）")
-        }
-        if let Some(layout) = layout {
+        if let Some(source) = native_override {
+            let localized;
+            let layout = if self.locale_id != "zh-Hant" {
+                localized = localized_native_dialogue_layout(&text, source, self.font.as_mut())?;
+                &localized
+            } else {
+                source
+            };
             let resolved_speaker = self.resolve_native_story_dialogue_speaker(layout)?;
             let motion_target_y = self.resolve_native_story_dialogue_motion_target(layout)?;
             speaker = resolved_speaker;
@@ -7408,10 +7411,6 @@ impl Game {
         if global && self.player_interface_requested {
             self.player_interface_requested = false;
             self.cycle_hd_title_interface();
-        }
-        if global && self.player_locale_requested {
-            // 全域：切換官方語系
-            todo!("R8: settings.go:cycleLocale（F4 語系切換）")
         }
         if global && self.player_font_requested {
             // 全域：切換字級

@@ -890,6 +890,44 @@ pub(crate) fn load_official_locale_entities(locale_id: &str) -> Result<Option<lo
 }
 
 impl Game {
+    /// 預先核對三份官方清冊與法術名稱，全部成功後才替換玩家看到的語系。
+    pub(crate) fn cycle_player_locale(&mut self) {
+        const ORDER: [&str; 4] = ["zh-Hant", "zh-Hans", "ja", "en"];
+        let current = ORDER.iter().position(|&locale| locale == self.locale_id).unwrap_or(0);
+        let next = ORDER[(current + 1) % ORDER.len()];
+        if let Err(err) = self.set_player_locale(next) {
+            self.msg = format!("語言切換失敗：{err}");
+            eprintln!("{}", self.msg);
+        }
+    }
+
+    fn set_player_locale(&mut self, locale: &str) -> Result<()> {
+        let catalog = load_official_locale(locale)?;
+        let content = load_official_locale_content(locale)?;
+        let entities = load_official_locale_entities(locale)?;
+        let spells =
+            (!self.spells.is_empty()).then(|| localized_spell_book(entities.as_ref(), &self.spells)).transpose()?;
+        let name = LOCALE_DISPLAY_NAME.get(locale).ok_or_else(|| game_err!("unsupported locale {locale}"))?;
+        let message = catalog
+            .as_ref()
+            .ok_or_else(|| game_err!("locale catalog missing"))?
+            .format("system.locale.changed", &[localization::FormatArg::Str(name.clone())])?;
+
+        self.locale_id = locale.into();
+        (self.locale_catalog, self.locale_content, self.locale_entities) = (catalog, content, entities);
+        if let Some(spells) = spells {
+            if let Some(state) = &mut self.st {
+                state.spell_book.clone_from(&spells);
+            }
+            self.spells = spells;
+        }
+        let mut settings = load_settings();
+        settings.locale_id.clone_from(&self.locale_id);
+        save_settings(&settings);
+        self.msg = message;
+        Ok(())
+    }
+
     /// Go：`locale.go:182`，`func (g *Game) localizedStoryText(line campaign.Line) (string, error)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn localized_story_text(&self, line: &campaign::Line) -> Result<String> {
