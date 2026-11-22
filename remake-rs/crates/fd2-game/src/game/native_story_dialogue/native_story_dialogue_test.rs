@@ -15,6 +15,23 @@ fn native_line(pages: &[&[&str]]) -> battle::DialogLine {
     }
 }
 
+#[test]
+fn chapter_boundary_dialogue_keeps_the_second_page() {
+    let line = battle::DialogLine { text: format!("{}?", "甲".repeat(48)), ..Default::default() };
+    let lines = legacy_dialogue_lines(&line);
+    assert_eq!(lines.len(), 4);
+    assert!(lines.first().unwrap().starts_with('『'));
+    assert!(lines.last().unwrap().ends_with("？』"));
+
+    let mut game = Game { dialog: vec![line], ..Default::default() };
+    assert!(!game.dlg_advance());
+    assert_eq!(game.dlg_page, 1);
+    assert!(!game.dlg_advance());
+    game.dlg_scroll_t = 0;
+    assert!(game.dlg_advance());
+    assert!(game.dialog.is_empty());
+}
+
 /// Go：`native_story_dialogue_progress_test.go:10` `TestNativeStoryDialogueProgressBlocksInputUntilPageComplete`
 #[test]
 fn test_native_story_dialogue_progress_blocks_input_until_page_complete() {

@@ -550,7 +550,8 @@ impl Game {
             return false;
         }
         if d.battle_snapshot.is_some() && !in_hotel {
-            todo!("R8: battle_snapshot.go:validateBattleSnapshotNode（第一章受控流程不讀戰場快照）");
+            self.msg = "目前無法還原戰場中途存檔".into();
+            return false;
         }
         if in_hotel {
             // 酒店讀檔回到城鎮節點，戰場快照不適用。
@@ -642,9 +643,6 @@ impl Game {
         let (message, ok) = self.locale_message("save.loaded", &[(slot + 1).into(), node.into()]);
         if ok {
             self.msg = message;
-        }
-        if d.battle_snapshot.is_some() && self.load_err.is_empty() {
-            todo!("R8: battle_snapshot.go:applyBattleSnapshot（第一章受控流程不讀戰場快照）");
         }
         self.load_err.is_empty()
     }

@@ -194,15 +194,19 @@ impl Game {
 
     /// Go：`player_input_pointer.go:187`，`func (g *Game) applyPointerToTitleSlots()`
     ///
-    /// Go 走 `applyTitleSlotEvent`（`title.go:86`，`r8`：標題 LOAD 讀檔槽在 R8）；Rust 與鍵盤上下鍵相同，要換列時停在
-    /// `todo!`。指向的列由 [`title_slot_rects`] 決定。
+    /// 滑鼠沿鍵盤的選槽事件逐列移動。JSON 後備版面使用自己的可見列位置。
     pub(crate) fn apply_pointer_to_title_slots(&mut self) {
         if !self.pointer.active {
             return;
         }
-        let target = pointer_in(&title_slot_rects(), self.pointer.x, self.pointer.y);
-        if target >= 0 && self.title_slot_sel != target {
-            todo!("R8: title.go:applyTitleSlotEvent（標題 LOAD 讀檔槽，滑鼠指向換列）")
+        let rows = if self.title_load_slots_fallback { json_title_slot_rects() } else { title_slot_rects() };
+        let target = pointer_in(&rows, self.pointer.x, self.pointer.y);
+        for _ in 0..4 {
+            if target < 0 || target == self.title_slot_sel {
+                break;
+            }
+            let event = if target < self.title_slot_sel { TITLE_SLOT_UP } else { TITLE_SLOT_DOWN };
+            self.apply_title_slot_event(event);
         }
     }
 
@@ -248,6 +252,15 @@ impl Game {
             steps += 1;
         }
     }
+}
+
+fn json_title_slot_rects() -> Vec<Rectangle> {
+    (0..4)
+        .map(|row| {
+            let y = JSON_LOAD_FIRST_ROW_Y + row * JSON_LOAD_ROW_HEIGHT;
+            rect(140, y, 500, y + JSON_LOAD_ROW_HEIGHT)
+        })
+        .collect()
 }
 
 /// 讀檔四格的列位置沿 `campaign.ComposeNativeLoadSlotsFrame`：文字列 y=119+19×列、框寬 5..315。

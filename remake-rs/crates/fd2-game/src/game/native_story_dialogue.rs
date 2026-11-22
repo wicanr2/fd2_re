@@ -17,6 +17,148 @@ pub(crate) const STORY_MOUTH_RNG_SEED: i64 = VIRTUAL_CLOCK_ORIGIN.0 + 1;
 
 const DIALOGUE_FRAME_SIZE: usize = 320 * 200;
 
+pub(crate) fn legacy_dialogue_lines(line: &battle::DialogLine) -> Vec<String> {
+    // Go `dlgWrap` reserves the existing portrait rectangle before counting glyphs.
+    let width = if line.speaker >= 32 { 640.0 - 16.0 - 80.0 * 2.1 - 8.0 - 32.0 } else { 10.0 + 620.0 - 16.0 - 216.0 };
+    let per_line = (width / (FONT_SIZE * 1.7)) as usize;
+    let text: Vec<_> = std::iter::once('『')
+        .chain(line.text.chars().map(|ch| match ch {
+            ',' => '，',
+            '!' => '！',
+            ':' => '：',
+            '?' => '？',
+            ';' => '；',
+            '.' => '。',
+            '(' => '（',
+            ')' => '）',
+            _ => ch,
+        }))
+        .chain(std::iter::once('』'))
+        .collect();
+    text.chunks(per_line).map(|row| row.iter().collect()).collect()
+}
+
+impl Game {
+    /// Go `draw` 的舊式可編輯對白。章界讀檔會經劇本的正式 setup 走到此處。
+    pub(crate) fn draw_legacy_story_dialogue(&mut self, screen: &mut Picture) {
+        let Some(line) = self.dialog.last() else { return };
+        let upper = self.dlg_upper.unwrap_or(self.dlg_shown >= 32);
+        let by = if upper { 4.0 } else { 198.0 };
+        let scale = match self.dlg_phase {
+            1 => 1.0 - self.dlg_t as f64 / DLG_ANIM_FRAMES as f64,
+            2 => self.dlg_t as f64 / DLG_ANIM_FRAMES as f64,
+            _ => 1.0,
+        };
+        if scale <= 0.0 {
+            return;
+        }
+        let top = by + (1.0 - scale) * 99.0;
+        let mut op = DrawImageOptions::default();
+        if let Some(box_image) = &self.dlg_box {
+            op.geo_m.scale(2.0, 2.0 * scale);
+            op.geo_m.translate(10.0, top);
+            screen.draw_image(box_image, &op);
+        } else {
+            let mut panel = Picture::new_image(1, 1);
+            panel.fill(ColorRgba { r: 0x2c, g: 0x44, b: 0x84, a: 0xf2 });
+            op.geo_m.scale(620.0, 198.0 * scale);
+            op.geo_m.translate(10.0, top);
+            screen.draw_image(&panel, &op);
+        }
+        if self.hd_title_menu.is_some()
+            && let Some(chrome) = self.native_dialogue_chrome.as_mut()
+        {
+            let bottom = top + 198.0 * scale;
+            let size = Point { x: 620 * 3, y: (bottom * 3.0).round() as i64 - (top * 3.0).round() as i64 };
+            if let Some(border) = chrome.gold_border_for_size(size) {
+                let extent = rect(10, top.round() as i64, 630, bottom.round() as i64);
+                self.window_dialogue_border = Some((border, extent));
+            }
+        }
+        if self.dlg_phase != 0 {
+            return;
+        }
+        let gradient = self.dlg_grad.get_or_insert_with(|| {
+            let mut picture = Picture::new_image(1, 198);
+            for y in 0..198 {
+                let d = (16 * y / 197) as u8;
+                picture.set(0, y, ColorRgba { r: 40 + d, g: 69 + d, b: 138 + d, a: 255 });
+            }
+            Arc::new(picture)
+        });
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(604.0, 182.0 / 198.0);
+        op.geo_m.translate(18.0, by + 8.0);
+        screen.draw_image(gradient, &op);
+
+        let modern = self.modern_story_portraits.as_ref().and_then(|art| art.portraits.get(&line.speaker));
+        let original = self.portraits.get(&line.speaker).and_then(|frames| {
+            let index = if self.mouth_open && frames.len() > 3 { 3 } else { 0 };
+            frames.get(index).and_then(Option::as_ref)
+        });
+        let portrait = (if self.modern_story_portraits.is_some() {
+            modern.and_then(|frame| frame.image.as_ref())
+        } else {
+            original
+        })
+        .filter(|image| image.width > 0 && image.height > 0);
+        if self.modern_story_portraits.is_some() && portrait.is_none() {
+            return;
+        }
+        let hx = if upper { 456.0 } else { 16.0 };
+        let hy = by + 15.0;
+        if let Some(portrait) = portrait {
+            let mirrored;
+            let picture = if upper {
+                portrait.as_ref()
+            } else {
+                let columns = portrait.width as usize;
+                let pixels: Vec<_> = portrait
+                    .read_pixels()
+                    .as_chunks::<4>()
+                    .0
+                    .chunks_exact(columns)
+                    .flat_map(|row| row.iter().rev().copied())
+                    .collect();
+                let mut flipped = Picture::new_image(portrait.width, portrait.height);
+                flipped.write_pixels(pixels.as_flattened());
+                mirrored = flipped;
+                &mirrored
+            };
+            let mut op = DrawImageOptions::default();
+            op.geo_m.scale(2.1, 2.1);
+            op.geo_m.translate(hx, hy);
+            screen.draw_image(picture, &op);
+            if let Some(frame) = modern.filter(|frame| frame.hd_image.is_some()) {
+                self.modern_hd_overlay = Some(ModernHDOverlay {
+                    portrait: Some(frame.clone()),
+                    rect: rect(hx as i64, hy as i64, hx as i64 + 168, hy as i64 + 168),
+                    mirror_x: !upper,
+                });
+            }
+        }
+        let tx = if upper || portrait.is_none() { 32.0 } else { 216.0 };
+        let ty = by + if upper { 46.0 } else { 24.0 };
+        let lines = legacy_dialogue_lines(line);
+        let Some(font) = self.font.as_mut() else { return };
+        let mut draw_page = |page: i64, dy: f64| {
+            for (row, line) in lines.iter().skip((page.max(0) * 3) as usize).take(3).enumerate() {
+                let y = ty + row as f64 * 38.0 + dy;
+                if (by + 8.0..=by + 184.0).contains(&y) {
+                    font.draw(screen, line, tx, y, 1.7, ColorRgba { r: 0xf0, g: 0xf4, b: 0xff, a: 255 });
+                }
+            }
+        };
+        if self.dlg_scroll_t > 0 {
+            let progress = 1.0 - self.dlg_scroll_t as f64 / DLG_SCROLL_FRAMES as f64;
+            draw_page(self.dlg_scroll_from, -progress * 114.0);
+            draw_page(self.dlg_page, (1.0 - progress) * 114.0);
+        } else {
+            draw_page(self.dlg_page, 0.0);
+        }
+    }
+}
+
 #[derive(Debug)]
 pub(crate) struct ModernStoryDialogueMasks {
     opening: Vec<Vec<bool>>,

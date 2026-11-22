@@ -6,6 +6,10 @@
 
 use super::*;
 
+const JSON_LOAD_BOX: Rectangle = rect(140, 70, 500, 320);
+pub(crate) const JSON_LOAD_FIRST_ROW_Y: i64 = 124;
+pub(crate) const JSON_LOAD_ROW_HEIGHT: i64 = 34;
+
 /// Go：`native_load_slots_ui.go:19`
 #[derive(Debug, Clone, Default)]
 pub(crate) struct NativeLoadSlotsUIAssets {
@@ -96,6 +100,110 @@ pub(crate) fn native_load_slot_confirmable(slot: i64) -> (bool, bool) {
 }
 
 impl Game {
+    pub(crate) fn draw_title_load_slots(&mut self, screen: &mut Picture) {
+        self.title_load_slots_fallback = !self.draw_native_load_slots(screen);
+        if !self.title_load_slots_fallback {
+            self.publish_title_slot_border(false, rect(10, 224, 630, 396));
+            return;
+        }
+        if let Some(title) = self.title_assets.as_ref().and_then(|assets| assets.title.as_ref()) {
+            let mut op = DrawImageOptions::default();
+            op.geo_m.scale(2.0, 2.0);
+            screen.draw_image(title, &op);
+        }
+        if self.font.is_none() {
+            return;
+        }
+        let mut panel = Picture::new_image(rect_dx(&JSON_LOAD_BOX), rect_dy(&JSON_LOAD_BOX));
+        panel.fill(ColorRgba { r: 0x08, g: 0x14, b: 0x30, a: 0xf0 });
+        let mut op = DrawImageOptions::default();
+        op.geo_m.translate(JSON_LOAD_BOX.min.x as f64, JSON_LOAD_BOX.min.y as f64);
+        screen.draw_image(&panel, &op);
+        self.publish_title_slot_border(true, JSON_LOAD_BOX);
+
+        let (controls, ok) = self.locale_message("title.load.controls", &[]);
+        if !ok {
+            return;
+        }
+        self.font.as_mut().unwrap().draw(
+            screen,
+            &controls,
+            158.0,
+            86.0,
+            0.9,
+            ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff },
+        );
+        for slot in 0..4 {
+            let (label, ok) = self.locale_message("title.load.slot", &[localization::FormatArg::Int(slot + 1)]);
+            if !ok {
+                return;
+            }
+            let status =
+                if std::fs::metadata(save_slot_path(slot)).is_ok() { "save.slot.present" } else { "save.slot.empty" };
+            let (status, ok) = self.locale_message(status, &[]);
+            if !ok {
+                return;
+            }
+            let (prefix, color) = if slot == self.title_slot_sel {
+                ("▶", ColorRgba { r: 255, g: 255, b: 255, a: 255 })
+            } else {
+                ("　", ColorRgba { r: 0xd0, g: 0xd8, b: 0xe8, a: 255 })
+            };
+            let y = JSON_LOAD_FIRST_ROW_Y + slot * JSON_LOAD_ROW_HEIGHT;
+            self.font.as_mut().unwrap().draw(
+                screen,
+                &format!("{prefix}{label}　{status}"),
+                176.0,
+                y as f64,
+                1.0,
+                color,
+            );
+        }
+    }
+
+    fn draw_native_load_slots(&self, screen: &mut Picture) -> bool {
+        let Some(assets) = &self.native_load_slots_ui else { return false };
+        let (slots, valid) = native_load_slot_metadata();
+        if !valid {
+            return false;
+        }
+        let Ok(pixels) = campaign::compose_native_load_slots_frame(
+            &[0; 320 * 200],
+            &assets.dialogue_box,
+            assets.strings.as_ref(),
+            assets.font.as_ref(),
+            slots,
+            self.title_slot_sel,
+        ) else {
+            return false;
+        };
+        let picture = Picture::from_indexed(&IndexedFrame {
+            width: 320,
+            height: 200,
+            pix: pixels,
+            palette: assets.palette.clone(),
+        });
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&picture, &op);
+        true
+    }
+
+    fn publish_title_slot_border(&mut self, json: bool, area: Rectangle) {
+        if self.hd_title_menu.is_none() {
+            return;
+        }
+        let Some(assets) = self.native_load_slots_ui.as_mut().filter(|assets| assets.title_slot_chrome_valid(json))
+        else {
+            return;
+        };
+        let Some(hd) = assets.hd.as_mut() else { return };
+        let chrome = if json { &mut hd.json_chrome } else { &mut hd.chrome };
+        if let Some(chrome) = chrome {
+            self.window_dialogue_border = Some((chrome.thin_border(area), area));
+        }
+    }
+
     /// confirmTitleLoadSlot 是標題四槽 selector 的正式確認擁有者。原版槽只有在
     /// checksum、typed restore 與戰間節點進入全部成功後才離開 loadslots；失敗會
     /// 保留選槽畫面，避免看似進入遊戲卻留下部分還原狀態。

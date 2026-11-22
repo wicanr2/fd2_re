@@ -155,9 +155,19 @@ Linux Bevy（RUNTIME-E1）以 `tools/rust_r6_theme_window.sh` 的 `locales` 模�
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> '' gold-dialogue` 在 Linux Bevy 正常 START 到皇城。`work/r6-gold-dialogue-20261123` 驗證同一句的四種美術與介面組合。切換介面時文字區為零像素差異，兩種美術及英文翻頁後的對白上框像素相同。樣本為 1280×800、`FD2_SEED=4`、遊戲四倍速。獨立 1860×516 參考圖逐像素核對通過，450 項 Rust 回歸通過。本輪視窗驗證限皇城穩定頁及翻頁（RUNTIME-E1）。
 
+### R6 標題讀檔槽與 HD 細框
+
+標題 LOAD 接回四槽選取、確認和取消。原生中繼資料通過檢查時沿用原生索引畫格，章號 0 的 JSON 存檔走原有後備框。兩種畫面各用實際列位置接收滑鼠，鍵盤上下鍵在首尾槽停止。工具列 HD 介面以各自的尺寸及來源色盤疊上細框。JSON 保留半透明底，原生槽仍沿原字模。確認沿既有存檔驗證與還原交易，遇到尚未支援的戰場中途快照會留在選槽畫面。
+
+從首章章界存檔還原時，沿用凍結 Go 版的劇本起始對白、三列分頁與頭像。這條路徑的對白也使用同一古金框材質，並跟隨說話者切換時的收展動畫。
+
+使用 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> <章界存檔目錄> loadslots`，存檔目錄以唯讀方式掛載。樣本為首章 `battle_ch01` JSON 章界存檔，SHA-256 為 `089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2`。測試以 1280×800、`FD2_SEED=4` 和遊戲四倍速執行。原生槽的視窗樣本使用空槽，原版 `FD2.SAV` 的實際還原另行驗證。
+
+`work/r6-loadslots-20261123-r9/json` 核對細框、空槽拒收、取消與首章讀檔。從工具列切換首章對白框時，框線像素改變，框內頭像與文字的比較區為零像素差異。視窗確認可以繼續到戰場，讀檔前後的存檔複本雜湊一致。此驗證屬 RUNTIME-E1。
+
 ### R6 F11 標題介面（RUNTIME-E1，2026-11-22）
 
-沿凍結 Go `modern_hd_title_interface.go` 的 FDOTHER #7 六個原生選單格、原生色盤與字型配置。預先驗證來源與字型，保留兩側選取標記、定位和閃爍，於選單中間以三倍畫布排繪 START、LOAD、CONTINUE。初版用 F11 保存 `interface_mode`，F2 保有獨立美術偏好。現行入口為工具列。讀檔槽與戰場介面另行接線。用正常 Bevy 視窗核對四種組合、缺字型、設定保存與冷啟動。
+沿凍結 Go `modern_hd_title_interface.go` 的 FDOTHER #7 六個原生選單格、原生色盤與字型配置。預先驗證來源與字型，保留兩側選取標記、定位和閃爍，於選單中間以三倍畫布排繪 START、LOAD、CONTINUE。初版用 F11 保存 `interface_mode`，F2 保有獨立美術偏好。現行入口為工具列。讀檔槽見上一節，戰場介面另行接線。用正常 Bevy 視窗核對四種組合、缺字型、設定保存與冷啟動。
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/r6-f11-title-20261122 work/r6-theme-toggle-20261122-r3` 通過 Linux Bevy 視窗測試。四種美術與介面組合通過，F11 切換前後的上方背景逐像素相同，兩種偏好冷啟動重現相同畫面。缺字型時原版標題像素相同且未寫設定。普通 START 與序章首句的 F2 切換仍通過。此輪使用 Noto Sans CJK 基底字型，區域字型家族仍待移植。
 

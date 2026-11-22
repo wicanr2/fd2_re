@@ -25,8 +25,44 @@ pub(crate) struct ModernHDDialogueChrome {
 }
 
 impl ModernHDDialogueChrome {
+    pub(crate) fn thin_border(&mut self, area: Rectangle) -> Arc<Picture> {
+        self.gpu
+            .get_or_insert_with(|| {
+                let (w, h) = (rect_dx(&area) * 3, rect_dy(&area) * 3);
+                let mut canvas = Picture::new_image(w, h);
+                for band in
+                    [rect(0, 0, w, 18), rect(0, h - 18, w, h), rect(0, 18, 18, h - 18), rect(w - 18, 18, w, h - 18)]
+                {
+                    canvas.sub_image_mut(band).fill(self.background);
+                }
+                for i in 0..3 {
+                    for (side, band) in [
+                        rect(3, i, w - 3, i + 1),
+                        rect(w - 3 + i, 3, w - 2 + i, h - 3),
+                        rect(3, h - 3 + i, w - 3, h - 2 + i),
+                        rect(i, 3, i + 1, h - 3),
+                    ]
+                    .into_iter()
+                    .enumerate()
+                    {
+                        canvas.sub_image_mut(band).fill(self.edges[side][i as usize]);
+                    }
+                }
+                for (corner, (x, y)) in [(0, 0), (w - 3, 0), (0, h - 3), (w - 3, h - 3)].into_iter().enumerate() {
+                    for (i, &color) in self.corners[corner].iter().enumerate() {
+                        canvas.set(x + (i % 3) as i64, y + (i / 3) as i64, color);
+                    }
+                }
+                Arc::new(canvas)
+            })
+            .clone()
+    }
+
     pub(crate) fn gold_border(&mut self, area: Rectangle) -> Option<Arc<Picture>> {
-        let size = Point { x: 6 * (area.max.x - area.min.x), y: 6 * (area.max.y - area.min.y) };
+        self.gold_border_for_size(Point { x: 6 * rect_dx(&area), y: 6 * rect_dy(&area) })
+    }
+
+    pub(crate) fn gold_border_for_size(&mut self, size: Point) -> Option<Arc<Picture>> {
         if size.x < 36 || size.y < 36 {
             return None;
         }

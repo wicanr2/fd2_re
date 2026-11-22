@@ -6,7 +6,7 @@ Rust R6 四語設定及原生劇情對白達 RUNTIME-E1。Linux Bevy 從標題�
 
 Rust R6 雙側海報已接入 Bevy 及工具列。兩組圖稿、關閉、漸層、淡入偏好、冷啟動及缺件回退通過 Linux 視窗驗證。中央標題背景逐像素保持，海報側欄攔截滑鼠點擊。[119 的雙側海報驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-雙側海報)
 
-Rust R6 標題介面達 RUNTIME-E1。既有 Linux Bevy 視窗收據涵蓋四種美術與介面組合、偏好冷啟動和缺字型回退。讀檔槽與戰場的 HD 介面仍由 #312 追蹤。[119 的標題介面驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-f11-標題介面runtime-e12026-11-22)
+Rust R6 標題介面達 RUNTIME-E1。既有 Linux Bevy 視窗收據涵蓋四種美術與介面組合、偏好冷啟動和缺字型回退。標題 LOAD 已驗證原生空槽與 JSON 後備版面的 HD 細框，以及首章 JSON 存檔進戰場。戰場其餘 HD 介面仍由 #312 追蹤。[119 的標題讀檔槽驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-標題讀檔槽與-hd-細框)
 
 Rust R6 原生劇情古金對白框達皇城抽樣 RUNTIME-E1。由工具列控制，沿原生格網定位並保留對白底圖、文字及頭像。四種美術與介面組合及英文翻頁通過 Linux Bevy 視窗。[119 的對白框驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-原生劇情古金對白框)
 

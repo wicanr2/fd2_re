@@ -10,6 +10,14 @@ pub(crate) const PLAYER_INTERFACE_HD: &str = "hd";
 
 impl Game {
     pub(crate) fn enable_hd_title_interface(&mut self) -> Result<()> {
+        if self.title_phase == "loadslots"
+            && !self
+                .native_load_slots_ui
+                .as_ref()
+                .is_some_and(|assets| assets.title_slot_chrome_valid(self.title_load_slots_fallback))
+        {
+            return Err(game_err!("modern HD load slots: source unavailable or changed"));
+        }
         let menu = self.prepare_hd_title_interface()?;
         if self.native_dialogue_chrome.is_none() {
             let assets = load_native_class_ui_assets()?.ok_or_else(|| game_err!("HD dialogue: source unavailable"))?;

@@ -1,6 +1,6 @@
 #!/bin/bash
 # 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples|gold-dialogue]
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據或存檔目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples|gold-dialogue|loadslots]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -79,12 +79,14 @@ drive() {
       }
       toolbar() {
         local x=$((2 * $1))
+        local rest_x=640 rest_y=400
+        if [[ "$MODE" == loadslots* ]]; then rest_x=30; rest_y=70; fi
         xdotool windowfocus --sync "$wid"
         xdotool mousemove --window "$wid" "$x" 2
         sleep 0.6
         xdotool mousemove --window "$wid" "$x" 24 mousedown 1
         sleep 0.35
-        xdotool mouseup 1 mousemove --window "$wid" 640 400
+        xdotool mouseup 1 mousemove --window "$wid" "$rest_x" "$rest_y"
         for _ in $(seq 1 60); do
           capture /tmp/fd2-toolbar.png
           if test "$(convert /tmp/fd2-toolbar.png -format "%[pixel:p{0,0}]" info:)" != "srgb(17,24,37)"; then
@@ -138,8 +140,10 @@ drive() {
       }
       wait_for_preference() {
         local field="$1" value="$2"
+        local settings=profile/fd2_re/fd2_settings.json
+        if [[ "$MODE" == loadslots-native ]]; then settings=empty/fd2_re/fd2_settings.json; fi
         for _ in $(seq 1 160); do
-          if test -f profile/fd2_re/fd2_settings.json && grep -q "\"$field\": \"$value\"" profile/fd2_re/fd2_settings.json; then
+          if test -f "$settings" && grep -q "\"$field\": \"$value\"" "$settings"; then
             echo "設定已寫入 $field=$value"
             return
           fi
@@ -211,6 +215,85 @@ drive() {
         locale_text_region "$1" /tmp/text-before.png
         locale_text_region "$2" /tmp/text-after.png
         same /tmp/text-before.png /tmp/text-after.png
+      }
+      open_loadslots() {
+        local previous
+        previous=$(grep -Fc "[title] load slots opened" "$MODE.log" || true)
+        for _ in $(seq 1 3); do
+          xdotool mousemove --window "$wid" 640 705
+          sleep 1
+          xdotool mousedown 1
+          sleep 0.45
+          xdotool mouseup 1 mousemove --window "$wid" 30 70
+          for _ in $(seq 1 60); do
+            if test "$(grep -Fc "[title] load slots opened" "$MODE.log" || true)" -gt "$previous"; then
+              sleep 1
+              capture "$1"
+              return
+            fi
+            sleep 0.5
+          done
+        done
+        echo "未開啟標題讀檔槽：$MODE" >&2
+        return 1
+      }
+      loadslots_key_until_event() {
+        local event="$1" button
+        shift
+        for button in "$@"; do
+          if grep -Fq "$event" "$MODE.log"; then return; fi
+          key "$button"
+          for _ in $(seq 1 12); do
+            if grep -Fq "$event" "$MODE.log"; then return; fi
+            sleep 0.5
+          done
+        done
+        wait_for_event "$event" 12
+      }
+      hover_second_slot() {
+        local row_y="$1" region="$2"
+        convert slots-hd.png -crop "$region" +repage /tmp/slots-first-choice.png
+        xdotool mousemove --window "$wid" 410 "$row_y"
+        for _ in $(seq 1 35); do
+          capture slots-second.png
+          convert slots-second.png -crop "$region" +repage /tmp/slots-second-choice.png
+          if different /tmp/slots-first-choice.png /tmp/slots-second-choice.png; then return; fi
+          sleep 0.25
+        done
+        echo "滑鼠未選到第二槽：$MODE" >&2
+        return 1
+      }
+      wait_for_loaded_dialogue() {
+        for _ in $(seq 1 60); do
+          capture "$1"
+          if test "$(convert "$1" -format "%[pixel:p{640,418}]" info:)" = "srgb(40,69,138)"; then
+            return
+          fi
+          sleep 0.25
+        done
+        echo "首章讀檔對白未展開：$MODE" >&2
+        return 1
+      }
+      advance_loaded_dialogue() {
+        for _ in $(seq 1 3); do
+          key Return
+          for _ in $(seq 1 10); do
+            capture slots-battle-next.png
+            convert slots-battle-next.png -crop 1160x330+60+430 +repage /tmp/slots-battle-next-content.png
+            if different /tmp/slots-battle-original-content.png /tmp/slots-battle-next-content.png; then return; fi
+            sleep 0.35
+          done
+        done
+        echo "首章讀檔對白未前進：$MODE" >&2
+        return 1
+      }
+      check_loadslots_border() {
+        for name in original hd; do
+          convert "slots-$name.png" -crop "$1" +repage "/tmp/slots-$name-edge.png"
+          convert "slots-$name.png" -crop "$2" +repage "/tmp/slots-$name-inside.png"
+        done
+        different /tmp/slots-original-edge.png /tmp/slots-hd-edge.png
+        same /tmp/slots-original-inside.png /tmp/slots-hd-inside.png
       }
       case "$MODE" in
         f2)
@@ -429,6 +512,44 @@ drive() {
           convert gold-hd-art-page2.png -crop 1240x12+20+448 +repage /tmp/gold-second.png
           same /tmp/gold-first.png /tmp/gold-second.png
           ;;
+        loadslots|loadslots-native)
+          wait_for_menu slots-title.png
+          open_loadslots slots-original.png
+          toolbar 180
+          wait_for_preference interface_mode hd
+          sleep 1
+          capture slots-hd.png
+          if [[ "$MODE" == loadslots ]]; then
+            check_loadslots_border 720x2+280+140 680x440+296+170
+            hover_second_slot 340 680x440+296+170
+          else
+            check_loadslots_border 1240x2+20+448 1200x300+40+466
+            hover_second_slot 580 1200x300+40+466
+          fi
+          loadslots_key_until_event "[title] slot 2 loaded=false" Return space Return
+          wait_for_picture slots-empty-rejected.png slots-second.png
+          loadslots_key_until_event "[title] load slots closed" Escape Escape Escape
+          wait_for_change slots-empty-rejected.png slots-cancelled.png
+          if [[ "$MODE" == loadslots ]]; then
+            open_loadslots slots-reopened.png
+            xdotool mousemove --window "$wid" 410 260 mousedown 1
+            sleep 0.45
+            xdotool mouseup 1
+            wait_for_event "[title] slot 1 loaded=true"
+            wait_for_loaded_dialogue slots-battle.png
+            toolbar 180
+            wait_for_preference interface_mode original
+            wait_for_loaded_dialogue slots-battle-original.png
+            for name in battle battle-original; do
+              convert "slots-$name.png" -crop 1240x6+20+396 +repage "/tmp/slots-$name-border.png"
+              convert "slots-$name.png" -crop 1160x330+60+430 +repage "/tmp/slots-$name-content.png"
+            done
+            different /tmp/slots-battle-border.png /tmp/slots-battle-original-border.png
+            same /tmp/slots-battle-content.png /tmp/slots-battle-original-content.png
+            advance_loaded_dialogue
+            sha256sum -c slot-source.sha256
+          fi
+          ;;
       esac
       if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
       echo "$MODE PASS"
@@ -438,7 +559,9 @@ drive() {
 mode="${3:-toggle}"
 baseline=()
 if [[ -n "${2:-}" ]]; then
-  if [[ "$mode" == "locale-samples" ]]; then
+  if [[ "$mode" == "loadslots" ]]; then
+    test -f "$2/fd2_save.json"
+  elif [[ "$mode" == "locale-samples" ]]; then
     test -f "$2/locale-en.png" && test -f "$2/profile/fd2_re/fd2_settings.json"
   else
     test -f "$2/title-hd.png" && test -f "$2/title-missing-pack.png"
@@ -451,6 +574,8 @@ elif [[ "$mode" == "no-font" ]]; then
   test -f "${2:?需要標題基準}/title-missing-pack.png"
 elif [[ "$mode" == "locale-samples" ]]; then
   test -f "${2:?需要英文視窗基準}/locale-en.png"
+elif [[ "$mode" == "loadslots" ]]; then
+  test -f "${2:?需要章界存檔目錄}/fd2_save.json"
 elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" && "$mode" != "locales" && "$mode" != "gold-dialogue" ]]; then
   test "$mode" = toggle
 fi
@@ -460,7 +585,7 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
     mkdir -p /out/profile/fd2_re
     theme=faithful
     interface=original
-    if test -d /baseline && test "$CHECK_MODE" != locale-samples; then
+    if test -d /baseline && [[ "$CHECK_MODE" != locale-samples && "$CHECK_MODE" != loadslots ]]; then
       cp /baseline/title-hd.png /baseline/title-missing-pack.png /out/
       theme=modern-handpainted-a
     fi
@@ -471,6 +596,15 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
     printf "{\"theme_id\":\"%s\",\"interface_mode\":\"%s\"}\n" "$theme" "$interface" > /out/profile/fd2_re/fd2_settings.json
     if [[ "$CHECK_MODE" == gold-dialogue ]]; then
       printf "{\"theme_id\":\"faithful\",\"locale_id\":\"en\",\"game_speed\":4}\n" > /out/profile/fd2_re/fd2_settings.json
+    fi
+    if [[ "$CHECK_MODE" == loadslots ]]; then
+      cp /baseline/fd2_save.json /out/profile/fd2_re/fd2_save.json
+      mkdir -p /out/empty/fd2_re
+      for profile in profile empty; do
+        printf "{\"theme_id\":\"faithful\",\"game_speed\":4}\n" > "/out/$profile/fd2_re/fd2_settings.json"
+      done
+      cd /out
+      sha256sum profile/fd2_re/fd2_save.json > slot-source.sha256
     fi
     mkdir -p /out/no-font/fd2_re
     printf "{\"theme_id\":\"faithful\",\"interface_mode\":\"hd\"}\n" > /out/no-font/fd2_re/fd2_settings.json
@@ -491,6 +625,20 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       fi
     fi
   '
+if [[ "$mode" == "loadslots" ]]; then
+  window loadslots profile /hd
+  drive loadslots
+  stop_window
+  timeout 20s docker run "${common[@]}" --memory 128m --cpus 1 \
+    --mount "type=bind,source=$out,target=/out" fd2-rust:1.99.1-r3 bash -euc '
+      mkdir /out/json
+      mv /out/slots-*.png /out/json/
+    '
+  window loadslots-native empty /hd
+  drive loadslots-native
+  stop_window
+  exit 0
+fi
 if [[ "$mode" == "gold-dialogue" ]]; then
   window gold-dialogue profile /hd
   drive gold-dialogue

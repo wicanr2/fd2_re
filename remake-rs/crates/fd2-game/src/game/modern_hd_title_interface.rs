@@ -287,6 +287,28 @@ pub(crate) struct ModernHDTitleLoadSlots {
     pub(crate) seal: [u8; 32],
 }
 
+impl NativeLoadSlotsUIAssets {
+    pub(crate) fn title_slot_chrome_valid(&self, json: bool) -> bool {
+        let Some(hd) = &self.hd else { return false };
+        let same_source = |chrome: &ModernHDDialogueChrome, identity: &ModernHDDialogueChrome| {
+            chrome.background == identity.background
+                && chrome.edges == identity.edges
+                && chrome.corners == identity.corners
+        };
+        let Some((native, identity)) = hd.chrome.as_ref().zip(hd.chrome_identity.as_ref()) else { return false };
+        if !same_source(native, identity) || hd.seal != title_load_slots_hd_seal(Some(self), Some(hd)) {
+            return false;
+        }
+        !json
+            || hd.json_chrome.as_ref().zip(hd.json_identity.as_ref()).is_some_and(|(chrome, identity)| {
+                same_source(chrome, identity)
+                    && chrome.background == ColorRgba::default()
+                    && chrome.edges == native.edges
+                    && chrome.corners == native.corners
+            })
+    }
+}
+
 /// Go：`modern_hd_title_interface.go:176`，`func titleLoadSlotsHDSeal(a *nativeLoadSlotsUIAssets, h *modernHDTitleLoadSlots) [32]byte`
 /// Rust 收唯讀借用（簽名變更見 `PORTING.md`）。
 pub(crate) fn title_load_slots_hd_seal(

@@ -72,7 +72,11 @@ impl Game {
         match action {
             TITLE_MENU_LOAD_SLOTS => {
                 self.title_slot_sel = 0;
+                self.title_load_slots_fallback = false;
                 self.title_phase = String::from("loadslots");
+                if self.cutscene_log {
+                    eprintln!("[title] load slots opened");
+                }
             }
             TITLE_MENU_CONTINUE => {
                 // Go：`g.loadNativeContinueFromCurrentSnapshot(os.Getenv("FD2_NATIVE_SAVE"))`；第一章重播走
@@ -88,6 +92,37 @@ impl Game {
                 }
                 self.native_chapter_slot_started = true;
                 self.title_phase.clear();
+            }
+            _ => {}
+        }
+        true
+    }
+
+    pub(crate) fn apply_title_slot_event(&mut self, event: TitleSlotEvent) -> bool {
+        if self.title_phase != "loadslots" {
+            return false;
+        }
+        match event {
+            TITLE_SLOT_UP | TITLE_SLOT_DOWN => {
+                let step = if event == TITLE_SLOT_UP { -1 } else { 1 };
+                self.title_slot_sel = (self.title_slot_sel + step).clamp(0, 3);
+                let sample = self.sfx_title_move.clone();
+                self.play_raw(&sample);
+            }
+            TITLE_SLOT_CANCEL => {
+                self.title_phase = "menu".into();
+                if self.cutscene_log {
+                    eprintln!("[title] load slots closed");
+                }
+            }
+            TITLE_SLOT_CONFIRM => {
+                let sample = self.sfx_title_confirm.clone();
+                self.play_raw(&sample);
+                let loaded = self.confirm_title_load_slot(self.title_slot_sel);
+                if self.cutscene_log {
+                    eprintln!("[title] slot {} loaded={loaded}", self.title_slot_sel + 1);
+                }
+                return loaded;
             }
             _ => {}
         }
@@ -571,19 +606,18 @@ impl Game {
                 true
             }
             "loadslots" => {
-                // Native 0x30550 selector: four bounded slots, no wrap, Enter/Space
-                // confirms and Esc cancels back to the title menu.
-                // Go 呼叫 `applyTitleSlotEvent`（`title.go:86`，`r8`：第一章重播走 START，沒有進讀檔槽）。
-                let input = &self.tick_input;
-                let event = (input.is_just_pressed(Key::ArrowUp) && self.title_slot_sel > 0)
-                    || (input.is_just_pressed(Key::ArrowDown) && self.title_slot_sel < 3)
-                    || input.is_just_pressed(Key::Escape)
-                    || input.is_just_pressed(Key::Enter)
-                    || input.is_just_pressed(Key::Space);
-                if event {
-                    todo!("R8: title.go:applyTitleSlotEvent（標題 LOAD 讀檔槽）")
+                if self.tick_input.is_just_pressed(Key::ArrowUp) && self.title_slot_sel > 0 {
+                    self.apply_title_slot_event(TITLE_SLOT_UP);
                 }
-                self.apply_pointer_to_title_slots(); // Go `title.go:703`（r5i）
+                if self.tick_input.is_just_pressed(Key::ArrowDown) && self.title_slot_sel < 3 {
+                    self.apply_title_slot_event(TITLE_SLOT_DOWN);
+                }
+                self.apply_pointer_to_title_slots();
+                if self.tick_input.is_just_pressed(Key::Escape) {
+                    self.apply_title_slot_event(TITLE_SLOT_CANCEL);
+                } else if self.tick_input.is_just_pressed(Key::Enter) || self.tick_input.is_just_pressed(Key::Space) {
+                    self.apply_title_slot_event(TITLE_SLOT_CONFIRM);
+                }
                 true
             }
             _ => false,
@@ -607,8 +641,7 @@ impl Game {
     /// Go 在 `titleAssets` 為 nil、或該幕影像為 nil 時解參考會 panic；Rust 與 `title_update` 相同，把缺少的
     /// 素材當作不畫（`loadGame` 在素材不全時失敗即關閉，正式路徑不會走到）。HD 開場由獨立畫布供應背景，
     /// F11 的標題介面使用預備好的選單疊層。`ColorM` 後備
-    /// （`titlePaletteBlend`，預建調色盤幀缺漏時）與讀檔槽畫面（`drawNativeLoadSlots`）在開場與第一章沒有走到，
-    /// 標 `todo!("r8:…")`。
+    /// （`titlePaletteBlend`，預建調色盤幀缺漏時）仍待移植。讀檔槽沿原生或 JSON 後備版面。
     pub(crate) fn draw_title(&mut self, screen: &mut Picture) {
         const RED: ColorRgba = ColorRgba { r: 0xff, g: 0, b: 0, a: 0xff };
         let modern = self.draw_modern_opening(screen);
@@ -769,11 +802,7 @@ impl Game {
                 }
                 // F2 仍可切換重製端音源，但原版標題沒有常駐提示；忠實畫面不疊診斷文字。
             }
-            "loadslots" => {
-                todo!(
-                    "r8:native_load_slots_ui.go:drawNativeLoadSlots（標題 LOAD 讀檔槽畫面與其後備；開場與第一章沒有進）"
-                )
-            }
+            "loadslots" => self.draw_title_load_slots(screen),
             _ => {}
         }
     }

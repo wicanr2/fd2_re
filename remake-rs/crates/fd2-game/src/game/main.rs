@@ -265,6 +265,7 @@ pub struct Game {
     pub(crate) hotel_has_route: bool,
     /// title LOAD selector: native 0x30550 slots 0..3
     pub(crate) title_slot_sel: i64,
+    pub(crate) title_load_slots_fallback: bool,
     pub(crate) class_change_table: campaign::ClassChangeTable,
     pub(crate) class_change_growth: BTreeMap<i64, campaign::ClassChangeGrowth>,
     pub(crate) native_join_constructor: campaign::NativeJoinConstructorTable,
@@ -3675,7 +3676,7 @@ pub(crate) fn equal_int_order(a: &[i64], b: &[i64]) -> bool {
 ///
 /// Go：`main.go:3356`，`func dlgPageCount(dl battle.DialogLine) int`
 ///
-/// R4 B 組：非原生對白的頁數由 `dlgWrap`（`r8`，依 TTF 量寬斷行）決定，第一章只有原生對白，停在 `todo!`。
+/// 舊式對白與繪製端共用三列分頁。
 pub(crate) fn dlg_page_count(dl: &battle::DialogLine) -> i64 {
     if let Some(native) = dl.native_dialogue.as_ref() {
         if !native.pages.is_empty() {
@@ -3683,7 +3684,7 @@ pub(crate) fn dlg_page_count(dl: &battle::DialogLine) -> i64 {
         }
         return 1;
     }
-    todo!("R8: main.go:dlgWrap（非原生對白依 TTF 量寬斷行；第一章沒有執行到）")
+    legacy_dialogue_lines(dl).len().div_ceil(3) as i64
 }
 
 impl Game {
@@ -8377,7 +8378,7 @@ impl Game {
                 && !(self.story_bg && self.walk_first && !self.story_walks.is_empty())
                 && self.dlg_shown != DLG_NONE
             {
-                todo!("r8:main.go:9987..10119 舊對話框（開場與第一章沒有走到）");
+                self.draw_legacy_story_dialogue(screen);
             }
             // main.go:10122..10147：TTF 戰場短訊與勝負字樣（R5 r5f；拆成 `battle_text_draws` 讓局部黃金呼叫同一份程式）。
             let (draws, finished) = self.battle_text_draws();
