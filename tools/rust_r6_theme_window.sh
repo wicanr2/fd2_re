@@ -1,6 +1,6 @@
 #!/bin/bash
 # 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄] [interface-cold]
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄] [interface-cold|no-font]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -255,9 +255,8 @@ drive() {
         no-font)
           first_visible_frame no-font-opening.png
           wait_for_menu title-no-font.png
-          toolbar 180
           wait_for_picture title-no-font.png title-missing-pack.png
-          test ! -e rejected/fd2_re/fd2_settings.json
+          grep -q "\"interface_mode\":\"hd\"" no-font/fd2_re/fd2_settings.json
           ;;
       esac
       if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
@@ -273,6 +272,8 @@ fi
 mode="${3:-toggle}"
 if [[ "$mode" == "interface-cold" ]]; then
   test -f "${2:?需要標題基準}/title-hd-interface-hd-art.png"
+elif [[ "$mode" == "no-font" ]]; then
+  test -f "${2:?需要標題基準}/title-missing-pack.png"
 else
   test "$mode" = toggle
 fi
@@ -291,10 +292,18 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       interface=hd
     fi
     printf "{\"theme_id\":\"%s\",\"interface_mode\":\"%s\"}\n" "$theme" "$interface" > /out/profile/fd2_re/fd2_settings.json
+    mkdir -p /out/no-font/fd2_re
+    printf "{\"theme_id\":\"faithful\",\"interface_mode\":\"hd\"}\n" > /out/no-font/fd2_re/fd2_settings.json
   '
 if [[ "$mode" == "interface-cold" ]]; then
   window interface-cold profile /hd
   drive interface-cold
+  stop_window
+  exit 0
+fi
+if [[ "$mode" == "no-font" ]]; then
+  window no-font no-font /hd
+  drive no-font
   stop_window
   exit 0
 fi
@@ -315,6 +324,6 @@ stop_window
 window interface-cold profile /hd
 drive interface-cold
 stop_window
-window no-font rejected /hd
+window no-font no-font /hd
 drive no-font
 stop_window
