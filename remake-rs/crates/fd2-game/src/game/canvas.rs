@@ -47,7 +47,7 @@ pub mod display_list;
 // ---------------- 矩形 ----------------
 
 /// Go `image.Rect(x0, y0, x1, y1)`（會把顛倒的座標換正）。
-pub fn rect(x0: i64, y0: i64, x1: i64, y1: i64) -> Rectangle {
+pub const fn rect(x0: i64, y0: i64, x1: i64, y1: i64) -> Rectangle {
     let (x0, x1) = if x0 > x1 { (x1, x0) } else { (x0, x1) };
     let (y0, y1) = if y0 > y1 { (y1, y0) } else { (y0, y1) };
     Rectangle { min: Point { x: x0, y: y0 }, max: Point { x: x1, y: y1 } }

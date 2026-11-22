@@ -41,14 +41,7 @@ impl ModernHDMapGPU {
         let clip = if rect_empty(&frame.viewport) { modern_hd_map_viewport() } else { frame.viewport };
         let mut world = Picture::new_image(HD_MAP_WIDTH, HD_MAP_HEIGHT);
         draw_layer(&mut world, background, world_rect(), world_rect(), false);
-        for terrain in &frame.terrain {
-            let rect = if terrain.scale_to_rect {
-                terrain.rect
-            } else {
-                at_size(terrain.rect.min, terrain.image.width, terrain.image.height)
-            };
-            draw_layer(&mut world, &terrain.image, rect, clip, false);
-        }
+        draw_terrain(&mut world, &frame.terrain, clip);
         if let Some(range) = &frame.range {
             if (range.width, range.height) != (320, 200) {
                 return Err(game_err!("modern HD map: invalid range plane size"));
@@ -103,6 +96,24 @@ impl ModernHDMapGPU {
         }
         self.world = Some(Arc::new(world));
         Ok(logical_ui)
+    }
+}
+
+pub(crate) fn compose_poster_terrain(base: &Picture, terrain: &[ModernHDTerrainDraw], clip: Rectangle) -> Picture {
+    let mut world = Picture::new_image(HD_MAP_WIDTH, HD_MAP_HEIGHT);
+    draw_layer(&mut world, base, world_rect(), world_rect(), false);
+    draw_terrain(&mut world, terrain, clip);
+    world
+}
+
+fn draw_terrain(world: &mut Picture, layers: &[ModernHDTerrainDraw], clip: Rectangle) {
+    for terrain in layers {
+        let rect = if terrain.scale_to_rect {
+            terrain.rect
+        } else {
+            at_size(terrain.rect.min, terrain.image.width, terrain.image.height)
+        };
+        draw_layer(world, &terrain.image, rect, clip, false);
     }
 }
 

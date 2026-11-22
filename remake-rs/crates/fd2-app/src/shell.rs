@@ -45,7 +45,7 @@ use crate::clock::EbitenClock;
 use crate::gpu_shell::{Renderer, ShellGpu, requested_renderer};
 use crate::input::{Bindings, PhysicalInput, PhysicalSnapshot, gamepad_snapshot};
 use crate::script::{Script, frame_record};
-use crate::video::{LOGICAL_H, LOGICAL_W, Letterbox, expected_window, letterbox, opaque_rgba};
+use crate::video::{LOGICAL_H, LOGICAL_W, Letterbox, centered_game, expected_window, letterbox, opaque_rgba};
 
 /// 截圖前等幾個顯示幀（讓貼圖上傳與管線化繪圖跑完）。
 const SHOT_SETTLE_FRAMES: u32 = 3;
@@ -70,6 +70,9 @@ struct Shell {
     panel_image: Handle<Image>,
     panel_sprite: Option<Entity>,
     panel_key: Option<String>,
+    poster_sprites: Option<[PosterSprite; 2]>,
+    poster_scenery: Handle<Image>,
+    poster_scenery_source: Option<Arc<Picture>>,
     script: Option<ScriptRun>,
     /// 上一個顯示幀畫好的 CPU 畫格（截圖核對用）。
     last_frame: Vec<u8>,
@@ -78,6 +81,13 @@ struct Shell {
     gpu: Option<ShellGpu>,
     /// 上一個 `drive` 開始的時間（`timing.jsonl` 的幀間隔）。
     last_drive: Option<Instant>,
+}
+
+struct PosterSprite {
+    picture: Handle<Image>,
+    front: Entity,
+    background: Entity,
+    cached: Option<Arc<Picture>>,
 }
 
 impl GameAudioHost for Shell {
@@ -140,7 +150,7 @@ pub fn run() -> AppExit {
     if !runner.load_error().is_empty() {
         eprintln!("loadGame：{}", runner.load_error());
     }
-    let (w, h) = script.as_ref().map_or((LOGICAL_W * 2, LOGICAL_H * 2), |(s, _)| s.window);
+    let (w, h) = script.as_ref().map_or(((runner.layout().0 as u32) * 2, LOGICAL_H * 2), |(s, _)| s.window);
     let started = Instant::now();
     let script = script.map(|(script, out)| ScriptRun {
         frames: std::fs::File::create(out.join("frames.jsonl")).expect("frames.jsonl"),
@@ -175,6 +185,9 @@ pub fn run() -> AppExit {
         panel_image: Handle::default(),
         panel_sprite: None,
         panel_key: None,
+        poster_sprites: None,
+        poster_scenery: Handle::default(),
+        poster_scenery_source: None,
         script,
         last_frame: Vec::new(),
         fullscreen: false,
@@ -265,6 +278,22 @@ fn setup(mut commands: Commands, mut images: ResMut<Assets<Image>>, mut shell: N
             ))
             .id(),
     );
+    let mut poster_image = Image::new_fill(
+        Extent3d { width: 1, height: 1, depth_or_array_layers: 1 },
+        TextureDimension::D2,
+        &[0, 0, 0, 0],
+        TextureFormat::Rgba8UnormSrgb,
+        RenderAssetUsages::MAIN_WORLD | RenderAssetUsages::RENDER_WORLD,
+    );
+    poster_image.sampler = ImageSampler::linear();
+    shell.poster_scenery = images.add(poster_image.clone());
+    shell.poster_sprites = Some(std::array::from_fn(|_| {
+        let picture = images.add(poster_image.clone());
+        let front = commands.spawn((Sprite::from_image(picture.clone()), Visibility::Hidden)).id();
+        let background =
+            commands.spawn((Sprite::from_color(Color::srgb_u8(8, 19, 33), Vec2::ONE), Visibility::Hidden)).id();
+        PosterSprite { picture, front, background, cached: None }
+    }));
 }
 
 /// r5i：手把接上時把 Bevy 的搖桿死區與重新映射關掉（Bevy 預設 ±5% 死區、區間外線性放大），讀到的值與 Ebiten 的
@@ -351,9 +380,9 @@ fn drive(
         return;
     };
     let (w, h, sf) = (window.physical_width(), window.physical_height(), window.scale_factor());
-    let lb = letterbox(w, h);
     let shell = &mut *shell;
-    place_sprite(shell, &mut sprites, lb, w, h, sf);
+    let side = shell.runner.poster_side_width();
+    let lb = centered_game(w, h, side);
 
     // r5i：滾輪（Ebiten `Wheel()`：一格是 1，上為正）、焦點與手把。Bevy 的像素單位（觸控板）以 100 像素當一格
     // （KNOWN_DIFFERENCES `wheel-pixel-unit`）。腳本模式不讀（見模組文件）。
@@ -430,6 +459,14 @@ fn drive(
     if snap.cursor.is_none() {
         raw.cursor = (-1, -1);
     }
+    if side != 0 {
+        if let Some((x, _)) = snap.cursor {
+            raw.cursor.0 = lb.game_x(x, raw.cursor.0);
+        }
+        for ((_, logical, _), &(_, physical, _)) in raw.touches.iter_mut().zip(&snap.touches) {
+            *logical = lb.game_x(physical, *logical);
+        }
+    }
     let runner = &mut shell.runner;
     let t_frame = Instant::now();
     for i in 0..updates {
@@ -485,9 +522,12 @@ fn drive(
     let t_draw = Instant::now();
     let progress = runner.progress();
     let game_frame = runner.game_frame();
+    let lb = centered_game(w, h, shell.runner.poster_side_width());
+    place_sprite(shell, &mut sprites, lb, w, h, sf);
     place_hd_world(shell, hd_world.as_ref(), &mut images, &mut sprites);
     place_hd_portrait(shell, &mut images, &mut sprites);
     place_controls_panel(shell, &mut images, &mut sprites);
+    place_posters(shell, &mut images, &mut sprites);
     let interval = shell.last_drive.map(|t| (t_frame - t).as_secs_f64() * 1e3);
     shell.last_drive = Some(t_frame);
     if let Some(run) = shell.script.as_mut() {
@@ -509,6 +549,89 @@ fn drive(
     }
     if let Some(pix) = pix {
         shell.last_frame = pix;
+    }
+}
+
+fn place_posters(
+    shell: &mut Shell,
+    images: &mut Assets<Image>,
+    sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
+) {
+    let game =
+        shell.sprite.and_then(|e| sprites.get(e).ok()).and_then(|(s, t, _)| Some((s.custom_size?, t.translation)));
+    let side = shell.runner.poster_side_width();
+    let scenery = shell.runner.poster_scenery();
+    if let Some((source, _)) = &scenery {
+        if shell.poster_scenery_source.as_ref().is_none_or(|last| !Arc::ptr_eq(last, source))
+            && let Some(mut image) = images.get_mut(&shell.poster_scenery)
+        {
+            image.texture_descriptor.size =
+                Extent3d { width: source.width as u32, height: source.height as u32, depth_or_array_layers: 1 };
+            image.data = Some(opaque_rgba(source.read_pixels()));
+            shell.poster_scenery_source = Some(source.clone());
+        }
+    } else {
+        shell.poster_scenery_source = None;
+    }
+    let layers = shell.runner.poster_sides();
+    let Some(sides) = &mut shell.poster_sprites else { return };
+    for (index, poster) in sides.iter_mut().enumerate() {
+        let (Some((layers, opacity)), Some((game_size, center))) = (layers, game) else {
+            poster.cached = None;
+            for entity in [poster.front, poster.background] {
+                if let Ok((_, _, mut visibility)) = sprites.get_mut(entity)
+                    && *visibility != Visibility::Hidden
+                {
+                    *visibility = Visibility::Hidden;
+                }
+            }
+            continue;
+        };
+        let source = &layers[index];
+        if poster.cached.as_ref().is_none_or(|last| !Arc::ptr_eq(last, source))
+            && let Some(mut image) = images.get_mut(&poster.picture)
+        {
+            image.texture_descriptor.size =
+                Extent3d { width: source.width as u32, height: source.height as u32, depth_or_array_layers: 1 };
+            image.data = Some(straight_alpha(source.read_pixels()));
+            poster.cached = Some(source.clone());
+        }
+        let size = Vec2::new(game_size.x * side as f32 / LOGICAL_W as f32, game_size.y);
+        let distance = (game_size.x + size.x) * 0.5;
+        let x = center.x + if index == 0 { -distance } else { distance };
+        for (entity, depth) in [(poster.front, -2.0), (poster.background, -3.0)] {
+            if let Ok((mut sprite, mut transform, mut visibility)) = sprites.get_mut(entity) {
+                if sprite.custom_size != Some(size) {
+                    sprite.custom_size = Some(size);
+                }
+                let position = Vec3::new(x, center.y, depth);
+                if transform.translation != position {
+                    transform.translation = position;
+                }
+                if entity == poster.front && sprite.color.alpha() != opacity {
+                    sprite.color.set_alpha(opacity);
+                }
+                if entity == poster.background {
+                    let (image, color, crop) = if let Some((_, bounds)) = &scenery {
+                        let width = (bounds.max.x - bounds.min.x) * i64::from(side) / i64::from(LOGICAL_W);
+                        let x = if index == 0 { bounds.min.x } else { bounds.max.x - width };
+                        let crop = Rect::new(x as f32, bounds.min.y as f32, (x + width) as f32, bounds.max.y as f32);
+                        (shell.poster_scenery.clone(), Color::WHITE, Some(crop))
+                    } else {
+                        (Handle::default(), Color::srgb_u8(8, 19, 33), None)
+                    };
+                    if sprite.image != image || sprite.color != color || sprite.rect != crop {
+                        sprite.image = image;
+                        sprite.color = color;
+                        sprite.rect = crop;
+                        sprite.flip_x = crop.is_some();
+                    }
+                }
+                if *visibility != Visibility::Visible {
+                    *visibility = Visibility::Visible;
+                }
+            }
+        }
     }
 }
 

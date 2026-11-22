@@ -894,6 +894,7 @@ pub struct Game {
     pub(crate) player_font_requested: bool,
     pub(crate) player_fullscreen_requested: bool,
     pub(crate) player_poster_cycle_requested: bool,
+    pub(crate) posters: PlayerPosters,
     pub(crate) player_viewport_left: i64,
     pub(crate) player_overlay_block: Rectangle,
     pub(crate) native_map_presented: bool,
@@ -8360,6 +8361,8 @@ impl Game {
         }
         self.draw_field_map_overlays(screen, native_map_presented, legacy_viewport, campaign_battle_view);
         let native_story_dialogue_drawn = self.draw_native_story_dialogue(screen);
+        self.posters.native_dialogue_visible =
+            native_story_dialogue_drawn && !modern_hd_requested && self.has_hd_story_map_source();
         if self.font.is_some() {
             if let Some(st) = self.st.as_ref()
                 && !legacy_viewport
@@ -9686,7 +9689,7 @@ impl Game {
             &mut work,
             &mut vga,
         );
-        let (new_work, new_vga, stage, modern) = match composed {
+        let (new_work, new_vga, stage, modern, poster_terrain) = match composed {
             Ok(outcome) => outcome,
             Err(err) => {
                 // Go 的 `work`／`vga` 與 `g.nativeMapWork`／`g.nativeMapVGA` 是同一塊記憶體（除非長度不對或要複製），
@@ -9695,6 +9698,9 @@ impl Game {
                 return Err(err);
             }
         };
+        if self.posters.native_scenery.as_deref() != poster_terrain.as_ref() {
+            self.posters.native_scenery = poster_terrain.map(Arc::new);
+        }
         if let Some(stage) = stage {
             self.native_ch23_state = Some(stage);
         }
@@ -9732,7 +9738,13 @@ impl Game {
         candidate_dac: &[u8],
         work: &mut Vec<u8>,
         vga: &mut Vec<u8>,
-    ) -> Result<(Option<Vec<u8>>, Option<Vec<u8>>, Option<NativeCh23AdapterState>, Option<ModernHDMapFrame>)> {
+    ) -> Result<(
+        Option<Vec<u8>>,
+        Option<Vec<u8>>,
+        Option<NativeCh23AdapterState>,
+        Option<ModernHDMapFrame>,
+        Option<Picture>,
+    )> {
         let overlay_fn;
         let mut in_ = build_native_map_frame_input(
             self.native_map_assets.as_ref(),
@@ -9792,11 +9804,22 @@ impl Game {
         } else {
             None
         };
+        let mut poster_terrain = None;
         match motion {
             ModernHDMapMotion::North { unit_y, phase } => {
                 indexedmap::compose_native_up_step_frame(work_buf, vga_buf, &in_.frame, unit_y, phase)?
             }
             ModernHDMapMotion::Step => indexedmap::compose_native_step_frame(work_buf, vga_buf, &in_.frame)?,
+            ModernHDMapMotion::Steady if self.posters.active() && modern.is_none() => {
+                let palette = color_palette_from_nrgba(&fdother::vga_palette_from_dac(candidate_dac)?);
+                let mut observe = |stage, work: &mut [u8], _: &mut [u8]| {
+                    if stage == indexedmap::FRAME_STAGE_TERRAIN {
+                        poster_terrain = poster_terrain_base(work, NATIVE_MAP_STEADY_BASE as usize, &palette);
+                    }
+                    Ok(())
+                };
+                indexedmap::compose_native_frame_observed(work_buf, vga_buf, &mut in_, Some(&mut observe))?;
+            }
             ModernHDMapMotion::Steady => indexedmap::compose_native_frame(work_buf, vga_buf, &mut in_)?,
         }
         if self.modern_story_portraits.is_none()
@@ -9807,7 +9830,7 @@ impl Game {
         {
             todo!("R6: main.go:12731 prepareModernHDMapHUDPanel（HD 介面 HUD）");
         }
-        Ok((own_work, own_vga, stage, modern))
+        Ok((own_work, own_vga, stage, modern, poster_terrain))
     }
 
     /// endTurn 是 0x1A30B 的入口（系統選單 END／YES、全員行動完的 0x13565、全軍移動收尾

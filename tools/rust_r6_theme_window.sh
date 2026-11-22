@@ -1,6 +1,6 @@
 #!/bin/bash
 # 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄] [interface-cold|no-font]
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前標題收據目錄] [interface-cold|no-font|posters|poster-scenery]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -47,7 +47,9 @@ window() {
       for path in /original/*; do ln -s "$path" "$FD2_ASSET_PACK/"; done
       ln -s /assets/locales "$FD2_ASSET_PACK/locales"
       rm -f /tmp/.X11-unix/X96
-      Xvfb :96 -screen 0 1280x800x24 -nolisten tcp -ac >"/out/$MODE-xvfb.log" 2>&1 &
+      width=1280
+      if [[ "$MODE" == poster* ]]; then width=1808; fi
+      Xvfb :96 -screen 0 "${width}x800x24" -nolisten tcp -ac >"/out/$MODE-xvfb.log" 2>&1 &
       xvfb=$!
       trap "kill $xvfb 2>/dev/null || true" EXIT
       for _ in $(seq 1 60); do test ! -S /tmp/.X11-unix/X96 || break; sleep 0.1; done
@@ -162,6 +164,38 @@ drive() {
         echo "逾時等候相同畫面 $1 與 $2" >&2
         return 1
       }
+      poster_point() {
+        xdotool mousemove --window "$wid" "$((264 + 2 * $1))" "$((2 * $2))"
+        sleep 0.55
+      }
+      poster_click() {
+        poster_point "$1" "$2"
+        xdotool mousedown 1
+        sleep 0.35
+        xdotool mouseup 1
+        sleep 0.5
+      }
+      poster_menu() {
+        poster_point 564 1
+        poster_click 564 12
+      }
+      poster_capture() {
+        poster_point 320 200
+        for _ in $(seq 1 60); do
+          sleep 0.4
+          capture "$1"
+          if test "$(convert "$1" -format "%[pixel:p{264,0}]" info:)" != "srgb(17,24,37)"; then
+            return
+          fi
+        done
+        echo "海報工具列未收合：$1" >&2
+        return 1
+      }
+      compare_poster_center() {
+        convert "$1" -crop 1280x656+264+0 +repage /tmp/poster-center.png
+        convert poster-off.png -crop 1280x656+264+0 +repage /tmp/poster-baseline.png
+        same /tmp/poster-center.png /tmp/poster-baseline.png
+      }
       case "$MODE" in
         f2)
           first_visible_frame opening-before.png
@@ -258,6 +292,68 @@ drive() {
           wait_for_picture title-no-font.png title-missing-pack.png
           grep -q "\"interface_mode\":\"hd\"" no-font/fd2_re/fd2_settings.json
           ;;
+        posters)
+          xdotool windowsize "$wid" 1808 800
+          wait_for_menu poster-off.png
+          poster_menu
+          capture poster-menu.png
+          poster_click 495 57
+          wait_for_preference set hd
+          key Escape
+          poster_capture poster-hd.png
+          compare_poster_center poster-hd.png
+          different poster-hd.png poster-off.png
+          poster_menu
+          poster_click 559 90
+          poster_click 466 118
+          poster_click 578 57
+          wait_for_preference set classic
+          grep -q "\"edge\": 72" profile/fd2_re/fd2_settings.json
+          grep -q "\"fade_ms\": 300" profile/fd2_re/fd2_settings.json
+          key Escape
+          poster_capture poster-classic.png
+          compare_poster_center poster-classic.png
+          different poster-hd.png poster-classic.png
+          poster_click -1 200
+          poster_click 641 200
+          poster_capture poster-after-side-click.png
+          compare_poster_center poster-after-side-click.png
+          ! grep -Fq "beat op=act source=0x32343" "$MODE.log"
+          ;;
+        poster-cold)
+          wait_for_menu poster-cold.png
+          compare_poster_center poster-cold.png
+          convert poster-cold.png -crop 264x800+0+0 +repage /tmp/poster-cold.png
+          convert poster-classic.png -crop 264x800+0+0 +repage /tmp/poster-classic.png
+          same /tmp/poster-cold.png /tmp/poster-classic.png
+          poster_menu
+          poster_click 413 57
+          wait_for_preference set off
+          key Escape
+          poster_capture poster-off-after.png
+          compare_poster_center poster-off-after.png
+          ;;
+        poster-missing)
+          xdotool windowsize "$wid" 1808 800
+          wait_for_menu poster-missing.png
+          compare_poster_center poster-missing.png
+          grep -q "海報不可用" "$MODE.log"
+          grep -q "\"set\":\"classic\"" rejected/fd2_re/fd2_settings.json
+          ;;
+        poster-scenery)
+          wait_for_menu poster-neutral.png
+          test "$(convert poster-neutral.png -crop 1x400+263+0 -format "%k" info:)" -eq 1
+          key Return
+          wait_for_event "beat op=dialog source=0x32382"
+          poster_capture poster-native-scenery.png
+          test "$(convert poster-native-scenery.png -crop 1x400+263+0 -format "%k" info:)" -gt 4
+          poster_point 105 1
+          poster_click 105 12
+          wait_for_event "[theme] 主題：現代手繪"
+          poster_capture poster-hd-scenery.png
+          test "$(convert poster-hd-scenery.png -crop 1x400+263+0 -format "%k" info:)" -gt 4
+          different poster-native-scenery.png poster-hd-scenery.png
+          ;;
       esac
       if grep -E "panicked at|^Update：|^loadGame：" "$MODE.log"; then exit 1; fi
       echo "$MODE PASS"
@@ -274,7 +370,7 @@ if [[ "$mode" == "interface-cold" ]]; then
   test -f "${2:?需要標題基準}/title-hd-interface-hd-art.png"
 elif [[ "$mode" == "no-font" ]]; then
   test -f "${2:?需要標題基準}/title-missing-pack.png"
-else
+elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" ]]; then
   test "$mode" = toggle
 fi
 timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
@@ -294,7 +390,34 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
     printf "{\"theme_id\":\"%s\",\"interface_mode\":\"%s\"}\n" "$theme" "$interface" > /out/profile/fd2_re/fd2_settings.json
     mkdir -p /out/no-font/fd2_re
     printf "{\"theme_id\":\"faithful\",\"interface_mode\":\"hd\"}\n" > /out/no-font/fd2_re/fd2_settings.json
+    if [[ "$CHECK_MODE" == poster* ]]; then
+      mkdir -p /out/rejected/fd2_re
+      printf "{\"poster\":{\"set\":\"classic\",\"edge\":72,\"fade_ms\":300}}\n" > /out/rejected/fd2_re/fd2_settings.json
+      mkdir -p /out/scenery/fd2_re
+      cp /out/rejected/fd2_re/fd2_settings.json /out/scenery/fd2_re/fd2_settings.json
+    fi
   '
+if [[ "$mode" == "poster-scenery" ]]; then
+  window poster-scenery scenery /hd
+  drive poster-scenery
+  stop_window
+  exit 0
+fi
+if [[ "$mode" == "posters" ]]; then
+  window posters profile /hd
+  drive posters
+  stop_window
+  window poster-cold profile /hd
+  drive poster-cold
+  stop_window
+  window poster-missing rejected /missing
+  drive poster-missing
+  stop_window
+  window poster-scenery scenery /hd
+  drive poster-scenery
+  stop_window
+  exit 0
+fi
 if [[ "$mode" == "interface-cold" ]]; then
   window interface-cold profile /hd
   drive interface-cold

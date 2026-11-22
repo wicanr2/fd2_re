@@ -46,6 +46,9 @@ impl PlayerRunner {
     /// `applyPackagedPlayerDefaults`（設 `FD2_CAMPAIGN`）要在呼叫之前由外殼處理：工作區禁用 `unsafe`，不能在行程內改環境變數。
     pub fn load() -> PlayerRunner {
         let mut game = load_game().expect("loadGame 一律回傳 Some");
+        if game.load_err.is_empty() && std::env::var_os("FD2_APP_SCRIPT").is_none() {
+            game.posters = PlayerPosters::load();
+        }
         // Go `main.go:13497`：`g.input = newPlayerInput(loadControlsSettings())`、`activeInput = g.input`（r5i）。
         let (bindings, status) = load_controls_settings();
         game.player_input = Some(PlayerInput::new(bindings, status));
@@ -72,7 +75,21 @@ impl PlayerRunner {
 
     /// Go `Layout`（`player_toolbar.go:154`）：沒有工具列與海報時是 640×400。
     pub fn layout(&self) -> (i64, i64) {
-        (LOGICAL_W, LOGICAL_H)
+        (LOGICAL_W + 2 * i64::from(self.poster_side_width()), LOGICAL_H)
+    }
+
+    pub fn poster_side_width(&self) -> u32 {
+        if self.game.posters.active() { POSTER_SIDE_WIDTH } else { 0 }
+    }
+
+    pub fn poster_sides(&mut self) -> Option<(&[Arc<Picture>; 2], f32)> {
+        self.game.posters.sides()
+    }
+
+    pub fn poster_scenery(&mut self) -> Option<(Arc<Picture>, Rectangle)> {
+        let map = self.game.modern_hd_world_visible.then_some(self.game.modern_hd_map_frame.as_ref()).flatten();
+        let native = self.game.native_map_presented || self.game.posters.native_dialogue_visible;
+        self.game.posters.scenery(map, native)
     }
 
     /// 一次 Ebiten `Update`：先推進 `inpututil` 與虛擬時鐘，再照 Go `modernHDPresentation.Update` 的忠實模式子集執行。
@@ -94,17 +111,27 @@ impl PlayerRunner {
         if self.game.balance_ui.open {
             todo!("r6:player_balance.go:412 updateBalanceEditor（數值編輯器由工具列開啟，R6）")
         }
-        self.game.player_overlay_block = Rectangle::default();
-        let toolbar_pointer = self.game.update_toolbar(&physical, raw.devices.focused);
-        if self.game.player_toolbar_touch_blocked {
-            physical.just_pressed_touches.retain(|&(_, y)| !(0..PLAYER_TOOLBAR_HEIGHT).contains(&y));
+        let allowed = self.game.player_poster_controls_allowed();
+        if self.game.posters.update_menu(&physical, raw.devices.focused, allowed) {
+            self.game.sample_input(false, &devices.snapshot);
+            return Ok(RunnerStep::Continue);
         }
-        if toolbar_pointer {
+        let toolbar_pointer = self.game.update_toolbar(&physical, raw.devices.focused);
+        self.game.player_overlay_block = self.game.posters.menu_rect();
+        if self.game.player_toolbar_touch_blocked || self.game.posters.active() {
+            let toolbar = self.game.player_toolbar_touch_blocked;
+            let posters = self.game.posters.active();
+            physical.just_pressed_touches.retain(|&(x, y)| {
+                (!toolbar || !(0..PLAYER_TOOLBAR_HEIGHT).contains(&y)) && (!posters || (0..LOGICAL_W).contains(&x))
+            });
+        }
+        let poster_pointer = self.game.posters.active() && !(0..LOGICAL_W).contains(&physical.cursor.0);
+        if toolbar_pointer || poster_pointer {
             physical.mouse_left_held = false;
             physical.mouse_left_just_pressed = false;
             physical.mouse_left_just_released = false;
         }
-        self.game.sample_input(!toolbar_pointer && !self.game.controls.open, &devices.snapshot);
+        self.game.sample_input(!toolbar_pointer && !poster_pointer && !self.game.controls.open, &devices.snapshot);
         if self.game.controls.open {
             return Ok(RunnerStep::Continue);
         }
@@ -117,10 +144,6 @@ impl PlayerRunner {
                 return Ok(RunnerStep::Terminated);
             }
             return Err(err.message().to_string());
-        }
-        if self.game.player_poster_cycle_requested {
-            // modern_hd_presentation.go:68
-            todo!("r6:player_poster.go:116 cyclePosters（F10 海報）")
         }
         // modern_hd_presentation.go:77..84
         self.game.sync_player_clock_speed_at(now);

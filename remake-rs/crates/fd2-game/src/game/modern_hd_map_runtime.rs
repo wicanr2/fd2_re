@@ -79,6 +79,8 @@ pub(crate) struct ModernHDMapFrame {
     pub(crate) units: Vec<ModernHDMapUnitDraw>,
     pub(crate) foreground: Vec<ModernHDMapForegroundDraw>,
     pub(crate) terrain_seed: Vec<u8>,
+    pub(crate) terrain_view_base: usize,
+    pub(crate) poster_base: Option<Arc<Picture>>,
     pub(crate) terrain: Vec<ModernHDTerrainDraw>,
     pub(crate) overlays: Vec<ModernHDMapOverlayDraw>,
     pub(crate) viewport: Rectangle,
@@ -273,6 +275,7 @@ pub(crate) fn prepare_modern_hd_map_frame(
         units: geometry.units,
         foreground: geometry.foreground,
         terrain_seed,
+        terrain_view_base: viewport_base,
         ..Default::default()
     })
 }
@@ -337,8 +340,24 @@ impl Game {
         if story_motion {
             self.project_hd_story_motion(&mut frame, &input.frame, seed, &palette, tiles, &theme.map_sprites_hd)?;
         }
+        if self.posters.active() {
+            frame.poster_base =
+                poster_terrain_base(&frame.terrain_seed, frame.terrain_view_base, &palette).map(Arc::new);
+        }
         Ok(frame)
     }
+}
+
+pub(crate) fn poster_terrain_base(seed: &[u8], base: usize, palette: &[ColorRgba]) -> Option<Picture> {
+    let stride = fdicon::NATIVE_MAP_STRIDE as usize;
+    let end = base.checked_add(191 * stride + 312)?;
+    if seed.len() < end || palette.len() != 256 {
+        return None;
+    }
+    Some(viewport_picture(|x, y| {
+        let c = palette[seed[base + (y - 4) * stride + (x - 4)] as usize];
+        [c.r, c.g, c.b, 255]
+    }))
 }
 
 #[cfg(test)]

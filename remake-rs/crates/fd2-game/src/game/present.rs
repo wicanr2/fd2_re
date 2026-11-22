@@ -68,6 +68,7 @@ impl Game {
     /// 忠實模式只清 `modernHDText`）。
     pub(crate) fn begin_present_frame(&mut self) {
         self.native_map_presented = false;
+        self.posters.native_dialogue_visible = false;
         self.movement_panel_draw = None;
         self.native_interface_hud_visible = false;
         self.modern_opening_view = None;

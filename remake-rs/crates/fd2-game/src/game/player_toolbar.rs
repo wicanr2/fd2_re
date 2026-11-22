@@ -18,9 +18,10 @@ enum ToolbarAction {
     Speed,
     Fullscreen,
     Controls,
+    Posters,
 }
 
-const BUTTONS: [(i64, i64, ToolbarAction); 9] = [
+const BUTTONS: [(i64, i64, ToolbarAction); 10] = [
     (8, 78, ToolbarAction::Art(false)),
     (82, 130, ToolbarAction::Art(true)),
     (134, 226, ToolbarAction::Interface),
@@ -28,8 +29,9 @@ const BUTTONS: [(i64, i64, ToolbarAction); 9] = [
     (318, 376, ToolbarAction::Font),
     (380, 424, ToolbarAction::Speed),
     (428, 482, ToolbarAction::Music),
-    (486, 560, ToolbarAction::Fullscreen),
-    (564, 622, ToolbarAction::Controls),
+    (486, 543, ToolbarAction::Fullscreen),
+    (547, 582, ToolbarAction::Posters),
+    (586, 632, ToolbarAction::Controls),
 ];
 
 impl Game {
@@ -37,7 +39,9 @@ impl Game {
         let height = if self.toolbar_ticks > 0 { PLAYER_TOOLBAR_HEIGHT } else { 4 };
         let zone = |(x, y)| (0..LOGICAL_W).contains(&x) && (0..height).contains(&y);
         let near = focused && zone(input.cursor);
-        if self.font.is_some() && (near || input.touches.iter().any(|&(_, x, y)| zone((x, y)))) {
+        if self.font.is_some()
+            && (near || self.posters.menu_open() || input.touches.iter().any(|&(_, x, y)| zone((x, y))))
+        {
             self.toolbar_ticks = 90 * self.effective_player_speed();
         } else {
             self.toolbar_ticks = (self.toolbar_ticks - 1).max(0);
@@ -111,10 +115,12 @@ impl Game {
             }
             ToolbarAction::Fullscreen => self.fullscreen_toggle_requested = true,
             ToolbarAction::Controls => self.open_controls_panel(),
+            ToolbarAction::Posters if self.player_poster_controls_allowed() => self.posters.toggle_menu(),
+            ToolbarAction::Posters => {}
         }
     }
 
-    fn toolbar_labels(&self) -> [String; 9] {
+    fn toolbar_labels(&self) -> [String; 10] {
         let interface = if self.hd_title_menu.is_some() { "HD" } else { "原版" };
         let audio = if self.bgm_source == "mt32" { "MT-32" } else { "FM" };
         [
@@ -126,12 +132,18 @@ impl Game {
             format!("{}×", self.player_speed),
             if self.current_native_system_options().music_enabled() { "音樂 開" } else { "音樂 關" }.into(),
             "全螢幕".into(),
+            "海報".into(),
             "按鍵".into(),
         ]
     }
 
     pub(crate) fn toolbar_render_key(&self) -> String {
-        format!("toolbar {:?} {}", self.toolbar_labels(), self.modern_story_portraits.is_some())
+        format!(
+            "toolbar {:?} {} {}",
+            self.toolbar_labels(),
+            self.modern_story_portraits.is_some(),
+            self.posters.render_key()
+        )
     }
 
     pub(crate) fn draw_toolbar(&mut self, surface: &mut Picture) {
@@ -140,7 +152,8 @@ impl Game {
         font.set_user_scale(1.0);
         surface.sub_image_mut(rect(0, 0, LOGICAL_W * 3, 72)).fill(ColorRgba { r: 17, g: 24, b: 37, a: 255 });
         for ((left, right, action), label) in BUTTONS.into_iter().zip(labels) {
-            let selected = matches!(action, ToolbarAction::Art(hd) if hd == self.modern_story_portraits.is_some());
+            let selected = matches!(action, ToolbarAction::Art(hd) if hd == self.modern_story_portraits.is_some())
+                || matches!(action, ToolbarAction::Posters if self.posters.menu_open());
             let color = if selected {
                 ColorRgba { r: 57, g: 77, b: 108, a: 255 }
             } else {
@@ -150,6 +163,9 @@ impl Game {
             let width = font.width(&label, 1.6);
             let x = ((left + right) as f64 * 3.0 - width) / 2.0;
             font.draw(surface, &label, x, 18.0, 1.6, ColorRgba { r: 245, g: 245, b: 245, a: 255 });
+        }
+        if self.posters.menu_open() {
+            self.posters.draw_menu(surface, &mut font);
         }
     }
 

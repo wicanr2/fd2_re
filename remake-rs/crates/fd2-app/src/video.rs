@@ -22,11 +22,20 @@ pub struct Letterbox {
 
 /// 視窗實體大小 `w×h` 時的整數倍置中位置：倍率 `max(1, min(w/640, h/400))`，餘下的寬高平分成黑邊（奇數時左、上少 1）。
 pub fn letterbox(w: u32, h: u32) -> Letterbox {
-    let scale = (w / LOGICAL_W).min(h / LOGICAL_H).max(1);
+    centered_game(w, h, 0)
+}
+
+/// 兩側加寬時，縮放依完整畫布，輸入原點仍在中央遊戲左上角。
+pub fn centered_game(w: u32, h: u32, side: u32) -> Letterbox {
+    let scale = (w / (LOGICAL_W + 2 * side)).min(h / LOGICAL_H).max(1);
     Letterbox { scale, ox: w.saturating_sub(LOGICAL_W * scale) / 2, oy: h.saturating_sub(LOGICAL_H * scale) / 2 }
 }
 
 impl Letterbox {
+    pub fn game_x(self, physical: f32, logical: i64) -> i64 {
+        if physical < self.ox as f32 { -1 } else { logical }
+    }
+
     /// 視窗實體座標換成 Ebiten 邏輯座標：Ebiten `clientPositionToLogicalPosition`（`internal/ui/context.go:271`）的
     /// `(x - ox) / s`，再照 `input_mobile.go:57` 的 `int(x)` 向零截斷。`s` 與 `ox`／`oy` 用本模組的整數倍位置。
     pub fn to_logical(self, x: f32, y: f32) -> (i64, i64) {
