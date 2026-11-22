@@ -125,9 +125,15 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 使用者確認將美術、介面、音訊、語言、字級、速度、海報、全螢幕及按鍵設定移到工具列。保留 F5／F9 快速存讀檔與遊戲操作。
 
-滑鼠移到遊戲畫面上緣即可顯示工具列。觸控同樣可從上緣開啟。工具列提供美術、標題介面、音源、音樂開關、字級、速度、全螢幕及按鍵面板。語言仍待接入其他語系的對白。海報仍待接入圖組載入和背景合成。
+滑鼠移到遊戲畫面上緣即可顯示工具列。觸控同樣可從上緣開啟。工具列提供美術、標題介面、音源、音樂開關、字級、速度、全螢幕及按鍵面板。語言仍待接入其他語系的對白。海報仍待接入工具列及視窗合成。
 
 Linux Bevy 發行組態建置及格式檢查通過。`work/r6-toolbar-20261122-r2` 用滑鼠驗證四種美術與介面組合，並比對按下 F2／F11 前後的標題畫面。`work/r6-toolbar-settings-20261122` 驗證偏好冷啟動、按鍵面板開關，以及音源、字級與速度保存。重跑入口為 [`tools/rust_r6_theme_window.sh`](../../tools/rust_r6_theme_window.sh)。
+
+### R6 HD1 海報素材（DATA-READY）
+
+沿 [61 的雙側海報規格](../knowledge-base/61-modern-theme-runtime-spec.md#hd1雙側海報正式接線conformed-scopedruntime-e1285)移植兩組圖稿的清冊、SHA-256、尺寸與不透明度檢查。整組驗過後才交付四張側欄，每張 296×900。內緣遮罩沿凍結 Go 版的分段漸層及預乘色彩規則。Bevy 側欄、乾淨場景銜接、淡入與工具列選單另待接線。
+
+`tools/rust_game_test.sh --release --quiet` 通過格式、Clippy 與 448 項回歸。唯讀掛載私人 HD 包後，在 Docker 以 `cargo test --offline --locked -p fd2-game --release --lib approved_posters_match_independent_crop_and_mask -- --ignored` 重驗正式素材。`FD2_REMAKE_ASSETS` 設為掛載的 `remake/assets`，`FD2_MODERN_THEME_PACK` 設為掛載的私人圖稿目錄。四張裁切圖及其 48 像素預設遮罩的 RGBA 雜湊均與獨立 Pillow 計算一致。
 
 ### R6 F11 標題介面（RUNTIME-E1，2026-11-22）
 

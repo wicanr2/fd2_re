@@ -2,6 +2,8 @@
 
 Rust R6 設定已移至上緣工具列。Linux Bevy 視窗驗證四種美術與標題介面組合、偏好冷啟動、按鍵面板，以及音源、字級與速度保存。語言及海報尚待接線。[119 的工具列驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-工具列設定入口)
 
+Rust R6 雙側海報素材達 DATA-READY。兩組正式圖稿通過清冊與原檔檢查，四張裁切圖及預設遮罩通過獨立像素比對。視窗與工具列尚未消費這些圖層。[119 的海報素材驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-海報素材data-ready)
+
 Rust R6 標題介面達 RUNTIME-E1。既有 Linux Bevy 視窗收據涵蓋四種美術與介面組合、偏好冷啟動和缺字型回退。讀檔槽、對白框及戰場的 HD 介面仍由 #312 追蹤。[119 的標題介面驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-f11-標題介面runtime-e12026-11-22)
 
 Rust R6 美術啟用達 RUNTIME-E1。既有 Linux Bevy 視窗收據涵蓋首次啟用、保存 HD 美術後冷啟動、缺包回退，以及標題與普通 START 後皇城首句對白的美術來回切換。完整主題清冊仍由 #312 追蹤。[119 的美術啟用驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-美術啟用與背景載入runtime-e12026-11-22)

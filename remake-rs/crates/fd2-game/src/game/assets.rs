@@ -292,7 +292,11 @@ pub(crate) fn decode_opaque_png_picture(data: &[u8]) -> Option<Picture> {
 }
 
 pub(crate) fn decode_opaque_square_png(data: &[u8], side: u32) -> Option<Picture> {
-    decode_png_checked(data, PngAlpha::Opaque, Some(side), |_, _, _| {})
+    decode_opaque_png_with_size(data, side, side)
+}
+
+pub(crate) fn decode_opaque_png_with_size(data: &[u8], width: u32, height: u32) -> Option<Picture> {
+    decode_png_checked(data, PngAlpha::Opaque, Some((width, height)), |_, _, _| {})
 }
 
 /// 對應 Go 先預乘 16 位元通道，再寫入 8 位元 RGBA。
@@ -301,7 +305,7 @@ pub(crate) fn decode_precise_png_picture(data: &[u8]) -> Option<Picture> {
 }
 
 pub(crate) fn decode_sprite_png(data: &[u8], side: u32, observe_alpha: impl FnMut(i64, i64, u16)) -> Option<Picture> {
-    decode_png_checked(data, PngAlpha::Precise, Some(side), observe_alpha)
+    decode_png_checked(data, PngAlpha::Precise, Some((side, side)), observe_alpha)
 }
 
 #[derive(PartialEq, Eq)]
@@ -318,7 +322,7 @@ fn decode_png(data: &[u8], alpha: PngAlpha) -> Option<Picture> {
 fn decode_png_checked(
     data: &[u8],
     alpha: PngAlpha,
-    side: Option<u32>,
+    size: Option<(u32, u32)>,
     mut observe_alpha: impl FnMut(i64, i64, u16),
 ) -> Option<Picture> {
     let mut decoder = png::Decoder::new(std::io::Cursor::new(data));
@@ -328,7 +332,7 @@ fn decode_png_checked(
     }
     decoder.set_transformations(transformations);
     let mut reader = decoder.read_info().ok()?;
-    if side.is_some_and(|side| (reader.info().width, reader.info().height) != (side, side)) {
+    if size.is_some_and(|size| (reader.info().width, reader.info().height) != size) {
         return None;
     }
     let mut buf = vec![0u8; reader.output_buffer_size()?];
