@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 開場視窗合成（RUNTIME-E1，2026-11-22）
+
+沿 Go `697c0913` 的 `modernOpeningSource`、`drawModernHDOpening`、`drawTitle` 及 61 的開場與按需解碼契約。由原有排程決定 FDOTHER／ANI 資源、畫格、淡色、長卷裁切與調色閃動。ANI #0 沿用共用圖庫，紅閃仍由邏輯畫布持有。開始選單以 FDOTHER #7 的 HD 畫布為底，原介面選單項獨立呈現。[61 的開場契約](../knowledge-base/61-modern-theme-runtime-spec.md#hd開場素材與呈現契約) [61 的按需解碼契約](../knowledge-base/61-modern-theme-runtime-spec.md#hd主題包按需解碼conformed-scopedgo-版2026-11-21)
+
+目前畫格以完整 1920×1200 交給 Bevy 線性取樣，只有長卷或色彩需要處理時才建立新畫布。相同畫格可重用貼圖。畫格若因延後檢查而拒收，下一畫格回到同幕原版圖。說明、啟動錯誤及非開場狀態依現有繪製分流。維持原有輸入、音效、開場時鐘與選單轉移。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-opening-view-20261122` 通過。以受控 HD 狀態走 Rust `Game::draw`，比較 Go 的 12 個 1920×1200 最終畫格。八格完全相同，四格的單一色彩通道最大差為 1。開始選單逐像素相同。比較紀錄 `rust-opening-view.txt` 的 SHA-256 為 `683f9c0068362ac93135973cd8e795800dbb944b7c49cb5679f59a32348c7e3c`。格式、Clippy、446 項 Rust 回歸與十項差分通過。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r5_app_frames.sh work/r6-opening-view-app-20261122 tools/rust_r5_app_scripts/letterbox-1500x850.json` 通過。Bevy 發行版原版美術回歸的 433 格與無畫面端相同，五張視窗截圖逐像素相同。完整主題載入、F2／F11 及正常 HD 啟動仍由 #312 追蹤。
+
 ### R6 HD1 戰場計時對白（RUNTIME-E1，2026-11-22）
 
 沿 [61 的計時戰場對話規格](../knowledge-base/61-modern-theme-runtime-spec.md#2026-10-19-計時戰場對話透明圖層conformed-scoped限runtime-e1及明示槽普通輸入)及其 `timed_dialogue_followup_20261019` 收據。移植基準為 Go `697c0913` 的 `freezeModernHDTimedDialogue` 與 `drawModernHDMapFrame`。FDTXT_000 的經驗、升級及中毒訊息已由原生計時對白處理器供應。

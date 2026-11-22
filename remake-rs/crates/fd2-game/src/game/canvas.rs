@@ -208,7 +208,7 @@ pub struct DrawImageOptions {
 }
 
 /// Ebiten `internal/graphics/vertex.go:113` adjustDestinationPixel：目標頂點對齊到約 1/3 像素，避開像素中心。
-fn adjust_destination_pixel(x: f32) -> f32 {
+pub(super) fn adjust_destination_pixel(x: f32) -> f32 {
     let mut ix = (x as i64) as f32; // Go `float32(int(x))`：向零截斷
     if x < 0.0 && x != ix {
         ix -= 1.0;

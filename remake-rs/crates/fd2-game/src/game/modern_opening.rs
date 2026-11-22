@@ -136,7 +136,29 @@ pub(crate) struct ModernOpening {
     banks: BTreeMap<OpeningSource, OpeningBank>,
     pub(crate) sky_key: SkyKeyAssets,
     current: Option<(String, Arc<Picture>)>,
+    view: Option<(OpeningFrame, Arc<Picture>)>,
     notices: Vec<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+struct OpeningFrame {
+    source: OpeningSource,
+    index: usize,
+    scroll: f64,
+    factor: f32,
+    tint: [u8; 3],
+}
+
+impl OpeningFrame {
+    fn fdother(source_resource: u16) -> Self {
+        Self {
+            source: OpeningSource { source_archive: OpeningArchive::Fdother, source_resource },
+            index: 0,
+            scroll: 0.0,
+            factor: 1.0,
+            tint: [0; 3],
+        }
+    }
 }
 
 impl OpeningAsset {
@@ -285,6 +307,134 @@ impl ModernOpening {
         let mut notices = std::mem::take(&mut self.notices);
         notices.extend(self.sky_key.ani0.as_mut().and_then(|bank| bank.take_notice()));
         notices
+    }
+
+    fn rejected(&self, source: OpeningSource) -> bool {
+        if source.source_archive == OpeningArchive::Ani && source.source_resource == 0 {
+            self.sky_key.ani0.as_ref().is_some_and(|bank| bank.is_rejected())
+        } else {
+            self.banks.get(&source).is_some_and(|bank| bank.rejected)
+        }
+    }
+
+    fn present(&mut self, plan: OpeningFrame) -> Result<Option<Arc<Picture>>> {
+        if let Some((previous, view)) = &self.view
+            && *previous == plan
+        {
+            return Ok(Some(view.clone()));
+        }
+        self.view = None;
+        let Some(picture) = self.frame(plan.source, plan.index)? else { return Ok(None) };
+        let view = if (picture.width, picture.height) == (HD_MAP_WIDTH, HD_MAP_HEIGHT) && plan.factor == 1.0 {
+            picture
+        } else {
+            Arc::new(opening_viewport(&picture, plan))
+        };
+        self.view = Some((plan, view.clone()));
+        Ok(Some(view))
+    }
+}
+
+fn opening_viewport(picture: &Picture, plan: OpeningFrame) -> Picture {
+    let stride = (HD_MAP_WIDTH * 4) as usize;
+    let source = picture.read_pixels();
+    let offset = (-canvas::adjust_destination_pixel((-plan.scroll * 6.0) as f32))
+        .clamp(0.0, (picture.height - HD_MAP_HEIGHT) as f32);
+    let top = offset.floor() as usize;
+    let fraction = offset - top as f32;
+    let rows = HD_MAP_HEIGHT as usize;
+    let mut pix = source[top * stride..(top + rows) * stride].to_vec();
+    if fraction != 0.0 {
+        let next = &source[(top + 1) * stride..(top + 1 + rows) * stride];
+        for (a, &b) in pix.iter_mut().zip(next) {
+            *a = (f32::from(*a) * (1.0 - fraction) + f32::from(b) * fraction).round_ties_even() as u8;
+        }
+    }
+    if plan.factor != 1.0 {
+        let factor = plan.factor;
+        let tint = plan.tint.map(|value| f32::from(value) * (1.0 - factor));
+        for px in pix.as_chunks_mut::<4>().0 {
+            for (channel, base) in px[..3].iter_mut().zip(tint) {
+                *channel = (f32::from(*channel) * factor + base).round_ties_even() as u8;
+            }
+        }
+    }
+    Picture { width: HD_MAP_WIDTH, height: HD_MAP_HEIGHT, pix }
+}
+
+impl Game {
+    /// 回傳是否由 HD 開場持有這個畫格。延後解碼拒收後，下一幀沿用原版圖。
+    pub(crate) fn draw_modern_opening(&mut self, screen: &mut Picture) -> bool {
+        if self.modern_story_portraits.is_none()
+            || self.title_assets.is_none()
+            || self.help_visible
+            || self.startup_blocked
+            || !matches!(self.title_phase.as_str(), "cutscene" | "menu")
+        {
+            return false;
+        }
+        let Some(opening) = &mut self.modern_opening else { return false };
+        let mut plan = OpeningFrame::fdother(7);
+        let mut red = false;
+        if self.title_phase == "cutscene" {
+            let Some(step) = CUT_SCRIPT.get(self.cut_idx as usize) else { return false };
+            match step.kind.as_str() {
+                "publisher" => {
+                    plan.source.source_resource = 74;
+                    plan.factor = title_publisher_brightness(self.cut_tick);
+                }
+                "static" => plan.source.source_resource = [100, 75][step.res as usize],
+                "scroll" | "hold" => {
+                    plan.source.source_resource = 69;
+                    plan.scroll = self.scroll_y;
+                    plan.index = usize::from(step.kind == "scroll" && title_scroll_uses_pulse_palette(self.scroll_y));
+                }
+                "redfade" => {
+                    plan.source.source_resource = 69;
+                    plan.factor = (40 - title_palette_phase(self.cut_tick)) as f32 / 40.0;
+                    plan.tint = [255, 0, 0];
+                }
+                "redhold" => red = true,
+                "titlefade" => {
+                    plan.factor = title_palette_phase(self.cut_tick) as f32 / 40.0;
+                    plan.tint = [0xe3, 0xf3, 255];
+                }
+                "afm" => {
+                    plan.source =
+                        OpeningSource { source_archive: OpeningArchive::Ani, source_resource: step.res as u16 };
+                    plan.index = self.cut_frame as usize;
+                }
+                _ => return false,
+            }
+        }
+        if opening.rejected(plan.source) {
+            return false;
+        }
+        screen.clear();
+        if red {
+            screen.fill(ColorRgba { r: 255, g: 0, b: 0, a: 255 });
+            return true;
+        }
+        match opening.present(plan) {
+            Ok(Some(view)) => {
+                if !self.modern_hd_separate_world {
+                    let mut op = DrawImageOptions::default();
+                    op.geo_m.scale(1.0 / 3.0, 1.0 / 3.0);
+                    screen.draw_image(&view, &op);
+                }
+                self.modern_opening_view = Some(view);
+            }
+            Ok(None) => {
+                for message in opening.take_notices() {
+                    eprintln!("HD 開場延後檢查拒收，改用原版畫格：{message}");
+                }
+            }
+            Err(err) => {
+                self.startup_blocked = true;
+                self.load_err = err.to_string();
+            }
+        }
+        true
     }
 }
 

@@ -3109,3 +3109,5 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 `game/native_story_dialogue.rs` 以兩種底色重播原生合成器，為 HD 世界建立開框、分頁和收框遮罩。索引 0 的實寫依舊不透明。`game/modern_hd_presentation.rs` 提供最終頭像及顯示矩形。Bevy 於介面上方呈現原尺寸頭像，同一來源及亮度重用貼圖。
 
 計時 `FFEC` 對白的處理器保存首次 HD 戰場繪圖計畫。`modern_hd_map_gpu.rs` 照常提交原生繪製交易，再畫快照。對白呈現優先取計時處理器的原生格網遮罩，並記錄本幀的呈現階段與索引。
+
+`game/modern_opening.rs` 把原生開場排程對應到 HD FDOTHER 與 ANI 圖庫。原尺寸開場畫布由 `PlayerRunner::draw_window_layers` 交給 Bevy，原介面選單留在邏輯畫布。相同來源及色彩、裁切狀態共用畫布與貼圖。光柵差分限受控開場狀態，完整主題載入仍在 R6。

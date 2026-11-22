@@ -602,19 +602,16 @@ impl Game {
     /// Go：`title.go:716`，`func (g *Game) drawTitle(screen *ebiten.Image)`
     ///
     /// Go 在 `titleAssets` 為 nil、或該幕影像為 nil 時解參考會 panic；Rust 與 `title_update` 相同，把缺少的
-    /// 素材當作不畫（`loadGame` 在素材不全時失敗即關閉，正式路徑不會走到）。HD 守門（`modernOpeningEnabled`、
-    /// `drawModernHDTitleMenuItem`）在忠實模式下為 false，HD 時 `todo!("r6:…")`。`ColorM` 後備
+    /// 素材當作不畫（`loadGame` 在素材不全時失敗即關閉，正式路徑不會走到）。HD 開場由獨立畫布供應背景，
+    /// `drawModernHDTitleMenuItem` 仍待移植。`ColorM` 後備
     /// （`titlePaletteBlend`，預建調色盤幀缺漏時）與讀檔槽畫面（`drawNativeLoadSlots`）在開場與第一章沒有走到，
     /// 標 `todo!("r8:…")`。
     pub(crate) fn draw_title(&mut self, screen: &mut Picture) {
         const RED: ColorRgba = ColorRgba { r: 0xff, g: 0, b: 0, a: 0xff };
-        // Go `g.modernOpeningEnabled()`（`modern_hd_opening.go:238`）的第一個條件是 modernStoryPortraits 非 nil；
-        // 忠實模式下為 false，Go 的 `if modern { screen.Clear() … }` 不執行。
-        let modern = if self.modern_story_portraits.is_some() {
-            todo!("r6:modern_hd_opening.go:modernOpeningEnabled（HD 開場）")
-        } else {
-            false
-        };
+        let modern = self.draw_modern_opening(screen);
+        if modern && self.title_phase == "cutscene" {
+            return;
+        }
         let ta = self.title_assets.as_ref();
         match self.title_phase.as_str() {
             "cutscene" => {

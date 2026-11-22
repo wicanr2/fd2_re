@@ -133,16 +133,21 @@ impl PlayerRunner {
         self.game.draw(screen);
     }
 
-    /// 保留 HD 世界的原尺寸。呼叫端把世界放在 640×400 介面下方。
+    /// 保留 HD 世界或開場的原尺寸。呼叫端把這層放在 640×400 介面下方。
     pub fn draw_window_layers(&mut self, ui: &mut Picture) -> Option<Arc<Picture>> {
         self.game.modern_hd_separate_world = true;
         self.game.draw(ui);
         self.game.modern_hd_separate_world = false;
+        if let Some(opening) = &self.game.modern_opening_view {
+            return Some(opening.clone());
+        }
         self.game.modern_hd_world_visible.then(|| self.game.modern_hd_map_gpu.as_ref()?.world.clone()).flatten()
     }
 
-    pub fn has_hd_map_theme(&self) -> bool {
-        self.game.modern_story_portraits.as_ref().is_some_and(|set| set.map_sprites_hd.len() == 125)
+    pub fn has_hd_window_layers(&self) -> bool {
+        self.game.modern_story_portraits.as_ref().is_some_and(|set| {
+            set.map_sprites_hd.len() == 125 || (self.game.modern_opening.is_some() && !self.game.title_phase.is_empty())
+        })
     }
 
     pub fn window_portrait(&self) -> Option<WindowPortrait> {

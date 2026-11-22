@@ -336,6 +336,10 @@ impl SkyKeyAsset {
 }
 
 impl SkyKeyBank {
+    pub(crate) fn is_rejected(&self) -> bool {
+        self.rejected
+    }
+
     /// `None` 代表像素或黑幕條件不符，呼叫端可退回原版。
     pub(crate) fn picture(&mut self, index: usize) -> Result<Option<Arc<Picture>>> {
         let file = index

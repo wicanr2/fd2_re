@@ -62,6 +62,7 @@ struct Shell {
     sprite: Option<Entity>,
     hd_world_image: Handle<Image>,
     hd_world_sprite: Option<Entity>,
+    hd_world_source: Option<Arc<Picture>>,
     hd_portrait_image: Handle<Image>,
     hd_portrait_sprite: Option<Entity>,
     hd_portrait_source: Option<(Arc<Picture>, f32)>,
@@ -167,6 +168,7 @@ pub fn run() -> AppExit {
         sprite: None,
         hd_world_image: Handle::default(),
         hd_world_sprite: None,
+        hd_world_source: None,
         hd_portrait_image: Handle::default(),
         hd_portrait_sprite: None,
         hd_portrait_source: None,
@@ -456,7 +458,7 @@ fn drive(
     let t_update = Instant::now();
     // Ebiten 每幀清空畫面後呼叫 Draw（`IsScreenClearedEveryFrame` 預設 true）。R5 r5g：GPU 模式錄成顯示清單（畫面目標
     // 同樣從全透明開始），交給渲染世界合成，不上傳 CPU 畫格。
-    let use_gpu = use_gpu && (shell.script.is_some() || !runner.has_hd_map_theme());
+    let use_gpu = use_gpu && (shell.script.is_some() || !runner.has_hd_window_layers());
     let mut hd_world = None;
     let (pix, gpu_id) = if use_gpu {
         let list = display_list::record(LOGICAL_W as i64, LOGICAL_H as i64, |screen| runner.draw(screen));
@@ -477,7 +479,7 @@ fn drive(
     let t_draw = Instant::now();
     let progress = runner.progress();
     let game_frame = runner.game_frame();
-    place_hd_world(shell, hd_world.as_deref(), &mut images, &mut sprites);
+    place_hd_world(shell, hd_world.as_ref(), &mut images, &mut sprites);
     place_hd_portrait(shell, &mut images, &mut sprites);
     place_controls_panel(shell, &mut images, &mut sprites);
     let interval = shell.last_drive.map(|t| (t_frame - t).as_secs_f64() * 1e3);
@@ -647,8 +649,8 @@ fn record_shot(run: &mut ScriptRun, name: &str, image: &Image, last_frame: &[u8]
 /// r5i：設定面板開著時，把疊層上傳成貼圖（面板狀態變了才重傳；預乘 alpha 換成 Bevy 精靈用的直接 alpha），擺在畫格
 /// 同一個位置與大小、畫在畫格上面；面板關著時隱藏。
 fn place_hd_world(
-    shell: &Shell,
-    world: Option<&Picture>,
+    shell: &mut Shell,
+    world: Option<&Arc<Picture>>,
     images: &mut Assets<Image>,
     sprites: &mut Query<(&mut Sprite, &mut Transform, &mut Visibility)>,
 ) {
@@ -661,12 +663,16 @@ fn place_hd_world(
         if *visibility != Visibility::Hidden {
             *visibility = Visibility::Hidden;
         }
+        shell.hd_world_source = None;
         return;
     };
-    if let Some(mut image) = images.get_mut(&shell.hd_world_image) {
+    if shell.hd_world_source.as_ref().is_none_or(|source| !Arc::ptr_eq(source, world))
+        && let Some(mut image) = images.get_mut(&shell.hd_world_image)
+    {
         image.texture_descriptor.size =
             Extent3d { width: world.width as u32, height: world.height as u32, depth_or_array_layers: 1 };
         image.data = Some(opaque_rgba(world.read_pixels()));
+        shell.hd_world_source = Some(world.clone());
     }
     sprite.custom_size = size;
     transform.translation = Vec3::new(translation.x, translation.y, -1.0);

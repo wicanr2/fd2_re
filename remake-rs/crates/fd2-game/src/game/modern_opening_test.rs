@@ -168,3 +168,102 @@ fn real_opening_matches_go() {
     assert_eq!(report, std::fs::read_to_string(output.join("go-opening.txt")).unwrap());
     println!("開場 173 格與 Go 逐格像素雜湊相同，序列 SHA-256 {}", digest(report.as_bytes()));
 }
+
+#[test]
+fn rejected_opening_frame_restores_the_original_scene_on_the_next_draw() {
+    let data = png(1, 1, png::BitDepth::Eight, &[100, 20, 30, 0]);
+    let mut opening = ModernOpening::default();
+    opening.banks.insert(
+        FD100,
+        OpeningBank {
+            shape: (1, 1),
+            frames: vec![EncodedFrame { sha256: digest(&data), bytes: data.into() }],
+            verified: BTreeSet::new(),
+            rejected: false,
+        },
+    );
+    let mut game = Game {
+        title_assets: Some(TitleAssets {
+            cut_static: [Some(Arc::new(Picture::from_nrgba(1, 1, &[14, 25, 36, 255]))), None],
+            ..Default::default()
+        }),
+        title_phase: "cutscene".into(),
+        cut_idx: 3,
+        modern_story_portraits: Some(ModernStoryPortraitSet::default()),
+        modern_opening: Some(opening),
+        modern_hd_separate_world: true,
+        ..Default::default()
+    };
+    let mut screen = Picture::new_image(LOGICAL_W, LOGICAL_H);
+    game.draw(&mut screen);
+    assert!(game.modern_opening_view.is_none() && !game.startup_blocked);
+    assert_eq!(&screen.read_pixels()[..4], &[0, 0, 0, 0]);
+    game.draw(&mut screen);
+    assert!(game.modern_opening_view.is_none());
+    assert_eq!(&screen.read_pixels()[..4], &[14, 25, 36, 255]);
+}
+
+#[test]
+#[ignore = "正式私人素材與 Go GPU 黃金由 tools/rust_r6_opening.sh 安排"]
+fn real_opening_presentation_matches_go() {
+    use std::fmt::Write as _;
+
+    #[derive(Deserialize)]
+    struct ViewCase {
+        name: String,
+        phase: String,
+        step: i64,
+        frame: i64,
+        tick: i64,
+        scroll: f64,
+    }
+    let path = |var| std::path::PathBuf::from(std::env::var_os(var).unwrap());
+    let out = path("FD2_R6_OPENING_OUT");
+    let cases: Vec<ViewCase> =
+        serde_json::from_slice(&std::fs::read(out.join("opening-view-cases.json")).unwrap()).unwrap();
+    let mut game = Game {
+        title_assets: load_title_assets().unwrap(),
+        modern_opening: ModernOpening::load(
+            &path("FD2_TEST_OPENING_CATALOG"),
+            &path("FD2_TEST_OPENING_PACK"),
+            &path("FD2_ASSET_PACK"),
+        )
+        .unwrap(),
+        modern_story_portraits: Some(ModernStoryPortraitSet::default()),
+        modern_hd_separate_world: true,
+        interface_mode: PLAYER_INTERFACE_ORIGINAL.into(),
+        ..Default::default()
+    };
+    let mut report = String::new();
+    assert_eq!(cases.len(), 12);
+    for c in cases {
+        game.title_phase = c.phase;
+        (game.cut_idx, game.cut_frame, game.cut_tick, game.scroll_y) = (c.step, c.frame, c.tick, c.scroll);
+        let mut ui = Picture::new_image(LOGICAL_W, LOGICAL_H);
+        game.draw(&mut ui);
+        assert!(!game.startup_blocked, "{}: {}", c.name, game.load_err);
+        assert_eq!((game.cut_idx, game.cut_frame, game.cut_tick, game.scroll_y), (c.step, c.frame, c.tick, c.scroll));
+        assert_eq!(game.modern_opening_view.is_none(), c.name == "redhold");
+        let mut surface = game
+            .modern_opening_view
+            .as_deref()
+            .cloned()
+            .unwrap_or_else(|| Picture::new_image(HD_MAP_WIDTH, HD_MAP_HEIGHT));
+        let mut op = DrawImageOptions::default();
+        op.geo_m.scale(3.0, 3.0);
+        surface.draw_image(&ui, &op);
+        let expected = std::fs::read(out.join(format!("go-opening-view-{}.rgba", c.name))).unwrap();
+        assert_eq!(expected.len(), surface.read_pixels().len());
+        let maximum = expected.iter().zip(surface.read_pixels()).map(|(a, b)| u8::abs_diff(*a, *b)).max().unwrap();
+        writeln!(report, "{} {maximum} {}", c.name, digest(surface.read_pixels())).unwrap();
+        assert!(maximum <= 1, "{}: {maximum}", c.name);
+        if c.name == "menu" {
+            assert!(ui.read_pixels().as_chunks::<4>().0.iter().any(|pixel| pixel[3] != 0));
+            let first = game.modern_opening_view.clone().unwrap();
+            game.draw(&mut ui);
+            assert!(Arc::ptr_eq(&first, game.modern_opening_view.as_ref().unwrap()));
+        }
+    }
+    std::fs::write(out.join("rust-opening-view.txt"), &report).unwrap();
+    println!("12 張 HD 開場最終畫面與 Go 的單通道差異最多 1：\n{report}");
+}

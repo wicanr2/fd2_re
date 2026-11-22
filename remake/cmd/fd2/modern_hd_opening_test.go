@@ -309,3 +309,92 @@ func TestModernHDOpeningRuntimeGPU(t *testing.T) {
 		}
 	}
 }
+
+type rustOpeningViewCase struct {
+	Name   string  `json:"name"`
+	Phase  string  `json:"phase"`
+	Step   int     `json:"step"`
+	Frame  int     `json:"frame"`
+	Tick   int     `json:"tick"`
+	Scroll float64 `json:"scroll"`
+}
+
+type rustOpeningViewProbe struct {
+	presentation modernHDPresentation
+	final        *ebiten.Image
+	cases        []rustOpeningViewCase
+	out          string
+	index        int
+	err          error
+}
+
+func (p *rustOpeningViewProbe) Layout(int, int) (int, int) { return 640, 400 }
+
+func (p *rustOpeningViewProbe) Update() error {
+	if p.err != nil || p.index == len(p.cases) {
+		return ebiten.Termination
+	}
+	return nil
+}
+
+func (p *rustOpeningViewProbe) Draw(screen *ebiten.Image) {
+	if p.err != nil || p.index == len(p.cases) {
+		return
+	}
+	c := p.cases[p.index]
+	g := p.presentation.Game
+	g.titlePhase, g.cutIdx, g.cutFrame, g.cutTick, g.scrollY = c.Phase, c.Step, c.Frame, c.Tick, c.Scroll
+	g.drawTitle(screen)
+	p.final.Clear()
+	var geometry ebiten.GeoM
+	geometry.Scale(3, 3)
+	p.presentation.DrawFinalScreen(p.final, screen, geometry)
+	pixels := make([]byte, 1920*1200*4)
+	p.final.ReadPixels(pixels)
+	p.err = os.WriteFile(filepath.Join(p.out, "go-opening-view-"+c.Name+".rgba"), pixels, 0600)
+	p.index++
+}
+
+func TestRustGoldenR6OpeningPresentation(t *testing.T) {
+	out := os.Getenv("FD2_R6_OPENING_OUT")
+	if out == "" {
+		t.Skip("set FD2_R6_OPENING_OUT to export the Rust golden")
+	}
+	set, _, _ := openingHDTestAssets(t)
+	assets, err := loadTitleAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	probe := &rustOpeningViewProbe{
+		presentation: modernHDPresentation{Game: &Game{modernStoryPortraits: set, titleAssets: assets,
+			interfaceMode: playerInterfaceOriginal}},
+		final: ebiten.NewImage(1920, 1200), out: out,
+		cases: []rustOpeningViewCase{
+			{"publisher", "cutscene", 0, 0, 3, 0},
+			{"scroll-limit", "cutscene", 2, 0, 0, 535},
+			{"scroll-pulse", "cutscene", 2, 0, 0, 520},
+			{"scroll-fraction", "cutscene", 2, 0, 0, 519.375},
+			{"static", "cutscene", 3, 0, 0, 0},
+			{"ani0", "cutscene", 13, 50, 0, 0},
+			{"hold", "cutscene", 17, 0, 0, 0},
+			{"redfade", "cutscene", 18, 0, 9, 0},
+			{"redhold", "cutscene", 19, 0, 0, 0},
+			{"ani1", "cutscene", 20, 18, 0, 0},
+			{"titlefade", "cutscene", 21, 0, 9, 0},
+			{"menu", "menu", 0, 0, 0, 0},
+		},
+	}
+	if err := ebiten.RunGame(probe); err != nil {
+		t.Fatal(err)
+	}
+	if probe.err != nil || probe.index != len(probe.cases) {
+		t.Fatalf("opening view capture stopped at %d: %v", probe.index, probe.err)
+	}
+	raw, err := json.Marshal(probe.cases)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(out, "opening-view-cases.json"), raw, 0600); err != nil {
+		t.Fatal(err)
+	}
+}

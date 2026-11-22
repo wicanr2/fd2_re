@@ -70,6 +70,7 @@ impl Game {
         self.native_map_presented = false;
         self.movement_panel_draw = None;
         self.native_interface_hud_visible = false;
+        self.modern_opening_view = None;
         self.modern_hd_overlay = None;
         self.modern_hd_scene = None;
         self.preparation_roster_hd = None;

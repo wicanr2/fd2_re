@@ -860,6 +860,8 @@ pub struct Game {
     pub(crate) source_battle_entities: Option<localization::EntityCatalog>,
     /// 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
     pub(crate) modern_story_portraits: Option<ModernStoryPortraitSet>,
+    pub(crate) modern_opening: Option<super::modern_opening::ModernOpening>,
+    pub(crate) modern_opening_view: Option<Arc<Picture>>,
     /// 同一程序內已通過預檢的完整素材
     pub(crate) modern_theme_cache: Option<ModernStoryPortraitSet>,
     /// 第一次切到 HD 的背景載入；nil 表示沒有進行中的載入
