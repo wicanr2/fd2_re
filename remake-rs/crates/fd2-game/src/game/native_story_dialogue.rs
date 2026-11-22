@@ -371,34 +371,6 @@ impl Game {
         if self.modern_hd_interface_enabled() {
             todo!("R6: modern_hd_dialogue_chrome.go:freezeModernHDDialogueChrome（HD 介面）")
         }
-        if self.modern_story_portraits.as_ref().is_some_and(|theme| theme.has_hd) {
-            self.native_dialogue_hd_masks = freeze_story_dialogue_masks(
-                pages,
-                |base| Ok(campaign::compose_native_story_dialogue_opening_frames(base, &class_ui.dialogue, &layout)?),
-                |base| {
-                    Ok(campaign::compose_native_story_dialogue_closing_frames(
-                        base,
-                        &class_ui.dialogue,
-                        &layout,
-                        motion_target_y,
-                        visible_cursor_x,
-                        visible_cursor_y,
-                    )?)
-                },
-                |base, page| {
-                    Ok(campaign::compose_native_story_dialogue_progressive_frames(
-                        base,
-                        &class_ui.dialogue,
-                        &portraits[0],
-                        class_ui.font.as_ref(),
-                        Some(&self.native_battle_glyphs),
-                        &layout,
-                        page as i64,
-                    )?)
-                },
-            )
-            .ok();
-        }
         (self.native_dialogue_chrome, self.native_dialogue_chrome_bounds) = (None, bounds);
         self.native_dialogue_frames = frames;
         self.native_dialogue_progressive = progressive;
@@ -407,8 +379,48 @@ impl Game {
         self.native_dialogue_closing = closing;
         self.native_dialogue_portraits = portraits;
         self.native_dialogue_layout = Some(layout);
+        self.native_dialogue_mask_motion = (motion_target_y, visible_cursor_x, visible_cursor_y);
         self.native_dialogue_glyph_steps = glyph_steps;
+        if self.modern_story_portraits.as_ref().is_some_and(|theme| theme.has_hd) {
+            self.native_dialogue_hd_masks = self.build_current_story_dialogue_masks().ok().flatten();
+        }
         Ok(())
+    }
+
+    pub(crate) fn build_current_story_dialogue_masks(&self) -> Result<Option<ModernStoryDialogueMasks>> {
+        let Some(layout) = &self.native_dialogue_layout else {
+            return Ok(None);
+        };
+        let ui = self.native_class_ui.as_ref().ok_or_else(|| game_err!("HD dialogue: missing interface"))?;
+        let portrait =
+            self.native_dialogue_portraits.first().ok_or_else(|| game_err!("HD dialogue: missing portrait"))?;
+        let (motion_y, cursor_x, cursor_y) = self.native_dialogue_mask_motion;
+        let masks = freeze_story_dialogue_masks(
+            layout.pages.len(),
+            |base| Ok(campaign::compose_native_story_dialogue_opening_frames(base, &ui.dialogue, layout)?),
+            |base| {
+                Ok(campaign::compose_native_story_dialogue_closing_frames(
+                    base,
+                    &ui.dialogue,
+                    layout,
+                    motion_y,
+                    cursor_x,
+                    cursor_y,
+                )?)
+            },
+            |base, page| {
+                Ok(campaign::compose_native_story_dialogue_progressive_frames(
+                    base,
+                    &ui.dialogue,
+                    portrait,
+                    ui.font.as_ref(),
+                    Some(&self.native_battle_glyphs),
+                    layout,
+                    page as i64,
+                )?)
+            },
+        )?;
+        Ok(Some(masks))
     }
 }
 

@@ -82,7 +82,7 @@ impl Game {
             return true;
         }
         match self.modern_story_portraits.as_ref() {
-            Some(set) if set.has_hd => {
+            Some(set) if !set.battle_animations.is_empty() || !set.battle_surfaces.is_empty() => {
                 todo!("R6: modern_hd_battle_runtime.go:modernHDBattleWanted（HD 美術的背景、台座與動畫素材判定）")
             }
             _ => false,

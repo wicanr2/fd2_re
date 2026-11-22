@@ -155,7 +155,11 @@ impl Game {
         if let Some(counter) = r.counter.clone() {
             r.counter_sounds = Arc::new(self.native_physical_sound_bank(&counter)?);
         }
-        if self.modern_story_portraits.is_some() {
+        if self
+            .modern_story_portraits
+            .as_ref()
+            .is_some_and(|set| !set.battle_animations.is_empty() || !set.battle_surfaces.is_empty())
+        {
             todo!(
                 "R6: modern_hd_battle_surface.go:validatePhysicalScenery、modern_hd_battle_assets.go:prepareBattleHDResources（HD 素材預檢）"
             )

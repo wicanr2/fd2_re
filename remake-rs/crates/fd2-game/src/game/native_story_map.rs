@@ -203,6 +203,11 @@ impl Game {
 
     /// 沿原生場景載體準備 HD 圖層。繪製取樣只更新私有候選。
     pub(crate) fn prepare_hd_story_map(&self) -> Result<ModernHDMapFrame> {
+        let theme = self.modern_story_portraits.as_ref().ok_or_else(|| game_err!("modern HD map: missing theme"))?;
+        self.prepare_hd_story_map_with_theme(theme)
+    }
+
+    pub(crate) fn prepare_hd_story_map_with_theme(&self, theme: &ModernStoryPortraitSet) -> Result<ModernHDMapFrame> {
         let assets = self.native_map_assets.as_ref().ok_or_else(|| game_err!("modern HD story: missing assets"))?;
         let mut state = self
             .story_native_map_state
@@ -256,7 +261,7 @@ impl Game {
         let stage = self.prepare_native_ch23_steady_stage(raw_tick)?;
         let motion =
             if self.banner_t > 0 || self.walk.is_some() { ModernHDMapMotion::Step } else { ModernHDMapMotion::Steady };
-        self.prepare_hd_map(&input, stage.as_ref(), &dac, motion, moving)
+        self.prepare_hd_map(&input, stage.as_ref(), &dac, motion, moving, theme)
     }
 }
 

@@ -1,62 +1,179 @@
-//! Go 來源：`remake/cmd/fd2/player_theme_loader.go`（82 行）。
-//!
-//! 骨架：Go 檔的 2 個函式中產生 1 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
+//! 背景驗證 HD 美術。只有遊戲更新能發布主題或保存設定。
 
+use std::path::{Path, PathBuf};
+use std::sync::mpsc::{Receiver, TryRecvError, channel};
+
+use super::modern_opening::ModernOpening;
 use super::*;
 
-pub(crate) const MODERN_THEME_PENDING_ART: &str = "art";
+pub(crate) struct ModernThemeArt {
+    pub(crate) set: ModernStoryPortraitSet,
+    pub(crate) opening: ModernOpening,
+}
 
-pub(crate) const MODERN_THEME_PENDING_INTERFACE: &str = "interface";
-
-/// Go：`player_theme_loader.go:22`
-///
-/// 不 derive `Debug`／`Clone`：欄位含 callback（`Box<dyn FnOnce>`）、檔案或亂數產生器等做不到的型別。
-#[derive(Debug, Default)]
 pub(crate) struct ModernThemeLoad {
-    pub(crate) done: Option<std::sync::mpsc::Receiver<()>>,
-    pub(crate) set: Option<ModernStoryPortraitSet>,
-    pub(crate) err: Option<GameError>,
-    /// 載入完成後要補做的切換
-    pub(crate) pending: String,
+    done: Receiver<Result<ModernThemeArt>>,
+    persist: bool,
+}
+
+const THEME_LOADING: &str = "HD 主題素材載入中，完成後自動切換……";
+
+fn load_theme_art() -> Result<ModernThemeArt> {
+    let directory = asset_path("assets/themes/modern");
+    let catalog = asset_path("assets/themes/modern/catalog.json");
+    let root = std::env::var_os("FD2_MODERN_THEME_PACK")
+        .filter(|root| !root.is_empty())
+        .map_or_else(|| PathBuf::from(directory), PathBuf::from);
+    let catalog = Path::new(&catalog);
+    let mut set = ModernStoryPortraitSet::default();
+    set.load_story_portraits(catalog, &root)?;
+    if !set.has_hd {
+        return Err(game_err!("modern theme: HD story portraits unavailable"));
+    }
+    set.load_map_art(catalog, &root)?;
+    let opening = ModernOpening::load(catalog, &root, Path::new(&separated_asset_path("")))?
+        .ok_or_else(|| game_err!("modern theme: HD opening unavailable"))?;
+    Ok(ModernThemeArt { set, opening })
+}
+
+pub(crate) fn modern_theme_startup_deferred() -> bool {
+    ["FD2_THEME", "FD2_INTERFACE_MODE", "FD2_SHOT", "FD2_SHOT_SERIES", "FD2_ENDING_PREFIX"]
+        .iter()
+        .all(|key| std::env::var_os(key).is_none_or(|value| value.is_empty()))
 }
 
 impl Game {
-    /// pollModernThemeLoad 在每次 Update 開頭收回已完成的背景載入，成功就寫進快取並補做切換。
-    ///
-    /// Go：`player_theme_loader.go:56`，`func (g *Game) pollModernThemeLoad()`
-    ///
-    /// Go 的背景 goroutine 把結果寫進 `load.set`／`load.err` 再 `close(done)`。Rust 的
-    /// `ModernThemeLoad` 只有 `Receiver<()>`，背景載入端（`requestModernThemeLoad`，R6）要在送出
-    /// 完成通知前把結果交回；忠實模式下 `modern_theme_loading` 永遠是 `None`，這裡只會走第一個 return。
+    pub(crate) fn request_modern_theme_art(&mut self, persist: bool) {
+        if let Some(load) = &mut self.modern_theme_loading {
+            load.persist |= persist;
+            self.msg = THEME_LOADING.into();
+            return;
+        }
+        let current_terrain = self
+            .native_map_assets
+            .as_ref()
+            .and_then(|assets| Some((u8::try_from(assets.map_index).ok()?, assets.terrain.clone()?)));
+        let (send, done) = channel();
+        match std::thread::Builder::new().name("fd2-theme".into()).spawn(move || {
+            let candidate = load_theme_art().and_then(|candidate| {
+                if let Some((id, bank)) = current_terrain
+                    && let Some(terrain) = &candidate.set.terrain_hd
+                {
+                    terrain.map(id, &bank)?;
+                }
+                Ok(candidate)
+            });
+            let _ = send.send(candidate);
+        }) {
+            Ok(_) => {
+                self.modern_theme_loading = Some(ModernThemeLoad { done, persist });
+                self.msg = THEME_LOADING.into();
+                if self.cutscene_log {
+                    eprintln!("[theme] {}", self.msg);
+                }
+            }
+            Err(err) => self.msg = format!("現代主題不可用：{err}"),
+        }
+    }
+
+    pub(crate) fn load_startup_modern_theme(&mut self) -> Result<()> {
+        let art = load_theme_art()?;
+        self.install_modern_theme_art(art)
+    }
+
     pub(crate) fn poll_modern_theme_load(&mut self) {
         let Some(load) = self.modern_theme_loading.as_ref() else {
             return;
         };
-        // Go `select { case <-load.done: default: return }`：已關閉的 channel 立刻可讀；
-        // Rust 的傳送端關閉（Disconnected）或送出通知（Ok）都算完成。
-        let finished = match &load.done {
-            None => false,
-            Some(done) => !matches!(done.try_recv(), Err(std::sync::mpsc::TryRecvError::Empty)),
+        let candidate = match load.done.try_recv() {
+            Err(TryRecvError::Empty) => return,
+            Err(TryRecvError::Disconnected) => Err(game_err!("modern theme: background worker exited")),
+            Ok(candidate) => candidate,
         };
-        if !finished {
+        let persist = load.persist;
+        self.modern_theme_loading = None;
+        match candidate.and_then(|art| self.install_modern_theme_art(art)) {
+            Ok(()) => self.finish_modern_theme_art_switch(persist),
+            Err(err) => self.msg = format!("現代主題不可用：{err}"),
+        }
+        if self.cutscene_log {
+            eprintln!("[theme] {}", self.msg);
+        }
+    }
+
+    pub(crate) fn cycle_theme_art(&mut self) {
+        if self.base_map_tileset.is_none() || self.m.is_none() {
             return;
         }
-        let load = self.modern_theme_loading.take().unwrap();
-        if let Some(err) = load.err {
-            self.msg = format!("現代主題不可用：{}", err.message());
-            return;
+        if let Some(set) = self.modern_story_portraits.take() {
+            self.modern_theme_cache = self.modern_opening.take().map(|opening| ModernThemeArt { set, opening });
+            self.native_dialogue_modern_portrait = None;
+            self.clear_modern_theme_view();
+            self.finish_modern_theme_art_switch(true);
+        } else if let Some(art) = self.modern_theme_cache.take() {
+            match self.install_modern_theme_art(art) {
+                Ok(()) => self.finish_modern_theme_art_switch(true),
+                Err(err) => self.msg = format!("現代主題不可用：{err}"),
+            }
+        } else {
+            self.request_modern_theme_art(true);
         }
-        self.modern_theme_cache = load.set;
-        match load.pending.as_str() {
-            MODERN_THEME_PENDING_ART => {
-                if self.modern_story_portraits.is_none() {
-                    todo!("R6: player_theme.go:cycleTheme（HD 美術切換）")
-                }
+    }
+
+    fn install_modern_theme_art(&mut self, art: ModernThemeArt) -> Result<()> {
+        let prepare = || {
+            let portrait = self
+                .dialog
+                .last()
+                .filter(|line| line.native_dialogue.is_some())
+                .map(|line| {
+                    art.set
+                        .portraits
+                        .get(&line.speaker)
+                        .cloned()
+                        .ok_or_else(|| game_err!("modern portrait for speaker {} is unavailable", line.speaker))
+                })
+                .transpose()?;
+            let masks = self.build_current_story_dialogue_masks()?;
+            let world =
+                self.has_hd_story_map_source().then(|| self.prepare_hd_story_map_with_theme(&art.set)).transpose()?;
+            Ok((portrait, masks, world))
+        };
+        let (portrait, masks, world) = match prepare() {
+            Ok(prepared) => prepared,
+            Err(err) => {
+                self.modern_theme_cache = Some(art);
+                return Err(err);
             }
-            MODERN_THEME_PENDING_INTERFACE if !self.modern_hd_interface_enabled() => {
-                todo!("R6: player_interface.go:cycleInterfaceMode（HD 介面切換）")
-            }
-            _ => {}
+        };
+        self.modern_story_portraits = Some(art.set);
+        self.modern_opening = Some(art.opening);
+        self.native_dialogue_modern_portrait = portrait;
+        self.native_dialogue_hd_masks = masks;
+        self.clear_modern_theme_view();
+        self.modern_hd_map_frame = world;
+        Ok(())
+    }
+
+    fn clear_modern_theme_view(&mut self) {
+        self.modern_hd_text = None;
+        self.modern_opening_view = None;
+        self.modern_hd_map_frame = None;
+        self.modern_hd_map_presented = None;
+        self.modern_hd_map_gpu = None;
+        self.modern_hd_world_visible = false;
+    }
+
+    fn finish_modern_theme_art_switch(&mut self, persist: bool) {
+        let modern = self.modern_story_portraits.is_some();
+        self.msg = if modern { "主題：現代手繪" } else { "主題：忠實原版" }.into();
+        if persist {
+            let mut settings = load_settings();
+            settings.theme_id = if modern { MODERN_HANDPAINTED_THEME_ID } else { "faithful" }.into();
+            settings.font_scale = self.font_scale;
+            settings.locale_id = self.locale_id.clone();
+            settings.bgm_source = self.bgm_source.clone();
+            save_settings(&settings);
         }
     }
 }

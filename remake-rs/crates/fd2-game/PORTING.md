@@ -3113,3 +3113,7 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 `game/modern_opening.rs` 把原生開場排程對應到 HD FDOTHER 與 ANI 圖庫。原尺寸開場畫布由 `PlayerRunner::draw_window_layers` 交給 Bevy，原介面選單留在邏輯畫布。相同來源及色彩、裁切狀態共用畫布與貼圖。光柵差分限受控開場狀態，完整主題載入仍在 R6。
 
 `game/native_story_map.rs` 從原生 `LOADCH` 載體的私有複本準備 HD 劇情地圖。沿用戰場地形與前景合成器，HUD 與範圍關閉。兩種原生載體共用 `sample_native_map_timing`。`game/modern_hd_story_motion.rs` 取樣走行人物與移鏡，補畫從視窗右側和下側進入的地形，並依原生比例繪製視差。
+
+### R6 美術啟用
+
+`game/player_theme_loader.rs` 將 Go `requestModernThemeLoad` 的美術請求移到背景執行緒。通道攜帶整個候選圖庫或錯誤，更新端先核對當前劇情圖層再套用。已載入圖庫在切回原版時移入快取。原生劇情對白沿已保存的排版、圖源及收框座標重建遮罩，頁次和時鐘仍由既有控制器推進。Bevy 以現有獨立圖層顯示 HD 美術。

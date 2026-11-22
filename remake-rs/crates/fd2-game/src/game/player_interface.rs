@@ -36,7 +36,7 @@ impl Game {
         }
         if self.interface_mode == PLAYER_INTERFACE_HD {
             if self.modern_theme_cache.is_some() {
-                return self.modern_theme_cache.as_ref();
+                return self.modern_theme_cache.as_ref().map(|theme| &theme.set);
             }
             return self.modern_story_portraits.as_ref();
         }

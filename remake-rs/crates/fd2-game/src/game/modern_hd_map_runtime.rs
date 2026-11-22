@@ -307,8 +307,8 @@ impl Game {
         dac: &[u8],
         motion: ModernHDMapMotion,
         story_motion: bool,
+        theme: &ModernStoryPortraitSet,
     ) -> Result<ModernHDMapFrame> {
-        let theme = self.modern_story_portraits.as_ref().ok_or_else(|| game_err!("modern HD map: missing theme"))?;
         let assets =
             self.native_map_assets.as_ref().ok_or_else(|| game_err!("modern HD map: missing native assets"))?;
         let palette = color_palette_from_nrgba(&fdother::vga_palette_from_dac(dac)?);

@@ -377,6 +377,9 @@ impl Game {
     /// Go：`title.go:521`，`func (g *Game) enterTitleMenu()`
     pub(crate) fn enter_title_menu(&mut self) {
         self.title_phase = String::from("menu");
+        if self.cutscene_log {
+            eprintln!("[cutscene] title menu ready");
+        }
         self.title_sel = 0;
         if let Some(assets) = self.title_assets.as_mut() {
             // AFM snapshots只供一次性開場；進選單後釋放約80 MiB的CPU影格，

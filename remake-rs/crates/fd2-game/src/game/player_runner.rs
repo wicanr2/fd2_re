@@ -94,12 +94,6 @@ impl PlayerRunner {
         if self.game.balance_ui.open {
             todo!("r6:player_balance.go:412 updateBalanceEditor（數值編輯器由工具列開啟，R6）")
         }
-        // Go `hdPresentationEnabled`（`player_interface.go:32`）。
-        let hd = self.game.modern_hd_interface_enabled()
-            || self.game.modern_story_portraits.as_ref().is_some_and(|set| set.has_hd);
-        if hd {
-            todo!("r6:modern_hd_presentation.go:40 hdPresentationEnabled 的視窗大小切換")
-        }
         // modern_hd_presentation.go:57：沒有海報選單與速度選單，`playerOverlayBlock` 是空矩形。
         self.game.player_overlay_block = Rectangle::default();
         // modern_hd_presentation.go:70：`poster.consumeInput` 與 `balanceUI.open` 都是 false，面板沒開（上面已返回）。

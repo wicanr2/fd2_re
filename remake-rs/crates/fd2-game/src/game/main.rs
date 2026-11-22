@@ -338,6 +338,7 @@ pub struct Game {
     pub(crate) native_dialogue_portraits: Vec<dato::Frame>,
     pub(crate) native_dialogue_layout: Option<campaign::NativeDialogueLayout>,
     pub(crate) native_dialogue_hd_masks: Option<ModernStoryDialogueMasks>,
+    pub(crate) native_dialogue_mask_motion: (i64, i64, i64),
     pub(crate) native_dialogue_chrome: Option<ModernHDDialogueChrome>,
     pub(crate) native_dialogue_chrome_bounds: BTreeMap<campaign::NativeDialogueFramePhase, Vec<Rectangle>>,
     pub(crate) native_dialogue_glyph_steps: Vec<Vec<bool>>,
@@ -862,12 +863,10 @@ pub struct Game {
     pub(crate) modern_story_portraits: Option<ModernStoryPortraitSet>,
     pub(crate) modern_opening: Option<super::modern_opening::ModernOpening>,
     pub(crate) modern_opening_view: Option<Arc<Picture>>,
-    /// 同一程序內已通過預檢的完整素材
-    pub(crate) modern_theme_cache: Option<ModernStoryPortraitSet>,
+    /// 切回原版時留存已通過預檢的 HD 美術。
+    pub(crate) modern_theme_cache: Option<ModernThemeArt>,
     /// 第一次切到 HD 的背景載入；nil 表示沒有進行中的載入
     pub(crate) modern_theme_loading: Option<ModernThemeLoad>,
-    /// 測試替換用；nil 時用 loadPlayerModernTheme
-    pub(crate) modern_theme_loader: Option<Box<dyn FnMut(&mut Game) -> Result<Option<ModernStoryPortraitSet>> + Send>>,
     /// 目前對話拍的靜態閉嘴真彩色層
     pub(crate) native_dialogue_modern_portrait: Option<ModernStoryPortraitFrame>,
     /// 本次Draw實際呈現的高解析頭像
@@ -7404,14 +7403,15 @@ impl Game {
         self.step_native_town_ui_lifecycle(tick);
         let now = self.game_now();
         self.step_native_preparation_ui_lifecycle(now);
-        self.poll_modern_theme_load(); // 背景載入完成時補做第一次 F2／F11
+        self.poll_modern_theme_load();
         let global = self.native_ending.is_none() && !native_modifier_held(&input);
         if global && (self.player_theme_requested || just(Key::F2)) {
-            // 全域：忠實／現代主題
-            todo!("R6: player_theme.go:cycleTheme（F2 美術主題切換）")
+            self.player_theme_requested = false;
+            self.cycle_theme_art();
         }
         if global && (self.player_interface_requested || just(Key::F11)) {
-            todo!("R6: player_interface.go:cycleInterfaceMode（F11 介面切換）")
+            self.player_interface_requested = false;
+            self.msg = "HD 介面尚未接通".into();
         }
         if global && just(Key::F3) {
             // 全域：切換音源
@@ -8896,8 +8896,8 @@ pub(crate) fn load_native_command_labels() -> BTreeMap<i64, String> {
 /// - 亂數種子：Go 沒有 `FD2_SEED` 時用 `time.Now().UnixNano()`；`fd2-game` 不讀主機時間，改用
 ///   `VIRTUAL_CLOCK_ORIGIN` 的奈秒值（KNOWN_DIFFERENCES `load-game-seed-no-wall-clock`），要不同種子的
 ///   外殼設定 `FD2_SEED` 或在載入後換掉 `rng`。
-/// - HD 主題（`FD2_THEME`／設定的 `modern-handpainted-a`、HD 介面的主題包）在 R6；截圖與除錯用的
-///   環境變數分支（結局預覽、晚期整備截圖、截圖隊伍、快轉）在 R8，都停在 `todo!`。
+/// - HD 美術讀取 `FD2_THEME` 或設定的 `modern-handpainted-a`。一般啟動將素材驗證交給背景執行緒。
+///   HD 介面、結局預覽、晚期整備截圖、截圖隊伍及快轉另行移植。
 pub(crate) fn load_game() -> Option<Game> {
     fn env(name: &str) -> String {
         std::env::var(name).unwrap_or_default()
@@ -8960,31 +8960,17 @@ pub(crate) fn load_game() -> Option<Game> {
     if theme_id.is_empty() {
         theme_id = configured.theme_id.clone();
     }
-    if !theme_id.is_empty() && theme_id != "faithful" {
-        if theme_id != MODERN_HANDPAINTED_THEME_ID {
-            g.load_err = format!("modern theme: unsupported theme {theme_id}");
-            return Some(g);
-        }
-        todo!("R6: modern_story_portrait.go:loadModernStoryPortraitSet（現代手繪主題包）")
+    let modern_art = theme_id == MODERN_HANDPAINTED_THEME_ID;
+    if !modern_art && !theme_id.is_empty() && theme_id != "faithful" {
+        g.load_err = format!("modern theme: unsupported theme {theme_id}");
+        return Some(g);
     }
-    g.interface_mode = configured.interface_mode.clone();
     let mode = env("FD2_INTERFACE_MODE");
-    if !mode.is_empty() {
-        if mode != PLAYER_INTERFACE_ORIGINAL && mode != PLAYER_INTERFACE_HD {
-            g.load_err = format!("interface: unsupported mode {mode}");
-            return Some(g);
-        }
-        g.interface_mode = mode;
+    if !mode.is_empty() && mode != PLAYER_INTERFACE_ORIGINAL && mode != PLAYER_INTERFACE_HD {
+        g.load_err = format!("interface: unsupported mode {mode}");
+        return Some(g);
     }
-    if g.interface_mode.is_empty() {
-        g.interface_mode = String::from(PLAYER_INTERFACE_ORIGINAL);
-        if g.modern_story_portraits.as_ref().is_some_and(|p| p.has_hd) {
-            g.interface_mode = String::from(PLAYER_INTERFACE_HD);
-        }
-    }
-    if g.interface_mode == PLAYER_INTERFACE_HD && g.modern_theme_cache.is_none() {
-        todo!("R6: player_interface.go:loadPlayerModernTheme（HD 介面主題包）")
-    }
+    g.interface_mode = PLAYER_INTERFACE_ORIGINAL.into();
     let bgm = env("FD2_BGM_SOURCE");
     if !bgm.is_empty() && BGM_SOURCE_NAME.get(&bgm).is_some_and(|n| !n.is_empty()) {
         g.bgm_source = bgm; // 覆寫(截圖/測試用)
@@ -9057,7 +9043,7 @@ pub(crate) fn load_game() -> Option<Game> {
         }
     }
     g.sprites = load_sprites();
-    // Go 以 g.modernStoryPortraits.mapSprites 覆寫 sprites（HD 主題，R6；忠實模式下主題是 nil）。
+    // HD 美術在 draw_unit_sprite 取用主題圖組，原版圖組仍由 sprites 保有。
     g.portraits = load_portraits();
     g.figani = load_figani();
     match load_figani_delays() {
@@ -9369,6 +9355,17 @@ pub(crate) fn load_game() -> Option<Game> {
             }
             Ok(None) => {}
             Err(err) => g.load_err = format!("campaign: {}", err.message()),
+        }
+    }
+    if g.load_err.is_empty() {
+        if modern_art {
+            if modern_theme_startup_deferred() {
+                g.request_modern_theme_art(false);
+            } else if let Err(err) = g.load_startup_modern_theme() {
+                g.load_err = format!("modern theme: {err}");
+            }
+        } else if mode == PLAYER_INTERFACE_HD || (mode.is_empty() && configured.interface_mode == PLAYER_INTERFACE_HD) {
+            g.msg = "HD 介面尚未接通".into();
         }
     }
     Some(g)
@@ -9799,7 +9796,9 @@ impl Game {
             ModernHDMapMotion::Steady
         };
         let modern = if self.modern_hd_map_composing {
-            Some(self.prepare_hd_map(&in_, stage.as_ref(), candidate_dac, motion, false)?)
+            let theme =
+                self.modern_story_portraits.as_ref().ok_or_else(|| game_err!("modern HD map: missing theme"))?;
+            Some(self.prepare_hd_map(&in_, stage.as_ref(), candidate_dac, motion, false, theme)?)
         } else {
             None
         };
@@ -11031,7 +11030,13 @@ impl Game {
     ) {
         let x = x + u.off_x; // 行軍/移動位移
         let y = y + u.off_y;
-        let frames = self.sprites.get(&sprite_group).map(Vec::as_slice).unwrap_or_default();
+        let frames = self
+            .modern_story_portraits
+            .as_ref()
+            .and_then(|theme| theme.map_sprites.get(&sprite_group))
+            .or_else(|| self.sprites.get(&sprite_group))
+            .map(Vec::as_slice)
+            .unwrap_or_default();
         if frames.is_empty() {
             // Go `drawUnit(screen, x, y, w, h, campColor(u.Camp), u)`：開場與第一章沒有走到（階段 0 覆蓋率 0）。
             let _ = (w, h);

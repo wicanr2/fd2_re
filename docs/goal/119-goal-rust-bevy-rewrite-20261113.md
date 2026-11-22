@@ -121,6 +121,16 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 美術啟用與背景載入（RUNTIME-E1，2026-11-22）
+
+依 Go `697c0913` 的 `player_theme_loader.go`、`player_shortcuts.go` 與 61 的 HD 主題包契約。第一個 F2 和 HD 美術設定啟動共用背景載入。繪製及輸入照常，成功後由遊戲更新套用，失敗留在原版並回報原因。切回原版時保留已驗證圖庫，重切不讀檔。F2 只寫美術設定，保留既有 F11 介面偏好。
+
+此切片啟用已通過差分的開場、故事頭像、劇情地圖與戰場圖層。沿用各圖庫的清冊身份、雜湊、尺寸與按需解碼。在對白進行中只替換畫面引用與遮罩，保留頁次與節拍。物理攻防沿原生畫面。完整 HD 清冊、F11 與工具列依 #312 追蹤。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_game_test.sh --quiet` 通過格式、Clippy 與 446 項 Rust 回歸。`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-theme-golden-20261122` 通過十項 Go 差分，包含開場、頭像、故事對白、計時對白及地圖圖層。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/r6-theme-window-20261122-r6` 通過 Linux Bevy 視窗驗證。首次 F2 後開場持續更新，美術偏好落盤並保留原介面偏好。冷啟動以保存的設定進入相同 HD 標題畫面，兩張 X11 擷取逐像素相同，PNG 的 SHA-256 為 `99edd3b6e1f2b359fe3a8cb305baf1a2816f95f3c71a5b039ecf109600396d57`。缺包時拒收並抵達原版標題，設定檔沒有寫入。視窗測試使用正常 Escape 略過開場。標題上的再次 F2 曾等候逾時，普通 START 後的對白切換仍待視窗驗證。
+
 ### R6 HD1 劇情走行與鏡頭滑動（RUNTIME-E1，2026-11-22）
 
 沿 Go `697c0913` 的 `modern_hd_story_motion.go` 及規格 61。使用現行劇情控制器的座標、偏移、面向和節拍。HD 鏡頭投影到私有地格視圖，保留小數像素位移及原生角色落腳點。地形補足右側一欄與下側一列，再裁切到原生視窗。視差採原生每格水平 3 像素與垂直 2 像素的比例。地形與前景的原生索引色映射各照來源遮罩執行。

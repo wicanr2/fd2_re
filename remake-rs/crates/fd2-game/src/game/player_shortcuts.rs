@@ -1,7 +1,7 @@
 //! Go 來源：`remake/cmd/fd2/player_shortcuts.go`（365 行）。
 //!
 //! R5 階段 4（r5w）只移植說明畫面 `drawPlayerHelp`（F1，使用者 2026-11-15 同意在階段 4 接 F1 時移植，見 121 範圍表）。
-//! 主題切換 `cycleTheme`、`applyTheme`、`refreshThemeVisuals` 是 F2（R6），仍是 `r8`。
+//! F2 的美術切換接在 `player_theme_loader.rs`。
 
 use super::*;
 
