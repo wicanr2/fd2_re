@@ -5861,3 +5861,8 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 接通原生四槽與 JSON 後備版面。工具列 HD 設定各自疊加細框，讀檔失敗可繼續選槽。首章 JSON 章界還原沿凍結 Go 版的開場對白與分頁，並套用古金框。
 - `work/r6-loadslots-20261123-r9` 在 Bevy 視窗驗證兩種槽位細框、空槽拒收與返回。從第一槽成功讀取 JSON 存檔，按確認離開開場對白後進入戰場，存檔複本的 SHA-256 相同。開場對白在古金與藍框之間切換時，頭像及文字比較區逐像素相同。[119 的讀檔槽驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-標題讀檔槽與-hd-細框)
 - 發行組態建置、格式、Clippy 與 451 項 Rust 回歸通過。清理 `target-r5i/debug/incremental` 的可重建快取，回收約 363 MiB。
+
+## 2026-11-23 Rust 讀取原版第 2 章存檔
+
+- `work/r6-native-save-20261123-r3` 以原版酒店寫出的 `FD2.SAV` 從標題 LOAD 還原羅德鎮。第二槽拒收，Esc 返回，第一槽成功讀取。存檔複本雜湊一致。
+- 與同一存檔的 dosgolem `town_loaded` 畫格比對，右側營帳區逐像素相同。工具列下方的 5,760 個差異像素集中在索爾圖格。格式、Clippy 和 5 項相關 Rust 測試通過。[119 的讀檔槽驗證](docs/goal/119-goal-rust-bevy-rewrite-20261113.md#r6-標題讀檔槽與-hd-細框)

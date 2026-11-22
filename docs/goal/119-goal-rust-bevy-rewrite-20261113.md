@@ -161,9 +161,17 @@ Linux Bevy（RUNTIME-E1）以 `tools/rust_r6_theme_window.sh` 的 `locales` 模�
 
 從首章章界存檔還原時，沿用凍結 Go 版的劇本起始對白、三列分頁與頭像。這條路徑的對白也使用同一古金框材質，並跟隨說話者切換時的收展動畫。
 
-使用 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> <章界存檔目錄> loadslots`，存檔目錄以唯讀方式掛載。樣本為首章 `battle_ch01` JSON 章界存檔，SHA-256 為 `089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2`。測試以 1280×800、`FD2_SEED=4` 和遊戲四倍速執行。原生槽的視窗樣本使用空槽，原版 `FD2.SAV` 的實際還原另行驗證。
+使用 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> <章界存檔目錄> loadslots`，存檔目錄以唯讀方式掛載。樣本為首章 `battle_ch01` JSON 章界存檔，SHA-256 為 `089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2`。測試以 1280×800、`FD2_SEED=4` 和遊戲四倍速執行。這次的原生版面樣本使用空槽。
 
 `work/r6-loadslots-20261123-r9/json` 核對細框、空槽拒收、取消與首章讀檔。從工具列切換首章對白框時，框線像素改變，框內頭像與文字的比較區為零像素差異。視窗確認可以繼續到戰場，讀檔前後的存檔複本雜湊一致。此驗證屬 RUNTIME-E1。
+
+原版 `FD2.SAV` 另用[第 2 章來源清冊](../data/parity-slots/ch02-manifest.json)中的酒店實存檔。標題 LOAD 拒收第二槽，取消後重開再選第一槽，成功還原羅德鎮。用同一份存檔的 dosgolem `town_loaded` 畫格比對，右側營帳區逐像素相同。工具列下方其餘畫面有 5,760 個差異像素，集中在索爾圖格。存檔複本的 SHA-256 維持 `540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b`。這份 Rust 收據只涵蓋載入城鎮。
+
+```bash
+FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh \
+  'work/<新收據目錄>' work/ch02-flow-20261017/input native-save \
+  work/ch02-flow-20261017/original-startup-r1/checkpoint-0018.png
+```
 
 ### R6 F11 標題介面（RUNTIME-E1，2026-11-22）
 

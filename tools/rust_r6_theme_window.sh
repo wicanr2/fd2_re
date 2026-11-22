@@ -1,6 +1,6 @@
 #!/bin/bash
 # 在正常 Bevy 視窗操作工具列，驗證設定冷啟動、缺包回退及序章對白。
-# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據或存檔目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples|gold-dialogue|loadslots]
+# 用法：FD2_RUST_TARGET=target-r5i bash tools/rust_r6_theme_window.sh work/<新收據目錄> [先前收據或存檔目錄] [interface-cold|no-font|posters|poster-scenery|locales|locale-samples|gold-dialogue|loadslots|native-save] [原版城鎮參考圖]
 # 先用 Rust 映像 release profile 建置 fd2。另一容器只經隔離的 X11 socket 操作視窗。
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
@@ -19,6 +19,7 @@ timeout 20s docker run "${common[@]}" --memory 128m --cpus 1 \
   mkdir -p "/work/$relative/socket" "/work/$relative/profile" "/work/$relative/rejected"
 hd="$(cd "$hd" && pwd -P)"
 name=
+native_reference=()
 stop_window() {
   test -n "$name" || return 0
   docker stop -t 3 "$name" >/dev/null 2>&1 || true
@@ -43,6 +44,7 @@ window() {
     -e FD2_CUTSCENE_LOG=1 -e WGPU_BACKEND=vulkan -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e RUST_LOG=warn \
     -w / fd2-rust:1.99.1-r3 bash -euc '
       export XDG_DATA_HOME="/out/$PROFILE" XDG_CACHE_HOME=/tmp/fd2-cache FD2_ASSET_PACK=/tmp/pack
+      if [[ "$MODE" == native-save ]]; then export FD2_NATIVE_SAVE=/out/profile/FD2.SAV; fi
       mkdir -p "$FD2_ASSET_PACK"
       for path in /original/*; do ln -s "$path" "$FD2_ASSET_PACK/"; done
       ln -s /assets/locales "$FD2_ASSET_PACK/locales"
@@ -62,6 +64,7 @@ drive() {
   timeout 400s docker run "${common[@]}" --name "$name-driver" --memory 512m --cpus 1 \
     --mount "type=bind,source=$out,target=/out" \
     --mount "type=bind,source=$out/socket,target=/tmp/.X11-unix,readonly" \
+    "${native_reference[@]}" \
     -e DISPLAY=:96 -e "MODE=$1" -w /out fd2-promo-local:latest bash -euc '
       trap "echo \"視窗測試 $MODE 失敗，腳本第 \$LINENO 行\" >&2" ERR
       for _ in $(seq 1 200); do
@@ -80,7 +83,7 @@ drive() {
       toolbar() {
         local x=$((2 * $1))
         local rest_x=640 rest_y=400
-        if [[ "$MODE" == loadslots* ]]; then rest_x=30; rest_y=70; fi
+        if [[ "$MODE" == loadslots* || "$MODE" == native-save ]]; then rest_x=30; rest_y=70; fi
         xdotool windowfocus --sync "$wid"
         xdotool mousemove --window "$wid" "$x" 2
         sleep 0.6
@@ -261,6 +264,22 @@ drive() {
           sleep 0.25
         done
         echo "滑鼠未選到第二槽：$MODE" >&2
+        return 1
+      }
+      wait_for_restored_town() {
+        # 同狀態的原版畫格為 320×200。比對沒有游標、人物或標籤的右側營帳區。
+        convert /native-town.png -filter point -resize 400% -crop 480x280+680+240 +repage /tmp/town-original.png
+        for _ in $(seq 1 50); do
+          capture slots-restored.png
+          convert slots-restored.png -crop 480x280+680+240 +repage /tmp/town-rust.png
+          if same /tmp/town-original.png /tmp/town-rust.png; then
+            echo "原版城鎮營帳區逐像素相同"
+            return
+          fi
+          sleep 0.4
+        done
+        compare -metric AE /tmp/town-original.png /tmp/town-rust.png null: || true
+        echo "還原畫面未匹配原版城鎮" >&2
         return 1
       }
       wait_for_loaded_dialogue() {
@@ -512,7 +531,7 @@ drive() {
           convert gold-hd-art-page2.png -crop 1240x12+20+448 +repage /tmp/gold-second.png
           same /tmp/gold-first.png /tmp/gold-second.png
           ;;
-        loadslots|loadslots-native)
+        loadslots|loadslots-native|native-save)
           wait_for_menu slots-title.png
           open_loadslots slots-original.png
           toolbar 180
@@ -548,6 +567,11 @@ drive() {
             same /tmp/slots-battle-content.png /tmp/slots-battle-original-content.png
             advance_loaded_dialogue
             sha256sum -c slot-source.sha256
+          elif [[ "$MODE" == native-save ]]; then
+            open_loadslots slots-reopened.png
+            loadslots_key_until_event "[title] slot 1 loaded=true" Return space Return
+            wait_for_restored_town
+            sha256sum -c slot-source.sha256
           fi
           ;;
       esac
@@ -561,6 +585,8 @@ baseline=()
 if [[ -n "${2:-}" ]]; then
   if [[ "$mode" == "loadslots" ]]; then
     test -f "$2/fd2_save.json"
+  elif [[ "$mode" == "native-save" ]]; then
+    test -f "$2/FD2.SAV"
   elif [[ "$mode" == "locale-samples" ]]; then
     test -f "$2/locale-en.png" && test -f "$2/profile/fd2_re/fd2_settings.json"
   else
@@ -576,6 +602,11 @@ elif [[ "$mode" == "locale-samples" ]]; then
   test -f "${2:?需要英文視窗基準}/locale-en.png"
 elif [[ "$mode" == "loadslots" ]]; then
   test -f "${2:?需要章界存檔目錄}/fd2_save.json"
+elif [[ "$mode" == "native-save" ]]; then
+  test -f "${2:?需要原版章界存檔目錄}/FD2.SAV"
+  reference="${4:?需要原版城鎮參考圖}"
+  test -f "$reference"
+  native_reference=(--mount "type=bind,source=$(cd "$(dirname "$reference")" && pwd -P)/$(basename "$reference"),target=/native-town.png,readonly")
 elif [[ "$mode" != "posters" && "$mode" != "poster-scenery" && "$mode" != "locales" && "$mode" != "gold-dialogue" ]]; then
   test "$mode" = toggle
 fi
@@ -585,7 +616,7 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
     mkdir -p /out/profile/fd2_re
     theme=faithful
     interface=original
-    if test -d /baseline && [[ "$CHECK_MODE" != locale-samples && "$CHECK_MODE" != loadslots ]]; then
+    if test -d /baseline && [[ "$CHECK_MODE" != locale-samples && "$CHECK_MODE" != loadslots && "$CHECK_MODE" != native-save ]]; then
       cp /baseline/title-hd.png /baseline/title-missing-pack.png /out/
       theme=modern-handpainted-a
     fi
@@ -606,6 +637,12 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       cd /out
       sha256sum profile/fd2_re/fd2_save.json > slot-source.sha256
     fi
+    if [[ "$CHECK_MODE" == native-save ]]; then
+      cp /baseline/FD2.SAV /out/profile/FD2.SAV
+      printf "{\"theme_id\":\"faithful\",\"game_speed\":4}\n" > /out/profile/fd2_re/fd2_settings.json
+      cd /out
+      sha256sum profile/FD2.SAV > slot-source.sha256
+    fi
     mkdir -p /out/no-font/fd2_re
     printf "{\"theme_id\":\"faithful\",\"interface_mode\":\"hd\"}\n" > /out/no-font/fd2_re/fd2_settings.json
     if [[ "$CHECK_MODE" == poster* ]]; then
@@ -625,6 +662,12 @@ timeout 15s docker run "${common[@]}" --memory 128m --cpus 1 "${baseline[@]}" \
       fi
     fi
   '
+if [[ "$mode" == "native-save" ]]; then
+  window native-save profile /hd
+  drive native-save
+  stop_window
+  exit 0
+fi
 if [[ "$mode" == "loadslots" ]]; then
   window loadslots profile /hd
   drive loadslots
