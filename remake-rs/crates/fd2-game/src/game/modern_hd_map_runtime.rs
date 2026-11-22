@@ -283,7 +283,7 @@ impl Game {
             return false;
         }
         if legacy_viewport {
-            return self.has_aligned_hd_story_map_source();
+            return self.has_hd_story_map_source();
         }
         battle_view
             && native_map_assets_available(self.native_map_assets.as_ref())
@@ -300,12 +300,13 @@ impl Game {
                 || self.native_move_plan.is_some())
     }
 
-    pub(crate) fn prepare_hd_battle_map(
+    pub(crate) fn prepare_hd_map(
         &self,
         input: &indexedmap::NativeFrameInput,
         stage: Option<&NativeCh23AdapterState>,
         dac: &[u8],
         motion: ModernHDMapMotion,
+        story_motion: bool,
     ) -> Result<ModernHDMapFrame> {
         let theme = self.modern_story_portraits.as_ref().ok_or_else(|| game_err!("modern HD map: missing theme"))?;
         let assets =
@@ -331,7 +332,12 @@ impl Game {
         let (offset, visible) = self.phase_banner_slide_offset();
         let glyphs = |dst: &mut [u8]| self.blit_phase_banner_glyphs(dst, offset);
         let glyphs = (visible && self.phase_banner_glyphs_available()).then_some(&glyphs as &dyn Fn(&mut [u8]) -> bool);
-        prepare_modern_hd_map_frame(input, &seed, &palette, &theme.map_sprites_hd, tiles, motion, glyphs)
+        let mut frame =
+            prepare_modern_hd_map_frame(input, &seed, &palette, &theme.map_sprites_hd, tiles, motion, glyphs)?;
+        if story_motion {
+            self.project_hd_story_motion(&mut frame, &input.frame, seed, &palette, tiles, &theme.map_sprites_hd)?;
+        }
+        Ok(frame)
     }
 }
 

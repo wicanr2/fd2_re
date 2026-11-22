@@ -9799,7 +9799,7 @@ impl Game {
             ModernHDMapMotion::Steady
         };
         let modern = if self.modern_hd_map_composing {
-            Some(self.prepare_hd_battle_map(&in_, stage.as_ref(), candidate_dac, motion)?)
+            Some(self.prepare_hd_map(&in_, stage.as_ref(), candidate_dac, motion, false)?)
         } else {
             None
         };

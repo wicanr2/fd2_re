@@ -17,11 +17,12 @@ pub(crate) fn build_modern_hd_map_unit_plan(
     viewport_base: i64,
     sprites: &BTreeMap<i64, Vec<Option<Arc<Picture>>>>,
 ) -> Result<Vec<ModernHDMapUnitDraw>> {
-    build_modern_hd_map_unit_region_plan(input, viewport_base, sprites, 12, 8)
+    build_modern_hd_map_unit_region_plan(input, &input.units, viewport_base, sprites, 12, 8)
 }
 
 pub(crate) fn build_modern_hd_map_unit_region_plan(
     input: &indexedmap::FrameInput,
+    units: &[fdicon::NativeUnitLayerEntry],
     viewport_base: i64,
     sprites: &BTreeMap<i64, Vec<Option<Arc<Picture>>>>,
     xmax: i64,
@@ -37,8 +38,8 @@ pub(crate) fn build_modern_hd_map_unit_region_plan(
     let y_range = input.camera_y.saturating_sub(1)..=input.camera_y.saturating_add(ymax);
     let area = (fdicon::NATIVE_SIZE * fdicon::NATIVE_SIZE) as usize;
     let side = fdicon::NATIVE_SIZE * super::modern_hd_terrain::SCALE as i64;
-    let mut commands = Vec::with_capacity(input.units.len());
-    for unit in &input.units {
+    let mut commands = Vec::with_capacity(units.len());
+    for unit in units {
         if unit.inactive || !x_range.contains(&unit.x) || !y_range.contains(&unit.y) {
             continue;
         }

@@ -134,6 +134,7 @@ mod modern_hd_sky_key;
 mod modern_hd_sky_key_assets;
 mod modern_hd_split_strike;
 mod modern_hd_status_text;
+mod modern_hd_story_motion;
 mod modern_hd_system_confirmation;
 mod modern_hd_system_info;
 mod modern_hd_terrain;

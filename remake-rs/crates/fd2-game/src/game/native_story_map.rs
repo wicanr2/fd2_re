@@ -192,21 +192,16 @@ impl Game {
         err
     }
 
-    pub(crate) fn has_aligned_hd_story_map_source(&self) -> bool {
+    pub(crate) fn has_hd_story_map_source(&self) -> bool {
         self.st.is_none()
             && self.story_bg
             && self.has_story_native_map_view
             && self.story_native_map_state.is_some()
             && native_map_assets_available(self.native_map_assets.as_ref())
-            && self.story_walks.is_empty()
-            && self.m.as_ref().is_some_and(|map| {
-                (map.tile_w, map.tile_h) == (24, 24)
-                    && self.cam_x == (self.story_native_map_view.camera_x * map.tile_w) as f64
-                    && self.cam_y == (self.story_native_map_view.camera_y * map.tile_h) as f64
-            })
+            && self.m.as_ref().is_some_and(|map| (map.tile_w, map.tile_h) == (24, 24))
     }
 
-    /// 沿原生場景載體準備固定鏡頭的 HD 圖層。這次取樣只更新私有候選，Draw 不推進劇情狀態。
+    /// 沿原生場景載體準備 HD 圖層。繪製取樣只更新私有候選。
     pub(crate) fn prepare_hd_story_map(&self) -> Result<ModernHDMapFrame> {
         let assets = self.native_map_assets.as_ref().ok_or_else(|| game_err!("modern HD story: missing assets"))?;
         let mut state = self
@@ -217,7 +212,21 @@ impl Game {
             .ok_or_else(|| game_err!("modern HD story: selector cache absent"))?;
         state.units.clone_from(&self.story_actors);
         approximate_story_foreground(&mut state.units)?;
-        state.materialize_native_map_view_state(self.story_native_map_view)?;
+        let map = self.m.as_ref().ok_or_else(|| game_err!("modern HD story: missing field"))?;
+        let mut view = self.story_native_map_view;
+        let moving = !self.story_walks.is_empty()
+            || self.cam_x != (view.camera_x * map.tile_w) as f64
+            || self.cam_y != (view.camera_y * map.tile_h) as f64;
+        if moving {
+            if !(0.0..=((map.w - 13) * 24) as f64).contains(&self.cam_x)
+                || !(0.0..=((map.h - 8) * 24) as f64).contains(&self.cam_y)
+            {
+                return Err(game_err!("modern HD story: camera outside drawable map"));
+            }
+            view.camera_x = (self.cam_x / 24.0).floor() as i64;
+            view.camera_y = (self.cam_y / 24.0).floor() as i64;
+        }
+        state.materialize_native_map_view_state(view)?;
         let mut player_clock = self.player_clock;
         let mut map_clock = self.native_map_clock;
         if !sample_native_map_timing(&mut state, &mut map_clock, player_clock.sample(self.virtual_now)) {
@@ -247,7 +256,7 @@ impl Game {
         let stage = self.prepare_native_ch23_steady_stage(raw_tick)?;
         let motion =
             if self.banner_t > 0 || self.walk.is_some() { ModernHDMapMotion::Step } else { ModernHDMapMotion::Steady };
-        self.prepare_hd_battle_map(&input, stage.as_ref(), &dac, motion)
+        self.prepare_hd_map(&input, stage.as_ref(), &dac, motion, moving)
     }
 }
 

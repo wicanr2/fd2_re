@@ -42,7 +42,11 @@ impl ModernHDMapGPU {
         let mut world = Picture::new_image(HD_MAP_WIDTH, HD_MAP_HEIGHT);
         draw_layer(&mut world, background, world_rect(), world_rect(), false);
         for terrain in &frame.terrain {
-            let rect = at_size(terrain.rect.min, terrain.image.width, terrain.image.height);
+            let rect = if terrain.scale_to_rect {
+                terrain.rect
+            } else {
+                at_size(terrain.rect.min, terrain.image.width, terrain.image.height)
+            };
             draw_layer(&mut world, &terrain.image, rect, clip, false);
         }
         if let Some(range) = &frame.range {
@@ -153,7 +157,7 @@ fn mosaic_world(source: &Picture, step: i64) -> Picture {
 
 impl Game {
     pub(crate) fn draw_modern_hd_map_frame(&mut self, screen: &mut Picture) -> Result<()> {
-        if self.has_aligned_hd_story_map_source() {
+        if self.has_hd_story_map_source() {
             let frame = self.prepare_hd_story_map().inspect_err(|_| screen.clear())?;
             self.modern_hd_map_frame = Some(frame);
         } else {

@@ -391,6 +391,7 @@ fn map_layers_match_go() {
             frame: 0,
             work_offset: 0,
             image: paint(144, 144, rect(0, 0, 135, 120), [21, 92, 52, 255]),
+            scale_to_rect: false,
         }],
         range: Some(paint(320, 200, rect(6, 9, 14, 21), [100, 10, 49, 255])),
         units: vec![ModernHDMapUnitDraw { rect: rect(48, 44, 192, 188), palette_band: true, ..Default::default() }],

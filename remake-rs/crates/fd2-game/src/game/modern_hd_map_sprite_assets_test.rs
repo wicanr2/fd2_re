@@ -208,18 +208,141 @@ fn verify_aligned_hd_story_map(theme: ModernStoryPortraitSet, out: &std::path::P
         )
         .unwrap();
     }
-    game.cam_x += 0.5;
-    assert!(!game.modern_hd_map_frame_admission(true, false));
-    game.cam_x -= 0.5;
-    game.story_walks.push(StoryWalkJob::default());
-    assert!(!game.modern_hd_map_frame_admission(true, false));
-    game.story_walks.clear();
     let previous = game.modern_hd_map_frame.clone();
     let frame = previous.as_ref().unwrap().units.iter().find(|unit| unit.group == 48).unwrap();
-    game.modern_story_portraits.as_mut().unwrap().map_sprites_hd.get_mut(&48).unwrap()[frame.frame as usize] = None;
+    let slot = frame.frame as usize;
+    let sprites = game.modern_story_portraits.as_mut().unwrap().map_sprites_hd.get_mut(&48).unwrap();
+    let picture = sprites[slot].take();
     game.draw(&mut ui);
     assert!(!game.modern_hd_world_visible && game.load_err.contains("invalid group 48"));
     assert!(game.modern_hd_map_frame == previous);
+    game.modern_story_portraits.as_mut().unwrap().map_sprites_hd.get_mut(&48).unwrap()[slot] = picture;
+    game.load_err.clear();
     std::fs::write(out.join("rust-story-map.txt"), &report).unwrap();
     println!("皇城兩個固定鏡頭對照 Go：\n{report}");
+    verify_hd_story_motion(&mut game, out);
+}
+
+fn verify_hd_story_motion(game: &mut Game, out: &std::path::Path) {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    #[derive(serde::Deserialize)]
+    struct MotionCase {
+        name: String,
+        x: i64,
+        y: i64,
+        ticks: i64,
+        camera_x: f64,
+        camera_y: f64,
+        parallax: bool,
+        follow: bool,
+    }
+    let cases: Vec<MotionCase> =
+        serde_json::from_slice(&std::fs::read(out.join("story-motion-cases.json")).unwrap()).unwrap();
+    assert_eq!(cases.len(), 8);
+    let asset_dir = separated_asset_path("surfaces");
+    let parallax = fdother::load_separated_native_map_parallax(asset_dir).unwrap();
+    let actor =
+        game.story_actors.iter().position(|actor| actor.has_map_selector_key && actor.map_selector_key == 0).unwrap();
+    let baseline = game.story_actors[actor].clone();
+    let mut report = String::new();
+    let mut hashes = String::new();
+    let mut ui = Picture::new_image(LOGICAL_W, LOGICAL_H);
+    for c in cases {
+        game.story_actors[actor] = baseline.clone();
+        game.story_actors[actor].on_field = true;
+        assert!(game.story_actors[actor].set_map_placement(8, 5, 0));
+        let raw = game.story_actors[actor].native_map_presentation;
+        game.story_native_map_view.camera_x = 0;
+        game.story_native_map_view.camera_y = 2;
+        game.story_native_map_view.cursor_x = 8;
+        game.story_native_map_view.visible_cursor_x = 8;
+        (game.cam_x, game.cam_y, game.frame) = (c.camera_x, c.camera_y, 0);
+        game.native_map_assets.as_mut().unwrap().parallax = c.parallax.then(|| parallax.clone());
+        game.story_walks.clear();
+        let completed = Arc::new(AtomicUsize::new(0));
+        if c.ticks != 0 {
+            let calls = completed.clone();
+            game.story_walks.push(StoryWalkJob {
+                actor: actor as i64,
+                from_x: 8,
+                from_y: 5,
+                to_x: c.x,
+                to_y: c.y,
+                frames: 24,
+                final_dir: 2,
+                scroll_follow: c.follow,
+                from_cam_y: c.camera_y,
+                scroll_free: 2,
+                then: Some(Box::new(move |_| {
+                    calls.fetch_add(1, Ordering::Relaxed);
+                })),
+                ..Default::default()
+            });
+        }
+        for _ in 0..c.ticks {
+            game.frame += 1;
+            game.step_story_walks();
+        }
+        let actor_snapshot = game.story_actors[actor].clone();
+        let view = game.story_native_map_view;
+        let camera = (game.cam_x, game.cam_y);
+        let clock = game.native_map_clock;
+        game.draw(&mut ui);
+        assert!(game.modern_hd_world_visible, "{}: {}", c.name, game.load_err);
+        assert_eq!(game.story_actors[actor], actor_snapshot);
+        assert_eq!(game.story_actors[actor].native_map_presentation.x, raw.x);
+        assert_eq!(game.story_actors[actor].native_map_presentation.y, raw.y);
+        assert_eq!(game.story_native_map_view, view);
+        assert_eq!((game.cam_x, game.cam_y), camera);
+        assert_eq!(game.native_map_clock, clock);
+        assert_eq!(completed.load(Ordering::Relaxed), 0);
+        assert!(game.story_walks.first().is_none_or(|job| job.t == c.ticks));
+        let frame = game.modern_hd_map_presented.as_ref().unwrap();
+        let backdrop = &frame.terrain[0];
+        assert!(backdrop.scale_to_rect);
+        write!(
+            report,
+            "{} {} {} {} {} {:x}",
+            c.name,
+            backdrop.rect.min.x,
+            backdrop.rect.min.y,
+            backdrop.rect.max.x,
+            backdrop.rect.max.y,
+            Sha256::digest(backdrop.image.read_pixels())
+        )
+        .unwrap();
+        for unit in &frame.units {
+            write!(report, " {}/{}/{}/{}", unit.group, unit.frame, unit.rect.min.x, unit.rect.min.y).unwrap();
+        }
+        report.push('\n');
+        let world = game.modern_hd_map_gpu.as_ref().unwrap().world.as_ref().unwrap();
+        let expected = std::fs::read(out.join(format!("go-story-motion-{}.rgba", c.name))).unwrap();
+        assert_eq!(world.read_pixels().len(), expected.len());
+        let diff = world.read_pixels().iter().zip(&expected).map(|(a, b)| u8::abs_diff(*a, *b)).max().unwrap();
+        writeln!(hashes, "{} {diff} {:x} {:x}", c.name, Sha256::digest(&expected), Sha256::digest(world.read_pixels()))
+            .unwrap();
+        assert!(diff <= 1, "{}: maximum pixel difference {diff}; plan {report}", c.name);
+        if c.ticks != 0 {
+            for _ in c.ticks..25 {
+                game.step_story_walks();
+            }
+            assert_eq!(completed.load(Ordering::Relaxed), 1);
+            assert!(game.story_walks.is_empty());
+            assert_eq!(
+                (game.story_actors[actor].x, game.story_actors[actor].y, game.story_actors[actor].dir),
+                (c.x, c.y, 2)
+            );
+        }
+    }
+    let expected = std::fs::read_to_string(out.join("go-story-motion.txt")).unwrap();
+    std::fs::write(out.join("rust-story-motion.txt"), &report).unwrap();
+    assert_eq!(report, expected);
+    let previous = game.modern_hd_map_frame.clone();
+    game.cam_x = f64::NAN;
+    game.draw(&mut ui);
+    assert!(!game.modern_hd_world_visible && game.load_err.contains("camera outside drawable map"));
+    assert!(game.modern_hd_map_frame == previous);
+    std::fs::write(out.join("rust-story-motion-world.txt"), &hashes).unwrap();
+    println!("劇情走行、移鏡與視差的八張世界畫布與 Go 比對：\n{hashes}");
 }

@@ -17,6 +17,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
@@ -171,6 +172,93 @@ func writeRustGoldenHDStoryMap(t *testing.T, out string, set *modernStoryPortrai
 		if err := os.WriteFile(filepath.Join(out, fmt.Sprintf("go-story-map-%d-ui.rgba", cameraX)), frame.UI.Pix, 0600); err != nil {
 			t.Fatal(err)
 		}
+	}
+	writeRustGoldenHDStoryMotion(t, out, g)
+}
+
+func writeRustGoldenHDStoryMotion(t *testing.T, out string, g *Game) {
+	t.Helper()
+	type motionCase struct {
+		Name     string  `json:"name"`
+		X        int     `json:"x"`
+		Y        int     `json:"y"`
+		Ticks    int     `json:"ticks"`
+		CameraX  float64 `json:"camera_x"`
+		CameraY  float64 `json:"camera_y"`
+		Parallax bool    `json:"parallax"`
+		Follow   bool    `json:"follow"`
+	}
+	cases := []motionCase{
+		{"east", 10, 5, 7, 0, 48, false, false},
+		{"west", 6, 5, 10, 0, 48, false, false},
+		{"north", 8, 3, 9, 0, 48, false, false},
+		{"south", 8, 7, 14, 0, 48, false, false},
+		{"turn-x", 10, 6, 19, 0, 48, false, false},
+		{"turn-y", 7, 7, 19, 0, 48, false, false},
+		{"pan", 0, 0, 0, 23.5, 71.25, true, false},
+		{"follow", 8, 2, 21, 0, 48, true, true},
+	}
+	parallax, err := fdother.LoadSeparatedNativeMapParallax(separatedAssetPath("surfaces"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	actorIndex := -1
+	for i, actor := range g.storyActors {
+		if actor.HasMapSelectorKey && actor.MapSelectorKey == 0 {
+			actorIndex = i
+			break
+		}
+	}
+	if actorIndex < 0 {
+		t.Fatal("story walking actor missing")
+	}
+	actor := &g.storyActors[actorIndex]
+	baseline := *actor
+	var report strings.Builder
+	for _, c := range cases {
+		*actor = baseline
+		actor.OnField = true
+		actor.SetMapPlacement(8, 5, 0)
+		g.storyNativeMapView.CameraX, g.storyNativeMapView.CameraY = 0, 2
+		g.storyNativeMapView.CursorX, g.storyNativeMapView.VisibleCursorX = 8, 8
+		g.camX, g.camY, g.frame = c.CameraX, c.CameraY, 0
+		g.nativeMapAssets.Parallax = nil
+		if c.Parallax {
+			g.nativeMapAssets.Parallax = parallax
+		}
+		g.storyWalks = nil
+		if c.Ticks != 0 {
+			g.storyWalks = []*storyWalkJob{{actor: actorIndex, fromX: 8, fromY: 5, toX: c.X, toY: c.Y, frames: 24,
+				finalDir: 2, scrollFollow: c.Follow, fromCamY: c.CameraY, scrollFree: 2}}
+		}
+		for i := 0; i < c.Ticks; i++ {
+			g.frame++
+			g.stepStoryWalks()
+		}
+		frame, err := g.prepareModernHDStoryMapFrame(g.modernStoryPortraits)
+		if err != nil {
+			t.Fatalf("%s: %v", c.Name, err)
+		}
+		backdrop := frame.Terrain[0]
+		fmt.Fprintf(&report, "%s %d %d %d %d %x", c.Name, backdrop.Rect.Min.X, backdrop.Rect.Min.Y,
+			backdrop.Rect.Max.X, backdrop.Rect.Max.Y, sha256.Sum256(backdrop.Image.Pix))
+		for _, unit := range frame.Units {
+			fmt.Fprintf(&report, " %d/%d/%d/%d", unit.Group, unit.Frame, unit.Rect.Min.X, unit.Rect.Min.Y)
+		}
+		report.WriteByte('\n')
+		if err := os.WriteFile(filepath.Join(out, "go-story-motion-"+c.Name+".rgba"), healHDCPUWorld(frame, g.modernStoryPortraits).Pix, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	raw, err := json.Marshal(cases)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(out, "story-motion-cases.json"), raw, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(out, "go-story-motion.txt"), []byte(report.String()), 0600); err != nil {
+		t.Fatal(err)
 	}
 }
 

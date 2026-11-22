@@ -3112,4 +3112,4 @@ Go 測試逐條移植：`jfreymuth/vorbis` 的 `TestDecode`（原本讀 gob 封�
 
 `game/modern_opening.rs` 把原生開場排程對應到 HD FDOTHER 與 ANI 圖庫。原尺寸開場畫布由 `PlayerRunner::draw_window_layers` 交給 Bevy，原介面選單留在邏輯畫布。相同來源及色彩、裁切狀態共用畫布與貼圖。光柵差分限受控開場狀態，完整主題載入仍在 R6。
 
-`game/native_story_map.rs` 從原生 `LOADCH` 載體的私有複本準備固定鏡頭 HD 地圖。沿用戰場地形與前景合成器，HUD 與範圍關閉。兩種原生載體共用 `sample_native_map_timing`。劇情的 HD 走行與鏡頭插值仍待移植。
+`game/native_story_map.rs` 從原生 `LOADCH` 載體的私有複本準備 HD 劇情地圖。沿用戰場地形與前景合成器，HUD 與範圍關閉。兩種原生載體共用 `sample_native_map_timing`。`game/modern_hd_story_motion.rs` 取樣走行人物與移鏡，補畫從視窗右側和下側進入的地形，並依原生比例繪製視差。

@@ -121,17 +121,27 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R6 HD1 劇情走行與鏡頭滑動（RUNTIME-E1，2026-11-22）
+
+沿 Go `697c0913` 的 `modern_hd_story_motion.go` 及規格 61。使用現行劇情控制器的座標、偏移、面向和節拍。HD 鏡頭投影到私有地格視圖，保留小數像素位移及原生角色落腳點。地形補足右側一欄與下側一列，再裁切到原生視窗。視差採原生每格水平 3 像素與垂直 2 像素的比例。地形與前景的原生索引色映射各照來源遮罩執行。
+
+走行人物由原生 selector 確認圖源，四方向各用三拍。遮擋使用私有視覺座標。取樣只改候選幀，錯誤格網、錯誤鏡頭及缺圖在發布前拒收。輸入、完成回呼、原生索引位置及保存沿既有控制器。
+
+`FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-story-motion-20261122` 通過。皇城 map32 的四向走行、兩次轉向、雙軸移鏡及跟隨捲動合計八張 1920×1200 畫布，皆經 Rust `Game::draw` 與 Go 世界合成比對，單一色彩通道最大差值為 1。底圖像素雜湊、圖格及矩形完全相同。鏡頭兩組取樣使用原版 FDOTHER #16／#17 視差資料。圖層計畫和畫布比較紀錄的 SHA-256 分別為 `a4ed743d0d5753c0a007ef80165cc89bd5ccc005123b6bf17c133e18565662a8` 與 `f56276f3aee134ed945fa5276b6f57ef06091774d84d8a76ae4ee01f8477f067`。
+
+測試確認繪製保留原生視圖與時鐘，走行完成回呼只執行一次，無效鏡頭或缺件保留上一份合成計畫。格式、Clippy、446 項 Rust 回歸與十項 Go 差分通過。此切片使用受控位置與原版介面。完整主題啟用、F2／F11 與一般遊玩仍由 #312 追蹤。[61 的走行和移鏡契約](../knowledge-base/61-modern-theme-runtime-spec.md#故事走位與插值移鏡hdconformed-scopedruntime-e1)
+
 ### R6 HD1 固定鏡頭的劇情地圖（RUNTIME-E1，2026-11-22）
 
 依 Go `697c0913` 的 `hasModernHDStoryMapSource`、`prepareModernHDStoryMapFrame` 及規格 61 的故事載體契約。限定具有原生 `LOADCH` 載體、24×24 地格、原生視圖且鏡頭對齊的劇情場景。畫面使用同一場景地形、色盤、人物及前景，關閉戰鬥 HUD 與範圍。原生對白仍由獨立介面繪製。
 
-候選載體讀目前已發布的劇情角色，沿用既有原生前景近似與時鐘規則。預備只操作複本，成功才交付 HD 繪圖計畫。角色名冊、索引工作區、VGA、DAC、相機與時鐘皆保留原控制器的發布邊界。缺來源或圖格時不發布畫面。走行與未對齊的鏡頭仍走既有劇情繪製路徑，HD 插值另接。
+候選載體讀目前已發布的劇情角色，沿用既有原生前景近似與時鐘規則。預備只操作複本，成功才交付 HD 繪圖計畫。角色名冊、索引工作區、VGA、DAC、相機與時鐘皆保留原控制器的發布邊界。缺來源或圖格時不發布畫面。
 
 `FD2_RUST_TARGET=target-r5i bash tools/rust_r6_opening.sh work/r6-story-map-20261122-r2` 通過。皇城 map32 採正式地形、人物、清冊及場景資料，在兩個固定鏡頭走 `Game::draw`。1920×1200 世界與 Go 的獨立 CPU 合成相比，單一通道最大差值為 1。兩側介面皆透明。重複繪製保留載體、名冊及時鐘，拿掉一張必要人物圖格時保留上一份合成結果。比較紀錄 SHA-256 為 `061f2c377f804421fca6574b4035bbfca8dddec7f49282236ae51f6c4a1081ee`。格式、Clippy、446 項 Rust 回歸與十項差分通過。
 
 `FD2_RUST_TARGET=target-r5i FD2_GOCACHE="$PWD/work/gocache-r5i" FD2_R5P_MODES=opening bash tools/rust_r5p_layers.sh work/r6-story-map-original-20261122` 通過。原版美術從開場、START、序章到第一關的 10,372 個圖層擷取點與 Go 相同，含 8,408 張世界圖層及 72 張淡幕。序列 SHA-256 為 `40f0309d295e993f9c9a8c9fbafe4c95220c6883538e0f0ba486fa5f7a155ef0`。
 
-完整 HD 主題載入、一般啟動與 HD 走行仍由 #312 追蹤。[61 的劇情載體契約](../knowledge-base/61-modern-theme-runtime-spec.md#hd1首關出場名冊同步修正conformed-scopedruntime-e1)
+完整 HD 主題載入與一般啟動仍由 #312 追蹤。[61 的劇情載體契約](../knowledge-base/61-modern-theme-runtime-spec.md#hd1首關出場名冊同步修正conformed-scopedruntime-e1)
 
 ### R6 HD1 開場視窗合成（RUNTIME-E1，2026-11-22）
 

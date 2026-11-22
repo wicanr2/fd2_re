@@ -9,6 +9,7 @@ pub(crate) struct ModernHDTerrainDraw {
     pub(crate) rect: Rectangle,
     pub(crate) frame: i64,
     pub(crate) work_offset: i64,
+    pub(crate) scale_to_rect: bool,
 }
 
 pub(crate) fn modern_hd_map_viewport() -> Rectangle {
@@ -97,7 +98,7 @@ pub(crate) fn build_modern_hd_terrain_region_plan(
                 continue;
             }
             if let Some(image) = map.shade(id, colours, cell.blit_mode == 0xff)? {
-                draws.push(ModernHDTerrainDraw { image, rect: area, frame, work_offset });
+                draws.push(ModernHDTerrainDraw { image, rect: area, frame, work_offset, scale_to_rect: false });
             }
         }
     }
