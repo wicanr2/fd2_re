@@ -273,11 +273,6 @@ impl Game {
         if self.draw_native_class_ui_job(screen) {
             return true;
         }
-        if self.facility_hd_draw_active() {
-            todo!(
-                "r6:modern_hd_facility_text.go:beginModernHDPreparationText、modern_hd_preparation_roster.go:drawModernHDPreparationRoster、modern_hd_preparation_background.go:drawModernHDPreparationBackground"
-            );
-        }
         let (frame, ok) = self.compose_native_preparation_stable_frame();
         if !ok {
             if self.prep_record_slots {
@@ -301,25 +296,178 @@ impl Game {
     }
 
     /// Go：`native_preparation_ui.go:466`，`func (g *Game) composeNativePreparationStableFrameParts(drawUnits, drawCursor bool) ([]byte, bool)`
-    ///
-    /// R5 階段 2 r5c。第一章只走到出擊前提示（`composeNativePreparationPromptFrame`）；四槽列表、出擊確認與名冊
-    /// （`composeNativePreparationRecordSlotsFrame`、`composeNativePreparationConfirmationFrame`、
-    /// `composeNativePreparationFrameParts`）在 crate 裡還沒有，`todo!("r8:…")`。
     pub(crate) fn compose_native_preparation_stable_frame_parts(
         &mut self,
         draw_units: bool,
         draw_cursor: bool,
     ) -> (Vec<u8>, bool) {
         if self.prep_record_slots {
-            todo!("r8:native_preparation_ui.go:composeNativePreparationRecordSlotsFrame（開場與第一章沒有走到）");
+            return self.compose_native_preparation_record_slots();
         }
         if self.native_preparation_prompt_active() {
             return self.compose_native_preparation_prompt_frame();
         }
-        if self.prep_confirm {
-            todo!("r8:native_preparation_ui.go:composeNativePreparationConfirmationFrame（開場與第一章沒有走到）");
+        let frame = if self.prep_confirm {
+            self.compose_native_preparation_confirmation()
+        } else {
+            self.compose_native_preparation_roster(draw_units, draw_cursor)
+        };
+        frame.map_or_else(|_| (Vec::new(), false), |frame| (frame, true))
+    }
+
+    fn compose_native_preparation_roster(&self, draw_units: bool, draw_cursor: bool) -> Result<Vec<u8>> {
+        let ui = self.native_preparation_ui.as_ref().ok_or_else(|| game_err!("缺少整備素材"))?;
+        let assets = ui.roster.as_ref().ok_or_else(|| game_err!("缺少整備名冊素材"))?;
+        let keys = self
+            .prep_ids
+            .iter()
+            .map(|id| {
+                self.party_roster
+                    .get(id)
+                    .filter(|unit| unit.has_map_selector_key)
+                    .map(|unit| unit.map_selector_key)
+                    .ok_or_else(|| game_err!("整備角色缺少原版圖示"))
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let selected =
+            self.prep_ids.iter().map(|id| self.party_deploy.get(id).copied().unwrap_or(false)).collect::<Vec<_>>();
+        let unit = self
+            .prep_ids
+            .get(self.prep_sel as usize)
+            .and_then(|id| self.party_roster.get(id))
+            .ok_or_else(|| game_err!("缺少整備角色"))?;
+        let cycle = fdicon::native_frame_index(0, false, self.prep_idle_cycle, 0)?;
+        let background = &self.prep_prompt_source;
+        let mut frame = if !draw_cursor {
+            fdother::compose_native_preparation_frame_without_cursor(
+                background,
+                assets,
+                &keys,
+                &selected,
+                self.prep_sel,
+                cycle,
+                self.prep_limit,
+                draw_units,
+            )?
+        } else {
+            let compose = if draw_units {
+                fdother::compose_native_preparation_frame_on_background
+            } else {
+                fdother::compose_native_preparation_frame_without_roster_units
+            };
+            compose(background, assets, &keys, &selected, self.prep_sel, cycle, self.prep_limit)?
+        };
+        let record = battle::native_item_panel_record_for_unit(Some(unit))?;
+        battle::render_native_item_panel_data(&ui.status, &record, &mut frame)?;
+        Ok(frame)
+    }
+
+    fn compose_native_preparation_confirmation(&self) -> Result<Vec<u8>> {
+        let ui = self.native_preparation_ui.as_ref().ok_or_else(|| game_err!("缺少整備素材"))?;
+        let frame = campaign::compose_native_preparation_confirmation_frame(
+            &self.prep_prompt_source,
+            &ui.choices,
+            &ui.dialogue,
+            &ui.portrait,
+            ui.status.strings.as_ref(),
+            ui.status.font.as_ref(),
+            self.prep_confirm_sel,
+            self.native_class_ui_pulse / 2,
+        )?;
+        let (frame, ok) = self.compose_native_confirmation_mouth(&frame, &ui.portraits);
+        if !ok {
+            return Err(game_err!("缺少整備確認畫面"));
         }
-        let _ = (draw_units, draw_cursor);
-        todo!("r8:native_preparation_ui.go:composeNativePreparationFrameParts（整備名冊；開場與第一章沒有走到）")
+        Ok(frame)
+    }
+
+    pub(crate) fn compose_native_preparation_record_slots(&self) -> (Vec<u8>, bool) {
+        let (Some(ui), Some(shared)) = (self.native_preparation_ui.as_ref(), self.native_class_ui.as_ref()) else {
+            return (Vec::new(), false);
+        };
+        let (slots, valid) = native_load_slot_metadata();
+        if !valid {
+            return (Vec::new(), false);
+        }
+        campaign::compose_native_load_slots_frame(
+            &self.prep_prompt_source,
+            &ui.slots_box,
+            shared.strings.as_ref(),
+            shared.font.as_ref(),
+            slots,
+            self.prep_record_slot_sel,
+        )
+        .map_or_else(|_| (Vec::new(), false), |frame| (frame, true))
+    }
+
+    pub(crate) fn begin_native_preparation_confirmation(
+        &mut self,
+        after: Option<Box<dyn FnOnce(&mut Game) + Send>>,
+    ) -> Result<()> {
+        let ui = self.native_preparation_ui.as_ref().ok_or_else(|| game_err!("缺少整備素材"))?;
+        let source = &self.prep_prompt_source;
+        let dialogue = campaign::compose_native_preparation_confirmation_dialogue(source, &ui.dialogue, &ui.portrait)?;
+        let question = campaign::compose_native_preparation_confirmation_question(
+            source,
+            &ui.dialogue,
+            &ui.portrait,
+            ui.status.strings.as_ref(),
+            ui.status.font.as_ref(),
+        )?;
+        let job = if after.is_some() {
+            NativeClassUIJob {
+                frames: campaign::native_preparation_confirmation_closing_frames(
+                    source,
+                    &dialogue,
+                    &question,
+                    &ui.choices,
+                )?,
+                restore: source.clone(),
+                after,
+                ..Default::default()
+            }
+        } else {
+            NativeClassUIJob {
+                frames: campaign::native_preparation_confirmation_opening_frames(
+                    source,
+                    &dialogue,
+                    &question,
+                    &ui.choices,
+                )?,
+                ..Default::default()
+            }
+        };
+        self.reset_native_class_ui_pulse();
+        self.native_class_ui_job = Some(job);
+        Ok(())
+    }
+
+    pub(crate) fn begin_native_preparation_required(
+        &mut self,
+        after: Option<Box<dyn FnOnce(&mut Game) + Send>>,
+    ) -> Result<()> {
+        let (dialogue, valid) = self.compose_native_preparation_prompt_dialogue();
+        if !valid {
+            return Err(game_err!("缺少必要角色提示素材"));
+        }
+        let source = &self.prep_prompt_source;
+        let job = if after.is_some() {
+            NativeClassUIJob {
+                frames: campaign::native_class_list_closing_frames(source, &dialogue)?,
+                restore: source.clone(),
+                after,
+                ..Default::default()
+            }
+        } else {
+            let (message, valid) = self.compose_native_preparation_prompt_question();
+            if !valid {
+                return Err(game_err!("缺少必要角色提示"));
+            }
+            let mut frames = campaign::native_class_list_opening_frames(source, &dialogue)?;
+            frames.push(message);
+            NativeClassUIJob { frames, ..Default::default() }
+        };
+        self.native_class_ui_job = Some(job);
+        Ok(())
     }
 }

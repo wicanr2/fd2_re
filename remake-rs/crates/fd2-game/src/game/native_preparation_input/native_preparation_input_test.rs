@@ -52,6 +52,56 @@ fn present_until_done(g: &mut Game, limit: usize) -> usize {
 }
 
 #[test]
+fn preparation_quota_reorders_native_records_and_can_cancel() {
+    let Ok(path) = std::env::var("FD2_SHOP_PROBE_SAVE") else { return };
+    if f_child_env(module_path!(), "preparation_quota_reorders_native_records_and_can_cancel", |dir| {
+        vec![
+            ("XDG_DATA_HOME", dir.into()),
+            ("FD2_TITLE", "1".into()),
+            ("FD2_MUTE", "1".into()),
+            ("FD2_CAMPAIGN", "canonical".into()),
+            ("FD2_NATIVE_SAVE", "".into()),
+        ]
+    })
+    .is_none()
+    {
+        return;
+    }
+    let mut game = load_game().unwrap();
+    assert!(game.load_err.is_empty(), "{}", game.load_err);
+    game.load_native_game_from_slot(&path, 0).unwrap();
+    game.title_phase.clear();
+    let old_order = game.party_join_order.clone();
+    let target = old_order[2];
+    let identity = game.party_roster[&target].native_identity;
+    let mut fixture = town_preparation_campaign();
+    let prep = fixture.nodes.get_mut("prep").unwrap();
+    prep.party_limit = 1;
+    prep.required_party_identities = vec![identity];
+    prep.party_front_identities = vec![identity];
+    game.camp = Some(campaign::new_runner(&fixture));
+    game.enter_node();
+    game.camp_sel = 2;
+    press(&mut game, Key::Enter);
+    present_until_done(&mut game, 20);
+    press(&mut game, Key::Enter);
+    present_until_done(&mut game, 20);
+    assert!(game.prep_selecting);
+    assert!(game.compose_native_preparation_stable_frame().1);
+    press(&mut game, Key::ArrowRight);
+    assert_eq!(game.prep_ids[game.prep_sel as usize], target);
+    press(&mut game, Key::Enter);
+    assert!(game.load_err.is_empty(), "{}", game.load_err);
+    assert!(game.prep_confirm);
+    assert_eq!(game.party_join_order[..3], [old_order[0], target, old_order[1]]);
+    assert_eq!(game.native_chapter_slot_baseline.as_ref().unwrap().records[1].raw[8] as i64, identity);
+    present_until_done(&mut game, 20);
+    press(&mut game, Key::Escape);
+    present_until_done(&mut game, 20);
+    assert_eq!(game.camp.as_ref().unwrap().node_id(), "town");
+}
+
+#[test]
 fn town_exit_prompt_escape_returns_to_same_town_selector() {
     if test_support::input("FD2_ASSET_PACK", "ui/fdother_010_town_label/resource.json").is_none() {
         return;

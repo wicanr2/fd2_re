@@ -8278,7 +8278,9 @@ impl Game {
         }
         if self.native_town_departure.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_town_departure.go:drawNativeTownDeparture（Draw 裡開場與第一章沒有走到）");
+            self.draw_native_town_departure(screen);
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_palette_ramp.is_some() {
             screen.fill(BLACK);

@@ -213,9 +213,6 @@ impl Game {
         } else {
             return false;
         };
-        if has_preparation_text && (self.modern_story_portraits.is_some() || self.modern_hd_text.is_some()) {
-            todo!("r6:modern_hd_preparation_transition.go:drawModernHDPreparationTransition");
-        }
         self.present_native_class_frame(screen, &pix);
         if has_preparation_text {
             // appendModernHDPreparationDialogue：忠實模式只清 HD 疊層，其餘要 modernHDText 或 HD 頭像。

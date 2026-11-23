@@ -5,6 +5,52 @@
 use super::*;
 
 impl Game {
+    pub(crate) fn reorder_preparation_roster(&mut self, order: Vec<i64>) -> Result<()> {
+        if let Some(baseline) = &self.native_chapter_slot_baseline {
+            let table =
+                campaign::load_native_join_constructor_table(&asset_path("assets/data/native_join_constructor.json"))?;
+            let item_rows =
+                battle::load_native_item_effect_row_prefix(&asset_path("assets/data/native_item_effect_rows.json"))?;
+            let mut built = campaign::build_native_chapter_slot(
+                baseline,
+                &self.party_roster,
+                &self.party_join_order,
+                u8::try_from(self.handler_chapter).map_err(|_| game_err!("整備章節超出原版範圍"))?,
+                u32::try_from(self.gold).map_err(|_| game_err!("金幣超出原版範圍"))?,
+                &table,
+                &item_rows,
+            )?;
+            let count = usize::from(built.metadata[1]);
+            let mut records = BTreeMap::new();
+            let (slots, remainder) = built.roster.as_chunks_mut::<{ fdsave::UNIT_SIZE }>();
+            if !remainder.is_empty() {
+                return Err(game_err!("整備原版名冊記錄尺寸無效"));
+            }
+            for record in slots.iter().take(count) {
+                if records.insert(i64::from(record[8]), *record).is_some() {
+                    return Err(game_err!("整備名冊有重複角色"));
+                }
+            }
+            if records.len() != order.len() {
+                return Err(game_err!("整備前後名冊人數不符"));
+            }
+            for (id, record) in order.iter().zip(slots) {
+                let unit = self
+                    .party_roster
+                    .get(id)
+                    .filter(|unit| unit.has_native_identity)
+                    .ok_or_else(|| game_err!("整備角色缺少原版身分"))?;
+                let original =
+                    records.remove(&unit.native_identity).ok_or_else(|| game_err!("找不到整備角色的原版存檔記錄"))?;
+                *record = original;
+            }
+            let plain = fdsave::write_slot(&self.native_chapter_slot_plain, baseline.slot, &built)?;
+            self.native_chapter_slot_baseline = Some(fdsave::inspect_chapter_slot(&plain, baseline.slot)?);
+        }
+        self.party_join_order = order;
+        Ok(())
+    }
+
     /// saveNativeChapterSlot 是酒店存檔（0x30012）的原版槽寫回：以標題 LOAD 讀進來的
     /// FD2.SAV plaintext 為底；正常 START 首次保存按已確認政策建立新名冊。
     /// 把目前持續隊伍與金幣寫進 slot，重算校驗和後原子取代

@@ -564,7 +564,17 @@ impl ParityReplay {
         match action.label.as_str() {
             "battle_start" => {
                 if node(&self.d.g).is_some_and(|n| n.r#type == "preparation") {
-                    todo!("R8: chapter_parity_replay_test.go:1328 整備 YES 進戰場（第一章 START 直接進序章）")
+                    assert!(
+                        self.d.g.handle_native_preparation_input(NativePreparationInput {
+                            enter: true,
+                            ..Default::default()
+                        })
+                    );
+                    assert!(
+                        self.d.pump(600, |g| node(g).is_some_and(|n| n.r#type != "preparation")),
+                        "確認出戰後未離開整備：{}",
+                        ch01_blockers(&self.d.g)
+                    );
                 }
                 let mut j = self.start_entry_trace.take().unwrap_or_else(new_journey_trace);
                 let battle = self.battle.clone();
@@ -595,6 +605,27 @@ impl ParityReplay {
                 self.ensure_town();
                 self.checkpoint("town_after_battle", action.seq, "town", true, &[]);
             }
+            "town_loaded" => {
+                self.settle_town();
+                self.checkpoint("town_loaded", action.seq, "town", true, &[]);
+            }
+            "departure_prompt" => {
+                for _ in 0..5 {
+                    if self.d.g.camp_sel == 2 {
+                        break;
+                    }
+                    assert!(self.d.g.move_native_town_selection(1), "無法移到城鎮出口");
+                }
+                assert_eq!(self.d.g.camp_sel, 2);
+                self.d.g.tick_input = TickInput { pressed: [Key::Enter].into(), ..Default::default() };
+                assert!(self.d.g.camp_input());
+                self.d.g.tick_input = TickInput::default();
+                assert!(node(&self.d.g).is_some_and(|n| n.r#type == "preparation"));
+                assert!(
+                    self.d.pump(600, |g| g.native_preparation_prompt_active() && !g.native_class_ui_blocks_input())
+                );
+                self.checkpoint("departure_prompt", action.seq, "preparation", true, &[]);
+            }
             "ending_entry"
             | "ending_terminal"
             | "captain_reinforcements_arrived"
@@ -602,8 +633,6 @@ impl ParityReplay {
             | "record_question"
             | "record_slots"
             | "record_party_selection"
-            | "town_loaded"
-            | "departure_prompt"
             | "party_selection"
             | "departure_confirmation"
             | "defeat_return_title" => {
@@ -1399,6 +1428,14 @@ impl ParityReplay {
                         skip_unit = true;
                     }
                 }
+                "stay" => {
+                    assert!(actor.is_some(), "stay(seq {}) 缺少角色", action.seq);
+                    self.replay_cursor_keys(action);
+                    self.d.g.confirm();
+                    assert!(self.d.pump(240, |g| g.ring), "stay(seq {}) 未開啟指令環", action.seq);
+                    self.settle_action_overlay(action);
+                    self.checkpoint("stay", action.seq, "ring", true, &[]);
+                }
                 "attack" => {
                     if self.attack(action, actor).is_none() {
                         skip_unit = true;
@@ -1416,7 +1453,7 @@ impl ParityReplay {
                 "force_enemy_clear" => self.force_enemy_clear(action, actions.get(i + 1)),
                 "town_enter" => self.town_probe(action),
                 "town_save" => self.town_save(action),
-                "hp_lock" | "stay" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" | "shop_sell"
+                "hp_lock" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" | "shop_sell"
                 | "shop_buy" | "secret_shop" => {
                     todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
                 }
@@ -1520,9 +1557,6 @@ fn test_chapter_parity_replay() {
     }
     if entry_mode != "load" && (entry_mode != "start" || chapter != 1) {
         panic!("FD2_PARITY_ENTRY={entry_mode:?}；START只適用首章");
-    }
-    if chapter != 1 || entry_mode != "start" {
-        todo!("R8: chapter_parity_replay_test.go:802 第 {chapter} 章／{entry_mode} 入口的章重播")
     }
     let (run, out) = (PathBuf::from(run), PathBuf::from(out));
     let slot_copy = out.join("FD2.SAV");
@@ -1664,7 +1698,23 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         if entry_mode == "start" {
             r.start_from_normal_title();
         } else {
-            todo!("R8: chapter_parity_replay_test.go:950 標題 LOAD 入口")
+            let g = &mut r.d.g;
+            g.title_phase = "menu".into();
+            g.title_sel = 0;
+            assert!(g.apply_title_menu_event(TITLE_MENU_DOWN));
+            assert!(g.apply_title_menu_event(TITLE_MENU_CONFIRM));
+            for _ in 0..24 {
+                g.apply_title_menu_event(TITLE_MENU_TICK);
+            }
+            assert!(g.apply_title_slot_event(TITLE_SLOT_CONFIRM), "讀取第一槽失敗：{}", g.msg);
+            let standalone = node(g).is_some_and(|n| n.r#type == "preparation" && n.cancel.is_empty())
+                && node_id(g) == format!("preparation_ch{chapter:02}");
+            assert!(
+                (node_id(g) == r.town || standalone) && g.load_err.is_empty(),
+                "讀檔後節點為 {}，錯誤訊息為 {}",
+                node_id(g),
+                g.load_err
+            );
         }
         r.settle_town();
         r.run_actions(&actions);
