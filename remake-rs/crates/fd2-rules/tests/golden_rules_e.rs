@@ -374,11 +374,16 @@ fn attack_native_physical(ctx: &Ctx, sp: &Value) -> Value {
     let before = snapshot(&st.units);
     let mut r = GoMathRand::new(i(sp, "seed"));
     let (a, d, state) = (unit_arg(sp, "a"), unit_arg(sp, "d"), i(sp, "state") as u16);
+    let preview = st.preview_native_physical_counterattack(a.unwrap(), d.unwrap(), state);
+    assert_eq!(snapshot(&st.units), before);
     let res = if b(sp, "with_exp") {
         st.attack_native_physical_with_experience(a, d, state, Some(&mut r))
     } else {
         st.attack_native_physical(a, d, state, &mut r)
     };
+    if let Ok(result) = &res {
+        assert_eq!(preview.unwrap(), result.counter.is_some());
+    }
     let eligible = st.native_physical_counterattack_eligible(a, d);
     json!({"result": physical_val(res.as_ref().unwrap_or(&NativePhysicalAttackResult::default())),
         "err": err_of(&res), "changed": changed(&before, &st.units), "acc": st.native_experience_accumulator,

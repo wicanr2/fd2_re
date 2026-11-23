@@ -1468,6 +1468,32 @@ impl ParityReplay {
         self.settle_town();
     }
 
+    fn shop_buy(&mut self, action: &ParityAction) {
+        self.ensure_town();
+        for _ in 0..6 {
+            if self.d.g.camp_sel == 3 {
+                break;
+            }
+            assert!(self.d.g.move_native_town_selection(1));
+        }
+        assert_eq!(self.d.g.camp_sel, 3, "道具店選項無法到達");
+        self.enter_town_option(3);
+        assert!(self.d.pump(700, |g| g.native_shop_ui_job.is_none() && g.fade.is_none()));
+        assert_eq!(self.d.g.native_shop_mode, "menu");
+        let gold = self.d.g.gold;
+        for mode in ["purchase", "confirm", "recipient_consumable", "purchase"] {
+            self.shop_input(None, true, mode);
+        }
+        if let (Some(before), Some(after)) = (action.gold_before, action.gold_after) {
+            assert_eq!(self.d.g.gold - gold, after - before, "購買扣款金額");
+        } else {
+            assert!(self.d.g.gold < gold, "購買未扣款");
+        }
+        self.d.g.leave_shop();
+        self.settle_town();
+        self.checkpoint("shop_buy", action.seq, "town", true, &[]);
+    }
+
     /// Go `TestChapterParityReplay` 的動作迴圈（`chapter_parity_replay_test.go:972`..`1036`）。
     fn run_actions(&mut self, actions: &[ParityAction]) {
         let (mut actor, mut skip_unit): (Option<UnitIdx>, bool) = (None, false);
@@ -1517,7 +1543,8 @@ impl ParityReplay {
                 "town_save" => self.town_save(action),
                 "shop_sell" => self.shop_sell(action),
                 "secret_shop" => self.secret_shop(action),
-                "hp_lock" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" | "shop_buy" => {
+                "shop_buy" => self.shop_buy(action),
+                "hp_lock" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" => {
                     todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
                 }
                 _ => self.note(action, "unhandled action kind"),

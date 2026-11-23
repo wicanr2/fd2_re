@@ -240,6 +240,21 @@ impl State {
         native_counterattack_eligible(au.x, au.y, self.counterattack_defender(target))
     }
 
+    /// 用相同的原生亂數在候選狀態先走主攻，確認反擊演出是否真的需要預載。
+    pub fn preview_native_physical_counterattack(
+        &self,
+        actor: UnitIdx,
+        target: UnitIdx,
+        rng_state: u16,
+    ) -> Result<bool> {
+        if !self.native_physical_counterattack_eligible(Some(actor), Some(target)) {
+            return Ok(false);
+        }
+        let mut candidate = self.clone();
+        candidate.native_physical_exchange(Some(actor), Some(target), rng_state)?;
+        Ok(candidate.native_physical_counterattack_eligible(Some(actor), Some(target)))
+    }
+
     /// AttackNativePhysical 依原版結算一次物理攻擊，含反擊。rngState 是原版的全域
     /// `0x627B8`；呼叫者要把回傳的新狀態存回去，否則之後每一次結算都會偏掉。
     ///

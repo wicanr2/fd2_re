@@ -87,7 +87,7 @@ impl Game {
             ..Default::default()
         };
         let (actor_fig, target_fig) = (actor_unit.battle_fig, target_unit.battle_fig);
-        let counter_eligible = st.native_physical_counterattack_eligible(Some(actor), Some(target));
+        let counter_eligible = st.preview_native_physical_counterattack(actor, target, self.native_rng_state)?;
         let animations = separated_asset_path("animations");
         r.actor_idle = Some(figani::load_separated_resource(&animations, actor_fig * 3)?);
         r.target_idle = Some(figani::load_separated_resource(&animations, target_fig * 3)?);
