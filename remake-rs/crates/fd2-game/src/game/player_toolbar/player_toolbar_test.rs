@@ -2,6 +2,36 @@
 
 use super::*;
 
+#[test]
+fn chapter_guide_hides_event_details_until_requested() {
+    let graph = campaign::Campaign {
+        start: "battle".into(),
+        nodes: [("battle".into(), campaign::Node { r#type: "battle".into(), ..Default::default() })].into(),
+        ..Default::default()
+    };
+    let mut scenario = battle::Scenario::default();
+    scenario.events.push(
+        serde_json::from_value(serde_json::json!({
+            "id": "reinforcement", "trigger": "on_turn_end", "once": true, "when": {"turn": 4},
+            "do": [{"type": "spawn_group", "groups": [2]}]
+        }))
+        .unwrap(),
+    );
+    let mut g = Game {
+        camp: Some(campaign::new_runner(&graph)),
+        sc: Some(scenario),
+        st: Some(battle::State::default()),
+        ..Default::default()
+    };
+    g.activate_toolbar(ToolbarAction::Chapter);
+    assert!(g.chapter_guide_open);
+    assert_eq!(g.chapter_guide_lines(), ["待觸發　增援登場"]);
+    g.update_chapter_guide(&TickInput { cursor: (470, 55), mouse_left_just_pressed: true, ..Default::default() }, true);
+    assert_eq!(g.chapter_guide_lines(), ["待觸發　增援登場", "　第 4 回合"]);
+    g.update_chapter_guide(&TickInput { just_pressed_touches: vec![(500, 330)], ..Default::default() }, false);
+    assert!(!g.chapter_guide_open);
+}
+
 /// Go `player_toolbar_floating_test.go:23` `TestFloatingToolbarGeometryAndOwnership` 末段的觸控表（`:54`..`:68`）。
 #[test]
 fn test_floating_toolbar_touch_rows() {

@@ -116,7 +116,12 @@ impl PlayerRunner {
             self.game.sample_input(false, &devices.snapshot);
             return Ok(RunnerStep::Continue);
         }
+        let guide_was_open = self.game.chapter_guide_open;
         let toolbar_pointer = self.game.update_toolbar(&physical, raw.devices.focused);
+        if guide_was_open || self.game.chapter_guide_open {
+            self.game.sample_input(false, &devices.snapshot);
+            return Ok(RunnerStep::Continue);
+        }
         self.game.player_overlay_block = self.game.posters.menu_rect();
         if self.game.player_toolbar_touch_blocked || self.game.posters.active() {
             let toolbar = self.game.player_toolbar_touch_blocked;
@@ -205,7 +210,7 @@ impl PlayerRunner {
     /// 沒變時沿用上次畫好的疊層；第一個回傳值是決定內容的面板狀態（外殼據此判斷要不要重新上傳貼圖）。
     pub fn controls_panel_surface(&mut self) -> Option<(&str, &Picture)> {
         let controls = self.game.controls.open;
-        if !controls && self.game.toolbar_ticks <= 0 {
+        if !controls && !self.game.chapter_guide_open && self.game.toolbar_ticks <= 0 {
             self.controls_surface = None;
             return None;
         }
@@ -214,6 +219,8 @@ impl PlayerRunner {
             let mut s = Picture::new_image(CONTROLS_SURFACE_W, CONTROLS_SURFACE_H);
             if controls {
                 self.game.draw_controls_panel_surface(&mut s, None, true);
+            } else if self.game.chapter_guide_open {
+                self.game.draw_chapter_guide(&mut s);
             } else {
                 self.game.draw_toolbar(&mut s);
             }

@@ -267,11 +267,12 @@ drive() {
         return 1
       }
       wait_for_restored_town() {
+        local shot="${1:-slots-restored.png}"
         # 同狀態的原版畫格為 320×200。比對沒有游標、人物或標籤的右側營帳區。
         convert /native-town.png -filter point -resize 400% -crop 480x280+680+240 +repage /tmp/town-original.png
         for _ in $(seq 1 50); do
-          capture slots-restored.png
-          convert slots-restored.png -crop 480x280+680+240 +repage /tmp/town-rust.png
+          capture "$shot"
+          convert "$shot" -crop 480x280+680+240 +repage /tmp/town-rust.png
           if same /tmp/town-original.png /tmp/town-rust.png; then
             echo "原版城鎮營帳區逐像素相同"
             return
@@ -280,6 +281,77 @@ drive() {
         done
         compare -metric AE /tmp/town-original.png /tmp/town-rust.png null: || true
         echo "還原畫面未匹配原版城鎮" >&2
+        return 1
+      }
+      click_chapter_toolbar() {
+        xdotool mousemove --window "$wid" 1248 2
+        sleep 1
+        xdotool mousemove --window "$wid" 1248 24 mousedown 1
+        sleep 0.45
+        xdotool mouseup 1
+      }
+      verify_chapter_guide() {
+        click_chapter_toolbar
+        for _ in $(seq 1 25); do
+          capture chapter-guide.png
+          if test "$(convert chapter-guide.png -format "%[pixel:p{100,80}]" info:)" = "srgb(17,24,37)"; then
+            xdotool mousemove --window "$wid" 940 110 mousedown 1
+            sleep 0.45
+            xdotool mouseup 1
+            wait_for_change chapter-guide.png chapter-guide-details.png
+            key Escape
+            return
+          fi
+          sleep 0.25
+        done
+        echo "工具列未打開關卡事件" >&2
+        return 1
+      }
+      verify_secret_shop_shortcut() {
+        convert slots-restored.png -crop 480x280+680+240 +repage /tmp/loaded-town.png
+        for _ in $(seq 1 3); do
+          click_chapter_toolbar
+          for _ in $(seq 1 15); do
+            capture slots-secret-shop.png
+            convert slots-secret-shop.png -crop 480x280+680+240 +repage /tmp/loaded-shop.png
+            if different /tmp/loaded-town.png /tmp/loaded-shop.png; then
+              sleep 1
+              capture slots-secret-shop.png
+              verify_secret_shop_browse
+              return
+            fi
+            sleep 0.25
+          done
+        done
+        echo "工具列未進入祕密商店" >&2
+        return 1
+      }
+      verify_secret_shop_browse() {
+        convert slots-secret-shop.png -crop 340x190+60+550 +repage /tmp/shop-menu.png
+        for _ in $(seq 1 3); do
+          key Return
+          for _ in $(seq 1 14); do
+            capture slots-secret-stock.png
+            convert slots-secret-stock.png -crop 340x190+60+550 +repage /tmp/shop-stock.png
+            if different /tmp/shop-menu.png /tmp/shop-stock.png; then
+              key Escape
+              for _ in $(seq 1 25); do
+                capture slots-secret-menu.png
+                convert slots-secret-menu.png -crop 340x190+60+550 +repage /tmp/shop-return.png
+                if same /tmp/shop-menu.png /tmp/shop-return.png; then
+                  sleep 1
+                  key Escape
+                  wait_for_restored_town slots-town-returned.png
+                  return
+                fi
+                sleep 0.35
+              done
+              break
+            fi
+            sleep 0.25
+          done
+        done
+        echo "祕密商店商品瀏覽或返回未完成" >&2
         return 1
       }
       wait_for_loaded_dialogue() {
@@ -551,10 +623,7 @@ drive() {
           wait_for_change slots-empty-rejected.png slots-cancelled.png
           if [[ "$MODE" == loadslots ]]; then
             open_loadslots slots-reopened.png
-            xdotool mousemove --window "$wid" 410 260 mousedown 1
-            sleep 0.45
-            xdotool mouseup 1
-            wait_for_event "[title] slot 1 loaded=true"
+            loadslots_key_until_event "[title] slot 1 loaded=true" Return space Return
             wait_for_loaded_dialogue slots-battle.png
             toolbar 180
             wait_for_preference interface_mode original
@@ -566,11 +635,13 @@ drive() {
             different /tmp/slots-battle-border.png /tmp/slots-battle-original-border.png
             same /tmp/slots-battle-content.png /tmp/slots-battle-original-content.png
             advance_loaded_dialogue
+            verify_chapter_guide
             sha256sum -c slot-source.sha256
           elif [[ "$MODE" == native-save ]]; then
             open_loadslots slots-reopened.png
             loadslots_key_until_event "[title] slot 1 loaded=true" Return space Return
             wait_for_restored_town
+            verify_secret_shop_shortcut
             sha256sum -c slot-source.sha256
           fi
           ;;

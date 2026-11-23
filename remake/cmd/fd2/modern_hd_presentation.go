@@ -30,11 +30,20 @@ type modernHDPresentation struct {
 	poster                         playerPosterPresentation
 	balanceSurface                 *ebiten.Image
 	controlsSurface                *ebiten.Image
+	chapterGuideSurface            *ebiten.Image
+	chapterGuideOpen               bool
+	chapterGuideDetail             bool
+	chapterGuidePage               int
 	posterMenuSurface, posterPixel *ebiten.Image
 }
 
 func (p *modernHDPresentation) Update() error {
 	p.Game.syncPlayerClockSpeedAt(time.Now())
+	if p.chapterGuideOpen {
+		p.updateChapterGuide()
+		p.sampleInput(false)
+		return nil
+	}
 	if p.updateControlsPanel() {
 		p.sampleInput(false)
 		return nil
@@ -68,7 +77,7 @@ func (p *modernHDPresentation) Update() error {
 		p.Game.playerOverlayBlock = playerSpeedMenu
 	}
 	p.sampleInput(!p.poster.consumeInput && !p.Game.balanceUI.open && !p.Game.controls.open)
-	if !p.poster.consumeInput && !p.Game.balanceUI.open && !p.Game.controls.open {
+	if !p.poster.consumeInput && !p.Game.balanceUI.open && !p.Game.controls.open && !p.chapterGuideOpen {
 		if err := p.Game.Update(); err != nil {
 			return err
 		}
@@ -242,4 +251,5 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	}
 	p.drawBalanceEditor(screen, contentGeometry)
 	p.drawControlsPanel(screen, contentGeometry)
+	p.drawChapterGuide(screen, contentGeometry)
 }

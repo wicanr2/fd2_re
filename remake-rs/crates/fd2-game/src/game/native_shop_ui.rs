@@ -237,7 +237,7 @@ impl Game {
         let Some(job) = self.native_shop_ui_job.as_ref() else {
             return false;
         };
-        if job.service_menu.is_some() {
+        if job.service_menu.is_some() && self.native_shop_variant != 5 {
             todo!("r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu");
         }
         if job.church_confirmation.is_some() {
@@ -259,11 +259,102 @@ impl Game {
         } else {
             return false;
         };
-        if self.modern_story_portraits.is_some() {
+        if self.modern_story_portraits.is_some() && self.native_shop_variant != 5 {
             todo!("r6:modern_hd_facility_scene.go:drawModernHDShopFrame");
         }
         self.present_native_class_frame(screen, &pix);
         self.native_shop_ui_job.as_mut().unwrap().drawn = true;
+        true
+    }
+
+    pub(crate) fn handle_native_secret_shop_input(&mut self, input: &TickInput, enter: bool) -> bool {
+        if self.native_shop_ui_job.is_some() {
+            return true;
+        }
+        let just = |key| input.is_just_pressed(key);
+        if just(Key::Escape) {
+            if self.native_shop_mode == "purchase" {
+                self.native_shop_mode = "menu".into();
+                self.native_shop_service_sel = 0;
+                self.msg.clear();
+                self.begin_native_shop_service_opening();
+            } else {
+                self.leave_shop();
+            }
+            return true;
+        }
+        if self.native_shop_mode == "menu" {
+            if just(Key::ArrowLeft) || just(Key::ArrowRight) {
+                let delta = if just(Key::ArrowLeft) { -1 } else { 1 };
+                self.native_shop_service_sel = (self.native_shop_service_sel + delta).rem_euclid(4);
+                self.reset_native_shop_ui_pulse();
+            }
+            if enter
+                && self.native_shop_service_sel == 0
+                && self.camp.as_ref().is_some_and(|camp| !camp.shop_goods().is_empty())
+            {
+                self.native_shop_mode = "purchase".into();
+                self.shop_sel = 0;
+                self.native_shop_item_start = 0;
+                self.msg.clear();
+            } else if enter {
+                self.msg = "此項商店服務尚未移植".into();
+            }
+        } else if self.native_shop_mode == "purchase" {
+            let len = self.camp.as_ref().map_or(0, |camp| camp.shop_goods().len()) as i64;
+            let step = [(Key::ArrowLeft, -1), (Key::ArrowRight, 1), (Key::ArrowUp, -2), (Key::ArrowDown, 2)]
+                .into_iter()
+                .find_map(|(key, step)| just(key).then_some(step))
+                .unwrap_or(0);
+            let next = self.shop_sel + step;
+            if (0..len).contains(&next) {
+                self.shop_sel = next;
+            }
+            if enter {
+                self.msg = "商品可瀏覽，購買尚未移植".into();
+            }
+        }
+        true
+    }
+
+    fn draw_native_secret_shop(&mut self, screen: &mut Picture) -> bool {
+        let (stable, valid) = self.compose_native_shop_stable();
+        if !valid {
+            return false;
+        }
+        let (assets, _, _, _) = self.native_shop_state();
+        let frame = if self.native_shop_mode == "purchase" {
+            let Some(camp) = self.camp.as_ref() else { return false };
+            let Some(ui) = self.native_shop_ui.as_ref() else { return false };
+            let ids: Vec<_> = camp.shop_goods().iter().map(|good| good.id).collect();
+            let (start, _) =
+                campaign::native_two_column_window(ids.len() as i64, self.shop_sel, self.native_shop_item_start);
+            let frame = campaign::compose_native_shop_item_list_frame(
+                &stable,
+                assets,
+                &ui.item_assets,
+                &ids,
+                start,
+                self.shop_sel,
+                &ui.effect_rows,
+                battle::NATIVE_FACILITY_FULL_PRICE,
+            );
+            self.native_shop_item_start = start;
+            frame
+        } else {
+            campaign::compose_native_shop_service_steady_frame(
+                &stable,
+                assets,
+                self.native_shop_service_sel,
+                self.native_shop_ui_pulse,
+            )
+        };
+        self.present_native_class_frame(screen, &frame.unwrap_or(stable));
+        if matches!(self.msg.as_str(), "此項商店服務尚未移植" | "商品可瀏覽，購買尚未移植")
+            && let Some(font) = self.font.as_mut()
+        {
+            font.draw(screen, &self.msg, 18.0, 370.0, 0.9, ColorRgba { r: 255, g: 240, b: 182, a: 255 });
+        }
         true
     }
 
@@ -277,6 +368,9 @@ impl Game {
         }
         if self.draw_native_shop_ui_job(screen) {
             return true;
+        }
+        if self.native_shop_variant == 5 {
+            return self.draw_native_secret_shop(screen);
         }
         if self.modern_hd_text.is_some() && self.font.is_some() {
             todo!("r6:native_shop_ui.go:1550..1554 HD 文字擷取（modernHDIndexedText、beginModernHDShopDigits）");
