@@ -7393,11 +7393,15 @@ impl Game {
         {
             return Ok(());
         }
-        if self.native_defeat.is_some() {
-            // Go：`g.stepNativeDefeat(g.gameNow())`（`native_defeat.go`，`r8`：第一章沒有敗北）。
-            todo!("R8: native_defeat.go:stepNativeDefeat（原生敗北演出）")
-        }
         if self.startup_blocked {
+            return Ok(());
+        }
+        if self.native_defeat.is_some() {
+            let now = self.game_now();
+            if let Err(err) = self.step_native_defeat(now) {
+                self.load_err = format!("原生敗北呈現：{err}");
+                self.startup_blocked = true;
+            }
             return Ok(());
         }
         self.step_sfx_voices();
@@ -8217,10 +8221,14 @@ impl Game {
         const BLACK: ColorRgba = ColorRgba { r: 0, g: 0, b: 0, a: 0xff };
         if self.startup_blocked {
             screen.fill(ColorRgba { r: 0x12, g: 0x16, b: 0x20, a: 0xff });
-            todo!("r8:main.go:9397 啟動失敗畫面的 ebitenutil.DebugPrintAt");
+            if let Some(font) = self.font.as_mut() {
+                font.draw(screen, &self.load_err, 16.0, 28.0, 1.0, ColorRgba { r: 255, g: 255, b: 255, a: 255 });
+            }
+            return;
         }
-        if self.native_defeat.is_some() {
-            todo!("r8:native_defeat.go:drawNativeDefeat");
+        if let Some(job) = self.native_defeat.as_mut() {
+            job.present(Some(screen));
+            return;
         }
         if !self.title_phase.is_empty() {
             self.draw_title(screen);

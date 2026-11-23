@@ -86,9 +86,11 @@ impl Game {
             TITLE_MENU_START => {
                 self.balance = None;
                 self.balance_ui = BalanceEditor::default();
-                if self.title_needs_new_campaign {
-                    // Go：`g.restartCampaignFromTitle()`（`native_defeat.go`，`r8`：戰敗後回標題才會設這個旗標）。
-                    todo!("R8: native_defeat.go:restartCampaignFromTitle（戰敗後重新開始）")
+                if self.title_needs_new_campaign
+                    && let Err(err) = self.restart_campaign_after_defeat()
+                {
+                    self.msg = err.to_string();
+                    return true;
                 }
                 self.native_chapter_slot_started = true;
                 self.title_phase.clear();

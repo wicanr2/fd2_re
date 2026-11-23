@@ -122,11 +122,7 @@ impl Game {
             return PresentOwner::StartupBlocked;
         }
         if let Some(job) = self.native_defeat.as_mut() {
-            // Go `native_defeat.go:160` drawNativeDefeat：每次都設 drawn（174），有斜坡時一併（176）。
-            job.drawn = true;
-            if let Some(ramp) = job.ramp.as_mut() {
-                ramp.drawn = true;
-            }
+            job.present(None);
             return PresentOwner::NativeDefeat;
         }
         if !self.title_phase.is_empty() {

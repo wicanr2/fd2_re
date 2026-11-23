@@ -5959,3 +5959,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 10 回合原版序號 3820 於格子 (16, 15) 選擇休息後顯示寶箱問句。Rust 原先停在該入口。現在從行動環已關的原生底圖建立問句並預建完整回覆。物品在回覆後入袋，金錢關框後入帳，地圖更新後才完成行動。選擇取消保留寶箱。[取寶規格](docs/knowledge-base/56-fd2-remake-sdd.md#53-取寶提示底圖邊界2026-10-01conformed)
 - 用 `work/parity-slot-ch12/FD2.SAV` 與 `sample-r5` 重跑 `test_chapter_parity_replay`，設定 `FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0`。存檔雜湊與既有原版收據相符。共通過 288 筆檢查點，第 11 回合使用既有清場注入，抵達第 13 章城鎮完成買賣、酒店存檔及祕密商店往返。驗證層級為 RUNTIME-E1，未取畫格比對。[原版收據](docs/data/ui-traces/parity-ch12.json)
 - 寶箱回歸走實際輸入分流，驗證物品接受、金錢延後入帳與取消。458 項 Rust 遊戲回歸、格式、Clippy 和發行組態建置通過。抽樣與建置容器已退出。
+
+## 2026-11-23 Rust 第 12 章敗北返回標題
+
+- 敗北接通既有 `0x22E5C` 排程。兩張畫格、戰場底圖與完整開場素材先驗證，畫格經呈現確認才推進色盤和等待步驟。敗北結束清除戰鬥續行，重播開場後交回標題。標題 START 建立新的戰役進度。[有限敗北規格](docs/knowledge-base/56-fd2-remake-sdd.md#2026-10-01-有限敗北規格驗收)
+- `test_chapter_parity_replay` 使用 `work/parity-slot-ch12/FD2.SAV` 與 `defeat-r3`，經標題 LOAD，依原版動作走至第 5 回合敗北。208 筆檢查點涵蓋兩張提示與原版標題序號 2144。實際繪圖路徑取得的 9／36 BIOS tick 提示，索引位元組 SHA-256 與原版收據一致，調色盤 SHA-256 與既有重製一致。完整開場自行交回選單，START 可進序章。兩個邊界的原生存檔均與輸入逐位元組相同。[原版收據](docs/data/ui-traces/ch12-defeat-return-title.json)
+- 第 12 章勝利分支仍通過 288 筆檢查點，走完戰後買賣、酒店存檔與祕密商店。458 項 Rust 回歸、格式、Clippy 及發行組態建置通過。測試與建置容器已退出。

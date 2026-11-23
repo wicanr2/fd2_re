@@ -638,10 +638,10 @@ impl ParityReplay {
             | "record_slots"
             | "record_party_selection"
             | "party_selection"
-            | "departure_confirmation"
-            | "defeat_return_title" => {
+            | "departure_confirmation" => {
                 todo!("R8: chapter_parity_replay_test.go:1107 mark {:?}（第一章沒有）", action.label)
             }
+            "defeat_return_title" => self.verify_defeat_return_title(action),
             _ => {
                 // 戰場裡的 mark 通常接在 await round>=N 之後：原版側已經推過敵方階段、回到下一回合的游標。
                 let in_battle = self.d.g.camp.is_some()
@@ -1192,6 +1192,53 @@ impl ParityReplay {
         }
         let ui = self.ui();
         self.checkpoint("after_enemy_phase", action.seq, &ui, true, &extra);
+    }
+
+    fn verify_defeat_return_title(&mut self, action: &ParityAction) {
+        assert_eq!(action.ui, "title", "原版敗北樣本未抵達標題選單");
+        assert!(self.d.pump(CH01_FRAME_BUDGET * 6, |g| !g.result.is_empty()));
+        let g = &mut self.d.g;
+        assert_eq!(g.result, "lose");
+        assert!(g.native_defeat.is_some() && !g.confirm_battle_result(), "確認鍵跳過敗北演出");
+
+        let mut screen = Picture::new_image(LOGICAL_W, LOGICAL_H);
+        let mut seen = Vec::new();
+        for _ in 0..500 {
+            let Some(job) = self.d.g.native_defeat.as_ref() else { break };
+            let step = job.plan[job.pos as usize];
+            if job.ramp.is_none()
+                && step.kind == fdother::PendingCode1PresentationKind::WaitTick
+                && matches!(step.count, 9 | 36)
+                && seen.last() != Some(&step.count)
+            {
+                seen.push(step.count);
+                eprintln!(
+                    "defeat_hold={} indexed_sha256={} dac_sha256={}",
+                    step.count,
+                    sha256_hex_of(&job.vga),
+                    sha256_hex_of(&job.dac)
+                );
+            }
+            self.d.g.draw(&mut screen);
+            parity_update_game(&mut self.d).expect("敗北演出更新");
+            assert!(self.d.g.load_err.is_empty(), "{}", self.d.g.load_err);
+        }
+        assert_eq!(seen, [9, 36]);
+        let g = &mut self.d.g;
+        assert!(g.native_defeat.is_none() && g.title_needs_new_campaign && g.st.is_none() && !g.ai_busy);
+        assert_eq!((g.title_phase.as_str(), g.cut_idx), ("cutscene", 0));
+        for _ in 0..JOURNEY_TITLE_FRAMES {
+            if g.title_phase == "menu" {
+                break;
+            }
+            g.title_update();
+        }
+        assert_eq!((g.title_phase.as_str(), g.title_sel), ("menu", 0));
+        let input_slot =
+            std::fs::read(std::env::var_os("FD2_PARITY_SLOT").expect("敗北重播缺少建構槽")).expect("讀原始建構槽");
+        let after = std::fs::read(native_current_save_path()).expect("讀敗北後 FD2.SAV");
+        assert_eq!(sha256_hex_of(&input_slot), sha256_hex_of(&after), "敗北改寫原生存檔");
+        self.checkpoint("defeat_return_title", action.seq, "title", false, &[]);
     }
 
     /// Go `chapter_parity_replay_test.go:2992`：`forceEnemyClear`。
@@ -1834,6 +1881,18 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         }
         let (ui, with_frame) = (r.ui(), r.d.g.title_phase.is_empty());
         r.checkpoint("end", 0, &ui, with_frame, &[]);
+        if actions.last().is_some_and(|action| action.kind == "mark" && action.label == "defeat_return_title") {
+            let g = &mut r.d.g;
+            let start = g.camp.as_ref().and_then(|runner| runner.c.as_ref()).expect("戰役已載入").start.clone();
+            let before = std::fs::read(native_current_save_path()).expect("讀重新開始前存檔");
+            assert!(g.apply_title_menu_event(TITLE_MENU_CONFIRM));
+            for _ in 0..24 {
+                g.apply_title_menu_event(TITLE_MENU_TICK);
+            }
+            assert_eq!(node_id(g), start);
+            assert!(g.title_phase.is_empty() && !g.title_needs_new_campaign && g.load_err.is_empty(), "{}", g.msg);
+            assert_eq!(std::fs::read(native_current_save_path()).expect("讀重新開始後存檔"), before);
+        }
         if let Some(capture) = r.d.frame_capture.take() {
             capture.finish(serde_json::Map::new());
         }
