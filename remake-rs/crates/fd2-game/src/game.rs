@@ -219,6 +219,7 @@ mod native_shop_transaction_ui;
 mod native_shop_ui;
 mod native_spawn_intro;
 mod native_staging_present;
+mod native_story_condition;
 mod native_story_dialogue;
 mod native_story_dialogue_locale;
 mod native_story_input;

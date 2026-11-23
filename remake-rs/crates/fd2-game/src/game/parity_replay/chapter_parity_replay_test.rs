@@ -416,6 +416,8 @@ pub(crate) fn parity_player_has_control(g: &Game, battle_node: &str) -> bool {
         && g.cam_pan.is_none()
         && g.focus_job.is_none()
         && g.native_player_focus.is_none()
+        && g.native_ch28_post_present.is_none()
+        && !g.native_action_death_presentation_pending()
         && g.native_end_turn_recovery.is_none()
         && g.native_palette_pulse.is_none()
 }
@@ -1087,7 +1089,12 @@ impl ParityReplay {
         }
         // 全員行動完原版會自己換手（0x13565）；先等到玩家重新拿到操作權，再照原版送 END。
         let battle = self.battle.clone();
-        self.d.pump(CH01_FRAME_BUDGET * 6, |g| !g.result.is_empty() || parity_player_has_control(g, &battle));
+        assert!(
+            self.d.pump(CH01_FRAME_BUDGET * 6, |g| !g.result.is_empty() || parity_player_has_control(g, &battle)),
+            "end_turn(seq {})：上一個動作未交回操作權\n阻塞：{}",
+            action.seq,
+            ch01_blockers(&self.d.g)
+        );
         if !self.d.g.result.is_empty() {
             self.note(action, "end_turn 前戰鬥已分出勝負");
             return;

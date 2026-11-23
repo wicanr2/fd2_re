@@ -167,11 +167,15 @@ pub(crate) fn ch01_blockers(g: &Game) -> String {
     flag("spawnIntroTransition", g.spawn_intro_transition.is_some());
     flag("indexedTransition", g.indexed_transition.is_some());
     flag("nativeUnitPresent", g.native_unit_present.is_some());
+    flag("nativeDeathVisual", g.native_ch28_post_present.is_some());
+    flag("nativeDeathContinuation", g.native_action_death_presentation_pending());
     flag("actJob", g.act_job.is_some());
     flag("camPan", g.cam_pan.is_some());
     flag("focusJob", g.focus_job.is_some());
     flag("nativePlayerFocus", g.native_player_focus.is_some());
-    flag("nativeEndTurnRecovery", g.native_end_turn_recovery.is_some());
+    flag("transientUI", g.transient_ui);
+    flag("helpVisible", g.help_visible);
+    flag("startupBlocked", g.startup_blocked);
     flag("nativePalettePulse", g.native_palette_pulse.is_some());
     flag("nativePaletteRamp", g.native_palette_ramp.is_some());
     flag("transitionReveal", g.transition_reveal.is_some());
@@ -181,6 +185,12 @@ pub(crate) fn ch01_blockers(g: &Game) -> String {
     flag("nativeFieldEventPending", g.native_field_event_pending.is_some());
     flag("fade", g.fade.is_some());
     flag("sel", g.sel.is_some());
+    if let Some(job) = &g.native_end_turn_recovery {
+        parts.push(format!(
+            "nativeEndTurnRecovery(frame={}, drawn={}, committed={})",
+            job.frame, job.drawn, job.committed
+        ));
+    }
     parts.push(format!("bannerT={}", g.banner_t));
     parts.push(format!("dialog={}", g.dialog.len()));
     parts.push(format!("result={:?}", g.result));

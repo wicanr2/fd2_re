@@ -29,6 +29,23 @@ fn unit0(g: &mut Game) -> &mut battle::Unit {
     &mut g.st.as_mut().unwrap().units[0]
 }
 
+#[test]
+fn end_turn_waits_for_the_death_presentation() {
+    let mut st = battle::State::default();
+    st.has_native_map_view_state = true;
+    let mut game = Game {
+        st: Some(st),
+        native_ch28_post_present: Some(NativeCh28PostPresentJob::default()),
+        ..Default::default()
+    };
+
+    game.end_turn();
+
+    assert!(game.native_ch28_post_present.is_some());
+    assert!(game.native_end_turn_recovery.is_none());
+    assert!(game.load_err.is_empty());
+}
+
 /// Go：`native_end_turn_recovery_test.go:46` `TestNativeEndTurnRecoveryAutoENDUsesSameOwner`
 #[test]
 fn test_native_end_turn_recovery_auto_end_uses_same_owner() {

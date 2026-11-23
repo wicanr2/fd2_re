@@ -2457,7 +2457,15 @@ impl Game {
                 }
                 todo!("R8: native_palette_ramp.go:applyHandlerDirectRecordPatch（第一章沒有執行到）")
             }
-            "if" => todo!("R8: main.go:evalBeatCondition／spliceBeatsAfterCurrent（第一章沒有執行到）"),
+            "if" => match self.eval_story_condition(b.condition.as_ref()) {
+                Ok(matched) => {
+                    let arm = if matched { &b.then } else { &b.r#else };
+                    let insert_at = (self.beat_idx + 1) as usize;
+                    self.beats.splice(insert_at..insert_at, arm.iter().cloned());
+                    self.beat_advance();
+                }
+                Err(err) => self.load_err = format!("beat if: {}", err.message()),
+            },
             "loadch" => {
                 if b.load_ch.is_none() {
                     self.load_err = String::from("beat loadch:缺少完整狀態映射");
@@ -2990,15 +2998,20 @@ impl Game {
                 self.beat_advance();
             }
             "grant_item" => {
-                if !b.item_id.is_some_and(|id| (0..=0xff).contains(&id)) {
+                let Some(item) = b.item_id.filter(|id| (0..=0xff).contains(id)) else {
                     self.load_err = String::from("beat grant_item:缺少有效 item_id");
                     return;
-                }
-                if self.st.is_none() {
+                };
+                let Some(state) = self.st.as_mut() else {
                     self.load_err = String::from("beat grant_item:缺少 runtime battle state");
                     return;
+                };
+                for unit in state.units.iter_mut().filter(|unit| unit.camp == battle::OWN && unit.inventory.len() < 8) {
+                    if unit.add_inventory_item(item, false) {
+                        break;
+                    }
                 }
-                todo!("R8: main.go:grantItemToParty（第一章沒有執行到）")
+                self.beat_advance();
             }
             "bgm" => {
                 self.play_bgm(&b.track);
@@ -9854,6 +9867,7 @@ impl Game {
             || !self.result.is_empty()
             || self.ai_busy
             || self.native_end_turn_recovery.is_some()
+            || self.native_ch28_post_present.is_some()
             || self.native_turn_staging.is_some()
             || self.battle_event.is_some()
             || self.native_palette_pulse.is_some()

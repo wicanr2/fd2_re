@@ -2141,6 +2141,8 @@ byte5 bit0 決定戰後 HP refill；缺 raw 才退回舊的 `OnField/Alive` proj
 
 目前 `cmd/fd2` 的 `any_unit_inactive` 在整個 runtime roster 都具 `HasNativeRecordByte5` 時已 strict 使用 raw predicate；只有舊／混合 authored JSON 缺 raw 時才使用 `OnField/Alive` 相容 projection，這是明確的 E1 gap，不是 native parity。constructor、已知 damage/death writer、revive writer、`deactivate_unit` 與 FDFIELD `+6` source 已同步 raw provenance；仍要補 zero-HP 初始 record 與所有 LOADCH 分支，並讓 strict binding 缺 raw 時 fail-closed。
 
+Rust 沿用相同條件語意。選出的分支插入當前劇情節點的執行佇列，後續共用劇情保留一次。第 2 章戰後以指定平民格位的 +5 旗標決定對白，獎勵分支依名冊順序交給第一名物品欄可收的我方角色。
+
 ch14 pre-handler (`0x334d9`) 是已閉合的動態文字例：`0x33499(12)` 的回傳經 `xor al,1; mul 3` 得到 FDTXT_015 base index。因此有 char_id 12 時依序播放 index `0/1/2`，否則 `3/4/5`；中間仍依原順序 pan `(24,17)`、呼叫 acting 48、最後 focus slot 0。資料以 `handlers/ch14_pre.json` 的兩個結構化 `if roster_has` 與 address-keyed binding 表達，保留六個原始 dialog call-site，避免在 runtime 猜 EBX/EAX。
 
 `layout_units` 是另一個必須 address-keyed 的 handler primitive。Official IDA 9.4 定義 `0x233c6..0x2345b`，並確認它被 15 個不同 post-handler caller 共用；其 call-site supplies X/Y byte arrays、slot range、pose source、optional special-slot placement，以及 focus/camera inputs。每個可播放 binding 必須保存完整 materialized `(slot,x,y,pose)` 與 camera 值；不得把任一 caller 的 table 位址、長度或 special-slot rule 泛化給其他關。缺少任一欄位的 layout 保持 compile issue／runtime fail-closed。
