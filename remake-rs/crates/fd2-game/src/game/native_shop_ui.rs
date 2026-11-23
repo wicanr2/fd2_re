@@ -6,6 +6,8 @@
 
 use super::*;
 
+mod native_shop_sell_ui;
+
 /// Go：`native_shop_ui.go:16`
 ///
 /// 不 derive `Debug`／`Clone`：欄位含 callback（`Box<dyn FnOnce>`）、檔案或亂數產生器等做不到的型別。
@@ -296,6 +298,10 @@ impl Game {
         if self.native_shop_ui_job.is_some() {
             return true;
         }
+        if self.native_shop_mode.starts_with("sell_") {
+            self.handle_native_secret_sale(input, enter);
+            return true;
+        }
         if !matches!(self.native_shop_mode.as_str(), "menu" | "purchase") {
             self.handle_native_shop_purchase(input, enter);
             return true;
@@ -326,6 +332,8 @@ impl Game {
                 self.shop_sel = 0;
                 self.native_shop_item_start = 0;
                 self.msg.clear();
+            } else if enter && self.native_shop_service_sel == 1 {
+                self.start_native_secret_sale();
             } else if enter {
                 self.msg = "此項商店服務尚未移植".into();
             }
@@ -384,6 +392,8 @@ impl Game {
                 self.native_shop_ui_pulse,
             )
             .ok()
+        } else if self.native_shop_mode.starts_with("sell_") {
+            self.compose_native_secret_sale(&stable).ok()
         } else {
             self.compose_native_secret_purchase(&stable).ok()
         };

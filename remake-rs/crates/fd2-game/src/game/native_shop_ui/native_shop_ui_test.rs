@@ -151,7 +151,80 @@ fn chapter_two_secret_shop_purchase_and_save() {
     assert_eq!(game.party_roster[&recipient].inventory.last(), Some(&1));
     assert_eq!(game.party_roster[&recipient].equipped.last(), Some(&true));
 
-    game.leave_shop();
+    let before_sale = game.party_roster.clone();
+    let funds = game.gold;
+    let roster_position = game.party_join_order.iter().position(|id| *id == recipient).unwrap();
+    game.handle_native_secret_shop_input(&key(Key::Escape), false);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_secret_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "sell_roster", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    let first = game.party_join_order[0];
+    let empty = game.party_roster.get_mut(&first).unwrap();
+    while !empty.inventory.is_empty() {
+        battle::remove_native_compact_inventory(Some(empty), 0).unwrap();
+    }
+    game.handle_native_secret_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "sell_empty", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_secret_shop_input(&confirm, true);
+    drain(&mut game, &mut screen, &mut clock);
+    assert_eq!(game.native_shop_mode, "sell_roster");
+    assert_eq!(game.gold, funds);
+    game.party_roster.insert(first, before_sale[&first].clone());
+    for _ in 0..roster_position {
+        game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
+    }
+    let select_last = |game: &mut Game, screen: &mut Picture, clock: &mut i64| {
+        game.handle_native_secret_shop_input(&confirm, true);
+        assert_eq!(game.native_shop_mode, "sell_items", "{}", game.msg);
+        drain(game, screen, clock);
+        for _ in 1..game.native_shop_sell_item_ids.len() {
+            game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
+        }
+        game.handle_native_secret_shop_input(&confirm, true);
+        assert_eq!(game.native_shop_mode, "sell_confirm", "{}", game.msg);
+        drain(game, screen, clock);
+    };
+    select_last(&mut game, &mut screen, &mut clock);
+    game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_secret_shop_input(&confirm, true);
+    drain(&mut game, &mut screen, &mut clock);
+    assert_eq!(game.native_shop_mode, "sell_roster");
+    assert_eq!(game.shop_sell_unit_sel, roster_position as i64);
+    assert_eq!(game.party_roster, before_sale);
+    assert_eq!(game.gold, funds);
+
+    select_last(&mut game, &mut screen, &mut clock);
+    game.handle_native_secret_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "sell_success", "{}", game.msg);
+    assert_eq!(game.gold, funds);
+    assert_eq!(game.party_roster, before_sale);
+    assert!(game.save_game_to_slot(0).is_err());
+    for _ in 0..700 {
+        assert!(game.draw_native_shop(&mut screen));
+        clock += 16_666_667;
+        game.step_native_shop_ui_lifecycle(GameInstant(clock));
+        if game.gold != funds {
+            break;
+        }
+    }
+    assert_eq!(game.gold, funds + 187);
+    assert_eq!(game.party_roster, before_sale);
+    assert!(game.save_game_to_slot(0).is_err());
+    drain(&mut game, &mut screen, &mut clock);
+    assert_eq!(game.native_shop_mode, "sell_roster");
+    let sold = &game.party_roster[&recipient];
+    let before = &before_sale[&recipient];
+    assert_eq!(&sold.inventory[..], &before.inventory[..before.inventory.len() - 1]);
+    assert_eq!(sold.equipped.last(), Some(&false));
+    assert_ne!(sold.ap, before.ap);
+    let free = sold.inventory.len();
+    assert_eq!(sold.native_inventory_flags[free] & 0x80, 0x80);
+    game.handle_native_secret_shop_input(&key(Key::Escape), false);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_secret_shop_input(&key(Key::Escape), false);
     game.save_game_to_slot(0).unwrap();
     let save = game.build_save_data();
     assert_eq!(save.node, "town_ch02");

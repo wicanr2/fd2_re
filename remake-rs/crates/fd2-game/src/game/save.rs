@@ -433,6 +433,9 @@ impl Game {
     ///
     /// Go：`save.go:137`，`func (g *Game) saveGameToSlotFrom(slot int, fromSystemMenu bool) error`
     pub(crate) fn save_game_to_slot_from(&mut self, slot: i64, from_system_menu: bool) -> Result<()> {
+        if self.native_shop_mode == "sell_success" {
+            return Err(game_err!("請等販賣完成後再存檔"));
+        }
         if self.native_end_turn_recovery.is_some() {
             return Err(game_err!("save blocked during native END recovery"));
         }

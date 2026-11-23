@@ -157,46 +157,16 @@ impl Game {
         if equip {
             campaign::equip_native_compact_slot(Some(&mut staged), self.shop_equip_slot, &self.shop_item_stats)?;
         }
-        let (assets, portrait, portrait_id, _) = self.native_shop_state();
-        let shop = assets.ok_or_else(|| game_err!("購買缺少商店素材"))?;
-        let shared = self.native_class_ui.as_ref().ok_or_else(|| game_err!("購買缺少設施素材"))?;
-        let background = campaign::compose_native_shop_bare_scene(assets, &shared.digits, self.gold)?;
-        let (animation, final_frame) = campaign::compose_native_shop_purchase_success_frames(
-            &background,
-            assets,
-            &portrait,
-            portrait_id,
-            self.native_shop_variant,
-        )?;
+        let timeline = self.native_secret_shop_success_effect()?;
+        let final_step = timeline.last().expect("shop success includes a final frame");
+        let shop = self.native_shop_state().0.ok_or_else(|| game_err!("購買缺少商店素材"))?;
         let (debit, next_gold) = campaign::compose_native_gold_debit_frames(
-            &final_frame,
+            &final_step.frame,
             &shop.gold_roll_strip,
             self.gold,
             self.shop_pending.price,
         )?;
-        let plan = campaign::plan_native_shop_purchase_success(self.native_shop_variant)?;
-        let palette = shared.palette.clone();
-        let step = |frame, duration| NativeClassUITimelineStep {
-            frame,
-            duration,
-            palette: palette.clone(),
-            ..Default::default()
-        };
-        let bios = |ticks| GoDuration(ticks * NATIVE_BIOS_TICK_PERIOD.0);
-        let mut timeline = Vec::new();
-        if plan.pre_delay_bios_ticks > 0 {
-            timeline.push(step(background, bios(plan.pre_delay_bios_ticks)));
-        }
-        let count = animation.len();
-        for (index, frame) in animation.into_iter().enumerate() {
-            let tail = if index + 1 == count { plan.post_delay_bios_ticks } else { 0 };
-            timeline.push(step(frame, bios(plan.per_frame_delay_bios_ticks + tail)));
-        }
-        timeline.push(step(final_frame, GoDuration(0)));
-        let debit = debit
-            .into_iter()
-            .map(|frame| step(frame, GoDuration(campaign::NATIVE_GOLD_ROLL_DELAY_MILLISECONDS * 1_000_000)))
-            .collect::<Vec<_>>();
+        let debit = Self::native_secret_shop_gold_timeline(debit, final_step);
         let id = self.shop_equip_unit;
         let item_id = self.shop_pending.id;
         self.native_shop_mode = "success".into();
@@ -226,6 +196,52 @@ impl Game {
             ..Default::default()
         });
         Ok(())
+    }
+
+    pub(crate) fn native_secret_shop_success_effect(&self) -> Result<Vec<NativeClassUITimelineStep>> {
+        let (assets, portrait, portrait_id, _) = self.native_shop_state();
+        let shared = self.native_class_ui.as_ref().ok_or_else(|| game_err!("商店缺少設施素材"))?;
+        let background = campaign::compose_native_shop_bare_scene(assets, &shared.digits, self.gold)?;
+        let (animation, final_frame) = campaign::compose_native_shop_purchase_success_frames(
+            &background,
+            assets,
+            &portrait,
+            portrait_id,
+            self.native_shop_variant,
+        )?;
+        let plan = campaign::plan_native_shop_purchase_success(self.native_shop_variant)?;
+        let step = |frame, ticks| NativeClassUITimelineStep {
+            frame,
+            duration: GoDuration(ticks * NATIVE_BIOS_TICK_PERIOD.0),
+            palette: shared.palette.clone(),
+            ..Default::default()
+        };
+        let mut timeline = Vec::new();
+        if plan.pre_delay_bios_ticks > 0 {
+            timeline.push(step(background, plan.pre_delay_bios_ticks));
+        }
+        let count = animation.len();
+        for (index, frame) in animation.into_iter().enumerate() {
+            let tail = if index + 1 == count { plan.post_delay_bios_ticks } else { 0 };
+            timeline.push(step(frame, plan.per_frame_delay_bios_ticks + tail));
+        }
+        timeline.push(step(final_frame, 0));
+        Ok(timeline)
+    }
+
+    pub(crate) fn native_secret_shop_gold_timeline(
+        frames: Vec<Vec<u8>>,
+        final_step: &NativeClassUITimelineStep,
+    ) -> Vec<NativeClassUITimelineStep> {
+        frames
+            .into_iter()
+            .map(|frame| NativeClassUITimelineStep {
+                frame,
+                duration: GoDuration(campaign::NATIVE_GOLD_ROLL_DELAY_MILLISECONDS * 1_000_000),
+                palette: final_step.palette.clone(),
+                ..Default::default()
+            })
+            .collect()
     }
 
     fn finish_native_secret_purchase(&mut self) {

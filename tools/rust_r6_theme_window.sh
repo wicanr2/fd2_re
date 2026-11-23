@@ -65,7 +65,8 @@ drive() {
     --mount "type=bind,source=$out,target=/out" \
     --mount "type=bind,source=$out/socket,target=/tmp/.X11-unix,readonly" \
     "${native_reference[@]}" \
-    -e DISPLAY=:96 -e "MODE=$1" -e "CHECK_SHOP_PURCHASE=${FD2_R6_SHOP_PURCHASE:-0}" -w /out fd2-promo-local:latest bash -euc '
+    -e DISPLAY=:96 -e "MODE=$1" -e "CHECK_SHOP_PURCHASE=${FD2_R6_SHOP_PURCHASE:-0}" \
+    -e "CHECK_SHOP_SELL=${FD2_R6_SHOP_SELL:-0}" -w /out fd2-promo-local:latest bash -euc '
       trap "echo \"視窗測試 $MODE 失敗，腳本第 \$LINENO 行\" >&2" ERR
       for _ in $(seq 1 200); do
         wid="$(xdotool search --onlyvisible --name "fd2_re rust" 2>/dev/null | head -1)"
@@ -317,7 +318,11 @@ drive() {
             if different /tmp/loaded-town.png /tmp/loaded-shop.png; then
               sleep 1
               capture slots-secret-shop.png
-              verify_secret_shop_browse
+              if [[ "$CHECK_SHOP_SELL" == 1 ]]; then
+                verify_secret_shop_sell
+              else
+                verify_secret_shop_browse
+              fi
               return
             fi
             sleep 0.25
@@ -371,6 +376,26 @@ drive() {
         grep -Eq "\[shop\] purchase committed item=192 recipient=[0-9]+ gold=990$" "$MODE.log"
         test "$(grep -Fc "[shop] purchase committed" "$MODE.log")" -eq 1
         capture shop-purchase-complete.png
+      }
+      verify_secret_shop_sell() {
+        key Right
+        loadslots_key_until_event "[shop] sell_roster ready" Return space Return
+        wait_for_change slots-secret-shop.png shop-sell-roster.png
+        loadslots_key_until_event "[shop] sell_items ready" Return space Return
+        wait_for_change shop-sell-roster.png shop-sell-items.png
+        sleep 1
+        move_secret_shop_selection Down
+        capture shop-sell-selected.png
+        loadslots_key_until_event "[shop] sell_confirm ready" Return space Return
+        wait_for_change shop-sell-selected.png shop-sell-confirm.png
+        loadslots_key_until_event "[shop] sale staged item=192" Return space Return
+        wait_for_event "[shop] sale committed item=192 recipient=0 gold=1007"
+        test "$(grep -Fc "[shop] sale committed" "$MODE.log")" -eq 1
+        loadslots_key_until_event "[shop] sell menu returned" Escape Escape
+        sleep 1
+        capture shop-sell-complete.png
+        key Escape
+        wait_for_restored_town slots-town-returned.png
       }
       move_secret_shop_selection() {
         local button="$1"
