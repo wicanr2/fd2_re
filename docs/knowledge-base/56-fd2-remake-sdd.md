@@ -8141,7 +8141,13 @@ Go 版以 `ch04-manifest.json` 登錄的章界存檔建立兩個受控狀態，�
 
 戰後城鎮工具列提供「祕密商店」直選。正式戰役圖中 23 個城鎮各有已驗證的店家連結；入口沿同一城鎮與店家交易節點，沿舊返回邊。只有整備或結局的節點沒有入口。這次 Go 解凍例外涵蓋兩項工具列操作。
 
-重跑 Go 抽測時，將 `FD2_CH04_PROBE_SAVE` 指向 [ch04-manifest](../data/parity-slots/ch04-manifest.json) 登錄的唯讀建構槽，再於 Go 測試容器執行 `go test ./cmd/fd2 -run '^TestChapterFourLastPlayerAttackProbe$' -count=1 -v`。Rust Bevy 視窗已從首章存檔點開事件說明與細節，並從第 2 章城鎮直選祕密商店、瀏覽商品後返回。Rust 祕密商店現行驗證範圍是進店、顯示與返回，交易屬後續移植。
+重跑 Go 抽測時，將 `FD2_CH04_PROBE_SAVE` 指向 [ch04-manifest](../data/parity-slots/ch04-manifest.json) 登錄的唯讀建構槽，再於 Go 測試容器執行 `go test ./cmd/fd2 -run '^TestChapterFourLastPlayerAttackProbe$' -count=1 -v`。Rust Bevy 視窗已從首章存檔點開事件說明與細節，並從第 2 章城鎮直選祕密商店、瀏覽商品後返回。
+
+Rust 祕密商店購買沿用上文 `0x1bb8c`、`0x1c142`、`0x2f4c6` 與 `0x2d516` 的插入、裝備、演出與扣款規則。先依隊伍加入順序編排收件者，裝備依職業的原生清單篩選。交易先在收件者複本驗證，購買演出結束後一起發布背包與金額，再播原生金幣滾動動畫。取消購買、金錢不足或背包已滿不扣款。選擇不立即裝備仍完成購買。
+
+樣本使用[第 2 章酒店存檔](../data/parity-slots/ch02-manifest.json)。`chapter_two_secret_shop_purchase_and_save` 由 `FD2_SHOP_PROBE_SAVE` 指向該唯讀樣本，檢查消耗品、裝備的兩個選項、金錢不足、背包已滿及返回城鎮後寫入與重讀。祕密商店的販賣、獨立裝備、道具轉讓與普通商店交易屬後續 Rust 移植。
+
+Linux Bevy 的 `work/r6-secret-shop-purchase-20261123-r3` 從標題 LOAD 進羅德鎮、工具列直選祕密商店、購買藥草交給索爾及返回。只確認一筆扣款，金額由 1000 變為 990，原版存檔複本雜湊一致。重跑時在既有 `rust_r6_theme_window.sh` 的 `native-save` 命令加上 `FD2_R6_SHOP_PURCHASE=1`，沿用 [119 的第 2 章輸入與參考圖](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-標題讀檔槽與-hd-細框)。此樣本為 RUNTIME-E1。
 
 ## 第五章章工作單元：回合事件處理器與敵方回合順序（2026-09-16）
 

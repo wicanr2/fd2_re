@@ -65,7 +65,7 @@ drive() {
     --mount "type=bind,source=$out,target=/out" \
     --mount "type=bind,source=$out/socket,target=/tmp/.X11-unix,readonly" \
     "${native_reference[@]}" \
-    -e DISPLAY=:96 -e "MODE=$1" -w /out fd2-promo-local:latest bash -euc '
+    -e DISPLAY=:96 -e "MODE=$1" -e "CHECK_SHOP_PURCHASE=${FD2_R6_SHOP_PURCHASE:-0}" -w /out fd2-promo-local:latest bash -euc '
       trap "echo \"視窗測試 $MODE 失敗，腳本第 \$LINENO 行\" >&2" ERR
       for _ in $(seq 1 200); do
         wid="$(xdotool search --onlyvisible --name "fd2_re rust" 2>/dev/null | head -1)"
@@ -334,6 +334,9 @@ drive() {
             capture slots-secret-stock.png
             convert slots-secret-stock.png -crop 340x190+60+550 +repage /tmp/shop-stock.png
             if different /tmp/shop-menu.png /tmp/shop-stock.png; then
+              if [[ "$CHECK_SHOP_PURCHASE" == 1 ]]; then
+                verify_secret_shop_purchase
+              fi
               key Escape
               for _ in $(seq 1 25); do
                 capture slots-secret-menu.png
@@ -352,6 +355,37 @@ drive() {
           done
         done
         echo "祕密商店商品瀏覽或返回未完成" >&2
+        return 1
+      }
+      verify_secret_shop_purchase() {
+        move_secret_shop_selection Right
+        move_secret_shop_selection Down
+        capture shop-purchase-selected.png
+        loadslots_key_until_event "[shop] purchase confirmation index=3" Return space
+        wait_for_change shop-purchase-selected.png shop-purchase-confirm.png
+        loadslots_key_until_event "[shop] recipient selection item=192" Return space
+        wait_for_change shop-purchase-confirm.png shop-purchase-recipient.png
+        loadslots_key_until_event "[shop] purchase staged item=192" Return space Return
+        wait_for_event "[shop] purchase committed item=192"
+        wait_for_event "[shop] purchase list ready"
+        grep -Eq "\[shop\] purchase committed item=192 recipient=[0-9]+ gold=990$" "$MODE.log"
+        test "$(grep -Fc "[shop] purchase committed" "$MODE.log")" -eq 1
+        capture shop-purchase-complete.png
+      }
+      move_secret_shop_selection() {
+        local button="$1"
+        capture /tmp/shop-cursor-before.png
+        convert /tmp/shop-cursor-before.png -crop 1240x310+20+460 +repage /tmp/shop-items-before.png
+        for _ in $(seq 1 3); do
+          key "$button"
+          for _ in $(seq 1 10); do
+            capture /tmp/shop-cursor-after.png
+            convert /tmp/shop-cursor-after.png -crop 1240x310+20+460 +repage /tmp/shop-items-after.png
+            if different /tmp/shop-items-before.png /tmp/shop-items-after.png; then return; fi
+            sleep 0.35
+          done
+        done
+        echo "祕密商店商品選取未改變：$button" >&2
         return 1
       }
       wait_for_loaded_dialogue() {
