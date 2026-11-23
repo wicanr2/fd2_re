@@ -5909,3 +5909,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 3 回合擊倒敵人後，重播曾在死亡演出交回控制前送出 END。死亡演出優先取得呈現，END 回復卻先取得更新，造成 END 的第 0 幀一直未呈現。重播現在等死亡演出及續行完成，正式 END 入口也會拒絕在死亡演出尚未結束時重入。原本停住的 seq 313 已推到第 4 回合增援。
 - 戰後劇本的 `if` 接上具型別條件與分支續行。`any_unit_inactive` 優先用原生 +5 旗標，舊資料沿既有 HP／在場判定。`grant_item` 依隊伍記錄順序將獎勵放入第一個可收的物品欄。
 - 用 `test_chapter_parity_replay`、`FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0` 重跑第 2 章。建構輸入為 `work/ch02-flow-20261017/input/FD2.SAV`，動作取 `original-full-r2`。樣本使用先前的受控清場動作，走過戰後對白、下一座城鎮、酒店存檔與回城，共 30 筆檢查點。首章的 40 筆檢查點與兩種存檔仍和既有 Go 黃金逐位元組相同。457 項 Rust 回歸通過。
+
+## 2026-11-23 Rust 第 3 章非玩家回復道具
+
+- 非玩家使用第 5、13 型回復道具時，沿原生目標名單預先計算回復、物品欄與亂數。正式繪圖確認最後一幀遮罩後一起發布，播放完回復數字和尾停後續行。第 5 型消耗來源物品，第 13 型保留。這輪接的是原版索引色演出。[原版演出證據](docs/data/ida/fd2_ai_item_restore_presentation_owner.txt)
+- `test_chapter_parity_replay` 以 `FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0` 讀入 `work/ch03-flow-20261017/input/FD2.SAV`，沿 `original-full-r3` 的輸入與清場注入走到第 4 章城鎮，完成酒店存檔並回城，共 30 筆檢查點。驗證層級為 RUNTIME-E1。
+- 第 4 章抽測用 `work/parity-slot-ch04/FD2.SAV` 與 `sample-r13`。重播依正式輸入順序在游標移動後確認畫面，解開首輪 END 的底圖快取缺失。樣本走到第 3 回合，在尚未接入的非玩家指令 0 停止。
+- 發行組態建置、格式、Clippy 及 457 項 Rust 回歸通過。

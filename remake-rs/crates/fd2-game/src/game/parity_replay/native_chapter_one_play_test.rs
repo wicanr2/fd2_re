@@ -210,7 +210,7 @@ pub(crate) fn ch01_blockers(g: &Game) -> String {
 /// R5 階段 3：三處改照 Go 呼叫 [`Game::draw`]（R4 時繪圖還沒移植，呼叫的是只做狀態改寫的呈現回報
 /// `acknowledge_present`）；畫到每次新建的暫存畫布，像素不用。
 pub(crate) fn ack_presents(g: &mut Game) {
-    if g.native_town_departure.is_some() {
+    if g.native_town_departure.is_some() || g.native_ai_item_presentation.is_some() {
         g.draw(&mut Picture::new_image(LOGICAL_W, LOGICAL_H));
     }
     if let Some(scene) = g.atk.as_ref().and_then(|a| a.native_scene.as_ref())
@@ -304,7 +304,6 @@ pub(crate) fn ack_presents(g: &mut Game) {
         native_heal_presentation,
         native_modifier_presentation,
         native_ai_command_modifier,
-        native_ai_item_presentation,
         native_ai_idle_recovery,
         native_field_event61,
     );

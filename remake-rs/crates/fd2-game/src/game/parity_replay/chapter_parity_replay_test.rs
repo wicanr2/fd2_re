@@ -1149,6 +1149,8 @@ impl ParityReplay {
                 }
             }
         }
+        // 方向鍵可能使畫面快取失效。實際選單在下一幀才確認 END。
+        ack_presents(&mut self.d.g);
         let before = self.d.g.st.as_ref().unwrap().turn;
         self.d.g.end_turn();
         if stop_before_ai {

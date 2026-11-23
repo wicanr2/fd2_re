@@ -199,7 +199,10 @@ impl Game {
             todo!("R8: main.go:9528..9701 指令 0～35 演出的 drawn 條件與 fail 路徑（第一章沒有）")
         }
         if self.native_ai_item_presentation.is_some() {
-            todo!("R8: main.go:9703 drawNativeAIItemPresentation")
+            if !self.acknowledge_native_ai_item_presentation() {
+                self.fail_native_ai_item_presentation(&game_err!("敵方道具演出畫面無效"));
+            }
+            return PresentOwner::NativeAIItemPresentation;
         }
         let hd_interface = self.modern_hd_interface_enabled();
         if let Some(job) = self.native_town_departure.as_mut() {

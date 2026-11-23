@@ -5,6 +5,65 @@
 use super::*;
 
 impl Game {
+    pub(crate) fn plan_native_ai_item_restore(&mut self, plan: &battle::AIPlan) -> Result<NativeAIItemTransaction> {
+        if plan.native_action_kind != battle::NATIVE_AI_ACTION_ITEM || plan.native_item_target_indices.is_empty() {
+            return Err(game_err!("敵方道具缺少原生目標名單"));
+        }
+        let state = self.st.as_ref().ok_or_else(|| game_err!("敵方道具缺少戰場狀態"))?;
+        let actor_index = plan.u.ok_or_else(|| game_err!("敵方道具缺少使用者"))?;
+        let actor = state.units.get(actor_index).ok_or_else(|| game_err!("敵方道具使用者不在名冊"))?;
+        let slot = usize::try_from(plan.native_item_slot).map_err(|_| game_err!("敵方道具欄位無效"))?;
+        if slot >= 8
+            || actor.inventory_slots.len() != 8
+            || actor.native_inventory_flags.len() != 8
+            || actor.native_inventory_flags[slot] & 0x80 != 0
+            || actor.inventory_slots[slot] != plan.native_item_id
+        {
+            return Err(game_err!("敵方道具欄位與原生記錄不符"));
+        }
+        let targets = plan.native_item_target_indices.iter().map(|&index| usize::from(index)).collect::<Vec<_>>();
+        let mut seen = BTreeSet::new();
+        if targets.first().copied() != plan.target
+            || targets.iter().any(|&index| index >= state.units.len() || !seen.insert(index))
+        {
+            return Err(game_err!("敵方道具的原生目標名單無效"));
+        }
+        if self.native_item_effect_rows.is_empty() {
+            self.native_item_effect_rows =
+                battle::load_native_item_effect_row_prefix(&asset_path("assets/data/native_item_effect_rows.json"))?;
+        }
+        let offset = battle::native_item_effect_row_offset(plan.native_item_id)? as usize;
+        let row = self
+            .native_item_effect_rows
+            .get(offset..offset + battle::NATIVE_ITEM_EFFECT_ROW_SIZE as usize)
+            .ok_or_else(|| game_err!("缺少原生道具表第 {} 列", plan.native_item_id))?;
+        let amount = u16::from_le_bytes([row[0x0e], row[0x0f]]);
+        let (route, valid) = battle::native_item_hp_restore_route_for_type(row[0x0d], amount);
+        if !valid {
+            return Err(game_err!("敵方道具 {} 的原生效果類型 {} 尚無執行入口", plan.native_item_id, row[0x0d]));
+        }
+        let before = native_item_runtime_records(&state.units)?;
+        let mut after = before.clone();
+        let rng_before = self.native_rng_state;
+        let restore = battle::apply_native_item_hp_restore(
+            &mut after,
+            &plan.native_item_target_indices,
+            route,
+            rng_before,
+            actor_index as i64,
+            plan.native_item_slot,
+        )?;
+        Ok(NativeAIItemTransaction {
+            before,
+            after,
+            targets,
+            rng_before,
+            rng_after: restore.rng_state,
+            restore: Some(restore),
+            ..Default::default()
+        })
+    }
+
     /// Go：`native_item_panel_ui.go:156`，`func (g *Game) clearNativeItemPanel()`
     pub(crate) fn clear_native_item_panel(&mut self) {
         self.native_item_panel_text = None;

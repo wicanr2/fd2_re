@@ -8287,7 +8287,11 @@ impl Game {
         }
         if self.native_ai_item_presentation.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_ai_item_presentation.go:drawNativeAIItemPresentation");
+            if !self.draw_native_ai_item_presentation(screen) {
+                self.fail_native_ai_item_presentation(&game_err!("敵方道具演出畫面無效"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_town_departure.is_some() {
             screen.fill(BLACK);
@@ -10546,10 +10550,17 @@ impl Game {
         if plan.spell_id >= 0 {
             todo!("R8: ai_spell_execute.go:executeAISpell（第一章重播沒有敵方法術）");
         }
-        if plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND
-            || plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM
-        {
-            todo!("R8: native_ai_execute.go:executeNativeAIAction（第一章重播沒有敵方指令或物品）");
+        if plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM {
+            if let Err(err) = self.execute_native_ai_item_restore(plan) {
+                self.load_err = format!("敵方道具：{}", err.message());
+                self.ai_busy = false;
+            }
+            return;
+        }
+        if plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND {
+            self.load_err = format!("敵方指令 {} 尚無執行入口", plan.native_command_id);
+            self.ai_busy = false;
+            return;
         }
         let target = plan.target.filter(|&t| self.st.as_ref().unwrap().units[t].alive());
         let Some(tgt) = target else {
