@@ -5916,3 +5916,11 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - `test_chapter_parity_replay` 以 `FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0` 讀入 `work/ch03-flow-20261017/input/FD2.SAV`，沿 `original-full-r3` 的輸入與清場注入走到第 4 章城鎮，完成酒店存檔並回城，共 30 筆檢查點。驗證層級為 RUNTIME-E1。
 - 第 4 章抽測用 `work/parity-slot-ch04/FD2.SAV` 與 `sample-r13`。重播依正式輸入順序在游標移動後確認畫面，解開首輪 END 的底圖快取缺失。樣本走到第 3 回合，在尚未接入的非玩家指令 0 停止。
 - 發行組態建置、格式、Clippy 及 457 項 Rust 回歸通過。
+
+## 2026-11-23 Rust 第 4 章非玩家指令
+
+- 指令 0 接入原版索引色場景。繪圖確認施放標記後扣除 MP，目標演出依七個標記分段更新 HP，尾段結束後發布亂數並執行死亡與換手流程。[指令 0 原版證據](docs/data/ida/fd2_command0_presentation_ida.txt)
+- 非玩家回復指令 13 至 16 使用各自的原版前導。最後一幀遮罩確認後，將預先驗證的 MP、HP、行動狀態和亂數一起發布，再播放回復數字。[回復前導證據](docs/data/ida/fd2_command13_21eb1_presentation_ida.txt)
+- 分離背景的物理攻擊接上原版出發畫格與左右向捲動。目標背景、台座與狀態欄依原生側別合成，正式戰鬥本體沿原有排程播放。[分離背景規格](docs/data/ida/fd2_physical_background_selection_20261004.json)
+- 用 `test_chapter_parity_replay`、`FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0` 重播 `work/parity-slot-ch04/FD2.SAV` 與 `sample-r13`。第 6 回合沿用清場注入，從戰後對白抵達第 5 章城鎮。通關抽測取到原版序號 1023，通過 56 筆檢查點。未裁切的重播在同一城鎮停於尚未移植的販賣測具。驗證層級為 RUNTIME-E1，HD 畫面留給人工驗收。
+- 第 3 章重播仍可進第 4 章城鎮並完成酒店存檔。發行組態建置、格式、Clippy 與 457 項 Rust 回歸通過。

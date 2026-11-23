@@ -332,9 +332,9 @@ impl Game {
         idle: &figani::Animation,
         side: u8,
         strikes: &[battle::NativePhysicalStrike],
-        _current_actor: &mut [u8],
+        current_actor: &mut [u8],
         current_target: &mut [u8],
-        _actor_index: i64,
+        actor_index: i64,
         target_index: i64,
         sounds: &Arc<BTreeMap<i64, Vec<u8>>>,
         attack_resource: i64,
@@ -350,8 +350,40 @@ impl Game {
         let mut plan_cursor = 0usize;
         for si in 0..strikes.len() {
             if attack.header_byte1 != 0 {
-                todo!(
-                    "R8: native_physical_body.go:278 FIGANI header1 非零的出發與捲動（nativePhysicalScroll、modernHDBattleScrollScenerySources；第一章沒有執行到）"
+                let mut source = vec![0; 320 * 200];
+                for frame in &attack.frames[..usize::from(attack.header_byte2)] {
+                    source = body.base.clone();
+                    frame.blit_at(&mut source, 320)?;
+                    let cue = if frame.raw_byte5 == 0 { -1 } else { i64::from(frame.raw_byte5) };
+                    body.p.jobs.push(NativePhysicalBodyJob {
+                        pixels: source.clone(),
+                        cue,
+                        wait_millis: frame.delay as f64 * indexedmap::PHASE_BANNER_STEP_MILLIS,
+                        sounds: Arc::clone(sounds),
+                        sound_bank,
+                        hd_phase: "departure".into(),
+                        ..Default::default()
+                    });
+                }
+                let (base, frames) = self.native_physical_scroll(
+                    scene,
+                    &source,
+                    &r.target_bg,
+                    current_target,
+                    target_index,
+                    &idle.frames[0],
+                    side == 0,
+                    &r.layers,
+                )?;
+                body.append_scroll(
+                    base,
+                    frames,
+                    modern_physical_backdrop_scenery(
+                        scene,
+                        &r.target_bg,
+                        modern_physical_target_bg_index(scene),
+                        side == 0,
+                    )?,
                 );
             }
             while plan_cursor < plan.len() && plan[plan_cursor].strike == si as i64 {
@@ -435,10 +467,25 @@ impl Game {
                 }
             }
             if si + 1 < strikes.len() && attack.header_byte1 == 1 {
-                todo!("R8: native_physical_body.go:349 兩擊之間的回捲（appendScroll；第一章沒有執行到）");
+                let mut source = body.base.clone();
+                idle.frames[0].blit_at(&mut source, 320)?;
+                let (base, frames) = self.native_physical_scroll(
+                    scene,
+                    &source,
+                    &r.actor_bg,
+                    current_actor,
+                    actor_index,
+                    &attack.frames[0],
+                    side != 0,
+                    &r.layers,
+                )?;
+                body.append_scroll(
+                    base,
+                    frames,
+                    modern_physical_backdrop_scenery(scene, &r.actor_bg, scene.selection.base_bg, side != 0)?,
+                );
             }
         }
-        let _ = r;
         Ok(())
     }
 }
@@ -448,6 +495,24 @@ struct NativePhysicalBodyAssembly {
     p: NativePhysicalBodyPlayback,
     base: Vec<u8>,
     base_scenery: Vec<ModernHDBattleSource>,
+}
+
+impl NativePhysicalBodyAssembly {
+    fn append_scroll(
+        &mut self,
+        base: Vec<u8>,
+        frames: Vec<battlepresent::NativeCommand24BackgroundPresent>,
+        scenery: Vec<ModernHDBattleSource>,
+    ) {
+        self.p.jobs.extend(frames.into_iter().map(|frame| NativePhysicalBodyJob {
+            pixels: frame.pixels,
+            cue: -1,
+            hd_phase: if frame.incoming { "scroll-in" } else { "scroll-out" }.into(),
+            ..Default::default()
+        }));
+        self.base = base;
+        self.base_scenery = scenery;
+    }
 }
 
 impl NativePhysicalBodyJob {

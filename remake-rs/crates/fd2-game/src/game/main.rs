@@ -8253,7 +8253,9 @@ impl Game {
         }
         if self.native_heal_presentation.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_command_heal_presentation.go:drawNativeCommandHealPresentation");
+            self.present_native_command_heal(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_modifier_presentation.is_some() {
             screen.fill(BLACK);
@@ -8263,8 +8265,15 @@ impl Game {
             screen.fill(BLACK);
             todo!("r8:native_ai_modifier_presentation.go:drawNativeAICommandModifierPresentation");
         }
-        if self.native_cmd0_presentation.is_some()
-            || self.native_cmd6_presentation.is_some()
+        if self.native_cmd0_presentation.is_some() {
+            screen.fill(BLACK);
+            if !self.native_cmd0_presentation.as_mut().unwrap().present(Some(screen)) {
+                self.fail_native_command0_presentation(&game_err!("指令 0 演出畫面無效"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()
             || self.native_cmd3_presentation.is_some()
@@ -10558,8 +10567,15 @@ impl Game {
             return;
         }
         if plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND {
-            self.load_err = format!("敵方指令 {} 尚無執行入口", plan.native_command_id);
-            self.ai_busy = false;
+            let result = match plan.native_command_id {
+                0 => self.execute_native_ai_command0(plan),
+                13..=16 => self.execute_native_ai_command_heal(plan),
+                id => Err(game_err!("指令 {id} 尚無執行入口")),
+            };
+            if let Err(err) = result {
+                self.load_err = format!("敵方指令：{}", err.message());
+                self.ai_busy = false;
+            }
             return;
         }
         let target = plan.target.filter(|&t| self.st.as_ref().unwrap().units[t].alive());

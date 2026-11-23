@@ -8,6 +8,8 @@ Rust 第 2、3 章可由章界存檔進城，經出口確認、戰前劇情進�
 
 Rust 第 2 章受控重播已走完第 4 回合增援、清場、戰後劇情，抵達第 3 章城鎮並完成酒店存檔。第 3 章已接通非玩家的第 5、13 型回復道具，受控重播抵達第 4 章城鎮並完成酒店存檔。兩章均使用既有清場注入，驗證層級為 RUNTIME-E1。[回復道具證據](../data/ida/fd2_ai_item_restore_presentation_owner.txt)
 
+Rust 第 4 章受控重播經過非玩家指令 0、回復指令 13、增援及分離背景的物理攻擊。第 6 回合執行既有清場注入後，抵達第 5 章城鎮。驗證層級為 RUNTIME-E1，畫面範圍為原版索引色。[指令 0 證據](../data/ida/fd2_command0_presentation_ida.txt) [分離背景規格](../data/ida/fd2_physical_background_selection_20261004.json)
+
 Rust R6 四語設定及原生劇情對白達 RUNTIME-E1。Linux Bevy 從標題正常 START，驗證英文首句的分頁與續行、冷啟動文字區逐像素相同，以及皇城首句的日文和簡中譯文。[119 的語言與對白驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-工具列語言與原生劇情對白)
 
 Rust R6 雙側海報已接入 Bevy 及工具列。兩組圖稿、關閉、漸層、淡入偏好、冷啟動及缺件回退通過 Linux 視窗驗證。中央標題背景逐像素保持，海報側欄攔截滑鼠點擊。[119 的雙側海報驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-雙側海報)

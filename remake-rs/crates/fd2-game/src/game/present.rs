@@ -170,7 +170,8 @@ impl Game {
             return PresentOwner::IndexedTransition;
         }
         if self.native_heal_presentation.is_some() {
-            todo!("R8: main.go:9500 drawNativeCommandHealPresentation（補血演出各階段的 drawn 條件）")
+            self.present_native_command_heal(None);
+            return PresentOwner::NativeHealPresentation;
         }
         if self.native_modifier_presentation.is_some() {
             todo!("R8: main.go:9510 drawNativeCommandModifierPresentation")
@@ -178,8 +179,13 @@ impl Game {
         if self.native_ai_command_modifier.is_some() {
             todo!("R8: main.go:9520 drawNativeAICommandModifierPresentation")
         }
-        if self.native_cmd0_presentation.is_some()
-            || self.native_cmd6_presentation.is_some()
+        if let Some(job) = self.native_cmd0_presentation.as_mut() {
+            if !job.present(None) {
+                self.fail_native_command0_presentation(&game_err!("指令 0 演出畫面無效"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
+        if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()
             || self.native_cmd3_presentation.is_some()

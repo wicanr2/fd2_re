@@ -263,7 +263,6 @@ impl Game {
         bg: &fdother::Frame,
         tai: &fdother::Frame,
     ) -> Result<()> {
-        let _ = attack; // 只有分離背景的出發段（`prepareNativePhysicalDeparture`，R8）用到。
         scene.background_frame = bg.clone();
         let st = self.st.as_ref().expect("Go：g.st 為 nil 時解參考 panic");
         scene.actor_record = battle::native_battle_panel_record_for_unit(Some(&st.units[actor]))?;
@@ -297,9 +296,104 @@ impl Game {
         if !scene.selection.has_separate_backgrounds {
             return Ok(());
         }
-        todo!(
-            "R8: native_physical_scene.go:292 prepareNativePhysicalDeparture（分離背景的出發與捲動；第一章沒有執行到）"
-        )
+        self.prepare_native_physical_departure(scene, attack, &target_idle.frames[0], raw_side)
+    }
+
+    fn prepare_native_physical_departure(
+        &mut self,
+        scene: &mut NativePhysicalScene,
+        attack: &figani::Animation,
+        target_idle: &figani::Frame,
+        raw_side: u8,
+    ) -> Result<()> {
+        let start = usize::from(attack.header_byte2);
+        let frames = attack.frames.get(..start).ok_or_else(|| game_err!("物理攻擊缺少原版出發畫格"))?;
+        if self.native_ui_palette.len() != 256 {
+            return Err(game_err!("物理攻擊缺少原版調色盤"));
+        }
+        scene.attack_start = start as i64;
+        scene.raw_side = raw_side;
+        let right = raw_side == 0;
+        let root = separated_asset_path("surfaces");
+        let target_bg = if right { scene.selection.secondary_bg } else { scene.selection.primary_bg };
+        scene.target_background = fdother::load_separated_single_frame(&root, "BG.DAT", target_bg as i64)?;
+        let mut layers = [fdother::Frame::default(), fdother::Frame::default(), fdother::Frame::default()];
+        for (index, layer) in layers.iter_mut().enumerate() {
+            *layer = fdother::load_separated_single_frame(&root, "BG.DAT", index as i64)?;
+        }
+        for frame in frames {
+            let mut pixels = scene.prelude_base.clone();
+            frame.blit_at(&mut pixels, 320)?;
+            scene.departure.push(pixels);
+            scene.lead_delays.push(frame.delay);
+        }
+        let empty = vec![0; 320 * 200];
+        let source = scene.departure.last().unwrap_or(&empty).clone();
+        let record = scene.target_record.clone();
+        let background = scene.target_background.clone();
+        let target_index = scene.target_index;
+        let (_, transition) = self.native_physical_scroll(
+            scene,
+            &source,
+            &background,
+            &record,
+            target_index,
+            target_idle,
+            right,
+            &layers,
+        )?;
+        scene.transition = transition.into_iter().map(|frame| frame.pixels).collect();
+        scene.lead_delays.resize(scene.departure.len() + scene.transition.len(), 0);
+        scene.lead_images = scene
+            .departure
+            .iter()
+            .chain(&scene.transition)
+            .map(|pixels| {
+                Some(Arc::new(Picture::from_indexed(&IndexedFrame {
+                    width: 320,
+                    height: 200,
+                    pix: pixels.clone(),
+                    palette: self.native_ui_palette.clone(),
+                })))
+            })
+            .collect();
+        Ok(())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub(crate) fn native_physical_scroll(
+        &mut self,
+        scene: &mut NativePhysicalScene,
+        source: &[u8],
+        background: &fdother::Frame,
+        record: &[u8],
+        target_index: i64,
+        target_idle: &figani::Frame,
+        right: bool,
+        layers: &[fdother::Frame; 3],
+    ) -> Result<(Vec<u8>, Vec<battlepresent::NativeCommand24BackgroundPresent>)> {
+        let mut target_base = vec![0; 320 * 200];
+        let mut background = background.clone();
+        (background.x, background.y) = (0, 50);
+        background.blit(&mut target_base, 320, -1)?;
+        if right {
+            let mut platform = scene.platform_frame.clone();
+            (platform.x, platform.y) = (164, 157);
+            platform.blit(&mut target_base, 320, -1)?;
+        }
+        self.render_physical_battle_panel(scene, record, &mut target_base, target_index)?;
+        let input = battlepresent::NativeCommand24BackgroundInputs {
+            layers: layers.clone(),
+            source,
+            target: &target_base,
+            target_idle: target_idle.clone(),
+        };
+        let frames = if right {
+            battlepresent::build_native_physical_right_background_presents(&input)?
+        } else {
+            battlepresent::build_native_command24_background_presents(&input)?
+        };
+        Ok((target_base, frames))
     }
 
     /// Go：`native_physical_scene.go:372`，`func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool`
@@ -311,8 +405,7 @@ impl Game {
     /// 結束前放回。期間呼叫的 `drawModernHDBattlePrelude`／`drawNativePhysicalBody` 只經參數讀場景，不讀
     /// `g.atk.nativeScene`。
     ///
-    /// 出發與捲動（`leadFrame < len(leadImages)`）在開場與第一章沒有走到（階段 0 覆蓋率 0 次；`leadImages` 由
-    /// `prepareNativePhysicalDeparture` 建立，Rust 是 R8），`todo!("r8:…")`。
+    /// 分離背景的正式攻擊由本體排程播放出發與捲動。
     pub(crate) fn draw_native_physical_prelude(&mut self, screen: &mut Picture) -> bool {
         let Some(mut scene) = self.atk.as_mut().and_then(|a| a.native_scene.take()) else {
             return false;
@@ -337,9 +430,18 @@ impl Game {
                 img = Picture::from_indexed(&scene.prelude_images[scene.prelude_frame as usize]);
                 scene.prelude_drawn = true;
             } else if scene.lead_frame < scene.lead_images.len() as i64 {
-                todo!(
-                    "r8:native_physical_scene.go:388..408 出發與捲動（分離背景；body 本體、HD lead 與 leadImages；開場與第一章沒有走到）"
-                )
+                if scene.body.is_some() {
+                    if let Err(err) = self.draw_native_physical_body(screen, scene) {
+                        self.load_err = format!("native physical body: {err}");
+                    }
+                    break 'draw true;
+                }
+                let Some(frame) = scene.lead_images[scene.lead_frame as usize].as_ref() else {
+                    self.load_err = "物理攻擊缺少出發捲動畫格".into();
+                    break 'draw true;
+                };
+                img = frame.as_ref().clone();
+                scene.lead_drawn = true;
             } else {
                 if scene.body.is_some() {
                     if let Err(err) = self.draw_native_physical_body(screen, scene) {
