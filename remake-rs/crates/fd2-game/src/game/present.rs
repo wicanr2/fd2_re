@@ -187,7 +187,7 @@ impl Game {
             return PresentOwner::NativeCommandPresentation;
         }
         if self.native_cmd5_presentation.is_some() {
-            self.present_native_command45(None);
+            self.present_native_indexed_damage_command(None);
             return PresentOwner::NativeCommandPresentation;
         }
         if self.native_cmd6_presentation.is_some()

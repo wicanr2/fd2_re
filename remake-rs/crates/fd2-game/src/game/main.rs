@@ -8277,7 +8277,7 @@ impl Game {
         }
         if self.native_cmd5_presentation.is_some() {
             screen.fill(BLACK);
-            self.present_native_command45(Some(screen));
+            self.present_native_indexed_damage_command(Some(screen));
             self.draw_capture_shot_point(screen);
             return;
         }
@@ -10576,7 +10576,7 @@ impl Game {
         if plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND {
             let result = match plan.native_command_id {
                 0 => self.execute_native_ai_command0(plan),
-                4..=5 => self.execute_native_ai_command45(plan),
+                1 | 4..=5 => self.execute_native_ai_indexed_damage_command(plan),
                 13..=16 => self.execute_native_ai_command_heal(plan),
                 17..=19 => self.execute_native_ai_command_modifier(plan),
                 id => Err(game_err!("指令 {id} 尚無執行入口")),

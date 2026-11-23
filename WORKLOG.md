@@ -5945,3 +5945,11 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 原版 `sample-r1` 的檢查點 941 至 950 顯示守方記錄 8 在主攻前 HP 為 2，攻擊後降到 0。Rust 原先依攻擊前狀態預載反擊素材，誤在這次攻擊觸發背景守衛。現在用固定原生亂數在候選狀態執行既有主攻，再依守方狀態判斷是否需要反擊素材。規則黃金的 780 筆物理攻擊逐筆核對候選判定與實際結果。
 - 重播以 `work/parity-slot-ch08/FD2.SAV` 和 `sample-r1` 為輸入，將 `eip-trace.jsonl.gz` 解到暫存原版樣本副本。第 10 回合沿用清場注入，277 筆檢查點走過戰後劇情、武器店販賣、道具店購買、酒店存檔與工具列祕密商店。購買沿正式選單扣款 10，驗證層級為 RUNTIME-E1。
 - 第 6 章重播、規則黃金 5,188 案、457 項 Rust 遊戲回歸、格式、Clippy 及發行組態建置均通過。
+
+## 2026-11-23 Rust 第 9 章敵方指令 1
+
+- 第 4 回合用同一建構槽比較首領倒戈和首批增援。原版與 Rust 在序號 915 均將記錄 11 轉到我方並把 HP 設為 1。序號 979 時，Rust 已產生同批五名增援。原版序號 1104 的 END 原先卡在 Rust 尚無敵方指令 1 入口。
+- 敵方指令 1 共用已接線的原版索引色戰鬥開場及尾段。使用指令 1 的 31 張目標畫格、八段 HP 和九張目標間轉場。MP、HP 和音效依繪圖確認推進，尾段結束才發布亂數並交回行動。[原版證據](docs/data/ida/fd2_command1_8_entries_ida.txt) [既有規格](docs/knowledge-base/56-fd2-remake-sdd.md#ui-03-native-command-data-contracte0-partial)
+- 由 `work/parity-slot-ch08/FD2.SAV` 重建第 9 章槽。來源 SHA-256 為 `768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0`。使用 `fd2-chapter-slot -base-slot 0 -target 8 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4 -boost-base-ap 200 -boost-base-dx 60`，產出 SHA-256 `93be4185fda3e460c558fc935620ac987f7c6c830c2934b1c4e77d789602d900`。
+- 原版由 dosgolem `d14149309fa4159a2986040e817090e364c47713` 執行 [第 9 章計畫](docs/data/parity-plans/ch09-sample.jsonl)，在第 5 回合觸及 580 秒擷取上限。Rust 以同槽執行 `test_chapter_parity_replay`，設定 `FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0`，通過 134 筆檢查點。此樣本涵蓋指令 1 後換手，後兩批增援及第 9 章戰後轉場未在此樣本驗證。
+- 第 6 章 74 筆重播檢查點、457 項 Rust 遊戲回歸、格式、Clippy 和發行組態建置均通過。抽樣容器已退出。
