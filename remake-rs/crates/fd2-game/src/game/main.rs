@@ -5424,6 +5424,18 @@ impl Game {
             if self.native_class_ui_job.is_some() {
                 return true;
             }
+            if let Some(state) = self.native_system_end_turn_ui.as_mut().filter(|state| state.treasure.is_some()) {
+                if just(Key::ArrowLeft) {
+                    state.choice = 0;
+                } else if just(Key::ArrowRight) {
+                    state.choice = 1;
+                }
+                if enter || esc {
+                    let accepted = !esc && state.choice == 0;
+                    self.finish_native_treasure_choice(accepted);
+                }
+                return true;
+            }
             if esc {
                 todo!("R8: main.go:5641 cancelNativeSystemEndTurn（第一章重播沒有執行到）");
             }
@@ -5724,7 +5736,10 @@ impl Game {
         let (before, exists) = st.treasure_at(ux, uy);
         if exists {
             if st.has_native_map_view_state && ((before.kind == "item" && inventory_len < 8) || before.kind == "gold") {
-                todo!("R8: main.go:6257 beginNativeTreasureItemPrompt（第一章重播沒有執行到）");
+                if let Err(err) = self.begin_native_treasure_prompt(u, before) {
+                    self.load_err = err.message().to_string();
+                }
+                return;
             }
             let (got, ok) = st.claim_treasure(Some(u), ux, uy);
             if ok {

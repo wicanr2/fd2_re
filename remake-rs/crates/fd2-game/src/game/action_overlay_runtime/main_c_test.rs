@@ -276,6 +276,67 @@ fn opened(g: &Game, slot: i64) -> bool {
     g.st.as_ref().unwrap().opened_treasure.as_ref().is_some_and(|m| m.get(&slot).copied().unwrap_or(false))
 }
 
+#[test]
+fn test_native_treasure_choice_publishes_reward_at_the_correct_boundary() {
+    let Ok(Some(ui)) = load_native_preparation_ui_assets() else {
+        test_support::skip("寶物確認介面素材");
+        return;
+    };
+    let present_all = |g: &mut Game| {
+        for _ in 0..32 {
+            let Some(job) = g.native_class_ui_job.as_mut() else { return };
+            job.drawn = true;
+            g.step_native_class_ui_lifecycle(GameInstant::default());
+        }
+        panic!("寶物確認演出未結束");
+    };
+    for (kind, value, accepted) in [("item", 192, true), ("gold", 3500, true), ("item", 192, false)] {
+        let reward = battle::Treasure { slot: 0, kind: kind.into(), value, ..Default::default() };
+        let mut st = treasure_state(battle::Cell { x: 7, y: 13 }, reward.clone());
+        st.units = vec![own_unit(40, 100, 7, 13), own_unit(40, 100, 8, 13)];
+        let frame = vec![0; 320 * 200];
+        let mut g = Game {
+            st: Some(st),
+            sel: Some(0),
+            gold: 10,
+            native_preparation_ui: Some(ui.clone()),
+            native_system_end_turn_confirm: true,
+            native_system_end_turn_ui: Some(Box::new(NativeSystemEndTurnUIState {
+                source: frame.clone(),
+                dialogue: frame.clone(),
+                question: frame.clone(),
+                accepted: vec![frame.clone()],
+                canceled: vec![frame],
+                treasure: Some(NativeTreasurePrompt { actor: Some(0), reward, x: 7, y: 13, ..Default::default() }),
+                ..Default::default()
+            })),
+            ..Default::default()
+        };
+        g.tick_input.pressed.insert(Key::Enter);
+        if !accepted {
+            g.tick_input.pressed.insert(Key::ArrowRight);
+        }
+        assert!(g.ring_input());
+        assert!(!opened(&g, 0));
+        present_all(&mut g);
+        assert_eq!(g.gold, 10);
+        assert_eq!(opened(&g, 0), accepted && kind == "item");
+        assert!(!g.st.as_ref().unwrap().units[0].acted);
+        if accepted {
+            assert!(g.ring_input());
+        }
+        for _ in 0..12 {
+            g.step_native_system_end_turn();
+        }
+        present_all(&mut g);
+        let unit = &g.st.as_ref().unwrap().units[0];
+        assert!(g.load_err.is_empty() && g.sel.is_none() && unit.acted);
+        assert_eq!(opened(&g, 0), accepted);
+        assert_eq!(g.gold, if kind == "gold" { 3510 } else { 10 });
+        assert_eq!(unit.inventory, if accepted && kind == "item" { vec![192] } else { vec![] });
+    }
+}
+
 /// Go：`treasure_test.go:9` `TestFinishSelectedWaitRestsThenClaimsTreasure`
 #[test]
 fn test_finish_selected_wait_rests_then_claims_treasure() {

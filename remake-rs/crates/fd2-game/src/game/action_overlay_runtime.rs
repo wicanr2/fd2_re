@@ -225,8 +225,9 @@ impl Game {
                         return;
                     };
                     let accepted = state.accepted_outcome;
-                    if state.treasure.is_some() {
-                        todo!("R8: action_overlay_runtime.go:719 finishNativeTreasurePrompt");
+                    if let Some(prompt) = state.treasure.take() {
+                        g.finish_native_treasure_prompt(prompt);
+                        return;
                     }
                     if state.death_reward.is_some() {
                         todo!("R8: action_overlay_runtime.go:723 finishNativeDeathRewardUI");

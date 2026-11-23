@@ -5953,3 +5953,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 由 `work/parity-slot-ch08/FD2.SAV` 重建第 9 章槽。來源 SHA-256 為 `768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0`。使用 `fd2-chapter-slot -base-slot 0 -target 8 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4 -boost-base-ap 200 -boost-base-dx 60`，產出 SHA-256 `93be4185fda3e460c558fc935620ac987f7c6c830c2934b1c4e77d789602d900`。
 - 原版由 dosgolem `d14149309fa4159a2986040e817090e364c47713` 執行 [第 9 章計畫](docs/data/parity-plans/ch09-sample.jsonl)，在第 5 回合觸及 580 秒擷取上限。Rust 以同槽執行 `test_chapter_parity_replay`，設定 `FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0`，通過 134 筆檢查點。此樣本涵蓋指令 1 後換手，後兩批增援及第 9 章戰後轉場未在此樣本驗證。
 - 第 6 章 74 筆重播檢查點、457 項 Rust 遊戲回歸、格式、Clippy 和發行組態建置均通過。抽樣容器已退出。
+
+## 2026-11-23 Rust 第 12 章戰場取寶
+
+- 第 10 回合原版序號 3820 於格子 (16, 15) 選擇休息後顯示寶箱問句。Rust 原先停在該入口。現在從行動環已關的原生底圖建立問句並預建完整回覆。物品在回覆後入袋，金錢關框後入帳，地圖更新後才完成行動。選擇取消保留寶箱。[取寶規格](docs/knowledge-base/56-fd2-remake-sdd.md#53-取寶提示底圖邊界2026-10-01conformed)
+- 用 `work/parity-slot-ch12/FD2.SAV` 與 `sample-r5` 重跑 `test_chapter_parity_replay`，設定 `FD2_PARITY_ENTRY=load`、`FD2_PARITY_CAPTURE_FRAMES=0`。存檔雜湊與既有原版收據相符。共通過 288 筆檢查點，第 11 回合使用既有清場注入，抵達第 13 章城鎮完成買賣、酒店存檔及祕密商店往返。驗證層級為 RUNTIME-E1，未取畫格比對。[原版收據](docs/data/ui-traces/parity-ch12.json)
+- 寶箱回歸走實際輸入分流，驗證物品接受、金錢延後入帳與取消。458 項 Rust 遊戲回歸、格式、Clippy 和發行組態建置通過。抽樣與建置容器已退出。

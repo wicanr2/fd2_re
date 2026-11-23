@@ -332,6 +332,6 @@ pub(crate) fn answer_native_treasure_prompt(g: &mut Game) {
         return;
     }
     if g.native_system_end_turn_confirm {
-        todo!("R8: action_overlay_runtime.go:614 confirmNativeSystemEndTurn（寶物提示；第一章重播沒有待機在寶物格）")
+        g.finish_native_treasure_choice(true);
     }
 }
