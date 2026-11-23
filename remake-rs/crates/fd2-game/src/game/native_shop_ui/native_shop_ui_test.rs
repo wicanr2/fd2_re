@@ -83,24 +83,24 @@ fn chapter_two_secret_shop_purchase_and_save() {
     let initial_gold = game.gold;
     let original = game.party_roster.clone();
 
-    game.handle_native_secret_shop_input(&confirm, true);
-    game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "confirm");
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "insufficient");
     assert!(game.draw_native_shop(&mut screen));
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.gold, initial_gold);
     assert_eq!(game.party_roster, original);
 
-    game.handle_native_secret_shop_input(&key(Key::ArrowDown), false);
-    game.handle_native_secret_shop_input(&confirm, true);
-    game.handle_native_secret_shop_input(&key(Key::Escape), false);
+    game.handle_native_shop_input(&key(Key::ArrowDown), false);
+    game.handle_native_shop_input(&confirm, true);
+    game.handle_native_shop_input(&key(Key::Escape), false);
     assert_eq!(game.native_shop_mode, "purchase");
     assert_eq!(game.party_roster, original);
-    game.handle_native_secret_shop_input(&confirm, true);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "recipient_consumable");
     let recipient = game.shop_recipients[0];
     let full = game.party_roster.get_mut(&recipient).unwrap();
@@ -108,13 +108,13 @@ fn chapter_two_secret_shop_purchase_and_save() {
         assert!(full.add_inventory_item(192, false));
     }
     let full = full.clone();
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "recipient_full");
     assert_eq!(game.party_roster[&recipient], full);
     assert_eq!(game.gold, initial_gold);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     game.party_roster.insert(recipient, original[&recipient].clone());
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "success", "{}", game.msg);
     assert_eq!(game.gold, initial_gold);
     assert_eq!(game.party_roster, original);
@@ -124,27 +124,27 @@ fn chapter_two_secret_shop_purchase_and_save() {
     assert_eq!(game.party_roster[&recipient].inventory.len(), original[&recipient].inventory.len() + 1);
     assert_eq!(game.party_roster[&recipient].inventory.last(), Some(&192));
 
-    game.handle_native_secret_shop_input(&key(Key::ArrowUp), false);
-    game.handle_native_secret_shop_input(&key(Key::ArrowLeft), false);
-    game.handle_native_secret_shop_input(&confirm, true);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&key(Key::ArrowUp), false);
+    game.handle_native_shop_input(&key(Key::ArrowLeft), false);
+    game.handle_native_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "recipient_equipment");
     let recipient = game.shop_recipients[0];
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "equip_confirm");
-    game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "success", "{}", game.msg);
     drain(&mut game, &mut screen, &mut clock);
     assert_eq!(game.gold, initial_gold - 260);
     assert_eq!(game.party_roster[&recipient].inventory.last(), Some(&1));
     assert_eq!(game.party_roster[&recipient].equipped.last(), Some(&false));
 
-    game.handle_native_secret_shop_input(&confirm, true);
-    game.handle_native_secret_shop_input(&confirm, true);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "equip_confirm");
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "success", "{}", game.msg);
     drain(&mut game, &mut screen, &mut clock);
     assert_eq!(game.gold, initial_gold - 510);
@@ -154,10 +154,10 @@ fn chapter_two_secret_shop_purchase_and_save() {
     let before_sale = game.party_roster.clone();
     let funds = game.gold;
     let roster_position = game.party_join_order.iter().position(|id| *id == recipient).unwrap();
-    game.handle_native_secret_shop_input(&key(Key::Escape), false);
+    game.handle_native_shop_input(&key(Key::Escape), false);
     drain(&mut game, &mut screen, &mut clock);
-    game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "sell_roster", "{}", game.msg);
     drain(&mut game, &mut screen, &mut clock);
     let first = game.party_join_order[0];
@@ -165,31 +165,31 @@ fn chapter_two_secret_shop_purchase_and_save() {
     while !empty.inventory.is_empty() {
         battle::remove_native_compact_inventory(Some(empty), 0).unwrap();
     }
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "sell_empty", "{}", game.msg);
     drain(&mut game, &mut screen, &mut clock);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     drain(&mut game, &mut screen, &mut clock);
     assert_eq!(game.native_shop_mode, "sell_roster");
     assert_eq!(game.gold, funds);
     game.party_roster.insert(first, before_sale[&first].clone());
     for _ in 0..roster_position {
-        game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
+        game.handle_native_shop_input(&key(Key::ArrowRight), false);
     }
     let select_last = |game: &mut Game, screen: &mut Picture, clock: &mut i64| {
-        game.handle_native_secret_shop_input(&confirm, true);
+        game.handle_native_shop_input(&confirm, true);
         assert_eq!(game.native_shop_mode, "sell_items", "{}", game.msg);
         drain(game, screen, clock);
         for _ in 1..game.native_shop_sell_item_ids.len() {
-            game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
+            game.handle_native_shop_input(&key(Key::ArrowRight), false);
         }
-        game.handle_native_secret_shop_input(&confirm, true);
+        game.handle_native_shop_input(&confirm, true);
         assert_eq!(game.native_shop_mode, "sell_confirm", "{}", game.msg);
         drain(game, screen, clock);
     };
     select_last(&mut game, &mut screen, &mut clock);
-    game.handle_native_secret_shop_input(&key(Key::ArrowRight), false);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
     drain(&mut game, &mut screen, &mut clock);
     assert_eq!(game.native_shop_mode, "sell_roster");
     assert_eq!(game.shop_sell_unit_sel, roster_position as i64);
@@ -197,7 +197,7 @@ fn chapter_two_secret_shop_purchase_and_save() {
     assert_eq!(game.gold, funds);
 
     select_last(&mut game, &mut screen, &mut clock);
-    game.handle_native_secret_shop_input(&confirm, true);
+    game.handle_native_shop_input(&confirm, true);
     assert_eq!(game.native_shop_mode, "sell_success", "{}", game.msg);
     assert_eq!(game.gold, funds);
     assert_eq!(game.party_roster, before_sale);
@@ -222,13 +222,100 @@ fn chapter_two_secret_shop_purchase_and_save() {
     assert_ne!(sold.ap, before.ap);
     let free = sold.inventory.len();
     assert_eq!(sold.native_inventory_flags[free] & 0x80, 0x80);
-    game.handle_native_secret_shop_input(&key(Key::Escape), false);
+    game.handle_native_shop_input(&key(Key::Escape), false);
     drain(&mut game, &mut screen, &mut clock);
-    game.handle_native_secret_shop_input(&key(Key::Escape), false);
+
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "equip_roster", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    for _ in 0..roster_position {
+        game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    }
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "equip_panel", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&key(Key::ArrowUp), false);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.party_roster[&recipient].equipped.last(), Some(&true), "{}", game.msg);
+    assert_eq!(game.party_roster[&recipient].ap, before.ap);
+    assert_eq!(game.gold, funds + 187);
+    game.handle_native_shop_input(&key(Key::Escape), false);
+    drain(&mut game, &mut screen, &mut clock);
+    assert_eq!(game.native_shop_mode, "equip_roster");
+    game.handle_native_shop_input(&key(Key::Escape), false);
+    drain(&mut game, &mut screen, &mut clock);
+
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "transfer_intro", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "transfer_source", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "transfer_items", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    let source = game.party_join_order[0];
+    let destination = game.party_join_order[1];
+    let source_before = game.party_roster[&source].inventory.clone();
+    let destination_before = game.party_roster[&destination].inventory.len();
+    let compact = game.native_shop_transfer_items[0] as usize;
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "transfer_dest_prompt", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "transfer_dest", "{}", game.msg);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&key(Key::ArrowRight), false);
+    game.handle_native_shop_input(&confirm, true);
+    assert_eq!(game.native_shop_mode, "transfer_intro", "{}", game.msg);
+    assert_eq!(game.party_roster[&source].inventory.len(), source_before.len() - 1);
+    assert_eq!(game.party_roster[&destination].inventory.len(), destination_before + 1);
+    assert_eq!(game.party_roster[&destination].inventory.last(), Some(&source_before[compact]));
+    assert_eq!(game.party_roster[&destination].equipped.last(), Some(&false));
+    assert_eq!(game.gold, funds + 187);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&confirm, true);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&key(Key::Escape), false);
+    drain(&mut game, &mut screen, &mut clock);
+    game.handle_native_shop_input(&key(Key::Escape), false);
     game.save_game_to_slot(0).unwrap();
     let save = game.build_save_data();
     assert_eq!(save.node, "town_ch02");
     assert!(game.load_json_game_from_slot(0, false));
     assert_eq!(game.build_save_data().gold, save.gold);
     assert_eq!(game.build_save_data().party_roster, save.party_roster);
+
+    for variant in [1, 3] {
+        let prior_gold = game.gold;
+        game.camp_sel = variant;
+        game.tick_input = key(Key::Enter);
+        assert!(game.camp_input());
+        assert_eq!(game.native_shop_variant, variant);
+        drain(&mut game, &mut screen, &mut clock);
+        assert!(game.draw_native_shop(&mut screen));
+        game.tick_input = key(Key::ArrowRight);
+        assert!(game.camp_input());
+        game.tick_input = key(Key::Enter);
+        assert!(game.camp_input());
+        assert_eq!(game.native_shop_mode, "sell_roster", "{}", game.msg);
+        drain(&mut game, &mut screen, &mut clock);
+        game.camp_input();
+        assert_eq!(game.native_shop_mode, "sell_items", "{}", game.msg);
+        drain(&mut game, &mut screen, &mut clock);
+        game.camp_input();
+        assert_eq!(game.native_shop_mode, "sell_confirm", "{}", game.msg);
+        drain(&mut game, &mut screen, &mut clock);
+        game.camp_input();
+        assert_eq!(game.native_shop_mode, "sell_success", "{}", game.msg);
+        drain(&mut game, &mut screen, &mut clock);
+        assert!(game.gold > prior_gold);
+        game.tick_input = key(Key::Escape);
+        game.camp_input();
+        drain(&mut game, &mut screen, &mut clock);
+        game.camp_input();
+        assert_eq!(game.camp.as_ref().unwrap().node_id(), "town_ch02");
+    }
 }

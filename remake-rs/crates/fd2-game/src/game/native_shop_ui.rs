@@ -6,7 +6,16 @@
 
 use super::*;
 
+mod native_shop_equip_ui;
 mod native_shop_sell_ui;
+mod native_shop_transfer_ui;
+
+fn native_shop_direction(input: &TickInput) -> i64 {
+    [(Key::ArrowLeft, -1), (Key::ArrowRight, 1), (Key::ArrowUp, -2), (Key::ArrowDown, 2)]
+        .into_iter()
+        .find_map(|(key, delta)| input.is_just_pressed(key).then_some(delta))
+        .unwrap_or(0)
+}
 
 /// Go：`native_shop_ui.go:16`
 ///
@@ -53,6 +62,49 @@ pub(crate) fn load_native_shop_ui_assets(shared: Option<&NativeClassUIAssets>) -
 }
 
 impl Game {
+    fn native_shop_service_background(&mut self) -> Result<Vec<u8>> {
+        let (frame, valid) = self.compose_native_shop_stable();
+        if !valid {
+            return Err(game_err!("缺少商店畫面"));
+        }
+        Ok(frame)
+    }
+
+    fn compose_native_shop_party_roster(
+        &self,
+        stable: &[u8],
+        ids: &[i64],
+        selection: i64,
+        top: i64,
+        cycle: i64,
+    ) -> Result<(Vec<u8>, i64)> {
+        let (start, visible) = campaign::native_two_column_window(ids.len() as i64, selection, top);
+        let shop = self.native_shop_state().0.ok_or_else(|| game_err!("缺少商店素材"))?;
+        let shared = self.native_class_ui.as_ref().ok_or_else(|| game_err!("缺少設施素材"))?;
+        let icons = shared.units.as_ref().ok_or_else(|| game_err!("缺少角色圖示"))?;
+        let rows = ids[start as usize..(start + visible) as usize]
+            .iter()
+            .map(|id| {
+                let unit = self
+                    .party_roster
+                    .get(id)
+                    .filter(|unit| unit.has_native_identity && unit.has_map_selector_key)
+                    .ok_or_else(|| game_err!("缺少角色資料"))?;
+                let sprite = icons.sprite_for(unit.map_selector_key, 0, cycle)?.clone();
+                Ok(campaign::NativeRosterRow { sprite, name_text_index: unit.native_identity + 1 })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let frame = campaign::compose_native_roster_frame(
+            stable,
+            &shop.panel,
+            &rows,
+            selection - start,
+            shared.strings.as_ref(),
+            shared.font.as_ref(),
+        )?;
+        Ok((frame, start))
+    }
+
     /// Go：`native_shop_ui.go:1084`，`func (g *Game) setupNativeShop() bool`
     pub(crate) fn setup_native_shop(&mut self) -> bool {
         // Go 直接解參考 `g.camp`（呼叫端 `enterNode` 已確認 campaign 存在）。
@@ -75,9 +127,7 @@ impl Game {
         self.native_shop_item_start = 0;
         self.native_shop_confirm_sel = 0;
         self.shop_sel = 0;
-        if variant == 5 {
-            self.msg.clear();
-        }
+        self.msg.clear();
         self.reset_native_shop_ui_pulse();
         self.begin_native_shop_service_opening()
     }
@@ -156,35 +206,19 @@ impl Game {
 
     /// Go：`native_shop_ui.go:1452`，`func (g *Game) stepNativeShopUILifecycle(now time.Time)`
     pub(crate) fn step_native_shop_ui_lifecycle(&mut self, now: GameInstant) {
-        if self.native_shop_mode == "equip_panel" {
-            todo!("R8: native_shop_ui.go:stepNativeShopEquipPanelLifecycle（購買後的裝備面板）");
-        }
         if let Some(job) = self.native_shop_ui_job.as_mut()
             && !job.timeline.is_empty()
         {
-            if self.native_shop_variant == 5 {
-                if job.started.is_zero() {
-                    job.started = now;
-                }
-                if job.drawn && now - job.started >= job.timeline[job.frame as usize].duration {
-                    job.frame += 1;
-                    job.drawn = false;
-                    job.started = now;
-                    if job.frame as usize == job.timeline.len()
-                        && let Some(after) = self.native_shop_ui_job.take().and_then(|job| job.after)
-                    {
-                        after(self);
-                    }
-                }
-                return;
-            }
             if job.started.is_zero() {
                 job.started = now;
             }
-            job.elapsed = now - job.started;
-            if job.frame == 1 && job.drawn {
-                let mut job = self.native_shop_ui_job.take().unwrap();
-                if let Some(after) = job.after.take() {
+            if job.drawn && now - job.started >= job.timeline[job.frame as usize].duration {
+                job.frame += 1;
+                job.drawn = false;
+                job.started = now;
+                if job.frame as usize == job.timeline.len()
+                    && let Some(after) = self.native_shop_ui_job.take().and_then(|job| job.after)
+                {
                     after(self);
                 }
             }
@@ -248,35 +282,16 @@ mod native_shop_ui_test;
 
 impl Game {
     /// Go：`native_shop_ui.go:1495`，`func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool`
-    ///
-    /// R5 階段 2 r5c。HD 路徑（`drawModernHDFacilityServiceMenu`、`drawModernHDFacilityConfirmation`、
-    /// `drawModernHDFacilityList`、`drawModernHDShopFrame`，R6）在忠實模式都回 false：前三個要 HD 描述（Rust 在忠實
-    /// 模式不建立），`drawModernHDShopFrame` 要 `modernFacility` 場景。描述或 HD 主題存在時 `todo!("r6:…")`；
-    /// `drawModernHDFacilityList` 開頭的 `facilityListRosterHD = nil` 照做。timeline（購買、出售成功演出）在開場與
-    /// 第一章沒有走到（`todo!("r8:…")`）。
     pub(crate) fn draw_native_shop_ui_job(&mut self, screen: &mut Picture) -> bool {
         let Some(job) = self.native_shop_ui_job.as_ref() else {
             return false;
         };
-        if job.service_menu.is_some() && self.native_shop_variant != 5 {
-            todo!("r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu");
-        }
-        if job.church_confirmation.is_some() {
-            todo!("r6:modern_hd_church_confirmation_transition.go:drawModernHDFacilityConfirmation");
-        }
         self.facility_list_roster_hd = None;
-        let job = self.native_shop_ui_job.as_ref().unwrap();
-        if job.facility_list.is_some() {
-            todo!("r6:modern_hd_facility_list_transition.go:drawModernHDFacilityList");
-        }
         if !job.timeline.is_empty() {
-            if self.native_shop_variant == 5 {
-                let frame = job.timeline[job.frame as usize].frame.clone();
-                self.present_native_class_frame(screen, &frame);
-                self.native_shop_ui_job.as_mut().unwrap().drawn = true;
-                return true;
-            }
-            todo!("r8:native_shop_ui.go:1512..1525 timeline（購買／出售成功演出；開場與第一章沒有走到）");
+            let frame = job.timeline[job.frame as usize].frame.clone();
+            self.present_native_class_frame(screen, &frame);
+            self.native_shop_ui_job.as_mut().unwrap().drawn = true;
+            return true;
         }
         let pix = if job.frame < job.frames.len() as i64 {
             // Go 以負的 frame 索引切片會 panic；Rust 同樣 panic。
@@ -286,20 +301,25 @@ impl Game {
         } else {
             return false;
         };
-        if self.modern_story_portraits.is_some() && self.native_shop_variant != 5 {
-            todo!("r6:modern_hd_facility_scene.go:drawModernHDShopFrame");
-        }
         self.present_native_class_frame(screen, &pix);
         self.native_shop_ui_job.as_mut().unwrap().drawn = true;
         true
     }
 
-    pub(crate) fn handle_native_secret_shop_input(&mut self, input: &TickInput, enter: bool) -> bool {
+    pub(crate) fn handle_native_shop_input(&mut self, input: &TickInput, enter: bool) -> bool {
         if self.native_shop_ui_job.is_some() {
             return true;
         }
         if self.native_shop_mode.starts_with("sell_") {
             self.handle_native_secret_sale(input, enter);
+            return true;
+        }
+        if self.native_shop_mode.starts_with("transfer_") {
+            self.handle_native_shop_transfer(input, enter);
+            return true;
+        }
+        if matches!(self.native_shop_mode.as_str(), "equip_roster" | "equip_panel") {
+            self.handle_native_secret_equip(input, enter);
             return true;
         }
         if !matches!(self.native_shop_mode.as_str(), "menu" | "purchase") {
@@ -334,8 +354,10 @@ impl Game {
                 self.msg.clear();
             } else if enter && self.native_shop_service_sel == 1 {
                 self.start_native_secret_sale();
-            } else if enter {
-                self.msg = "此項商店服務尚未移植".into();
+            } else if enter && self.native_shop_service_sel == 2 {
+                self.start_native_secret_equip();
+            } else if enter && self.native_shop_service_sel == 3 {
+                self.start_native_shop_transfer();
             }
         } else if self.native_shop_mode == "purchase" {
             let len = self.camp.as_ref().map_or(0, |camp| camp.shop_goods().len()) as i64;
@@ -360,7 +382,7 @@ impl Game {
         true
     }
 
-    fn draw_native_secret_shop(&mut self, screen: &mut Picture) -> bool {
+    fn draw_native_shop_service(&mut self, screen: &mut Picture) -> bool {
         let (stable, valid) = self.compose_native_shop_stable();
         if !valid {
             return false;
@@ -394,6 +416,12 @@ impl Game {
             .ok()
         } else if self.native_shop_mode.starts_with("sell_") {
             self.compose_native_secret_sale(&stable).ok()
+        } else if self.native_shop_mode == "equip_roster" {
+            self.compose_native_shop_equip_roster(&stable).ok()
+        } else if self.native_shop_mode == "equip_panel" {
+            self.compose_native_shop_equip_panel(&stable).ok()
+        } else if self.native_shop_mode.starts_with("transfer_") {
+            self.compose_native_shop_transfer(&stable).ok()
         } else {
             self.compose_native_secret_purchase(&stable).ok()
         };
@@ -407,9 +435,6 @@ impl Game {
     }
 
     /// Go：`native_shop_ui.go:1543`，`func (g *Game) drawNativeShop(screen *ebiten.Image) bool`
-    ///
-    /// R5 階段 2 r5c。第一章只走到開關框工作（`drawNativeShopUIJob`）；各模式的穩態合成（`composeNativeShop*`）
-    /// 在 crate 裡還沒有，開場與第一章也沒有畫到，`todo!("r8:…")`。`modernHDText` 存在時的 HD 文字擷取 `todo!("r6:…")`。
     pub(crate) fn draw_native_shop(&mut self, screen: &mut Picture) -> bool {
         if self.native_shop_mode.is_empty() {
             return false;
@@ -417,15 +442,6 @@ impl Game {
         if self.draw_native_shop_ui_job(screen) {
             return true;
         }
-        if self.native_shop_variant == 5 {
-            return self.draw_native_secret_shop(screen);
-        }
-        if self.modern_hd_text.is_some() && self.font.is_some() {
-            todo!("r6:native_shop_ui.go:1550..1554 HD 文字擷取（modernHDIndexedText、beginModernHDShopDigits）");
-        }
-        todo!(
-            "r8:native_shop_ui.go:1555..1610 商店穩態畫面（composeNativeShop*；開場與第一章沒有走到）, mode={}",
-            self.native_shop_mode
-        )
+        self.draw_native_shop_service(screen)
     }
 }

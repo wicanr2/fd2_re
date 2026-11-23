@@ -37,10 +37,7 @@ impl Game {
     fn step_native_secret_sale(&mut self, input: &TickInput, enter: bool) -> Result<()> {
         let just = |key| input.is_just_pressed(key);
         let escape = just(Key::Escape);
-        let delta = [(Key::ArrowLeft, -1), (Key::ArrowRight, 1), (Key::ArrowUp, -2), (Key::ArrowDown, 2)]
-            .into_iter()
-            .find_map(|(key, delta)| just(key).then_some(delta))
-            .unwrap_or(0);
+        let delta = native_shop_direction(input);
         match self.native_shop_mode.as_str() {
             "sell_roster" if escape => {
                 self.native_shop_mode = "menu".into();
@@ -162,32 +159,12 @@ impl Game {
         let shared = self.native_class_ui.as_ref().ok_or_else(|| game_err!("販賣缺少設施素材"))?;
         match self.native_shop_mode.as_str() {
             "sell_roster" => {
-                let selected = self.shop_sell_unit_sel;
-                let (start, visible) = campaign::native_two_column_window(
-                    self.party_join_order.len() as i64,
-                    selected,
-                    self.native_shop_sell_roster_top,
-                );
-                let shop = assets.ok_or_else(|| game_err!("販賣缺少商店素材"))?;
-                let icons = shared.units.as_ref().ok_or_else(|| game_err!("販賣缺少角色圖示"))?;
-                let rows = self.party_join_order[start as usize..(start + visible) as usize]
-                    .iter()
-                    .map(|id| {
-                        let unit = self.party_roster.get(id).ok_or_else(|| game_err!("販賣缺少角色資料"))?;
-                        let sprite = icons.sprite_for(unit.map_selector_key, 0, self.native_shop_sell_roster_cycle)?;
-                        Ok(campaign::NativeRosterRow {
-                            sprite: sprite.clone(),
-                            name_text_index: unit.native_identity + 1,
-                        })
-                    })
-                    .collect::<Result<Vec<_>>>()?;
-                let frame = campaign::compose_native_roster_frame(
+                let (frame, start) = self.compose_native_shop_party_roster(
                     stable,
-                    &shop.panel,
-                    &rows,
-                    selected - start,
-                    shared.strings.as_ref(),
-                    shared.font.as_ref(),
+                    &self.party_join_order,
+                    self.shop_sell_unit_sel,
+                    self.native_shop_sell_roster_top,
+                    self.native_shop_sell_roster_cycle,
                 )?;
                 self.native_shop_sell_roster_top = start;
                 Ok(frame)

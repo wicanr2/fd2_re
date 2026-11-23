@@ -5207,10 +5207,13 @@ impl Game {
                 todo!("R8: main.go:5121（教會選單、狀態、轉移、復活與轉職輸入：handleNativeChurch*Input）")
             }
             "shop" => {
-                if self.native_shop_variant == 5 {
-                    return self.handle_native_secret_shop_input(&input, enter);
+                if !self.native_shop_mode.is_empty() {
+                    return self.handle_native_shop_input(&input, enter);
                 }
-                todo!("R8: main.go:5251（商店輸入：handleNativeShopInput 與相容購買／販賣路徑）")
+                if just(Key::Escape) {
+                    self.leave_shop();
+                }
+                true
             }
             "hotel" => {
                 if !self.native_hotel_mode.is_empty() {
