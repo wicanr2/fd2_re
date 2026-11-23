@@ -54,7 +54,6 @@ impl Game {
                 job.started = now;
             }
             job.elapsed = now - job.started;
-            // Go 第 128..131 行另算 `total`，本函式沒有使用。
             if job.frame == 1 && job.drawn {
                 let mut job = self.native_class_ui_job.take().unwrap();
                 if let Some(after) = job.after.take() {
@@ -187,7 +186,22 @@ impl Game {
             todo!("r6:modern_hd_transient_expiry.go:drawModernHDTransientExpiryMessage");
         }
         if !job.timeline.is_empty() {
-            todo!("r8:native_class_ui_lifecycle.go:195..218 timeline（設施成功演出；開場與第一章沒有走到）");
+            let mut elapsed = job.elapsed;
+            let active = job.timeline.iter().find(|step| {
+                if elapsed < step.duration {
+                    return true;
+                }
+                elapsed.0 -= step.duration.0;
+                false
+            });
+            let finished = active.is_none();
+            let step = active.unwrap_or_else(|| job.timeline.last().unwrap());
+            let (frame, palette) = (step.frame.clone(), step.palette.clone());
+            self.present_native_class_frame_with_palette(screen, &frame, &palette);
+            let job = self.native_class_ui_job.as_mut().unwrap();
+            job.frame = i64::from(finished);
+            job.drawn = true;
+            return true;
         }
         let (pix, has_preparation_text) = if (job.frame as usize) < job.frames.len() {
             if job.status_text.is_some() {

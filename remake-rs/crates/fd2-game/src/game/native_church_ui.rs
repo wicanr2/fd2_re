@@ -6,6 +6,9 @@
 
 use super::*;
 
+mod native_church_panels;
+mod native_church_services;
+
 /// Go：`native_church_ui.go:27`
 ///
 /// 不 derive `Debug`／`Clone`：欄位含 callback（`Box<dyn FnOnce>`）、檔案或亂數產生器等做不到的型別。
@@ -146,9 +149,6 @@ impl Game {
         let Some(job) = self.native_church_ui_job.as_ref() else {
             return false;
         };
-        if job.service_menu.is_some() {
-            todo!("r6:modern_hd_service_menu_transition.go:drawModernHDFacilityServiceMenu");
-        }
         let frame = job.frame;
         let pix = if frame < job.frames.len() as i64 {
             // Go 以負的 frame 索引切片會 panic；Rust 同樣 panic。

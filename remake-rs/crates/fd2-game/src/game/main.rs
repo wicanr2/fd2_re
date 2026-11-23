@@ -5200,11 +5200,8 @@ impl Game {
                         escape: just(Key::Escape),
                     });
                 }
-                // Go `g.nativeChurchUIBlocksInput()`（`native_church_ui.go:244`，`r8`）是 `g.nativeChurchUIJob != nil`。
-                if self.native_class_ui_blocks_input() || self.native_church_ui_job.is_some() {
-                    return true;
-                }
-                todo!("R8: main.go:5121（教會選單、狀態、轉移、復活與轉職輸入：handleNativeChurch*Input）")
+                self.handle_native_church_input(&input, enter);
+                true
             }
             "shop" => {
                 if !self.native_shop_mode.is_empty() {
@@ -11006,7 +11003,7 @@ impl Game {
                 if self.draw_native_class_ui_job(screen) {
                     return;
                 }
-                todo!("r8:main.go:10897..11098 教會的其餘原生子畫面與 TTF 後備（開場與第一章沒有走到）");
+                self.draw_native_church_service(screen);
             }
             "ending" => todo!("r8:main.go:11099..11122 ending 結語（開場與第一章沒有走到）"),
             _ => {}

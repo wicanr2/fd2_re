@@ -165,7 +165,10 @@ impl Game {
     }
 }
 
-fn composite_equip_panel(stable: &[u8], panel: &[u8], frame: i64) -> Result<Vec<u8>> {
+pub(crate) fn composite_equip_panel(stable: &[u8], panel: &[u8], frame: i64) -> Result<Vec<u8>> {
+    if stable.len() != 320 * 200 || panel.len() != 320 * 200 {
+        return Err(game_err!("角色面板畫面尺寸無效"));
+    }
     let pass = battle::native_item_panel_frame_for(frame)?;
     let mut pixels = stable.to_vec();
     for region in [pass.left, pass.upper, pass.bottom] {

@@ -6,7 +6,7 @@
 
 use super::*;
 
-mod native_shop_equip_ui;
+pub(super) mod native_shop_equip_ui;
 mod native_shop_sell_ui;
 mod native_shop_transfer_ui;
 
