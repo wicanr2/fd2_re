@@ -40,6 +40,8 @@ pub(crate) struct ParityAction {
     #[serde(rename = "probe_index")]
     pub(crate) probe: Option<i64>,
     pub(crate) cleared: Option<i64>,
+    pub(crate) gold_before: Option<i64>,
+    pub(crate) gold_after: Option<i64>,
     pub(crate) slot: Option<i64>,
     pub(crate) item_id: Option<i64>,
     pub(crate) key: String,
@@ -477,7 +479,7 @@ fn unit_at(g: &Game, i: UnitIdx) -> &battle::Unit {
     &g.st.as_ref().expect("戰場狀態").units[i]
 }
 
-fn sha256_hex_of(raw: &[u8]) -> String {
+pub(super) fn sha256_hex_of(raw: &[u8]) -> String {
     use sha2::Digest as _;
     sha2::Sha256::digest(raw).iter().map(|b| format!("{b:02x}")).collect()
 }
@@ -1415,6 +1417,57 @@ impl ParityReplay {
         }
     }
 
+    fn shop_input(&mut self, key: Option<Key>, confirm: bool, expected_mode: &str) {
+        let input = TickInput { pressed: key.into_iter().collect(), ..Default::default() };
+        self.d.g.handle_native_shop_input(&input, confirm);
+        assert!(
+            self.d.pump(700, |g| g.native_shop_ui_job.is_none() && g.fade.is_none()),
+            "商店未完成演出，預期模式 {expected_mode}"
+        );
+        assert_eq!(self.d.g.native_shop_mode, expected_mode, "{}", self.d.g.msg);
+    }
+
+    fn shop_sell(&mut self, action: &ParityAction) {
+        self.ensure_town();
+        for _ in 0..6 {
+            if self.d.g.camp_sel == 1 {
+                break;
+            }
+            assert!(self.d.g.move_native_town_selection(1));
+        }
+        assert_eq!(self.d.g.camp_sel, 1, "武器店選項無法到達");
+        self.enter_town_option(1);
+        assert!(self.d.pump(700, |g| g.native_shop_ui_job.is_none() && g.fade.is_none()));
+        assert_eq!(self.d.g.native_shop_mode, "menu");
+        self.checkpoint("shop_menu", action.seq, "shop", false, &[]);
+        let gold = self.d.g.gold;
+        self.shop_input(Some(Key::ArrowRight), false, "menu");
+        self.shop_input(None, true, "sell_roster");
+        self.shop_input(None, true, "sell_items");
+        self.shop_input(None, true, "sell_confirm");
+        self.shop_input(None, true, "sell_roster");
+        if let (Some(before), Some(after)) = (action.gold_before, action.gold_after) {
+            assert_eq!(self.d.g.gold - gold, after - before, "販賣入帳金額");
+        }
+        self.d.g.leave_shop();
+        self.settle_town();
+        self.checkpoint("shop_sell", action.seq, "town", true, &[]);
+    }
+
+    fn secret_shop(&mut self, action: &ParityAction) {
+        self.ensure_town();
+        // 原版的快捷鍵由 Rust 已接線的工具列按鈕取代。先移入上緣展開，再點按入口。
+        let hover = TickInput { cursor: (624, 2), ..Default::default() };
+        let click = TickInput { cursor: (624, 10), mouse_left_just_pressed: true, ..Default::default() };
+        assert!(self.d.g.update_toolbar(&hover, true));
+        assert!(self.d.g.update_toolbar(&click, true));
+        assert!(self.d.pump(700, |g| g.native_shop_ui_job.is_none() && g.fade.is_none()));
+        assert_eq!(self.d.g.native_shop_mode, "menu", "工具列祕密商店無法開啟");
+        self.checkpoint("secret_shop", action.seq, "shop", true, &[]);
+        self.d.g.leave_shop();
+        self.settle_town();
+    }
+
     /// Go `TestChapterParityReplay` 的動作迴圈（`chapter_parity_replay_test.go:972`..`1036`）。
     fn run_actions(&mut self, actions: &[ParityAction]) {
         let (mut actor, mut skip_unit): (Option<UnitIdx>, bool) = (None, false);
@@ -1462,8 +1515,9 @@ impl ParityReplay {
                 "force_enemy_clear" => self.force_enemy_clear(action, actions.get(i + 1)),
                 "town_enter" => self.town_probe(action),
                 "town_save" => self.town_save(action),
-                "hp_lock" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" | "shop_sell"
-                | "shop_buy" | "secret_shop" => {
+                "shop_sell" => self.shop_sell(action),
+                "secret_shop" => self.secret_shop(action),
+                "hp_lock" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" | "shop_buy" => {
                     todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
                 }
                 _ => self.note(action, "unhandled action kind"),
@@ -1596,11 +1650,13 @@ fn test_chapter_parity_replay() {
 
 /// `TestChapterParityReplay` 在 `t.Setenv` 之後的本體（子行程）。
 fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &Path) {
-    let actions = read_parity_actions(&run.join("actions.jsonl"));
+    let mut actions = read_parity_actions(&run.join("actions.jsonl"));
     if actions.is_empty() {
         panic!("actions.jsonl 是空的");
     }
-    let legacy_end_sources = recover_parity_legacy_end_sources(&actions);
+    let keys = read_parity_control_keys(&run.join("control-history.jsonl"));
+    let legacy_end_sources =
+        recover_parity_legacy_end_sources(run, &mut actions, keys.as_ref()).expect("核對舊版 END 的原版來源");
     let frame_setting = env("FD2_PARITY_CAPTURE_FRAMES");
     if !frame_setting.is_empty() && frame_setting != "0" && frame_setting != "1" {
         panic!("FD2_PARITY_CAPTURE_FRAMES={frame_setting:?}；只允許0或1");
@@ -1667,7 +1723,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         battle_done: false,
         ai: ai.clone(),
         growth: growth.clone(),
-        keys: read_parity_control_keys(&run.join("control-history.jsonl")),
+        keys,
         prev_seq: 0,
         keys_consumed_through: 0,
         rejected_attack: false,

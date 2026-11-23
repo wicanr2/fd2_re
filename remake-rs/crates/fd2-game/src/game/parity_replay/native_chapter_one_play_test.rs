@@ -214,6 +214,8 @@ pub(crate) fn ack_presents(g: &mut Game) {
         || g.native_ai_item_presentation.is_some()
         || g.native_cmd0_presentation.is_some()
         || g.native_heal_presentation.is_some()
+        || g.native_shop_ui_job.is_some()
+        || g.native_ai_command_modifier.is_some()
     {
         g.draw(&mut Picture::new_image(LOGICAL_W, LOGICAL_H));
     }
@@ -269,7 +271,9 @@ pub(crate) fn ack_presents(g: &mut Game) {
         // #144：Go 走正式 drawNativeCh23Loop 再交出回呼（第二十四章舞台）。
         todo!("R8: native_chapter_one_play_test.go:604 drawNativeCh23Loop（第二十四章舞台）")
     }
-    if let Some(j) = g.native_class_ui_job.as_mut() {
+    if g.transient_ui && g.native_class_ui_job.is_some() {
+        assert!(g.draw_native_class_ui_job(&mut Picture::new_image(LOGICAL_W, LOGICAL_H)));
+    } else if let Some(j) = g.native_class_ui_job.as_mut() {
         j.drawn = true;
     }
     // 死亡程式的 0x35822 閃白與 0x35BBA 接的 0x1DB65 呈現也掛在 drawn 上。
@@ -305,7 +309,6 @@ pub(crate) fn ack_presents(g: &mut Game) {
         native_cmd34_presentation,
         native_cmd35_presentation,
         native_modifier_presentation,
-        native_ai_command_modifier,
         native_ai_idle_recovery,
         native_field_event61,
     );

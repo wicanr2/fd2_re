@@ -47,11 +47,16 @@ impl Game {
         if !expired.is_empty() && (self.native_class_ui.is_none() || self.native_map_vga.len() != 320 * 200) {
             return Err(game_err!("native transient presentation: indexed source assets are unavailable"));
         }
+        let mut expiries = Vec::with_capacity(expired.len());
+        let source = self.native_map_vga.clone();
         for event in &expired {
-            native_transient_presentation_event(&candidate, event)?;
-            todo!(
-                "R8: native_transient_presentation.go:57 到期提示的頭像與框預檢（composeNativeTransientExpiryFrame、newNativeTransientExpiryPresentation；第一章沒有到期）"
-            );
+            let (unit, counter) = native_transient_presentation_event(&candidate, event)?;
+            let portrait = load_native_separated_portrait(candidate.units[unit].battle_fig)?
+                .into_iter()
+                .next()
+                .ok_or_else(|| game_err!("到期提示缺少原版頭像"))?;
+            self.compose_native_transient_expiry(&source, &portrait, counter)?;
+            expiries.push(NativeTransientExpiryFrame { unit, counter, portrait });
         }
         let mut damage_pages = Vec::with_capacity(damage.len());
         let mut damage_waits = Vec::with_capacity(damage.len());
@@ -72,10 +77,9 @@ impl Game {
             damage_pages.push(pages);
             damage_waits.push(wait);
         }
-        self.preflight_modern_hd_transient_expiry(&candidate, &expired, &damage)?;
         self.adopt_native_state_candidate(Some(candidate));
         self.msg = String::new();
-        let run = Arc::new(NativeTransientRun { damage, damage_pages, damage_waits, death_flags });
+        let run = Arc::new(NativeTransientRun { damage, damage_pages, damage_waits, death_flags, expiries });
         if run.damage.is_empty() {
             // 到期演出是同步的：呼叫端看 transientUI 等它結束。
             self.transient_ui = true;
@@ -94,8 +98,9 @@ impl Game {
         if index >= run.damage.len() {
             if !run.death_flags.is_empty() && self.st.as_ref().is_some_and(|st| st.has_native_map_view_state) {
                 self.transient_ui = false; // the death owner now blocks Update and phase continuation
+                let expiry_run = Arc::clone(&run);
                 let next: Box<dyn FnOnce(&mut Game) + Send> =
-                    Box::new(move |g: &mut Game| g.run_native_transient_expiry(0, then));
+                    Box::new(move |g: &mut Game| g.run_native_transient_expiry(expiry_run, 0, then));
                 // Go 的閉包捕捉 `then`；Rust 交給死亡演出的延續，沒開始時由這裡取回（共用格子）。
                 let slot: SharedAfter = Arc::new(std::sync::Mutex::new(Some(next)));
                 let deferred = Arc::clone(&slot);
@@ -121,7 +126,7 @@ impl Game {
                 }
                 return;
             }
-            self.run_native_transient_expiry(0, then);
+            self.run_native_transient_expiry(run, 0, then);
             return;
         }
         let unit = run.damage[index].unit;
@@ -145,14 +150,89 @@ impl Game {
         }
     }
 
-    /// Go `beginNativeTransientPhases` 的閉包 `runExpiry`（`native_transient_presentation.go:96`..`142`）。到期提示
-    /// 本身在 R8（見 `begin_native_transient_phases`），這裡只會走到「沒有下一筆」的收尾。
-    fn run_native_transient_expiry(&mut self, index: usize, then: Option<Box<dyn FnOnce(&mut Game) + Send>>) {
-        let _ = index;
-        self.transient_ui = false;
-        if let Some(then) = then {
-            then(self);
+    /// Go `beginNativeTransientPhases` 的逐筆到期提示。
+    fn run_native_transient_expiry(
+        &mut self,
+        run: Arc<NativeTransientRun>,
+        index: usize,
+        then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
+    ) {
+        let Some(event) = run.expiries.get(index) else {
+            self.transient_ui = false;
+            if let Some(then) = then {
+                then(self);
+            }
+            return;
+        };
+        let job = (|| -> Result<NativeClassUIJob> {
+            self.focus_native_transient_record(Some(event.unit))?;
+            let source = self.native_map_vga.clone();
+            let frame = self.compose_native_transient_expiry(&source, &event.portrait, event.counter)?;
+            let mut frames = campaign::native_class_list_opening_frames(&source, &frame)?;
+            frames.extend(campaign::native_class_list_closing_frames(&source, &frame)?);
+            Ok(NativeClassUIJob { frames, restore: source, ..Default::default() })
+        })();
+        match job {
+            Ok(mut job) => {
+                job.after = Some(Box::new(move |g| g.run_native_transient_expiry(run, index + 1, then)));
+                self.transient_ui = true;
+                self.native_class_ui_job = Some(job);
+            }
+            Err(err) => {
+                self.transient_ui = false;
+                self.load_err = format!("狀態到期提示：{err}");
+            }
         }
+    }
+
+    fn compose_native_transient_expiry(
+        &mut self,
+        source: &[u8],
+        portrait: &dato::Frame,
+        counter: i64,
+    ) -> Result<Vec<u8>> {
+        let ui = self.native_class_ui.as_ref().ok_or_else(|| game_err!("到期提示缺少對話框素材"))?;
+        if self.locale_id.is_empty() || self.locale_id == "zh-Hant" {
+            return Ok(campaign::compose_native_transient_expiry_frame(
+                source,
+                &ui.dialogue,
+                portrait,
+                ui.strings.as_ref(),
+                ui.font.as_ref(),
+                counter,
+            )?);
+        }
+        let keys = [
+            "battle.status.expiry.attack",
+            "battle.status.expiry.defence",
+            "battle.status.expiry.speed",
+            "battle.status.expiry.poison",
+            "battle.status.expiry.paralysis",
+            "battle.status.expiry.silence",
+        ];
+        let key = keys.get(counter as usize).ok_or_else(|| game_err!("到期提示的原生計數器無效"))?;
+        let mut frame = campaign::compose_native_transient_expiry_dialogue(source, &ui.dialogue, portrait)?;
+        let (message, ok) = self.locale_message(key, &[]);
+        let font = self.font.as_mut().filter(|_| ok).ok_or_else(|| game_err!("到期提示缺少翻譯或字型"))?;
+        let lines = font.wrap(&message, 0.78, 205.0);
+        if lines.is_empty() || lines.len() > 3 {
+            return Err(game_err!("到期提示的翻譯超過文字區"));
+        }
+        for (row, line) in lines.iter().enumerate() {
+            draw_indexed_localized_text(
+                &mut frame,
+                Some(font),
+                line,
+                99,
+                127 + row as i64 * 19,
+                205,
+                19,
+                0.78,
+                0xcd,
+                0x4c,
+            )?;
+        }
+        Ok(frame)
     }
 
     /// nativeTransientPresentationActive 回報 sub_1A866 的扣血訊息或到期提示還沒播完。
@@ -197,6 +277,13 @@ pub(crate) struct NativeTransientRun {
     damage_pages: Vec<Vec<Vec<Vec<u16>>>>,
     damage_waits: Vec<bool>,
     death_flags: BTreeMap<i64, u8>,
+    expiries: Vec<NativeTransientExpiryFrame>,
+}
+
+struct NativeTransientExpiryFrame {
+    unit: UnitIdx,
+    counter: i64,
+    portrait: dato::Frame,
 }
 
 /// Go：`native_transient_presentation.go:205`，`func nativeTransientPresentationEvent(event battle.NativeTransientExpiry) (*battle.Unit, int, error)`

@@ -8263,7 +8263,9 @@ impl Game {
         }
         if self.native_ai_command_modifier.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_ai_modifier_presentation.go:drawNativeAICommandModifierPresentation");
+            self.present_native_ai_command_modifier(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_cmd0_presentation.is_some() {
             screen.fill(BLACK);
@@ -10570,6 +10572,7 @@ impl Game {
             let result = match plan.native_command_id {
                 0 => self.execute_native_ai_command0(plan),
                 13..=16 => self.execute_native_ai_command_heal(plan),
+                17..=19 => self.execute_native_ai_command_modifier(plan),
                 id => Err(game_err!("指令 {id} 尚無執行入口")),
             };
             if let Err(err) = result {

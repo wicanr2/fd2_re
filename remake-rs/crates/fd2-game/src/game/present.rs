@@ -177,7 +177,8 @@ impl Game {
             todo!("R8: main.go:9510 drawNativeCommandModifierPresentation")
         }
         if self.native_ai_command_modifier.is_some() {
-            todo!("R8: main.go:9520 drawNativeAICommandModifierPresentation")
+            self.present_native_ai_command_modifier(None);
+            return PresentOwner::NativeAICommandModifier;
         }
         if let Some(job) = self.native_cmd0_presentation.as_mut() {
             if !job.present(None) {
