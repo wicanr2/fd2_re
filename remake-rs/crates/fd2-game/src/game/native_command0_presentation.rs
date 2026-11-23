@@ -84,17 +84,17 @@ fn command0_terrain_control(map: &MapData, unit: &battle::Unit) -> Result<[u8; 4
         || !(0..map.h).contains(&unit.y)
         || map.w.checked_mul(map.h) != Some(map.tiles.len() as i64)
     {
-        return Err(game_err!("指令 0 缺少原版地形格"));
+        return Err(game_err!("指令演出缺少原版地形格"));
     }
     let tile = map.tiles[(unit.y * map.w + unit.x) as usize];
     let (controls, remainder) = map.native_terrain_control.as_chunks::<4>();
     if !(0..=0x3ff).contains(&tile) || !remainder.is_empty() {
-        return Err(game_err!("指令 0 的地形控制表無效"));
+        return Err(game_err!("指令演出的地形控制表無效"));
     }
-    controls.get(tile as usize).copied().ok_or_else(|| game_err!("指令 0 缺少地形控制列 {tile}"))
+    controls.get(tile as usize).copied().ok_or_else(|| game_err!("指令演出缺少地形控制列 {tile}"))
 }
 
-fn command0_image(pixels: Vec<u8>, palette: &ColorPalette) -> Option<Arc<Picture>> {
+pub(super) fn command0_image(pixels: Vec<u8>, palette: &ColorPalette) -> Option<Arc<Picture>> {
     Some(Arc::new(Picture::from_indexed(&IndexedFrame {
         width: 320,
         height: 200,
@@ -104,6 +104,67 @@ fn command0_image(pixels: Vec<u8>, palette: &ColorPalette) -> Option<Arc<Picture
 }
 
 impl Game {
+    pub(super) fn native_damage_command_scenery(
+        &self,
+        actor: &battle::Unit,
+        targets: &[battle::Unit],
+    ) -> Result<(fdother::Frame, fdother::Frame)> {
+        let initial = self
+            .native_command_scene
+            .as_ref()
+            .ok_or_else(|| game_err!("指令演出缺少場景表"))?
+            .initial_background(self.handler_chapter)?;
+        let map = self.m.as_ref().ok_or_else(|| game_err!("指令演出缺少地圖"))?;
+        let actor_control = command0_terrain_control(map, actor)?;
+        let actor_gate = battle::native_command_background_gate(Some(actor))?;
+        let actor_selector = if actor_gate && initial != 0 { initial } else { actor_control[2] };
+        let target_controls = targets
+            .iter()
+            .map(|target| {
+                Ok(fdicon::NativeCommandBackgroundTarget {
+                    gate: battle::native_command_background_gate(Some(target))?,
+                    control: command0_terrain_control(map, target)?,
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let target_selector = fdicon::native_command_background_selector(initial, &target_controls);
+        let (bg, tai) = if actor.native_record_byte6 == 0 {
+            (actor_selector, target_selector)
+        } else {
+            (target_selector, actor_selector)
+        };
+        let surfaces = separated_asset_path("surfaces");
+        let mut background = fdother::load_separated_single_frame(&surfaces, "BG.DAT", i64::from(bg))?;
+        let mut platform = fdother::load_separated_single_frame(&surfaces, "TAI.DAT", i64::from(tai))?;
+        (background.x, background.y) = (0, 50);
+        (platform.x, platform.y) = (164, 157);
+        Ok((background, platform))
+    }
+
+    pub(super) fn native_damage_command_base(
+        &mut self,
+        panel_assets: &battle::NativeItemPanelDataAssets,
+        panels: [(UnitIdx, &[u8]); 2],
+        background: &fdother::Frame,
+        platform: Option<&fdother::Frame>,
+    ) -> Result<Vec<u8>> {
+        let mut pixels = vec![0; 320 * 200];
+        for (index, record) in panels {
+            self.render_localized_native_battle_panel(
+                panel_assets,
+                record,
+                &mut pixels,
+                index as i64,
+                self.handler_chapter,
+            )?;
+        }
+        background.blit(&mut pixels, 320, -1)?;
+        if let Some(platform) = platform {
+            platform.blit(&mut pixels, 320, -1)?;
+        }
+        Ok(pixels)
+    }
+
     pub(crate) fn execute_native_ai_command0(&mut self, action: &battle::AIPlan) -> Result<()> {
         let actor = action.u.ok_or_else(|| game_err!("指令 0 缺少施放者"))?;
         let target = action.target.ok_or_else(|| game_err!("指令 0 缺少目標"))?;
@@ -192,29 +253,7 @@ impl Game {
             return Err(game_err!("指令 0 的效果模式或目標不符"));
         }
 
-        let chapter = self.handler_chapter;
-        let initial = self
-            .native_command_scene
-            .as_ref()
-            .ok_or_else(|| game_err!("指令 0 缺少場景表"))?
-            .initial_background(chapter)?;
-        let map = self.m.as_ref().ok_or_else(|| game_err!("指令 0 缺少地圖"))?;
-        let actor_control = command0_terrain_control(map, &actor)?;
-        let actor_gate = battle::native_command_background_gate(Some(&actor))?;
-        let actor_selector = if actor_gate && initial != 0 { initial } else { actor_control[2] };
-        let target_selector = fdicon::native_command_background_selector(
-            initial,
-            &[fdicon::NativeCommandBackgroundTarget {
-                gate: battle::native_command_background_gate(Some(&target))?,
-                control: command0_terrain_control(map, &target)?,
-            }],
-        );
-        let (bg, tai) = if side == 0 { (actor_selector, target_selector) } else { (target_selector, actor_selector) };
-        let surfaces = separated_asset_path("surfaces");
-        let mut background = fdother::load_separated_single_frame(&surfaces, "BG.DAT", i64::from(bg))?;
-        let mut platform = fdother::load_separated_single_frame(&surfaces, "TAI.DAT", i64::from(tai))?;
-        (background.x, background.y) = (0, 50);
-        (platform.x, platform.y) = (164, 157);
+        let (background, platform) = self.native_damage_command_scenery(&actor, std::slice::from_ref(&target))?;
         let actor_idle = figani::load_separated_resource(&animations, actor.battle_fig * 3)?;
         let actor_effect =
             figani::load_separated_resource_with_zero_header_fallback(&animations, actor.battle_fig * 3 + 2)?;
@@ -231,27 +270,13 @@ impl Game {
         let actor_before_record = battle::native_battle_panel_record_for_unit(Some(&actor))?;
         let actor_after_record = battle::native_battle_panel_record_for_unit(Some(&actor_after))?;
         let target_before_record = battle::native_battle_panel_record_for_unit(Some(&target))?;
-        let mut base = |actor_record: &[u8], target_record: &[u8], include_platform| -> Result<Vec<u8>> {
-            let mut pixels = vec![0; 320 * 200];
-            self.render_localized_native_battle_panel(
+        let mut base = |actor_record: &[u8], target_record: &[u8], include_platform: bool| {
+            self.native_damage_command_base(
                 &panel_assets,
-                actor_record,
-                &mut pixels,
-                actor_index as i64,
-                chapter,
-            )?;
-            self.render_localized_native_battle_panel(
-                &panel_assets,
-                target_record,
-                &mut pixels,
-                target_index as i64,
-                chapter,
-            )?;
-            background.blit(&mut pixels, 320, -1)?;
-            if include_platform {
-                platform.blit(&mut pixels, 320, -1)?;
-            }
-            Ok(pixels)
+                [(actor_index, actor_record), (target_index, target_record)],
+                &background,
+                include_platform.then_some(&platform),
+            )
         };
         let prelude_base = base(&actor_before_record, &target_before_record, false)?;
         let actor_base = base(&actor_before_record, &target_before_record, true)?;

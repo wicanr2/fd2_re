@@ -186,11 +186,14 @@ impl Game {
             }
             return PresentOwner::NativeCommandPresentation;
         }
+        if self.native_cmd5_presentation.is_some() {
+            self.present_native_command45(None);
+            return PresentOwner::NativeCommandPresentation;
+        }
         if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()
             || self.native_cmd3_presentation.is_some()
-            || self.native_cmd5_presentation.is_some()
             || self.native_cmd7_presentation.is_some()
             || self.native_cmd8_presentation.is_some()
             || self.native_cmd9_ai_presentation.is_some()

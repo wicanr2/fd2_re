@@ -213,6 +213,7 @@ pub(crate) fn ack_presents(g: &mut Game) {
     if g.native_town_departure.is_some()
         || g.native_ai_item_presentation.is_some()
         || g.native_cmd0_presentation.is_some()
+        || g.native_cmd5_presentation.is_some()
         || g.native_heal_presentation.is_some()
         || g.native_shop_ui_job.is_some()
         || g.native_ai_command_modifier.is_some()
@@ -295,7 +296,6 @@ pub(crate) fn ack_presents(g: &mut Game) {
         native_cmd1_presentation,
         native_cmd2_presentation,
         native_cmd3_presentation,
-        native_cmd5_presentation,
         native_cmd6_presentation,
         native_cmd7_presentation,
         native_cmd8_presentation,

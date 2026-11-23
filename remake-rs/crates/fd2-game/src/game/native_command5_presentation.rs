@@ -2,6 +2,7 @@
 //!
 //! 骨架：Go 檔的 6 個函式中產生 1 個（階段 0 清單），其餘標 `r8`，見 `PORTING.json`。
 
+use super::native_command0_presentation::command0_image;
 use super::*;
 
 /// Go：`native_command5_presentation.go:15`
@@ -59,6 +60,311 @@ pub(crate) struct NativeCommand5PresentationJob {
 }
 
 impl Game {
+    pub(crate) fn execute_native_ai_command45(&mut self, action: &battle::AIPlan) -> Result<()> {
+        if !self.current_native_system_options().full_presentation_enabled() || self.native_cmd5_presentation.is_some()
+        {
+            return Err(game_err!("指令 4／5 的原版演出不可用"));
+        }
+        let state = self.st.as_ref().ok_or_else(|| game_err!("指令缺少戰場"))?;
+        let actor_index =
+            action.u.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令缺少施放者"))?;
+        let confirmed =
+            action.target.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令缺少目標"))?;
+        let actor = state.units[actor_index].clone();
+        let id = action.native_command_id;
+        if !actor.has_battle_fig
+            || !actor.has_native_record_byte6
+            || !(0..=255).contains(&actor.battle_fig)
+            || self.native_ui_palette.len() != 256
+        {
+            return Err(game_err!("指令 {id} 缺少人物編號或調色盤"));
+        }
+        let luts = self
+            .native_map_assets
+            .as_ref()
+            .and_then(|assets| assets.luts.get(11..15))
+            .ok_or_else(|| game_err!("指令 {id} 缺少場景調色表"))?
+            .to_vec();
+        let animations = separated_asset_path("animations");
+        let side = actor.native_record_byte6;
+        let resource = match id {
+            4 => 22,
+            5 => 24,
+            _ => return Err(game_err!("未知的指令演出 {id}")),
+        } + i64::from(side == 0);
+        let effect = figani::load_separated_archive_resource(&animations, "FDOTHER.DAT", resource)?;
+        let schedule = if id == 4 {
+            figani::build_native_command4_presentation_schedule(side, Some(&effect))?
+        } else {
+            figani::build_native_command5_presentation_schedule(side, Some(&effect))?
+        };
+        let rng = self.native_rng_state;
+        let mut rolls = BTreeMap::new();
+        let mut walk = |count: i64, resolve: &mut dyn FnMut(i64, u16) -> battle::Result<(u16, bool)>| {
+            let mut record = |index, before| {
+                let (after, hit) = resolve(index, before).map_err(|err| Box::new(err) as figani::ResolveError)?;
+                rolls.insert(index, (before, after, hit));
+                Ok((after, hit))
+            };
+            figani::walk_native_command5_rng(rng, schedule, side, count, Some(&mut record))
+                .map_err(|err| battle::BattleError::new(err.error.to_string()))
+        };
+        let origin = action.native_action_destination;
+        let resistances = &state.native_command_resistances;
+        let plan = if actor.camp == battle::ENEMY {
+            state.plan_native_ai_command_damage_walk(
+                Some(actor_index),
+                origin,
+                id,
+                resistances,
+                rng,
+                Some(&mut walk),
+            )?
+        } else {
+            state.plan_native_command_damage_walk(
+                Some(actor_index),
+                Some(confirmed),
+                id,
+                resistances,
+                rng,
+                Some(&mut walk),
+            )?
+        };
+        if plan.results.is_empty()
+            || plan.damage_stages != figani::NATIVE_COMMAND5_DAMAGE_STAGES
+            || state.native_command_book[id as usize].effect_mode != 1
+        {
+            return Err(game_err!("指令 {id} 缺少原版範圍或傷害排程"));
+        }
+        let (indices, targets): (Vec<_>, Vec<_>) = plan
+            .results
+            .iter()
+            .map(|result| {
+                let index = result.target.ok_or_else(|| game_err!("指令 {id} 缺少傷害目標"))?;
+                let unit = &state.units[index];
+                if !unit.has_battle_fig || !unit.has_native_record_byte6 {
+                    return Err(game_err!("指令 {id} 目標 {index} 缺少原版人物編號"));
+                }
+                Ok((index, unit.clone()))
+            })
+            .collect::<Result<Vec<_>>>()?
+            .into_iter()
+            .unzip();
+        let (background, platform) = self.native_damage_command_scenery(&actor, &targets)?;
+        let actor_idle = figani::load_separated_resource(&animations, actor.battle_fig * 3)?;
+        let actor_effect =
+            figani::load_separated_resource_with_zero_header_fallback(&animations, actor.battle_fig * 3 + 2)?;
+        let target_idle = targets
+            .iter()
+            .map(|unit| figani::load_separated_resource(&animations, unit.battle_fig * 3))
+            .collect::<std::result::Result<Vec<_>, _>>()?;
+        let (Some(actor_idle_first), Some(target_idle_first), Some(actor_effect_first)) =
+            (actor_idle.frames.first(), target_idle[0].frames.first(), actor_effect.frames.first())
+        else {
+            return Err(game_err!("指令 {id} 缺少開場人物畫格"));
+        };
+        let (actor_sfx, target_sfx) = if id == 4 {
+            (self.sfx_command4_actor.clone(), self.sfx_command4_target.clone())
+        } else {
+            (self.sfx_command5_actor.clone(), self.sfx_command5_target.clone())
+        };
+        if !os_mute_or_shot(Some(self)) && (actor_sfx.is_empty() || target_sfx.is_empty()) {
+            return Err(game_err!("指令 {id} 缺少原版音效"));
+        }
+        let panel_assets = battle::load_native_item_panel_data_assets(&separated_asset_path(""))?;
+        let (mut dac, _) = load_native_battle_palette()?;
+        let actor_record = battle::native_battle_panel_record_for_unit(Some(&actor))?;
+        let mut actor_after = actor.clone();
+        actor_after.mp = plan.mp_after;
+        let actor_after_record = battle::native_battle_panel_record_for_unit(Some(&actor_after))?;
+        let first = battle::native_battle_panel_record_for_unit(Some(&targets[0]))?;
+        let before_panels = [(actor_index, actor_record.as_slice()), (indices[0], first.as_slice())];
+        let prelude_base = self.native_damage_command_base(&panel_assets, before_panels, &background, None)?;
+        let actor_base = self.native_damage_command_base(&panel_assets, before_panels, &background, Some(&platform))?;
+        let mut bases = Vec::with_capacity(targets.len());
+        for ((&index, target), result) in indices.iter().zip(&targets).zip(&plan.results) {
+            let mut staged = target.clone();
+            let mut target_bases = Vec::new();
+            for stage in 0..=plan.damage_stages {
+                staged.hp = result.hp_before - (result.hp_before - result.hp_after) * stage / plan.damage_stages;
+                let record = battle::native_battle_panel_record_for_unit(Some(&staged))?;
+                target_bases.push(self.native_damage_command_base(
+                    &panel_assets,
+                    [(actor_index, &actor_after_record), (index, &record)],
+                    &background,
+                    Some(&platform),
+                )?);
+            }
+            bases.push(target_bases);
+        }
+        let prelude = battlepresent::build_native_command_prelude_frames(&battlepresent::NativeCommandPreludeInput {
+            base: &prelude_base,
+            actor_idle: actor_idle_first.clone(),
+            first_target_idle: target_idle_first.clone(),
+            platform: Some(&platform),
+            raw_side: side,
+            mode: 0,
+            baseline_dac: &dac,
+        })?;
+        let prelude = native_command24_prelude_images(&prelude)?
+            .into_iter()
+            .map(|frame| Some(Arc::new(Picture::from_indexed(&frame))))
+            .collect();
+        let actor_specs =
+            battlepresent::build_native_command0_actor_frames(&battlepresent::NativeCommand0ActorInput {
+                base_before: &actor_base,
+                base_after: &bases[0][0],
+                actor_effect: Some(&actor_effect),
+                first_target_idle: Some(&target_idle[0]),
+                raw_side: side,
+                background: background.clone(),
+                platform: platform.clone(),
+                lut: &luts[0],
+            })?;
+        let flash = self
+            .native_command_palette_flash
+            .as_ref()
+            .and_then(|table| table.entries.get(id as usize))
+            .ok_or_else(|| game_err!("指令 {id} 缺少閃光調色表"))?;
+        dac[..3].copy_from_slice(flash);
+        let pulse = color_palette_from_nrgba(&fdother::vga_palette_from_dac(&dac)?);
+        let palette = &self.native_ui_palette;
+        let actor_black = actor_specs.iter().map(|spec| command0_image(spec.pixels.clone(), palette)).collect();
+        let actor_pulse = actor_specs.iter().map(|spec| command0_image(spec.pixels.clone(), &pulse)).collect();
+        let mut replay = |index, before| {
+            let Some(&(_, after, hit)) = rolls.get(&index).filter(|(seed, _, _)| *seed == before) else {
+                return Err(battle::BattleError::new(format!("指令 {id} 的目標 {index} 亂數序列不符")));
+            };
+            Ok((after, hit))
+        };
+        let last_stage = plan.damage_stages as usize;
+        let tail_base = &bases[bases.len() - 1][last_stage];
+        let sequence =
+            battlepresent::build_native_command5_effect_sequence(battlepresent::NativeCommand5EffectInput {
+                front_base: &bases[0][0],
+                tail_base,
+                target_bases: bases.iter().map(|frames| frames.iter().map(Vec::as_slice).collect()).collect(),
+                transition_bases: bases[..bases.len() - 1].iter().map(|frames| frames[last_stage].as_slice()).collect(),
+                actor_effect: Some(&actor_effect),
+                target_idle: target_idle.iter().map(Some).collect(),
+                effect: Some(&effect),
+                schedule,
+                raw_side: side,
+                visual_rng: rng,
+                resolve_target: Some(&mut replay),
+            })?;
+        if sequence.visual_rng != plan.rng_after {
+            return Err(game_err!("指令 {id} 的演出與傷害亂數序列不一致"));
+        }
+        let mut handler = Vec::new();
+        let mut append = |frames: Vec<battlepresent::NativeCommand5RenderedFrame>, target_index| {
+            handler.extend(frames.into_iter().map(|frame| NativeCommand5HandlerFrame {
+                image: command0_image(frame.pixels, palette),
+                target_index,
+                hp_stage: frame.hp_stage,
+                play_primary: frame.play_primary,
+                play_secondary: frame.play_secondary,
+            }));
+        };
+        append(sequence.front, -1);
+        let mut transitions = sequence.transitions.into_iter();
+        for (index, frames) in sequence.targets.into_iter().enumerate() {
+            append(frames, index as i64);
+            if let Some(frames) = transitions.next() {
+                append(frames, -1);
+            }
+        }
+        append(sequence.tail, -1);
+        let idle = &target_idle[target_idle.len() - 1].frames;
+        let mut idle_index = sequence.next_idle_frame as usize;
+        let mut idle_repeat = sequence.next_idle_repeat;
+        let mut tail = Vec::new();
+        for lut in luts[1..].iter().map(Some).chain(std::iter::once(None)) {
+            let mut pixels = tail_base.clone();
+            if let Some(lut) = lut {
+                background.blit_lut_at(&mut pixels, 320, 0, lut)?;
+                platform.blit_lut_at(&mut pixels, 320, 0, lut)?;
+            } else {
+                background.blit(&mut pixels, 320, -1)?;
+                platform.blit(&mut pixels, 320, -1)?;
+            }
+            actor_effect_first.blit_at(&mut pixels, 320)?;
+            let frame = idle.get(idle_index).ok_or_else(|| game_err!("指令 {id} 缺少尾段人物畫格"))?;
+            frame.blit_at(&mut pixels, 320)?;
+            idle_repeat += 1;
+            if idle_repeat >= frame.delay {
+                idle_repeat = 0;
+                idle_index = (idle_index + 1) % idle.len();
+            }
+            tail.push(command0_image(pixels, palette));
+        }
+        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
+            let (mut hit, mut damage) = (0, 0);
+            for result in results {
+                if result.native_command_damage.hit {
+                    hit += 1;
+                    damage += result.native_command_damage.damage;
+                }
+                g.award_death_reward(result.target, Some(actor_index));
+            }
+            let units = &mut g.st.as_mut().unwrap().units;
+            let (actor, target) = (&units[actor_index], &units[confirmed]);
+            let pose = dir_toward(actor.x, actor.y, target.x, target.y);
+            units[actor_index].set_map_pose(pose);
+            g.msg = format!("原始指令 {id}：命中 {hit}，傷害 {damage}");
+            g.finish_successful_unit_action(Some(actor_index), None);
+            g.check_result();
+        });
+        let job = NativeCommand5PresentationJob {
+            command_id: id,
+            actor: Some(actor_index),
+            plan: Some(plan),
+            prelude,
+            actor_black,
+            actor_pulse,
+            actor_specs,
+            handler,
+            tail,
+            actor_mp_before: actor.mp,
+            actor_acted_before: actor.acted,
+            target_hp_before: targets.iter().map(|target| target.hp).collect(),
+            actor_sfx,
+            target_sfx,
+            then: Some(then),
+            ..Default::default()
+        };
+        self.ai_focus_cursor(actor.x, actor.y);
+        self.ai_focus_cursor(origin.x, origin.y);
+        self.st.as_mut().unwrap().native_experience_accumulator = 0;
+        self.native_cmd5_presentation = Some(job);
+        Ok(())
+    }
+
+    pub(crate) fn present_native_command45(&mut self, screen: Option<&mut Picture>) {
+        let job = self.native_cmd5_presentation.as_mut().unwrap();
+        let index = job.frame as usize;
+        let image = match job.phase {
+            NATIVE_COMMAND5_COMMON_PRELUDE => job.prelude.get(index),
+            NATIVE_COMMAND5_ACTOR => {
+                let pulse = job.actor_specs.get(index).is_some_and(|spec| spec.pulse) && !job.pulse_black;
+                (if pulse { &job.actor_pulse } else { &job.actor_black }).get(index)
+            }
+            NATIVE_COMMAND5_HANDLER => job.handler.get(index).map(|frame| &frame.image),
+            NATIVE_COMMAND5_COMMON_TAIL => job.tail.get(index),
+            _ => None,
+        };
+        let Some(image) = image.and_then(Option::as_deref) else {
+            self.fail_native_command5_presentation(&game_err!("指令演出畫格無效"));
+            return;
+        };
+        if let Some(screen) = screen {
+            let mut options = DrawImageOptions::default();
+            options.geo_m.scale(2.0, 2.0);
+            screen.draw_image(image, &options);
+        }
+        job.drawn = true;
+    }
+
     /// Go：`native_command5_presentation.go:441`，`func (g *Game) stepNativeCommand5Presentation()`
     pub(crate) fn step_native_command5_presentation(&mut self) {
         let Some(j) = self.native_cmd5_presentation.as_mut() else {
