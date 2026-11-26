@@ -5986,3 +5986,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - Rust 重播先停在戰前劇情的 `direct_record_patch`：移植 Go `applyHandlerDirectRecordPatch` 與 `battleNativeMapView`，先核對全部 sparse 寫入與視圖再一次寫入；兩項原子失敗測試照 Go 移植。
 - 接著停在敵方指令 26 沒有執行入口：依 Go `startNativeCommand2022Presentation` 的敵方分支新增 `execute_native_ai_command2022`，接上指令 20～22、26、27。效果畫格、遮罩交替、發布複本與數字尾段沿用指令 17～19 的原版索引色寫法；22、26、27 對受傷目標發死亡獎勵。HD 綁定與 17～19 相同另期。
 - 補完後重播通過 293 筆檢查點，走完第 5 回合友軍登場、第 10 回合清場、戰後與第 11 章城鎮的買賣、探訪、存檔及祕密商店，酒店存檔與原版逐位元組相同。第 9 章 294 筆與存檔仍相同；Rust 遊戲回歸 460 項、格式與 Clippy 通過。驗證層級為 RUNTIME-E1。
+
+## 2026-11-26 Rust 第 11 章完整重播
+
+- 第 11 章槽由第 10 章槽以 `fd2-chapter-slot -base-slot 0 -target 10 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4` 重建，SHA-256 `70e8c773e7d770f7360f884a565f5cc85a67f18d88e0b33a868795e67f51dd87`，名冊 13 人（含第 10 章戰後兩名加入）。
+- 原版以 dosgolem `d14149309fa4159a2986040e817090e364c47713`、`FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A` 執行 [第 11 章計畫](docs/data/parity-plans/ch11-sample.jsonl)，共 7038 個檢查點，原版酒店存檔 SHA-256 前綴 `79b20510`。本樣本沒有升級擲骰。
+- Rust 以 `tools/rust_parity_chapter.sh` 重播通過 244 筆檢查點，走完戰前演出、第 7 回合清場、戰後與第 12 章城鎮的買賣、探訪、存檔及祕密商店，無 AI 順序分歧，酒店存檔與原版逐位元組相同。本章不需補移植。驗證層級為 RUNTIME-E1。
