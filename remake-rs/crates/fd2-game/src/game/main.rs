@@ -7327,7 +7327,8 @@ impl Game {
             return;
         }
         if !self.sc.as_ref().unwrap().native_result_rules.is_empty() {
-            todo!("R8: native_chapter_result.go:beginNativeChapterResult（第一章沒有原生結果規則）");
+            self.begin_native_chapter_result();
+            return;
         }
         let mut protect = String::from("索爾");
         if let Some(n) = self.camp.as_ref().and_then(|camp| camp.node())

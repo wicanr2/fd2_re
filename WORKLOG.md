@@ -5998,3 +5998,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 13 章槽由第 12 章槽以 `fd2-chapter-slot -base-slot 0 -target 12 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4` 重建（SHA-256 `f20afb229914534828b45dc677fafd46a47c0686b4d65b1602856222d9fb9571`，15 人）；第 14 章槽再由它以 `-target 13` 同參數重建（SHA-256 `561dc7452cb701c85942a48dfeaf4c42a4c997181df3f4cf496e29c73692589c`，16 人）。
 - 原版以 dosgolem `d14149309fa4159a2986040e817090e364c47713`、`FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A` 執行 [第 14 章計畫](docs/data/parity-plans/ch14-sample.jsonl)，共 1367 個檢查點，原版酒店存檔 SHA-256 前綴 `e67df911`，無升級擲骰。
 - Rust 重播通過 73 筆檢查點，走完前三回合接戰、第 4 回合清場、戰後與第 15 章城鎮的買賣、探訪、存檔及祕密商店，無 AI 順序分歧，酒店存檔逐位元組相同。本章不需補移植。驗證層級為 RUNTIME-E1。
+
+## 2026-11-26 Rust 第 13 章章節結果規則與完整重播
+
+- 原版 `sample-r1`（[既有計畫](docs/data/parity-plans/ch13-sample.jsonl)）在第 7 回合敵方階段讓友軍記錄 59（camp 1、identity 3）陣亡，依本章「回合>5 且記錄 59 bit0=1」敗北回到標題，2160 個檢查點。`hp_lock` 只接受 camp 0／2，鎖不住這筆，所以另寫 [`ch13-sample-r2.jsonl`](docs/data/parity-plans/ch13-sample-r2.jsonl) 在第 6 回合開頭清場；第 9 回合結束的 event 7 增援不在 r2 內。
+- Rust 用 r1 重播時停在 `beginNativeChapterResult` 尚未移植。依 Go `native_chapter_result.go` 移植 `begin／fail／advance_native_chapter_result`：先算初始碼，逐列讀 raw 條件，有對白的列等對白收框才讀下一列，全部完成才交給結果／敗北擁有者；`native_result_auto_advance` 照 Go 直接進戰後。r1 重播接著跑到第 7 回合 END（119 筆），計畫在敗北前中斷，尾段未驗。
+- r2 原版共 2391 個檢查點，酒店存檔 SHA-256 前綴 `267c5273`。Rust 重播通過 129 筆檢查點，經章節規則判勝、戰後與第 14 章城鎮的買賣、探訪、存檔及祕密商店，無 AI 順序分歧，酒店存檔逐位元組相同。Rust 遊戲回歸 460 項、格式與 Clippy 通過。Go `native_chapter_result_test.go` 的四項需整套直接進章測具，Rust 尚無對應，列為後續。驗證層級為 RUNTIME-E1。
