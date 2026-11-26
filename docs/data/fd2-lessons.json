@@ -6016,6 +6016,21 @@
         ],
         "pattern": "MarkNativeUnitInactive\\(u\\)"
       }
+    },
+    {
+      "id": "chapter-replay-requires-oracle-eip-trace",
+      "date": "2026-11-26",
+      "area": "對拍",
+      "rule": "給 Rust／Go 章重播用的原版執行一律帶 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A；重播用 tools/rust_parity_chapter.sh 跑，它在原版目錄缺含 0x13A9F 的 eip-trace.jsonl 時拒跑。",
+      "why": "重播在每個 AI 計畫與升級擲骰前抄原版 rng_word，缺追蹤時安靜地改用重製端自己的亂數，測試照樣通過。第 9 章 sample-r2 因此四次升級成長各差 1～2 點，酒店存檔差 22 位元組；補追蹤的 r3 逐位元組相同。",
+      "evidence": "WORKLOG.md 2026-11-26 Rust 第 9 章完整重播",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/rust_parity_chapter.sh"
+        ],
+        "pattern": "0x13A9F"
+      }
     }
   ]
 }

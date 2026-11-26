@@ -5971,3 +5971,11 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 清除 Rust `target-r5i`、Go `gocache-r5i` 與 26 份舊測試執行檔。移除 681 份逐檔符合既有雜湊的音訊比對暫存。第 5 階段兩輪畫面逐檔核對，移除第二輪 16,034 張重複 PNG，第一輪影像與兩輪雜湊清單保留。
 - 201 份舊輸入紀錄以 gzip 無損壓縮，解壓後逐檔核對 SHA-256。逐檔清理紀錄保存在本機 `work/cleanup-20261123-weekly.jsonl`。
 - 合計回收 8,812,912,640 位元組，清理後 `work/` 為 41,846,063,104 位元組。保留離線 Cargo 依賴、黃金資料、重播、存檔與仍有引用的歷史驗證資料。第 8、12 章存檔雜湊一致。
+
+## 2026-11-26 Rust 第 9 章完整重播
+
+- 上次的第 9 章輸入與原版樣本留在 `/tmp`，已搬到 `work/parity-slot-ch09/`（建構槽 SHA-256 `93be4185…`，原樣本為 `sample-r1`）。
+- 原版以 dosgolem `d14149309fa4159a2986040e817090e364c47713`（乾淨）重跑 [第 9 章計畫](docs/data/parity-plans/ch09-sample.jsonl)，不設 580 秒上限。`sample-r2` 漏帶 `FD2_ORACLE_EIP_TRACE`，前 1162 個檢查點與 r1 相同，但 Rust 重播在缺追蹤時改用自己的亂數，四次升級成長差 1～2 點，酒店存檔差 22 位元組。`sample-r3` 帶 `FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A`（124／17 筆），共 2740 個檢查點，原版酒店存檔 SHA-256 `599dab8e…`。
+- 新增受版控的 [`tools/rust_parity_chapter.sh`](tools/rust_parity_chapter.sh)，第 2 章以後共用；原版目錄缺含 `0x13A9F` 的 `eip-trace.jsonl` 即拒跑。
+- Rust 以 `sample-r3` 重播通過 294 筆檢查點，走完後兩批增援、第 10 回合清場、戰後、第 10 章城鎮的買賣、探訪、存檔與祕密商店，寫出的酒店存檔與原版逐位元組相同。本章不需補移植。驗證層級為 RUNTIME-E1。
+- 第 10 章槽由第 9 章槽以 `fd2-chapter-slot -base-slot 0 -target 9 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4` 重建，不再加強化（第 9 章槽已含一次 AP +200、DX +60），SHA-256 `257f751c56c1f272f99b90f0247fb866721d066432e280ef3dc1e761fc953157`。舊登錄的第 2 章通關基底與第 10、11 章槽已不在本機。
