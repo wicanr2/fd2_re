@@ -8186,11 +8186,25 @@ Rust 教會沿用 `0x2d7bd` 的四服務選單。角色狀態面板可切換到�
 - 失敗即關閉：抵達的單位不在執行期陣列裡時，記錄錯誤並停止敵方迴圈，不寫半套狀態。
 - 範圍：所有寫入模式 7 的章節共用這條規則，不只第 4 章。其他敵方單位行動後的逐單位判定維持現狀，不在本次修正範圍。
 
+會讓敵人撤退離場的來源（劇本與 FDFIELD 名冊盤點，2026-11-26）：
+
+| 章 | 來源 | 撤退者 | 修正前 |
+|---|---|---|---|
+| 4 | 死亡效果 2:12（任一獸人倒下） | 記錄 24～27 | 預設規則看 `OnField`，會卡 |
+| 5 | 死亡效果 2:19（首領倒下，「糟啦！首領被打倒了！快逃啊！」） | 記錄 7～36 | 會卡 |
+| 5 | 第 8 回合事件 17 | 記錄 48～51 | 會卡 |
+| 11、16、19 | 名冊模式 5：抵達事件格後 `+0x34` 寫成 7，再走向邊緣的 `+0x35/+0x36` | 25、2、3 名 | 沒在逃走前打倒就會卡 |
+| 13 | 名冊模式 5，同上 | 10 名 | 自訂規則看 raw bit0，不卡；判勝延到下個玩家回合 |
+| 15 | 名冊開局模式 7（地圖 14 名冊 58～61） | 4 名 | 同上 |
+
+第 6 章 `mark_inactive` 與第 9 章 `record_bytes` 的 `+5=0` 重新登場原本就同步 `OnField`；劇本沒有其他直接寫入 `+0x34` 低四位 7 或 `+5 bit0` 的動作。
+
 驗收：
 
 - Go `TestAIStepMode7DepartureEndsBattleWhenNoEnemyRemains`：撤退者抵達後 `OnField=false`、raw `+5=1`、HP 不變，同一敵方階段得到 `win`。同一測試放回修正前的提交會失敗，失敗訊息是 `onField=true byte5=0x1`，與玩家回報一致。
 - Go `TestMarkNativeUnitInactiveLetsDepartedEnemyStopBlockingResult` 與 Rust 同名移植測試核對原始記錄同步與 `Result`。
 - Go 黃金資料工具 `fd2-golden-rules-int` 與 Rust `golden_rules_int` 的無頭驅動同步改寫，兩邊逐步比對。
+- Go `TestChapterFiveBossDeathRetreatEndsBattleProbe`：`FD2_CH05_PROBE_SAVE` 指向 [ch05-manifest](../data/parity-slots/ch05-manifest.json) 登錄的建構槽，首領 HP 改成 1 並移到索爾旁，以正式玩家攻擊打倒，其餘不在撤退範圍的敵軍 HP 歸零，之後只按 END。29 名撤退者在第 2～6 回合陸續離場或被友軍擊倒，第 6 回合敵方階段最後一名處理完即判勝，回合不推進，接著進 `postbattle_ch05_persist`。同一測試在修正前的提交失敗於「已離場的撤退者仍算在場」。層級 RUNTIME-E1。
 - 原版重現走修改路徑，不是 `PLAYER-E2`：dosgolem `f5be010a`、固定第四章建構槽，計畫為 `docs/data/parity-plans/ch04-orc-retreat-r1`～`r4.jsonl`。擊殺獸人 27 全程正常鍵；其後以 `hp_lock` 暫保索爾與撤退者、`force_enemy_clear` 清掉其餘 camp 0，解除鎖定後只按 END。r1 索爾陣亡、r2 未擊倒目標，兩份保留為失敗樣本。r3 第 6 回合擊倒 27 後，24～26 的 raw `+0x34` 變成 `07`，往各自登場邊緣移動，一個敵方階段沒有抵達，`+5 bit0` 仍為 0，戰鬥繼續。r4 只按 END：第 7 回合敵方階段 24、25 抵達即 `+5=0x81`，最後一名 26 抵達 (0,18) 後的下一個觀測點已是戰後對白，回合仍為 7，沒有玩家階段介入，接著進戰後城鎮。原版在最後一名撤退者離場的當下判勝，與本節規格一致。收據摘要見 [`ch04-orc-retreat-r4.json`](../data/ui-traces/ch04-orc-retreat-r4.json)。
 
 ## 第五章章工作單元：回合事件處理器與敵方回合順序（2026-09-16）
