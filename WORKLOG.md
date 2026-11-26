@@ -6060,3 +6060,8 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 槽：直接沿用第 26 章原版在第 27 章酒店存下的 `FD2.SAV`（`9d87927f`），計畫 `ch27-flow-cheat-r2.jsonl`；原版 579 個檢查點走到第 28 章整備的記錄存檔。
 - Rust 補 `plan_native_ai_item_restore` 的指令傷害分支（Go `planNativeAITargetItem` 的 `NativeItemCommandDamageRouteForType`，在複本上算傷害再寫回 byte+5 與 HP）、`build_native_ai_item_damage_presentation`（0x1cd17；0x1cac7 的第 21 類演出仍 `todo!`）與 `reset_persistent_roster_state` 節拍。
 - 重播 54 筆無分歧，存檔逐位元組相同。Rust 遊戲回歸 461 項通過，第 24、26 章重播回歸相同。
+
+## 2026-11-27 Rust 第 28 章重播
+
+- 槽：第 27 章原版記錄存檔（`work/parity-slot-ch27/state-r1/FD2.SAV`）以 `fd2-chapter-slot -target 27 -boost-only -boost-base-ap 1000` 建成 `3ecd2a2a`，manifest 存於 [`ch28-r8-ap1000-manifest.json`](docs/data/parity-slots/ch28-r8-ap1000-manifest.json)。計畫 `ch28-flow-cheat-r2.jsonl`，原版 1283 個檢查點。
+- Rust 重播 120 筆無分歧，存檔逐位元組相同；本章沒有新增程式。
