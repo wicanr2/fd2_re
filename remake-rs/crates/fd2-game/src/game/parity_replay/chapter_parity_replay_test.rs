@@ -704,6 +704,46 @@ impl ParityReplay {
         self.checkpoint("preparation_save", action.seq, &ui, true, &[format!("save_sha256={}", sha256_hex_of(&raw))]);
     }
 
+    /// Go `chapter_parity_replay_test.go`：mark `before_clear_viewport`（#207）。清敵前的方向鍵照原版逐一走正式
+    /// 地圖游標，之後游標與鏡頭必須和原版檢查點的 view 相同。
+    fn mark_before_clear_viewport(&mut self, action: &ParityAction) {
+        let ok = self.player_has_control()
+            && self.d.g.st.as_ref().is_some_and(|st| st.turn == action.round)
+            && verify_parity_preparation_owner(&self.run, action.seq, "0x117F8").is_ok();
+        assert!(ok, "清敵前視野mark缺少同回合正常游標owner");
+        for seq in self.prev_seq + 1..=action.seq {
+            let Some(key) = self.keys.as_ref().and_then(|k| k.get(&seq)).cloned() else {
+                panic!("清敵前方向鍵seq{seq}缺少來源");
+            };
+            match key.as_str() {
+                "" => {}
+                "left" => self.d.g.move_map_cursor(-1, 0),
+                "right" => self.d.g.move_map_cursor(1, 0),
+                "up" => self.d.g.move_map_cursor(0, -1),
+                "down" => self.d.g.move_map_cursor(0, 1),
+                _ => panic!("清敵前視野seq{seq}包含非方向鍵{key}"),
+            }
+        }
+        let data = oracle_checkpoint(&self.run, action.seq).unwrap_or_else(|err| panic!("{err}"));
+        let original: serde_json::Value = serde_json::from_slice(&data).unwrap_or_else(|err| panic!("{err}"));
+        let view = &original["view"];
+        let field = |key: &str| view[key].as_i64().unwrap_or_else(|| panic!("清敵前視野來源缺少{key}"));
+        let (cx, cy, camx, camy) = (field("cursor_x"), field("cursor_y"), field("camera_x"), field("camera_y"));
+        let g = &self.d.g;
+        let st = g.st.as_ref().unwrap();
+        let v = st.native_map_view_state;
+        assert!(
+            st.has_native_map_view_state && g.cur_x == cx && g.cur_y == cy && v.camera_x == camx && v.camera_y == camy,
+            "清敵前視野不同：重製cursor({},{}) camera({},{})，原版{view}",
+            g.cur_x,
+            g.cur_y,
+            v.camera_x,
+            v.camera_y
+        );
+        let ui = self.ui();
+        self.checkpoint(&format!("mark:{}", action.label), action.seq, &ui, true, &[]);
+    }
+
     /// Go `chapter_parity_replay_test.go:2798`：`useSelfRestoreItem`。已選角色走正式物品面板、原版選擇器確認、
     /// 第一段目標與回復交易，核對 HP 回復、行動完成與八格依原生規則補位。
     fn use_self_restore_item(&mut self, action: &ParityAction, actor: Option<UnitIdx>) {
@@ -1055,7 +1095,8 @@ impl ParityReplay {
             "record_question" => self.mark_record_question(action),
             "record_slots" => self.mark_record_slots(action),
             "record_party_selection" => self.mark_record_party_selection(action),
-            "ending_entry" | "ending_terminal" | "captain_reinforcements_arrived" | "before_clear_viewport" => {
+            "before_clear_viewport" => self.mark_before_clear_viewport(action),
+            "ending_entry" | "ending_terminal" | "captain_reinforcements_arrived" => {
                 todo!("R8: chapter_parity_replay_test.go:1107 mark {:?}（第一章沒有）", action.label)
             }
             "party_selection" => self.mark_party_selection(action),

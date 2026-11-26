@@ -109,6 +109,17 @@ impl Game {
         actor: &battle::Unit,
         targets: &[battle::Unit],
     ) -> Result<(fdother::Frame, fdother::Frame)> {
+        self.native_damage_command_scenery_with(actor, targets, true)
+    }
+
+    /// `swap_for_side0` 為 false 時背景一律取目標側、平台取施放者側（Go `startNativeCommand9AIPresentation`
+    /// 不依 raw side 交換）。
+    pub(super) fn native_damage_command_scenery_with(
+        &self,
+        actor: &battle::Unit,
+        targets: &[battle::Unit],
+        swap_for_side0: bool,
+    ) -> Result<(fdother::Frame, fdother::Frame)> {
         let initial = self
             .native_command_scene
             .as_ref()
@@ -128,7 +139,7 @@ impl Game {
             })
             .collect::<Result<Vec<_>>>()?;
         let target_selector = fdicon::native_command_background_selector(initial, &target_controls);
-        let (bg, tai) = if actor.native_record_byte6 == 0 {
+        let (bg, tai) = if swap_for_side0 && actor.native_record_byte6 == 0 {
             (actor_selector, target_selector)
         } else {
             (target_selector, actor_selector)

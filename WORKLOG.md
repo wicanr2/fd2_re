@@ -6047,3 +6047,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 物品面板（第 25 章需要）：照 Go `native_item_panel_ui.go` 與 `main.go` 移植原版物品面板的準備、刷新、十二格開收動畫、選擇器輸入、即時物品（基礎值／上限）、第一段目標選擇與 HP／MP／旗標／能力值的回復交易、目標確認與取消、面板繪製，以及重播測具的 `item_use`／`cancel`。指令傷害物品與傳送物品的演出遇到時失敗即關閉；HD 物品面板屬 R6。
 - 第 25 章：槽由第 24 章槽重建（`ecacf8df`）。原版 r4 計畫第 4 回合敵方階段索爾與記錄 4～7 陣亡敗北；r5（[`ch25-flow-cheat-r5.jsonl`](docs/data/parity-plans/ch25-flow-cheat-r5.jsonl)）開戰鎖索爾、清場後解鎖，原版執行中。
 - Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 19、21、23 章重播回歸相同。
+
+## 2026-11-27 Rust 第 25 章 BLOCKED、第 26 章重播與敵方指令 6／7／9
+
+- 第 25 章：r5 在第 5 回合輪到記錄 16 用神聖之水時對方 HP 已滿，驅動端停下；r6（[`ch25-flow-cheat-r6.jsonl`](docs/data/parity-plans/ch25-flow-cheat-r6.jsonl)）拿掉兩次 use_item。Rust 重播 r5 樣本時暫停寫回的鎖血讓敵方一擊致死，演出收尾即判死亡；r7（[`ch25-flow-cheat-r7.jsonl`](docs/data/parity-plans/ch25-flow-cheat-r7.jsonl)）改鎖 HP 30000。r7 原版在第 5 回合敵方階段遇零旗標主攻／非零旗標反擊，`0x4E6A7` STOSB 寫 `0160:0025F000` 中止，Rust 29 筆無分歧後停在 caller BG 拒收，與 #321 同型，章重播 BLOCKED。第 25 章因此沒有物品使用的原版對照。
+- 敵方指令 9（`execute_native_ai_command9`，只限 raw side 0，背景取目標側不交換；新增 `native_damage_command_scenery_with`）、指令 6（`execute_native_ai_command6`，LUT15 重畫各段底圖、演出亂數須與傷害規劃一致）、指令 7（`execute_native_ai_command7`）依 Go 敵方分支移植原版索引色呈現並接到 AI 分派、present 與 draw。
+- 第 26 章：槽由第 25 章槽重建後依 `docs/data/parity-slots/ch26-hp-policy-manifest.json` 同政策以 `-boost-only -boost-max-hp 30000` 加成（`327f7405`），名冊順序與舊槽相同，沿用 `ch26-flow-cheat-r4.jsonl`。原版 959 個檢查點；Rust 補 `before_clear_viewport` 標記後 49 筆走到第 27 章城鎮的酒店存檔，存檔逐位元組相同。
+- Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 21、23、24 章重播回歸相同。

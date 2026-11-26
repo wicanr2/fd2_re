@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 760,
+      "ported": 767,
       "r6": 59,
-      "r8": 1103
+      "r8": 1096
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -14530,15 +14530,15 @@
         {
           "name": "startNativeCommand6PresentationAtCursor",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native_command6_presentation_at_cursor",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::execute_native_ai_command6",
+          "status": "ported",
           "go_line": 68
         },
         {
           "name": "nativeCommand6StageBases",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::native_command6_stage_bases",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::execute_native_ai_command6",
+          "status": "ported",
           "go_line": 383
         },
         {
@@ -14564,8 +14564,8 @@
         {
           "name": "drawNativeCommand6Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native_command6_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::present_native_command6",
+          "status": "ported",
           "go_line": 520
         }
       ],
@@ -14625,8 +14625,8 @@
         {
           "name": "startNativeCommand7Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native_command7_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::execute_native_ai_command7",
+          "status": "ported",
           "go_line": 51
         },
         {
@@ -14652,8 +14652,8 @@
         {
           "name": "drawNativeCommand7Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native_command7_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::present_native_command7",
+          "status": "ported",
           "go_line": 467
         }
       ],
@@ -14801,8 +14801,8 @@
         {
           "name": "startNativeCommand9AIPresentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native_command9_ai_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::execute_native_ai_command9",
+          "status": "ported",
           "go_line": 53
         },
         {
@@ -14828,8 +14828,8 @@
         {
           "name": "drawNativeCommand9AIPresentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native_command9_ai_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::present_native_command9_ai",
+          "status": "ported",
           "go_line": 412
         }
       ],
