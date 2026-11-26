@@ -66,6 +66,8 @@ Rust 第 29 章受控重播接通 event75 對白、event76 最後一輪（spawn 
 
 第 29 章另以第 28 章 Rust 對照鏈的存檔重建 AP+5000 槽（`69acdb7e`）試跑：r4 正常擊龍在第 24～39 回合被識別碼 114 的單位擋路，16 輪未擊倒三頭龍；r3 的 HP-only 清敵在本章不觸發勝利，清場後停在第 24 回合。兩者都只是驅動端的限制，沒有改變上述 r7 對照。
 
+Rust 第 30 章受控重播接通 0x33F78 故事與戰場版 staging present（event82）、敵方指令 3、AI mode 11 兩段分派、死亡程式 `clear_hp_from`（0x35BBA）與原版結局呈現（`ending_preview.rs`：0x2bce5 前綴、0x2c39b 文字、0x2c548 角色蒙太奇、0x2c194 尾段與 THE END 終局；原版索引色，除錯 HUD 與 `FD2_ENDING_PREFIX` 預覽另期）。對照 Go 端 PLAYER-E2 用的原版 `work/ch30-flow-20261017/original-full-r2`（計畫 `ch30-full-flow-r1.jsonl`）：正常 LOAD、選人、五魔神死亡、戰後與終局。57 筆檢查點通過；重製端 `ending-flow.json` 的 27 筆 0x2c548 消費記錄與 6 個結局文字區塊和 Go `remake-full-r5` 相同，終局不存檔，前後存檔都是 `33c3d74d`。結局以固定 60 Hz 呈現時鐘走正式 Update／Draw，不宣稱逐幀或硬體時序。驗證層級為 RUNTIME-E1。
+
 Rust R6 四語設定及原生劇情對白達 RUNTIME-E1。Linux Bevy 從標題正常 START，驗證英文首句的分頁與續行、冷啟動文字區逐像素相同，以及皇城首句的日文和簡中譯文。[119 的語言與對白驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-工具列語言與原生劇情對白)
 
 Rust R6 雙側海報已接入 Bevy 及工具列。兩組圖稿、關閉、漸層、淡入偏好、冷啟動及缺件回退通過 Linux 視窗驗證。中央標題背景逐像素保持，海報側欄攔截滑鼠點擊。[119 的雙側海報驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-雙側海報)

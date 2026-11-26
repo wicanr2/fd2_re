@@ -131,7 +131,8 @@ impl Game {
             return PresentOwner::Title;
         }
         if self.native_ending.is_some() {
-            todo!("R8: main.go:9413 drawNativeEndingPreview（結局）")
+            self.draw_native_ending_preview(None);
+            return PresentOwner::NativeEnding;
         }
         if self.native_ch20_sky_key.is_some() {
             todo!("R8: main.go:9417 drawNativeCh20SkyKey／failNativeCh20SkyKey（第二十章）")

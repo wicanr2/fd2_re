@@ -360,6 +360,8 @@ fn encode_decode_roundtrip_and_validate() {
 fn direct_pix_sites_are_reviewed() {
     let reviewed: BTreeMap<&str, usize> = [
         ("game/assets.rs", 3),
+        // 結局合成器輸出的 `go_image::Rgba.pix` 交給 `write_pixels`，不是畫面目標。
+        ("game/ending_preview.rs", 2),
         ("game/font.rs", 2),
         ("game/main.rs", 3),
         ("game/modern_hd_battle_panel_chrome.rs", 1),

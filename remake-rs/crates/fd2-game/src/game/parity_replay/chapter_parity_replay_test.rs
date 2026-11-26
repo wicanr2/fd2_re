@@ -229,6 +229,8 @@ pub(crate) struct ParityReplay {
     pub(crate) start_entry_trace: Option<JourneyTrace>,
     /// Go `parityReplay.partySelectionSeq`：`party_selection` 標記的原版序號。
     pub(crate) party_selection_seq: i64,
+    /// Go `endingStoryTrace`：`ending_entry` 起的戰後故事輸入紀錄。
+    pub(crate) ending_story_trace: Option<JourneyTrace>,
 }
 
 /// Go `chapter_parity_replay_test.go:1500`：`readParityPreparationControls`。選人起點之後到最終確認的
@@ -786,6 +788,117 @@ impl ParityReplay {
         self.checkpoint(&format!("mark:{}", action.label), action.seq, &ui, true, &[]);
     }
 
+    /// Go mark `ending_entry`：原版 r2 的 893 位於 25816 文字 10 內，尚未 LOADCH30 或呼叫 2BCE5；
+    /// 只沿正常故事輸入走到同一 caller，不把這個 mark 誤稱為結局影片入口。
+    fn mark_ending_entry(&mut self, action: &ParityAction) {
+        let mut trace = new_journey_trace();
+        self.d.drive_story(&mut trace, |g| {
+            node_id(g) == "postbattle_ch30_terminal"
+                && usize::try_from(g.beat_idx).ok().and_then(|i| g.beats.get(i)).is_some_and(|b| b.source == "0x25816")
+                && !g.dialog.is_empty()
+        });
+        self.ending_story_trace = Some(trace);
+        self.checkpoint(
+            &format!("mark:{}", action.label),
+            action.seq,
+            "ending",
+            true,
+            &[String::from("25757戰後文字10入口；不是2BCE5影片入口，畫面僅供參考")],
+        );
+    }
+
+    /// Go `chapter_parity_replay_test.go:1379`：`finishEnding`。正常戰後交給 raw30 結局 owner，以固定 60 Hz 呈現時鐘
+    /// 逐次走正式 Update／Draw 到終局畫面，寫 `ending-flow.json`。
+    fn finish_ending(&mut self, action: &ParityAction) {
+        if verify_parity_preparation_owner(&self.run, action.seq, "0x25975").is_err() {
+            // 終局自迴圈沒有 caller frame，直接核對原版 PC 及固定 EXE。
+            let raw = oracle_checkpoint(&self.run, action.seq).ok();
+            let cp: serde_json::Value = raw.and_then(|raw| serde_json::from_slice(&raw).ok()).unwrap_or_default();
+            assert!(
+                cp["eip"] == "0x25975"
+                    && cp["exe_sha256"] == "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+                "終局缺少原版25975永久自迴圈"
+            );
+        }
+        let mut trace = self.ending_story_trace.take().expect("終局缺少完整戰後輸入紀錄");
+        self.d.drive_story(&mut trace, |g| node_id(g) == "ending");
+        let bound = self.d.g.native_ending.as_ref().is_some_and(|p| p.campaign_source_bound);
+        assert!(bound && self.d.g.handler_chapter == 30, "正常戰後沒有交給raw30結局owner");
+        // 只固定呈現時鐘，不改規則、名冊或玩家輸入；仍逐次走正式 Update 與 Draw。
+        let mut now = GameInstant(100 * GoDuration::SECOND.0);
+        self.d.g.native_ending_now = Some(Box::new(move |_g: &mut Game| {
+            now = GameInstant(now.0 + GoDuration::SECOND.0 / 60);
+            now
+        }));
+        let mut screen = Picture::new_image(320, 200);
+        let (mut blocks, mut seen) = (Vec::<ending::DialogueBlock>::new(), std::collections::BTreeSet::new());
+        for _ in 0..50000 {
+            let g = &mut self.d.g;
+            let p = g.native_ending.as_ref().expect("結局 owner 消失");
+            if p.presenting_campaign_terminal() {
+                let records: Vec<[u8; 4]> = p
+                    .montage
+                    .as_ref()
+                    .map(|m| m.units.iter().map(|r| [r[6], r[7], r[8], r[0x20]]).collect())
+                    .unwrap_or_default();
+                let before = std::fs::read(std::env::var("FD2_PARITY_SLOT").unwrap()).expect("讀建構槽");
+                let after = std::fs::read(self.out.join("FD2.SAV")).expect("讀重製存檔");
+                use sha2::Digest as _;
+                let hex = |data: &[u8]| format!("{:x}", sha2::Sha256::digest(data));
+                let proof = serde_json::json!({
+                    "handler_chapter": g.handler_chapter,
+                    "runtime_record_count": g.story_actors.len(),
+                    "persistent_count": g.party_join_order.len(),
+                    "records_2c548_consumed": records,
+                    "post_story_trace": &trace,
+                    "ending_dialogue_blocks": &blocks,
+                    "terminal": true,
+                    "terminal_owner": "presentingCampaignTerminal",
+                    "save_sha256_before": hex(&before),
+                    "save_sha256_after": hex(&after),
+                    "presentation_clock": "deterministic 60Hz; hardware-spec approximation; no frame parity",
+                });
+                let mut raw = serde_json::to_vec_pretty(&proof).unwrap();
+                raw.push(b'\n');
+                std::fs::write(self.out.join("ending-flow.json"), raw).expect("寫 ending-flow.json");
+                g.native_ending_now = None;
+                self.checkpoint(
+                    "ending_terminal",
+                    action.seq,
+                    "ending_terminal",
+                    false,
+                    &[String::from("正常Update／Draw完成結局；60Hz呈現時鐘近似，未比較逐幀或硬體wall-clock")],
+                );
+                return;
+            }
+            if p.dialogue.is_some() {
+                let (active, ok) = p.player.as_ref().unwrap().blocked_dialogue(p.chapter);
+                assert!(ok, "已發布文字缺少原始文字閘門");
+                for block in active {
+                    if seen.insert(format!("{}/{}", block.source_dat, block.string_index)) {
+                        blocks.push(block);
+                    }
+                }
+                g.step_native_ending_dialogue(true).unwrap_or_else(|err| panic!("{err}"));
+            }
+            let p = g.native_ending.as_ref().unwrap();
+            if p.montage.as_ref().is_some_and(|m| m.phase == ending::MONTAGE_PHASE_PORTRAIT && !m.ready()) {
+                g.apply_native_ending_input(true, false, true).unwrap_or_else(|err| panic!("{err}"));
+            }
+            g.update().unwrap_or_else(|err| panic!("{err}"));
+            g.draw(&mut screen);
+            assert!(g.load_err.is_empty(), "{}", g.load_err);
+            let p = g.native_ending.as_ref().unwrap();
+            assert!(
+                p.montage_start_error.is_empty() && p.tail_start_error.is_empty(),
+                "結局缺少來源：montage={} tail={}",
+                p.montage_start_error,
+                p.tail_start_error
+            );
+        }
+        panic!("正常結局沒有在50000個呈現tick內完成");
+    }
+
     /// Go `chapter_parity_replay_test.go:2798`：`useSelfRestoreItem`。已選角色走正式物品面板、原版選擇器確認、
     /// 第一段目標與回復交易，核對 HP 回復、行動完成與八格依原生規則補位。
     fn use_self_restore_item(&mut self, action: &ParityAction, actor: Option<UnitIdx>) {
@@ -1138,7 +1251,13 @@ impl ParityReplay {
             "record_slots" => self.mark_record_slots(action),
             "record_party_selection" => self.mark_record_party_selection(action),
             "before_clear_viewport" => self.mark_before_clear_viewport(action),
-            "ending_entry" | "ending_terminal" | "captain_reinforcements_arrived" => {
+            "ending_entry" => self.mark_ending_entry(action),
+            "ending_terminal" => {
+                let terminal = self.d.g.native_ending.as_ref().is_some_and(|p| p.presenting_campaign_terminal());
+                assert!(terminal, "終局mark缺少正常永久畫面owner");
+                self.checkpoint(&format!("mark:{}", action.label), action.seq, "ending_terminal", false, &[]);
+            }
+            "captain_reinforcements_arrived" => {
                 todo!("R8: chapter_parity_replay_test.go:1107 mark {:?}（第一章沒有）", action.label)
             }
             "party_selection" => self.mark_party_selection(action),
@@ -2148,9 +2267,7 @@ impl ParityReplay {
                 "preparation_save" => self.preparation_save(action),
                 "item_use" => self.use_self_restore_item(action, actor),
                 "cancel" => self.cancel_unit(action),
-                "ending_terminal" => {
-                    todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
-                }
+                "ending_terminal" => self.finish_ending(action),
                 _ => self.note(action, "unhandled action kind"),
             }
             if !self.d.g.load_err.is_empty() {
@@ -2362,6 +2479,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         skip_frames,
         start_entry_trace: None,
         party_selection_seq: 0,
+        ending_story_trace: None,
     };
     {
         let (ai, log) = (ai.clone(), log.clone());

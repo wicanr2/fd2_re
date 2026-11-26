@@ -4313,10 +4313,11 @@ impl Game {
             }
             "ending" => {
                 (self.dialog, self.st, self.sel) = (Vec::new(), None, None);
-                if n.native_ending_prefix.is_some() {
-                    // Go：`g.startCampaignNativeEnding(n.NativeEndingPrefix)`（`ending_preview.go`，`r8`），
-                    // 失敗時寫 endingNotice「原始結局素材不足，顯示可編輯結語：…」。
-                    todo!("R8: ending_preview.go:startCampaignNativeEnding（結局節點）")
+                if let Some(prefix) = n.native_ending_prefix.clone()
+                    && let Err(err) = self.start_campaign_native_ending(&prefix)
+                {
+                    // 原始結局資源是玩家自備且不隨專案散布；載入失敗時保留可編輯結語，不發布部分原生演出。
+                    self.ending_notice = format!("原始結局素材不足，顯示可編輯結語：{err}");
                 }
             }
             _ => {}
@@ -7641,8 +7642,12 @@ impl Game {
             return Ok(());
         }
         if self.native_ending.is_some() {
-            // Go：applyNativeEndingInput／nativeEnding.advance／蒙太奇與結語（`ending_preview.go`，`r8`）。
-            todo!("R8: ending_preview.go:applyNativeEndingInput（原生結局流程）")
+            let confirm = just(Key::Enter) || just(Key::Space);
+            self.update_native_ending(confirm, just(Key::Escape), input.any_just_pressed())?;
+            if !self.shot_path.is_empty() && self.shot_taken {
+                return Err(ERR_TERMINATION.clone());
+            }
+            return Ok(());
         }
         if self.native_field_event61.is_some() {
             // Go：`g.stepNativeFieldEvent61Tick(g.nativeFieldEvent61.clock.Sample(g.gameNow()))`（`r8`）。
@@ -8392,7 +8397,7 @@ impl Game {
     }
 
     /// Go `g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame` 時的 `captureShot`（截圖模式，fd2-tools）。
-    fn draw_capture_shot_point(&mut self, screen: &mut Picture) {
+    pub(crate) fn draw_capture_shot_point(&mut self, screen: &mut Picture) {
         if !self.shot_path.is_empty() && !self.shot_taken && self.frame >= self.shot_frame {
             let _ = screen;
             todo!("r8:main.go:captureShot（FD2_SHOT 截圖模式；R5 的畫格擷取走 parity_replay 的擷取點）")
@@ -8419,7 +8424,8 @@ impl Game {
             return;
         }
         if self.native_ending.is_some() {
-            todo!("r8:ending_preview.go:drawNativeEndingPreview");
+            self.draw_native_ending_preview(Some(screen));
+            return;
         }
         if self.native_ch20_sky_key.is_some() {
             screen.fill(BLACK);

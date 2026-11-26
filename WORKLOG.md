@@ -6079,3 +6079,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - Rust 補：故事載體與戰場版 0x33F78（`start_native_staging_present`、`start_native_battle_staging_present`，event82）、敵方指令 3、AI mode 11 兩段分派（新增 `native_ai_mode11_execute.rs`；指令／道具階段經 `Game::native_ai_action_after` 承接 Go 的 continuation，敵方指令／道具分派抽成 `execute_native_ai_action`）、死亡程式 `clear_hp_from`（0x35BBA，`start_native_hp_clear`）。
 - 重播 53 筆無分歧，停在重播測具的 `ending_entry` 標記；結局呈現（Go `ending_preview.go` 32 個函式）尚未移植，本章未通過。
 - Rust 遊戲回歸 461 項通過；第 26、27、29 章重播回歸相同，第 25 章仍停在同一 BLOCKED 點。
+
+## 2026-11-27 Rust 第 30 章重播通過（含結局）
+
+- 移植 `ending_preview.go` 29 個函式到 `ending_preview.rs`（`newNativeEndingPreview` 開發者預覽、`playerAssetPath`、除錯 HUD `nativeEndingEvidenceOverlay` 未移植）；接通結局節點、Update、Draw 與 present 四處 hook。重播測具補 `ending_entry`／`ending_terminal` 標記與 `finish_ending`（Go `finishEnding`，固定 60 Hz 呈現時鐘）。
+- 第 30 章對照原版 `original-full-r2` 重播 57 筆無分歧到 THE END；`ending-flow.json` 的 27 筆 0x2c548 記錄與 6 個文字區塊和 Go `remake-full-r5` 相同，前後存檔皆 `33c3d74d`。
+- `display_list_test` 的 `.pix` 直接存取表加 `ending_preview.rs` 2 處（合成器 `go_image::Rgba` 交給 `write_pixels`，不是畫面目標）。
+- Rust 遊戲回歸 461 項通過，第 28、29 章重播回歸相同。

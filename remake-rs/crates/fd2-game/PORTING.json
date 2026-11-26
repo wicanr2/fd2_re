@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 796,
+      "ported": 825,
       "r6": 59,
-      "r8": 1067
+      "r8": 1038
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -1435,173 +1435,173 @@
         {
           "name": "newNativeEndingPreviewForCampaign",
           "rust": "fd2_game::game::new_native_ending_preview_for_campaign",
-          "status": "r8",
+          "status": "ported",
           "go_line": 70
         },
         {
           "name": "newNativeEndingPreviewForTimeline",
           "rust": "fd2_game::game::new_native_ending_preview_for_timeline",
-          "status": "r8",
+          "status": "ported",
           "go_line": 77
         },
         {
           "name": "startCampaignNativeEnding",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_campaign_native_ending",
-          "status": "r8",
+          "status": "ported",
           "go_line": 127
         },
         {
           "name": "atNativeMontageGate",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::at_native_montage_gate",
-          "status": "r8",
+          "status": "ported",
           "go_line": 140
         },
         {
           "name": "runningCampaignMontage",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::running_campaign_montage",
-          "status": "r8",
+          "status": "ported",
           "go_line": 147
         },
         {
           "name": "runningCampaignTail",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::running_campaign_tail",
-          "status": "r8",
+          "status": "ported",
           "go_line": 151
         },
         {
           "name": "presentingCampaignTerminal",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::presenting_campaign_terminal",
-          "status": "r8",
+          "status": "ported",
           "go_line": 159
         },
         {
           "name": "reviewingCampaignPartyOutcomes",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::reviewing_campaign_party_outcomes",
-          "status": "r8",
+          "status": "ported",
           "go_line": 168
         },
         {
           "name": "applyNativeEndingInput",
           "recv": "Game",
           "rust": "fd2_game::game::Game::apply_native_ending_input",
-          "status": "r8",
+          "status": "ported",
           "go_line": 175
         },
         {
           "name": "awaitingCampaignFallback",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::awaiting_campaign_fallback",
-          "status": "r8",
+          "status": "ported",
           "go_line": 195
         },
         {
           "name": "consumeNativeEndingAudioAtGate",
           "recv": "Game",
           "rust": "fd2_game::game::Game::consume_native_ending_audio_at_gate",
-          "status": "r8",
+          "status": "ported",
           "go_line": 203
         },
         {
           "name": "emitNativeEndingAudioCue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::emit_native_ending_audio_cue",
-          "status": "r8",
+          "status": "ported",
           "go_line": 216
         },
         {
           "name": "finishCampaignNativeEndingFallback",
           "recv": "Game",
           "rust": "fd2_game::game::Game::finish_campaign_native_ending_fallback",
-          "status": "r8",
+          "status": "ported",
           "go_line": 227
         },
         {
           "name": "nativeEndingMontageRecords",
           "rust": "fd2_game::game::native_ending_montage_records",
-          "status": "r8",
+          "status": "ported",
           "go_line": 249
         },
         {
           "name": "montageArchivePaths",
           "recv": "nativeEndingPreview",
-          "rust": "fd2_game::game::NativeEndingPreview::montage_archive_paths",
-          "status": "r8",
+          "rust": "fd2_game::game::montage_archive_paths",
+          "status": "ported",
           "go_line": 280
         },
         {
           "name": "startCampaignNativeMontage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_campaign_native_montage",
-          "status": "r8",
+          "status": "ported",
           "go_line": 301
         },
         {
           "name": "startCampaignNativeTail",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_campaign_native_tail",
-          "status": "r8",
+          "status": "ported",
           "go_line": 373
         },
         {
           "name": "resetCampaignPartyReviewCycle",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::reset_campaign_party_review_cycle",
-          "status": "r8",
+          "status": "ported",
           "go_line": 442
         },
         {
           "name": "startCampaignPartyOutcomeReview",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_campaign_party_outcome_review",
-          "status": "r8",
+          "status": "ported",
           "go_line": 476
         },
         {
           "name": "returnCampaignTerminalFromReview",
           "recv": "Game",
           "rust": "fd2_game::game::Game::return_campaign_terminal_from_review",
-          "status": "r8",
+          "status": "ported",
           "go_line": 492
         },
         {
           "name": "queueNativeEndingDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::queue_native_ending_dialogue",
-          "status": "r8",
+          "status": "ported",
           "go_line": 511
         },
         {
           "name": "prepareNativeEndingDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_native_ending_dialogue",
-          "status": "r8",
+          "status": "ported",
           "go_line": 532
         },
         {
           "name": "syncNativeEndingDialogueView",
           "recv": "Game",
           "rust": "fd2_game::game::Game::sync_native_ending_dialogue_view",
-          "status": "r8",
+          "status": "ported",
           "go_line": 607
         },
         {
           "name": "stepNativeEndingDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::step_native_ending_dialogue",
-          "status": "r8",
+          "status": "ported",
           "go_line": 621
         },
         {
           "name": "resumeNativeEndingDialogue",
           "recv": "Game",
           "rust": "fd2_game::game::Game::resume_native_ending_dialogue",
-          "status": "r8",
+          "status": "ported",
           "go_line": 661
         },
         {
@@ -1614,21 +1614,21 @@
           "name": "advanceMontage",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::advance_montage",
-          "status": "r8",
+          "status": "ported",
           "go_line": 697
         },
         {
           "name": "advanceTail",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::advance_tail",
-          "status": "r8",
+          "status": "ported",
           "go_line": 736
         },
         {
           "name": "advance",
           "recv": "nativeEndingPreview",
           "rust": "fd2_game::game::NativeEndingPreview::advance",
-          "status": "r8",
+          "status": "ported",
           "go_line": 764
         },
         {
@@ -1642,7 +1642,7 @@
           "name": "drawNativeEndingPreview",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ending_preview",
-          "status": "r8",
+          "status": "ported",
           "go_line": 823
         }
       ],
