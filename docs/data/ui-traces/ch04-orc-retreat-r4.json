@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch04_retreat_result_timing_receipt",
+  "date": "2026-11-26",
+  "evidence_level": "modified-path diagnostic; not PLAYER-E2, not damage/survival evidence",
+  "question": "第四章事件 12 的模式 7 撤退者抵達登場邊緣、其餘 camp 0 已不在場時，原版何時判勝。",
+  "runner": {
+    "name": "dosgolem apps/fd2/cmd/oracle",
+    "commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+    "tracked_dirty_files": 0,
+    "untracked_files": 0,
+    "driver_sha256": null
+  },
+  "inputs": {
+    "plan": "docs/data/parity-plans/ch04-orc-retreat-r4.jsonl",
+    "plan_sha256": "b96d61a86d583697bce5ce2ac78a6e81281c3c0f9e95719bf0cd677bfc7f4453",
+    "slot_manifest": "docs/data/parity-slots/ch04-manifest.json",
+    "slot_fd2_sav_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+    "fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "reference_manifest": "docs/data/fd2-reference-files.json"
+  },
+  "state_injections": [
+    "hp_lock：開戰起保住記錄 0、3、4、5；擊倒 27 後改保 0、24、25、26，清場後全部解除",
+    "force_enemy_clear（preserve_hp_locks）：第 6 回合清掉 24～26 以外的 camp 0",
+    "擊倒記錄 27 與其後的 END 全程正常 BIOS 鍵"
+  ],
+  "observations": [
+    {
+      "seq": 1186,
+      "round": 6,
+      "eip": "0x4DEF2",
+      "input_chain_head": [
+        "0x12211",
+        "0x11CED",
+        "0x11AE4"
+      ],
+      "retreaters": [
+        {
+          "index": 24,
+          "x": 8,
+          "y": 9,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 25,
+          "x": 12,
+          "y": 10,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 26,
+          "x": 8,
+          "y": 16,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        }
+      ],
+      "other_camp0_alive": [
+        7,
+        8,
+        9,
+        12,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "seq": 1202,
+      "round": 6,
+      "eip": "0x4DF2C",
+      "input_chain_head": [
+        "0x12211",
+        "0x130E6",
+        "0x134CD"
+      ],
+      "retreaters": [
+        {
+          "index": 24,
+          "x": 4,
+          "y": 8,
+          "byte5": "0x80",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 25,
+          "x": 15,
+          "y": 8,
+          "byte5": "0x80",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 26,
+          "x": 6,
+          "y": 16,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        }
+      ],
+      "other_camp0_alive": []
+    },
+    {
+      "seq": 1203,
+      "round": 7,
+      "eip": "0x4E83E",
+      "input_chain_head": [
+        "0x1F353",
+        "0x1A5ED",
+        "0x17277"
+      ],
+      "retreaters": [
+        {
+          "index": 24,
+          "x": 4,
+          "y": 8,
+          "byte5": "0x80",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 25,
+          "x": 15,
+          "y": 8,
+          "byte5": "0x80",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 26,
+          "x": 4,
+          "y": 17,
+          "byte5": "0x80",
+          "byte34": "07",
+          "hp": 96
+        }
+      ],
+      "other_camp0_alive": []
+    },
+    {
+      "seq": 1216,
+      "round": 7,
+      "eip": "0x4DF2E",
+      "input_chain_head": [
+        "0x12211",
+        "0x130E6",
+        "0x134CD"
+      ],
+      "retreaters": [
+        {
+          "index": 24,
+          "x": 4,
+          "y": 8,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 25,
+          "x": 15,
+          "y": 8,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 26,
+          "x": 4,
+          "y": 17,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        }
+      ],
+      "other_camp0_alive": []
+    },
+    {
+      "seq": 1217,
+      "round": 7,
+      "eip": "0x4DEF2",
+      "input_chain_head": [
+        "0x12211",
+        "0x130E6",
+        "0x134CD"
+      ],
+      "retreaters": [
+        {
+          "index": 24,
+          "x": 0,
+          "y": 8,
+          "byte5": "0x81",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 25,
+          "x": 19,
+          "y": 7,
+          "byte5": "0x81",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 26,
+          "x": 2,
+          "y": 18,
+          "byte5": "0x0",
+          "byte34": "07",
+          "hp": 96
+        }
+      ],
+      "other_camp0_alive": []
+    },
+    {
+      "seq": 1218,
+      "round": 7,
+      "eip": "0x4E91E",
+      "input_chain_head": [
+        "0x4E906",
+        "0x165A7",
+        "0x16D66"
+      ],
+      "retreaters": [
+        {
+          "index": 24,
+          "x": 0,
+          "y": 8,
+          "byte5": "0x81",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 25,
+          "x": 19,
+          "y": 7,
+          "byte5": "0x81",
+          "byte34": "07",
+          "hp": 96
+        },
+        {
+          "index": 26,
+          "x": 0,
+          "y": 18,
+          "byte5": "0x81",
+          "byte34": "07",
+          "hp": 96
+        }
+      ],
+      "other_camp0_alive": []
+    },
+    {
+      "seq": 1222,
+      "round": 7,
+      "eip": "0x4E91A",
+      "input_chain_head": [
+        "0x4E8D4",
+        "0x2CFC7",
+        "0x36CE0"
+      ],
+      "note": "driver ui=town；戰場單位陣列已釋放／重用，不讀單位欄位"
+    }
+  ],
+  "conclusion": "擊倒 27 後 24～26 的 raw +0x34 為 07；第 6 回合敵方階段未抵達、+5 bit0 為 0，戰鬥繼續。第 7 回合 END 後 24、25 抵達即 +5=0x81，最後一名 26 抵達 (0,18) 變 0x81 的下一個觀測點已是戰後對白，回合仍為 7，沒有玩家階段介入，seq 1222 進戰後城鎮。原版在最後一名撤退者離場的當下判勝。",
+  "local_run_dir": "work/parity-slot-ch04/orc-retreat-original-r4",
+  "failed_samples": {
+    "r1": "第 5 回合索爾陣亡返回標題",
+    "r2": "第 5 回合未擊倒 27",
+    "r3": "撤退未抵達時計畫只等城鎮而逾時"
+  }
+}

@@ -8191,7 +8191,7 @@ Rust 教會沿用 `0x2d7bd` 的四服務選單。角色狀態面板可切換到�
 - Go `TestAIStepMode7DepartureEndsBattleWhenNoEnemyRemains`：撤退者抵達後 `OnField=false`、raw `+5=1`、HP 不變，同一敵方階段得到 `win`。同一測試放回修正前的提交會失敗，失敗訊息是 `onField=true byte5=0x1`，與玩家回報一致。
 - Go `TestMarkNativeUnitInactiveLetsDepartedEnemyStopBlockingResult` 與 Rust 同名移植測試核對原始記錄同步與 `Result`。
 - Go 黃金資料工具 `fd2-golden-rules-int` 與 Rust `golden_rules_int` 的無頭驅動同步改寫，兩邊逐步比對。
-- 原版重現走修改路徑，不是 `PLAYER-E2`：dosgolem `f5be010a`、固定第四章建構槽，計畫為 `docs/data/parity-plans/ch04-orc-retreat-r1`～`r4.jsonl`。擊殺獸人 27 全程正常鍵；其後以 `hp_lock` 暫保索爾與撤退者、`force_enemy_clear` 清掉其餘 camp 0，解除鎖定後只按 END。r1 索爾陣亡、r2 未擊倒目標，兩份保留為失敗樣本。r3 第 6 回合擊倒 27 後，24～26 的 raw `+0x34` 變成 `07`，往各自登場邊緣移動，一個敵方階段沒有抵達，`+5 bit0` 仍為 0，戰鬥繼續。抵達後的判勝時點由 r4 收據回答。
+- 原版重現走修改路徑，不是 `PLAYER-E2`：dosgolem `f5be010a`、固定第四章建構槽，計畫為 `docs/data/parity-plans/ch04-orc-retreat-r1`～`r4.jsonl`。擊殺獸人 27 全程正常鍵；其後以 `hp_lock` 暫保索爾與撤退者、`force_enemy_clear` 清掉其餘 camp 0，解除鎖定後只按 END。r1 索爾陣亡、r2 未擊倒目標，兩份保留為失敗樣本。r3 第 6 回合擊倒 27 後，24～26 的 raw `+0x34` 變成 `07`，往各自登場邊緣移動，一個敵方階段沒有抵達，`+5 bit0` 仍為 0，戰鬥繼續。r4 只按 END：第 7 回合敵方階段 24、25 抵達即 `+5=0x81`，最後一名 26 抵達 (0,18) 後的下一個觀測點已是戰後對白，回合仍為 7，沒有玩家階段介入，接著進戰後城鎮。原版在最後一名撤退者離場的當下判勝，與本節規格一致。收據摘要見 [`ch04-orc-retreat-r4.json`](../data/ui-traces/ch04-orc-retreat-r4.json)。
 
 ## 第五章章工作單元：回合事件處理器與敵方回合順序（2026-09-16）
 
