@@ -206,7 +206,8 @@ impl Game {
             units[actor].set_map_pose(pose);
             let count = if id < 19 { result.word_steps.len() } else { result.pair_steps.len() };
             g.msg = format!("原始指令 {id}：影響 {count} 個目標");
-            g.finish_successful_unit_action(Some(actor), None);
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor), after);
             g.check_result();
         });
         self.native_ai_command_modifier = Some(NativeAICommandModifierPresentationJob {
@@ -459,7 +460,8 @@ impl Game {
             let pose = dir_toward(a.x, a.y, t.x, t.y);
             units[actor].set_map_pose(pose);
             g.msg = format!("原始指令 {id}：完成敵方 indexed 尾段 ({} targets)", result.results.len());
-            g.finish_successful_unit_action(Some(actor), None);
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor), after);
             g.check_result();
         });
         self.native_ai_command_modifier = Some(NativeAICommandModifierPresentationJob {

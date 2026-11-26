@@ -36,7 +36,8 @@ impl Game {
         let item = plan.native_item_id;
         let after = Box::new(move |game: &mut Game| {
             game.msg = format!("使用道具 {item:02X}h");
-            game.finish_successful_unit_action(Some(actor), None);
+            let after = game.native_ai_action_after.take();
+            game.finish_successful_unit_action(Some(actor), after);
             game.check_result();
         });
         let job = if transaction.restore.is_some() {

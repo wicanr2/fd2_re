@@ -293,6 +293,9 @@ pub struct Game {
     pub(crate) cam_pan: Option<CamPanJob>,
     /// beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
     pub(crate) focus_job: Option<FocusUnitJob>,
+    /// 敵方指令／道具 owner 成功收尾後的接續（Go `executeNativeAIActionWithContinuation` 的 `after`）；
+    /// 只有 mode 11 在分派前設定，各 owner 在成功邊界取走。
+    pub(crate) native_ai_action_after: Option<Box<dyn FnOnce(&mut Game) + Send>>,
     /// beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
     pub(crate) act_job: Option<ActPoseJob>,
     /// 60Hz Update 到原版約18.2065Hz來源拍的投影餘數
@@ -2464,7 +2467,10 @@ impl Game {
                     self.load_err = String::from("beat native_staging_present:缺少原版 wrapper ABI payload");
                     return;
                 }
-                todo!("R8: native_staging_present.go:startNativeStagingPresent（第一章沒有執行到）")
+                let spec = b.native_staging_present.unwrap();
+                if let Err(err) = self.start_native_staging_present(&spec) {
+                    self.load_err = format!("beat native_staging_present: {err}");
+                }
             }
             "native_ch23_loop" => {
                 if b.native_ch23_loop.is_none() {
@@ -8533,6 +8539,12 @@ impl Game {
             self.draw_capture_shot_point(screen);
             return;
         }
+        if self.native_cmd3_presentation.is_some() {
+            screen.fill(BLACK);
+            self.present_native_command3(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
+        }
         if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()
@@ -10384,7 +10396,12 @@ impl Game {
                         self.finish_battle_event_with_error("staging 缺少已證實caller");
                         return;
                     }
-                    todo!("R8: native_battle_staging_present.go:startNativeBattleStagingPresent（第一章沒有執行到）")
+                    let spec = action.native_staging_present;
+                    let then: Box<dyn FnOnce(&mut Game) + Send> = Box::new(|g: &mut Game| g.advance_battle_event());
+                    if let Err(err) = self.start_native_battle_staging_present(spec.as_ref(), Some(then)) {
+                        self.finish_battle_event_with_error(&err.to_string());
+                    }
+                    return;
                 }
                 "native_range_zero" | "native_range_one" => {
                     if self.st.is_none() || action.native_source.is_empty() {
@@ -10737,7 +10754,8 @@ impl Game {
             return;
         }
         if !plan.native_mode11_stages.is_empty() {
-            todo!("R8: native_ai_mode11_execute.go:startNativeAIMode11（第一章重播沒有 mode 11）");
+            self.start_native_ai_mode11(plan);
+            return;
         }
         if let Some(decision) = plan.native_idle_recovery {
             let u = plan.u;
@@ -10822,29 +10840,16 @@ impl Game {
         if plan.spell_id >= 0 {
             todo!("R8: ai_spell_execute.go:executeAISpell（第一章重播沒有敵方法術）");
         }
-        if plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM {
-            if let Err(err) = self.execute_native_ai_item_restore(plan) {
-                self.load_err = format!("敵方道具：{}", err.message());
-                self.ai_busy = false;
-            }
-            return;
-        }
-        if plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND {
-            let result = match plan.native_command_id {
-                0 => self.execute_native_ai_command0(plan),
-                1 | 4..=5 => self.execute_native_ai_indexed_damage_command(plan),
-                2 => self.execute_native_ai_command2(plan),
-                8 => self.execute_native_ai_command8(plan),
-                9 => self.execute_native_ai_command9(plan),
-                6 => self.execute_native_ai_command6(plan),
-                7 => self.execute_native_ai_command7(plan),
-                13..=16 => self.execute_native_ai_command_heal(plan),
-                17..=19 => self.execute_native_ai_command_modifier(plan),
-                20..=22 | 26 | 27 => self.execute_native_ai_command2022(plan),
-                id => Err(game_err!("指令 {id} 尚無執行入口")),
-            };
-            if let Err(err) = result {
-                self.load_err = format!("敵方指令：{}", err.message());
+        if plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM
+            || plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND
+        {
+            if let Err(err) = self.execute_native_ai_action(plan) {
+                let kind = if plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM {
+                    "敵方道具"
+                } else {
+                    "敵方指令"
+                };
+                self.load_err = format!("{kind}：{}", err.message());
                 self.ai_busy = false;
             }
             return;
@@ -10987,6 +10992,27 @@ impl Game {
             self.ai_step_finish(plan);
         }
         self.check_result();
+    }
+
+    /// 敵方指令／道具的已閉合 owner 分派（Go `executeNativeAIActionWithContinuation` 的 switch）。
+    pub(crate) fn execute_native_ai_action(&mut self, plan: &battle::AIPlan) -> Result<()> {
+        if plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM {
+            return self.execute_native_ai_item_restore(plan);
+        }
+        match plan.native_command_id {
+            0 => self.execute_native_ai_command0(plan),
+            1 | 4..=5 => self.execute_native_ai_indexed_damage_command(plan),
+            2 => self.execute_native_ai_command2(plan),
+            8 => self.execute_native_ai_command8(plan),
+            9 => self.execute_native_ai_command9(plan),
+            6 => self.execute_native_ai_command6(plan),
+            7 => self.execute_native_ai_command7(plan),
+            3 => self.execute_native_ai_command3(plan),
+            13..=16 => self.execute_native_ai_command_heal(plan),
+            17..=19 => self.execute_native_ai_command_modifier(plan),
+            20..=22 | 26 | 27 => self.execute_native_ai_command2022(plan),
+            id => Err(game_err!("指令 {id} 尚無執行入口")),
+        }
     }
 
     /// Go `aiStep` 的閉包 `finish`（`main.go:13291`..`13340`）。

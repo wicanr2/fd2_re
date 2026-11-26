@@ -260,7 +260,8 @@ impl Game {
             state.units[actor].set_map_pose(pose);
             let total: i64 = results.iter().map(|result| result.restore.actual).sum();
             g.msg = format!("原始指令 {id}：回復 {total}");
-            g.finish_successful_unit_action(Some(actor), None);
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor), after);
             g.check_result();
         });
         self.native_heal_presentation = Some(NativeCommandHealPresentationJob {

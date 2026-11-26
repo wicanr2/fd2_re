@@ -389,7 +389,8 @@ impl Game {
             let hit = results.iter().any(|result| result.native_command_damage.hit);
             let damage: i64 = results.iter().map(|result| result.native_command_damage.damage).sum();
             g.msg = format!("原始指令 0：命中 {}，傷害 {damage}", i64::from(hit));
-            g.finish_successful_unit_action(Some(actor_index), None);
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor_index), after);
             g.check_result();
         });
         Ok(NativeCommand0PresentationJob {

@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 787,
+      "ported": 796,
       "r6": 59,
-      "r8": 1076
+      "r8": 1067
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -11602,7 +11602,7 @@
     },
     {
       "go": "remake/cmd/fd2/native_ai_mode11_execute.go",
-      "rust": null,
+      "rust": "remake-rs/crates/fd2-game/src/game/native_ai_mode11_execute.rs",
       "go_lines": 155,
       "items": [],
       "functions": [
@@ -11610,21 +11610,21 @@
           "name": "startNativeAIMode11",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_ai_mode11",
-          "status": "r8",
+          "status": "ported",
           "go_line": 12
         },
         {
           "name": "runNativeAIMode11Stage",
           "recv": "Game",
           "rust": "fd2_game::game::Game::run_native_ai_mode11_stage",
-          "status": "r8",
+          "status": "ported",
           "go_line": 24
         },
         {
           "name": "executeNativeAIMode11Physical",
           "recv": "Game",
           "rust": "fd2_game::game::Game::execute_native_ai_mode11_physical",
-          "status": "r8",
+          "status": "ported",
           "go_line": 82
         }
       ],
@@ -11892,7 +11892,7 @@
           "name": "startNativeBattleStagingPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_battle_staging_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 13
         },
         {
@@ -14333,8 +14333,8 @@
         {
           "name": "startNativeCommand3Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native_command3_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::execute_native_ai_command3",
+          "status": "ported",
           "go_line": 51
         },
         {
@@ -14360,8 +14360,8 @@
         {
           "name": "drawNativeCommand3Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native_command3_presentation",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::present_native_command3",
+          "status": "ported",
           "go_line": 464
         }
       ],
@@ -15426,7 +15426,7 @@
           "name": "startNativeHPClear",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_hp_clear",
-          "status": "r8",
+          "status": "ported",
           "go_line": 212
         },
         {
@@ -19237,14 +19237,14 @@
           "name": "buildNativeStagingPresentJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::build_native_staging_present_job",
-          "status": "r8",
+          "status": "ported",
           "go_line": 96
         },
         {
           "name": "startNativeStagingPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_staging_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 164
         }
       ],

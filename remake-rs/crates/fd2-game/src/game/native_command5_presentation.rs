@@ -365,7 +365,8 @@ impl Game {
             let pose = dir_toward(actor.x, actor.y, target.x, target.y);
             units[actor_index].set_map_pose(pose);
             g.msg = format!("原始指令 {id}：命中 {hit}，傷害 {damage}");
-            g.finish_successful_unit_action(Some(actor_index), None);
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor_index), after);
             g.check_result();
         });
         let job = NativeCommand5PresentationJob {

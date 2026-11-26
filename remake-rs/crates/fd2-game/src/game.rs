@@ -149,6 +149,7 @@ mod native_24b4d;
 mod native_action_death_present;
 mod native_ai_idle_recovery;
 mod native_ai_item_presentation;
+mod native_ai_mode11_execute;
 mod native_ai_modifier_presentation;
 mod native_attack_assets;
 mod native_battle_name;

@@ -183,7 +183,11 @@ impl Game {
                 return true;
             }
             "clear_hp_from" => {
-                todo!("R8: native_death_program_runtime.go:172 startNativeHPClear（0x35BBA；第一章沒有執行到）")
+                let then: Box<dyn FnOnce(&mut Game) + Send> = Box::new(|g: &mut Game| g.advance_battle_event());
+                if let Err(err) = self.start_native_hp_clear(op.first, then) {
+                    self.finish_battle_event_with_error(err.message());
+                }
+                return true;
             }
             "reward" => {
                 let killer = self.death_program_killer;
@@ -248,5 +252,33 @@ impl Game {
             }
             _ => {}
         }
+    }
+}
+
+impl Game {
+    /// 0x35BBA：從 `first` 起清 +0x40，接 0x1DB65 呈現。戰場沒有原版索引色地圖時直接清並把 +5 設 1。
+    ///
+    /// Go：`native_death_program_runtime.go:212`，`func (g *Game) startNativeHPClear(first int, then func()) error`
+    pub(crate) fn start_native_hp_clear(&mut self, first: i64, then: Box<dyn FnOnce(&mut Game) + Send>) -> Result<()> {
+        let indexed = self.st.as_ref().is_some_and(|st| st.has_native_map_view_state)
+            && native_map_assets_available(self.native_map_assets.as_ref());
+        if indexed {
+            return self.start_native_unit_death_present(
+                &mut |st: &mut battle::State| {
+                    st.clear_native_hp_from(first);
+                    Ok(())
+                },
+                Some(then),
+            );
+        }
+        let st = self.st.as_mut().ok_or_else(|| game_err!("0x35BBA 缺少戰場"))?;
+        for index in st.clear_native_hp_from(first) {
+            let unit = &mut st.units[index];
+            if unit.has_native_record_byte5 {
+                unit.native_record_byte5 = 1;
+            }
+        }
+        then(self);
+        Ok(())
     }
 }
