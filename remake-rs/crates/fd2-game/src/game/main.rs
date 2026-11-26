@@ -1956,6 +1956,77 @@ pub(crate) enum HandlerUnitRef {
 pub(crate) const NATIVE_RUNTIME_RECORD_CAPACITY: i64 = 96;
 
 impl Game {
+    /// 把道具放進第一個未滿 8 格的我方單位；全員背包都滿時原版靜默放棄獎勵。
+    ///
+    /// Go：`main.go:4268`，`func (g *Game) grantItemToParty(itemID int) bool`
+    pub(crate) fn grant_item_to_party(&mut self, item_id: i64) -> bool {
+        let Some(st) = self.st.as_mut() else {
+            return false;
+        };
+        for unit in st.units.iter_mut() {
+            if unit.camp != battle::OWN || unit.inventory.len() >= 8 {
+                continue;
+            }
+            if unit.add_inventory_item(item_id, false) {
+                return true;
+            }
+        }
+        false
+    }
+
+    /// 戰間節點用的持有判斷：先以原始記錄搜尋執行期 0..15 格，失敗再看正規化背包，最後退回持續名冊。
+    /// 不宣稱與原版 0x24B14 逐位元組相同（說明見 Go 註解）。
+    ///
+    /// Go：`main.go:4291`，`func (g *Game) partyHasItemID(itemID int) bool`
+    pub(crate) fn party_has_item_id(&self, item_id: i64) -> bool {
+        if let Some(st) = self.st.as_ref() {
+            if (0..=0xff).contains(&item_id)
+                && let Ok(records) = battle::native_inventory_records(&st.units, 16)
+            {
+                return battle::find_native_inventory_item(&records, item_id as u8).is_ok_and(|(unit, _)| unit >= 0);
+            }
+            if st.units.iter().take(16).any(|unit| unit.inventory.contains(&item_id)) {
+                return true;
+            }
+        }
+        self.party_roster.values().any(|unit| unit.inventory.contains(&item_id))
+    }
+
+    /// 照原版 ch20_post 的巢狀迴圈：每組（道具,執行期格）最多算一次，總數恰好等於 `required_matches` 才合成；
+    /// 成功時依道具再依格的順序各移除第一份，再以一般給道具路徑發獎勵。
+    ///
+    /// Go：`main.go:4330`，`func (g *Game) applyInventoryRecipe(n *campaign.Node) (bool, error)`
+    pub(crate) fn apply_inventory_recipe(&mut self, n: &campaign::Node) -> std::result::Result<bool, String> {
+        let Some(reward) =
+            n.reward_item_id.filter(|_| !n.item_ids.is_empty() && n.slot_count > 0 && n.required_matches > 0)
+        else {
+            return Err(String::from("invalid recipe data"));
+        };
+        let slots = n.slot_count as usize;
+        if self.st.as_ref().is_none_or(|st| st.units.len() < slots) {
+            return Err(format!("runtime slots={}, want at least {}", self.handler_unit_count(), n.slot_count));
+        }
+        let st = self.st.as_mut().unwrap();
+        let find = |unit: &battle::Unit, item: i64| unit.inventory.iter().position(|&held| held == item);
+        let matches = n
+            .item_ids
+            .iter()
+            .map(|&item| st.units[..slots].iter().filter(|unit| find(unit, item).is_some()).count() as i64)
+            .sum::<i64>();
+        if matches != n.required_matches {
+            return Ok(false);
+        }
+        for &item in &n.item_ids {
+            for unit in st.units[..slots].iter_mut() {
+                if let Some(index) = find(unit, item) {
+                    unit.remove_inventory_index(index as i64);
+                }
+            }
+        }
+        self.grant_item_to_party(reward); // 原版只在全員背包都滿時靜默放棄獎勵
+        Ok(true)
+    }
+
     /// Go：`main.go:1420`，`func (g *Game) handlerUnitCount() int`
     pub(crate) fn handler_unit_count(&self) -> i64 {
         if let Some(st) = self.st.as_ref() {
@@ -4108,13 +4179,20 @@ impl Game {
                     self.load_err = String::from("inventory_gate: missing item_id");
                     return;
                 };
-                // Go：`g.partyHasItemID(*n.ItemID)`（`main.go`，`r8`：第一章沒有物品閘門節點）。
-                let _ = item_id;
-                todo!("R8: main.go:partyHasItemID（inventory_gate 節點）")
+                let outcome = if self.party_has_item_id(item_id) { "present" } else { "missing" };
+                self.camp.as_mut().unwrap().advance(outcome);
+                self.enter_node();
             }
             "inventory_recipe" => {
-                // Go：`g.applyInventoryRecipe(n)`（`main.go`，`r8`：第一章沒有合成節點）。
-                todo!("R8: main.go:applyInventoryRecipe（inventory_recipe 節點）")
+                let crafted = match self.apply_inventory_recipe(&n) {
+                    Ok(crafted) => crafted,
+                    Err(err) => {
+                        self.load_err = format!("inventory_recipe: {err}");
+                        return;
+                    }
+                };
+                self.camp.as_mut().unwrap().advance(if crafted { "crafted" } else { "insufficient" });
+                self.enter_node();
             }
             "event" => {
                 self.camp.as_mut().unwrap().advance("");

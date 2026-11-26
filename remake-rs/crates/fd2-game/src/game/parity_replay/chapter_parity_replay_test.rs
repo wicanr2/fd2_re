@@ -533,7 +533,13 @@ impl ParityReplay {
         let targets = action.hp_lock.clone().unwrap_or_default();
         assert!(self.d.hp_policy.is_some() && targets.len() <= 4, "鎖血缺少明示測試政策");
         let battle = self.battle.clone();
-        assert!(self.d.pump(JOURNEY_STORY_FRAMES, |g| parity_player_has_control(g, &battle)), "鎖血前未取得正常游標");
+        // 解鎖（空綁定）不需要活躍單位：清場後戰鬥已分出勝負時不等游標（第 19 章 r6）。Go 測具沒有這段。
+        let release = targets.is_empty();
+        assert!(
+            self.d.pump(JOURNEY_STORY_FRAMES, |g| parity_player_has_control(g, &battle)
+                || (release && (!g.result.is_empty() || node_id(g) != battle))),
+            "鎖血前未取得正常游標"
+        );
         let old = self.d.hp_policy.as_ref().unwrap().cells.clone();
         let mut next = Vec::with_capacity(targets.len());
         let mut seen = BTreeSet::new();

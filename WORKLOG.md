@@ -6022,3 +6022,12 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 18 章：由第 17 章槽重建（`ac9fdbe5`，18 人），原版 `ch18-guard-r4.jsonl` 2478 個檢查點。Rust 重播 96 筆後停在敵方指令 8 尚無執行入口：依 Go `startNativeCommand8Presentation` 的敵方分支新增 `execute_native_ai_command8` 與原版索引色呈現，脈衝色用閃光表第 8 列，尾段共用指令 2 的 `native_command2_tail_pixels`（與 Go `nativeCommand1TailPixels` 逐行相同）。補完後 202 筆走到第 19 章城鎮，存檔逐位元組相同。
 - 第 19 章：由第 18 章槽重建（`a55cdde9`，20 人），原版 r4 計畫第 3 回合索爾陣亡敗北；Rust 重播 r1 到中斷點 53 筆通過。新增 [`ch19-sample-r5.jsonl`](docs/data/parity-plans/ch19-sample-r5.jsonl) 開戰即鎖索爾，原版執行中。
 - Rust 遊戲回歸 461 項、格式、Clippy 通過；第 16、17、20 章重播回歸存檔相同。
+
+## 2026-11-26 Rust 第 18、19、21 章重播與天空之鑰合成節點
+
+- 第 18 章：補敵方指令 8 後 202 筆通過（見前段），提交 `68b419c9`。
+- 第 19 章：r5 開戰鎖索爾，但清場後沒有解鎖，戰後劇情改寫記錄 0 時 oracle 以 `hp_lock active binding changed at record 0` 中止（seq 1144）。r6（[`ch19-sample-r6.jsonl`](docs/data/parity-plans/ch19-sample-r6.jsonl)）清場後以空綁定解鎖：原版 1351 個檢查點，Rust 68 筆走到第 20 章城鎮，存檔逐位元組相同。測具的 `update_hp_locks` 在空綁定且戰鬥已分出勝負時不等游標（Go 測具沒有這段）。
+- 第 21 章：槽由第 20 章槽重建（`0cc81b8b`，22 人；第 20 章戰後一項 `native_round_gt` 依政策假設為 false）。原版 989 個檢查點；Rust 停在 `inventory_recipe` 未移植。照 Go `main.go:4268/4291/4330` 移植 `grant_item_to_party`、`party_has_item_id`、`apply_inventory_recipe` 並接上 `inventory_gate`／`inventory_recipe` 節點，37 筆走到第 22 章城鎮，存檔逐位元組相同。
+- 第 22 章：槽由第 21 章槽重建（`ce8588c8`，24 人），原版執行中。
+- 兩個原版第一次在指令內以 `&` 背景啟動，約 24 步後隨工具呼叫結束被終止，紀錄無錯誤；改用受追蹤背景任務重跑。
+- Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 4、19、21 章重播回歸相同。
