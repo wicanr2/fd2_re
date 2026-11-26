@@ -318,10 +318,7 @@ impl State {
                 if op.unit >= self.units.len() as i64 {
                     return Ok(());
                 }
-                let u = &mut self.units[op.unit as usize];
-                u.on_field = false;
-                (u.native_record_byte5, u.has_native_record_byte5) = (1, true);
-                self.sync_native_runtime_record(op.unit, 0x05, 1, 1);
+                self.mark_native_unit_inactive(op.unit as usize)?;
             }
             "range_one" => {
                 // 0x35C18：互動時的地圖範圍選擇值。

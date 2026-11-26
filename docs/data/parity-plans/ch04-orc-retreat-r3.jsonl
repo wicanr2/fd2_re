@@ -1,0 +1,54 @@
+# 第四章獸人撤退與勝負判定重現（固定第四章建構槽 docs/data/parity-slots/ch04-manifest.json）。
+# 問題：事件 12 讓第 2 群組（執行期 24..27，identity 102）改成 mode 7 撤退；抵達目的座標後 0x32975
+# 寫 +5=1。要看原版在最後一名撤退者抵達、其餘敵軍已不在場時，是否在同一個敵方階段就結束戰鬥。
+# r1（work/parity-slot-ch04/orc-retreat-original-r1）在第 5 回合敵方階段索爾陣亡回到標題，沒走到撤退；
+# r2 開戰即以 hp_lock 保住索爾與三名主力（修改路徑），各回合改用 stop_on_auto_end，避免自動換手後吃掉下一回合。
+# r2（orc-retreat-original-r2）第 5 回合只有一名助手打到記錄 27，其餘被擋住，回合自動換手後失敗；
+# r3 讓擊殺有界延到最多 4 個玩家回合，每回合沒打倒就正常 END。擊殺本身全程正常 BIOS 鍵。
+# 之後：hp_lock 改成索爾與 24..26、force_enemy_clear 清掉其餘 camp 0、解除全部 hp_lock 再 END；
+# hp_lock 每指令重套且會拒絕 +5 bit0 已設的綁定，所以必須在撤退者抵達前解除。
+# 收據不得當成 PLAYER-E2、傷害或存活證據；只回答「撤退抵達離場後何時判勝負」。
+# --- 標題 LOAD 槽 0 → 城鎮 ---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前對白 → 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":120}
+{"await_ui":"cursor","steps":10000000,"max":60}
+{"mark":"battle_start","steps":1000000}
+# --- 修改路徑：保住索爾（0）與主力 3、4、5，讓戰鬥撐到第 2 群組登場 ---
+{"hp_lock":[{"index":0,"camp":2,"identity":0},{"index":3,"camp":2,"identity":30},{"index":4,"camp":2,"identity":1},{"index":5,"camp":2,"identity":8}],"steps":1000}
+# --- 第 1～2 回合：守在出發格（打得到才打，不推進），END 換手；第 3～4 回合全員接戰 ---
+{"sweep_round":true,"stop_on_auto_end":true,"advance":false,"steps":2000000}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"stop_on_auto_end":true,"advance":false,"steps":2000000}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"stop_on_auto_end":true,"steps":2000000}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"stop_on_auto_end":true,"steps":2000000}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":260}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"round5_orcs_present","steps":1000000}
+# --- 第 5 回合起：正常攻擊擊殺記錄 27 → 死亡效果 2:12 → 事件 12 撤退 ---
+{"defeat_in_phase":{"index":27,"identity":102,"helpers":[6,5,4,3,2,1,0],"max_rounds":4},"steps":2000000}
+{"mark":"retreat_triggered","steps":1000000}
+# --- 修改路徑：保留撤退者、清其餘 camp 0、解除鎖定、END ---
+{"hp_lock":[{"index":0,"camp":2,"identity":0},{"index":24,"camp":0,"identity":102},{"index":25,"camp":0,"identity":102},{"index":26,"camp":0,"identity":102}],"steps":1000}
+{"force_enemy_clear":true,"preserve_hp_locks":true,"end_turn":false,"steps":2000000}
+{"hp_lock":[],"steps":1000}
+{"mark":"only_retreaters_remain","steps":1000000}
+{"sweep_round":true,"max_units":0,"finish_wait":160,"steps":2000000}
+{"await_ui":"town","steps":20000000,"max":200}
+{"mark":"town_after_retreat","steps":1000000}

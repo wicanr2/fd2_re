@@ -10809,8 +10809,11 @@ impl Game {
         let write_byte5 = plan.native_mode_write_byte5;
         if let Some(decision) = plan.native_fallback_idle_recovery {
             let after: Box<dyn FnOnce(&mut Game) + Send> = Box::new(move |g: &mut Game| {
-                g.ai_step_write_byte5(u, write_byte5);
+                if !g.ai_step_write_byte5(u, write_byte5) {
+                    return;
+                }
                 g.finish_successful_unit_action(Some(u), None);
+                g.ai_step_departed(write_byte5);
             });
             if let Err(err) = self.begin_native_ai_idle_recovery(Some(u), decision, Some(after)) {
                 self.load_err = format!("native AI mode fallback 0x13fd4: {}", err.message());
@@ -10818,21 +10821,39 @@ impl Game {
             }
             return;
         }
-        self.ai_step_write_byte5(u, write_byte5);
+        if !self.ai_step_write_byte5(u, write_byte5) {
+            return;
+        }
         self.finish_successful_unit_action(Some(u), None);
+        self.ai_step_departed(write_byte5);
     }
 
-    /// Go `aiStep` 的閉包 `writeByte5`（`main.go:13317`..`13328`）。
-    fn ai_step_write_byte5(&mut self, u: UnitIdx, write: bool) {
+    /// Go `aiStep` 的閉包 `writeByte5`。
+    fn ai_step_write_byte5(&mut self, u: UnitIdx, write: bool) -> bool {
         if write {
             // 0x32975 writes the complete runtime +0x05 byte only after
             // mode 7's raw destination comparison succeeds (0x13D60, after
-            // the optional 0x13FD4).  Keep the mutation on the native field;
+            // the optional 0x13FD4).  The record leaves the field: on_field
+            // follows +5 bit0 so the result rule no longer counts it.
             // Acted remains the engine projection updated by the common
             // completion owner below.
-            let unit = &mut self.st.as_mut().expect("Go：u 指向 g.st.Units").units[u];
-            unit.native_record_byte5 = 1;
-            unit.has_native_record_byte5 = true;
+            let st = self.st.as_mut().expect("Go：u 指向 g.st.Units");
+            if let Err(err) = st.mark_native_unit_inactive(u) {
+                self.load_err = format!("native AI mode 7 departure: {}", err.message());
+                self.ai_busy = false;
+                return false;
+            }
+        }
+        true
+    }
+
+    /// Go `aiStep` 的閉包 `departed`：0x1D80B／0x1D8BA／0x1D988 每個單位走完 0x13A9F 都呼叫
+    /// 章節處理器 [0x51B19]（0x1D8A0／0x1D96C／0x1D9FC），[0x53ECC] 非零就停下敵方迴圈；撤退的
+    /// 最後一名敵軍抵達離場的當下就判勝負。收尾若開了格子事件（0x51B91 在 0x51B19 之前），
+    /// 等它播完；玩家回合開始的 check_result 仍會補判。
+    fn ai_step_departed(&mut self, write: bool) {
+        if write && self.battle_event.is_none() {
+            self.check_result();
         }
     }
 }

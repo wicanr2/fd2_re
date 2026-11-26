@@ -459,6 +459,59 @@ func TestAIStepConsumesVerifiedMode7DestinationPlan(t *testing.T) {
 	}
 }
 
+// 第四章事件 12：第 2 群組改 mode 7 撤退，最後一名撤退者抵達目的座標時 0x32975 寫 +5=1，
+// 敵方迴圈 0x1D8A0 等隨即呼叫章節處理器判勝負。撤退者必須離場（OnField 跟著 +5 bit0），
+// 而且在同一個敵方階段就判勝，不等下一個玩家行動；畫面上看不見的撤退者不能擋住勝利。
+func TestAIStepMode7DepartureEndsBattleWhenNoEnemyRemains(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 7)
+	actor.NativeRecordByte35 = 1
+	actor.HasNativeRecordByte35 = true
+	actor.NativeRecordByte36 = 0
+	actor.HasNativeRecordByte36 = true
+	hero := nativeAIConsumerUnit(2, 0, 2, 0)
+	hero.Name, hero.Camp = "索爾", battle.Own
+	hero.NativeRecordByte8 = 0 // 原版記錄 0 的 raw +8；保護判定由正式譯名表解出索爾。
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor, hero},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:     state,
+		sc:     &battle.Scenario{},
+		aiBusy: true,
+	}
+	if got := state.Result("索爾"); got != "" {
+		t.Fatalf("retreating enemy must still count before arrival: Result=%q", got)
+	}
+	g.aiStep()
+	if g.loadErr != "" || g.walk == nil || g.walk.u != actor {
+		t.Fatalf("mode-7 retreat did not start as movement-only: walk=%v err=%q", g.walk != nil, g.loadErr)
+	}
+	for step := 0; step < 96 && (g.aiBusy || g.walk != nil); step++ {
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if g.loadErr != "" || g.walk != nil || g.aiBusy {
+		t.Fatalf("mode-7 retreat completion walk=%v ai=%v err=%q", g.walk != nil, g.aiBusy, g.loadErr)
+	}
+	if actor.X != 1 || actor.Y != 0 || actor.OnField || actor.NativeRecordByte5 != 1 || !actor.Alive() {
+		t.Fatalf("mode-7 arrival did not leave the field: pos=(%d,%d) onField=%v byte5=%#x hp=%d",
+			actor.X, actor.Y, actor.OnField, actor.NativeRecordByte5, actor.HP)
+	}
+	if g.result != "win" || state.Turn != 0 {
+		t.Fatalf("departure of the last enemy must end the battle in the same enemy phase: result=%q turn=%d", g.result, state.Turn)
+	}
+}
+
 func TestAIStepStopsMode7WithoutMovementProvenance(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 7)
 	actor.NativeRecordByte35 = 1

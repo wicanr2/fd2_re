@@ -2346,6 +2346,116 @@ def do_defeat_targets(command):
     return False
 
 
+# 第四章第2群組四筆獸人（FDFIELD map3 名冊 17..20 → 執行期 24..27，identity 102）。
+# 任一筆死亡觸發死亡效果 2:12 → 事件 12（0x345AB 起）把 24..27 改成 mode 7 撤退。
+CH04_RETREAT_ORCS = {24: 102, 25: 102, 26: 102, 27: 102}
+
+
+def do_defeat_in_phase(command):
+    """第四章撤退重現：依序派助手正常攻擊一筆指定敵人，不寫入狀態。
+
+    每回合輪一次助手；目標倒下就推完死亡對白回到地圖游標並回 True。沒倒下就照
+    正常玩家路徑結束回合（全員行動完原版已自動換手時不再送 END），等下一個玩家
+    回合再試，最多 ``max_rounds`` 回合。用完仍未倒下回 False，不把沒發生的擊殺當成
+    已觸發。只接受 ``CH04_RETREAT_ORCS`` 內已登錄的記錄，助手須是 camp 2 且帶 raw
+    +0x3B 移動力。
+    """
+    spec = command["defeat_in_phase"]
+    index, identity, helpers = spec.get("index"), spec.get("identity"), spec.get("helpers")
+    limit = spec.get("max_rounds")
+    if (set(spec) != {"index", "identity", "helpers", "max_rounds"} or type(index) is not int
+            or CH04_RETREAT_ORCS.get(index) != identity or not isinstance(helpers, list)
+            or not 1 <= len(helpers) <= 7 or len(set(helpers)) != len(helpers)
+            or any(type(h) is not int or not 0 <= h <= 6 for h in helpers)
+            or type(limit) is not int or not 1 <= limit <= 4):
+        raise SystemExit("defeat_in_phase：缺少第四章已登錄目標／助手／有界輪數")
+    steps = int(command.get("steps", 2_000_000))
+
+    def target_row():
+        return next((u for u in state().get("units", []) if u.get("index") == index), {})
+
+    for _ in range(limit):
+        start_round = measure(state(), "round")
+        for helper in helpers:
+            current = state()
+            if measure(current, "round") != start_round:
+                break
+            rows = {u["index"]: u for u in current.get("units", [])}
+            target = rows.get(index, {})
+            if target.get("identity") != identity or target.get("camp") != ENEMY_CAMP:
+                print("defeat_in_phase：目標記錄不符", file=sys.stderr)
+                return False
+            if target.get("hp", 0) <= 0:
+                break
+            actor = rows.get(helper, {})
+            raw = bytes.fromhex(actor.get("raw_hex", ""))
+            if actor.get("camp") != ALLY_CAMP or actor.get("hp", 0) <= 0 or len(raw) != 80:
+                continue
+            if acted(actor) or paralyzed(actor) or not raw[0x3b]:
+                continue
+            if not do_engage({"engage": {"from_index": helper, "target_index": index},
+                              "typical_move": raw[0x3b], "reach": 1, "tries": 14,
+                              "finish_wait": 240, "steps": steps}):
+                return False
+        target = target_row()
+        if target.get("identity") != identity:
+            print("defeat_in_phase：目標記錄不符", file=sys.stderr)
+            return False
+        if target.get("hp", 0) <= 0:
+            log_action("defeat_in_phase", state(), index=index, identity=identity)
+            return do_await_ui({"await_ui": "cursor", "steps": 20_000_000, "max": 200})
+        if measure(state(), "round") == start_round:
+            if not do_sweep_round({"max_units": 0, "finish_wait": 160, "steps": steps}):
+                return False
+        if not do_await({"await": f"round>={start_round + 1}", "steps": 10_000_000, "max": 200}):
+            return False
+        if not do_await_ui({"await_ui": "cursor", "steps": 20_000_000, "max": 200}):
+            return False
+        do_mark({"mark": f"defeat_in_phase_round_{start_round + 1}"})
+    print(f"defeat_in_phase：{limit}回合後記錄 {index} 仍存活", file=sys.stderr)
+    return False
+
+
+def do_end_turns_until_town(command):
+    """只按 END 推進回合，直到原版自己進戰後城鎮；不攻擊、不移動。
+
+    第四章撤退者要走幾回合才回到登場邊緣；這段期間我方不能出手，否則打倒撤退者
+    就不是「撤退離場後判勝負」。每回合 END 後只推對白，看到城鎮回 True；回合推進
+    回到地圖游標就再 END 一次，最多 ``max_rounds`` 回合，用完回 False。
+    """
+    limit = command["end_turns_until_town"].get("max_rounds")
+    if set(command["end_turns_until_town"]) != {"max_rounds"} or type(limit) is not int or not 1 <= limit <= 6:
+        raise SystemExit("end_turns_until_town：需要 1～6 的有界回合數")
+    steps = int(command.get("steps", 2_000_000))
+    wait_steps = int(command.get("wait_steps", 10_000_000))
+    wait_max = int(command.get("wait_max", 300))
+    for _ in range(limit):
+        if ui_mode(state()) == "town":
+            print("end_turns_until_town：已在戰後城鎮", flush=True)
+            return True
+        start_round = measure(state(), "round")
+        if not end_turn({"steps": steps}):
+            return False
+        for _ in range(wait_max):
+            current = state()
+            mode = ui_mode(current)
+            if mode == "town":
+                log_action("end_turns_until_town", current, from_round=start_round)
+                print(f"end_turns_until_town：第 {start_round} 回合 END 後進入戰後城鎮", flush=True)
+                return True
+            if mode == "cursor" and in_battle(current) and measure(current, "round") > start_round:
+                do_mark({"mark": f"end_turns_round_{measure(current, 'round')}"})
+                break
+            key = "enter" if mode == "dialogue" and current.get("kbd_pending", 0) == 0 else ""
+            seq, current = send(key, wait_steps)
+            report(seq, key, current, " end-turns-until-town")
+        else:
+            print("end_turns_until_town：等不到下一回合或城鎮", file=sys.stderr)
+            return False
+    print(f"end_turns_until_town：{limit} 回合後仍在戰場", file=sys.stderr)
+    return False
+
+
 def main():
     first = state()
     print(f"checkpoint-0000 eip={first['eip']} view={first['view']}", flush=True)
@@ -2431,6 +2541,14 @@ def main():
         if "defeat_targets" in command:
             if not do_defeat_targets(command):
                 return 20
+            continue
+        if "defeat_in_phase" in command:
+            if not do_defeat_in_phase(command):
+                return 23
+            continue
+        if "end_turns_until_town" in command:
+            if not do_end_turns_until_town(command):
+                return 24
             continue
         if "escort_rounds" in command:
             if not do_escort_rounds(command):

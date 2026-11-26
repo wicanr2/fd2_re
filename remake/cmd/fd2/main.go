@@ -13343,29 +13343,50 @@ func (g *Game) aiStep() {
 					return
 				}
 			}
-			writeByte5 := func() {
+			writeByte5 := func() bool {
 				if plan.NativeModeWriteByte5 {
 					// 0x32975 writes the complete runtime +0x05 byte only after
 					// mode 7's raw destination comparison succeeds (0x13D60, after
-					// the optional 0x13FD4).  Keep the mutation on the native field;
+					// the optional 0x13FD4).  The record leaves the field: OnField
+					// follows +5 bit0 so the result rule no longer counts it.
 					// Acted remains the engine projection updated by the common
 					// completion owner below.
-					u.NativeRecordByte5 = 1
-					u.HasNativeRecordByte5 = true
+					if err := g.st.MarkNativeUnitInactive(u); err != nil {
+						g.loadErr = "native AI mode 7 departure: " + err.Error()
+						g.aiBusy = false
+						return false
+					}
+				}
+				return true
+			}
+			// 0x1D80B／0x1D8BA／0x1D988 每個單位走完 0x13A9F 都呼叫章節處理器
+			// [0x51B19]（0x1D8A0／0x1D96C／0x1D9FC），[0x53ECC] 非零就停下敵方迴圈；
+			// 撤退的最後一名敵軍抵達離場的當下就判勝負，不等下一個玩家行動。
+			// 收尾若開了格子事件（0x51B91 在 0x51B19 之前），等它播完；玩家回合
+			// 開始的 checkResult 仍會補判。
+			departed := func() {
+				if plan.NativeModeWriteByte5 && g.battleEvent == nil {
+					g.checkResult()
 				}
 			}
 			if plan.NativeFallbackIdleRecovery != nil {
 				if err := g.beginNativeAIIdleRecovery(u, *plan.NativeFallbackIdleRecovery, func() {
-					writeByte5()
+					if !writeByte5() {
+						return
+					}
 					g.finishSuccessfulUnitAction(u, nil)
+					departed()
 				}); err != nil {
 					g.loadErr = "native AI mode fallback 0x13fd4: " + err.Error()
 					g.aiBusy = false
 				}
 				return
 			}
-			writeByte5()
+			if !writeByte5() {
+				return
+			}
 			g.finishSuccessfulUnitAction(u, nil)
+			departed()
 		}
 		if plan.Target != nil && plan.Target.Alive() {
 			tgt := plan.Target

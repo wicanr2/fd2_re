@@ -6001,6 +6001,21 @@
         ],
         "pattern": "wgpu = .*features = \\[\"std\", \"wgsl\"\\]"
       }
+    },
+    {
+      "id": "raw-inactive-writer-updates-onfield",
+      "date": "2026-11-26",
+      "area": "重製端",
+      "rule": "寫 raw +5 bit0（0x32975 一類「離場」）的 owner，一律經 battle.State.MarkNativeUnitInactive／Rust mark_native_unit_inactive 同時清 OnField 並同步原始記錄。原生地圖呈現看 raw bit0，勝負判定 Result／AliveCount 看 OnField，只寫其中一邊就會出現「看不見卻還算在場」。",
+      "why": "第 4 章事件 12 讓獸人改模式 7 撤退，抵達時只寫了 NativeRecordByte5=1。地圖上獸人消失，Result 仍把它算成存活敵軍，玩家打光看得到的敵人後戰役無法結束。",
+      "evidence": "docs/knowledge-base/56-fd2-remake-sdd.md#第四章撤退離場與勝負判定",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "MarkNativeUnitInactive\\(u\\)"
+      }
     }
   ]
 }

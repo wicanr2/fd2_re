@@ -236,10 +236,7 @@ func (st *State) ApplyNativeDeathOp(op NativeDeathOp) error {
 		if op.Unit >= len(st.Units) || st.Units[op.Unit] == nil {
 			return nil
 		}
-		u := st.Units[op.Unit]
-		u.OnField = false
-		u.NativeRecordByte5, u.HasNativeRecordByte5 = 1, true
-		st.syncNativeRuntimeRecord(op.Unit, 0x05, 1, 1)
+		st.markNativeRecordInactive(op.Unit)
 	case "range_one":
 		// 0x35C18：互動時的地圖範圍選擇值。
 		st.NativeMapRangeMode, st.HasNativeMapRangeModeState = 1, true

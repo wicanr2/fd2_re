@@ -817,9 +817,16 @@ func (d *driver) act(plan *battle.AIPlan) obj {
 			}
 		}
 		if plan.NativeModeWriteByte5 {
-			u.NativeRecordByte5, u.HasNativeRecordByte5 = 1, true
+			// 與 aiStep 相同：0x32975 讓記錄離場，0x1D8A0 等逐單位章節處理器當下判勝負。
+			if err := d.st.MarkNativeUnitInactive(u); err != nil {
+				d.stop("mode7 departure: " + err.Error())
+				return
+			}
 		}
 		d.finishAction(u)
+		if plan.NativeModeWriteByte5 {
+			d.checkResult()
+		}
 	}
 	if plan.Target != nil && plan.Target.Alive() {
 		out["attack"] = d.attack(u, plan.Target)

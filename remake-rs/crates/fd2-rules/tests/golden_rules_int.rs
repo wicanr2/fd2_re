@@ -767,9 +767,16 @@ impl Driver<'_> {
             }
         }
         if plan.native_mode_write_byte5 {
-            (self.st.units[u].native_record_byte5, self.st.units[u].has_native_record_byte5) = (1, true);
+            // 與 aiStep 相同：0x32975 讓記錄離場，0x1D8A0 等逐單位章節處理器當下判勝負。
+            if let Err(err) = self.st.mark_native_unit_inactive(u) {
+                self.stop(format!("mode7 departure: {err}"));
+                return out;
+            }
         }
         self.finish_action(u);
+        if plan.native_mode_write_byte5 {
+            self.check_result();
+        }
         out
     }
 

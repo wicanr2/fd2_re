@@ -116,6 +116,103 @@ class DefeatRecord(unittest.TestCase):
         with self.assertRaises(SystemExit):
             drive.do_defeat_record(command)
 
+class DefeatInPhase(unittest.TestCase):
+    def command(self, helpers=(6, 5)):
+        return {"defeat_in_phase": {"index": 27, "identity": 102, "helpers": list(helpers), "max_rounds": 1}}
+
+    def helper(self, index, acted=False):
+        raw = bytearray(80)
+        raw[0x3b] = 6
+        raw[5] = 0x80 if acted else 0
+        return {"index": index, "camp": 2, "hp": 40, "x": 10, "y": 14, "raw_hex": raw.hex()}
+
+    def test_unregistered_target_or_helper_rejects(self):
+        for spec in ({"index": 19, "identity": 97, "helpers": [6], "max_rounds": 1},
+                     {"index": 27, "identity": 101, "helpers": [6], "max_rounds": 1},
+                     {"index": 27, "identity": 102, "helpers": [7], "max_rounds": 1},
+                     {"index": 27, "identity": 102, "helpers": [6, 6], "max_rounds": 1},
+                     {"index": 27, "identity": 102, "helpers": [6], "max_rounds": 5},
+                     {"index": 27, "identity": 102, "helpers": [6]},
+                     {"index": 27, "identity": 102, "helpers": [6], "max_rounds": 1, "extra": 1}):
+            with self.assertRaises(SystemExit):
+                drive.do_defeat_in_phase({"defeat_in_phase": spec})
+
+    def test_dead_target_skips_engage_and_returns_to_cursor(self):
+        snapshot = {"units": [{"index": 27, "identity": 102, "camp": 0, "hp": 0}]}
+        with mock.patch.object(drive, "state", return_value=snapshot), \
+                mock.patch.object(drive, "do_engage") as engage, \
+                mock.patch.object(drive, "log_action"), \
+                mock.patch.object(drive, "do_await_ui", return_value=True) as await_ui:
+            self.assertTrue(drive.do_defeat_in_phase(self.command()))
+            engage.assert_not_called()
+            await_ui.assert_called_once()
+
+    def test_stops_attacking_after_first_kill(self):
+        alive = {"view": {"round": 5}, "units": [{"index": 27, "identity": 102, "camp": 0, "hp": 85},
+                                                  self.helper(6), self.helper(5)]}
+        dead = {"view": {"round": 5}, "units": [{"index": 27, "identity": 102, "camp": 0, "hp": 0},
+                                                 self.helper(6, acted=True), self.helper(5)]}
+        current = [alive]
+
+        def strike(_command):
+            current[0] = dead
+            return True
+
+        with mock.patch.object(drive, "state", side_effect=lambda: current[0]), \
+                mock.patch.object(drive, "do_engage", side_effect=strike) as engage, \
+                mock.patch.object(drive, "log_action"), \
+                mock.patch.object(drive, "do_await_ui", return_value=True):
+            self.assertTrue(drive.do_defeat_in_phase(self.command()))
+            self.assertEqual(engage.call_count, 1)
+            self.assertEqual(engage.call_args[0][0]["engage"], {"from_index": 6, "target_index": 27})
+
+    def test_survivor_ends_round_normally_then_fails_after_bound(self):
+        snapshot = {"view": {"round": 5},
+                    "units": [{"index": 27, "identity": 102, "camp": 0, "hp": 85},
+                              self.helper(6, acted=True), self.helper(5, acted=True)]}
+        with mock.patch.object(drive, "state", return_value=snapshot), \
+                mock.patch.object(drive, "do_engage") as engage, \
+                mock.patch.object(drive, "do_sweep_round", return_value=True) as sweep, \
+                mock.patch.object(drive, "do_await", return_value=True), \
+                mock.patch.object(drive, "do_mark"), \
+                mock.patch.object(drive, "do_await_ui", return_value=True):
+            self.assertFalse(drive.do_defeat_in_phase(self.command()))
+            engage.assert_not_called()
+            sweep.assert_called_once_with({"max_units": 0, "finish_wait": 160, "steps": 2_000_000})
+
+class EndTurnsUntilTown(unittest.TestCase):
+    def test_bound_is_validated(self):
+        for spec in ({}, {"max_rounds": 0}, {"max_rounds": 7}, {"max_rounds": 2, "extra": 1}):
+            with self.assertRaises(SystemExit):
+                drive.do_end_turns_until_town({"end_turns_until_town": spec})
+
+    def test_already_in_town_sends_nothing(self):
+        with mock.patch.object(drive, "state", return_value={}), \
+                mock.patch.object(drive, "ui_mode", return_value="town"), \
+                mock.patch.object(drive, "end_turn") as end:
+            self.assertTrue(drive.do_end_turns_until_town({"end_turns_until_town": {"max_rounds": 2}}))
+            end.assert_not_called()
+
+    def test_town_after_end_succeeds_without_second_end(self):
+        modes = iter(["cursor", "town"])
+        with mock.patch.object(drive, "state", return_value={"view": {"round": 6}}), \
+                mock.patch.object(drive, "ui_mode", side_effect=lambda _c: next(modes)), \
+                mock.patch.object(drive, "end_turn", return_value=True) as end, \
+                mock.patch.object(drive, "log_action"):
+            self.assertTrue(drive.do_end_turns_until_town({"end_turns_until_town": {"max_rounds": 3}}))
+            end.assert_called_once()
+
+    def test_bound_exhausted_fails(self):
+        rounds = iter([6, 7, 7, 7, 7])
+        with mock.patch.object(drive, "state", return_value={}), \
+                mock.patch.object(drive, "ui_mode", return_value="cursor"), \
+                mock.patch.object(drive, "in_battle", return_value=True), \
+                mock.patch.object(drive, "measure", side_effect=lambda _c, _n: next(rounds)), \
+                mock.patch.object(drive, "end_turn", return_value=True) as end, \
+                mock.patch.object(drive, "do_mark"):
+            self.assertFalse(drive.do_end_turns_until_town({"end_turns_until_town": {"max_rounds": 1}}))
+            end.assert_called_once()
+
 class EscortRounds(unittest.TestCase):
     def command(self, rounds=3):
         return {"escort_rounds": {"from_index": 1, "helpers": [18],
