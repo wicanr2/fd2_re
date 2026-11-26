@@ -605,6 +605,105 @@ impl ParityReplay {
         );
     }
 
+    /// Go `chapter_parity_replay_test.go`：mark `record_question`。非城鎮整備（沒有 cancel）的「要記錄戰況嗎」，
+    /// 原版停在 0x2CC76；從戰場或戰後節點進來時先推到下一章整備節點。
+    fn mark_record_question(&mut self, action: &ParityAction) {
+        if let Err(err) = verify_parity_preparation_owner(&self.run, action.seq, "0x2CC76") {
+            panic!("{err}");
+        }
+        let id = node_id(&self.d.g);
+        if id == self.battle || (!self.postbattle.is_empty() && id == self.postbattle) {
+            let target = self.preparation_after.clone();
+            self.ensure_postbattle_node(&target);
+        }
+        let ok = self.d.pump(600, |g| g.native_preparation_prompt_active() && !g.native_class_ui_blocks_input())
+            && node(&self.d.g).is_some_and(|n| n.cancel.is_empty());
+        assert!(ok, "非城鎮記錄問題未取得操作權");
+        let ui = self.ui();
+        self.checkpoint("record_question", action.seq, &ui, true, &[]);
+    }
+
+    /// Go `chapter_parity_replay_test.go`：mark `record_slots`。正常 YES 進四槽保存（0x3009C／0x2CCBB）。
+    fn mark_record_slots(&mut self, action: &ParityAction) {
+        assert!(
+            verify_parity_preparation_owner(&self.run, action.seq, "0x3009C").is_ok()
+                && verify_parity_preparation_owner(&self.run, action.seq, "0x2CCBB").is_ok(),
+            "四槽保存缺少原版caller"
+        );
+        self.replay_preparation_record_keys(self.prev_seq, action.seq);
+        assert!(self.d.g.prep_record_slots && !self.d.g.prep_selecting, "正常YES輸入沒有進四槽保存");
+        let ui = self.ui();
+        self.checkpoint("record_slots", action.seq, &ui, true, &[]);
+    }
+
+    /// Go `chapter_parity_replay_test.go`：mark `record_party_selection`。非城鎮 NO／四槽 ESC 回到零勾選選人。
+    fn mark_record_party_selection(&mut self, action: &ParityAction) {
+        if let Err(err) = verify_parity_preparation_owner(&self.run, action.seq, "0x31A2E") {
+            panic!("{err}");
+        }
+        self.replay_preparation_record_keys(self.prev_seq, action.seq);
+        let g = &self.d.g;
+        let selected = g.party_deploy.values().filter(|&&v| v).count();
+        assert!(g.prep_selecting && !g.prep_record_slots && selected == 0, "非城鎮NO／四槽ESC沒有回零勾選選人");
+        self.party_selection_seq = action.seq;
+        let ui = self.ui();
+        self.checkpoint("record_party_selection", action.seq, &ui, true, &[]);
+    }
+
+    /// Go `chapter_parity_replay_test.go:3156`：`replayPreparationRecordKeys`。
+    fn replay_preparation_record_keys(&mut self, from: i64, to: i64) {
+        assert!(from > 0 && to > from, "整備記錄缺少控制序列邊界");
+        for seq in from + 1..=to {
+            let Some(key) = self.keys.as_ref().and_then(|k| k.get(&seq)).cloned() else {
+                panic!("整備記錄缺control-history seq{seq}");
+            };
+            if key.is_empty() {
+                continue;
+            }
+            let mut input = NativePreparationInput::default();
+            match key.as_str() {
+                "enter" => input.enter = true,
+                "esc" => input.escape = true,
+                "up" => input.up = true,
+                "down" => input.down = true,
+                "left" => input.left = true,
+                "right" => input.right = true,
+                _ => panic!("整備記錄未知按鍵{key:?}"),
+            }
+            assert!(
+                self.d.g.handle_native_preparation_input(input)
+                    && self.d.pump(600, |g| !g.native_class_ui_blocks_input()),
+                "整備記錄seq{seq}輸入未消費"
+            );
+        }
+    }
+
+    /// Go `chapter_parity_replay_test.go:3193`：`preparationSave`。四槽列表上一次正常 Enter 寫入選定槽。
+    fn preparation_save(&mut self, action: &ParityAction) {
+        let g = &self.d.g;
+        let ok = action.slot.is_some_and(|slot| (0..=3).contains(&slot) && g.prep_record_slot_sel == slot)
+            && g.prep_record_slots
+            && verify_parity_preparation_owner(&self.run, action.seq, "0x3009C").is_ok()
+            && verify_parity_preparation_owner(&self.run, action.seq, "0x2CCBB").is_ok();
+        assert!(ok, "整備保存缺少原版四槽owner或selected slot");
+        let confirms = (self.prev_seq + 1..=action.seq).filter(|&seq| self.key(seq) == "enter").count();
+        assert_eq!(confirms, 1, "整備保存必須消費一次正常Enter，不能只比既存SAV");
+        self.replay_preparation_record_keys(self.prev_seq, action.seq);
+        let g = &self.d.g;
+        assert!(
+            g.prep_record_slots
+                && !g.prep_selecting
+                && g.native_chapter_slot_save_err.is_none()
+                && g.load_err.is_empty(),
+            "整備保存後沒有保留四槽列表 {} {:?}",
+            g.load_err,
+            g.native_chapter_slot_save_err
+        );
+        let raw = std::fs::read(native_current_save_path()).unwrap_or_else(|err| panic!("{err}"));
+        let ui = self.ui();
+        self.checkpoint("preparation_save", action.seq, &ui, true, &[format!("save_sha256={}", sha256_hex_of(&raw))]);
+    }
+
     /// Go `chapter_parity_replay_test.go:1248`：mark `party_selection`。原版停在 0x31A2E 的出戰 YES，
     /// 重製端以正式整備 owner 按 YES 進入選人。
     fn mark_party_selection(&mut self, action: &ParityAction) {
@@ -860,13 +959,10 @@ impl ParityReplay {
                 );
                 self.checkpoint("departure_prompt", action.seq, "preparation", true, &[]);
             }
-            "ending_entry"
-            | "ending_terminal"
-            | "captain_reinforcements_arrived"
-            | "before_clear_viewport"
-            | "record_question"
-            | "record_slots"
-            | "record_party_selection" => {
+            "record_question" => self.mark_record_question(action),
+            "record_slots" => self.mark_record_slots(action),
+            "record_party_selection" => self.mark_record_party_selection(action),
+            "ending_entry" | "ending_terminal" | "captain_reinforcements_arrived" | "before_clear_viewport" => {
                 todo!("R8: chapter_parity_replay_test.go:1107 mark {:?}（第一章沒有）", action.label)
             }
             "party_selection" => self.mark_party_selection(action),
@@ -1873,7 +1969,8 @@ impl ParityReplay {
                 "shop_buy" => self.shop_buy(action),
                 "hp_lock" => self.update_hp_locks(action),
                 "end_turns_until_town" => self.end_turns_until_town(action),
-                "item_use" | "cancel" | "preparation_save" | "ending_terminal" => {
+                "preparation_save" => self.preparation_save(action),
+                "item_use" | "cancel" | "ending_terminal" => {
                     todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
                 }
                 _ => self.note(action, "unhandled action kind"),

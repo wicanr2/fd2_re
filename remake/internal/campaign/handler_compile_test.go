@@ -2578,7 +2578,7 @@ func TestCompileCompleteChapter22PostBindingPreservesLayoutResourcesAndPaletteLo
 	}
 	visitBeats(beats)
 	if layout == nil || len(layout.Units) != 18 || layout.CamX != 336 || layout.CamY != 336 ||
-		layout.Units[16] != (HandlerUnitLayout{Slot: 16, X: 19, Y: 21, Pose: 0}) ||
+		layout.Units[16] != (HandlerUnitLayout{Slot: 16, X: 19, Y: 21, Pose: 2}) ||
 		layout.Units[17] != (HandlerUnitLayout{Slot: 17, X: 21, Y: 21, Pose: 2}) {
 		t.Fatalf("ch22_post layout=%#v", layout)
 	}

@@ -3309,7 +3309,7 @@ fn compile_complete_chapter22_post_binding_preserves_layout_resources_and_palett
         v.layout.as_ref().is_some_and(|l| l.units.len() == 18
             && l.cam_x == 336
             && l.cam_y == 336
-            && l.units[16] == HandlerUnitLayout { slot: 16, x: 19, y: 21, pose: 0 }
+            && l.units[16] == HandlerUnitLayout { slot: 16, x: 19, y: 21, pose: 2 }
             && l.units[17] == HandlerUnitLayout { slot: 17, x: 21, y: 21, pose: 2 }),
         "ch22_post layout={:?}",
         v.layout

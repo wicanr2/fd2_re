@@ -145,6 +145,7 @@ mod modern_hd_transient_expiry;
 mod modern_hd_unit_present;
 mod modern_opening;
 mod modern_story_portrait;
+mod native_24b4d;
 mod native_action_death_present;
 mod native_ai_idle_recovery;
 mod native_ai_item_presentation;

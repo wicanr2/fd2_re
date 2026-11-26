@@ -121,6 +121,160 @@ pub(crate) fn native_delay_ticks(ms: i64) -> i64 {
     (ms * 60 + 999) / 1000
 }
 
+/// Go：`native_indexed_transition.go:62`，`func validateNativeIndexedTransitionSpec(s campaign.HandlerIndexedTransition) error`
+pub(crate) fn validate_native_indexed_transition_spec(s: &campaign::HandlerIndexedTransition) -> Result<()> {
+    if s.frames != 9
+        || s.frame_delay_ms != 5
+        || s.tail_delay_ms != 500
+        || s.start_y != 0
+        || s.end_y != fdother::NATIVE_TRANSITION_STAGE_HEIGHT
+        || s.clip_width != fdother::NATIVE_TRANSITION_STAGE_WIDTH
+        || s.clip_height != fdother::NATIVE_TRANSITION_STAGE_HEIGHT
+        || s.palette_range_start != 0
+        || s.palette_range_end != 255
+        || s.palette_delta_start != 0
+        || s.palette_delta_end != 62
+        || s.palette_delta_step != 2
+        || s.palette_delay_ms != 4
+    {
+        return Err(GameError::new("native 0x24618 payload differs from recovered geometry/timing"));
+    }
+    Ok(())
+}
+
+impl NativeIndexedTransitionJob {
+    /// Go：`native_indexed_transition.go:237`，`func (j *nativeIndexedTransitionJob) composePass(index int, luts [][]byte) error`
+    pub(crate) fn compose_pass(&mut self, index: usize, assets: &NativeMapAssets) -> Result<()> {
+        let Some(frame) = self.schedule.frames.get(index).copied() else {
+            return Err(GameError::new("native 0x24618 pass outside schedule"));
+        };
+        let lut = fdother::native_indexed_transition_lut(&assets.luts, frame.lut_index)?;
+        let pass = fdother::build_native_indexed_transition_pass(
+            self.spec.tile_x,
+            self.spec.tile_y,
+            frame.radius,
+            self.spec.start_y,
+            self.spec.end_y,
+        )?;
+        indexedmap::compose_native_transition_frame(
+            &mut self.work,
+            &mut self.vga,
+            &self.input.input(assets),
+            pass,
+            &lut,
+        )?;
+        self.frame_vga.push(self.vga.clone());
+        self.frame_work.push(self.work.clone());
+        Ok(())
+    }
+}
+
+impl Game {
+    /// 第一、二個參數是動態游標運算式，與靜態幾何分開；呼叫點屬於 `Beat.Source`，未證實的偏移失敗即關閉。
+    ///
+    /// Go：`native_indexed_transition.go:82`，`func (g *Game) resolveNativeIndexedTransitionSpec(spec campaign.HandlerIndexedTransition, source string) (campaign.HandlerIndexedTransition, error)`
+    pub(crate) fn resolve_native_indexed_transition_spec(
+        &self,
+        spec: &campaign::HandlerIndexedTransition,
+        source: &str,
+    ) -> Result<campaign::HandlerIndexedTransition> {
+        let mut spec = spec.clone();
+        if spec.cursor_source.is_empty() {
+            return Ok(spec);
+        }
+        if spec.cursor_source != "native_relative_cursor" {
+            return Err(GameError::new("native 0x24618 cursor source is not proven"));
+        }
+        let (dx, dy) = (spec.cursor_x_offset, spec.cursor_y_offset);
+        let valid_offset = matches!(
+            (source, dx, dy),
+            ("0x245ce", 0, 3)
+                | ("0x336e5", 0, 5)
+                | ("0x33ce2", 6, 5)
+                // 第27章READY caller資料：fd2_ch27_flow_20261016.json。
+                | ("0x33bb9", 0, 3)
+                | ("0x33c09", 0, 0)
+                | ("0x33c66", 2, 0)
+                | ("0x252ee", 0, -1)
+        );
+        if !valid_offset {
+            return Err(game_err!("native 0x24618 cursor offset is not proven for source {source}"));
+        }
+        let view = match self.st.as_ref() {
+            Some(st) if st.has_native_map_view_state => st.native_map_view_state,
+            // LOADCH scenes keep the six raw map-view globals outside battle.State.
+            _ if self.has_story_native_map_view => self.story_native_map_view,
+            _ => return Err(GameError::new("native 0x24618 relative cursor provenance unavailable")),
+        };
+        let (x, y) = (view.visible_cursor_x + dx, view.visible_cursor_y + dy);
+        if !(0..fdother::NATIVE_TRANSITION_STAGE_WIDTH).contains(&x)
+            || !(0..fdother::NATIVE_TRANSITION_STAGE_HEIGHT).contains(&y)
+        {
+            return Err(GameError::new("native 0x24618 relative cursor is outside indexed stage"));
+        }
+        (spec.tile_x, spec.tile_y) = (x, y);
+        Ok(spec)
+    }
+
+    /// 0x24618 圓形轉場：九段 LUT 合成全部預先算好再啟動；HD 綁定與其他 Rust 演出相同另期。
+    ///
+    /// Go：`native_indexed_transition.go:184`，`func (g *Game) startNativeIndexedTransition(spec campaign.HandlerIndexedTransition, source string, then func()) error`
+    pub(crate) fn start_native_indexed_transition(
+        &mut self,
+        spec: &campaign::HandlerIndexedTransition,
+        source: &str,
+        then: Box<dyn FnOnce(&mut Game) + Send>,
+    ) -> Result<()> {
+        if self.indexed_transition.is_some() {
+            return Err(GameError::new("native 0x24618 transition already active"));
+        }
+        let spec = self.resolve_native_indexed_transition_spec(spec, source)?;
+        validate_native_indexed_transition_spec(&spec)?;
+        let schedule = fdother::build_native_indexed_transition_schedule(spec.radial_radius, spec.radial_radius_step)?;
+        let input = self.build_native_indexed_transition_input()?;
+        let assets = self.native_map_assets.as_ref().ok_or_else(|| GameError::new("native map assets unavailable"))?;
+        let mut job = NativeIndexedTransitionJob {
+            input,
+            schedule,
+            spec,
+            work: vec![0; indexedmap::NATIVE_UNIT_PRESENT_WORK_SIZE as usize],
+            vga: vec![0; indexedmap::NATIVE_MAP_VGA_SIZE as usize],
+            dac: assets.palette_dac.clone(),
+            baseline: assets.palette_dac.clone(),
+            phase: NATIVE_TRANSITION_PASS,
+            then: Some(then),
+            ..Default::default()
+        };
+        for i in 0..job.schedule.frames.len() {
+            job.compose_pass(i, assets).map_err(|err| game_err!("preflight pass {i}: {}", err.message()))?;
+        }
+        let palette = fdother::vga_palette_from_dac(&job.dac)?;
+        (job.frame, job.palette, job.drawn) = (0, color_palette_from_nrgba(&palette), false);
+        let first = job.frame_vga[0].clone();
+        job.vga.copy_from_slice(&first);
+        self.indexed_transition = Some(job);
+        Ok(())
+    }
+
+    /// 原版索引色分支：以目前 DAC 調色盤畫 320×200 VGA 並承認呈現。
+    ///
+    /// Go：`native_indexed_transition.go:331`，`func (g *Game) drawNativeIndexedTransition(screen *ebiten.Image) bool`
+    pub(crate) fn draw_native_indexed_transition(&mut self, screen: &mut Picture) -> bool {
+        let Some(j) = self.indexed_transition.as_mut() else {
+            return false;
+        };
+        if j.vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE || j.palette.len() != 256 {
+            return false;
+        }
+        let img = indexed_frame(320, 200, &j.vga, j.palette.clone());
+        let mut options = DrawImageOptions::default();
+        options.geo_m.scale(2.0, 2.0);
+        screen.draw_image(&Picture::from_indexed(&img), &options);
+        j.drawn = true;
+        true
+    }
+}
+
 impl Game {
     /// R4 B 組隨呼叫端補移植（原標 `r8`）：Go `native_indexed_transition.go:122`，
     /// `func (g *Game) buildNativeIndexedTransitionInput() (indexedmap.NativeTransitionFrameInput, error)`。

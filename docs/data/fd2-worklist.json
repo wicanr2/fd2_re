@@ -548,6 +548,19 @@
         "note": "需要以真實 HD 包實測對白畫面。"
       },
       "issue": 320
+    },
+    {
+      "id": "ch22-zero-flag-counter-caller-bg",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "第22章重建槽第1回合零旗標主攻／非零旗標反擊，原版0x4E6BD越界寫入",
+      "body": "依 #193 結案留言另開的窄題：可比的原版正常狀態再次觸發零旗標主攻（FIGANI byte1=0）對非零旗標反擊（byte1≠0）。\n\n輸入：由第21章槽重建的第22章槽（SHA-256前綴 ce8588c8，24人），計畫 docs/data/parity-plans/ch22-sample-r3.jsonl（只把選人右鍵改7次）。dosgolem d1414930、工作樹乾淨。第1回合敵方階段 record 48（camp 0）出手時，原版以 adapter 近堆在 0x4E6BD STOSB 寫 0160:00291001 中止（seq 684）；改用 native 近堆重跑，同一次行動在 0x4E6A7 STOSB 寫 0160:002A1017 中止（seq 683）。兩種近堆都失敗，因此不是 #192 的近堆模式問題。\n\nRust 重播同一份原版收據到這一步前 30 筆檢查點無分歧，停在 native_physical_body 的既有拒收「native physical counter requires unavailable caller BG layers」。重製端照 #193 保留失敗即關閉，沒有猜補背景。\n\n既有線索見 docs/data/ida/fd2_ch18_oracle_stosb_20261003.json 的 lifetime_lead：28A6C 只依主攻 byte1 載入 BG0..2，反擊 2939D 仍進 29C90，可能消費前一場已釋放的 5410B 指標（假說）。",
+      "acceptance": "以同源原版收據定位這次反擊讀到的 BG 指標、header 與 payload 來源（writer／consumer、raw bytes、推論等級），寫入 IDA 證據檔；判定原版在實機上的可見結果後，再決定重製端的正式行為與規格。第22章章重播在此之前維持 BLOCKED。",
+      "verify": {
+        "kind": "manual",
+        "note": "比對同源原版收據的BG來源證據；不得移除拒收、不得以重新載入BG#0..2猜補，也不得換章計畫繞過這次攻擊來宣稱第22章完成。"
+      },
+      "issue": 321
     }
   ]
 }

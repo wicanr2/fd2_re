@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 36 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 37 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -69,6 +69,20 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 IDA 9.4列出[0x53EC8]的直接寫入端時，函式0x1ECC7（由0x1E856呼叫）在0x1F024／0x1F03C以mov覆寫累計，不是累加。呼叫情境與覆寫值的來源未查。證據見docs/data/ida/fd2_command_experience_writers_20261114.json的not_resolved。
 
 怎樣算做完：以IDA直接指令與caller閉合0x1ECC7覆寫的情境與數值來源，寫入證據檔並登記58；若屬玩家可達路徑，重製端依規格接線。
+
+### 第22章重建槽第1回合零旗標主攻／非零旗標反擊，原版0x4E6BD越界寫入
+
+`ch22-zero-flag-counter-caller-bg` · RE待解 · [#321](https://github.com/wicanr2/fd2_re/issues/321) · 仍未完成 · 要人判
+
+依 #193 結案留言另開的窄題：可比的原版正常狀態再次觸發零旗標主攻（FIGANI byte1=0）對非零旗標反擊（byte1≠0）。
+
+輸入：由第21章槽重建的第22章槽（SHA-256前綴 ce8588c8，24人），計畫 docs/data/parity-plans/ch22-sample-r3.jsonl（只把選人右鍵改7次）。dosgolem d1414930、工作樹乾淨。第1回合敵方階段 record 48（camp 0）出手時，原版以 adapter 近堆在 0x4E6BD STOSB 寫 0160:00291001 中止（seq 684）；改用 native 近堆重跑，同一次行動在 0x4E6A7 STOSB 寫 0160:002A1017 中止（seq 683）。兩種近堆都失敗，因此不是 #192 的近堆模式問題。
+
+Rust 重播同一份原版收據到這一步前 30 筆檢查點無分歧，停在 native_physical_body 的既有拒收「native physical counter requires unavailable caller BG layers」。重製端照 #193 保留失敗即關閉，沒有猜補背景。
+
+既有線索見 docs/data/ida/fd2_ch18_oracle_stosb_20261003.json 的 lifetime_lead：28A6C 只依主攻 byte1 載入 BG0..2，反擊 2939D 仍進 29C90，可能消費前一場已釋放的 5410B 指標（假說）。
+
+怎樣算做完：以同源原版收據定位這次反擊讀到的 BG 指標、header 與 payload 來源（writer／consumer、raw bytes、推論等級），寫入 IDA 證據檔；判定原版在實機上的可見結果後，再決定重製端的正式行為與規格。第22章章重播在此之前維持 BLOCKED。
 
 ## data — 可編輯資料還沒就緒
 

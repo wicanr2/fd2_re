@@ -276,3 +276,14 @@ helper 已存在就直接解除 campaign gate。
 勘誤（2026-10-03，#137）
 ----------------------
 本檔86筆拓撲是全量原始容量與局部post建構fixture。canonical dosgolem同源第23章正常開場seq153只物化16持續隊員、group0兩筆及group1二十四筆，共42筆；其餘44筆保留pending。舊測試將全部群組初始登場的做法已由此同狀態反證否定。主證據與原始位址保留；入口：fd2_ch23_startup_20261003.json的#137延伸及ui-traces/ch23-native-startup.json。晚期event52來源由#138另驗，不用86容量推斷時序。
+
+2026-11-26 勘誤：`0x247B4` pose 表最後一個 byte（IDA 已證實）
+
+- 上方 2026-08-21 段落的 `pose[0..16] = 00 … 00`（17 個 00）少看最後一個
+  byte。同一 EXE 雜湊（MD5 b97caf22…）以 IDA Pro 9.4 重新 dump
+  `0x522A3:0x33`，pose 表 `0x522C5..0x522D5` 為 16 個 `00` 接 `02`：slot16
+  的 pose 是 2。`sub_233C6` 在 `0x23412` 比 `arg_8` 與 4，表指標走
+  `0x23422` 取 `table[slot]`，由 `0x2341D` 寫 record+3。
+- dosgolem d1414930 第23章重建槽的唯讀記憶體監看看到 `0x2341D` 把
+  record16+3 由 0 寫成 2，與 byte dump 一致。完整證據與取代關係見
+  `docs/data/ida/fd2_ch23_post_layout_pose_20261126.json`。

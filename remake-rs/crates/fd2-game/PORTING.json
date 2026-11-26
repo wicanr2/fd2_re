@@ -25,11 +25,11 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 689,
+      "ported": 735,
       "r6": 59,
-      "r8": 1174
+      "r8": 1128
     },
-    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）"
+    "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
   "excluded_go_files": [
     "assets_glob_js.go",
@@ -11163,29 +11163,29 @@
     },
     {
       "go": "remake/cmd/fd2/native_24b4d.go",
-      "rust": null,
+      "rust": "remake-rs/crates/fd2-game/src/game/native_24b4d.rs",
       "go_lines": 162,
       "items": [],
       "functions": [
         {
           "name": "startNative24B4D",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native24_b4_d",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::start_native_24b4d",
+          "status": "ported",
           "go_line": 15
         },
         {
           "name": "failNative24B4D",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::fail_native24_b4_d",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::fail_native_24b4d",
+          "status": "ported",
           "go_line": 134
         },
         {
           "name": "drawNative24B4D",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native24_b4_d",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::draw_native_24b4d",
+          "status": "ported",
           "go_line": 142
         }
       ],
@@ -12136,36 +12136,36 @@
         {
           "name": "startNative2189A",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native2189_a",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::start_native_2189a",
+          "status": "ported",
           "go_line": 52
         },
         {
           "name": "publishNative2189AFrame",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::publish_native2189_a_frame",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::publish_native_2189a_frame",
+          "status": "ported",
           "go_line": 193
         },
         {
           "name": "stepNative2189A",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::step_native2189_a",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::step_native_2189a",
+          "status": "ported",
           "go_line": 203
         },
         {
           "name": "failNative2189A",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::fail_native2189_a",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::fail_native_2189a",
+          "status": "ported",
           "go_line": 221
         },
         {
           "name": "drawNative2189A",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native2189_a",
-          "status": "r8",
+          "rust": "fd2_game::game::Game::draw_native_2189a",
+          "status": "ported",
           "go_line": 229
         }
       ],
@@ -12187,34 +12187,34 @@
         {
           "name": "loadSeparatedFDFIELDComposition",
           "rust": "fd2_game::game::load_separated_fdfield_composition",
-          "status": "r8",
+          "status": "ported",
           "go_line": 16
         },
         {
           "name": "decodeNativeCh22Reload",
           "rust": "fd2_game::game::decode_native_ch22_reload",
-          "status": "r8",
+          "status": "ported",
           "go_line": 55
         },
         {
           "name": "stageNativeCh22Resource",
           "recv": "Game",
           "rust": "fd2_game::game::Game::stage_native_ch22_resource",
-          "status": "r8",
+          "status": "ported",
           "go_line": 96
         },
         {
           "name": "resetNativeCh22ReloadGrid",
           "recv": "Game",
           "rust": "fd2_game::game::Game::reset_native_ch22_reload_grid",
-          "status": "r8",
+          "status": "ported",
           "go_line": 131
         },
         {
           "name": "prepareNativeCh22Aux",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_native_ch22_aux",
-          "status": "r8",
+          "status": "ported",
           "go_line": 140
         }
       ],
@@ -13925,7 +13925,7 @@
         {
           "name": "startNativeCommand2Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native_command2_presentation",
+          "rust": "fd2_game::game::Game::execute_native_ai_command2",
           "status": "ported",
           "go_line": 93
         },
@@ -13952,7 +13952,7 @@
         {
           "name": "drawNativeCommand2Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native_command2_presentation",
+          "rust": "fd2_game::game::Game::present_native_command2",
           "status": "ported",
           "go_line": 545
         }
@@ -14713,7 +14713,7 @@
         {
           "name": "startNativeCommand8Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::start_native_command8_presentation",
+          "rust": "fd2_game::game::Game::execute_native_ai_command8",
           "status": "ported",
           "go_line": 49
         },
@@ -14740,7 +14740,7 @@
         {
           "name": "drawNativeCommand8Presentation",
           "recv": "Game",
-          "rust": "fd2_game::game::Game::draw_native_command8_presentation",
+          "rust": "fd2_game::game::Game::present_native_command8",
           "status": "ported",
           "go_line": 406
         }
@@ -15413,13 +15413,13 @@
         {
           "name": "nativeDeathStagingEvent",
           "rust": "fd2_game::game::native_death_staging_event",
-          "status": "r8",
+          "status": "ported",
           "go_line": 182
         },
         {
           "name": "validateNativeDeathStaging",
           "rust": "fd2_game::game::validate_native_death_staging",
-          "status": "r8",
+          "status": "ported",
           "go_line": 195
         },
         {
@@ -16189,14 +16189,14 @@
         {
           "name": "validateNativeIndexedTransitionSpec",
           "rust": "fd2_game::game::validate_native_indexed_transition_spec",
-          "status": "r8",
+          "status": "ported",
           "go_line": 62
         },
         {
           "name": "resolveNativeIndexedTransitionSpec",
           "recv": "Game",
           "rust": "fd2_game::game::Game::resolve_native_indexed_transition_spec",
-          "status": "r8",
+          "status": "ported",
           "go_line": 82
         },
         {
@@ -16236,14 +16236,14 @@
           "name": "startNativeIndexedTransition",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_indexed_transition",
-          "status": "r8",
+          "status": "ported",
           "go_line": 184
         },
         {
           "name": "composePass",
           "recv": "nativeIndexedTransitionJob",
           "rust": "fd2_game::game::NativeIndexedTransitionJob::compose_pass",
-          "status": "r8",
+          "status": "ported",
           "go_line": 237
         },
         {
@@ -16267,7 +16267,7 @@
           "name": "drawNativeIndexedTransition",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_indexed_transition",
-          "status": "r8",
+          "status": "ported",
           "go_line": 331
         }
       ],
@@ -16946,21 +16946,21 @@
         {
           "name": "validateNativePalettePulse",
           "rust": "fd2_game::game::validate_native_palette_pulse",
-          "status": "r8",
+          "status": "ported",
           "go_line": 30
         },
         {
           "name": "startNativePaletteUpdate",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_palette_update",
-          "status": "r8",
+          "status": "ported",
           "go_line": 37
         },
         {
           "name": "startNativePalettePulse",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_palette_pulse",
-          "status": "r8",
+          "status": "ported",
           "go_line": 62
         },
         {
@@ -16984,7 +16984,7 @@
           "name": "drawNativePalettePulse",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_palette_pulse",
-          "status": "r8",
+          "status": "ported",
           "go_line": 158
         }
       ],
@@ -20258,19 +20258,19 @@
           "name": "nativeEvent52EmptyGroup",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_event52_empty_group",
-          "status": "r8",
+          "status": "ported",
           "go_line": 18
         },
         {
           "name": "validateNativeEvent63",
           "rust": "fd2_game::game::validate_native_event63",
-          "status": "r8",
+          "status": "ported",
           "go_line": 72
         },
         {
           "name": "validateNativeEvent74",
           "rust": "fd2_game::game::validate_native_event74",
-          "status": "r8",
+          "status": "ported",
           "go_line": 95
         },
         {
@@ -20289,7 +20289,7 @@
           "name": "preflightNativeTurnStaging",
           "recv": "Game",
           "rust": "fd2_game::game::Game::preflight_native_turn_staging",
-          "status": "r8",
+          "status": "ported",
           "go_line": 130
         },
         {
@@ -20319,21 +20319,21 @@
           "name": "beginNativeStagingJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::begin_native_staging_job",
-          "status": "r8",
+          "status": "ported",
           "go_line": 316
         },
         {
           "name": "startNativeTurnStagingCall",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_turn_staging_call",
-          "status": "r8",
+          "status": "ported",
           "go_line": 343
         },
         {
           "name": "commitNativeTurnStagingSpawn",
           "recv": "Game",
           "rust": "fd2_game::game::Game::commit_native_turn_staging_spawn",
-          "status": "r8",
+          "status": "ported",
           "go_line": 366
         },
         {
@@ -20360,7 +20360,7 @@
           "name": "drawNativeTurnStaging",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_turn_staging",
-          "status": "r8",
+          "status": "ported",
           "go_line": 486
         }
       ],

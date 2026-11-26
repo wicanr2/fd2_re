@@ -2371,7 +2371,12 @@ impl Game {
                     self.load_err = String::from("beat indexed_transition:缺少 transition payload");
                     return;
                 }
-                todo!("R8: native_indexed_transition.go:startNativeIndexedTransition（第一章沒有執行到）")
+                let spec = b.indexed_transition.clone().unwrap();
+                if let Err(err) =
+                    self.start_native_indexed_transition(&spec, &b.source, Box::new(|g: &mut Game| g.beat_advance()))
+                {
+                    self.load_err = format!("beat indexed_transition: {}", err.message());
+                }
             }
             "native_ch20_sky_key_sequence" => {
                 if b.source != "0x242c9" || b.native_ch20_sky_key.as_ref().is_none_or(|s| !s.is_recovered_contract()) {
@@ -2412,7 +2417,10 @@ impl Game {
                     self.load_err = String::from("beat native_palette_pulse:缺少原版 DAC pulse payload");
                     return;
                 }
-                todo!("R8: native_palette_pulse.go:startNativePalettePulse（第一章沒有執行到）")
+                let pulse = b.native_palette_pulse.unwrap();
+                if let Err(err) = self.start_native_palette_pulse(&pulse, Box::new(|g: &mut Game| g.beat_advance())) {
+                    self.load_err = format!("beat native_palette_pulse: {}", err.message());
+                }
             }
             "native_palette_blackout" => {
                 let Some(blackout) = b.native_palette_blackout.as_ref().filter(|bo| {
@@ -2463,7 +2471,10 @@ impl Game {
                     self.load_err = String::from("beat native_2189a_loop:缺少原始十次 loop payload");
                     return;
                 }
-                todo!("R8: native_ch22_post.go:startNative2189A（第一章沒有執行到）")
+                let lp = b.native2189_a_loop.clone().unwrap();
+                if let Err(err) = self.start_native_2189a(&lp, Box::new(|g: &mut Game| g.beat_advance())) {
+                    self.load_err = format!("beat native_2189a_loop: {}", err.message());
+                }
             }
             "layout_units" => {
                 let Some(layout) = b.layout.as_ref().filter(|l| !l.units.is_empty()) else {
@@ -3110,7 +3121,13 @@ impl Game {
                     self.load_err = String::from("beat transition_reveal:缺少正確 frame count");
                     return;
                 }
-                todo!("R8: native_24b4d.go:startNative24B4D（第一章沒有執行到）")
+                if let Err(err) = self.start_native_24b4d(
+                    b.reveal_frames,
+                    b.reveal_delay_ms,
+                    Box::new(|g: &mut Game| g.beat_advance()),
+                ) {
+                    self.load_err = format!("beat transition_reveal: {}", err.message());
+                }
             }
             "load_res" => {
                 let Some(resource_id) = b.resource_id.filter(|&id| id >= 0) else {
@@ -3118,17 +3135,31 @@ impl Game {
                     return;
                 };
                 if b.source == "0x24a4b" || b.source == "0x24a65" || b.source == "0x24a7f" {
-                    todo!("R8: native_ch22_reload.go:stageNativeCh22Resource（第一章沒有執行到）")
+                    if let Err(err) = self.stage_native_ch22_resource(b) {
+                        self.native_ch22_reload = None;
+                        self.load_err = format!("beat load_res: {}", err.message());
+                        return;
+                    }
                 } else {
                     self.handler_resource = resource_id;
                 }
                 self.beat_advance();
             }
             "native_ch22_reset_grid" => {
-                todo!("R8: native_ch22_reload.go:resetNativeCh22ReloadGrid（第一章沒有執行到）")
+                if let Err(err) = self.reset_native_ch22_reload_grid() {
+                    self.native_ch22_reload = None;
+                    self.load_err = format!("beat native_ch22_reset_grid: {}", err.message());
+                    return;
+                }
+                self.beat_advance();
             }
             "native_ch22_prepare_aux" => {
-                todo!("R8: native_ch22_reload.go:prepareNativeCh22Aux（第一章沒有執行到）")
+                if let Err(err) = self.prepare_native_ch22_aux() {
+                    self.native_ch22_reload = None;
+                    self.load_err = format!("beat native_ch22_prepare_aux: {}", err.message());
+                    return;
+                }
+                self.beat_advance();
             }
             "play_sfx" => {
                 if b.resource_id != Some(88) || !(b.sfx_index == Some(1) || b.sfx_index == Some(-1)) {
@@ -3168,7 +3199,12 @@ impl Game {
                     && b.palette_delta <= 63
                     && native_map_assets_available(self.native_map_assets.as_ref())
                 {
-                    todo!("R8: native_palette_pulse.go:startNativePaletteUpdate（第一章沒有執行到）")
+                    if let Err(err) =
+                        self.start_native_palette_update(b.palette_delta, Box::new(|g: &mut Game| g.beat_advance()))
+                    {
+                        self.load_err = format!("beat palette_update: {}", err.message());
+                    }
+                    return;
                 }
                 // Full range delta=255 is independent of source RGB: every six-bit
                 // component saturates to white. This exact operation can cover legacy
@@ -7585,7 +7621,8 @@ impl Game {
             todo!("R8: native_ch23_post.go:stepNativeCh23Loop（第二十三章）")
         }
         if self.native2189_a.is_some() {
-            todo!("R8: stepNative2189A（0x2189A 演出）")
+            self.step_native_2189a();
+            return self.shot_termination();
         }
         if self.native_unit_present.is_some() {
             todo!("R8: native_unit_present.go:stepNativeUnitPresent（單位登場演出）")
@@ -8332,7 +8369,11 @@ impl Game {
         }
         if self.native2189_a.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_ch22_post.go:drawNative2189A／failNative2189A");
+            if !self.draw_native_2189a(Some(screen)) {
+                self.fail_native_2189a("indexed frame unavailable");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_unit_present.is_some() {
             screen.fill(BLACK);
@@ -8349,14 +8390,24 @@ impl Game {
         }
         if self.transition_reveal.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_24b4d.go:drawNative24B4D／failNative24B4D");
+            if self.transition_reveal.as_ref().is_some_and(|j| !j.hd_frames.is_empty()) {
+                todo!("R6: native_24b4d.go:146 HD 列震動幀");
+            }
+            self.draw_native_24b4d(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.m.is_none() {
             todo!("r8:main.go:9483 缺地圖時的 ebitenutil.DebugPrint");
         }
         if self.indexed_transition.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_indexed_transition.go:drawNativeIndexedTransition（Draw 裡開場與第一章沒有走到）");
+            if self.modern_story_portraits.as_ref().is_some_and(|set| set.map_sprites_hd.len() == 125) {
+                todo!("R6: native_indexed_transition.go:336 HD 索引轉場幀");
+            }
+            self.draw_native_indexed_transition(screen);
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_heal_presentation.is_some() {
             screen.fill(BLACK);
@@ -8444,7 +8495,9 @@ impl Game {
         }
         if self.native_palette_pulse.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_palette_pulse.go:drawNativePalettePulse");
+            self.draw_native_palette_pulse(screen);
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.spawn_intro_transition.is_some() {
             screen.fill(BLACK);
@@ -8456,7 +8509,9 @@ impl Game {
         }
         if self.native_turn_staging.as_ref().is_some_and(|j| j.indexed) {
             screen.fill(BLACK);
-            todo!("r8:native_turn_staging.go:drawNativeTurnStaging（indexed）");
+            self.draw_native_turn_staging(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_field_event61.is_some() {
             screen.fill(BLACK);

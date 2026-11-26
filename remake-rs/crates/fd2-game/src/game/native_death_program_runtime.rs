@@ -174,9 +174,13 @@ impl Game {
         };
         match op.op.as_str() {
             "staging" => {
-                todo!(
-                    "R8: native_death_program_runtime.go:166 beginNativeStagingJob（死亡程式的 0x35822；第一章沒有執行到）"
-                )
+                let event = native_death_staging_event(action.native_event_id.unwrap_or(0), op, &action.native_source);
+                if let Err(err) =
+                    self.begin_native_staging_job(&event, Box::new(|g: &mut Game| g.advance_battle_event()))
+                {
+                    self.finish_battle_event_with_error(err.message());
+                }
+                return true;
             }
             "clear_hp_from" => {
                 todo!("R8: native_death_program_runtime.go:172 startNativeHPClear（0x35BBA；第一章沒有執行到）")

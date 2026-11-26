@@ -6031,3 +6031,12 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 22 章：槽由第 21 章槽重建（`ce8588c8`，24 人），原版執行中。
 - 兩個原版第一次在指令內以 `&` 背景啟動，約 24 步後隨工具呼叫結束被終止，紀錄無錯誤；改用受追蹤背景任務重跑。
 - Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 4、19、21 章重播回歸相同。
+
+## 2026-11-26 Rust 第 22 章 BLOCKED、第 23 章重播與戰後版面 pose 勘誤
+
+- 第 22 章：槽由第 21 章槽重建（`ce8588c8`，24 人）。r2 計畫右移 8 格選到 identity 23，原版以 31E65 拒收必出的希爾法並回城鎮；r3（[`ch22-sample-r3.jsonl`](docs/data/parity-plans/ch22-sample-r3.jsonl)）改右移 7 格後進戰場。第 1 回合敵方階段 record 48 出手時原版以 adapter 近堆在 `0x4E6BD` STOSB 寫 `0160:00291001` 中止，native 近堆在 `0x4E6A7` 寫 `0160:002A1017` 中止；Rust 重播 30 筆無分歧後停在既有 caller BG 拒收。依 #193 結案留言、經使用者同意開 [#321](https://github.com/wicanr2/fd2_re/issues/321)，章重播 BLOCKED。
+- 第 23 章：槽由第 22 章槽重建（`3d507974`）。r4 連選前 15 位不含希爾法而被拒；r5（[`ch23-sample-r5.jsonl`](docs/data/parity-plans/ch23-sample-r5.jsonl)）先選 14 位、右移 7 格。原版 741 個檢查點走到第 24 章整備的四槽保存。Rust 依序補移植：`record_question`／`record_slots`／`record_party_selection` 標記與 `preparation_save`、`start_native_indexed_transition`（0x24618）、`start_native_palette_update`／`start_native_palette_pulse`、0x35822 增援登場（預檢、平移、提交、畫面，回合事件與死亡程式共用）、`start_native_2189a`、`start_native_24b4d`、第 22 章戰後地圖重載三步。46 筆無分歧。
+- 存檔差 1 byte：槽 0 record 24（identity 22）`+3` 原版 2、Rust 0。dosgolem 唯讀記憶體監看定位到 `sub_233C6` 的 `0x2341D` 寫入 2；IDA byte dump `0x522A3:0x33` 顯示 pose 表最後一格 `0x522D5=02`，舊筆記與 SDD 抄成 0。依使用者 2026-11-26 決定修正共用資料 `bindings/ch22_post.json` 並同步 Go／Rust 測試斷言（資料勘誤例外，不動 Go 程式碼）。修正後保存的 FD2.SAV 與原版相同（`30ea9f5d`）。證據 [`fd2_ch23_post_layout_pose_20261126.json`](docs/data/ida/fd2_ch23_post_layout_pose_20261126.json)。
+- IDA 以 `tools/ida.sh` 跑，預設映像標籤 `locked-v1` 本機不存在，改指定既有的 `ida-pro-9.4-idapython:py312-v1`。
+- PORTING.json 的 `functions_by_status` 從這輪之前就沒跟上，已重算（ported 730 起）；新移植函式的 Rust 名稱照實際名稱登錄。
+- 回歸：Rust game 461 項、campaign 530 項、格式與 Clippy 通過；第 4、17、19、21 章重播回歸相同。Go `internal/campaign` 只有既有的 `TestNativeTownCursorLayerReconstructsAllNativeStates`（缺城鎮素材路徑）失敗，HEAD 同樣失敗。

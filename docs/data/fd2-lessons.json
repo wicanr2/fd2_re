@@ -6031,6 +6031,29 @@
         ],
         "pattern": "0x13A9F"
       }
+    },
+    {
+      "id": "layout-table-transcription-needs-byte-dump",
+      "date": "2026-11-26",
+      "area": "逆向證據",
+      "rule": "把原版靜態表抄進可編輯資料前，以 IDA byte dump 逐 byte 核對表的完整長度；表的結尾要用 consumer 的指標推進量（例如 rep movsd 後的 esi）定出來，不能只看前面幾格都一樣就推定整張表相同。",
+      "why": "第23章戰後版面 pose 表 0x522C5..0x522D5 實為 16 個 00 接 02，舊筆記抄成 17 個 00，作者資料與 Go／Rust 測試都跟著寫 0；Rust 重播因此在加入隊伍的 identity 22 朝向差 1 byte。dosgolem 記憶體監看在 0x2341D 看到寫入 2，byte dump 才確認。",
+      "evidence": "docs/data/ida/fd2_ch23_post_layout_pose_20261126.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/assets/cutscenes/bindings/ch22_post.json"
+        ],
+        "pattern": "\"slot\": 16,\n            \"x\": 19,\n            \"y\": 21,\n            \"pose\": 2"
+      }
+    },
+    {
+      "id": "oracle-runs-need-tracked-background",
+      "date": "2026-11-26",
+      "area": "工具鏈",
+      "rule": "原版長執行一律以受追蹤的背景任務啟動（工具的 run_in_background，或在其中 & 再 wait），不要在一般前景指令裡用 & 丟背景；跑完先核對 checkpoint 數與 oracle.log 是否到達計畫終點。",
+      "why": "第19章 r6 與第21章原版在前景指令內以 & 啟動，約 24 步後隨工具呼叫結束被終止，oracle.log 是空的、紀錄沒有任何錯誤，看起來像正常停止。",
+      "evidence": "WORKLOG.md 2026-11-26 Rust 第 18、19、21 章重播"
     }
   ]
 }

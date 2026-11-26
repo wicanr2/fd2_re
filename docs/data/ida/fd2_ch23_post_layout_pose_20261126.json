@@ -1,0 +1,375 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_ida_and_runtime_evidence",
+ "date": "2026-11-26",
+ "timezone": "Asia/Taipei",
+ "scope": "0x247B4→0x233C6 第23章戰後版面的 pose 表（slot16）",
+ "input": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "tool": {
+  "ida": "IDA Pro 9.4（tools/ida.sh，映像 ida-pro-9.4-idapython:py312-v1，image id sha256:4ac62de83339…；預設標籤 locked-v1 本機不存在）",
+  "scripts": [
+   "tools/ida_export_function_listing.py",
+   "tools/ida_dump_bytes.py"
+  ],
+  "address_space": "IDA linear address (LE object base)"
+ },
+ "static_tables": {
+  "level": "已證實",
+  "range": "0x522A3:0x33（IDA 線性位址）",
+  "bytes": "14 14 12 13 14 15 16 12 16 12 13 15 16 13 14 15 13 13 11 12 12 12 12 12 11 11 10 10 10 10 0f 0f 0f 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02",
+  "X[0..16]": "0x522A3 起 17 bytes",
+  "Y[0..16]": "0x522B4 起 17 bytes",
+  "pose[0..16]": "0x522C5 起 17 bytes：slots0..15 為 00，slot16 為 02",
+  "consumer": "0x24792 rep movsd／movsb 把三表複製到堆疊（呼叫當下 esi=0x522D6，正好是 pose 表尾）；0x247B4 以三個堆疊指標、range 0..16、special slot 17 (21,21,2) 與 camera (14,14) 呼叫 0x233C6。"
+ },
+ "writer": {
+  "level": "已證實",
+  "function": "sub_233C6（0x233c6..0x234bb，原始名稱保留）",
+  "rule": "每個 slot 寫 record+0=X[slot]、+1=Y[slot]；0x23412 比 arg_8 與 4，小於 4 時 pose 取 arg_8 本身的低位元組（0x23419），否則取 table[slot]（0x23422）；+3 由 0x2341D 寫入。迴圈後 special slot 以 arg_18／arg_1C／arg_20 覆寫 +0／+1／+3。",
+  "instructions": [
+   {
+    "address": "0x233ea",
+    "bytes": "8b542420",
+    "text": "mov     edx, [esp+10h+arg_C]"
+   },
+   {
+    "address": "0x233ee",
+    "bytes": "eb01",
+    "text": "jmp     short loc_233F1"
+   },
+   {
+    "address": "0x233f0",
+    "bytes": "42",
+    "text": "inc     edx"
+   },
+   {
+    "address": "0x233f1",
+    "bytes": "39f2",
+    "text": "cmp     edx, esi"
+   },
+   {
+    "address": "0x233f3",
+    "bytes": "7f36",
+    "text": "jg      short loc_2342B"
+   },
+   {
+    "address": "0x233f5",
+    "bytes": "89d0",
+    "text": "mov     eax, edx"
+   },
+   {
+    "address": "0x233f7",
+    "bytes": "c1e002",
+    "text": "shl     eax, 2"
+   },
+   {
+    "address": "0x233fa",
+    "bytes": "8d1c02",
+    "text": "lea     ebx, [edx+eax]"
+   },
+   {
+    "address": "0x233fd",
+    "bytes": "c1e304",
+    "text": "shl     ebx, 4"
+   },
+   {
+    "address": "0x23400",
+    "bytes": "a1453a0500",
+    "text": "mov     eax, dword_53A45"
+   },
+   {
+    "address": "0x23405",
+    "bytes": "01d8",
+    "text": "add     eax, ebx"
+   },
+   {
+    "address": "0x23407",
+    "bytes": "8a1c3a",
+    "text": "mov     bl, [edx+edi]"
+   },
+   {
+    "address": "0x2340a",
+    "bytes": "8818",
+    "text": "mov     [eax], bl"
+   },
+   {
+    "address": "0x2340c",
+    "bytes": "8a1c2a",
+    "text": "mov     bl, [edx+ebp]"
+   },
+   {
+    "address": "0x2340f",
+    "bytes": "885801",
+    "text": "mov     [eax+1], bl"
+   },
+   {
+    "address": "0x23412",
+    "bytes": "837c241c04",
+    "text": "cmp     [esp+10h+arg_8], 4"
+   },
+   {
+    "address": "0x23417",
+    "bytes": "7309",
+    "text": "jnb     short loc_23422"
+   },
+   {
+    "address": "0x23419",
+    "bytes": "8a5c241c",
+    "text": "mov     bl, byte ptr [esp+10h+arg_8]"
+   },
+   {
+    "address": "0x2341d",
+    "bytes": "885803",
+    "text": "mov     [eax+3], bl"
+   },
+   {
+    "address": "0x23420",
+    "bytes": "ebce",
+    "text": "jmp     short loc_233F0"
+   },
+   {
+    "address": "0x23422",
+    "bytes": "8b5c241c",
+    "text": "mov     ebx, [esp+10h+arg_8]"
+   },
+   {
+    "address": "0x23426",
+    "bytes": "8a1c1a",
+    "text": "mov     bl, [edx+ebx]"
+   },
+   {
+    "address": "0x23429",
+    "bytes": "ebf2",
+    "text": "jmp     short loc_2341D"
+   },
+   {
+    "address": "0x2342b",
+    "bytes": "837c242800",
+    "text": "cmp     [esp+10h+arg_14], 0"
+   },
+   {
+    "address": "0x23430",
+    "bytes": "7429",
+    "text": "jz      short loc_2345B"
+   },
+   {
+    "address": "0x23432",
+    "bytes": "8b542428",
+    "text": "mov     edx, [esp+10h+arg_14]"
+   },
+   {
+    "address": "0x23436",
+    "bytes": "89d0",
+    "text": "mov     eax, edx"
+   },
+   {
+    "address": "0x23438",
+    "bytes": "c1e002",
+    "text": "shl     eax, 2"
+   },
+   {
+    "address": "0x2343b",
+    "bytes": "01c2",
+    "text": "add     edx, eax"
+   },
+   {
+    "address": "0x2343d",
+    "bytes": "c1e204",
+    "text": "shl     edx, 4"
+   },
+   {
+    "address": "0x23440",
+    "bytes": "a1453a0500",
+    "text": "mov     eax, dword_53A45"
+   },
+   {
+    "address": "0x23445",
+    "bytes": "01d0",
+    "text": "add     eax, edx"
+   },
+   {
+    "address": "0x23447",
+    "bytes": "8a54242c",
+    "text": "mov     dl, [esp+10h+arg_18]"
+   },
+   {
+    "address": "0x2344b",
+    "bytes": "8810",
+    "text": "mov     [eax], dl"
+   },
+   {
+    "address": "0x2344d",
+    "bytes": "8a542430",
+    "text": "mov     dl, [esp+10h+arg_1C]"
+   },
+   {
+    "address": "0x23451",
+    "bytes": "885001",
+    "text": "mov     [eax+1], dl"
+   },
+   {
+    "address": "0x23454",
+    "bytes": "8a542434",
+    "text": "mov     dl, [esp+10h+arg_20]"
+   },
+   {
+    "address": "0x23458",
+    "bytes": "885003",
+    "text": "mov     [eax+3], dl"
+   },
+   {
+    "address": "0x2345b",
+    "bytes": "c705831a050000000000",
+    "text": "mov     dword_51A83, 0"
+   }
+  ],
+  "caller_instructions": [
+   {
+    "address": "0x24792",
+    "bytes": "f3a5",
+    "text": "rep movsd"
+   },
+   {
+    "address": "0x24794",
+    "bytes": "a4",
+    "text": "movsb"
+   },
+   {
+    "address": "0x24795",
+    "bytes": "6a0e",
+    "text": "push    0Eh"
+   },
+   {
+    "address": "0x24797",
+    "bytes": "6a0e",
+    "text": "push    0Eh"
+   },
+   {
+    "address": "0x24799",
+    "bytes": "6a02",
+    "text": "push    2"
+   },
+   {
+    "address": "0x2479b",
+    "bytes": "6a15",
+    "text": "push    15h"
+   },
+   {
+    "address": "0x2479d",
+    "bytes": "6a15",
+    "text": "push    15h"
+   },
+   {
+    "address": "0x2479f",
+    "bytes": "6a11",
+    "text": "push    11h"
+   },
+   {
+    "address": "0x247a1",
+    "bytes": "6a10",
+    "text": "push    10h"
+   },
+   {
+    "address": "0x247a3",
+    "bytes": "6a00",
+    "text": "push    0"
+   },
+   {
+    "address": "0x247a5",
+    "bytes": "8d442420",
+    "text": "lea     eax, [esp+68h+var_48]"
+   },
+   {
+    "address": "0x247a9",
+    "bytes": "50",
+    "text": "push    eax"
+   },
+   {
+    "address": "0x247aa",
+    "bytes": "8d442438",
+    "text": "lea     eax, [esp+6Ch+var_34]"
+   },
+   {
+    "address": "0x247ae",
+    "bytes": "50",
+    "text": "push    eax"
+   },
+   {
+    "address": "0x247af",
+    "bytes": "8d442450",
+    "text": "lea     eax, [esp+70h+var_20]"
+   },
+   {
+    "address": "0x247b3",
+    "bytes": "50",
+    "text": "push    eax"
+   },
+   {
+    "address": "0x247b4",
+    "bytes": "e80decffff",
+    "text": "call    sub_233C6"
+   },
+   {
+    "address": "0x247b9",
+    "bytes": "83c42c",
+    "text": "add     esp, 2Ch"
+   }
+  ]
+ },
+ "runtime": {
+  "level": "已證實",
+  "source": "dosgolem d14149309fa4159a2986040e817090e364c47713（工作樹乾淨），計畫 docs/data/parity-plans/ch23-sample-r5.jsonl，第23章重建槽 3d507974，FD2_ORACLE_MEMORY_CHANGE 監看 record16+3（relocated 0x175BA7＝unit_base 1529508＋16×0x50＋3），窗口為步數 6044360302..6064360302。只供診斷，不是章收據。",
+  "memory_change": [
+   {
+    "address_space": "dosgolem relocated LE linear",
+    "control_seq": 680,
+    "eip_after": "0x4E882",
+    "eip_before": "0x4E882",
+    "instruction_step": 6044360302,
+    "kind": "baseline",
+    "memory_valid": true,
+    "samples": [
+     {
+      "address": "0x175BA7",
+      "after": 0,
+      "before": 0
+     }
+    ],
+    "step": 6044360302
+   },
+   {
+    "address_space": "dosgolem relocated LE linear",
+    "control_seq": 680,
+    "eip_after": "0x23420",
+    "eip_before": "0x2341D",
+    "instruction_step": 6046450678,
+    "kind": "change",
+    "memory_valid": true,
+    "samples": [
+     {
+      "address": "0x175BA7",
+      "after": 2,
+      "before": 0
+     }
+    ],
+    "step": 6046450679
+   }
+  ],
+  "result": "0x2341D 把 record16+3 由 0 寫成 2；同次 0x233C6 呼叫（step 6045245686）的堆疊參數為 X 0x55668、Y 0x55654、pose 0x55640、range 0..0x10、special 0x11。"
+ },
+ "supersedes": {
+  "claim": "docs/data/ida/fd2_ch22_post_ida.txt 的 pose[0..16] 全為 00、56 SDD 第23章第10條的 pose0..16 全為0，以及 bindings/ch22_post.json 的 slot16 pose 0。",
+  "reason": "同一 EXE 雜湊的 IDA byte dump 顯示 0x522D5=02，執行期在同一 writer 看到寫入 2；舊抄錄少看最後一個 byte。"
+ },
+ "consumer_update": "remake/assets/cutscenes/bindings/ch22_post.json slot16 pose 改 2；Go handler_compile_test 與 Rust 移植測試的斷言同步（使用者 2026-11-26 同意的資料勘誤例外，不動 Go 程式碼）。",
+ "artifacts": {
+  "work/ida-ch23-layout/listing-233c6.json": "8de4de16004633cab45ad9e705edefc5d5437059736da2ed7f391a2f55b9422b",
+  "work/ida-ch23-layout/bytes-522a3.txt": "606cb5777e767f327c471326b3462d6deafad385f881351fe9406a72dd7dc789",
+  "work/parity-slot-ch23/diag-pose/memory-change.jsonl": "5c3f97abfaf38bb0199181b842e7e36a576b38b651b55117f71a245b925dce80"
+ }
+}

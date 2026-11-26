@@ -140,7 +140,10 @@ impl Game {
             todo!("R8: main.go:9428 drawNativeCh23Loop／failNativeCh23Loop（第二十四章）")
         }
         if self.native2189_a.is_some() {
-            todo!("R8: main.go:9439 drawNative2189A／failNative2189A（第二十二章）")
+            if !self.draw_native_2189a(None) {
+                self.fail_native_2189a("indexed frame unavailable");
+            }
+            return PresentOwner::Native2189A;
         }
         if self.native_unit_present.is_some() {
             todo!("R8: main.go:9450 drawNativeUnitPresent／failNativeUnitPresent")
@@ -149,7 +152,8 @@ impl Game {
             todo!("R8: main.go:9461 drawNativeCh28PostPresent／failNativeCh28PostPresent")
         }
         if self.transition_reveal.is_some() {
-            todo!("R8: main.go:9472 drawNative24B4D／failNative24B4D")
+            self.draw_native_24b4d(None);
+            return PresentOwner::TransitionReveal;
         }
         if self.m.is_none() {
             return PresentOwner::NoMap;
@@ -259,7 +263,8 @@ impl Game {
             return PresentOwner::SpawnIntroTransition;
         }
         if self.native_turn_staging.as_ref().is_some_and(|j| j.indexed) {
-            todo!("R8: main.go:9745 drawNativeTurnStaging（indexed；PAN 階段先合成整幀，native_turn_staging.go:486）")
+            self.draw_native_turn_staging(None);
+            return PresentOwner::NativeTurnStagingIndexed;
         }
         if self.native_field_event61.is_some() {
             todo!("R8: main.go:9755 drawNativeFieldEvent61")

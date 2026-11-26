@@ -5296,8 +5296,9 @@ stride 456、13×8 原始場景建立、312×192 呈現區域、320 呈現 strid
 10. `0x247b4→0x233c6` 的 layout 固定為 slots0..16 的17筆 table，加上 special
     slot17 `(21,21,2)`；camera 固定 `(14,14)`。X table 是
     `[20,20,18,19,20,21,22,18,22,18,19,21,22,19,20,21,19]`，Y table 是
-    `[19,17,18,18,18,18,18,17,17,16,16,16,16,15,15,15,21]`，pose0..16
-    全為0。binding 必須 materialize 全18筆，不得把舊「16×17」散文當成維度，
+    `[19,17,18,18,18,18,18,17,17,16,16,16,16,15,15,15,21]`，pose 表
+    slots0..15 為0、slot16 為2（`0x522D5=02`，執行期由 `0x2341D` 寫入，見
+    [`fd2_ch23_post_layout_pose_20261126.json`](../data/ida/fd2_ch23_post_layout_pose_20261126.json)）。binding 必須 materialize 全18筆，不得把舊「16×17」散文當成維度，
     也不得漏掉 special slot17 的最後覆寫。
 11. runtime constructor 必須遵守 `0x1088d`：先以16個 persistent／部署 records
     建 slots0..15，再由 `0x10b4e` 依 group 追加 map22 FDFIELD records。
