@@ -5992,3 +5992,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 11 章槽由第 10 章槽以 `fd2-chapter-slot -base-slot 0 -target 10 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4` 重建，SHA-256 `70e8c773e7d770f7360f884a565f5cc85a67f18d88e0b33a868795e67f51dd87`，名冊 13 人（含第 10 章戰後兩名加入）。
 - 原版以 dosgolem `d14149309fa4159a2986040e817090e364c47713`、`FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A` 執行 [第 11 章計畫](docs/data/parity-plans/ch11-sample.jsonl)，共 7038 個檢查點，原版酒店存檔 SHA-256 前綴 `79b20510`。本樣本沒有升級擲骰。
 - Rust 以 `tools/rust_parity_chapter.sh` 重播通過 244 筆檢查點，走完戰前演出、第 7 回合清場、戰後與第 12 章城鎮的買賣、探訪、存檔及祕密商店，無 AI 順序分歧，酒店存檔與原版逐位元組相同。本章不需補移植。驗證層級為 RUNTIME-E1。
+
+## 2026-11-26 Rust 第 14 章完整重播
+
+- 第 13 章槽由第 12 章槽以 `fd2-chapter-slot -base-slot 0 -target 12 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4` 重建（SHA-256 `f20afb229914534828b45dc677fafd46a47c0686b4d65b1602856222d9fb9571`，15 人）；第 14 章槽再由它以 `-target 13` 同參數重建（SHA-256 `561dc7452cb701c85942a48dfeaf4c42a4c997181df3f4cf496e29c73692589c`，16 人）。
+- 原版以 dosgolem `d14149309fa4159a2986040e817090e364c47713`、`FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A` 執行 [第 14 章計畫](docs/data/parity-plans/ch14-sample.jsonl)，共 1367 個檢查點，原版酒店存檔 SHA-256 前綴 `e67df911`，無升級擲骰。
+- Rust 重播通過 73 筆檢查點，走完前三回合接戰、第 4 回合清場、戰後與第 15 章城鎮的買賣、探訪、存檔及祕密商店，無 AI 順序分歧，酒店存檔逐位元組相同。本章不需補移植。驗證層級為 RUNTIME-E1。
