@@ -8206,6 +8206,7 @@ Rust 教會沿用 `0x2d7bd` 的四服務選單。角色狀態面板可切換到�
 - Go 黃金資料工具 `fd2-golden-rules-int` 與 Rust `golden_rules_int` 的無頭驅動同步改寫，兩邊逐步比對。
 - Go `TestChapterFiveBossDeathRetreatEndsBattleProbe`：`FD2_CH05_PROBE_SAVE` 指向 [ch05-manifest](../data/parity-slots/ch05-manifest.json) 登錄的建構槽，首領 HP 改成 1 並移到索爾旁，以正式玩家攻擊打倒，其餘不在撤退範圍的敵軍 HP 歸零，之後只按 END。29 名撤退者在第 2～6 回合陸續離場或被友軍擊倒，第 6 回合敵方階段最後一名處理完即判勝，回合不推進，接著進 `postbattle_ch05_persist`。同一測試在修正前的提交失敗於「已離場的撤退者仍算在場」。層級 RUNTIME-E1。
 - 原版重現走修改路徑，不是 `PLAYER-E2`：dosgolem `f5be010a`、固定第四章建構槽，計畫為 `docs/data/parity-plans/ch04-orc-retreat-r1`～`r4.jsonl`。擊殺獸人 27 全程正常鍵；其後以 `hp_lock` 暫保索爾與撤退者、`force_enemy_clear` 清掉其餘 camp 0，解除鎖定後只按 END。r1 索爾陣亡、r2 未擊倒目標，兩份保留為失敗樣本。r3 第 6 回合擊倒 27 後，24～26 的 raw `+0x34` 變成 `07`，往各自登場邊緣移動，一個敵方階段沒有抵達，`+5 bit0` 仍為 0，戰鬥繼續。r4 只按 END：第 7 回合敵方階段 24、25 抵達即 `+5=0x81`，最後一名 26 抵達 (0,18) 後的下一個觀測點已是戰後對白，回合仍為 7，沒有玩家階段介入，接著進戰後城鎮。原版在最後一名撤退者離場的當下判勝，與本節規格一致。收據摘要見 [`ch04-orc-retreat-r4.json`](../data/ui-traces/ch04-orc-retreat-r4.json)。
+- Rust 章重播對拍（RUNTIME-E1，修改路徑）：同一建構槽、同一 r4 計畫，原版以 dosgolem `f5be010a` 加 `0x13A9F,0x1E54A` 追蹤重跑（r5），Rust `test_chapter_parity_replay` 依原版收據重播 91 筆檢查點無分歧。重播照原版綁定鎖血，第 7 回合 END 後的敵方階段當場判勝、回合不變，經戰果確認抵達 `town_ch05`；`end_turns_until_town` 在重製端核對這一點。
 
 ## 第五章章工作單元：回合事件處理器與敵方回合順序（2026-09-16）
 

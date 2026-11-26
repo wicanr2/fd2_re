@@ -21,7 +21,11 @@ use std::sync::Mutex;
 #[derive(Debug, Clone, Default, serde::Deserialize)]
 #[serde(default)]
 pub(crate) struct ParityAction {
-    pub(crate) hp_lock: Option<serde_json::Value>,
+    pub(crate) hp_lock: Option<Vec<ParityHPLockTarget>>,
+    /// Go `parityAction.Captured`：oracle 回報的鎖血實際綁定。
+    pub(crate) captured: Vec<ParityHPLockCell>,
+    /// 驅動端 `end_turns_until_town`：最後一次 END 的回合。
+    pub(crate) from_round: Option<i64>,
     pub(crate) preserved_indices: Vec<i64>,
     pub(crate) kind: String,
     pub(crate) seq: i64,
@@ -523,6 +527,78 @@ pub(super) fn sha256_hex_of(raw: &[u8]) -> String {
 }
 
 impl ParityReplay {
+    /// Go `chapter_parity_hp_lock_test.go:82`：`updateHPLocks`。先推到正常游標，依計畫綁定與目前 HP 建新政策，
+    /// 必須與 oracle 回報的實際綁定（`captured`）相同才套用。
+    fn update_hp_locks(&mut self, action: &ParityAction) {
+        let targets = action.hp_lock.clone().unwrap_or_default();
+        assert!(self.d.hp_policy.is_some() && targets.len() <= 4, "鎖血缺少明示測試政策");
+        let battle = self.battle.clone();
+        assert!(self.d.pump(JOURNEY_STORY_FRAMES, |g| parity_player_has_control(g, &battle)), "鎖血前未取得正常游標");
+        let old = self.d.hp_policy.as_ref().unwrap().cells.clone();
+        let mut next = Vec::with_capacity(targets.len());
+        let mut seen = BTreeSet::new();
+        for target in &targets {
+            let mut cell =
+                ParityHPLockCell { index: target.index, camp: target.camp, identity: target.identity, hp: 0 };
+            assert!(
+                seen.insert(cell.index) && (cell.camp == 0 || cell.camp == 2) && (0..=255).contains(&cell.identity),
+                "鎖血綁定重複或越界"
+            );
+            let index = parity_hp_lock_unit(&self.d.g, cell).unwrap_or_else(|err| panic!("{err}"));
+            cell.hp = self.d.g.st.as_ref().unwrap().units[index].hp;
+            if let Some(prev) =
+                old.iter().find(|o| o.index == cell.index && o.camp == cell.camp && o.identity == cell.identity)
+            {
+                cell.hp = prev.hp;
+            }
+            if let Some(hp) = target.hp {
+                cell.hp = hp;
+            }
+            assert!((1..=32767).contains(&cell.hp), "鎖血HP超出正有號word");
+            next.push(cell);
+        }
+        assert!(next == action.captured, "鎖血來源與原版不同：{next:?}／{:?}", action.captured);
+        self.d.hp_policy.as_mut().unwrap().cells = next;
+        if let Err(err) = self.d.hp_policy.clone().unwrap().apply(&mut self.d.g) {
+            panic!("{err}");
+        }
+        let ui = self.ui();
+        self.checkpoint("hp_lock", action.seq, &ui, false, &[String::from("修改路徑；每次Update前後復原明示HP")]);
+    }
+
+    /// 驅動端 `do_end_turns_until_town`（`tools/dosgolem_oracle_drive.py`，第 4 章撤退 r4 起）：原版在
+    /// `from_round` 回合的 END 之後，敵方回合讓最後的撤退者離場並當場判勝。重製端在同一個敵方回合必須
+    /// 分出勝負、結果是勝利，回合數不變；之後由正常結果確認進戰後節點。規格見 56「第四章撤退離場與勝負判定」。
+    fn end_turns_until_town(&mut self, action: &ParityAction) {
+        let from_round =
+            action.from_round.unwrap_or_else(|| panic!("end_turns_until_town(seq {})：缺少 from_round", action.seq));
+        let battle = self.battle.clone();
+        if node_id(&self.d.g) == battle {
+            assert!(
+                self.d.pump(CH01_FRAME_BUDGET * 6, |g| !g.result.is_empty()
+                    || (parity_player_has_control(g, &battle) && g.st.as_ref().unwrap().turn > from_round)),
+                "end_turns_until_town(seq {})：敵方回合沒有結束\n阻塞：{}",
+                action.seq,
+                ch01_blockers(&self.d.g)
+            );
+            let turn = self.d.g.st.as_ref().unwrap().turn;
+            assert!(
+                self.d.g.result == "win" && turn == from_round,
+                "end_turns_until_town(seq {})：原版第 {from_round} 回合敵方階段判勝，重製端 result={:?} turn={turn}",
+                action.seq,
+                self.d.g.result
+            );
+        }
+        self.ensure_town();
+        self.checkpoint(
+            "end_turns_until_town",
+            action.seq,
+            "town",
+            true,
+            &[format!("同一敵方回合判勝（第 {from_round} 回合）")],
+        );
+    }
+
     /// Go `chapter_parity_replay_test.go:1248`：mark `party_selection`。原版停在 0x31A2E 的出戰 YES，
     /// 重製端以正式整備 owner 按 YES 進入選人。
     fn mark_party_selection(&mut self, action: &ParityAction) {
@@ -753,7 +829,7 @@ impl ParityReplay {
                 write_journey(&self.out.join("start-entry.json"), &j);
                 self.checkpoint("battle_start", action.seq, "cursor", true, &[]);
             }
-            "town_after_battle" => {
+            "town_after_battle" | "town_after_retreat" => {
                 self.ensure_town();
                 self.checkpoint("town_after_battle", action.seq, "town", true, &[]);
             }
@@ -1076,8 +1152,9 @@ impl ParityReplay {
         self.checkpoint("attack_armed", action.seq, "target", true, &extra);
         self.d.g.confirm();
         let g = &self.d.g;
+        // #115：原版自己的格不通過0x115B6。射程外的格（第4章撤退r5 seq1003，弓兵貼身）同樣不通過，
+        // 原版停在target等鍵後送Esc／Down／Enter待機；鍵序由finish_rejected_attack_from_keys核對。
         if g.st.as_ref().unwrap().has_native_map_view_state
-            && target == actor
             && g.sel == Some(actor)
             && g.moved
             && !g.ring
@@ -1085,7 +1162,7 @@ impl ParityReplay {
             && g.atk.is_none()
             && g.load_err.is_empty()
         {
-            // #115：原版自己的格不通過0x115B6，仍在target等鍵；不得強推acted。
+            // 仍在target等鍵；不得強推acted。
             self.rejected_attack = true;
             return Some(target);
         }
@@ -1099,7 +1176,18 @@ impl ParityReplay {
             let a = unit_at(g, actor);
             a.acted || a.hp <= 0 || g.native_death_reward_message_awaiting_key() || g.native_level_up_dialogue_at_wait()
         }) {
-            panic!("attack(seq {})：攻擊之後沒有行動完畢\n阻塞：{}", action.seq, ch01_blockers(&self.d.g));
+            let g = &self.d.g;
+            panic!(
+                "attack(seq {})：攻擊之後沒有行動完畢 msg={:?} atk={} ring={} moved={} acted={} target_hp={}\n阻塞：{}",
+                action.seq,
+                g.msg,
+                g.atk.is_some(),
+                g.ring,
+                g.moved,
+                unit_at(g, actor).acted,
+                unit_at(g, target).hp,
+                ch01_blockers(g)
+            );
         }
         Some(target)
     }
@@ -1125,10 +1213,45 @@ impl ParityReplay {
         }
     }
 
+    /// Go `chapter_parity_replay_test.go:2670`：`finishRejectedAttackFromKeys`（#115）。原版自己的格不通過
+    /// 0x115B6、停在選目標；之後原版送 Esc／Down／Enter 取消並待機，重製端走正式取消 owner 與指令環待機。
+    fn finish_rejected_attack_from_keys(&mut self, action: &ParityAction, actor: Option<UnitIdx>) {
+        let mut keys = Vec::new();
+        let mut last = action.seq;
+        let mut seq = action.seq + 1;
+        while seq <= action.seq + 64 && keys.len() < 3 {
+            let key = self.key(seq).to_string();
+            if !key.is_empty() {
+                keys.push(key);
+                last = seq;
+            }
+            seq += 1;
+        }
+        if keys != ["esc", "down", "enter"] {
+            panic!("rejected attack(seq {})：沒有原版取消／待機鍵序 {keys:?}", action.seq);
+        }
+        let Some(actor) = actor.filter(|&a| self.d.g.sel == Some(a)) else {
+            panic!("rejected attack(seq {})：正式取消owner拒收", action.seq);
+        };
+        if !self.d.g.return_player_attack_target_to_ring() {
+            panic!("rejected attack(seq {})：正式取消owner拒收", action.seq);
+        }
+        self.settle_action_overlay(action);
+        self.wait_instead_of_attack(actor);
+        if !unit_at(&self.d.g, actor).acted {
+            panic!("rejected attack(seq {})：正常指令環待機未完成", action.seq);
+        }
+        self.keys_consumed_through = last;
+    }
+
     /// Go `chapter_parity_replay_test.go:2693`：`checkpointAttackResult`。
-    fn checkpoint_attack_result(&mut self, action: &ParityAction, _actor: Option<UnitIdx>) {
+    fn checkpoint_attack_result(&mut self, action: &ParityAction, actor: Option<UnitIdx>) {
         if self.rejected_attack {
-            todo!("R8: chapter_parity_replay_test.go:2670 finishRejectedAttackFromKeys（#115，第一章沒有）")
+            let ui = self.ui();
+            self.checkpoint("attack_result", action.seq, &ui, true, &[]);
+            self.finish_rejected_attack_from_keys(action, actor);
+            self.rejected_attack = false;
+            return;
         }
         let battle = self.battle.clone();
         let death_dialogue_open =
@@ -1411,10 +1534,13 @@ impl ParityReplay {
         // 與 oracle 的 force_enemy_clear 相同的注入：把場上 camp 0 的 HP 寫成 0（明示的修改路徑）。
         let mut cleared = 0;
         let preserved = action.preserved_indices.clone();
+        let policy = self.d.hp_policy.clone();
+        if policy.is_none() && !preserved.is_empty() {
+            panic!("清敵保留索引缺少鎖血綁定");
+        }
         for (index, u) in self.d.g.st.as_mut().unwrap().units.iter_mut().enumerate() {
             if u.on_field && u.camp == battle::ENEMY && u.hp > 0 {
-                let _ = index;
-                if parity_preserves_enemy(&preserved) {
+                if parity_preserves_enemy(policy.as_ref(), &preserved, index as i64) {
                     continue;
                 }
                 u.hp = 0;
@@ -1739,7 +1865,9 @@ impl ParityReplay {
                 "shop_sell" => self.shop_sell(action),
                 "secret_shop" => self.secret_shop(action),
                 "shop_buy" => self.shop_buy(action),
-                "hp_lock" | "item_use" | "cancel" | "preparation_save" | "ending_terminal" => {
+                "hp_lock" => self.update_hp_locks(action),
+                "end_turns_until_town" => self.end_turns_until_town(action),
+                "item_use" | "cancel" | "preparation_save" | "ending_terminal" => {
                     todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
                 }
                 _ => self.note(action, "unhandled action kind"),
@@ -1894,16 +2022,14 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
     if !g.load_err.is_empty() {
         panic!("{}", g.load_err);
     }
-    if actions.iter().any(|a| a.kind == "hp_lock") {
-        todo!("R8: chapter_parity_hp_lock_test.go 鎖血政策")
-    }
+    let hp_policy = actions.iter().any(|a| a.kind == "hp_lock").then(ParityHPLockPolicy::default);
     let settings: BTreeMap<&str, serde_json::Value> = BTreeMap::from([
         ("go_seed", 4.into()),
         ("native_rng_initial", g.native_rng_state.into()),
         ("method", "AI／攻擊確認／END／升級比較點承接原版受控 RNG word".into()),
         ("legacy_end_sources", serde_json::to_value(&legacy_end_sources).unwrap()),
         ("capture_frames", (frame_setting != "0").into()),
-        ("modified_path_hp_lock", false.into()),
+        ("modified_path_hp_lock", hp_policy.is_some().into()),
         ("entry_mode", entry_mode.into()),
     ]);
     let mut raw = serde_json::to_vec_pretty(&settings).unwrap();
@@ -1933,6 +2059,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             r5b_layer_capture: R5bLayerCapture::from_env(),
             r5h_layer_capture: R5hLayerCapture::from_env(),
             r5s_frame_capture: R5sFrameCapture::from_env(),
+            hp_policy,
         },
         out: out.to_path_buf(),
         run: run.to_path_buf(),

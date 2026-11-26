@@ -34,6 +34,8 @@ pub(crate) struct Driver {
     /// R5 階段 3 r5s：城鎮與設施的整張畫格黃金（`rust_golden_r5s_frames_test.rs`），同一個掛點另加 r5c 的 gap
     /// 擷取點；預設 `None`。
     pub(crate) r5s_frame_capture: Option<R5sFrameCapture>,
+    /// Go `parityHPPolicies[g]`：明示修改路徑的鎖血政策；`None` 表示這份計畫沒有 `hp_lock`。
+    pub(crate) hp_policy: Option<ParityHPLockPolicy>,
 }
 
 /// Go `native_chapter_one_play_test.go:101`：`pendingOwn`，我方在場、存活、還沒行動的單位。

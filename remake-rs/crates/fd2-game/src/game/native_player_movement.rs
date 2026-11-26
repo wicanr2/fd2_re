@@ -126,6 +126,24 @@ impl Game {
         }
     }
 
+    /// 選目標時按 Esc：清掉目標標記，回到指令環原本的選項（該選項不可選時重開整個指令環）。
+    ///
+    /// Go：`native_player_movement.go:148`，`func (g *Game) returnPlayerAttackTargetToRing() bool`
+    pub(crate) fn return_player_attack_target_to_ring(&mut self) -> bool {
+        if self.st.is_none() || self.sel.is_none() || !self.moved {
+            return false;
+        }
+        self.reset_native_target_field();
+        let availability = self.action_overlay_availability();
+        if fdother::action_overlay_accepts_direction(availability, self.ring_sel) {
+            self.begin_action_overlay_open(self.ring_sel);
+        } else {
+            self.begin_battle_action_overlay();
+        }
+        self.msg.clear();
+        true
+    }
+
     /// markNativePlayerAttackField 在指令環選攻擊收合後，把 0x18f6a 那次 0x14818 的
     /// 標記寫進 NativeTileBlitModes；選目標期間整幀就會照原版染出武器射程。舊版
     /// JSON 戰場沒有原版物品表時維持不標記。

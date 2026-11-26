@@ -6012,3 +6012,13 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 17 章：原版 `sample-r1` 第 1 回合讓護衛記錄 52（camp 2、identity 18）前進接戰，第 2 回合陣亡敗北。Rust 重播先停在測具不認得 `party_selection`：照 Go 移植 `party_selection`／`departure_confirmation` 標記與 `readParityPreparationControls`，含必出角色拒收分支。接著停在敵方指令 2：依 Go `startNativeCommand2Presentation` 的敵方分支新增 `execute_native_ai_command2`、`native_command2_tail_pixels` 與原版索引色呈現，接到 AI 分派、`present` 與 `draw`；脈衝色沿 Go 用閃光表第 1 列。補完後 r1 重播通過到計畫中斷點（38 筆）。r2（[`ch17-sample-r2.jsonl`](docs/data/parity-plans/ch17-sample-r2.jsonl)）讓記錄 52 留在原位：原版 2238 個檢查點，Rust 重播 111 筆走到第 18 章城鎮的買賣、存檔與祕密商店，無分歧，酒店存檔逐位元組相同。
 - 第 15 章：原版 `sample-r1` 第 4～6 回合友軍 camp 1 陸續陣亡，第 6 回合記錄 64（identity 15）離場觸發 `record64_inactive` 敗北，`hp_lock` 不收 camp 1。r2（[`ch15-sample-r2.jsonl`](docs/data/parity-plans/ch15-sample-r2.jsonl)）改在第 6 回合開頭清場，保留第 4 回合結束的 event 13：原版 1415 個檢查點，Rust 重播 79 筆經章節規則判勝，走到第 16 章城鎮的買賣、存檔與祕密商店，無分歧，酒店存檔逐位元組相同。
 - Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 10、16 章重播回歸與存檔仍相同。
+
+## 2026-11-26 Rust 第 20 章、鎖血重播與第 4 章撤退判勝對拍
+
+- 第 20 章：槽由第 19 章槽重建（`caf5d963`，20 人）。原版以 `ch20-sample-r3.jsonl` 執行 1064 個檢查點；Rust 重播停在 `finishRejectedAttackFromKeys` 未移植。照 Go 移植它與產品碼 `return_player_attack_target_to_ring`（Go `native_player_movement.go:148`）後，38 筆走到第 21 章城鎮，存檔逐位元組相同。
+- 鎖血重播：照 Go `chapter_parity_hp_lock_test.go` 移植 `hp_lock` 動作、每次 Update 前後寫回與清場保留索引。差異一項：指令傷害演出進行中不寫回。原版 oracle 每一步寫回、原版演出不核對中間 HP；重製端分段扣血會核對目標仍是上一段的 HP，敵方法術打中鎖血單位時寫回會讓它失敗即關閉。Go 測具沒有這段，鎖血章遇到同樣情況會同樣失敗。
+- 射程外攻擊拒收：第 4 章撤退 r5 seq 1003 弓兵貼身攻擊，原版不通過、停在選目標，之後送 Esc／Down／Enter 待機。重播的 #115 拒收判定從「點自己那格」放寬為「確認後仍停在選目標」，鍵序核對不變。
+- 第 4 章撤退：原版以 dosgolem `f5be010a` 加追蹤重跑 r4 計畫（r5，1222 個檢查點，記錄 24～27 撤退）。Rust 新增 `end_turns_until_town` 處理，核對第 7 回合同一敵方階段判勝；91 筆無分歧，抵達 `town_ch05`。
+- 第 18 章：由第 17 章槽重建（`ac9fdbe5`，18 人），原版 `ch18-guard-r4.jsonl` 2478 個檢查點。Rust 重播 96 筆後停在敵方指令 8 尚無執行入口，下一步移植。
+- 第 19 章：由第 18 章槽重建（`a55cdde9`，20 人），原版 r4 計畫第 3 回合索爾陣亡敗北；Rust 重播 r1 到中斷點 53 筆通過。新增 [`ch19-sample-r5.jsonl`](docs/data/parity-plans/ch19-sample-r5.jsonl) 開戰即鎖索爾，原版執行中。
+- Rust 遊戲回歸 461 項、格式、Clippy 通過；第 16、17、20 章重播回歸存檔相同。

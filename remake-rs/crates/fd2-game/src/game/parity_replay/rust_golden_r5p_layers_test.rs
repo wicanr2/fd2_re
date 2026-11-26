@@ -368,6 +368,7 @@ fn run_r5p_layers_opening(out: &Path) {
         r5b_layer_capture: None,
         r5h_layer_capture: None,
         r5s_frame_capture: None,
+        hp_policy: None,
     };
     // Go 黃金的 rand.Seed(4)（r5d 接上的全域亂數；本組圖層不取用，照 Go 的步驟設定）。
     pin_global_rand(&mut d.g);

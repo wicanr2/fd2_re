@@ -86,6 +86,7 @@ fn run_golden_frames_opening(out: &Path) {
         r5b_layer_capture: None,
         r5h_layer_capture: None,
         r5s_frame_capture: None,
+        hp_policy: None,
     };
     // R5 階段 2 r5d：Go 黃金的 rand.Seed(4)。
     pin_global_rand(&mut d.g);
