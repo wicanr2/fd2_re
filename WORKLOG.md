@@ -5979,3 +5979,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 新增受版控的 [`tools/rust_parity_chapter.sh`](tools/rust_parity_chapter.sh)，第 2 章以後共用；原版目錄缺含 `0x13A9F` 的 `eip-trace.jsonl` 即拒跑。
 - Rust 以 `sample-r3` 重播通過 294 筆檢查點，走完後兩批增援、第 10 回合清場、戰後、第 10 章城鎮的買賣、探訪、存檔與祕密商店，寫出的酒店存檔與原版逐位元組相同。本章不需補移植。驗證層級為 RUNTIME-E1。
 - 第 10 章槽由第 9 章槽以 `fd2-chapter-slot -base-slot 0 -target 9 -out-slot 0 -gold 3000 -levels-per-chapter 6 -seed 4` 重建，不再加強化（第 9 章槽已含一次 AP +200、DX +60），SHA-256 `257f751c56c1f272f99b90f0247fb866721d066432e280ef3dc1e761fc953157`。舊登錄的第 2 章通關基底與第 10、11 章槽已不在本機。
+
+## 2026-11-26 Rust 第 10 章完整重播
+
+- 原版以 dosgolem `d14149309fa4159a2986040e817090e364c47713`（乾淨）、`FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A` 執行 [第 10 章計畫](docs/data/parity-plans/ch10-sample.jsonl)，建構槽為 `work/parity-slot-ch10/FD2.SAV`（SHA-256 `257f751c…`），共 5123 個檢查點，原版酒店存檔 SHA-256 前綴 `7b49e3e6`。
+- Rust 重播先停在戰前劇情的 `direct_record_patch`：移植 Go `applyHandlerDirectRecordPatch` 與 `battleNativeMapView`，先核對全部 sparse 寫入與視圖再一次寫入；兩項原子失敗測試照 Go 移植。
+- 接著停在敵方指令 26 沒有執行入口：依 Go `startNativeCommand2022Presentation` 的敵方分支新增 `execute_native_ai_command2022`，接上指令 20～22、26、27。效果畫格、遮罩交替、發布複本與數字尾段沿用指令 17～19 的原版索引色寫法；22、26、27 對受傷目標發死亡獎勵。HD 綁定與 17～19 相同另期。
+- 補完後重播通過 293 筆檢查點，走完第 5 回合友軍登場、第 10 回合清場、戰後與第 11 章城鎮的買賣、探訪、存檔及祕密商店，酒店存檔與原版逐位元組相同。第 9 章 294 筆與存檔仍相同；Rust 遊戲回歸 460 項、格式與 Clippy 通過。驗證層級為 RUNTIME-E1。

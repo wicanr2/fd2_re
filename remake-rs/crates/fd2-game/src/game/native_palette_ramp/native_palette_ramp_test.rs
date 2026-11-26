@@ -149,3 +149,60 @@ fn draw_native_palette_ramp_scales_and_fails_closed() {
     assert!(!no_palette.draw_native_palette_ramp(&mut screen));
     assert!(!Game::default().draw_native_palette_ramp(&mut screen));
 }
+
+/// 有原生地圖座標來源的單位（跨 crate 的私有欄位不能用結構更新語法）。
+fn patch_test_unit(x: i64, y: i64) -> battle::Unit {
+    let mut unit = battle::Unit::default();
+    (unit.x, unit.y) = (x, y);
+    unit.native_map_presentation.x = x as u8;
+    unit.native_map_presentation.y = y as u8;
+    unit.has_native_map_presentation = true;
+    unit
+}
+
+fn patch_test_game(units: Vec<battle::Unit>) -> Game {
+    let mut st = battle::State::default();
+    st.units = units;
+    Game { st: Some(st), ..Default::default() }
+}
+
+/// Go：`native_palette_ramp_test.go:116` `TestChapter9PostDirectRecordPatchFailsAtomicallyBelowFrontier`
+#[test]
+fn test_chapter9_post_direct_record_patch_fails_atomically_below_frontier() {
+    let patch = campaign::HandlerDirectRecordPatch {
+        units: vec![campaign::HandlerUnitRecordPatch { slot: 52, x: Some(9), y: Some(9), ..Default::default() }],
+        view: None,
+    };
+    let mut g = patch_test_game(vec![patch_test_unit(1, 2); 52]);
+    assert!(g.apply_handler_direct_record_patch(&patch).is_err(), "short runtime frontier accepted");
+    let first = &g.st.as_ref().unwrap().units[0];
+    assert!(first.x == 1 && first.y == 2, "rejected patch mutated an earlier slot");
+}
+
+/// Go：`native_palette_ramp_test.go:132` `TestChapter9PostDirectRecordPatchRejectsLateInvalidByteAtomically`
+#[test]
+fn test_chapter9_post_direct_record_patch_rejects_late_invalid_byte_atomically() {
+    let patch = campaign::HandlerDirectRecordPatch {
+        units: vec![
+            campaign::HandlerUnitRecordPatch { slot: 0, x: Some(9), y: Some(10), ..Default::default() },
+            campaign::HandlerUnitRecordPatch {
+                slot: 1,
+                raw_bytes: vec![campaign::HandlerRawUnitBytePatch { offset: 5, value: 0x100 }],
+                ..Default::default()
+            },
+        ],
+        view: None,
+    };
+    let mut second = battle::Unit::default();
+    (second.native_record_byte5, second.has_native_record_byte5) = (0x81, true);
+    let mut g = patch_test_game(vec![patch_test_unit(1, 2), second]);
+    assert!(g.apply_handler_direct_record_patch(&patch).is_err(), "out-of-range raw byte accepted");
+    let units = &g.st.as_ref().unwrap().units;
+    assert!(
+        units[0].x == 1 && units[0].y == 2 && units[1].native_record_byte5 == 0x81,
+        "rejected patch mutated records: slot0=({},{}) slot1={:#x}",
+        units[0].x,
+        units[0].y,
+        units[1].native_record_byte5
+    );
+}

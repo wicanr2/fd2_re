@@ -207,5 +207,110 @@ pub(crate) fn native_dacis_black(dac: &[u8]) -> bool {
     dac.iter().all(|&c| c == 0)
 }
 
+impl Game {
+    /// 戰場上寫 `g.st`；戰前處理器（例如 0x3332B 在 LOADCH 之後）寫同一份 runtime slot 的劇情演員陣列，
+    /// 戰場接手時由 AdoptHandlerBattleState 原樣帶進去。先核對全部 sparse 寫入與視圖，再一次寫入，
+    /// 不留半套。
+    ///
+    /// Go：`native_palette_ramp.go:202`，`func (g *Game) applyHandlerDirectRecordPatch(patch *campaign.HandlerDirectRecordPatch) error`
+    pub(crate) fn apply_handler_direct_record_patch(
+        &mut self,
+        patch: &campaign::HandlerDirectRecordPatch,
+    ) -> Result<()> {
+        if self.handler_unit_count() == 0 || patch.units.is_empty() || (patch.view.is_some() && self.st.is_none()) {
+            return Err(GameError::new("runtime battle records unavailable"));
+        }
+        let mut seen = BTreeSet::new();
+        for entry in &patch.units {
+            if entry.slot < 0 || entry.slot >= self.handler_unit_count() || seen.contains(&entry.slot) {
+                return Err(GameError::new(format!("slot{} unavailable or duplicated", entry.slot)));
+            }
+            if entry.x.is_none() != entry.y.is_none()
+                || (entry.x.is_none() && entry.pose.is_none() && entry.raw_bytes.is_empty())
+            {
+                return Err(GameError::new(format!("slot{} has an incomplete or empty sparse write", entry.slot)));
+            }
+            if let (Some(x), Some(y)) = (entry.x, entry.y)
+                && (!(0..=0xff).contains(&x) || !(0..=0xff).contains(&y))
+            {
+                return Err(GameError::new(format!("slot{} coordinate outside byte range", entry.slot)));
+            }
+            if entry.pose.is_some_and(|pose| !(0..=3).contains(&pose)) {
+                return Err(GameError::new(format!("slot{} pose outside native range", entry.slot)));
+            }
+            seen.insert(entry.slot);
+            let Some(r) = self.handler_unit_at(entry.slot) else {
+                return Err(GameError::new(format!("slot{} lacks native map-record provenance", entry.slot)));
+            };
+            let unit = self.handler_unit(r);
+            if (entry.x.is_some() || entry.pose.is_some()) && !unit.has_native_map_presentation {
+                return Err(GameError::new(format!("slot{} lacks native map-record provenance", entry.slot)));
+            }
+            let mut seen_offsets = BTreeSet::new();
+            for raw in &entry.raw_bytes {
+                if !(0..=0xff).contains(&raw.value) || seen_offsets.contains(&raw.offset) {
+                    return Err(GameError::new(format!(
+                        "slot{} raw offset {:#x} has invalid or duplicate byte value",
+                        entry.slot, raw.offset
+                    )));
+                }
+                seen_offsets.insert(raw.offset);
+                if raw.offset == 5 && !unit.has_native_record_byte5 {
+                    return Err(GameError::new(format!("slot{} lacks raw byte+5 provenance", entry.slot)));
+                }
+                if raw.offset != 5 && !(0x22..=0x27).contains(&raw.offset) {
+                    return Err(GameError::new(format!("slot{} raw offset {:#x} unsupported", entry.slot, raw.offset)));
+                }
+            }
+        }
+        if let Some(view) = patch.view.as_ref() {
+            let mut candidate = self.st.as_ref().expect("view 已確認 st").clone();
+            if let Err(err) = candidate.materialize_native_map_view_state(battle_native_map_view(view)) {
+                return Err(GameError::new(format!("native view: {err}")));
+            }
+        }
+        for entry in &patch.units {
+            let r = self.handler_unit_at(entry.slot).expect("前面已核對 slot");
+            let unit = self.handler_unit_mut(r);
+            if let (Some(x), Some(y)) = (entry.x, entry.y)
+                && !unit.set_native_map_coordinates_raw(x, y)
+            {
+                return Err(GameError::new(format!("slot{} coordinate write failed", entry.slot)));
+            }
+            if let Some(pose) = entry.pose
+                && !unit.set_map_pose(pose)
+            {
+                return Err(GameError::new(format!("slot{} pose write failed", entry.slot)));
+            }
+            for raw in &entry.raw_bytes {
+                match raw.offset {
+                    5 => unit.native_record_byte5 = raw.value as u8,
+                    offset => unit.native_transient[(offset - 0x22) as usize] = raw.value as u8,
+                }
+            }
+        }
+        if let Some(view) = patch.view.as_ref() {
+            let st = self.st.as_mut().expect("view 已確認 st");
+            if let Err(err) = st.materialize_native_map_view_state(battle_native_map_view(view)) {
+                return Err(GameError::new(format!("native view commit: {err}")));
+            }
+            self.sync_native_map_view();
+        }
+        Ok(())
+    }
+}
+
+/// Go：`native_palette_ramp.go:275`，`func battleNativeMapView(view campaign.NativeMapViewConfig) battle.NativeMapViewState`
+pub(crate) fn battle_native_map_view(view: &campaign::NativeMapViewConfig) -> battle::NativeMapViewState {
+    battle::NativeMapViewState {
+        camera_x: view.camera_x,
+        camera_y: view.camera_y,
+        cursor_x: view.cursor_x,
+        cursor_y: view.cursor_y,
+        visible_cursor_x: view.visible_cursor_x,
+        visible_cursor_y: view.visible_cursor_y,
+    }
+}
+
 #[cfg(test)]
 mod native_palette_ramp_test;

@@ -2455,7 +2455,12 @@ impl Game {
                     self.load_err = String::from("beat direct_record_patch:缺少原版來源或 sparse payload");
                     return;
                 }
-                todo!("R8: native_palette_ramp.go:applyHandlerDirectRecordPatch（第一章沒有執行到）")
+                let patch = b.direct_record_patch.clone().expect("前面已核對 payload");
+                if let Err(err) = self.apply_handler_direct_record_patch(&patch) {
+                    self.load_err = format!("beat direct_record_patch: {}", err.message());
+                    return;
+                }
+                self.beat_advance();
             }
             "if" => match self.eval_story_condition(b.condition.as_ref()) {
                 Ok(matched) => {
@@ -10602,6 +10607,7 @@ impl Game {
                 1 | 4..=5 => self.execute_native_ai_indexed_damage_command(plan),
                 13..=16 => self.execute_native_ai_command_heal(plan),
                 17..=19 => self.execute_native_ai_command_modifier(plan),
+                20..=22 | 26 | 27 => self.execute_native_ai_command2022(plan),
                 id => Err(game_err!("指令 {id} 尚無執行入口")),
             };
             if let Err(err) = result {

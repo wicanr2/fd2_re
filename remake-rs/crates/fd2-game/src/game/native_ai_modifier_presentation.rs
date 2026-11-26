@@ -227,6 +227,260 @@ impl Game {
         Ok(())
     }
 
+    /// 敵方指令 20／21／22／26／27 的 handler 尾段：與玩家表共用的 0x1541F 路線，敵方不播玩家專屬的 0x1D6C8
+    /// 調色盤前奏。效果畫格 → 遮罩交替 → 發布 → 數字尾段，與指令 17～19 共用同一個演出擁有者。
+    /// 只做原版索引色畫面，HD 綁定與指令 17～19 的 Rust 版相同另期。
+    ///
+    /// Go：`native_ai_modifier_presentation.go:70`，`func (g *Game) startNativeAICommand2022Presentation(...)`
+    /// 與 `:74` `startNativeCommand2022Presentation` 的敵方分支（`player == false`）。
+    pub(crate) fn execute_native_ai_command2022(&mut self, action: &battle::AIPlan) -> Result<()> {
+        let id = action.native_command_id;
+        if !self.current_native_system_options().full_presentation_enabled()
+            || !matches!(id, 20 | 21 | 22 | 26 | 27)
+            || self.native_ai_command_modifier.is_some()
+        {
+            return Err(game_err!("原版指令尾段演出不可用"));
+        }
+        let state = self.st.as_ref().ok_or_else(|| game_err!("指令尾段缺少戰場"))?;
+        let actor = action.u.filter(|&i| i < state.units.len()).ok_or_else(|| game_err!("指令缺少施放者"))?;
+        let target = action.target.filter(|&i| i < state.units.len()).ok_or_else(|| game_err!("指令缺少目標"))?;
+        let origin = action.native_action_destination;
+        let plan = state.plan_native_ai_command2022(Some(actor), origin, id, self.native_rng_state)?;
+        let (x, y) = (state.units[actor].x, state.units[actor].y);
+        self.ai_focus_cursor(x, y);
+        self.ai_focus_cursor(origin.x, origin.y);
+        let (hud, hud_ready) = self.native_map_hud_input();
+        let state = self.st.as_ref().unwrap();
+        let assets = self
+            .native_map_assets
+            .as_ref()
+            .filter(|a| native_map_assets_available(Some(a)))
+            .ok_or_else(|| game_err!("指令尾段缺少地圖素材"))?;
+        if !hud_ready
+            || !state.has_native_map_view_state
+            || self.native_map_work.len() as i64 != indexedmap::NATIVE_UNIT_PRESENT_WORK_SIZE
+            || self.native_map_vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE
+        {
+            return Err(game_err!("指令尾段缺少原版地圖畫面"));
+        }
+        let schedule = fdother::build_native_command2022_tail_schedule()
+            .map_err(|err| game_err!("{err}"))?
+            .into_iter()
+            .find(|schedule| schedule.command_id == id)
+            .ok_or_else(|| game_err!("缺少指令 {id} 的原版演出排程"))?;
+        if (assets.fdother6.len() as i64) < schedule.effect_start + schedule.effect_frames
+            || assets.command_heal_digits.len() as i64 <= schedule.digit_bias + 9
+        {
+            return Err(game_err!("指令 {id} 的尾段描述不可用"));
+        }
+        let tail_targets = plan
+            .targets
+            .iter()
+            .map(|&index| {
+                let unit = &state.units[index];
+                if !unit.has_native_map_presentation || !unit.has_map_selector_slot {
+                    return Err(game_err!("指令目標 {index} 缺少原生圖示"));
+                }
+                Ok(indexedmap::NativeCommandHealTailTarget {
+                    record_index: index as i64,
+                    x: i64::from(unit.native_map_presentation.x),
+                    y: i64::from(unit.native_map_presentation.y),
+                    selector_slot: unit.map_selector_slot,
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let view = state.native_map_view_state;
+        let effect_targets = tail_targets
+            .iter()
+            .copied()
+            .filter(|target| {
+                (view.camera_x - 1..=view.camera_x + 12).contains(&target.x)
+                    && (view.camera_y - 1..=view.camera_y + 8).contains(&target.y)
+            })
+            .collect::<Vec<_>>();
+        let palette = color_palette_from_nrgba(&fdother::vga_palette_from_dac(&self.native_map_dac)?);
+        let image = |pix| {
+            Arc::new(Picture::from_indexed(&IndexedFrame { width: 320, height: 200, pix, palette: palette.clone() }))
+        };
+        let mut frames = Vec::new();
+        let (baseline_work, baseline_vga) = (self.native_map_work.clone(), self.native_map_vga.clone());
+        let mut work = baseline_work.clone();
+        for index in schedule.effect_start..schedule.effect_start + schedule.effect_frames {
+            let effect =
+                assets.fdother6.get(index as usize).ok_or_else(|| game_err!("缺少指令 {id} 的畫格 {index}"))?;
+            work.copy_from_slice(&baseline_work);
+            let mut pixels = baseline_vga.clone();
+            indexedmap::compose_native_command_heal_effect_frame(
+                &mut work,
+                &mut pixels,
+                &baseline_work,
+                effect,
+                &effect_targets,
+                view.camera_x,
+                view.camera_y,
+            )?;
+            frames.push(NativeCompoundPresentedFrame { image: Some(image(pixels)), delay: 1, ..Default::default() });
+        }
+        let sample = |selector| {
+            self.separated_command_sfx.get(&80).and_then(|bank| bank.get(&selector)).cloned().unwrap_or_default()
+        };
+        let effect_sound = sample(schedule.effect_sample);
+        let mask_sound = sample(1);
+        if !os_mute_or_shot(Some(self)) && (effect_sound.is_empty() || mask_sound.is_empty()) {
+            return Err(game_err!("指令 {id} 缺少原版音效"));
+        }
+        for &raw_frame in &schedule.extra_sample_frame_indices {
+            if raw_frame <= 0 || raw_frame >= schedule.effect_frames {
+                return Err(game_err!("指令 {id} 的額外音效畫格無效"));
+            }
+        }
+        for index in std::iter::once(0).chain(schedule.extra_sample_frame_indices.iter().copied()) {
+            frames.get_mut(index as usize).ok_or_else(|| game_err!("指令 {id} 的音效畫格無效"))?.sound =
+                effect_sound.clone();
+        }
+        work.copy_from_slice(&baseline_work);
+        let mut mask = baseline_vga.clone();
+        indexedmap::compose_native_command_heal_mask_frame(
+            &mut work,
+            &mut mask,
+            &baseline_work,
+            assets.units.as_ref(),
+            state.native_map_selector_cache.as_ref(),
+            &effect_targets,
+            view.camera_x,
+            view.camera_y,
+            state.native_map_frame_roster()?.cycles.idle,
+            schedule.mask_index as u8,
+        )?;
+        let masks = [image(baseline_vga.clone()), image(mask)];
+        for index in 0..schedule.mask_pairs * 2 + 1 {
+            frames.push(NativeCompoundPresentedFrame {
+                image: Some(masks[index as usize % 2].clone()),
+                delay: 1,
+                sound: if index == 0 { mask_sound.clone() } else { Vec::new() },
+                ..Default::default()
+            });
+        }
+        let publish_at = frames.len() as i64;
+        // Go `nativeCommand2022ClonedState`：只投影計畫結果到複本，畫出發布後的地圖。
+        let mut post = state.clone();
+        for (index, result) in plan.results.iter().enumerate() {
+            let Some(unit) = result.target.and_then(|t| post.units.get_mut(t)) else {
+                return Err(game_err!("native command tail cloned target {index} unavailable"));
+            };
+            if !result.command25 && !(0x22..=0x27).contains(&result.offset) {
+                return Err(game_err!("native command tail cloned target {index} unavailable"));
+            }
+            if let Some(restore) = result.restore.filter(|r| r.applied) {
+                unit.hp += restore.restore.actual;
+                unit.set_native_transient_duration(result.offset, 0);
+            }
+            if let Some(apply) = result.apply.filter(|a| a.applied) {
+                unit.hp -= apply.damage.actual;
+                unit.set_native_transient_duration(result.offset, apply.marker);
+            }
+            if result.command25 && result.cleared_byte5 {
+                unit.native_record_byte5 &= !0x80;
+            }
+        }
+        let mut input = build_native_map_frame_input(
+            Some(assets),
+            self.m.as_ref(),
+            Some(&post),
+            NativeMapFrameRuntime { hud, ..Default::default() },
+        )?;
+        let (mut stage_work, mut stage_vga) = (baseline_work.clone(), baseline_vga.clone());
+        indexedmap::compose_native_frame(&mut stage_work, &mut stage_vga, &mut input)?;
+        let mut queue = Vec::new();
+        for result in &plan.results {
+            let record = result.target.ok_or_else(|| game_err!("native command tail result target unavailable"))?;
+            let unit = &state.units[record];
+            let in_camera = (view.camera_x..view.camera_x + 12).contains(&unit.x)
+                && (view.camera_y - 1..=view.camera_y + 7).contains(&unit.y);
+            let (processed, value) = if let Some(restore) = result.restore {
+                (restore.applied, restore.restore.actual)
+            } else if let Some(apply) = result.apply {
+                (apply.applied, apply.damage.actual)
+            } else if result.command25 {
+                // 0x22C04 沒有成功數字；只有沒清掉的目標進 sub_1E1DC 而排入數字尾段。
+                if result.cleared_byte5 {
+                    continue;
+                }
+                (false, 0)
+            } else {
+                (false, 0)
+            };
+            if processed {
+                queue = battle::append_native_presentation_digits(
+                    &queue,
+                    value,
+                    schedule.digit_bias,
+                    record as i64,
+                    in_camera,
+                )?;
+            } else if in_camera {
+                queue = battle::append_native_presentation_miss(&queue, record as i64);
+            }
+        }
+        let has_digits = !queue.is_empty();
+        if has_digits {
+            for index in 0..schedule.digit_frames {
+                work.copy_from_slice(&stage_work);
+                let mut pixels = stage_vga.clone();
+                indexedmap::compose_native_command_heal_digit_frame(
+                    &mut work,
+                    &mut pixels,
+                    &stage_work,
+                    &assets.command_heal_digits,
+                    &queue,
+                    &tail_targets,
+                    view.camera_x,
+                    view.camera_y,
+                    schedule.digit_vertical,
+                    index,
+                )?;
+                frames.push(NativeCompoundPresentedFrame {
+                    image: Some(image(pixels)),
+                    delay: 1,
+                    ..Default::default()
+                });
+            }
+        }
+        let then2022 = Box::new(move |g: &mut Game, result: &battle::NativeAICommand2022Plan| {
+            if matches!(id, 22 | 26 | 27) {
+                for entry in &result.results {
+                    if entry.apply.is_some_and(|apply| apply.damage.actual > 0) {
+                        g.award_death_reward(entry.target, Some(actor));
+                    }
+                }
+            }
+            let units = &mut g.st.as_mut().unwrap().units;
+            let (a, t) = (&units[actor], &units[target]);
+            let pose = dir_toward(a.x, a.y, t.x, t.y);
+            units[actor].set_map_pose(pose);
+            g.msg = format!("原始指令 {id}：完成敵方 indexed 尾段 ({} targets)", result.results.len());
+            g.finish_successful_unit_action(Some(actor), None);
+            g.check_result();
+        });
+        self.native_ai_command_modifier = Some(NativeAICommandModifierPresentationJob {
+            actor: Some(actor),
+            plan2022: Some(plan),
+            end_at: frames.len() as i64,
+            frames,
+            publish_at,
+            skip_hold: !has_digits,
+            rng_before: self.native_rng_state,
+            baseline_work,
+            baseline_vga,
+            stage_work,
+            stage_vga,
+            then2022: Some(then2022),
+            ..Default::default()
+        });
+        self.st.as_mut().unwrap().native_experience_accumulator = 0;
+        Ok(())
+    }
+
     pub(crate) fn present_native_ai_command_modifier(&mut self, screen: Option<&mut Picture>) {
         let job = self.native_ai_command_modifier.as_mut().unwrap();
         let Some(image) = job.frames.get(job.frame as usize).and_then(|frame| frame.image.as_ref()) else {
