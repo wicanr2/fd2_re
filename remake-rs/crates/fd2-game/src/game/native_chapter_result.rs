@@ -103,3 +103,6 @@ impl Game {
         }
     }
 }
+
+#[cfg(test)]
+mod native_chapter_result_test;
