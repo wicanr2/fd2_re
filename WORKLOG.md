@@ -6040,3 +6040,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - IDA 以 `tools/ida.sh` 跑，預設映像標籤 `locked-v1` 本機不存在，改指定既有的 `ida-pro-9.4-idapython:py312-v1`。
 - PORTING.json 的 `functions_by_status` 從這輪之前就沒跟上，已重算（ported 730 起）；新移植函式的 Rust 名稱照實際名稱登錄。
 - 回歸：Rust game 461 項、campaign 530 項、格式與 Clippy 通過；第 4、17、19、21 章重播回歸相同。Go `internal/campaign` 只有既有的 `TestNativeTownCursorLayerReconstructsAllNativeStates`（缺城鎮素材路徑）失敗，HEAD 同樣失敗。
+
+## 2026-11-26 Rust 第 24 章重播、物品面板與第 25 章樣本
+
+- 第 24 章：槽由第 23 章槽重建（`722cf1e1`，25 人，全員存活）。原版 r4 計畫以右鍵跳過舊槽的陣亡者，在重建槽上選不滿 15 人、停在選人；r5（[`ch24-sample-r5.jsonl`](docs/data/parity-plans/ch24-sample-r5.jsonl)）依序選前 15 位，原版 204 個檢查點走到第 25 章整備的四槽保存。Rust 停在 `startNativeCh23Loop`：照 Go `native_ch23_post.go` 移植兩段 loop（initial／palette）、候選快照與失敗復原，並補重播測具的第 24 章舞台 Draw 承認。19 筆無分歧，保存的 FD2.SAV 與原版逐位元組相同。
+- 物品面板（第 25 章需要）：照 Go `native_item_panel_ui.go` 與 `main.go` 移植原版物品面板的準備、刷新、十二格開收動畫、選擇器輸入、即時物品（基礎值／上限）、第一段目標選擇與 HP／MP／旗標／能力值的回復交易、目標確認與取消、面板繪製，以及重播測具的 `item_use`／`cancel`。指令傷害物品與傳送物品的演出遇到時失敗即關閉；HD 物品面板屬 R6。
+- 第 25 章：槽由第 24 章槽重建（`ecacf8df`）。原版 r4 計畫第 4 回合敵方階段索爾與記錄 4～7 陣亡敗北；r5（[`ch25-flow-cheat-r5.jsonl`](docs/data/parity-plans/ch25-flow-cheat-r5.jsonl)）開戰鎖索爾、清場後解鎖，原版執行中。
+- Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 19、21、23 章重播回歸相同。

@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 735,
+      "ported": 760,
       "r6": 59,
-      "r8": 1128
+      "r8": 1103
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -3348,7 +3348,7 @@
           "name": "cancelNativeItemTargetModal",
           "recv": "Game",
           "rust": "fd2_game::game::Game::cancel_native_item_target_modal",
-          "status": "r8",
+          "status": "ported",
           "go_line": 6213
         },
         {
@@ -4172,7 +4172,7 @@
           "name": "nativeItemMenuSlot",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_item_menu_slot",
-          "status": "r8",
+          "status": "ported",
           "go_line": 10394
         },
         {
@@ -12249,7 +12249,7 @@
         {
           "name": "cloneNativeCh23AdapterState",
           "rust": "fd2_game::game::clone_native_ch23_adapter_state",
-          "status": "r8",
+          "status": "ported",
           "go_line": 52
         },
         {
@@ -12268,70 +12268,70 @@
         {
           "name": "nativeCh23LoopSpec",
           "rust": "fd2_game::game::native_ch23_loop_spec",
-          "status": "r8",
+          "status": "ported",
           "go_line": 93
         },
         {
           "name": "snapshotNativeCh23LoopState",
           "recv": "Game",
           "rust": "fd2_game::game::Game::snapshot_native_ch23_loop_state",
-          "status": "r8",
+          "status": "ported",
           "go_line": 101
         },
         {
           "name": "startNativeCh23Loop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_ch23_loop",
-          "status": "r8",
+          "status": "ported",
           "go_line": 125
         },
         {
           "name": "prepareNativeCh23Draw",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_native_ch23_draw",
-          "status": "r8",
+          "status": "ported",
           "go_line": 175
         },
         {
           "name": "failNativeCh23Loop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::fail_native_ch23_loop",
-          "status": "r8",
+          "status": "ported",
           "go_line": 244
         },
         {
           "name": "finishNativeCh23Loop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::finish_native_ch23_loop",
-          "status": "r8",
+          "status": "ported",
           "go_line": 252
         },
         {
           "name": "stepNativeCh23LoopAt",
           "recv": "Game",
           "rust": "fd2_game::game::Game::step_native_ch23_loop_at",
-          "status": "r8",
+          "status": "ported",
           "go_line": 268
         },
         {
           "name": "nativeCh23Now",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_ch23_now",
-          "status": "r8",
+          "status": "ported",
           "go_line": 296
         },
         {
           "name": "stepNativeCh23Loop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::step_native_ch23_loop",
-          "status": "r8",
+          "status": "ported",
           "go_line": 303
         },
         {
           "name": "drawNativeCh23Loop",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ch23_loop",
-          "status": "r8",
+          "status": "ported",
           "go_line": 307
         }
       ],
@@ -16291,42 +16291,42 @@
         {
           "name": "nativeItemRawSlots",
           "rust": "fd2_game::game::native_item_raw_slots",
-          "status": "r8",
+          "status": "ported",
           "go_line": 15
         },
         {
           "name": "prepareNativeItemPanel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_native_item_panel",
-          "status": "r8",
+          "status": "ported",
           "go_line": 28
         },
         {
           "name": "prepareNativeItemPanelMode",
           "recv": "Game",
           "rust": "fd2_game::game::Game::prepare_native_item_panel_mode",
-          "status": "r8",
+          "status": "ported",
           "go_line": 32
         },
         {
           "name": "refreshNativeItemPanel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::refresh_native_item_panel",
-          "status": "r8",
+          "status": "ported",
           "go_line": 70
         },
         {
           "name": "refreshNativeItemPanelMode",
           "recv": "Game",
           "rust": "fd2_game::game::Game::refresh_native_item_panel_mode",
-          "status": "r8",
+          "status": "ported",
           "go_line": 74
         },
         {
           "name": "setNativeItemPanelPixels",
           "recv": "Game",
           "rust": "fd2_game::game::Game::set_native_item_panel_pixels",
-          "status": "r8",
+          "status": "ported",
           "go_line": 109
         },
         {
@@ -16350,28 +16350,28 @@
           "name": "stepNativeItemPanelAnimation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::step_native_item_panel_animation",
-          "status": "r8",
+          "status": "ported",
           "go_line": 168
         },
         {
           "name": "beginNativeItemPanelClose",
           "recv": "Game",
           "rust": "fd2_game::game::Game::begin_native_item_panel_close",
-          "status": "r8",
+          "status": "ported",
           "go_line": 195
         },
         {
           "name": "applyNativeImmediateItem",
           "recv": "Game",
           "rust": "fd2_game::game::Game::apply_native_immediate_item",
-          "status": "r8",
+          "status": "ported",
           "go_line": 209
         },
         {
           "name": "beginNativeTargetItem",
           "recv": "Game",
           "rust": "fd2_game::game::Game::begin_native_target_item",
-          "status": "r8",
+          "status": "ported",
           "go_line": 281
         },
         {
@@ -16418,7 +16418,7 @@
           "name": "applyNativeTargetItem",
           "recv": "Game",
           "rust": "fd2_game::game::Game::apply_native_target_item",
-          "status": "r8",
+          "status": "ported",
           "go_line": 556
         },
         {
@@ -16453,7 +16453,7 @@
           "name": "drawNativeItemPanel",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_item_panel",
-          "status": "r8",
+          "status": "ported",
           "go_line": 935
         }
       ],

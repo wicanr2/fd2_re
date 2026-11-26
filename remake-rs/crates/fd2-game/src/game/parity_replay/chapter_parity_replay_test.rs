@@ -704,6 +704,99 @@ impl ParityReplay {
         self.checkpoint("preparation_save", action.seq, &ui, true, &[format!("save_sha256={}", sha256_hex_of(&raw))]);
     }
 
+    /// Go `chapter_parity_replay_test.go:2798`：`useSelfRestoreItem`。已選角色走正式物品面板、原版選擇器確認、
+    /// 第一段目標與回復交易，核對 HP 回復、行動完成與八格依原生規則補位。
+    fn use_self_restore_item(&mut self, action: &ParityAction, actor: Option<UnitIdx>) {
+        let (Some(actor), Some(index), Some(slot), Some(item_id)) = (actor, action.index, action.slot, action.item_id)
+        else {
+            panic!("item_use缺少已選角色、原始槽或指令環來源");
+        };
+        let ok = item_id == 195
+            && (0..8).contains(&slot)
+            && index as usize == actor
+            && native_action_selectable(self.d.g.action_overlay_availability(), 2);
+        assert!(ok, "item_use缺少已選角色、原始槽或指令環來源");
+        let (occupied, held) = self.d.g.native_item_menu_slot(actor, slot);
+        let u = unit_at(&self.d.g, actor);
+        assert!(occupied && held == item_id && u.hp > 0 && u.hp < u.max_hp, "item_use原有回復品或受傷狀態不符");
+        let (before_hp, before_flags, before_slots) =
+            (u.hp, u.native_inventory_flags.to_vec(), u.inventory_slots.to_vec());
+        self.d.g.ring_sel = 2;
+        let opened = self.d.close_ring(Box::new(move |g: &mut Game| {
+            (g.item_open, g.item_sel) = (true, 0);
+            (g.item_anim_step, g.item_closing) = (0, false);
+            g.prepare_native_item_panel(actor);
+        })) && self
+            .d
+            .pump(CH01_FRAME_BUDGET, |g| g.item_open && g.native_item_panel.is_some() && g.item_anim_step == 11);
+        assert!(opened, "item_use物品面板沒有正常展開");
+        let raw_slots = native_item_raw_slots(unit_at(&self.d.g, actor));
+        while (self.d.g.item_sel as usize) < raw_slots.len() && raw_slots[self.d.g.item_sel as usize] != slot {
+            let selected = battle::advance_native_item_selector(self.d.g.item_sel, raw_slots.len() as i64, 80, true, 1)
+                .map(|(s, _)| s)
+                .ok()
+                .filter(|&s| s > self.d.g.item_sel)
+                .unwrap_or_else(|| panic!("item_use原始物品槽無法選取"));
+            self.d.g.item_sel = selected;
+            assert!(self.d.g.refresh_native_item_panel(actor), "item_use物品選擇畫面缺失");
+        }
+        let confirm = battle::advance_native_item_selector(self.d.g.item_sel, raw_slots.len() as i64, 28, true, 5);
+        assert!(
+            confirm.is_ok_and(|(_, result)| result == battle::NATIVE_ITEM_SELECTOR_CONFIRM),
+            "item_use未通過正式物品確認規則"
+        );
+        match self.d.g.begin_native_target_item(slot, held) {
+            Ok(true) => {}
+            other => panic!("item_use目標選擇：{:?}", other.map_err(|e| e.message().to_string())),
+        }
+        match self.d.g.apply_native_target_item(actor) {
+            Ok(true) => {}
+            other => panic!("item_use回復交易：{:?}", other.map_err(|e| e.message().to_string())),
+        }
+        let battle = self.battle.clone();
+        let done = self.d.pump(CH01_FRAME_BUDGET, |g| unit_at(g, actor).acted && parity_player_has_control(g, &battle));
+        assert!(done && unit_at(&self.d.g, actor).hp > before_hp, "item_use沒有完整回復、消耗及行動完成");
+        let u = unit_at(&self.d.g, actor);
+        for s in 0..8usize {
+            let source = if s as i64 >= slot { s + 1 } else { s };
+            let (flag, item) =
+                if source < 8 { (before_flags[source], before_slots[source]) } else { (0x80, before_slots[7]) };
+            assert!(
+                u.native_inventory_flags[s] == flag && u.inventory_slots[s] == item,
+                "item_use消耗後槽{s}沒有依原生規則補位"
+            );
+        }
+        let ui = self.ui();
+        self.checkpoint("item_use", action.seq, &ui, true, &[]);
+    }
+
+    /// Go `chapter_parity_replay_test.go:2866`：`cancelUnit`。指令環上 Esc：取消這次行動，單位退回移動前那一格。
+    fn cancel_unit(&mut self, action: &ParityAction) {
+        self.d.close_ring(Box::new(|g: &mut Game| {
+            g.msg.clear();
+            let Some(sel) = g.sel else {
+                return;
+            };
+            let (x, y, dir) = {
+                let u = &g.st.as_ref().unwrap().units[sel];
+                (u.x, u.y, u.dir)
+            };
+            if x == g.sel_orig_x && y == g.sel_orig_y {
+                g.clear_native_player_movement();
+                (g.sel, g.reach, g.moved) = (None, Default::default(), false);
+                return;
+            }
+            let (ox, oy) = (g.sel_orig_x, g.sel_orig_y);
+            g.st.as_mut().unwrap().units[sel].set_map_placement(ox, oy, dir);
+            g.moved = false;
+            g.reach = g.st.as_ref().unwrap().reachable(sel);
+            g.restore_player_movement_cursor();
+        }));
+        self.d.pump(CH01_FRAME_BUDGET, |g| !g.ring && g.walk.is_none());
+        let ui = self.ui();
+        self.checkpoint("cancel", action.seq, &ui, true, &[]);
+    }
+
     /// Go `chapter_parity_replay_test.go:1248`：mark `party_selection`。原版停在 0x31A2E 的出戰 YES，
     /// 重製端以正式整備 owner 按 YES 進入選人。
     fn mark_party_selection(&mut self, action: &ParityAction) {
@@ -1970,7 +2063,9 @@ impl ParityReplay {
                 "hp_lock" => self.update_hp_locks(action),
                 "end_turns_until_town" => self.end_turns_until_town(action),
                 "preparation_save" => self.preparation_save(action),
-                "item_use" | "cancel" | "ending_terminal" => {
+                "item_use" => self.use_self_restore_item(action, actor),
+                "cancel" => self.cancel_unit(action),
+                "ending_terminal" => {
                     todo!("R8: chapter_parity_replay_test.go:1003 動作 {:?}（第一章沒有）", action.kind)
                 }
                 _ => self.note(action, "unhandled action kind"),

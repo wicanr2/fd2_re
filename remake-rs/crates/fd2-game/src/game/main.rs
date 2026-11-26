@@ -2464,7 +2464,10 @@ impl Game {
                     self.load_err = String::from("beat native_ch23_loop:缺少原始兩段 loop payload");
                     return;
                 }
-                todo!("R8: native_ch23_post.go:startNativeCh23Loop（第一章沒有執行到）")
+                let lp = b.native_ch23_loop.clone().unwrap();
+                if let Err(err) = self.start_native_ch23_loop(&lp, Box::new(|g: &mut Game| g.beat_advance())) {
+                    self.load_err = format!("beat native_ch23_loop: {}", err.message());
+                }
             }
             "native_2189a_loop" => {
                 if b.native2189_a_loop.is_none() {
@@ -5650,10 +5653,7 @@ impl Game {
                 self.clear_native_item_panel();
                 return false;
             }
-            todo!(
-                "R8: main.go:5794 物品面板輸入（stepNativeItemPanelAnimation、handleNativeDeathRewardItemInput、\
-                 beginNativeItemPanelClose、nativeItemRawSlots 等；第一章重播沒有執行到）"
-            );
+            return self.native_item_panel_input(enter, esc);
         }
         if self.native_command_open {
             if self.sel.is_none() {
@@ -5798,7 +5798,9 @@ impl Game {
                     self.begin_action_overlay_close(Some(Box::new(|g: &mut Game| {
                         (g.item_open, g.item_sel) = (true, 0);
                         (g.item_anim_step, g.item_closing) = (0, false);
-                        todo!("R8: main.go:6081 prepareNativeItemPanel（第一章重播沒有執行到）");
+                        if let Some(actor) = g.sel {
+                            g.prepare_native_item_panel(actor);
+                        }
                     })));
                 }
                 3 => {
@@ -7233,7 +7235,34 @@ impl Game {
             todo!("R8: main.go:7475 施法目標確認（CastArea、localizedSpellResult；第一章重播沒有執行到）");
         }
         if self.native_item_targeting {
-            todo!("R8: main.go:7536 物品目標確認（applyNativeTargetItem；第一章重播沒有執行到）");
+            let item_id = self.native_item_target_id;
+            let target = self.st.as_ref().and_then(|st| st.unit_at(self.cur_x, self.cur_y));
+            let applied = match target.map(|t| self.apply_native_target_item(t)) {
+                Some(Ok(applied)) => applied,
+                Some(Err(err)) => {
+                    self.msg = format!("物品 {item_id:02X}h：{}", err.message());
+                    return;
+                }
+                None => false,
+            };
+            if !applied {
+                if self.native_item_relocating
+                    && let (message, true) =
+                        self.locale_message("battle.item.choose_destination", &[localization::FormatArg::Int(item_id)])
+                {
+                    self.msg = message;
+                }
+                return;
+            }
+            let key = if self.native_ai_item_presentation.is_some() {
+                "battle.item.damage_presenting"
+            } else {
+                "battle.item.recovery_complete"
+            };
+            if let (message, true) = self.locale_message(key, &[localization::FormatArg::Int(item_id)]) {
+                self.msg = message;
+            }
+            return;
         }
         if self.native_item_relocating {
             todo!("R8: main.go:7562 物品／傳送術目的地確認（applyNativeRelocationDestination；第一章重播沒有執行到）");
@@ -7618,7 +7647,8 @@ impl Game {
             todo!("R8: native_ch20_sky_key.go:stepNativeCh20SkyKey（第二十章天空之鑰）")
         }
         if self.native_ch23_loop.is_some() {
-            todo!("R8: native_ch23_post.go:stepNativeCh23Loop（第二十三章）")
+            self.step_native_ch23_loop();
+            return self.shot_termination();
         }
         if self.native2189_a.is_some() {
             self.step_native_2189a();
@@ -7881,7 +7911,8 @@ impl Game {
         let cancel = just(Key::Escape) || just(Key::Backspace);
         if (self.native_item_targeting || self.native_item_relocating) && cancel {
             // 原始物品第一階段 target selector：ESC 回物品列
-            todo!("R8: cancelNativeItemTargetModal（物品目標取消）")
+            self.cancel_native_item_target_modal();
+            return Ok(());
         }
         if (self.cast_sp.is_some() || self.native_command0_targeting) && just(Key::Escape) {
             // native target selection: ESC 回 command grid
@@ -8365,7 +8396,11 @@ impl Game {
         }
         if self.native_ch23_loop.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_ch23_post.go:drawNativeCh23Loop／failNativeCh23Loop");
+            if !self.draw_native_ch23_loop(Some(screen)) {
+                self.fail_native_ch23_loop("presentation unavailable");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native2189_a.is_some() {
             screen.fill(BLACK);
@@ -11185,8 +11220,10 @@ impl Game {
         if !self.item_open || self.sel.is_none() {
             return;
         }
-        let _ = screen;
-        todo!("r8:main.go:10581..10609 drawNativeItemPanel 與 TTF 後備清單（開場與第一章沒有走到）")
+        if self.draw_native_item_panel(screen) {
+            return;
+        }
+        todo!("r8:main.go:10594..10609 TTF 後備物品清單（缺原版素材時）")
     }
 
     /// drawNativeCommandGrid renders the recovered 0x1ceed four-row layout only

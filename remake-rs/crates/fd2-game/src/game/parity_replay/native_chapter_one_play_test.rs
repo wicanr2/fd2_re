@@ -272,7 +272,10 @@ pub(crate) fn ack_presents(g: &mut Game) {
     }
     if g.native_ch23_loop.is_some() {
         // #144：Go 走正式 drawNativeCh23Loop 再交出回呼（第二十四章舞台）。
-        todo!("R8: native_chapter_one_play_test.go:604 drawNativeCh23Loop（第二十四章舞台）")
+        let mut screen = Picture::new_image(640, 400);
+        if !g.draw_native_ch23_loop(Some(&mut screen)) {
+            g.load_err = String::from("第24章舞台Draw缺少完整來源");
+        }
     }
     if g.transient_ui && g.native_class_ui_job.is_some() {
         assert!(g.draw_native_class_ui_job(&mut Picture::new_image(LOGICAL_W, LOGICAL_H)));

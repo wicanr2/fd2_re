@@ -137,7 +137,10 @@ impl Game {
             todo!("R8: main.go:9417 drawNativeCh20SkyKey／failNativeCh20SkyKey（第二十章）")
         }
         if self.native_ch23_loop.is_some() {
-            todo!("R8: main.go:9428 drawNativeCh23Loop／failNativeCh23Loop（第二十四章）")
+            if !self.draw_native_ch23_loop(None) {
+                self.fail_native_ch23_loop("presentation unavailable");
+            }
+            return PresentOwner::NativeCh23Loop;
         }
         if self.native2189_a.is_some() {
             if !self.draw_native_2189a(None) {
