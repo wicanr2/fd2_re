@@ -149,10 +149,16 @@ impl Game {
             return PresentOwner::Native2189A;
         }
         if self.native_unit_present.is_some() {
-            todo!("R8: main.go:9450 drawNativeUnitPresent／failNativeUnitPresent")
+            if !self.draw_native_unit_present(None) {
+                self.fail_native_unit_present(&game_err!("indexed frame unavailable"));
+            }
+            return PresentOwner::NativeUnitPresent;
         }
         if self.native_ch28_post_present.is_some() {
-            todo!("R8: main.go:9461 drawNativeCh28PostPresent／failNativeCh28PostPresent")
+            if let Some(j) = self.native_ch28_post_present.as_mut() {
+                j.drawn = true;
+            }
+            return PresentOwner::NativeCh28PostPresent;
         }
         if self.transition_reveal.is_some() {
             self.draw_native_24b4d(None);

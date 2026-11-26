@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 769,
+      "ported": 787,
       "r6": 59,
-      "r8": 1094
+      "r8": 1076
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -12382,14 +12382,14 @@
           "name": "startNativeCh28PostPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_ch28_post_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 59
         },
         {
           "name": "startNativeUnitDeathPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_unit_death_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 65
         },
         {
@@ -12442,7 +12442,7 @@
           "name": "failNativeCh28PostPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::fail_native_ch28_post_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 331
         },
         {
@@ -15924,7 +15924,7 @@
         {
           "name": "event75DialogueActions",
           "rust": "fd2_game::game::event75_dialogue_actions",
-          "status": "r8",
+          "status": "ported",
           "go_line": 7
         },
         {
@@ -20167,27 +20167,27 @@
         {
           "name": "event76DialogueActions",
           "rust": "fd2_game::game::event76_dialogue_actions",
-          "status": "r8",
+          "status": "ported",
           "go_line": 11
         },
         {
           "name": "nativeEvent76PulseSpec",
           "rust": "fd2_game::game::native_event76_pulse_spec",
-          "status": "r8",
+          "status": "ported",
           "go_line": 46
         },
         {
           "name": "preflightNativeEvent76FinalState",
           "recv": "Game",
           "rust": "fd2_game::game::Game::preflight_native_event76_final_state",
-          "status": "r8",
+          "status": "ported",
           "go_line": 54
         },
         {
           "name": "preflightNativeEvent76Final",
           "recv": "Game",
           "rust": "fd2_game::game::Game::preflight_native_event76_final",
-          "status": "r8",
+          "status": "ported",
           "go_line": 88
         },
         {
@@ -20208,7 +20208,7 @@
           "name": "runNativeEvent76Presentation",
           "recv": "Game",
           "rust": "fd2_game::game::Game::run_native_event76_presentation",
-          "status": "r8",
+          "status": "ported",
           "go_line": 160
         }
       ],
@@ -20385,61 +20385,61 @@
         {
           "name": "nativeUnitPresentAssetsAvailable",
           "rust": "fd2_game::game::native_unit_present_assets_available",
-          "status": "r8",
+          "status": "ported",
           "go_line": 48
         },
         {
           "name": "resolveNativeUnitPresentCall",
           "rust": "fd2_game::game::resolve_native_unit_present_call",
-          "status": "r8",
+          "status": "ported",
           "go_line": 61
         },
         {
           "name": "cloneNativeUnitPresentState",
           "rust": "fd2_game::game::clone_native_unit_present_state",
-          "status": "r8",
+          "status": "ported",
           "go_line": 72
         },
         {
           "name": "startNativeUnitPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_unit_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 84
         },
         {
           "name": "buildNativeUnitPresentJob",
           "recv": "Game",
           "rust": "fd2_game::game::Game::build_native_unit_present_job",
-          "status": "r8",
+          "status": "ported",
           "go_line": 121
         },
         {
           "name": "publishNativeUnitPresentFrame",
           "recv": "Game",
           "rust": "fd2_game::game::Game::publish_native_unit_present_frame",
-          "status": "r8",
+          "status": "ported",
           "go_line": 277
         },
         {
           "name": "stepNativeUnitPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::step_native_unit_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 291
         },
         {
           "name": "failNativeUnitPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::fail_native_unit_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 332
         },
         {
           "name": "drawNativeUnitPresent",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_unit_present",
-          "status": "r8",
+          "status": "ported",
           "go_line": 340
         }
       ],

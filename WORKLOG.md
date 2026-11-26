@@ -6065,3 +6065,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 
 - 槽：第 27 章原版記錄存檔（`work/parity-slot-ch27/state-r1/FD2.SAV`）以 `fd2-chapter-slot -target 27 -boost-only -boost-base-ap 1000` 建成 `3ecd2a2a`，manifest 存於 [`ch28-r8-ap1000-manifest.json`](docs/data/parity-slots/ch28-r8-ap1000-manifest.json)。計畫 `ch28-flow-cheat-r2.jsonl`，原版 1283 個檢查點。
 - Rust 重播 120 筆無分歧，存檔逐位元組相同；本章沒有新增程式。
+
+## 2026-11-27 Rust 第 29 章重播
+
+- 對照：沿用 Go 端 PLAYER-E2 的原版 r7（`work/ch29-flow-20261017/original-r7`，計畫 `ch29-flow-dragons-r4.jsonl`，輸入 `input-ap5000/FD2.SAV` `aad6a138`，原版存檔 `state-r7/FD2.SAV` `33c3d74d`）。
+- 自建鏈試跑：第 28 章 Rust 對照鏈存檔加 AP+5000（`69acdb7e`）。r4 在第 24～39 回合助手被識別碼 114 的單位擋住，16 輪未擊倒三頭龍；r3 的 HP-only 清敵不觸發本章勝利，清場後停在第 24 回合（58 已記錄的既有限制）。第一次 r3 漏追 `0x35EE6`，停掉重跑。
+- Rust 補：重播測具 event79 原版 rng_word 承接（`ParityEvent79Rng`，5 筆全消費並寫進 replay-settings）、event75 對白、event76 最後一輪預檢與三次脈衝演出、`start_native_ch28_post_present`／`fail_native_ch28_post_present`、`native_unit_present` 全檔（原版索引色分支；bridge 每列沿用已完成重映射的 work）、present 端兩處 todo。
+- 重播 351 筆無分歧，存檔逐位元組相同。Rust 遊戲回歸 461 項通過，第 26～28 章重播回歸相同。

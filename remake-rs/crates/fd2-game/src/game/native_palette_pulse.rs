@@ -55,7 +55,7 @@ pub(crate) fn validate_native_palette_pulse(spec: &campaign::NativePalettePulse)
 }
 
 impl Game {
-    fn native_palette_presenter_active(&self) -> bool {
+    pub(super) fn native_palette_presenter_active(&self) -> bool {
         self.native_palette_pulse.is_some()
             || self.native_palette_ramp.is_some()
             || self.native_unit_present.is_some()

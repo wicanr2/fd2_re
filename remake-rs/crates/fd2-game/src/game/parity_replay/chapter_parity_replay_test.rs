@@ -267,6 +267,48 @@ pub(crate) fn read_parity_preparation_controls(
     Ok(keys)
 }
 
+/// 第 29 章 event79（0x35EE6）的原版入口 rng_word 佇列。
+#[derive(Default)]
+pub(crate) struct ParityEvent79Rng {
+    pub(crate) entries: Vec<ParityAIEntry>,
+    pub(crate) cursor: usize,
+    pub(crate) inputs: Vec<BTreeMap<&'static str, i64>>,
+}
+
+impl ParityEvent79Rng {
+    /// Go `chapter_parity_replay_test.go:648`：`observeTurnPairRNG`。正式 consumer 入口承接原版 rng_word，
+    /// 並以入口前 checkpoint 核對執行器、執行檔雜湊與回合。
+    fn observe(&mut self, run: &Path, g: &Game, event: &battle::NativeTurnEvent, _state: u16) -> Result<u16, String> {
+        if event.event_id != 79 || event.handler != "0x35ee6" || self.cursor >= self.entries.len() {
+            return Err("event79缺少唯一原版入口".into());
+        }
+        let entry = &self.entries[self.cursor];
+        if entry.control_seq <= 0 || entry.unit != 0 || !(0..=65535).contains(&entry.rng_word) {
+            return Err("event79原版入口欄位不合法".into());
+        }
+        let raw = oracle_checkpoint(run, entry.control_seq - 1).map_err(|err| err.to_string())?;
+        let before: serde_json::Value = serde_json::from_slice(&raw).map_err(|err| err.to_string())?;
+        let round = before["view"]["round"].as_i64();
+        let same = before["runner"] == "dosgolem"
+            && before["exe_sha256"] == "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+            && before["control_seq"].as_i64() == Some(entry.control_seq - 1)
+            && round.is_some()
+            && g.st.as_ref().is_some_and(|st| Some(st.native_round_counter) == round);
+        if !same {
+            return Err("event79原版版本／入口前回合不相同".into());
+        }
+        let input = entry.rng_word as u16;
+        self.inputs.push(BTreeMap::from([
+            ("oracle_seq", entry.control_seq),
+            ("round", round.unwrap()),
+            ("input_rng_word", entry.rng_word),
+            ("result_rng_word", i64::from(fd2_formats::native_rng::native_rng_step(input))),
+        ]));
+        self.cursor += 1;
+        Ok(input)
+    }
+}
+
 /// Go `chapter_parity_replay_test.go:616`：`readParityAIEntries`。讀不到檔回空（Go 回 nil）。
 pub(crate) fn read_parity_ai_entries(path: &Path, eip: &str) -> Vec<ParityAIEntry> {
     let Ok(rows) = read_jsonl(path) else {
@@ -2330,8 +2372,14 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
             observe_growth_roll(&growth, state)
         })));
     }
+    let event79 = Arc::new(Mutex::new(ParityEvent79Rng::default()));
     if chapter == 29 {
-        todo!("R8: chapter_parity_replay_test.go:931 event79 turn pair RNG")
+        event79.lock().unwrap().entries = read_parity_ai_entries(&run.join("eip-trace.jsonl"), "0x35EE6");
+        let (event79, run) = (event79.clone(), run.to_path_buf());
+        r.d.g.native_turn_pair_rng_input =
+            Some(Box::new(move |g: &mut Game, event: battle::NativeTurnEvent, state: u16| {
+                event79.lock().unwrap().observe(&run, g, &event, state).map_err(|err| game_err!("{err}"))
+            }));
     }
     // R5 階段 2 r5d：畫格擷取打開時照 Go 黃金的 rand.Seed(4) 接上全域亂數；關閉時維持 R4 的固定種子。
     if r.d.frame_capture.is_some()
@@ -2390,6 +2438,28 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
                 false,
                 &[format!("divergence: 原版 AI 入口 {total} 筆，重製只消費 {cursor} 筆")],
             );
+        }
+        {
+            let state = event79.lock().unwrap();
+            assert_eq!(
+                state.cursor,
+                state.entries.len(),
+                "event79原版入口{}筆，重製只消費{}筆",
+                state.entries.len(),
+                state.cursor
+            );
+            if chapter == 29 {
+                let path = out.join("replay-settings.json");
+                let mut metadata: serde_json::Value =
+                    serde_json::from_slice(&std::fs::read(&path).expect("讀 replay-settings.json")).unwrap();
+                metadata["event79_rng_inputs"] = serde_json::to_value(&state.inputs).unwrap();
+                metadata["event79_rng_method"] =
+                    "正式consumer入口承接dosgolem35EE6原始rng_word；以入口前checkpoint核對原始回合，非整段骰序一致。"
+                        .into();
+                let mut raw = serde_json::to_vec_pretty(&metadata).unwrap();
+                raw.push(b'\n');
+                std::fs::write(&path, raw).expect("寫 replay-settings.json");
+            }
         }
         if env("FD2_PARITY_DEFEAT_TAIL") == "1" {
             todo!("R8: chapter_parity_replay_test.go verifyObservedDefeatTail")

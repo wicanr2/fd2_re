@@ -43,6 +43,84 @@ impl Game {
             }
             return true;
         }
-        todo!("R8: native_field_event75.go:event75DialogueActions（第一章沒有執行到）")
+        let Some(mut actions) = event75_dialogue_actions(self, plan.text_index, Some(actor)) else {
+            if self.load_err.is_empty() {
+                self.load_err = String::from("event75: FDTXT_029 editable dialogue unavailable");
+            }
+            if let Some(after) = after {
+                after(self);
+            }
+            return true;
+        };
+        let then: Option<Box<dyn FnOnce(&mut Game) + Send>> = if plan.activate {
+            Some(Box::new(move |g: &mut Game| {
+                if let Err(err) = battle::commit_native_field_event75(g.st.as_mut(), &plan) {
+                    g.load_err = err.to_string();
+                }
+                if let Some(after) = after {
+                    after(g);
+                }
+            }))
+        } else {
+            after
+        };
+        self.start_battle_event(&mut actions, then);
+        true
     }
+}
+
+/// FDTXT_029 index0（1 句）／index1（5 句）轉成可編輯對白；index0 的說話者取觸發 record 的 BattleFig
+/// （sub_35C79 把 raw +7 交給 0x1956B）。
+///
+/// Go：`native_field_event75.go:7`，`func event75DialogueActions(g *Game, textIndex int, trigger *battle.Unit) ([]battle.Action, bool)`
+fn event75_dialogue_actions(g: &mut Game, text_index: i64, trigger: Option<UnitIdx>) -> Option<Vec<battle::Action>> {
+    let (line, count) = match text_index {
+        0 => (0usize, 1usize),
+        1 => (1, 5),
+        _ => return None,
+    };
+    let mut actions = ch29_story_dialogue_actions(g, 0, line, count, "event75")?;
+    if text_index == 0 {
+        let unit = g.st.as_ref().zip(trigger).map(|(st, index)| &st.units[index])?;
+        if !unit.has_battle_fig {
+            return None;
+        }
+        actions[0].speaker = unit.battle_fig;
+    }
+    Some(actions)
+}
+
+/// `assets/story/ch29.json` 第 `scene_index` 幕的 `line..line+count` 句轉成對白動作；有 speaker_slot 的句子或
+/// 越界時回 `None`（失敗即關閉）。Go 的 event75／event76DialogueActions 共用這段迴圈。
+pub(crate) fn ch29_story_dialogue_actions(
+    g: &mut Game,
+    scene_index: i64,
+    line: usize,
+    count: usize,
+    tag: &str,
+) -> Option<Vec<battle::Action>> {
+    let lines = load_story_script_with_identity_at("assets/story/ch29.json", "", Some(&scene_index)).ok()?;
+    if count == 0 || line + count > lines.len() {
+        return None;
+    }
+    let mut actions = Vec::with_capacity(count);
+    for source in &lines[line..line + count] {
+        if source.speaker_slot.is_some() {
+            return None;
+        }
+        let text = match g.localized_story_text(source) {
+            Ok(text) => text,
+            Err(err) => {
+                g.load_err = format!("{tag} locale: {err}");
+                return None;
+            }
+        };
+        actions.push(battle::Action {
+            r#type: String::from("dialogue"),
+            speaker: source.speaker,
+            text,
+            ..Default::default()
+        });
+    }
+    Some(actions)
 }

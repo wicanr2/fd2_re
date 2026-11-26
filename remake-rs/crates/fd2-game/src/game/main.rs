@@ -2355,7 +2355,11 @@ impl Game {
                     self.load_err = String::from("beat native_unit_present:缺少原版 0x25535 payload");
                     return;
                 }
-                todo!("R8: native_unit_present.go:startNativeUnitPresent（第一章沒有執行到）")
+                let spec = b.native_unit_present.unwrap();
+                let then: Box<dyn FnOnce(&mut Game) + Send> = Box::new(|g: &mut Game| g.beat_advance());
+                if let Err(err) = self.start_native_unit_present(&spec, Some(then)) {
+                    self.load_err = format!("beat native_unit_present: {err}");
+                }
             }
             "native_ch28_post_present" => {
                 if b.native_ch28_post_present.as_ref().is_none_or(|p| !p.is_recovered_contract())
@@ -2364,7 +2368,10 @@ impl Game {
                     self.load_err = String::from("beat native_ch28_post_present:缺少原版 0x254c0 payload");
                     return;
                 }
-                todo!("R8: native_ch28_post_present.go:startNativeCh28PostPresent（第一章沒有執行到）")
+                let then: Box<dyn FnOnce(&mut Game) + Send> = Box::new(|g: &mut Game| g.beat_advance());
+                if let Err(err) = self.start_native_ch28_post_present(Some(then)) {
+                    self.load_err = format!("beat native_ch28_post_present: {err}");
+                }
             }
             "indexed_transition" => {
                 if b.indexed_transition.is_none() {
@@ -7656,7 +7663,8 @@ impl Game {
             return self.shot_termination();
         }
         if self.native_unit_present.is_some() {
-            todo!("R8: native_unit_present.go:stepNativeUnitPresent（單位登場演出）")
+            self.step_native_unit_present();
+            return self.shot_termination();
         }
         if self.native_ch28_post_present.is_some() {
             self.step_native_ch28_post_present();
@@ -8429,7 +8437,11 @@ impl Game {
         }
         if self.native_unit_present.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_unit_present.go:drawNativeUnitPresent／failNativeUnitPresent");
+            if !self.draw_native_unit_present(Some(screen)) {
+                self.fail_native_unit_present(&game_err!("indexed frame unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_ch28_post_present.is_some() {
             // 第一章執行到（階段 0 覆蓋率 1064 次），失敗路徑沒有。

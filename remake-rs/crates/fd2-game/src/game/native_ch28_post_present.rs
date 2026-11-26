@@ -80,6 +80,37 @@ impl Game {
         )
     }
 
+    /// 第 28 關戰後 0x254c0：先以 0x35BBA(20) 清 HP 的 prelude，再走 0x1DB65 死亡呈現。
+    ///
+    /// Go：`native_ch28_post_present.go:59`，`func (g *Game) startNativeCh28PostPresent(then func()) error`
+    pub(crate) fn start_native_ch28_post_present(
+        &mut self,
+        then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
+    ) -> Result<()> {
+        self.start_native_unit_death_present(
+            &mut |st: &mut battle::State| Ok(battle::apply_native_ch28_post_raw_prelude(Some(st))?),
+            then,
+        )
+    }
+
+    /// Go：`native_ch28_post_present.go:65`，`func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, then func()) error`
+    pub(crate) fn start_native_unit_death_present(
+        &mut self,
+        prelude: &mut dyn FnMut(&mut battle::State) -> Result<()>,
+        then: Option<Box<dyn FnOnce(&mut Game) + Send>>,
+    ) -> Result<()> {
+        self.start_native_unit_death_present_mode(prelude, then, false)
+    }
+
+    /// Go：`native_ch28_post_present.go:331`，`func (g *Game) failNativeCh28PostPresent(err error)`
+    pub(crate) fn fail_native_ch28_post_present(&mut self, err: &GameError) {
+        if let Some(rollback) = self.native_ch28_post_present.as_mut().and_then(|j| j.rollback.take()) {
+            rollback(self);
+        }
+        self.native_ch28_post_present = None;
+        self.load_err = format!("native 0x1DB65: {err}");
+    }
+
     /// Go：`native_ch28_post_present.go:69`，`func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error, then func(), retainState bool) error`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     /// Go 的 func 參數 `then` 會被存起來（工作結構的延續），Rust 收擁有的 `Box`。

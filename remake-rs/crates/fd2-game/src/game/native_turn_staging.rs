@@ -215,7 +215,7 @@ impl Game {
     }
 
     /// 以候選狀態試合成一幀（不發布候選狀態、畫布或時鐘）。Go 以 `probe := *g` 淺複製整個 Game。
-    fn probe_native_map_frame(&mut self, state: battle::State, cam: Option<(f64, f64)>) -> Result<Vec<u8>> {
+    pub(super) fn probe_native_map_frame(&mut self, state: battle::State, cam: Option<(f64, f64)>) -> Result<Vec<u8>> {
         let saved = self.save_native_game_preview(state);
         (self.native_map_work, self.native_map_vga) = (Vec::new(), Vec::new());
         if let Some((x, y)) = cam {
