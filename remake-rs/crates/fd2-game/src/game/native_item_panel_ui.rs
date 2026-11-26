@@ -40,7 +40,37 @@ impl Game {
         let amount = u16::from_le_bytes([row[0x0e], row[0x0f]]);
         let (route, valid) = battle::native_item_hp_restore_route_for_type(row[0x0d], amount);
         if !valid {
-            return Err(game_err!("敵方道具 {} 的原生效果類型 {} 尚無執行入口", plan.native_item_id, row[0x0d]));
+            let (damage_route, damage_valid) = battle::native_item_command_damage_route_for_type(row[0x0d], amount);
+            if !damage_valid {
+                return Err(game_err!("敵方道具 {} 的原生效果類型 {} 尚無執行入口", plan.native_item_id, row[0x0d]));
+            }
+            // Go：`native_item_panel_ui.go:497` 的指令傷害分支。共用傷害 helper 會改 HP，先在複本上算，
+            // 驗證失敗時不會發布半套多目標名單。
+            let before = native_item_runtime_records(&state.units)?;
+            let mut clones = targets.iter().map(|&index| state.units[index].clone()).collect::<Vec<_>>();
+            let (damage, rng_after) = battle::apply_native_item_command_damage(
+                &mut clones,
+                damage_route,
+                &self.native_command_book,
+                &self.native_command_resistances,
+                self.native_rng_state,
+            )?;
+            let mut after = before.clone();
+            for (clone, &raw) in clones.iter().zip(&plan.native_item_target_indices) {
+                let base = usize::from(raw) * 80;
+                after[base + 5] = clone.native_record_byte5;
+                after[base + 0x40..base + 0x42].copy_from_slice(&(clone.hp as i16).to_le_bytes());
+            }
+            return Ok(NativeAIItemTransaction {
+                before,
+                after,
+                targets,
+                rng_before: self.native_rng_state,
+                rng_after,
+                damage,
+                damage_route: Some(damage_route),
+                ..Default::default()
+            });
         }
         let before = native_item_runtime_records(&state.units)?;
         let mut after = before.clone();

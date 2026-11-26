@@ -6054,3 +6054,9 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 敵方指令 9（`execute_native_ai_command9`，只限 raw side 0，背景取目標側不交換；新增 `native_damage_command_scenery_with`）、指令 6（`execute_native_ai_command6`，LUT15 重畫各段底圖、演出亂數須與傷害規劃一致）、指令 7（`execute_native_ai_command7`）依 Go 敵方分支移植原版索引色呈現並接到 AI 分派、present 與 draw。
 - 第 26 章：槽由第 25 章槽重建後依 `docs/data/parity-slots/ch26-hp-policy-manifest.json` 同政策以 `-boost-only -boost-max-hp 30000` 加成（`327f7405`），名冊順序與舊槽相同，沿用 `ch26-flow-cheat-r4.jsonl`。原版 959 個檢查點；Rust 補 `before_clear_viewport` 標記後 49 筆走到第 27 章城鎮的酒店存檔，存檔逐位元組相同。
 - Rust 遊戲回歸 461 項、格式與 Clippy 通過；第 21、23、24 章重播回歸相同。
+
+## 2026-11-27 Rust 第 27 章重播與敵方指令傷害物品
+
+- 槽：直接沿用第 26 章原版在第 27 章酒店存下的 `FD2.SAV`（`9d87927f`），計畫 `ch27-flow-cheat-r2.jsonl`；原版 579 個檢查點走到第 28 章整備的記錄存檔。
+- Rust 補 `plan_native_ai_item_restore` 的指令傷害分支（Go `planNativeAITargetItem` 的 `NativeItemCommandDamageRouteForType`，在複本上算傷害再寫回 byte+5 與 HP）、`build_native_ai_item_damage_presentation`（0x1cd17；0x1cac7 的第 21 類演出仍 `todo!`）與 `reset_persistent_roster_state` 節拍。
+- 重播 54 筆無分歧，存檔逐位元組相同。Rust 遊戲回歸 461 項通過，第 24、26 章重播回歸相同。

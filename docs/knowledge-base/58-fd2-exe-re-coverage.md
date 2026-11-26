@@ -58,6 +58,8 @@ Rust 第 25 章受控重播 `BLOCKED`（[#321](https://github.com/wicanr2/fd2_re
 
 Rust 第 26 章受控重播接通敵方指令 7 與 `before_clear_viewport` 標記。從標題讀取由第 25 章槽重建、依 `ch26-hp-policy-manifest.json` 同政策加 HP／MaxHP +30000 的建構槽（boost-only），經出戰選人（悠妮、亞奇梅吉）與九波增援至第 18 回合，清場前視野與原版相同後一次清場，完成戰後劇情並抵達第 27 章城鎮的酒店存檔。49 筆檢查點通過，存檔與原版逐位元組相同。HP 政策不證明傷害、存活或敵方選目標。驗證層級為 RUNTIME-E1。[第二十六章原版樣本](57-ui-evidence-matrix.md)
 
+Rust 第 27 章受控重播接通敵方指令傷害物品（0x1cd17：效果格、單位混色、交易發布後數字格）與 `reset_persistent_roster_state` 節拍。從標題讀取第 26 章原版酒店存檔（`9d87927f`），經出戰選人、第 9 回合清場前視野與一次清場，走天空之鑰閘門的成功分支到第 28 章整備的記錄存檔。54 筆檢查點通過，存檔與原版逐位元組相同。驗證層級為 RUNTIME-E1。[第二十七章原版樣本](57-ui-evidence-matrix.md)
+
 Rust R6 四語設定及原生劇情對白達 RUNTIME-E1。Linux Bevy 從標題正常 START，驗證英文首句的分頁與續行、冷啟動文字區逐像素相同，以及皇城首句的日文和簡中譯文。[119 的語言與對白驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-工具列語言與原生劇情對白)
 
 Rust R6 雙側海報已接入 Bevy 及工具列。兩組圖稿、關閉、漸層、淡入偏好、冷啟動及缺件回退通過 Linux 視窗驗證。中央標題背景逐像素保持，海報側欄攔截滑鼠點擊。[119 的雙側海報驗證](../goal/119-goal-rust-bevy-rewrite-20261113.md#r6-hd1-雙側海報)

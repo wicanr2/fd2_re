@@ -3077,7 +3077,8 @@ impl Game {
                 self.beat_advance();
             }
             "reset_persistent_roster_state" => {
-                todo!("R8: main.go:resetPersistentRosterState（第一章沒有執行到）")
+                self.reset_persistent_roster_state();
+                self.beat_advance();
             }
             "set_chapter" => {
                 let Some(chapter) = b.chapter.filter(|&c| c >= 0) else {
@@ -8151,6 +8152,22 @@ impl Game {
     }
 
     /// Go：`main.go:9220`，`func (g *Game) moveMapCursor(dx, dy int)`
+    /// 持續名冊全員回滿 HP／MP，清行動、位移、增益與狀態異常。
+    ///
+    /// Go：`main.go`，`func (g *Game) resetPersistentRosterState()`
+    pub(crate) fn reset_persistent_roster_state(&mut self) {
+        for unit in self.party_roster.values_mut() {
+            unit.acted = false;
+            unit.hp = unit.max_hp;
+            unit.mp = unit.max_mp;
+            (unit.off_x, unit.off_y) = (0.0, 0.0);
+            (unit.buff_ap_pct, unit.buff_dp_pct, unit.buff_hit, unit.buff_ev, unit.buff_turns) = (0, 0, 0, 0, 0);
+            (unit.sealed, unit.seal_turns) = (false, 0);
+            (unit.poisoned, unit.poison_turns) = (false, 0);
+            (unit.paralyzed, unit.paralyze_turns) = (false, 0);
+        }
+    }
+
     pub(crate) fn move_map_cursor(&mut self, dx: i64, dy: i64) {
         if let Some(st) = self.st.as_mut().filter(|st| st.has_native_map_view_state) {
             let before = st.native_map_view_state;
