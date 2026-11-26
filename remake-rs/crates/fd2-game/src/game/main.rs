@@ -8310,6 +8310,12 @@ impl Game {
             self.draw_capture_shot_point(screen);
             return;
         }
+        if self.native_cmd2_presentation.is_some() {
+            screen.fill(BLACK);
+            self.present_native_command2(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
+        }
         if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()
@@ -10606,6 +10612,7 @@ impl Game {
             let result = match plan.native_command_id {
                 0 => self.execute_native_ai_command0(plan),
                 1 | 4..=5 => self.execute_native_ai_indexed_damage_command(plan),
+                2 => self.execute_native_ai_command2(plan),
                 13..=16 => self.execute_native_ai_command_heal(plan),
                 17..=19 => self.execute_native_ai_command_modifier(plan),
                 20..=22 | 26 | 27 => self.execute_native_ai_command2022(plan),

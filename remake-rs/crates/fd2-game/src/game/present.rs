@@ -186,6 +186,10 @@ impl Game {
             self.present_native_indexed_damage_command(None);
             return PresentOwner::NativeCommandPresentation;
         }
+        if self.native_cmd2_presentation.is_some() {
+            self.present_native_command2(None);
+            return PresentOwner::NativeCommandPresentation;
+        }
         if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()

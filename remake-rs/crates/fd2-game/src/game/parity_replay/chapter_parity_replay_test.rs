@@ -223,6 +223,44 @@ pub(crate) struct ParityReplay {
     pub(crate) stopped_before_ai: bool,
     pub(crate) skip_frames: bool,
     pub(crate) start_entry_trace: Option<JourneyTrace>,
+    /// Go `parityReplay.partySelectionSeq`：`party_selection` 標記的原版序號。
+    pub(crate) party_selection_seq: i64,
+}
+
+/// Go `chapter_parity_replay_test.go:1500`：`readParityPreparationControls`。選人起點之後到最終確認的
+/// 每一格都要有連續序號與已知鍵，Enter 數必須等於 quota。
+pub(crate) fn read_parity_preparation_controls(
+    run: &Path,
+    from: i64,
+    to: i64,
+    quota: i64,
+) -> std::result::Result<Vec<String>, String> {
+    if from <= 0 || to <= from || (quota != 15 && quota != 19) {
+        return Err(String::from("選人序列／quota未知"));
+    }
+    let data = std::fs::read_to_string(run.join("control-history.jsonl")).map_err(|e| e.to_string())?;
+    let (mut expected, mut count, mut keys) = (from + 1, 0, Vec::new());
+    for line in data.lines().filter(|l| !l.trim().is_empty()) {
+        let entry: serde_json::Value = serde_json::from_str(line).map_err(|e| e.to_string())?;
+        let seq = entry["seq"].as_i64().unwrap_or(0);
+        let key = entry["key"].as_str().unwrap_or("").to_string();
+        if seq <= from || seq > to {
+            continue;
+        }
+        let known = matches!(key.as_str(), "" | "enter" | "left" | "right" | "up" | "down");
+        if seq != expected || !known {
+            return Err(format!("選人seq{seq}輸入缺格／順序未知"));
+        }
+        expected += 1;
+        if key == "enter" {
+            count += 1;
+        }
+        keys.push(key);
+    }
+    if expected != to + 1 || count != quota {
+        return Err(format!("選人輸入數量{count}與quota{quota}不符或尾端缺格"));
+    }
+    Ok(keys)
 }
 
 /// Go `chapter_parity_replay_test.go:616`：`readParityAIEntries`。讀不到檔回空（Go 回 nil）。
@@ -485,6 +523,116 @@ pub(super) fn sha256_hex_of(raw: &[u8]) -> String {
 }
 
 impl ParityReplay {
+    /// Go `chapter_parity_replay_test.go:1248`：mark `party_selection`。原版停在 0x31A2E 的出戰 YES，
+    /// 重製端以正式整備 owner 按 YES 進入選人。
+    fn mark_party_selection(&mut self, action: &ParityAction) {
+        if let Err(err) = verify_parity_preparation_owner(&self.run, action.seq, "0x31A2E") {
+            panic!("{err}");
+        }
+        let g = &self.d.g;
+        let ok = node(g).is_some_and(|n| n.r#type == "preparation")
+            && !g.prep_selecting
+            && !g.prep_confirm
+            && g.prep_ids.len() as i64 > g.prep_limit
+            && (g.prep_limit == 15 || g.prep_limit == 19)
+            && g.party_deploy.is_empty()
+            && g.prep_confirm_sel == 0;
+        assert!(ok, "選人mark缺少未消費的正常出戰YES或名冊／quota不符");
+        assert!(
+            self.d.g.handle_native_preparation_input(NativePreparationInput { enter: true, ..Default::default() })
+                && self.d.pump(600, |g| g.prep_selecting && !g.native_class_ui_blocks_input()),
+            "正式出戰YES沒有進入選人"
+        );
+        self.party_selection_seq = action.seq;
+        self.checkpoint("party_selection", action.seq, "preparation", true, &[]);
+    }
+
+    /// Go `chapter_parity_replay_test.go:1263`：mark `departure_confirmation`。照原版 control-history 的選人鍵
+    /// 交給正式整備 owner；原版停在 0x31E65 時是必出角色拒收。
+    fn mark_departure_confirmation(&mut self, action: &ParityAction) {
+        let rejected = verify_parity_preparation_owner(&self.run, action.seq, "0x31E65").is_ok();
+        if let Err(err) = verify_parity_preparation_owner(&self.run, action.seq, "0x31D8E")
+            && !rejected
+        {
+            panic!("{err}");
+        }
+        let g = &self.d.g;
+        let ok = self.party_selection_seq > 0
+            && node(g).is_some_and(|n| n.r#type == "preparation")
+            && g.prep_selecting
+            && !g.prep_confirm
+            && g.prep_sel == 0
+            && g.party_deploy.is_empty();
+        assert!(ok, "最終確認mark缺少正常選人起點");
+        let keys = read_parity_preparation_controls(&self.run, self.party_selection_seq, action.seq, g.prep_limit)
+            .unwrap_or_else(|err| panic!("{err}"));
+        for key in keys {
+            if !key.is_empty() {
+                let input = NativePreparationInput {
+                    enter: key == "enter",
+                    left: key == "left",
+                    right: key == "right",
+                    up: key == "up",
+                    down: key == "down",
+                    ..Default::default()
+                };
+                assert!(self.d.g.handle_native_preparation_input(input), "選人鍵{key}未被正式owner消費");
+            }
+            assert!(self.d.pump(600, |g| !g.native_class_ui_blocks_input()), "選人確認開框沒有完成");
+        }
+        let g = &self.d.g;
+        let selected = g.prep_ids.iter().filter(|id| g.party_deploy.get(id).copied().unwrap_or(false)).count() as i64;
+        if rejected {
+            assert!(
+                g.prep_required_missing.is_some() && !g.prep_confirm && !g.prep_selecting && selected == g.prep_limit,
+                "31E65原版拒收沒有對應正式必出角色訊息"
+            );
+            self.checkpoint("required_party_rejection", action.seq, "preparation", true, &[]);
+            let next = action.seq + 1;
+            let key_ok = self.keys.as_ref().and_then(|keys| keys.get(&next)).is_some_and(|key| key == "enter");
+            assert!(
+                key_ok
+                    && self
+                        .d
+                        .g
+                        .handle_native_preparation_input(NativePreparationInput { enter: true, ..Default::default() }),
+                "原版拒收確認鍵缺少來源或未由正式owner消費"
+            );
+            let cancel = node(&self.d.g).map(|n| n.cancel).unwrap_or_default();
+            if !cancel.is_empty() {
+                if let Err(err) = verify_parity_preparation_owner(&self.run, next, "0x2CE08") {
+                    panic!("{err}");
+                }
+                let town = self.town.clone();
+                assert!(
+                    self.d.pump(600, |g| node_id(g) == town && !g.native_class_ui_blocks_input()),
+                    "必出角色拒收沒有返回原城鎮"
+                );
+                self.checkpoint("town_after_required_rejection", next, "town", true, &[]);
+            } else {
+                if let Err(err) = verify_parity_preparation_owner(&self.run, next, "0x31A2E") {
+                    panic!("{err}");
+                }
+                assert!(
+                    self.d.pump(600, |g| {
+                        g.prep_selecting
+                            && g.party_deploy.values().filter(|&&v| v).count() == 0
+                            && !g.native_class_ui_blocks_input()
+                    }),
+                    "非城鎮必出拒收沒有重回零勾選選人"
+                );
+                self.checkpoint("selection_after_required_rejection", next, "preparation", true, &[]);
+            }
+            return;
+        }
+        assert!(
+            g.prep_confirm && !g.prep_selecting && selected == g.prep_limit && g.prep_confirm_sel == 0,
+            "正常選人尚未完成：selected={selected} quota={}",
+            g.prep_limit
+        );
+        self.checkpoint("departure_confirmation", action.seq, "preparation", true, &[]);
+    }
+
     fn checkpoint(&mut self, kind: &str, seq: i64, ui: &str, with_frame: bool, extra: &[String]) -> ParityCheckpoint {
         parity_checkpoint(&self.d.g, &self.log, self.skip_frames, kind, seq, ui, with_frame, extra)
     }
@@ -636,11 +784,11 @@ impl ParityReplay {
             | "before_clear_viewport"
             | "record_question"
             | "record_slots"
-            | "record_party_selection"
-            | "party_selection"
-            | "departure_confirmation" => {
+            | "record_party_selection" => {
                 todo!("R8: chapter_parity_replay_test.go:1107 mark {:?}（第一章沒有）", action.label)
             }
+            "party_selection" => self.mark_party_selection(action),
+            "departure_confirmation" => self.mark_departure_confirmation(action),
             "defeat_return_title" => self.verify_defeat_return_title(action),
             _ => {
                 // 戰場裡的 mark 通常接在 await round>=N 之後：原版側已經推過敵方階段、回到下一回合的游標。
@@ -1805,6 +1953,7 @@ fn run_chapter_parity_replay(chapter: i64, entry_mode: &str, run: &Path, out: &P
         stopped_before_ai: false,
         skip_frames,
         start_entry_trace: None,
+        party_selection_seq: 0,
     };
     {
         let (ai, log) = (ai.clone(), log.clone());
