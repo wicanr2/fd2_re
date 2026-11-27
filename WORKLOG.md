@@ -6145,3 +6145,11 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 一次注入全部 HD 變數跑 `cmd/fd2` 時，在 1072 秒 `signal: killed`，後面的測試沒跑；測具因此不整批注入，`tools/remake_go_test.sh` 說明寫明要個別帶變數。
 - 結果：Go 預設全套（`work/go-test-pack-root`，原版包加 locales）21 個套件全部 ok，`cmd/fd2` 386 秒，0 項失敗；HD 輸入測試帶 `fd2-modern-handpainted-a`（私人庫 `e6e9bff6`）個別跑全過。log 在 `work/go-321-verify/go-full-test-r3.log`、`hd-inputs-r5.log`。
 - 新教訓 `shared-draw-change-updates-independent-oracles`、`hd-input-tests-skip-without-inputs`。
+
+## 2026-11-27 v.1.1.17-20261127（Go 凍結例外：#321 與全套測試清零）
+
+- 使用者同意發 Go 本機完整版。版號提交 `45a98417`，含 #321 修正 `71671cf1`、測試修正 `27d279c4`，以及 de40313d 的 `ch22_post.json` pose 勘誤（Go 版也讀這份資料）。
+- 建置照 v.1.1.16：`remake/packaging/build-local-release.sh` 建三平台引擎包；`tools/build_fd2_full_local.py stage／package` 在 `fd2-go-test-local` 執行，Linux AppImage 缺 appimagetool，改在 `fd2-build-appimage` 以 `package --resume` 補完；`verify_fd2_full_local.py` 為 STATIC-CONTENT-PASSED；`finalize --promo-version v.1.1.10-20261112` 為 PASS-SCOPED。
+- 完整版 Windows 3748489463 位元組／`6a7d93f0…`、macOS 3757251889／`a8fddfb4…`、Linux 3236612600／`84b209e6…`。三包各 54581 份素材，與 v.1.1.16 比對只有 `assets/cutscenes/bindings/ch22_post.json` 不同；Linux 與 Wine 完整包自檢通過，開場截圖與 v.1.1.16 相同（`affb593a…`），已人工檢視。
+- 核對後刪除本輪組裝樹 165649 檔、11832843636 位元組（`work/full-local-v.1.1.17-20261127/{linux,macos,windows}` 與 `work/release-v.1.1.17-20261127`），保留清冊、staging.json 與 `work/local-release-v.1.1.17-20261127` 建置紀錄；同時刪除本輪 Go 測試快取與符號連結素材根。v.1.1.16 的組裝樹與舊版完整包仍在，是否刪除待使用者決定。
+- 沒有建立 tag 或公開 Release。
