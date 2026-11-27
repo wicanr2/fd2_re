@@ -6086,6 +6086,14 @@
       "rule": "在獨立 git worktree 跑 tools/rust_parity_all.sh 時，FD2_REMAKE_ASSETS、FD2_ASSET_PACK 指主工作區，並在 worktree 根目錄建 work 連結指到主工作區的 work/；建構槽、原版追蹤與 remake/assets 的字型都不在版控裡。跑完先刪連結再移除 worktree。",
       "why": "提交點的 worktree 第一次缺字型，30 章都在載字型時失敗；第二次缺 work/ 下的建構槽，29 章回報槽雜湊不符。兩次都不是重播分歧。",
       "evidence": "tools/rust_parity_all.sh、work/rust-parity-all-0abad3d5"
+    },
+    {
+      "id": "rust-test-file-check-existing-before-write",
+      "date": "2026-11-28",
+      "area": "重製端",
+      "rule": "在 remake-rs 新增 `<模組>/<模組>_test.rs` 前，先看模組檔尾有沒有 `#[path = ...]` 的測試模組、目錄裡有沒有同名檔；已有就用附加，不用 `cat >` 或 Write 整檔覆寫。",
+      "why": "移植指令 33 的端到端測試時整檔覆寫了已移植 Go 三項步進測試的檔案，編譯報重複模組才發現，只能從 HEAD 還原。",
+      "evidence": "remake-rs/crates/fd2-game/src/game/native_command33_presentation/native_command33_presentation_test.rs"
     }
   ]
 }

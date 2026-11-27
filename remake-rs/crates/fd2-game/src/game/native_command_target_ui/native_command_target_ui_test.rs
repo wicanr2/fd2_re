@@ -9,7 +9,7 @@ use crate::test_support;
 /// 第一章 map0：`(0,0)` 我方施放者、`(1,0)` 敵方目標，原版 HUD／範圍模式就緒。缺分離素材包或原版地圖時回傳
 /// `None`。Go 另設 `FD2_ORIGINAL_*` 指到原版檔；Rust 的指令演出只讀分離素材包。HD 面板（Go
 /// `maybeAttachCommandPanelHDTest`）不在這裡。
-fn ordinary_command_test_game() -> Option<(Game, UnitIdx, UnitIdx)> {
+pub(crate) fn ordinary_command_test_game() -> Option<(Game, UnitIdx, UnitIdx)> {
     test_support::input("FD2_ASSET_PACK", "surfaces/BG_000/resource.json")?;
     let (scene, flash) = (
         test_support::remake_asset("data/native_command_scene.json")?,

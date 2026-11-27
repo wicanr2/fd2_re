@@ -224,7 +224,7 @@ impl Game {
 
     /// 閘門通過後交給各指令的玩家演出入口。回傳 false 代表這個 ID 還沒有玩家入口。
     ///
-    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、24～31）
+    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、24～35）
     pub(crate) fn start_native_player_command(&mut self, id: i64, target: Option<UnitIdx>) -> bool {
         let Some(actor) = self.sel else { return true };
         let cursor = (self.cur_x, self.cur_y);
@@ -352,6 +352,66 @@ impl Game {
                 };
                 if let Err(err) = started {
                     self.msg = format!("原始指令 {id}：indexed 演出不可用 ({err})");
+                }
+                true
+            }
+            32 => {
+                let then = Box::new(move |g: &mut Game, result: battle::NativeCompoundCommand32Result| {
+                    g.native_rng_state = result.rng_state;
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.msg = String::from("原始指令 32：完成 indexed command damage");
+                    g.award_native_compound_command32_experience(actor, &result);
+                    g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                    g.check_result();
+                });
+                match self.start_native_command32_presentation(actor, target, then) {
+                    Ok(()) => self.msg = String::from("原始指令 32：indexed 演出進行中"),
+                    Err(err) => self.msg = format!("原始指令 32：請選擇有效目標 ({err})"),
+                }
+                true
+            }
+            33 => {
+                let then = Box::new(move |g: &mut Game, result: battle::NativeCompoundCommand33Result| {
+                    g.native_rng_state = result.restore.rng_state;
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.msg = String::from("原始指令 33：完成 indexed 清除與回復");
+                    g.award_native_compound_command33_experience(actor, &result);
+                    g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                    g.check_result();
+                });
+                match self.start_native_command33_presentation(actor, target, then) {
+                    Ok(()) => self.msg = String::from("原始指令 33：indexed 演出進行中"),
+                    Err(err) => self.msg = format!("原始指令 33：請選擇有效目標 ({err})"),
+                }
+                true
+            }
+            34 => {
+                let then = Box::new(move |g: &mut Game, result: battle::NativeCompoundCommand34Result| {
+                    g.native_rng_state = result.rng_state;
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.msg = String::from("原始指令 34：完成三段 indexed modifier");
+                    g.award_native_compound_command34_experience(actor, &result);
+                    g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                    g.check_result();
+                });
+                match self.start_native_command34_presentation(actor, target, then) {
+                    Ok(()) => self.msg = String::from("原始指令 34：indexed 演出進行中"),
+                    Err(err) => self.msg = format!("原始指令 34：請選擇有效目標 ({err})"),
+                }
+                true
+            }
+            35 => {
+                let then = Box::new(move |g: &mut Game, result: battle::NativeCompoundCommand35Result| {
+                    g.native_rng_state = result.rng_state;
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.msg = String::from("原始指令 35：完成三段 indexed application");
+                    g.award_native_compound_command35_experience(actor, &result);
+                    g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                    g.check_result();
+                });
+                match self.start_native_command35_presentation(actor, target, then) {
+                    Ok(()) => self.msg = String::from("原始指令 35：indexed 演出進行中"),
+                    Err(err) => self.msg = format!("原始指令 35：請選擇有效目標 ({err})"),
                 }
                 true
             }
@@ -520,4 +580,4 @@ fn native_player_command_after() -> Box<dyn FnOnce(&mut Game) + Send> {
 
 #[cfg(test)]
 #[path = "native_command_target_ui/native_command_target_ui_test.rs"]
-mod native_command_target_ui_test;
+pub(crate) mod native_command_target_ui_test;

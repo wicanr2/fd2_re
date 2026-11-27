@@ -226,6 +226,30 @@ impl Game {
             self.present_native_command3(None);
             return PresentOwner::NativeCommandPresentation;
         }
+        if self.native_cmd35_presentation.is_some() {
+            if !self.present_native_command35(None) {
+                self.fail_native_command35_presentation(&game_err!("draw input unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
+        if self.native_cmd34_presentation.is_some() {
+            if !self.present_native_command34(None) {
+                self.fail_native_command34_presentation(&game_err!("draw input unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
+        if self.native_cmd33_presentation.is_some() {
+            if !self.present_native_command33(None) {
+                self.fail_native_command33_presentation(&game_err!("draw input unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
+        if self.native_cmd32_presentation.is_some() {
+            if !self.present_native_command32(None) {
+                self.fail_native_command32_presentation(&game_err!("draw unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
         if self.native_cmd29_presentation.is_some() {
             if !self.present_native_command29(None) {
                 self.fail_native_command29_presentation(&game_err!("draw unavailable"));
@@ -238,23 +262,8 @@ impl Game {
             }
             return PresentOwner::NativeCommandPresentation;
         }
-        if self.native_cmd6_presentation.is_some()
-            || self.native_cmd1_presentation.is_some()
-            || self.native_cmd2_presentation.is_some()
-            || self.native_cmd3_presentation.is_some()
-            || self.native_cmd7_presentation.is_some()
-            || self.native_cmd8_presentation.is_some()
-            || self.native_cmd9_ai_presentation.is_some()
-            || self.native_cmd9_player.is_some()
-            || self.native_cmd1012.is_some()
-            || self.native_cmd24_presentation.is_some()
-            || self.native_cmd29_presentation.is_some()
-            || self.native_cmd32_presentation.is_some()
-            || self.native_cmd33_presentation.is_some()
-            || self.native_cmd34_presentation.is_some()
-            || self.native_cmd35_presentation.is_some()
-        {
-            todo!("R8: main.go:9528..9701 指令 0～35 演出的 drawn 條件與 fail 路徑（第一章沒有）")
+        if self.native_cmd9_player.is_some() || self.native_cmd1012.is_some() {
+            todo!("R8: main.go:9528..9701 玩家指令 9 與 10～12 演出的 drawn 條件與 fail 路徑（第一章沒有）")
         }
         if self.native_ai_item_presentation.is_some() {
             if !self.acknowledge_native_ai_item_presentation() {

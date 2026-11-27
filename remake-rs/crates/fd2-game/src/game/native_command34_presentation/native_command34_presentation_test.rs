@@ -3,6 +3,8 @@
 //! Go 的單位不在 `g.st` 裡；Rust 把建立計畫的 `State` 放進 `g.st`（行動者索引 0、目標索引 1）。
 
 use super::*;
+use crate::game::native_command_target_ui::native_command_target_ui_test::ordinary_command_test_game;
+use crate::test_support;
 
 const ACTOR: UnitIdx = 0;
 const TARGET: UnitIdx = 1;
@@ -146,4 +148,74 @@ fn test_reset_action_overlay_cancels_native_command34_stages() {
             && g.native_rng_state == 7,
         "overlay reset retained command34 actor={a:?} target={t:?}"
     );
+}
+
+/// Go：`native_command34_presentation_test.go:31` `nativeCommand34PresentationFixture`：map0 的施放者 `(0,0)` 與
+/// 同陣營目標 `(1,0)`，其他我方單位下場。
+fn command34_test_game() -> Option<(Game, UnitIdx, UnitIdx)> {
+    let (mut g, actor, target) = ordinary_command_test_game()?;
+    let st = g.st.as_mut().unwrap();
+    for index in 1..4 {
+        st.units[index].on_field = false;
+    }
+    assert!(st.units[target].set_map_placement(1, 0, 3));
+    st.units[target].materialize_native_map_presentation().unwrap();
+    let a = &mut st.units[actor];
+    (a.camp, a.mp, a.ap, a.dp, a.hit, a.ev, a.battle_fig) = (battle::OWN, 60, 100, 80, 60, 50, 4);
+    let t = &mut st.units[target];
+    (t.camp, t.ap, t.dp, t.hit, t.ev, t.battle_fig) = (battle::OWN, 70, 60, 50, 40, 5);
+    st.native_command_book[34] = battle::NativeCommandRecord {
+        id: 34,
+        selection_mode: 5,
+        effect_mode: 3,
+        mp_cost: 28,
+        target_code: 1,
+        ..Default::default()
+    };
+    g.compose_native_map_frame().unwrap();
+    Some((g, actor, target))
+}
+
+/// Go：`native_command34_presentation_test.go:87` `TestStartNativeCommand34PresentationUsesOriginalAssetsEndToEnd`
+#[test]
+fn test_start_native_command34_presentation_uses_original_assets_end_to_end() {
+    if test_support::input("FD2_ASSET_PACK", "surfaces/BG_000/resource.json").is_none() {
+        return;
+    }
+    if f_child_env(module_path!(), "test_start_native_command34_presentation_uses_original_assets_end_to_end", |_| {
+        vec![("FD2_MUTE", "1".into())]
+    })
+    .is_none()
+    {
+        return;
+    }
+    let Some((mut g, actor, target)) = command34_test_game() else { return };
+    let done = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+    let sink = done.clone();
+    g.start_native_command34_presentation(
+        actor,
+        Some(target),
+        Box::new(move |_, result| sink.lock().unwrap().push(result.stage_states.len())),
+    )
+    .unwrap();
+    let j = g.native_cmd34_presentation.as_mut().unwrap();
+    assert!(j.frames.len() >= 150 && j.publish_at[0] > 0, "frames={} publish_at={:?}", j.frames.len(), j.publish_at);
+    for frame in &mut j.frames {
+        frame.delay = 1;
+    }
+    let mut screen = Picture::new_image(640, 400);
+    for steps in 0..2000 {
+        if g.native_cmd34_presentation.is_none() {
+            break;
+        }
+        assert!(g.present_native_command34(Some(&mut screen)), "draw failed at {steps}: {}", g.load_err);
+        g.step_native_command34_presentation();
+        if let Some(j) = g.native_cmd34_presentation.as_mut().filter(|j| j.holding) {
+            j.hold = 0;
+        }
+    }
+    assert!(g.native_cmd34_presentation.is_none(), "err={}", g.load_err);
+    let a = &g.st.as_ref().unwrap().units[actor];
+    assert!(a.acted && a.native_transient[..3].iter().all(|&b| b != 0) && a.mp == 60, "actor={a:?}");
+    assert_eq!(*done.lock().unwrap(), [3]);
 }

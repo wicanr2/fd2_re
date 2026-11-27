@@ -8603,6 +8603,42 @@ impl Game {
             self.draw_capture_shot_point(screen);
             return;
         }
+        if self.native_cmd35_presentation.is_some() {
+            // Go main.go:9711：畫不出來就 fail；Go 的 DebugPrint 由 `load_err` 顯示。
+            screen.fill(BLACK);
+            if !self.present_native_command35(Some(screen)) {
+                self.fail_native_command35_presentation(&game_err!("draw input unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_cmd34_presentation.is_some() {
+            // Go main.go:9704：畫不出來就 fail；Go 的 DebugPrint 由 `load_err` 顯示。
+            screen.fill(BLACK);
+            if !self.present_native_command34(Some(screen)) {
+                self.fail_native_command34_presentation(&game_err!("draw input unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_cmd33_presentation.is_some() {
+            // Go main.go:9697：畫不出來就 fail；Go 的 DebugPrint 由 `load_err` 顯示。
+            screen.fill(BLACK);
+            if !self.present_native_command33(Some(screen)) {
+                self.fail_native_command33_presentation(&game_err!("draw input unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_cmd32_presentation.is_some() {
+            // Go main.go:9686：畫不出來就 fail；Go 的 DebugPrint 由 `load_err` 顯示。
+            screen.fill(BLACK);
+            if !self.present_native_command32(Some(screen)) {
+                self.fail_native_command32_presentation(&game_err!("draw unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
         if self.native_cmd29_presentation.is_some() {
             // Go main.go:9675：畫不出來就 fail（指令 28 也掛在這個工作上）；Go 的 DebugPrint 由 `load_err` 顯示。
             screen.fill(BLACK);
@@ -8621,25 +8657,10 @@ impl Game {
             self.draw_capture_shot_point(screen);
             return;
         }
-        if self.native_cmd6_presentation.is_some()
-            || self.native_cmd1_presentation.is_some()
-            || self.native_cmd2_presentation.is_some()
-            || self.native_cmd3_presentation.is_some()
-            || self.native_cmd7_presentation.is_some()
-            || self.native_cmd8_presentation.is_some()
-            || self.native_cmd9_player.is_some()
-            || self.native_cmd9_ai_presentation.is_some()
-            || self.native_cmd1012.is_some()
-            || self.native_cmd24_presentation.is_some()
-            || self.native_cmd29_presentation.is_some()
-            || self.native_cmd32_presentation.is_some()
-            || self.native_cmd33_presentation.is_some()
-            || self.native_cmd34_presentation.is_some()
-            || self.native_cmd35_presentation.is_some()
-        {
-            // Go main.go:9528..9701 依序 17 個指令演出分支，各自 Fill 黑、draw、失敗時 fail＋DebugPrint。
+        if self.native_cmd9_player.is_some() || self.native_cmd1012.is_some() {
+            // Go main.go:9528..9701 的指令演出分支只剩玩家指令 9 與 10～12（0x2189A 前奏）還沒移植。
             screen.fill(BLACK);
-            todo!("r8:main.go:9528..9701 指令 0～35 演出（第一章沒有）");
+            todo!("r8:main.go:9528..9701 玩家指令 9 與 10～12 的演出（第一章沒有）");
         }
         if self.native_ai_item_presentation.is_some() {
             screen.fill(BLACK);

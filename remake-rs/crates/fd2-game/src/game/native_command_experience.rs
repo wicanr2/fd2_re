@@ -74,6 +74,60 @@ impl Game {
         self.award_native_player_command_experience(actor, exp, &targets);
     }
 
+    /// 指令 32（0x27FC9 → 0x1C75E）。
+    ///
+    /// Go：`native_command_experience.go:74`，`func (g *Game) awardNativeCompoundCommand32Experience(actor *battle.Unit, result battle.NativeCompoundCommand32Result)`
+    pub(crate) fn award_native_compound_command32_experience(
+        &mut self,
+        actor: UnitIdx,
+        result: &battle::NativeCompoundCommand32Result,
+    ) {
+        let targets: Vec<UnitIdx> = result.targets.iter().filter_map(|target| target.target).collect();
+        let exp = battle::native_compound_command32_experience(&self.st.as_ref().unwrap().units, result);
+        self.award_native_player_command_experience(actor, exp, &targets);
+    }
+
+    /// 指令 33（0x211A4 → 0x1C916）。
+    ///
+    /// Go：`native_command_experience.go:84`，`func (g *Game) awardNativeCompoundCommand33Experience(actor *battle.Unit, result battle.NativeCompoundCommand33Result)`
+    pub(crate) fn award_native_compound_command33_experience(
+        &mut self,
+        actor: UnitIdx,
+        result: &battle::NativeCompoundCommand33Result,
+    ) {
+        let targets: Vec<UnitIdx> = result.targets.iter().filter_map(|target| target.target).collect();
+        let exp = battle::native_compound_command33_experience(result);
+        self.award_native_player_command_experience(actor, Ok(exp), &targets);
+    }
+
+    /// 指令 34（0x27FC9 → 0x22721／0x22866／0x22997）。
+    ///
+    /// Go：`native_command_experience.go:93`，`func (g *Game) awardNativeCompoundCommand34Experience(actor *battle.Unit, result battle.NativeCompoundCommand34Result)`
+    pub(crate) fn award_native_compound_command34_experience(
+        &mut self,
+        actor: UnitIdx,
+        result: &battle::NativeCompoundCommand34Result,
+    ) {
+        let targets: Vec<UnitIdx> =
+            result.stage_states.first().into_iter().flatten().filter_map(|state| state.target).collect();
+        let exp = battle::native_compound_command34_experience(result);
+        self.award_native_player_command_experience(actor, Ok(exp), &targets);
+    }
+
+    /// 指令 35（0x27FC9 → 三次 0x22D1B）。
+    ///
+    /// Go：`native_command_experience.go:104`，`func (g *Game) awardNativeCompoundCommand35Experience(actor *battle.Unit, result battle.NativeCompoundCommand35Result)`
+    pub(crate) fn award_native_compound_command35_experience(
+        &mut self,
+        actor: UnitIdx,
+        result: &battle::NativeCompoundCommand35Result,
+    ) {
+        let targets: Vec<UnitIdx> =
+            result.stage_states.first().into_iter().flatten().filter_map(|state| state.target).collect();
+        let exp = battle::native_compound_command35_experience(&self.st.as_ref().unwrap().units, result);
+        self.award_native_player_command_experience(actor, exp, &targets);
+    }
+
     /// 指令 17～19（0x22721／0x22866／0x22997）：累加量已在結果的 accumulator。
     ///
     /// Go：`native_command_experience.go:60`，`func (g *Game) awardNativeCommandModifierExperience(actor *battle.Unit, result battle.NativeCommandModifierResult, targets []*battle.Unit)`
