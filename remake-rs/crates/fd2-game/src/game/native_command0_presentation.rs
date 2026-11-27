@@ -179,7 +179,23 @@ impl Game {
     pub(crate) fn execute_native_ai_command0(&mut self, action: &battle::AIPlan) -> Result<()> {
         let actor = action.u.ok_or_else(|| game_err!("指令 0 缺少施放者"))?;
         let target = action.target.ok_or_else(|| game_err!("指令 0 缺少目標"))?;
-        let job = self.build_native_command0_presentation(actor, target, Some(action.native_action_destination))?;
+        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
+            for result in &results {
+                g.award_death_reward(result.target, Some(actor));
+            }
+            let state = g.st.as_mut().expect("指令 0 結算保留戰場");
+            let (a, t) = (&state.units[actor], &state.units[target]);
+            let pose = dir_toward(a.x, a.y, t.x, t.y);
+            state.units[actor].set_map_pose(pose);
+            let hit = results.iter().any(|result| result.native_command_damage.hit);
+            let damage: i64 = results.iter().map(|result| result.native_command_damage.damage).sum();
+            g.msg = format!("原始指令 0：命中 {}，傷害 {damage}", i64::from(hit));
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor), after);
+            g.check_result();
+        });
+        let job =
+            self.build_native_command0_presentation(actor, target, Some(action.native_action_destination), then)?;
         let state = self.st.as_ref().expect("已驗證指令 0 戰場");
         let (x, y) = (state.units[actor].x, state.units[actor].y);
         self.ai_focus_cursor(x, y);
@@ -189,11 +205,26 @@ impl Game {
         Ok(())
     }
 
+    /// 玩家確認指令 0 後的入口；完成回呼由呼叫端決定（玩家另發經驗）。
+    ///
+    /// Go：`native_command0_presentation.go:172`，`func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then func([]battle.NativeCommandDamageResult)) error`
+    pub(crate) fn start_native_command0_presentation(
+        &mut self,
+        actor: UnitIdx,
+        target: UnitIdx,
+        then: Box<dyn FnOnce(&mut Game, Vec<battle::NativeCommandDamageResult>) + Send>,
+    ) -> Result<()> {
+        let job = self.build_native_command0_presentation(actor, target, None, then)?;
+        self.native_cmd0_presentation = Some(job);
+        Ok(())
+    }
+
     fn build_native_command0_presentation(
         &mut self,
         actor_index: UnitIdx,
         target_index: UnitIdx,
         ai_origin: Option<battle::Cell>,
+        then: Box<dyn FnOnce(&mut Game, Vec<battle::NativeCommandDamageResult>) + Send>,
     ) -> Result<NativeCommand0PresentationJob> {
         if !self.current_native_system_options().full_presentation_enabled() {
             return Err(game_err!("指令 0 的簡略演出尚無執行入口"));
@@ -377,22 +408,6 @@ impl Game {
         actor_effect_first.blit_at(&mut pixels, 320)?;
         next_idle().blit_at(&mut pixels, 320)?;
         tail.push(command0_image(pixels, palette));
-        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
-            for result in &results {
-                g.award_death_reward(result.target, Some(actor_index));
-            }
-            let state = g.st.as_mut().expect("指令 0 結算保留戰場");
-            let target = &state.units[target_index];
-            let actor = &state.units[actor_index];
-            let pose = dir_toward(actor.x, actor.y, target.x, target.y);
-            state.units[actor_index].set_map_pose(pose);
-            let hit = results.iter().any(|result| result.native_command_damage.hit);
-            let damage: i64 = results.iter().map(|result| result.native_command_damage.damage).sum();
-            g.msg = format!("原始指令 0：命中 {}，傷害 {damage}", i64::from(hit));
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor_index), after);
-            g.check_result();
-        });
         Ok(NativeCommand0PresentationJob {
             actor: Some(actor_index),
             target: Some(target_index),

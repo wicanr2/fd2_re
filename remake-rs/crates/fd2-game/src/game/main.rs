@@ -5721,14 +5721,7 @@ impl Game {
             return self.native_item_panel_input(enter, esc);
         }
         if self.native_command_open {
-            if self.sel.is_none() {
-                self.native_command_open = false;
-                return false;
-            }
-            todo!(
-                "R8: main.go:5915 原始指令格輸入（nativeCommandTargetSupported、nativeCommandTargetUnitsFor、\
-                 beginNativeCommandTargetSelection；第一章重播沒有執行到）"
-            );
+            return self.native_command_grid_input(enter, esc);
         }
         if self.spell_open {
             // 法術選單
@@ -7333,10 +7326,15 @@ impl Game {
             todo!("R8: main.go:7562 物品／傳送術目的地確認（applyNativeRelocationDestination；第一章重播沒有執行到）");
         }
         if self.native_command0_targeting {
-            todo!(
-                "R8: main.go:7589 原始指令目標確認（指令 0..35 的演出與經驗發放 awardNative*Experience；\
-                 第一章重播沒有執行到）"
-            );
+            let Some((id, target)) = self.native_command_target_confirmation() else {
+                return;
+            };
+            // 各指令的玩家演出入口（Go `main.go:7631`..`8193`）逐一補移植；尚未接上的指令與 Go 執行失敗時相同，
+            // 留在選目標並顯示原因，Esc 回指令格。
+            if !self.start_native_player_command(id, target) {
+                self.msg = format!("原始指令 {id}：玩家演出尚未移植");
+            }
+            return;
         }
         if !self.moved {
             // 移動階段
@@ -7986,7 +7984,8 @@ impl Game {
         }
         if (self.cast_sp.is_some() || self.native_command0_targeting) && just(Key::Escape) {
             // native target selection: ESC 回 command grid
-            todo!("R8: cancelNativeCommandTargetSelection（指令目標取消）")
+            self.cancel_native_command_target_selection();
+            return Ok(());
         }
         // 游標移動:方向鍵 / WASD(按住持續移動,keyRepeat)/ 觸控
         if self.native_move_panel.is_some() && input.any_just_pressed() {

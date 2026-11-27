@@ -6168,3 +6168,5 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 新增 `docs/data/rust-parity-chapters.json`（第 2～30 章的槽、槽雜湊與原版目錄，取自各章 WORKLOG 段落與過去的重播命令）與 `tools/rust_parity_all.sh`（逐章核對槽雜湊、gz 追蹤解到硬連結副本，再跑 `rust_parity_chapter.sh`，彙整 `summary.tsv`）。第一輪 `work/rust-parity-all-20261127`：第 1～19、26～28 章通過；第 20～25、29、30 章失敗，原因是批次直接編譯工作樹，跑到那幾章時本輪改到一半的程式編不過（log 是閉包 `Send` 與缺測試檔的編譯錯誤），不是重播分歧。總表要在提交後、沒有並行修改時重跑。
 - 產品碼仍有 `todo!()` 樁：30 章受控樣本沒走到的一般玩家路徑會中止。新增 `tools/rust_todo_inventory.py` 現場列出，本輪由 151 處降到 134 處。補上取消移動、退回指令環、輪流選我方單位，系統游標選單與巢狀選單（結束回合、選項、離開、全軍移動、戰場資訊），戰場快照存讀，F5／F9／F7／F8。細節與仍失敗即關閉的三項見 119「R8 一般玩家路徑補移植」。
 - fd2-game 480 項、Clippy 通過。
+- 30 章總表改在 `ec0d4a50` 的獨立 worktree 跑（`work/wt-batch-ec0d4a50`；`FD2_REMAKE_ASSETS`、`FD2_ASSET_PACK` 指主工作區，因為 `remake/assets/fonts` 等受 `.gitignore` 排除、worktree 沒有）：第 1～30 章全部通過，`work/rust-parity-all-ec0d4a50/summary.tsv`。第一次在 worktree 跑時漏設素材路徑，30 章都在載字型時失敗，不是重播問題。
+- 玩家指令格與指令 0 玩家入口、指令家族發經驗函式；`todo!` 剩 131 處。fd2-game 483 項通過。見 119「R8 30 章總表與玩家指令格」。

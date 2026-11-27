@@ -121,6 +121,14 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 30 章總表與玩家指令格（RUNTIME-E1，2026-11-27）
+
+`tools/rust_parity_all.sh` 依 [`rust-parity-chapters.json`](../data/rust-parity-chapters.json) 逐章重跑。在提交 `ec0d4a50` 的獨立 worktree 上跑，素材指主工作區的 `remake/assets` 與原版分離包，第 1～30 章全部通過（輸出 `work/rust-parity-all-ec0d4a50/summary.tsv`）。第 22 章存檔 `3c7298cd` 與原版逐位元組相同；第 29 章產出的 `33c3d74d` 正是第 30 章的輸入槽。這是受控樣本的回歸證據，不代表樣本外的玩家路徑已移植。
+
+玩家指令格（選「法術」後的原生指令格）先前整段是 `todo!`，打開就會中止。本輪補上指令格輸入、白名單、選目標候選與目標格、進入／取消選目標，以及確認時的共用游標閘門；指令家族的發經驗函式（`native_command_experience.go`）整檔移植。各指令的玩家演出入口逐一補：指令 0 的建立函式改成由呼叫端傳入完成回呼，AI 與玩家共用，玩家收尾另發經驗。其餘 ID 確認時留在選目標並顯示「玩家演出尚未移植」，Esc 回指令格。`todo!` 剩 131 處。
+
+驗證：移植 `TestNativeCommandTargetFieldMaterializeAndReset`、白名單測試與 `TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm`（缺抗性表、缺 FIGANI 出處都在交易前拒收；MP 發布 1 次、HP 7 次，與 Go 相同）。fd2-game 483 項通過。
+
 ### R8 一般玩家路徑補移植：系統選單、戰場快照與快捷鍵（RUNTIME-E1，2026-11-27）
 
 30 章受控重播都通過，只代表樣本走到的函式已移植。產品碼仍留著 `todo!()` 樁，一般玩家走到就會中止；剩下多少一律以 [`tools/rust_todo_inventory.py`](../../tools/rust_todo_inventory.py) 現場產生，不在文件寫死。本輪從 151 處降到 134 處（R8 84→68、R6 65→64），照 Go 補上：

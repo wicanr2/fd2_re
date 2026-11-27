@@ -900,3 +900,159 @@ fn test_nested_system_overlay_uses_runtime_save_and_fd2sav_gates() {
         assert_eq!(state.cell_index(direction as i64).ok(), Some(want), "direction {direction}");
     }
 }
+
+/// Go：`native_action_overlay_test.go:592` `TestNativeCommandTargetFieldMaterializeAndReset`（Go 的施法者不在
+/// `Units` 裡；Rust 的 `sel` 是索引，放進名單第 0 筆，位置相同）。
+#[test]
+fn test_native_command_target_field_materialize_and_reset() {
+    let mut st = battle::State::default();
+    (st.w, st.h) = (3, 1);
+    st.native_composition_event_bytes = vec![0; 3];
+    st.native_tile_blit_modes = vec![0xff; 3];
+    st.units = vec![battle::Unit::default()];
+    let mut g = Game { st: Some(st), sel: Some(0), ..Default::default() };
+    let record = battle::NativeCommandRecord { selection_mode: 1, ..Default::default() };
+    g.materialize_native_command_target_field(&record).expect("materialize");
+    let st = g.st.as_ref().unwrap();
+    assert_eq!(st.native_tile_blit_modes, vec![1, 0, 0xff]);
+    assert!(st.has_native_map_range_mode_state && st.native_map_range_mode == 2, "target selector");
+    assert!(g.reset_native_target_field());
+    assert_eq!(g.st.as_ref().unwrap().native_tile_blit_modes, vec![0xff; 3]);
+}
+
+/// Go：`native_action_overlay_test.go:427` `TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed`
+#[test]
+fn test_native_command_target_whitelist_keeps_unresolved_ids_fail_closed() {
+    let g = Game::default();
+    for id in (0..=35).filter(|&id| id != 9) {
+        assert!(g.native_command_target_supported(id), "verified target/effect id {id} was rejected");
+    }
+    for id in [-1, 9, 36] {
+        assert!(!g.native_command_target_supported(id), "unresolved target/effect id {id} was enabled");
+    }
+}
+
+/// Go：`native_action_overlay_test.go:618` `TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm`
+/// （Go 另設 `FD2_ORIGINAL_*` 指到缺檔與原版檔；Rust 的指令 0 只讀分離素材包。）
+#[test]
+fn test_player_native_command0_runs_indexed_presentation_through_cursor_confirm() {
+    if test_support::input("FD2_ASSET_PACK", "surfaces/BG_000/resource.json").is_none() {
+        return;
+    }
+    let Some(_dir) = f_child_env(
+        module_path!(),
+        "test_player_native_command0_runs_indexed_presentation_through_cursor_confirm",
+        |_| vec![("FD2_MUTE", "1".into())],
+    ) else {
+        return;
+    };
+    let (Some(scene), Some(flash)) = (
+        test_support::remake_asset("data/native_command_scene.json"),
+        test_support::remake_asset("data/native_command_palette_flash.json"),
+    ) else {
+        return;
+    };
+    let (mut assets, field, mut state) = complete_native_map_frame_fixture();
+    let mut book: Vec<battle::NativeCommandRecord> = (0..battle::NATIVE_COMMAND_RECORD_COUNT)
+        .map(|id| battle::NativeCommandRecord { id, ..Default::default() })
+        .collect();
+    book[0] = battle::NativeCommandRecord {
+        id: 0,
+        damage: 50,
+        hit: 100,
+        selection_mode: 5,
+        effect_mode: 0,
+        mp_cost: 2,
+        target_code: 0,
+    };
+    {
+        let actor = &mut state.units[0];
+        (actor.camp, actor.on_field, actor.hp, actor.max_hp, actor.mp) = (battle::OWN, true, 28, 28, 8);
+        (actor.max_mp, actor.native_record_byte8, actor.has_native_record_byte8) = (8, 0, true);
+        (actor.inventory_slots, actor.native_inventory_flags) = (vec![0; 8].into(), vec![0; 8].into());
+    }
+    let mut target = battle::Unit::default();
+    (target.camp, target.on_field, target.x, target.y, target.hp, target.max_hp, target.class_id) =
+        (battle::ENEMY, true, 1, 0, 100, 100, 5);
+    (target.native_record_byte5, target.has_native_record_byte5) = (0, true);
+    (target.native_record_byte6, target.has_native_record_byte6) = (1, true);
+    (target.battle_fig, target.has_battle_fig) = (0, true);
+    (target.native_record_byte8, target.has_native_record_byte8) = (1, true);
+    (target.native_record_race, target.has_native_record_race) = (1, true);
+    (target.native_record_class, target.has_native_record_class) = (1, true);
+    (target.inventory_slots, target.native_inventory_flags) = (vec![0; 8].into(), vec![0; 8].into());
+    let (tx, ty) = (target.x, target.y);
+    state.units.push(target);
+    state.native_command_book = book;
+    state.native_composition_event_bytes = vec![0; (state.w * state.h) as usize];
+    let w = state.w;
+    state.native_tile_blit_modes[(ty * w + tx) as usize] = 0;
+    state.materialize_native_map_range_mode(3);
+    while assets.luts.len() <= 14 {
+        assets.luts.push((0..=255).collect());
+    }
+    let mut g = Game {
+        m: Some(field),
+        st: Some(state),
+        sel: Some(0),
+        cur_x: tx,
+        cur_y: ty,
+        native_command0_targeting: true,
+        native_command_target_id: 0,
+        native_rng_state: 1,
+        native_map_assets: Some(assets),
+        native_ui_palette: load_native_ui_palette(),
+        native_command_scene: Some(battle::load_native_command_scene_table(&scene).expect("scene")),
+        native_command_palette_flash: Some(battle::load_native_command_palette_flash_table(&flash).expect("flash")),
+        ..Default::default()
+    };
+    g.locale_id = String::from("zh-Hant");
+    g.locale_catalog = load_official_locale("zh-Hant").expect("locale");
+    g.locale_entities = load_official_locale_entities("zh-Hant").expect("entities");
+    let snapshot = |g: &Game| {
+        let st = g.st.as_ref().unwrap();
+        (st.units[0].mp, st.units[0].acted, st.units[1].hp)
+    };
+    // 缺少原版職業抗性表時，正式確認保留選目標，MP、HP、行動與目標格都不動。
+    g.confirm();
+    assert_eq!(snapshot(&g), (8, false, 100), "missing resistance crossed transaction boundary");
+    assert!(g.native_command0_targeting && g.sel == Some(0));
+    assert_eq!(g.st.as_ref().unwrap().native_tile_blit_modes[(ty * w + tx) as usize], 0);
+    g.st.as_mut().unwrap().native_command_resistances = BTreeMap::from([(1, 10)]);
+    g.st.as_mut().unwrap().units[1].has_battle_fig = false;
+    g.confirm();
+    assert!(g.native_cmd0_presentation.is_none() && snapshot(&g) == (8, false, 100) && g.native_command0_targeting);
+    g.st.as_mut().unwrap().units[1].has_battle_fig = true;
+    g.confirm();
+    assert!(g.native_cmd0_presentation.is_some(), "command0 did not start: {}", g.msg);
+    assert_eq!(snapshot(&g), (8, false, 100), "command0 start crossed transaction boundary");
+    g.step_native_command0_presentation();
+    assert_eq!(snapshot(&g), (8, false, 100), "command0 advanced without Draw acknowledgement");
+    let mut screen = Picture::new_image(640, 400);
+    let (mut hp_changes, mut mp_changes) = (0, 0);
+    for step in 0..512 {
+        let (before_mp, _, before_hp) = snapshot(&g);
+        let Some(job) = g.native_cmd0_presentation.as_mut() else { break };
+        let (phase, frame) = (job.phase, job.frame as usize);
+        let publish_mp = job.actor_specs.get(frame).is_some_and(|spec| spec.publish_mp);
+        let impact = job.target_impact.get(frame).copied().unwrap_or(false);
+        assert!(job.present(Some(&mut screen)), "command0 draw failed at step {step}");
+        g.step_native_command0_presentation();
+        let (mp, _, hp) = snapshot(&g);
+        if mp != before_mp {
+            mp_changes += 1;
+            assert!(phase == NATIVE_COMMAND0_ACTOR && publish_mp, "MP changed outside actor marker");
+        }
+        if hp != before_hp {
+            hp_changes += 1;
+            assert!(phase == NATIVE_COMMAND0_TARGET && impact, "HP changed outside target marker");
+        }
+    }
+    let (mp, acted, hp) = snapshot(&g);
+    assert!(g.native_cmd0_presentation.is_none() && mp == 6 && acted && hp < 100, "result msg={}", g.msg);
+    assert_eq!((mp_changes, hp_changes), (1, 7), "command0 publication counts");
+    let st = g.st.as_ref().unwrap();
+    assert!(!g.native_command0_targeting && g.sel.is_none() && st.native_map_range_mode == 1, "command0 cleanup");
+    assert!(st.native_tile_blit_modes.iter().all(|&value| value == 0xff), "target field not reset");
+    assert!(!g.msg.is_empty(), "command0 numeric result did not publish its result message");
+}
