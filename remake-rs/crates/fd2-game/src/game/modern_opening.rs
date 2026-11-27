@@ -118,8 +118,27 @@ struct Derivation {
 
 #[derive(Debug)]
 struct EncodedFrame {
-    bytes: Arc<[u8]>,
+    data: FrameData,
     sha256: String,
+}
+
+/// 正式包只記路徑：載入時已核對 SHA-256 與 PNG 標頭，用到時重讀並再驗一次 SHA-256，
+/// 不常駐壓縮檔。測試可以直接放位元組。
+#[derive(Debug, Clone)]
+enum FrameData {
+    File(Arc<Path>),
+    #[cfg_attr(not(test), allow(dead_code))]
+    Memory(Arc<[u8]>),
+}
+
+impl FrameData {
+    /// 檔案不見或內容改變是硬性錯誤；解碼或不透明檢查失敗回 `Ok(None)`。
+    fn decode(&self, sha256: &str, verified: bool) -> Result<Option<Picture>> {
+        Ok(match self {
+            FrameData::File(path) => decode_opening_frame(&read_verified_theme_file(path, sha256)?, verified),
+            FrameData::Memory(bytes) => decode_opening_frame(bytes, verified),
+        })
+    }
 }
 
 #[derive(Debug)]
@@ -130,7 +149,7 @@ struct OpeningBank {
     rejected: bool,
 }
 
-/// 完整的開場圖組。壓縮檔保留於記憶體，解碼後只保留目前一格。
+/// 完整的開場圖組。只記路徑與 SHA-256，解碼後保留目前一格，另在背景預解下一格。
 #[derive(Debug, Default)]
 pub(crate) struct ModernOpening {
     banks: BTreeMap<OpeningSource, OpeningBank>,
@@ -138,6 +157,19 @@ pub(crate) struct ModernOpening {
     current: Option<(String, Arc<Picture>)>,
     view: Option<(OpeningFrame, Arc<Picture>)>,
     notices: Vec<String>,
+    /// 目前這格之後的下一格，在背景執行緒先解碼。只留一格。
+    prefetch: Option<OpeningPrefetch>,
+}
+
+#[derive(Debug)]
+struct OpeningPrefetch {
+    sha256: String,
+    decoded: std::thread::JoinHandle<Result<Option<Picture>>>,
+}
+
+/// 已通過不透明檢查的畫格只需解碼；第一次見到的要連不透明一起驗。
+fn decode_opening_frame(bytes: &[u8], verified: bool) -> Option<Picture> {
+    if verified { decode_png_picture(bytes) } else { decode_opaque_png_picture(bytes) }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -185,26 +217,23 @@ impl OpeningAsset {
         self.verify_provenance(root, &digest)?;
 
         let mut paths = BTreeSet::new();
-        let mut shared: BTreeMap<String, Arc<[u8]>> = BTreeMap::new();
+        let mut checked = BTreeSet::new();
         let mut frames = Vec::with_capacity(count);
         for (name, sha256) in self.files.into_iter().zip(self.frame_sha256) {
             if theme_file_extension(&name) != Some("png") || !paths.insert(name.clone()) {
                 return Err(game_err!("modern opening: unsafe or duplicate frame path"));
             }
-            let bytes = read_verified_theme_file(&root.join(&name), &sha256)?;
-            let bytes = match shared.entry(sha256.clone()) {
-                std::collections::btree_map::Entry::Occupied(entry) => entry.get().clone(),
-                std::collections::btree_map::Entry::Vacant(entry) => {
-                    let reader = png::Decoder::new(Cursor::new(&bytes))
-                        .read_info()
-                        .map_err(|err| game_err!("modern opening: invalid PNG header for {name}: {err}"))?;
-                    if (reader.info().width, reader.info().height) != (width, height) {
-                        return Err(game_err!("modern opening: frame geometry differs for {name}"));
-                    }
-                    entry.insert(bytes.into()).clone()
+            let path: Arc<Path> = root.join(&name).into();
+            let bytes = read_verified_theme_file(&path, &sha256)?;
+            if checked.insert(sha256.clone()) {
+                let reader = png::Decoder::new(Cursor::new(&bytes))
+                    .read_info()
+                    .map_err(|err| game_err!("modern opening: invalid PNG header for {name}: {err}"))?;
+                if (reader.info().width, reader.info().height) != (width, height) {
+                    return Err(game_err!("modern opening: frame geometry differs for {name}"));
                 }
-            };
-            frames.push(EncodedFrame { bytes, sha256 });
+            }
+            frames.push(EncodedFrame { data: FrameData::File(path), sha256 });
         }
         Ok(OpeningBank { shape: (width, height), frames, verified: BTreeSet::new(), rejected: false })
     }
@@ -282,10 +311,14 @@ impl ModernOpening {
         {
             return Ok(Some(picture.clone()));
         }
-        let picture = if bank.verified.contains(&frame.sha256) {
-            decode_png_picture(&frame.bytes)
-        } else {
-            decode_opaque_png_picture(&frame.bytes)
+        let prefetched = self
+            .prefetch
+            .take()
+            .filter(|prefetch| prefetch.sha256 == frame.sha256)
+            .and_then(|prefetch| prefetch.decoded.join().ok());
+        let picture = match prefetched {
+            Some(picture) => picture?,
+            None => frame.data.decode(&frame.sha256, bank.verified.contains(&frame.sha256))?,
         };
         let Some(picture) = picture.filter(|p| (p.width, p.height) == (bank.shape.0.into(), bank.shape.1.into()))
         else {
@@ -300,6 +333,16 @@ impl ModernOpening {
         let picture = Arc::new(picture);
         bank.verified.insert(frame.sha256.clone());
         self.current = Some((frame.sha256.clone(), picture.clone()));
+        if let Some(next) = bank.frames.get(index + 1).filter(|next| next.sha256 != frame.sha256) {
+            let (data, sha256, verified) =
+                (next.data.clone(), next.sha256.clone(), bank.verified.contains(&next.sha256));
+            if let Ok(decoded) = std::thread::Builder::new()
+                .name("fd2-opening-prefetch".into())
+                .spawn(move || data.decode(&sha256, verified))
+            {
+                self.prefetch = Some(OpeningPrefetch { sha256: next.sha256.clone(), decoded });
+            }
+        }
         Ok(Some(picture))
     }
 
@@ -345,17 +388,31 @@ fn opening_viewport(picture: &Picture, plan: OpeningFrame) -> Picture {
     let rows = HD_MAP_HEIGHT as usize;
     let mut pix = source[top * stride..(top + rows) * stride].to_vec();
     if fraction != 0.0 {
+        // 同一條 f32 算式先對全部 (a, b) 組合算好再查表，結果與逐位元組計算相同。
+        let blend: Vec<u8> = (0..=255u8)
+            .flat_map(|a| {
+                (0..=255u8)
+                    .map(move |b| (f32::from(a) * (1.0 - fraction) + f32::from(b) * fraction).round_ties_even() as u8)
+            })
+            .collect();
         let next = &source[(top + 1) * stride..(top + 1 + rows) * stride];
         for (a, &b) in pix.iter_mut().zip(next) {
-            *a = (f32::from(*a) * (1.0 - fraction) + f32::from(b) * fraction).round_ties_even() as u8;
+            *a = blend[usize::from(*a) << 8 | usize::from(b)];
         }
     }
     if plan.factor != 1.0 {
         let factor = plan.factor;
         let tint = plan.tint.map(|value| f32::from(value) * (1.0 - factor));
+        let tables = tint.map(|base| {
+            let mut table = [0u8; 256];
+            for (value, out) in table.iter_mut().enumerate() {
+                *out = (f32::from(value as u8) * factor + base).round_ties_even() as u8;
+            }
+            table
+        });
         for px in pix.as_chunks_mut::<4>().0 {
-            for (channel, base) in px[..3].iter_mut().zip(tint) {
-                *channel = (f32::from(*channel) * factor + base).round_ties_even() as u8;
+            for (channel, table) in px[..3].iter_mut().zip(&tables) {
+                *channel = table[usize::from(*channel)];
             }
         }
     }

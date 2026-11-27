@@ -41,7 +41,7 @@ window() {
     --mount "type=bind,source=$out/socket,target=/tmp/.X11-unix" \
     -e "PROFILE=$profile" -e "MODE=$mode" -e "FD2_MODERN_THEME_PACK=$pack" \
     -e DISPLAY=:96 -e FD2_CAMPAIGN=canonical -e FD2_REQUIRE_ORIGINAL=1 -e FD2_MUTE=1 -e FD2_SEED=4 \
-    -e FD2_CUTSCENE_LOG=1 -e WGPU_BACKEND=vulkan -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e RUST_LOG=warn \
+    -e FD2_CUTSCENE_LOG=1 -e "FD2_FRAME_TIMING=${FD2_FRAME_TIMING:-}" -e WGPU_BACKEND=vulkan -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e RUST_LOG=warn \
     -w / fd2-rust:1.99.1-r3 bash -euc '
       export XDG_DATA_HOME="/out/$PROFILE" XDG_CACHE_HOME=/tmp/fd2-cache FD2_ASSET_PACK=/tmp/pack
       if [[ "$MODE" == native-save ]]; then export FD2_NATIVE_SAVE=/out/profile/FD2.SAV; fi

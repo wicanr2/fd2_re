@@ -80,6 +80,8 @@ struct Shell {
     gpu: Option<ShellGpu>,
     /// 上一個 `drive` 開始的時間（`timing.jsonl` 的幀間隔）。
     last_drive: Option<Instant>,
+    /// `FD2_FRAME_TIMING=1` 時的每幀耗時統計（只觀測，不影響繪製）。
+    frame_timing: Option<FrameTiming>,
 }
 
 struct PosterSprite {
@@ -197,6 +199,7 @@ pub fn run() -> AppExit {
         fullscreen: false,
         gpu: None,
         last_drive: None,
+        frame_timing: std::env::var_os("FD2_FRAME_TIMING").is_some_and(|v| v == "1").then(FrameTiming::default),
     };
     // 腳本模式不等垂直同步、視窗沒有焦點也連續更新：顯示幀與牆鐘無關（每幀的 Update 次數由腳本決定），
     // 只影響跑完腳本要多久。一般模式照 Bevy 預設（垂直同步，同 Ebiten 預設）。
@@ -556,8 +559,60 @@ fn drive(
         }
         run.next += 1;
     }
+    if let Some(timing) = shell.frame_timing.as_mut() {
+        timing.record(
+            (t_update - t_frame).as_secs_f64() * 1e3,
+            (t_draw - t_update).as_secs_f64() * 1e3,
+            t_draw.elapsed().as_secs_f64() * 1e3,
+            hd_world.is_some(),
+        );
+    }
     if let Some(pix) = pix {
         shell.last_frame = pix;
+    }
+}
+
+/// 每 60 幀輸出一次 update／draw／放置（含貼圖上傳準備）的平均與最大毫秒；單幀合計超過 50 ms 另記一行。
+#[derive(Default)]
+struct FrameTiming {
+    frames: u64,
+    window: [(f64, f64); 3],
+    count: u32,
+    hd: u32,
+}
+
+impl FrameTiming {
+    fn record(&mut self, update: f64, draw: f64, place: f64, hd: bool) {
+        self.frames += 1;
+        if update + draw + place > 50.0 {
+            eprintln!(
+                "[frame-timing] slow frame={} update={update:.1} draw={draw:.1} place={place:.1} hd={hd}",
+                self.frames
+            );
+        }
+        for (slot, value) in self.window.iter_mut().zip([update, draw, place]) {
+            slot.0 += value;
+            slot.1 = slot.1.max(value);
+        }
+        self.count += 1;
+        self.hd += u32::from(hd);
+        if self.count == 60 {
+            let [u, d, p] = self.window.map(|(sum, max)| (sum / 60.0, max));
+            let rss = std::fs::read_to_string("/proc/self/status")
+                .ok()
+                .and_then(|s| {
+                    s.lines()
+                        .find(|l| l.starts_with("VmRSS:"))
+                        .map(|l| l.split_whitespace().nth(1).unwrap_or("0").to_owned())
+                })
+                .and_then(|kib| kib.parse::<u64>().ok())
+                .map_or(0, |kib| kib / 1024);
+            eprintln!(
+                "[frame-timing] frames={} hd={}/60 update avg={:.1} max={:.1} draw avg={:.1} max={:.1} place avg={:.1} max={:.1} rss={rss}MiB",
+                self.frames, self.hd, u.0, u.1, d.0, d.1, p.0, p.1
+            );
+            *self = FrameTiming { frames: self.frames, ..Default::default() };
+        }
     }
 }
 

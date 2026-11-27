@@ -14,6 +14,7 @@ pub(crate) struct ModernThemeArt {
 pub(crate) struct ModernThemeLoad {
     done: Receiver<Result<ModernThemeArt>>,
     persist: bool,
+    started: std::time::Instant,
 }
 
 const THEME_LOADING: &str = "HD 主題素材載入中，完成後自動切換……";
@@ -66,7 +67,7 @@ impl Game {
             let _ = send.send(candidate);
         }) {
             Ok(_) => {
-                self.modern_theme_loading = Some(ModernThemeLoad { done, persist });
+                self.modern_theme_loading = Some(ModernThemeLoad { done, persist, started: std::time::Instant::now() });
                 self.msg = THEME_LOADING.into();
                 if self.cutscene_log {
                     eprintln!("[theme] {}", self.msg);
@@ -91,13 +92,20 @@ impl Game {
             Ok(candidate) => candidate,
         };
         let persist = load.persist;
+        let background = load.started.elapsed();
         self.modern_theme_loading = None;
+        let install = std::time::Instant::now();
         match candidate.and_then(|art| self.install_modern_theme_art(art)) {
             Ok(()) => self.finish_modern_theme_art_switch(persist),
             Err(err) => self.msg = format!("現代主題不可用：{err}"),
         }
         if self.cutscene_log {
-            eprintln!("[theme] {}", self.msg);
+            eprintln!(
+                "[theme] {}（背景載入 {} ms，安裝 {} ms）",
+                self.msg,
+                background.as_millis(),
+                install.elapsed().as_millis()
+            );
         }
     }
 
@@ -105,6 +113,14 @@ impl Game {
         if self.base_map_tileset.is_none() || self.m.is_none() {
             return;
         }
+        let started = std::time::Instant::now();
+        self.cycle_theme_art_inner();
+        if self.cutscene_log && self.modern_theme_loading.is_none() {
+            eprintln!("[theme] {}（切換 {} ms）", self.msg, started.elapsed().as_millis());
+        }
+    }
+
+    fn cycle_theme_art_inner(&mut self) {
         if let Some(set) = self.modern_story_portraits.take() {
             self.modern_theme_cache = self.modern_opening.take().map(|opening| ModernThemeArt { set, opening });
             self.native_dialogue_modern_portrait = None;
@@ -177,3 +193,7 @@ impl Game {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "player_theme_loader_measure_test.rs"]
+mod measure_tests;

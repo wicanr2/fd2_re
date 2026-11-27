@@ -35,7 +35,7 @@ fn frame_keeps_only_the_current_picture_and_rejects_a_bank_once() {
             .iter()
             .map(|color| {
                 let data = png(1, 1, png::BitDepth::Eight, color);
-                EncodedFrame { sha256: digest(&data), bytes: data.into() }
+                EncodedFrame { sha256: digest(&data), data: FrameData::Memory(data.into()) }
             })
             .collect(),
         verified: BTreeSet::new(),
@@ -177,7 +177,7 @@ fn rejected_opening_frame_restores_the_original_scene_on_the_next_draw() {
         FD100,
         OpeningBank {
             shape: (1, 1),
-            frames: vec![EncodedFrame { sha256: digest(&data), bytes: data.into() }],
+            frames: vec![EncodedFrame { sha256: digest(&data), data: FrameData::Memory(data.into()) }],
             verified: BTreeSet::new(),
             rejected: false,
         },
@@ -266,4 +266,104 @@ fn real_opening_presentation_matches_go() {
     }
     std::fs::write(out.join("rust-opening-view.txt"), &report).unwrap();
     println!("12 張 HD 開場最終畫面與 Go 的單通道差異最多 1：\n{report}");
+}
+
+/// 查表前的逐位元組算式，用來核對查表結果。
+fn reference_viewport(picture: &Picture, plan: OpeningFrame) -> Picture {
+    let stride = (HD_MAP_WIDTH * 4) as usize;
+    let source = picture.read_pixels();
+    let offset = (-canvas::adjust_destination_pixel((-plan.scroll * 6.0) as f32))
+        .clamp(0.0, (picture.height - HD_MAP_HEIGHT) as f32);
+    let top = offset.floor() as usize;
+    let fraction = offset - top as f32;
+    let rows = HD_MAP_HEIGHT as usize;
+    let mut pix = source[top * stride..(top + rows) * stride].to_vec();
+    if fraction != 0.0 {
+        let next = &source[(top + 1) * stride..(top + 1 + rows) * stride];
+        for (a, &b) in pix.iter_mut().zip(next) {
+            *a = (f32::from(*a) * (1.0 - fraction) + f32::from(b) * fraction).round_ties_even() as u8;
+        }
+    }
+    if plan.factor != 1.0 {
+        let factor = plan.factor;
+        let tint = plan.tint.map(|value| f32::from(value) * (1.0 - factor));
+        for px in pix.as_chunks_mut::<4>().0 {
+            for (channel, base) in px[..3].iter_mut().zip(tint) {
+                *channel = (f32::from(*channel) * factor + base).round_ties_even() as u8;
+            }
+        }
+    }
+    Picture { width: HD_MAP_WIDTH, height: HD_MAP_HEIGHT, pix }
+}
+
+#[test]
+fn viewport_lookup_tables_match_per_byte_arithmetic() {
+    let height = HD_MAP_HEIGHT + 30;
+    let mut state = 0x2545_f491_u32;
+    let pix: Vec<u8> = (0..HD_MAP_WIDTH * height * 4)
+        .map(|_| {
+            state ^= state << 13;
+            state ^= state >> 17;
+            state ^= state << 5;
+            state as u8
+        })
+        .collect();
+    let picture = Picture { width: HD_MAP_WIDTH, height, pix };
+    for (scroll, factor, tint) in [
+        (0.0, 1.0, [0, 0, 0]),
+        (1.37, 1.0, [0, 0, 0]),
+        (2.5, 1.0, [0, 0, 0]),
+        (3.9, 0.35, [255, 0, 0]),
+        (0.0, 0.725, [0xe3, 0xf3, 255]),
+        (4.01, 0.025, [255, 0, 0]),
+    ] {
+        let plan = OpeningFrame { scroll, factor, tint, ..OpeningFrame::fdother(69) };
+        assert_eq!(opening_viewport(&picture, plan).pix, reference_viewport(&picture, plan).pix, "{scroll} {factor}");
+    }
+}
+
+#[test]
+fn next_frame_is_prefetched_and_a_jump_ignores_it() {
+    let frames: Vec<EncodedFrame> = [[1, 2, 3, 255], [4, 5, 6, 255], [7, 8, 9, 255], [10, 11, 12, 255]]
+        .iter()
+        .map(|color| {
+            let data = png(1, 1, png::BitDepth::Eight, color);
+            EncodedFrame { sha256: digest(&data), data: FrameData::Memory(data.into()) }
+        })
+        .collect();
+    let shas: Vec<String> = frames.iter().map(|f| f.sha256.clone()).collect();
+    let mut opening = ModernOpening::default();
+    opening.banks.insert(FD100, OpeningBank { shape: (1, 1), frames, verified: BTreeSet::new(), rejected: false });
+    opening.frame(FD100, 0).unwrap().unwrap();
+    assert_eq!(opening.prefetch.as_ref().map(|p| p.sha256.as_str()), Some(shas[1].as_str()));
+    assert_eq!(opening.frame(FD100, 1).unwrap().unwrap().read_pixels(), &[4, 5, 6, 255]);
+    assert_eq!(opening.prefetch.as_ref().map(|p| p.sha256.as_str()), Some(shas[2].as_str()));
+    // 跳到第 3 格：預解的第 2 格不能拿來用。
+    assert_eq!(opening.frame(FD100, 3).unwrap().unwrap().read_pixels(), &[10, 11, 12, 255]);
+    assert!(opening.prefetch.is_none());
+    assert_eq!(opening.frame(FD100, 2).unwrap().unwrap().read_pixels(), &[7, 8, 9, 255]);
+}
+
+#[test]
+fn frame_file_changed_after_admission_is_a_hard_error() {
+    let dir = std::env::temp_dir().join(format!("fd2-opening-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let frames: Vec<EncodedFrame> = [[1, 2, 3, 255], [4, 5, 6, 255]]
+        .iter()
+        .enumerate()
+        .map(|(i, color)| {
+            let data = png(1, 1, png::BitDepth::Eight, color);
+            let path = dir.join(format!("{i}.png"));
+            std::fs::write(&path, &data).unwrap();
+            EncodedFrame { sha256: digest(&data), data: FrameData::File(path.into()) }
+        })
+        .collect();
+    let mut opening = ModernOpening::default();
+    opening.banks.insert(FD100, OpeningBank { shape: (1, 1), frames, verified: BTreeSet::new(), rejected: false });
+    assert_eq!(opening.frame(FD100, 0).unwrap().unwrap().read_pixels(), &[1, 2, 3, 255]);
+    // 第 1 格已在背景預解；等它讀完再改檔，換第 0 格重讀時要報錯。
+    opening.frame(FD100, 1).unwrap().unwrap();
+    std::fs::write(dir.join("0.png"), png(1, 1, png::BitDepth::Eight, &[9, 9, 9, 255])).unwrap();
+    assert!(opening.frame(FD100, 0).is_err());
+    std::fs::remove_dir_all(&dir).unwrap();
 }

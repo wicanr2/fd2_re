@@ -15,6 +15,24 @@ pub(crate) struct ModernHDMapGPU {
     pub(crate) quality: HdTextureQuality,
     pub(crate) world: Option<Arc<Picture>>,
     banner: Option<Arc<Picture>>,
+    /// 背景＋地形層與它的輸入。輸入逐像素相同時沿用，每幀只疊其餘圖層。
+    base: Option<(ModernHDMapBaseKey, Arc<Picture>)>,
+    /// 上一張完整世界圖的全部輸入。相同時沿用同一個 `world`，外殼也就不重傳貼圖。
+    last: Option<ModernHDMapFrameKey>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct ModernHDMapBaseKey {
+    background: Arc<Picture>,
+    terrain: Vec<ModernHDTerrainDraw>,
+    clip: Rectangle,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct ModernHDMapFrameKey {
+    frame: ModernHDMapFrame,
+    units: Vec<(Arc<Picture>, Rectangle)>,
+    banner: Option<(String, i64)>,
 }
 
 pub(crate) const HD_MAP_WIDTH: i64 = 1920;
@@ -39,24 +57,51 @@ impl ModernHDMapGPU {
             return Err(game_err!("modern HD map: invalid plane size or palette addition"));
         }
         let clip = if rect_empty(&frame.viewport) { modern_hd_map_viewport() } else { frame.viewport };
-        let mut world = Picture::new_image(HD_MAP_WIDTH, HD_MAP_HEIGHT);
-        draw_layer(&mut world, background, world_rect(), world_rect(), false);
-        draw_terrain(&mut world, &frame.terrain, clip);
-        if let Some(range) = &frame.range {
-            if (range.width, range.height) != (320, 200) {
-                return Err(game_err!("modern HD map: invalid range plane size"));
+        if let Some(range) = &frame.range
+            && (range.width, range.height) != (320, 200)
+        {
+            return Err(game_err!("modern HD map: invalid range plane size"));
+        }
+        let units = frame
+            .units
+            .iter()
+            .map(|unit| {
+                let image = theme
+                    .map_sprites_hd
+                    .get(&unit.group)
+                    .and_then(|frames| frames.get(unit.frame as usize))
+                    .and_then(Option::as_ref)
+                    .ok_or_else(|| game_err!("modern HD map: missing unit picture"))?;
+                Ok((image.clone(), theme.map_sprite_visual_rect(unit.group, unit.frame, unit.rect)))
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let logical_ui = (!frame.overlays_above_ui).then(|| ui.clone());
+        let key = ModernHDMapFrameKey {
+            frame: frame.clone(),
+            units,
+            banner: banner.map(|(name, step)| (name.to_owned(), step)),
+        };
+        if self.world.is_some() && self.last.as_ref() == Some(&key) {
+            return Ok(logical_ui);
+        }
+        self.last = None;
+        let base_key = ModernHDMapBaseKey { background: background.clone(), terrain: frame.terrain.clone(), clip };
+        let mut world = match &self.base {
+            Some((cached, base)) if *cached == base_key => (**base).clone(),
+            _ => {
+                let mut base = Picture::new_image(HD_MAP_WIDTH, HD_MAP_HEIGHT);
+                draw_layer(&mut base, background, world_rect(), world_rect(), false);
+                draw_terrain(&mut base, &frame.terrain, clip);
+                let world = base.clone();
+                self.base = Some((base_key, Arc::new(base)));
+                world
             }
+        };
+        if let Some(range) = &frame.range {
             draw_layer(&mut world, range, world_rect(), world_rect(), false);
         }
-        for unit in &frame.units {
-            let image = theme
-                .map_sprites_hd
-                .get(&unit.group)
-                .and_then(|frames| frames.get(unit.frame as usize))
-                .and_then(Option::as_ref)
-                .ok_or_else(|| game_err!("modern HD map: missing unit picture"))?;
-            let area = theme.map_sprite_visual_rect(unit.group, unit.frame, unit.rect);
-            draw_layer(&mut world, image, area, clip, unit.palette_band);
+        for ((image, area), unit) in key.units.iter().zip(&frame.units) {
+            draw_layer(&mut world, image, *area, clip, unit.palette_band);
         }
         for foreground in &frame.foreground {
             let image = foreground.hd_image.as_ref().unwrap_or(&foreground.image);
@@ -75,15 +120,13 @@ impl ModernHDMapGPU {
         } else {
             self.clear_banner();
         }
-        let logical_ui = if frame.overlays_above_ui {
+        if frame.overlays_above_ui {
             draw_layer(&mut world, ui, world_rect(), world_rect(), false);
             draw_patches(&mut world, &frame.hud, clip)?;
             draw_patches(&mut world, &frame.overlays, clip)?;
-            None
         } else {
             draw_patches(&mut world, &frame.hud, clip)?;
-            Some(ui.clone())
-        };
+        }
         if frame.palette_add6 != 0 {
             let addition = f32::from(frame.palette_add6) / 63.0;
             let mut pixels = world.read_pixels().to_vec();
@@ -95,6 +138,7 @@ impl ModernHDMapGPU {
             world.write_pixels(&pixels);
         }
         self.world = Some(Arc::new(world));
+        self.last = Some(key);
         Ok(logical_ui)
     }
 }
@@ -212,3 +256,7 @@ impl Game {
         Ok(())
     }
 }
+
+#[cfg(test)]
+#[path = "modern_hd_map_gpu_test.rs"]
+mod tests;
