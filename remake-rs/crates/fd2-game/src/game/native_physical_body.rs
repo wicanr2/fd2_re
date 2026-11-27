@@ -91,10 +91,10 @@ impl Game {
         let animations = separated_asset_path("animations");
         r.actor_idle = Some(figani::load_separated_resource(&animations, actor_fig * 3)?);
         r.target_idle = Some(figani::load_separated_resource(&animations, target_fig * 3)?);
-        // 主攻 FIGANI byte1=0 時原版 28A6C 不重載 BG0..2，`dword_5410B/F/13` 仍是上一個非零旗標場景
-        // free 掉的指標，非零旗標反擊經 29CC2 照讀（#321，原版 use-after-free）。那三個指標固定來自
-        // `BG.DAT` 0／1／2，記憶體未被覆用時畫面與一般反擊相同；使用者 2026-11-27 定案重製端取這個
-        // 可見結果，照常載入三層，不重現覆用後的損壞或中止。
+        // 主攻 FIGANI byte1=0 時原版 28A6C 不重載 BG0..2，非零旗標反擊經 29CC2 照讀 `dword_5410B/F/13`
+        // （#321）。讀到的是最後一次寫入後 free 掉的指標，開機後從未寫過則是 BSS 的 0。寫入端只載入
+        // `BG.DAT` 0／1／2，區塊未被覆用時畫面與一般反擊相同；使用者 2026-11-27 定案重製端取這個
+        // 可見結果，照常載入三層，不重現覆用或空指標造成的損壞與中止。
         let mut counter_reads_stale_layers = false;
         if counter_eligible {
             let counter = figani::load_separated_resource(&animations, target_fig * 3 + 1)?;

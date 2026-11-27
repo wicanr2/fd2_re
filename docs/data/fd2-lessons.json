@@ -6054,6 +6054,14 @@
       "rule": "原版長執行一律以受追蹤的背景任務啟動（工具的 run_in_background，或在其中 & 再 wait），不要在一般前景指令裡用 & 丟背景；跑完先核對 checkpoint 數與 oracle.log 是否到達計畫終點。",
       "why": "第19章 r6 與第21章原版在前景指令內以 & 啟動，約 24 步後隨工具呼叫結束被終止，oracle.log 是空的、紀錄沒有任何錯誤，看起來像正常停止。",
       "evidence": "WORKLOG.md 2026-11-26 Rust 第 18、19、21 章重播"
+    },
+    {
+      "id": "trace-miss-read-the-value-first",
+      "date": "2026-11-27",
+      "area": "逆向證據",
+      "rule": "觀測點沒命中已知寫入端時，先在讀取端記下實際讀到的值，再推斷它從哪裡來；全域落在 LE object 的未載入區（BSS）時，開機初值 0 本身就是一個來源，不要直接歸給其他寫入端。",
+      "why": "#321 第 25 章 r2 只觀測物理場景寫入端，0 次命中後推成「懸空值來自另兩組寫入端之一」；r3 補上全部寫入端與 0x29CC9 讀取端，三組都 0 次、讀到的指標是 0。",
+      "evidence": "docs/data/ida/fd2_counter_stale_bg_layers_20261127.json source_by_chapter"
     }
   ]
 }

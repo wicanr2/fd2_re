@@ -6107,3 +6107,13 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - Rust 遊戲回歸 463 項通過。
 - #321 證據補完：新工具 `tools/fd2_bg_layer_xrefs.py` 以 LE fixup 列出 `dword_54103..54113` 的全部參照（輸出 `docs/data/ida/fd2_bg_layer_xrefs_20261127.txt`）。三組寫入端 `0x278D8`、`0x28D7B`（`sub_28A6C`）、`0x2A2FD` 都只載入 `BG.DAT` 0／1／2，九個 free（`call 0x37416`）後不清空全域。主契約 `docs/data/ida/fd2_counter_stale_bg_layers_20261127.json`，58「不要重做」加一列。
 - 第 25 章原版以 r7 重跑（dosgolem `d1414930`，工作樹乾淨）：adapter 近堆重現 `0x4E6A7` 中止，開機到中止都沒經過 `0x28DC4`，懸空值來自另兩組寫入端之一；native 近堆在這次攻擊前就分岔，沒有經過 `0x29CC2`。第一次重跑把 `0x4E64E`／`0x4E656` 列入觀測，5.9 億步就到 20 萬筆上限，改用輕量觀測點重跑。
+
+## 2026-11-27 #321 勘誤：第 22、25 章反擊讀到的是開機後的空背景指標
+
+- 勘誤：上一段「第 25 章懸空值來自另兩組寫入端之一」是只觀測 `0x28DC4` 後的推論，不成立。被推翻的斷言曾寫在 56、58 第 57 行與 1297 列及證據檔 `ch25_runtime.adapter.note`，已改成現況。
+- IDA 9.4 定出另兩組寫入端：`sub_276EC`（`0x278D6..0x2793E`，唯一呼叫端 `0x2A7FB` 在 `sub_2A6BD`，指令 24 專用演出）與 `sub_2A2E8`（`0x2A2FB..0x2A355`，唯一呼叫端 `0x31551` 在 `sub_31385`，教會轉職）。先前寫的 `sub_2A2ED` 是錯的入口，IDA 函式起點為 `0x2A2E8`。節錄 `docs/data/ida/fd2_bg_layer_writer_functions_20261127.json`。`tools/ida.sh` 預設映像 `locked-v1` 本機不存在，這次以 `FD2_IDA_IMAGE=ida-pro-9.4-idapython:py312-v1` 執行。
+- LE object 2 只有 `0x50000..0x54000` 由檔案載入，`dword_54103..54113` 在其後的 BSS，開機為 0。
+- 第 25 章 adapter r3（16 個觀測點涵蓋三組寫入、六個 free、`0x29CC9`）：三組寫入端與 free 都 0 次，`0x29CC9` 交給 `sub_4E63D` 的來源指標是 0。r4 在讀取窗口觀察 `0x4E648`／`0x4E650`，寬高都讀成 0。寬 0 時列內計數繞成負值、高 0 時列數繞成 `0xFFFF`，失控寫到 `0x4E6A7` 越界。
+- 第 22 章 `ch22-sample-r3` 以同組觀測點與 native 近堆重跑（槽 `ce8588c8`）：同樣 0 次命中、來源 0，第 1 回合在 `0x4E6A7` 中止。
+- 第 18 章維持既有結論：釋放後被 FDMUS 覆用。所以 #321 的原版行為分三種，只有「釋放後未覆用」時畫面與一般反擊相同；重製端依使用者定案三種都畫一般反擊背景，程式行為不變，只更新註解。
+- 新教訓 `trace-miss-read-the-value-first` 寫入 `docs/data/fd2-lessons.json`。

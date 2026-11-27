@@ -3,7 +3,7 @@
   "kind": "fd2_counter_stale_bg_layers_evidence",
   "date": "2026-11-27",
   "issue": "https://github.com/wicanr2/fd2_re/issues/321",
-  "status": "RE-CLOSED（原版機制）；重製端行為為使用者定案，Rust RUNTIME-E1",
+  "status": "RE-CLOSED（原版機制：釋放後使用與開機後空指標兩種來源）；重製端行為為使用者定案，Rust RUNTIME-E1",
   "input": {
     "file": "FD2.EXE",
     "size": 357074,
@@ -32,6 +32,15 @@
       "slot_sha256": "ecacf8dfa893a1ad97e8721f1e24ff8d7671a2bc2061462512c6444d34776c99",
       "eip_trace": "0x13A9F,0x1E54A,0x11255,0x28A6C,0x2939D,0x28DC4,0x28DDE,0x28DF8,0x29032,0x29CC2",
       "state_injections": "force_enemy_clear 宣告、allow_hp_lock（索爾鎖 HP 30000）；修改路徑，不談傷害或存活"
+    },
+    "ida": {
+      "version": "IDA Pro 9.4",
+      "image": "ida-pro-9.4-idapython:py312-v1（tools/ida.sh 預設的 locked-v1 本機不存在，以 FD2_IDA_IMAGE 指定）",
+      "script": "tools/ida_export_function_listing.py",
+      "excerpt": "docs/data/ida/fd2_bg_layer_writer_functions_20261127.json",
+      "excerpt_sha256": "f9e35bdbf8bb2901a1f0b20597d8ea9b72022827d17f2a1331c7d54fedee4e70",
+      "full_export": "work/ida-bg-writers/listing.json（未進版控）",
+      "full_export_sha256": "fe8fb6a56e39805fd65cb0f41e4cee7d36d0dab4330f0d6a87903d41f81e846b"
     }
   },
   "writers": {
@@ -41,12 +50,13 @@
     "sites": [
       {
         "range": "0x278D8..0x2793A",
-        "function": "未命名（入口在 0x278C0 之前，本次未定界）",
+        "function": "sub_276EC（IDA 函式 0x276EC..0x27FC9；唯一直接呼叫端 0x2A7FB 在 sub_2A6BD）；doc 37 已證實為指令 24 的專用演出分支",
         "frees": [
           "0x27EDC",
           "0x27EEA",
           "0x27EF8"
-        ]
+        ],
+        "instruction_range": "0x278D6..0x2793E（range 欄為 fixup 位址）"
       },
       {
         "range": "0x28D7B..0x28DF9",
@@ -55,19 +65,26 @@
           "0x2902E",
           "0x2903C",
           "0x2904A"
-        ]
+        ],
+        "instruction_range": "0x28D79..0x28DFD"
       },
       {
         "range": "0x2A2FD..0x2A351",
-        "function": "sub_2A2ED（強推論：0x2A2EC 為 ret，0x2A2ED 起為 push 38h／call __CHK prologue）",
+        "function": "sub_2A2E8（IDA 函式 0x2A2E8..0x2A5D0，0x2A2E8 起為 push 38h／call sub_36CD7；唯一直接呼叫端 0x31551 在 sub_31385）；0x31385 為教會轉職分支（57 UI-10）",
         "frees": [
           "0x2A57F",
           "0x2A58D",
           "0x2A59B"
-        ]
+        ],
+        "instruction_range": "0x2A2FB..0x2A355"
       }
     ],
-    "free_does_not_clear": "九個 free 點都是 FF 35 push 全域後 E8 call 0x37416（與 sub_28A6C 反編譯中 free(dword_5410B) 的呼叫目標相同），之後沒有把全域寫回 0；下次寫入前全域保持已釋放指標。"
+    "free_does_not_clear": "九個 free 點都是 FF 35 push 全域後 E8 call 0x37416（與 sub_28A6C 反編譯中 free(dword_5410B) 的呼叫目標相同），之後沒有把全域寫回 0；下次寫入前全域保持已釋放指標。",
+    "initial_value": {
+      "level": "已證實（LE 表頭）；初值 0 另由 dosgolem 執行期 trace 證實",
+      "description": "LE object 2 base 0x50000、vsize 0x56B0、4 個檔案頁，檔案只載到 0x54000；dword_54103..54113 落在其後的未載入區（BSS），載入時為 0。開機後在任一寫入端執行前，這三個全域都是空指標。",
+      "tool": "python:3.13-slim 內以 tools/le_xref.py parse_le 讀 object table，--network none、原版唯讀"
+    }
   },
   "consumers": {
     "level": "已證實（位址與指令形）",
@@ -84,7 +101,12 @@
   "counter_path": {
     "level": "已證實",
     "source": "docs/data/ida/fd2_physical_counterattack_ida.txt 第110～190、270～380行",
-    "description": "sub_28A6C 主攻 byte1=0 時不重載三層；反擊 byte1≠0 經 sub_2939D 進 sub_29C90，以 0x29CC2 讀三層。連擊返回另讀 dword_54103，主攻 byte1=0 時同樣是前一次非零分支留下的值。"
+    "description": "sub_28A6C 主攻 byte1=0 時不重載三層；反擊 byte1≠0 經 sub_2939D 進 sub_29C90，以 0x29CC2 讀三層。連擊返回另讀 dword_54103，主攻 byte1=0 時同樣是前一次非零分支留下的值。",
+    "null_source": {
+      "level": "已證實（sub_4E63D 指令）；寬高讀值由 dosgolem trace 證實",
+      "description": "0x29CC9 call sub_4E63D 的第一個引數即來源指標。sub_4E63D 在 0x4E646／0x4E64E 以 LODSW 讀寬高存 word_627B4／627B6。寬為 0 時 0x4E6A3 sub bx,cx 首次即繞成負值，0x4E6A9 or bx,bx 幾乎不歸零；高為 0 時 0x4E6ED dec 繞成 0xFFFF。結果是失控寫入，最後 0x4E6A7 rep stosb 或 0x4E6BD stosb 寫出範圍。",
+      "dosgolem_linear0": "dosgolem 的線性位址 0 讀出 0；實機 DOS/4GW 平面模式的線性 0 是真實模式中斷向量表，讀到的寬高是 INT 0 向量的 offset／segment，畫面內容未驗證，不會是正常背景。"
+    }
   },
   "ch25_runtime": {
     "adapter": {
@@ -113,22 +135,64 @@
       },
       "stop": "cpu386: EIP=0004E6A7 opcode=AA：STOSB write 0160:0025F000 未處理",
       "bg_writer_28A6C_hits": 0,
-      "note": "整段開機到中止沒有經過 0x28DC4／0x28DDE／0x28DF8；本次讀到的懸空值來自另兩組寫入端之一（未加觀測點，未分辨是哪一組）。三組寫入的資源相同，皆為 BG.DAT 0／1／2。"
+      "note": "r2 沒觀測另兩組寫入端；r3 補上後確認三組寫入端與 free 點全部 0 次，讀到的是開機後的空指標（見 r3、r4）。"
     },
     "native": {
       "out": "work/parity-slot-ch25/bg-native-r2",
       "trace_sha256": "60c6ad454ed1ee846666db8cab8fd201f6a2d1cfb396c720aa6f5e37405ced93",
       "runner_sha256": "4594e726e242126a0d0cc55b1ead38964e5397b3242a6f8eb2e7855da4893f33",
       "result": "第 5 回合戰況在這次攻擊前就與 adapter 分岔（我方 14／敵方 35 對 13／36），沒有經過 0x29CC2，停在控制序列 401 等待逾時。不能作為這次反擊的證據。"
+    },
+    "adapter_r3": {
+      "level": "已證實（指定 oracle 範圍）",
+      "out": "work/parity-slot-ch25/bg-adapter-r3",
+      "trace_sha256": "21ea8077fc3594261f96f3436a56b1fd4f26e21162624d79fac22d2044bfc963",
+      "runner_sha256": "8a4622125e06fbee2f6c99793b2dd712e253d318d7307f40929a77345343f50f",
+      "eip_trace": "0x276EC,0x2A2E8,0x28A6C,0x27905,0x2791F,0x27939,0x2A31C,0x2A336,0x2A350,0x27EE0,0x27EEE,0x27EFC,0x2A583,0x2A591,0x29CC9,0x28DC4",
+      "hits": "0x28A6C 25 次、0x29CC9 1 次（step 3544372029，control_seq 393）；其餘 14 個位址 0 次",
+      "read_source": "0x29CC9 堆疊頂 0x0（來源指標為空）",
+      "stop": "與 r2 相同：EIP=0004E6A7 STOSB write 0160:0025F000"
+    },
+    "adapter_r4": {
+      "level": "已證實（指定 oracle 範圍）",
+      "out": "work/parity-slot-ch25/bg-adapter-r4",
+      "trace_sha256": "82cc5af846b845c4460c507357fa745b71c11ca7739dfd8bf358c2eacf1c27af",
+      "runner_sha256": "bc8778ac6739ac07c0f0778eddf48873f6093b7ec87a5d25384e04d8d08675d4",
+      "eip_trace": "0x29CC9,0x4E643,0x4E648,0x4E650,0x4E656，窗口 step 3544372000..3544374000",
+      "result": "0x4E643 進入後 0x4E648 的 ax=0（寬）、0x4E650 的 ax=0（高），ESI 由 0 前進到 2、4"
     }
   },
   "original_visible_result": {
     "level": "強推論",
-    "description": "三層指標只可能指向 BG.DAT 0／1／2 曾在的區塊。區塊未被覆用時，反擊畫面與主攻 byte1≠0 的一般反擊相同；被覆用時 header 讀成任意資料，dosgolem 上第 18、22、25 章都因此越界中止。實機配置器是否覆用未驗證。"
+    "description": "分三種情況。（1）本次開機已有寫入端執行過、區塊未被覆用：反擊畫面與一般反擊相同。（2）區塊已被覆用（第 18 章）：header 讀成任意資料，失控寫入。（3）開機後沒有任何寫入端執行過（第 22、25 章）：讀線性位址 0，實機為中斷向量表，同樣不是正常背景，畫面內容與是否當機未驗證。使用者「可見結果一樣」只對應情況 1；重製端三種都畫一般反擊背景。"
   },
   "remake_decision": {
     "decided_by": "使用者 2026-11-27：「用可見結果一樣即可」",
     "behavior": "Rust prepare_native_physical_body_resources 在主攻 byte1=0、反擊 byte1≠0 時照常載入 BG.DAT 0／1／2；反擊連擊返回用本場背景，不追 dword_54103 的跨場景殘值。Go 凍結，保留拒收。",
     "spec": "docs/knowledge-base/56-fd2-remake-sdd.md#2026-11-27-321-零旗標主攻對非零旗標反擊的背景層"
+  },
+  "ch22_runtime": {
+    "native_r4": {
+      "level": "已證實（指定 oracle 範圍）",
+      "plan": "docs/data/parity-plans/ch22-sample-r3.jsonl",
+      "plan_sha256": "89fc1254ae9185b2d833fe1bc38e773041e7ff49d3a185df7b35d1d5cd88cc3e",
+      "slot_sha256": "ce8588c818ae4d4c86d50db6a52764bd40719bba3301be81a667ba6c66689f43",
+      "heap_profile": "native（與原 sample-r3 相同）",
+      "state_injections": "force_enemy_clear 宣告；修改路徑",
+      "out": "work/parity-slot-ch22/bg-native-r4",
+      "trace_sha256": "af2ec72e096896ed5855e77b4224589b7e633b47afdbf02c3481ef4ab1664b30",
+      "runner_sha256": "6e6fe2edd1e9ffea59530aaa87254b40098658161f52267cbf139c4102fa9d51",
+      "eip_trace": "同 ch25 adapter_r3",
+      "hits": "0x28A6C 5 次、0x29CC9 1 次（step 4395895082，control_seq 683，第 1 回合）；其餘 14 個位址 0 次",
+      "read_source": "0x29CC9 堆疊頂 0x0",
+      "stop": "EIP=0004E6A7 STOSB write 0160:002A1017（與 sample-r3 相同）"
+    }
+  },
+  "source_by_chapter": {
+    "level": "已證實（指定 oracle 範圍）",
+    "ch18": "釋放後使用：BG0 指標 149EF4 由 0x28DC4 寫入、場景 free 後被 FDMUS 配置覆用（fd2_ch18_oracle_stosb_20261003.json cause）",
+    "ch22": "開機後空指標（ch22_runtime.native_r4）",
+    "ch25": "開機後空指標（ch25_runtime.adapter_r3／r4）",
+    "why_null": "兩章都從存檔開機直接進戰場，這次反擊之前沒有主攻 byte1≠0 的物理場景、指令 24 或轉職演出，三個全域保持 BSS 初值 0。"
   }
 }
