@@ -550,3 +550,41 @@ fn test_player_native_command25_uses_original_tail_without_empty_numeric_hold() 
     assert_eq!(byte5(&g), (0x80, 0, 8, true), "command25 owner incomplete");
     assert_eq!(continued.load(std::sync::atomic::Ordering::SeqCst), 1);
 }
+
+/// Rust 新增（Go 沒有玩家指令 31 的測試）：指令 31 沒有演出，確認即走 0x276EC 結算，與 Go `main.go:8160` 的共用
+/// 收尾相同。數值沿用 `native_command24_test.rs` 的 31 號倍率測試（AP×18／10－DP，MP 40→14）。
+#[test]
+fn test_player_native_command31_settles_on_cursor_confirm() {
+    let mut actor = battle::Unit::default();
+    (actor.camp, actor.on_field, actor.x, actor.y, actor.ap, actor.mp, actor.hp) =
+        (battle::OWN, true, 0, 0, 100, 40, 50);
+    let mut target = battle::Unit::default();
+    (target.camp, target.on_field, target.x, target.y, target.dp, target.hp) = (battle::ENEMY, true, 1, 0, 20, 300);
+    // 0x115B6 的游標閘門要求名冊每筆都有原版 +5。
+    (actor.has_native_record_byte5, target.has_native_record_byte5) = (true, true);
+    let mut book: Vec<battle::NativeCommandRecord> =
+        (0..battle::NATIVE_COMMAND_RECORD_COUNT).map(|id| record(id, 0, 0, 0)).collect();
+    book[31] = record(31, 1, 26, 0);
+    let mut st = battle::State::default();
+    (st.w, st.h, st.units, st.native_command_book) = (2, 1, vec![actor, target], book);
+    (st.native_composition_event_bytes, st.native_tile_blit_modes) = (vec![0; 2], vec![0xff, 0]);
+    st.materialize_native_map_range_mode(3);
+    let mut g = Game {
+        st: Some(st),
+        sel: Some(0),
+        cur_x: 1,
+        cur_y: 0,
+        native_command0_targeting: true,
+        native_command_target_id: 31,
+        rng: Some(battle::GoMathRand::new(2)),
+        ..Default::default()
+    };
+    g.confirm();
+    let units = &g.st.as_ref().unwrap().units;
+    let damage = 300 - units[1].hp;
+    assert!(units[0].mp == 14 && units[0].acted && damage > 0, "command31 settle mp={} msg={}", units[0].mp, g.msg);
+    assert_eq!(g.msg, format!("原始指令 31：傷害 {damage}"));
+    let st = g.st.as_ref().unwrap();
+    assert!(!g.native_command0_targeting && g.sel.is_none() && st.native_map_range_mode == 1, "command31 cleanup");
+    assert_eq!(st.native_tile_blit_modes, vec![0xff, 0xff]);
+}

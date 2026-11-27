@@ -121,6 +121,25 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 玩家指令施放：指令 1～8、13～22、25～27、31（RUNTIME-E1，2026-11-27）
+
+Go 的 AI 與玩家共用同一個指令建立函式，差在計畫來源與完成回呼。Rust 先前只移植了敵方分支，指令 3、6、7 甚至明確拒收我方施放者。本輪照 Go 的結構把指令 2、3、5（含 1、4）、6、7、8、回復 13～16、尾段 20～22／25～27 拆成 AI 入口與共用建立函式：
+
+| 項目 | 敵方 | 玩家 |
+|---|---|---|
+| 計畫來源 | 0x15311 選定的目標格（`nativeAIActionOrigin`） | 確認的目標；指令 6 以確認時的游標格為中心 |
+| 死亡獎勵 | 每個結果都發 | 只發命中的目標 |
+| 經驗 | 不發 | `native_command_experience` 依家族發 |
+| 收尾 | 交給 AI 的後續 | 清目標標記、範圍模式回 1、結束選取 |
+
+玩家的尾段 20～22、25～27 先播 0x1D6C8 調色盤前奏的八個階段；指令 17～19 用同一個前奏（`startNativeCommandPalettePresentation`，本輪移植原版索引色分支與繪製），八個階段都被畫面承認之後才跑 0x22721／0x22866／0x22997 交易。指令 31 沒有演出，確認即結算。
+
+還沒接上的玩家指令是 10～12、23、24、28～30、32～35：Rust 只有它們的步進函式，建立函式與繪製都要從 Go 移植（10～12 另牽涉 0x2189A 前奏）。確認時留在選目標並顯示「玩家演出尚未移植」。
+
+驗證：
+- 移植 Go 測試 `TestNativePlayerFormalCommandEntryAndPresentation`（Go 測 3、4、5、7；Rust 另加 1、2、8，各兩種 +6 值）、`TestPlayerNativeCommand6CursorCentersThroughConfirm`（MP 1071、HP 4、亂數 33552 與 Go 相同）、`…Command13…`（回復 60）、`…Command17…`（八階段前不改 MP／AP，結算後 MP 6、AP 116）、`…Command20…`、`…Command25…`。指令 31 另寫 Rust 測試。
+- AI 路徑重構在提交 `0abad3d5` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `ec0d4a50` 相同。fd2-game 490 項通過；`todo!` 剩 129 處。
+
 ### R8 30 章總表與玩家指令格（RUNTIME-E1，2026-11-27）
 
 `tools/rust_parity_all.sh` 依 [`rust-parity-chapters.json`](../data/rust-parity-chapters.json) 逐章重跑。在提交 `ec0d4a50` 的獨立 worktree 上跑，素材指主工作區的 `remake/assets` 與原版分離包，第 1～30 章全部通過（輸出 `work/rust-parity-all-ec0d4a50/summary.tsv`）。第 22 章存檔 `3c7298cd` 與原版逐位元組相同；第 29 章產出的 `33c3d74d` 正是第 30 章的輸入槽。這是受控樣本的回歸證據，不代表樣本外的玩家路徑已移植。

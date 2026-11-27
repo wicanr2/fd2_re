@@ -6078,6 +6078,14 @@
       "rule": "讀 FD2_TEST_<組別>_CATALOG／_PACK 或原型輸出目錄的測試，沒給變數時一律 t.Skip（用 requireHDTestPack），不要讀空路徑後 Fatal；回歸測具不要整批注入這些變數，cmd/fd2 全部打開會超過 8 GB 被砍。",
       "why": "10 項 HD 輸入測試沒有守衛，預設全套固定以「open : no such file or directory」失敗；一次注入全部 HD 變數後，原本 Skip 的測試被喚醒，cmd/fd2 在 1072 秒 signal: killed，後面的測試沒跑。",
       "evidence": "remake/cmd/fd2/modern_hd_facility_scene_test.go requireHDTestPack"
+    },
+    {
+      "id": "rust-batch-worktree-needs-untracked-inputs",
+      "date": "2026-11-27",
+      "area": "回歸",
+      "rule": "在獨立 git worktree 跑 tools/rust_parity_all.sh 時，FD2_REMAKE_ASSETS、FD2_ASSET_PACK 指主工作區，並在 worktree 根目錄建 work 連結指到主工作區的 work/；建構槽、原版追蹤與 remake/assets 的字型都不在版控裡。跑完先刪連結再移除 worktree。",
+      "why": "提交點的 worktree 第一次缺字型，30 章都在載字型時失敗；第二次缺 work/ 下的建構槽，29 章回報槽雜湊不符。兩次都不是重播分歧。",
+      "evidence": "tools/rust_parity_all.sh、work/rust-parity-all-0abad3d5"
     }
   ]
 }

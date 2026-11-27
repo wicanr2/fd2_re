@@ -184,7 +184,9 @@ impl Game {
             return PresentOwner::NativeHealPresentation;
         }
         if self.native_modifier_presentation.is_some() {
-            todo!("R8: main.go:9510 drawNativeCommandModifierPresentation")
+            // Go `main.go:9524`：畫不出來時只印除錯字，工作留著。
+            self.present_native_command_modifier(None);
+            return PresentOwner::NativeModifierPresentation;
         }
         if self.native_ai_command_modifier.is_some() {
             self.present_native_ai_command_modifier(None);

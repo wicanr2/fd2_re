@@ -224,7 +224,7 @@ impl Game {
 
     /// 閘門通過後交給各指令的玩家演出入口。回傳 false 代表這個 ID 還沒有玩家入口。
     ///
-    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、25～27）
+    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、25～27、31）
     pub(crate) fn start_native_player_command(&mut self, id: i64, target: Option<UnitIdx>) -> bool {
         let Some(actor) = self.sel else { return true };
         let cursor = (self.cur_x, self.cur_y);
@@ -295,6 +295,27 @@ impl Game {
                 if let Err(err) = self.start_native_command2022_presentation(actor, target, id, None, then2022) {
                     self.msg = format!("原始指令 {id}：完整演出不可用 ({err})");
                 }
+                true
+            }
+            31 => {
+                let rng = self.rng.as_mut().map(|rng| rng as &mut dyn battle::GoRand);
+                let st = self.st.as_mut().unwrap();
+                let results = match st.execute_native_command_derived_strike(Some(actor), target, id, rng) {
+                    Ok(results) => results,
+                    Err(err) => {
+                        self.msg = format!("原始指令 {id}：請選擇有效目標 ({err})");
+                        return true;
+                    }
+                };
+                let total: i64 = results.iter().map(|result| result.damage).sum();
+                for result in &results {
+                    self.award_death_reward(result.target, Some(actor));
+                }
+                self.face_native_player_command_actor(actor, cursor);
+                self.msg = format!("原始指令 {id}：傷害 {total}");
+                self.award_native_command_derived_strike_experience(actor, &results);
+                self.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                self.check_result();
                 true
             }
             _ => false,
