@@ -16,6 +16,7 @@ import (
 
 func minimalFacilityRosterSet(t *testing.T) *modernStoryPortraitSet {
 	t.Helper()
+	requireHDTestPack(t, "FACILITY")
 	raw, err := os.ReadFile(os.Getenv("FD2_TEST_FACILITY_CATALOG"))
 	if err != nil {
 		t.Fatal(err)

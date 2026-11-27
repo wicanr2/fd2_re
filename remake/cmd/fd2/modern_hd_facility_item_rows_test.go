@@ -279,13 +279,24 @@ func TestModernHDFacilityItemRowsFontMaterial(t *testing.T) {
 	for _, label := range facilityItemRowLabels {
 		want := image.NewRGBA(image.Rect(0, 0, label.width*6, 48))
 		draw.Draw(want, want.Bounds(), image.NewUniform(palette[73]), image.Point{}, draw.Src)
-		face, _ := g.font.faceFor(48)
-		bounds, _ := font.BoundString(face, label.text)
-		box := image.Rect(bounds.Min.X.Floor(), bounds.Min.Y.Floor(), bounds.Max.X.Ceil(), bounds.Max.Y.Ceil())
-		if box.Dx() > want.Bounds().Dx() || box.Dy() > want.Bounds().Dy() {
-			t.Fatal("base font no longer fits source rectangle", label.text)
+		// c98ada43 起 HD 面板字帶右下 2 像素字影，安全矩形要多留 2 像素；放不下就從 48 往下找最大字級（最小 24）。
+		var face font.Face
+		var box image.Rectangle
+		for size := 48; size >= 24 && face == nil; size-- {
+			candidate, _ := g.font.faceFor(size)
+			bounds, _ := font.BoundString(candidate, label.text)
+			box = image.Rect(bounds.Min.X.Floor(), bounds.Min.Y.Floor(), bounds.Max.X.Ceil(), bounds.Max.Y.Ceil())
+			if box.Dx()+2 <= want.Bounds().Dx() && box.Dy()+2 <= want.Bounds().Dy() {
+				face = candidate
+			}
 		}
-		d := font.Drawer{Dst: want, Src: image.NewUniform(palette[169]), Face: face, Dot: fixed.P(-box.Min.X, -box.Min.Y)}
+		if face == nil {
+			t.Fatal("font no longer fits source rectangle", label.text)
+		}
+		pen := fixed.P(-box.Min.X, -box.Min.Y)
+		d := font.Drawer{Dst: want, Src: image.NewUniform(color.RGBA{12, 22, 38, 255}), Face: face, Dot: pen.Add(fixed.P(2, 2))}
+		d.DrawString(label.text)
+		d.Src, d.Dot = image.NewUniform(palette[169]), pen
 		d.DrawString(label.text)
 		if !bytes.Equal(want.Pix, h.icons[label.index].picture.Pix) {
 			t.Fatal("material differs from independent font drawing", label.text)

@@ -21,6 +21,16 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+// requireHDTestPack 讀 FD2_TEST_<kind>_CATALOG／_PACK；沒給就略過，與其他需要明示 HD 輸入的測試一致。
+func requireHDTestPack(t *testing.T, kind string) (catalog, pack string) {
+	t.Helper()
+	catalog, pack = os.Getenv("FD2_TEST_"+kind+"_CATALOG"), os.Getenv("FD2_TEST_"+kind+"_PACK")
+	if catalog == "" || pack == "" {
+		t.Skip("explicit FD2_TEST_" + kind + "_CATALOG and _PACK required")
+	}
+	return catalog, pack
+}
+
 func facilityHDTestSet(t *testing.T) *modernStoryPortraitSet {
 	t.Helper()
 	catalog, pack := os.Getenv("FD2_TEST_FACILITY_CATALOG"), os.Getenv("FD2_TEST_FACILITY_PACK")

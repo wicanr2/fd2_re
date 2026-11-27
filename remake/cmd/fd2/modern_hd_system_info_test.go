@@ -74,7 +74,11 @@ func TestModernHDSystemInfoOriginalInkAndNumbers(t *testing.T) {
 		}
 		face, _ := g.font.faceFor(48)
 		b, _ := font.BoundString(face, field.text)
-		d := font.Drawer{Dst: expected, Src: image.NewUniform(palette[field.ink]), Face: face, Dot: fixed.P(-b.Min.X.Floor(), -b.Min.Y.Floor())}
+		// c98ada43 起 HD 面板字先畫右下 2 像素的深色字影，再畫本色。
+		pen := fixed.P(-b.Min.X.Floor(), -b.Min.Y.Floor())
+		d := font.Drawer{Dst: expected, Src: image.NewUniform(color.RGBA{12, 22, 38, 255}), Face: face, Dot: pen.Add(fixed.P(2, 2))}
+		d.DrawString(field.text)
+		d.Src, d.Dot = image.NewUniform(palette[field.ink]), pen
 		d.DrawString(field.text)
 		for y := 0; y < r.Dy(); y++ {
 			for x := 0; x < r.Dx(); x++ {

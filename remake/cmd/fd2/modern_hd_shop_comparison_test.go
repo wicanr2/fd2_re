@@ -45,10 +45,14 @@ func TestModernHDShopComparisonSourceAndFallback(t *testing.T) {
 			face, _ := g.font.faceFor(label.height * 6)
 			bounds, _ := font.BoundString(face, label.text)
 			box := image.Rect(bounds.Min.X.Floor(), bounds.Min.Y.Floor(), bounds.Max.X.Ceil(), bounds.Max.Y.Ceil())
-			if box.Dx() > want.Bounds().Dx() || box.Dy() > want.Bounds().Dy() {
+			// c98ada43 起 HD 面板字帶右下 2 像素字影，安全矩形要多留 2 像素。
+			if box.Dx()+2 > want.Bounds().Dx() || box.Dy()+2 > want.Bounds().Dy() {
 				t.Fatal("base font no longer fits original rectangle")
 			}
-			d := font.Drawer{Dst: want, Src: image.NewUniform(pal[169]), Face: face, Dot: fixed.P(-box.Min.X, -box.Min.Y)}
+			pen := fixed.P(-box.Min.X, -box.Min.Y)
+			d := font.Drawer{Dst: want, Src: image.NewUniform(color.RGBA{12, 22, 38, 255}), Face: face, Dot: pen.Add(fixed.P(2, 2))}
+			d.DrawString(label.text)
+			d.Src, d.Dot = image.NewUniform(pal[169]), pen
 			d.DrawString(label.text)
 			if !bytes.Equal(want.Pix, h.icons[i].picture.Pix) {
 				t.Fatal("label differs from independent base-font drawing", label.text)

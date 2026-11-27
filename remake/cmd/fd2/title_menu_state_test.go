@@ -402,6 +402,8 @@ func TestTitleMenuShotOracleEntersBoundedMenuState(t *testing.T) {
 	t.Setenv("FD2_SHOT_TITLE_MENU", "1")
 	t.Setenv("FD2_SHOT", t.TempDir()+"/title.png")
 	t.Setenv("FD2_MUTE", "1")
+	// 使用者資料目錄每個程序只解析一次，先跑的測試可能已存下 HD 主題設定；這裡明定原版主題。
+	t.Setenv("FD2_THEME", "faithful")
 	g := loadGame()
 	if g.loadErr != "" || g.titleAssets == nil || g.titlePhase != "menu" || g.titleSel != 0 || g.titleFlash != 0 {
 		t.Fatalf("title menu shot state phase=%q sel=%d flash=%d assets=%v err=%q", g.titlePhase, g.titleSel, g.titleFlash, g.titleAssets != nil, g.loadErr)

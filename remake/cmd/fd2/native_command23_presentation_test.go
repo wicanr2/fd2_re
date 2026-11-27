@@ -54,6 +54,8 @@ func nativeCommand23TestGame(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
 }
 
 func TestNativeCommand23FormalConfirmCancelAndFullPresentation(t *testing.T) {
+	// 測具不載音效；FDOTHER #80 音效檢查以靜音放行。
+	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := nativeCommand23TestGame(t)
 	if err := g.beginNativeCommandTargetSelection(23); err != nil {
 		t.Fatal(err)

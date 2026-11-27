@@ -6062,6 +6062,22 @@
       "rule": "觀測點沒命中已知寫入端時，先在讀取端記下實際讀到的值，再推斷它從哪裡來；全域落在 LE object 的未載入區（BSS）時，開機初值 0 本身就是一個來源，不要直接歸給其他寫入端。",
       "why": "#321 第 25 章 r2 只觀測物理場景寫入端，0 次命中後推成「懸空值來自另兩組寫入端之一」；r3 補上全部寫入端與 0x29CC9 讀取端，三組都 0 次、讀到的指標是 0。",
       "evidence": "docs/data/ida/fd2_counter_stale_bg_layers_20261127.json source_by_chapter"
+    },
+    {
+      "id": "shared-draw-change-updates-independent-oracles",
+      "date": "2026-11-27",
+      "area": "回歸",
+      "rule": "改共用繪製函式（字影、字色來源、血條立體邊、白名單）時，同一個提交裡 grep 所有用獨立重畫或硬寫常數當期望值的測試一起更新；Go 全套跑不完整時，HD 輸入類測試要帶 FD2_TEST_*_CATALOG／_PACK 個別跑，不能拿預設全套的通過代表它們通過。",
+      "why": "d8d901bc 把面板字色改成取自原版畫格、c98ada43 加字影與立體血條、38eff878 放行指令 10／23／30，對應的獨立期望值測試都沒改，在預設全套裡又被缺輸入的失敗淹沒，從 11-04 一路累積到 2026-11-27 才清掉。",
+      "evidence": "WORKLOG.md 2026-11-27「Go 全套既有失敗清零」"
+    },
+    {
+      "id": "hd-input-tests-skip-without-inputs",
+      "date": "2026-11-27",
+      "area": "回歸",
+      "rule": "讀 FD2_TEST_<組別>_CATALOG／_PACK 或原型輸出目錄的測試，沒給變數時一律 t.Skip（用 requireHDTestPack），不要讀空路徑後 Fatal；回歸測具不要整批注入這些變數，cmd/fd2 全部打開會超過 8 GB 被砍。",
+      "why": "10 項 HD 輸入測試沒有守衛，預設全套固定以「open : no such file or directory」失敗；一次注入全部 HD 變數後，原本 Skip 的測試被喚醒，cmd/fd2 在 1072 秒 signal: killed，後面的測試沒跑。",
+      "evidence": "remake/cmd/fd2/modern_hd_facility_scene_test.go requireHDTestPack"
     }
   ]
 }

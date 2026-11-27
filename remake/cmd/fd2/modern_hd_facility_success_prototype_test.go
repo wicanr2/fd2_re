@@ -20,7 +20,7 @@ func TestModernHDFacilitySuccessPrototype(t *testing.T) {
 	g := facilityDialogueTestGame(t, nil)
 	out := os.Getenv("FD2_HD_FACILITY_SUCCESS_PROTOTYPE_OUT")
 	if out == "" {
-		t.Fatal("explicit output required")
+		t.Skip("explicit prototype output required")
 	}
 	sha := func(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToString(sum[:]) }
 	save := func(name string, raw []byte) map[string]any {

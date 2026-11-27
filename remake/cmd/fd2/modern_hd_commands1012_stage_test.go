@@ -127,6 +127,8 @@ func TestModernHDCommandPreludeStageMarker(t *testing.T) {
 	}
 	stage.art = modernTerrainHDAsset{Image: picture, Colours: []byte{243}}
 	set.mapStages = map[int]*modernMapStageHD{42: &stage}
+	// 下面把原生地形遮罩清成零；b3bda747 之後的 HD 地形圖照真實遮罩繪製，這份複本一併拿掉。
+	set.terrainHD = nil
 	assets := *g.nativeMapAssets
 	bank := *assets.Terrain
 	bank.Sprites = append(bank.Sprites[:0:0], bank.Sprites...)

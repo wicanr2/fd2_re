@@ -6129,3 +6129,19 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
   - 第 22 章 `sample-r3`（31 筆）、第 25 章 `sample-r4`（30 筆）：行為閘門通過；節點與交易閘門因原版在反擊中止而缺後續節點，兩版缺的與原版相同。
 - 回歸：Rust 463 項通過。Go 全套 23 項失敗，都不是這次造成的：22 項 `cmd/fd2` 在改動前的 HEAD 開乾淨 worktree，疊掛同一份 `remake/assets`、`org_game` 對照後同樣失敗或隨素材變動（多數缺現代 HD 主題素材）；`TestReviewedGoCandidatesMatchCurrentInventory` 是 `7d0d483c` 改 `player_chapter_guide.go` 後未重綁字串審查，`tools/rebind_string_review.sh` 因該檔少了 5 筆審查字串而拒絕遷移。
 - 第一次跑 Go 全套時素材根給了相對路徑，docker 把它當成具名 volume 拒絕啟動（exit 125）；`remake_go_test.sh` 的素材根要給絕對路徑。
+
+## 2026-11-27 Go 全套既有失敗清零、#265 結案
+
+- #265（`native-physical-mixed-counter-bg`）與 #321 同一組合，使用者同意後留言結案：可達章節、caller 圖層來源、Rust／Go 實作與 RUNTIME-E1 範圍寫在留言；驗收條件的一般玩家抽樣沒有另做，留言如實註明。
+- 使用者要求修正 Go 全套的 23 項既有失敗，並同意發 `v.1.1.17-20261127` 本機完整版（AGENTS.md 例外段同步改寫；仍不建 tag 或公開 Release）。生產碼沒有改，全部是測試與盤點：
+  - 10 項 HD 輸入測試讀 `FD2_TEST_<組別>_CATALOG／_PACK`，沒給就讀空路徑失敗。補上與同類一致的 Skip（新 helper `requireHDTestPack`）；帶私人 HD 包個別跑，14 項全過。
+  - 4 項期望值落後已確認的設計：d8d901bc 面板字色改取原版畫格最亮色、c98ada43 加字影與立體血條。測試改成同一契約，字級與比對點都照新畫法。
+  - 指令目標白名單測試落後 38eff878（10、23、30 已放行）。
+  - 指令 23 與未命中描述子兩項沒載音效，補 `FD2_MUTE`，與其他 167 處相同。
+  - 原型輸出測試沒給輸出目錄時改 Skip，與同類一致。
+  - 標題選單截圖測試受前面測試存下的 HD 主題設定污染（使用者資料目錄每程序只解析一次），改明定 `FD2_THEME=faithful`。
+  - 字串盤點：11-23 新增的 `player_chapter_guide.go`（關卡事件面板）17 條字串沒分類，重綁時遷移工具拒絕。確認由工具列繪製後歸 `player_visible`，綁定 `efd6c0db…`。
+  - 帶 HD 輸入跑時另外喚醒 4 項原本 Skip 的測試，也一併修好：兩項地形測試在隔離複本拿掉 b3bda747 之後的 HD 地形；面板圖示測試只取 `FDOTHER.DAT` #5 那 10 張；道具列測試照字影規則找字級。
+- 一次注入全部 HD 變數跑 `cmd/fd2` 時，在 1072 秒 `signal: killed`，後面的測試沒跑；測具因此不整批注入，`tools/remake_go_test.sh` 說明寫明要個別帶變數。
+- 結果：Go 預設全套（`work/go-test-pack-root`，原版包加 locales）21 個套件全部 ok，`cmd/fd2` 386 秒，0 項失敗；HD 輸入測試帶 `fd2-modern-handpainted-a`（私人庫 `e6e9bff6`）個別跑全過。log 在 `work/go-321-verify/go-full-test-r3.log`、`hd-inputs-r5.log`。
+- 新教訓 `shared-draw-change-updates-independent-oracles`、`hd-input-tests-skip-without-inputs`。

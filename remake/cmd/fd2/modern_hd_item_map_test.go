@@ -159,6 +159,8 @@ func itemHDState(g *Game) any {
 }
 
 func TestNativeMissDescriptorConsumers(t *testing.T) {
+	// 測具不載音效；modifier 尾段的 FDOTHER #80 音效檢查以靜音放行，與 itemHDGame 相同。
+	t.Setenv("FD2_MUTE", "1")
 	// Exercise real preflight producers. Raw transient flags select their
 	// existing no-application paths; the official seed stays fixed at seven.
 	check := func(t *testing.T, frames []nativeCompoundPresentedFrame) {

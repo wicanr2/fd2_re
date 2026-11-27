@@ -162,7 +162,8 @@ func TestModernBattlePanelChromeNativeSpans(t *testing.T) {
 				if colored[p.native.Pixels[(y+2)*149+21+x]] {
 					wantIndex = p.chrome.ink[i]
 				}
-				if got, want := picture.At((21+x)*6+3, y*6+3), color.RGBAModel.Convert(g.nativeUIPalette[wantIndex]); got != want {
+				// c98ada43 起血條上下各 6 列是立體亮暗邊；取條身正中央那一列比對原版填色範圍。
+				if got, want := picture.At((21+x)*6+3, y*6+18), color.RGBAModel.Convert(g.nativeUIPalette[wantIndex]); got != want {
 					t.Fatalf("%+v bar%d column%d: HD %v native-span %v", sample, i, x, got, want)
 				}
 			}

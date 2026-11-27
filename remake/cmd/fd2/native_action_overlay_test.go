@@ -426,12 +426,16 @@ func TestNativeActionSelectableRejectsDisabledWordAndInvalidDirection(t *testing
 
 func TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed(t *testing.T) {
 	g := &Game{}
-	for _, id := range []int{0, 1, 6, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35} {
+	// 10、23、30 已由 38eff878 補上玩家入口與演出，白名單隨之放行；9 不走這份目標白名單。
+	for id := 0; id <= 35; id++ {
+		if id == 9 {
+			continue
+		}
 		if !g.nativeCommandTargetSupported(id) {
 			t.Fatalf("verified target/effect id %d was rejected", id)
 		}
 	}
-	for _, id := range []int{-1, 9, 10, 23, 30, 36} {
+	for _, id := range []int{-1, 9, 36} {
 		if g.nativeCommandTargetSupported(id) {
 			t.Fatalf("unresolved target/effect id %d was enabled", id)
 		}

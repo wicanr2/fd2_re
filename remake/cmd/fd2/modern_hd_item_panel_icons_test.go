@@ -160,7 +160,9 @@ func TestModernHDPanelIconsAssetLoader(t *testing.T) {
 	}
 	minimal := modernThemeCatalog{SchemaVersion: 1, ThemeID: modernHandpaintedThemeID}
 	for _, asset := range all.Assets {
-		if asset.Role == "native_ui_icon_hd" || asset.Role == "story_portrait_frame" && len(minimal.Assets) == 0 {
+		// 服務選單圖示後來也登錄為 native_ui_icon_hd；這裡只取物品面板那 10 張（FDOTHER #5）。
+		itemPanelIcon := asset.Role == "native_ui_icon_hd" && asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource == 5
+		if itemPanelIcon || asset.Role == "story_portrait_frame" && len(minimal.Assets) == 0 {
 			minimal.Assets = append(minimal.Assets, asset)
 		}
 	}

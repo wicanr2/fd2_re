@@ -135,7 +135,8 @@ func startModifierHDTest(t *testing.T, g *Game, c modifierHDCase, done *int) {
 
 func modifierHDTestTheme(t *testing.T) *modernStoryPortraitSet {
 	t.Helper()
-	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
+	catalog, pack := requireHDTestPack(t, "MODERN_EFFECT")
+	set, err := loadModernStoryPortraitSet(catalog, pack)
 	if err != nil {
 		t.Fatal(err)
 	}

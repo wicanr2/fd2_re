@@ -39,28 +39,12 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 35 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 34 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
 
 ## re — 原版證據還沒閉合
-
-### P1 混合背景反擊：主動header零、反擊非零的caller圖層待證
-
-`native-physical-mixed-counter-bg` · RE待解 · [#265](https://github.com/wicanr2/fd2_re/issues/265) · 仍未完成 · 自承還在 remake/cmd/fd2/native_physical_body.go
-
-原始拒收保留：第九章章前HP+1000建構槽的貝克威為class4弓兵，卻裝著type1短劍item0、射程1。相鄰受擊因此嘗試反擊，遇到主動header零／counter非零的caller BG守衛。這份建構槽不能證明未修改原版可達性。
-
-後續已正常購買並立即裝備type5黑暗弓，金幣扣1800、射程2～4；一次普通END及射程4炮擊、返回／F2／邊界保存與新程序LOAD通過，貝克威21幀已正式登錄。此正常購弓來源不再阻塞本輪HD。購物另發現的原生ignored格毀損獨立列#266，已修正並實機驗證。
-
-本項保留的一般能力限制：prepareNativePhysicalBodyResources仍拒收attack.HeaderByte1==0且counter.HeaderByte1!=0。未證明所有這類組合均不可達，也未補齊原版caller保存的BG與必要預載；缺件仍在結算前拒收，不刪守衛或把反擊關掉。原版oracle未知與已完成的正常貝克威流程分開。
-
-原背景主證據docs/data/ida/fd2_physical_background_selection_20261004.json；前批失敗沿主收據early_party_battle_followup_20261020，購弓修正與普通炮擊沿bekwei_battle_followup_20261020。既有已閉合位址不重做，後續只有實際合法caller需要時才開窄切片。
-
-怎樣算做完：確認該組合的原生裝備／射程與可達範圍，補齊固定雜湊、原始位址及caller／consumer證據；依READY規格實作必要背景預載或修正錯誤測試來源，同狀態與普通玩家抽樣通過，缺件仍在結算前拒收。不能只刪守衛或改成無反擊。
-
-證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
 ### P2 經驗累計寫入端0x1ECC7的語意
 

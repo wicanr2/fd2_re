@@ -18,6 +18,10 @@
 #     ln -s "/src/${e}" "$root/$(basename "$e")"
 #   done
 #   ln -s /src/remake/assets/locales "$root/locales"
+#
+# 需要 HD 主題輸入的測試讀 FD2_TEST_<組別>_CATALOG／_PACK 等變數，沒給就 Skip。
+# 這裡不整批注入：全部打開時 cmd/fd2 會超過 8 GB 記憶體被砍。要驗它們，照各測試
+# 或 61 的命令個別帶變數執行。
 set -euo pipefail
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)

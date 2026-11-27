@@ -442,7 +442,8 @@ func TestModernCommandPanelPalette(t *testing.T) {
 	}
 	palette := append(color.Palette(nil), g.nativeUIPalette...)
 	ink := color.RGBA{10, 200, 90, 255}
-	palette[0xcd] = ink
+	// d8d901bc 起面板字色取自原版數字畫格最亮色（digitInk），不再固定 0xcd。
+	palette[p.digitInk[0]] = ink
 	picture, key, err := p.raster(palette)
 	if err != nil || key == baseKey {
 		t.Fatal("palette did not change panel", err)

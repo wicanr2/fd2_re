@@ -293,6 +293,9 @@ func modernBattleCandidateFigure(t *testing.T) int {
 // 這裡仍沿正式逐組loader核對每一個場景實際請求的PNG／SHA／原描述子。
 func modernHDBattleFixtureSet(t *testing.T, catalog, pack string, resources []int) *modernStoryPortraitSet {
 	t.Helper()
+	if catalog == "" || pack == "" {
+		t.Skip("explicit HD battle catalog and pack required")
+	}
 	raw, err := os.ReadFile(catalog)
 	if err != nil {
 		t.Fatal(err)
