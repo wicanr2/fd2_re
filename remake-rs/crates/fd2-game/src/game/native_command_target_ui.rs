@@ -224,38 +224,138 @@ impl Game {
 
     /// 閘門通過後交給各指令的玩家演出入口。回傳 false 代表這個 ID 還沒有玩家入口。
     ///
-    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0）
+    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、25～27）
     pub(crate) fn start_native_player_command(&mut self, id: i64, target: Option<UnitIdx>) -> bool {
         let Some(actor) = self.sel else { return true };
         let cursor = (self.cur_x, self.cur_y);
         match id {
-            0 => {
-                let Some(target) = target else {
-                    self.msg = String::from("原始指令 0：indexed 演出不可用 (target unavailable)");
-                    return true;
-                };
-                let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
-                    let (mut hit, mut total) = (0, 0);
-                    for result in &results {
-                        if result.native_command_damage.hit {
-                            hit += 1;
-                            total += result.native_command_damage.damage;
-                            g.award_death_reward(result.target, Some(actor));
-                        }
+            0..=8 => {
+                let then = native_player_damage_command_then(id, actor, cursor);
+                let started = match (id, target) {
+                    (6, _) => {
+                        let cell = battle::Cell { x: cursor.0, y: cursor.1 };
+                        self.start_native_command6_presentation_at_cursor(actor, cell, then)
                     }
+                    (_, None) => Err(game_err!("native command{id} confirmed unit unavailable")),
+                    (0, Some(target)) => self.start_native_command0_presentation(actor, target, then),
+                    (1 | 4 | 5, Some(target)) => self.start_native_indexed_damage_command(id, actor, target, then),
+                    (2, Some(target)) => self.start_native_command2_presentation(actor, target, then),
+                    (3, Some(target)) => self.start_native_command3_presentation(actor, target, then),
+                    (7, Some(target)) => self.start_native_command7_presentation(actor, target, then),
+                    (_, Some(target)) => self.start_native_command8_presentation(actor, target, then),
+                };
+                if let Err(err) = started {
+                    self.msg = format!("原始指令 {id}：indexed 演出不可用 ({err})");
+                }
+                true
+            }
+            13..=16 => {
+                let targets = self.st.as_ref().unwrap().native_command_heal_targets(Some(actor), target, id);
+                if let Err(err) = targets {
+                    self.msg = format!("原始指令 {id}：請選擇有效目標 ({err})");
+                    return true;
+                }
+                let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandHealResult>| {
+                    let total: i64 = results.iter().map(|result| result.restore.actual).sum();
                     g.face_native_player_command_actor(actor, cursor);
-                    g.msg = format!("原始指令 0：命中 {hit}，傷害 {total}");
-                    g.award_native_command_damage_experience(actor, &results);
+                    g.msg = format!("原始指令 {id}：回復 {total}");
+                    g.award_native_command_heal_experience(actor, &results);
                     g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
                     g.check_result();
                 });
-                if let Err(err) = self.start_native_command0_presentation(actor, target, then) {
-                    self.msg = format!("原始指令 0：indexed 演出不可用 ({err})");
+                if let Err(err) = self.start_native_command_heal_presentation(id, actor, target, None, then) {
+                    self.msg = format!("原始指令 {id}：indexed 演出不可用 ({err})");
+                }
+                true
+            }
+            17..=19 => {
+                self.start_native_player_command_modifier(id, actor, target, cursor);
+                true
+            }
+            20..=22 | 25..=27 => {
+                let then2022 = Box::new(move |g: &mut Game, plan: &battle::NativeAICommand2022Plan| {
+                    if id != 25 {
+                        for result in &plan.results {
+                            if result.apply.is_some_and(|apply| apply.damage.actual > 0) {
+                                g.award_death_reward(result.target, Some(actor));
+                            }
+                        }
+                    }
+                    let count = plan.results.len();
+                    g.msg = if id <= 22 {
+                        format!("原始指令 {id}：完成palette與indexed尾段 ({count} targets)")
+                    } else {
+                        format!("原始指令 {id}：完成 palette 與 indexed 尾段 ({count} targets)")
+                    };
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.award_native_command2022_experience(actor, plan);
+                    g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                    g.check_result();
+                });
+                if let Err(err) = self.start_native_command2022_presentation(actor, target, id, None, then2022) {
+                    self.msg = format!("原始指令 {id}：完整演出不可用 ({err})");
                 }
                 true
             }
             _ => false,
         }
+    }
+
+    /// 玩家指令 17～19：先驗目標，0x1D6C8 前奏八個階段都畫過之後才跑 0x22721／0x22866／0x22997 交易。
+    ///
+    /// Go：`main.go:7756`..`7792`
+    fn start_native_player_command_modifier(
+        &mut self,
+        id: i64,
+        actor: UnitIdx,
+        target: Option<UnitIdx>,
+        cursor: (i64, i64),
+    ) {
+        let targets = match self.st.as_ref().unwrap().native_command_modifier_targets(Some(actor), target, id) {
+            Ok(targets) => targets,
+            Err(err) => {
+                self.msg = format!("原始指令 {id}：請選擇有效目標 ({err})");
+                return;
+            }
+        };
+        let result = std::sync::Arc::new(std::sync::Mutex::new(None::<battle::NativeCommandModifierResult>));
+        let preflight_targets = targets.clone();
+        let preflight = move |g: &Game| -> Result<()> {
+            Ok(g.st.as_ref().unwrap().validate_native_command_modifier_targets(Some(actor), &preflight_targets, id)?)
+        };
+        let written = result.clone();
+        let transaction = Box::new(move |g: &mut Game| -> Result<()> {
+            let rng = g.native_rng_state;
+            let outcome = g.st.as_mut().unwrap().execute_native_command_modifier(Some(actor), target, id, rng)?;
+            g.native_rng_state = outcome.rng_state;
+            *written.lock().unwrap() = Some(outcome);
+            Ok(())
+        });
+        let then = Box::new(move |g: &mut Game| {
+            let Some(outcome) = result.lock().unwrap().take() else { return };
+            let count = if id == 19 { outcome.pair_steps.len() } else { outcome.word_steps.len() };
+            g.face_native_player_command_actor(actor, cursor);
+            g.msg = format!("原始指令 {id}：完成 raw modifier ({count} targets)");
+            g.award_native_command_modifier_experience(actor, &outcome, &targets);
+            g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+            g.check_result();
+        });
+        if let Err(err) = self.start_native_command_palette_presentation(id, preflight, transaction, then) {
+            self.msg = format!("原始指令 {id}：palette 演出不可用 ({err})");
+        }
+    }
+
+    /// AI 指令工作建好之後：聚焦施放者，再把游標移到選中的目標格，並清經驗累計。
+    ///
+    /// Go：`native_ai_execute.go:31`..`51`（0x15311／0x1567E 的 0x15360、0x153C2；0x1546A 清累計）。
+    pub(crate) fn begin_native_ai_command_job(&mut self, actor: UnitIdx, origin: battle::Cell) {
+        let (x, y) = {
+            let unit = &self.st.as_ref().unwrap().units[actor];
+            (unit.x, unit.y)
+        };
+        self.ai_focus_cursor(x, y);
+        self.ai_focus_cursor(origin.x, origin.y);
+        self.st.as_mut().unwrap().native_experience_accumulator = 0;
     }
 
     /// 施法者轉向確認時的游標格（Go `actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))`）。
@@ -264,6 +364,66 @@ impl Game {
         let pose = dir_toward(unit.x, unit.y, cursor.0, cursor.1);
         unit.set_map_pose(pose);
     }
+}
+
+/// 指令 0～12 演出結束後的回呼（傷害結果）。
+pub(crate) type NativeCommandDamageThen = Box<dyn FnOnce(&mut Game, Vec<battle::NativeCommandDamageResult>) + Send>;
+
+/// 敵方指令的計畫原點：敵方用 0x15311 選定的目標格（Go `nativeAIActionOrigin`），玩家不用。
+pub(crate) fn native_command_plan_origin(
+    actor: &battle::Unit,
+    ai_origin: Option<battle::Cell>,
+) -> Result<battle::Cell> {
+    match ai_origin {
+        Some(origin) => Ok(origin),
+        None if actor.camp == battle::ENEMY => {
+            Err(game_err!("native AI command origin unavailable: no 0x15311 plan is being dispatched for this actor"))
+        }
+        None => Ok(battle::Cell { x: actor.x, y: actor.y }),
+    }
+}
+
+/// 敵方指令 1～8 的完成回呼（Go `native_ai_execute.go` 各分支同一段）：每個結果都發死亡獎勵，轉向確認的目標，
+/// 交給 AI 的後續。
+pub(crate) fn native_ai_damage_command_then(id: i64, actor: UnitIdx, target: UnitIdx) -> NativeCommandDamageThen {
+    Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
+        let (mut hit, mut damage) = (0, 0);
+        for result in results {
+            if result.native_command_damage.hit {
+                hit += 1;
+                damage += result.native_command_damage.damage;
+            }
+            g.award_death_reward(result.target, Some(actor));
+        }
+        let units = &mut g.st.as_mut().unwrap().units;
+        let (a, t) = (&units[actor], &units[target]);
+        let pose = dir_toward(a.x, a.y, t.x, t.y);
+        units[actor].set_map_pose(pose);
+        g.msg = format!("原始指令 {id}：命中 {hit}，傷害 {damage}");
+        let after = g.native_ai_action_after.take();
+        g.finish_successful_unit_action(Some(actor), after);
+        g.check_result();
+    })
+}
+
+/// 玩家指令 0～12 的完成回呼（Go `main.go:7873`..`8121` 各分支同一段）：命中的目標才發死亡獎勵，轉向確認時的
+/// 游標格，發指令經驗後收尾。
+fn native_player_damage_command_then(id: i64, actor: UnitIdx, cursor: (i64, i64)) -> NativeCommandDamageThen {
+    Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
+        let (mut hit, mut total) = (0, 0);
+        for result in &results {
+            if result.native_command_damage.hit {
+                hit += 1;
+                total += result.native_command_damage.damage;
+                g.award_death_reward(result.target, Some(actor));
+            }
+        }
+        g.face_native_player_command_actor(actor, cursor);
+        g.msg = format!("原始指令 {id}：命中 {hit}，傷害 {total}");
+        g.award_native_command_damage_experience(actor, &results);
+        g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+        g.check_result();
+    })
 }
 
 /// 玩家指令行動的收尾（Go 每個分支傳給 `finishSuccessfulUnitAction` 的同一段）：清目標標記、範圍模式回 1、
@@ -278,3 +438,7 @@ fn native_player_command_after() -> Box<dyn FnOnce(&mut Game) + Send> {
             (false, 0, None, BTreeMap::new(), false);
     })
 }
+
+#[cfg(test)]
+#[path = "native_command_target_ui/native_command_target_ui_test.rs"]
+mod native_command_target_ui_test;

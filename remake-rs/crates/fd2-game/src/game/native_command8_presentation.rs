@@ -58,8 +58,38 @@ impl Game {
     /// 敵方指令 8：前奏 → 施放者 → 單一目標的前段、目標段、尾段 → 共用尾段。原版索引色畫面，HD 綁定與其他
     /// 指令的 Rust 版相同另期。尾段像素與 Go `nativeCommand1TailPixels` 逐行相同，共用指令 2 的實作。
     ///
-    /// Go：`native_command8_presentation.go:49`，`func (g *Game) startNativeCommand8Presentation(...)` 的敵方分支。
+    /// Go：`native_command8_presentation.go:49`，`func (g *Game) startNativeCommand8Presentation(...)`；AI 與玩家入口共用下方的建立函式。
     pub(crate) fn execute_native_ai_command8(&mut self, action: &battle::AIPlan) -> Result<()> {
+        let actor = action.u.ok_or_else(|| game_err!("指令 8缺少施放者"))?;
+        let target = action.target.ok_or_else(|| game_err!("指令 8缺少目標"))?;
+        let origin = action.native_action_destination;
+
+        let then = native_ai_damage_command_then(8, actor, target);
+        let job = self.build_native_command8_presentation(actor, target, Some(origin), then)?;
+        self.begin_native_ai_command_job(actor, origin);
+        self.native_cmd8_presentation = Some(job);
+        Ok(())
+    }
+
+    /// 玩家確認後的入口：以確認的目標建計畫，完成回呼由呼叫端決定。
+    pub(crate) fn start_native_command8_presentation(
+        &mut self,
+        actor: UnitIdx,
+        confirmed: UnitIdx,
+        then: NativeCommandDamageThen,
+    ) -> Result<()> {
+        let job = self.build_native_command8_presentation(actor, confirmed, None, then)?;
+        self.native_cmd8_presentation = Some(job);
+        Ok(())
+    }
+
+    fn build_native_command8_presentation(
+        &mut self,
+        actor_index: UnitIdx,
+        confirmed: UnitIdx,
+        ai_origin: Option<battle::Cell>,
+        then: NativeCommandDamageThen,
+    ) -> Result<NativeCommand8PresentationJob> {
         if !self.current_native_system_options().full_presentation_enabled()
             || self.native_cmd8_presentation.is_some()
             || self.native_command_scene.is_none()
@@ -68,10 +98,11 @@ impl Game {
             return Err(game_err!("native command8 presentation context unavailable"));
         }
         let state = self.st.as_ref().ok_or_else(|| game_err!("指令 8 缺少戰場"))?;
-        let actor_index =
-            action.u.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 8 缺少施放者"))?;
+        let actor_index = Some(actor_index)
+            .filter(|&index| index < state.units.len())
+            .ok_or_else(|| game_err!("指令 8 缺少施放者"))?;
         let confirmed =
-            action.target.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 8 缺少目標"))?;
+            Some(confirmed).filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 8 缺少目標"))?;
         let actor = state.units[actor_index].clone();
         let luts = self
             .native_map_assets
@@ -88,7 +119,7 @@ impl Game {
         }
         let side = actor.native_record_byte6;
         let rng = self.native_rng_state;
-        let origin = action.native_action_destination;
+        let origin = native_command_plan_origin(&actor, ai_origin)?;
         let resistances = &state.native_command_resistances;
         let plan = if actor.camp == battle::ENEMY {
             state.plan_native_ai_command_damage(Some(actor_index), origin, 8, resistances, rng)?
@@ -240,24 +271,6 @@ impl Game {
         .into_iter()
         .map(image)
         .collect();
-        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
-            let (mut hit, mut damage) = (0, 0);
-            for result in results {
-                if result.native_command_damage.hit {
-                    hit += 1;
-                    damage += result.native_command_damage.damage;
-                }
-                g.award_death_reward(result.target, Some(actor_index));
-            }
-            let units = &mut g.st.as_mut().unwrap().units;
-            let (a, t) = (&units[actor_index], &units[confirmed]);
-            let pose = dir_toward(a.x, a.y, t.x, t.y);
-            units[actor_index].set_map_pose(pose);
-            g.msg = format!("原始指令 8：命中 {hit}，傷害 {damage}");
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor_index), after);
-            g.check_result();
-        });
         let job = NativeCommand8PresentationJob {
             actor: Some(actor_index),
             plan: Some(plan),
@@ -273,11 +286,7 @@ impl Game {
             then: Some(then),
             ..Default::default()
         };
-        self.ai_focus_cursor(actor.x, actor.y);
-        self.ai_focus_cursor(origin.x, origin.y);
-        self.st.as_mut().unwrap().native_experience_accumulator = 0;
-        self.native_cmd8_presentation = Some(job);
-        Ok(())
+        Ok(job)
     }
 
     /// 依階段取目前畫格畫到畫面並標記已呈現；步進由 `step_native_command8_presentation` 推進。

@@ -61,16 +61,47 @@ pub(crate) struct NativeCommand5PresentationJob {
 
 impl Game {
     pub(crate) fn execute_native_ai_indexed_damage_command(&mut self, action: &battle::AIPlan) -> Result<()> {
+        let actor = action.u.ok_or_else(|| game_err!("指令缺少施放者"))?;
+        let target = action.target.ok_or_else(|| game_err!("指令缺少目標"))?;
+        let origin = action.native_action_destination;
         let id = action.native_command_id;
+        let then = native_ai_damage_command_then(id, actor, target);
+        let job = self.build_native_indexed_damage_command(id, actor, target, Some(origin), then)?;
+        self.begin_native_ai_command_job(actor, origin);
+        self.native_cmd5_presentation = Some(job);
+        Ok(())
+    }
+
+    /// 玩家確認後的入口：以確認的目標建計畫，完成回呼由呼叫端決定。
+    pub(crate) fn start_native_indexed_damage_command(
+        &mut self,
+        id: i64,
+        actor: UnitIdx,
+        confirmed: UnitIdx,
+        then: NativeCommandDamageThen,
+    ) -> Result<()> {
+        let job = self.build_native_indexed_damage_command(id, actor, confirmed, None, then)?;
+        self.native_cmd5_presentation = Some(job);
+        Ok(())
+    }
+
+    fn build_native_indexed_damage_command(
+        &mut self,
+        id: i64,
+        actor_index: UnitIdx,
+        confirmed: UnitIdx,
+        ai_origin: Option<battle::Cell>,
+        then: NativeCommandDamageThen,
+    ) -> Result<NativeCommand5PresentationJob> {
         if !self.current_native_system_options().full_presentation_enabled() || self.native_cmd5_presentation.is_some()
         {
             return Err(game_err!("指令 {id} 的原版演出不可用"));
         }
         let state = self.st.as_ref().ok_or_else(|| game_err!("指令缺少戰場"))?;
         let actor_index =
-            action.u.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令缺少施放者"))?;
+            Some(actor_index).filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令缺少施放者"))?;
         let confirmed =
-            action.target.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令缺少目標"))?;
+            Some(confirmed).filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令缺少目標"))?;
         let actor = state.units[actor_index].clone();
         if !actor.has_battle_fig
             || !actor.has_native_record_byte6
@@ -107,7 +138,7 @@ impl Game {
         };
         let rng = self.native_rng_state;
         let mut rolls = BTreeMap::new();
-        let origin = action.native_action_destination;
+        let origin = native_command_plan_origin(&actor, ai_origin)?;
         let resistances = &state.native_command_resistances;
         let plan = if let Some(schedule) = schedule {
             let mut walk = |count: i64, resolve: &mut dyn FnMut(i64, u16) -> battle::Result<(u16, bool)>| {
@@ -351,24 +382,6 @@ impl Game {
             }
             tail.push(command0_image(pixels, palette));
         }
-        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
-            let (mut hit, mut damage) = (0, 0);
-            for result in results {
-                if result.native_command_damage.hit {
-                    hit += 1;
-                    damage += result.native_command_damage.damage;
-                }
-                g.award_death_reward(result.target, Some(actor_index));
-            }
-            let units = &mut g.st.as_mut().unwrap().units;
-            let (actor, target) = (&units[actor_index], &units[confirmed]);
-            let pose = dir_toward(actor.x, actor.y, target.x, target.y);
-            units[actor_index].set_map_pose(pose);
-            g.msg = format!("原始指令 {id}：命中 {hit}，傷害 {damage}");
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor_index), after);
-            g.check_result();
-        });
         let job = NativeCommand5PresentationJob {
             command_id: id,
             actor: Some(actor_index),
@@ -387,11 +400,7 @@ impl Game {
             then: Some(then),
             ..Default::default()
         };
-        self.ai_focus_cursor(actor.x, actor.y);
-        self.ai_focus_cursor(origin.x, origin.y);
-        self.st.as_mut().unwrap().native_experience_accumulator = 0;
-        self.native_cmd5_presentation = Some(job);
-        Ok(())
+        Ok(job)
     }
 
     pub(crate) fn present_native_indexed_damage_command(&mut self, screen: Option<&mut Picture>) {

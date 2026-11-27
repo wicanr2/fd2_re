@@ -8543,7 +8543,9 @@ impl Game {
         }
         if self.native_modifier_presentation.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_command_modifier_presentation.go:drawNativeCommandModifierPresentation");
+            self.present_native_command_modifier(Some(screen));
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_ai_command_modifier.is_some() {
             screen.fill(BLACK);

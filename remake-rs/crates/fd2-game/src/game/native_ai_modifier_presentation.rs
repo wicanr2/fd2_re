@@ -236,20 +236,77 @@ impl Game {
     /// 與 `:74` `startNativeCommand2022Presentation` 的敵方分支（`player == false`）。
     pub(crate) fn execute_native_ai_command2022(&mut self, action: &battle::AIPlan) -> Result<()> {
         let id = action.native_command_id;
-        if !self.current_native_system_options().full_presentation_enabled()
-            || !matches!(id, 20 | 21 | 22 | 26 | 27)
-            || self.native_ai_command_modifier.is_some()
-        {
+        if !matches!(id, 20 | 21 | 22 | 26 | 27) {
             return Err(game_err!("原版指令尾段演出不可用"));
         }
         let state = self.st.as_ref().ok_or_else(|| game_err!("指令尾段缺少戰場"))?;
         let actor = action.u.filter(|&i| i < state.units.len()).ok_or_else(|| game_err!("指令缺少施放者"))?;
         let target = action.target.filter(|&i| i < state.units.len()).ok_or_else(|| game_err!("指令缺少目標"))?;
         let origin = action.native_action_destination;
-        let plan = state.plan_native_ai_command2022(Some(actor), origin, id, self.native_rng_state)?;
-        let (x, y) = (state.units[actor].x, state.units[actor].y);
-        self.ai_focus_cursor(x, y);
-        self.ai_focus_cursor(origin.x, origin.y);
+        let then2022 = Box::new(move |g: &mut Game, result: &battle::NativeAICommand2022Plan| {
+            if matches!(id, 22 | 26 | 27) {
+                for entry in &result.results {
+                    if entry.apply.is_some_and(|apply| apply.damage.actual > 0) {
+                        g.award_death_reward(entry.target, Some(actor));
+                    }
+                }
+            }
+            let units = &mut g.st.as_mut().unwrap().units;
+            let (a, t) = (&units[actor], &units[target]);
+            let pose = dir_toward(a.x, a.y, t.x, t.y);
+            units[actor].set_map_pose(pose);
+            g.msg = format!("原始指令 {id}：完成敵方 indexed 尾段 ({} targets)", result.results.len());
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor), after);
+            g.check_result();
+        });
+        self.start_native_command2022_presentation(actor, None, id, Some(origin), then2022)?;
+        self.st.as_mut().unwrap().native_experience_accumulator = 0;
+        Ok(())
+    }
+
+    /// 指令 20～22、25～27 的 handler 尾段。玩家（`ai_origin` 為 `None`）先播 0x1D6C8 調色盤前奏的八個階段，
+    /// 再接與敵方相同的效果、遮罩、發布與數字尾段；敵方的游標聚焦在計畫成立之後、擷取地圖畫面之前。
+    ///
+    /// Go：`native_ai_modifier_presentation.go:74`，`func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit, commandID int, player bool, then func(*battle.NativeAICommand2022Plan)) error`
+    pub(crate) fn start_native_command2022_presentation(
+        &mut self,
+        actor: UnitIdx,
+        confirmed: Option<UnitIdx>,
+        id: i64,
+        ai_origin: Option<battle::Cell>,
+        then2022: Box<dyn FnOnce(&mut Game, &battle::NativeAICommand2022Plan) + Send>,
+    ) -> Result<()> {
+        let player = ai_origin.is_none();
+        if !self.current_native_system_options().full_presentation_enabled()
+            || !(20..=27).contains(&id)
+            || id == 23
+            || id == 24
+            || (!player && id == 25)
+            || self.st.is_none()
+        {
+            return Err(game_err!("native command tail presentation context unavailable"));
+        }
+        if player && confirmed.is_none() {
+            return Err(game_err!("native player command tail confirmed target unavailable"));
+        }
+        if self.native_ai_command_modifier.is_some()
+            || self.native_modifier_presentation.is_some()
+            || self.native_heal_presentation.is_some()
+        {
+            return Err(game_err!("native command tail presentation already active"));
+        }
+        let state = self.st.as_ref().unwrap();
+        let rng = self.native_rng_state;
+        let plan = match ai_origin {
+            Some(origin) => state.plan_native_ai_command2022(Some(actor), origin, id, rng)?,
+            None => state.plan_native_player_command2022(Some(actor), confirmed, id, rng)?,
+        };
+        if let Some(origin) = ai_origin {
+            let (x, y) = (state.units[actor].x, state.units[actor].y);
+            self.ai_focus_cursor(x, y);
+            self.ai_focus_cursor(origin.x, origin.y);
+        }
         let (hud, hud_ready) = self.native_map_hud_input();
         let state = self.st.as_ref().unwrap();
         let assets = self
@@ -305,6 +362,32 @@ impl Game {
         };
         let mut frames = Vec::new();
         let (baseline_work, baseline_vga) = (self.native_map_work.clone(), self.native_map_vga.clone());
+        if player {
+            let flash = self.native_command_palette_flash.as_ref();
+            if flash.is_none() || (!os_mute_or_shot(Some(self)) && self.sfx_command_modifier.is_empty()) {
+                return Err(game_err!("native player command tail palette assets unavailable"));
+            }
+            let phases = flash
+                .unwrap()
+                .native_command_palette_flash_phases(id)
+                .ok()
+                .filter(|phases| phases.len() == 8)
+                .ok_or_else(|| game_err!("native player command tail palette phases unavailable"))?;
+            for rgb in phases {
+                let mut dac = self.native_map_dac.clone();
+                dac[..3].copy_from_slice(&rgb);
+                let phase_palette = color_palette_from_nrgba(&fdother::vga_palette_from_dac(&dac)?);
+                let indexed =
+                    IndexedFrame { width: 320, height: 200, pix: baseline_vga.clone(), palette: phase_palette };
+                frames.push(NativeCompoundPresentedFrame {
+                    image: Some(Arc::new(Picture::from_indexed(&indexed))),
+                    delay: 1,
+                    ..Default::default()
+                });
+            }
+            frames[0].sound = self.sfx_command_modifier.clone();
+        }
+        let effect_start = frames.len();
         let mut work = baseline_work.clone();
         for index in schedule.effect_start..schedule.effect_start + schedule.effect_frames {
             let effect =
@@ -336,7 +419,7 @@ impl Game {
             }
         }
         for index in std::iter::once(0).chain(schedule.extra_sample_frame_indices.iter().copied()) {
-            frames.get_mut(index as usize).ok_or_else(|| game_err!("指令 {id} 的音效畫格無效"))?.sound =
+            frames.get_mut(effect_start + index as usize).ok_or_else(|| game_err!("指令 {id} 的音效畫格無效"))?.sound =
                 effect_sound.clone();
         }
         work.copy_from_slice(&baseline_work);
@@ -447,23 +530,6 @@ impl Game {
                 });
             }
         }
-        let then2022 = Box::new(move |g: &mut Game, result: &battle::NativeAICommand2022Plan| {
-            if matches!(id, 22 | 26 | 27) {
-                for entry in &result.results {
-                    if entry.apply.is_some_and(|apply| apply.damage.actual > 0) {
-                        g.award_death_reward(entry.target, Some(actor));
-                    }
-                }
-            }
-            let units = &mut g.st.as_mut().unwrap().units;
-            let (a, t) = (&units[actor], &units[target]);
-            let pose = dir_toward(a.x, a.y, t.x, t.y);
-            units[actor].set_map_pose(pose);
-            g.msg = format!("原始指令 {id}：完成敵方 indexed 尾段 ({} targets)", result.results.len());
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor), after);
-            g.check_result();
-        });
         self.native_ai_command_modifier = Some(NativeAICommandModifierPresentationJob {
             actor: Some(actor),
             plan2022: Some(plan),
@@ -479,7 +545,6 @@ impl Game {
             then2022: Some(then2022),
             ..Default::default()
         });
-        self.st.as_mut().unwrap().native_experience_accumulator = 0;
         Ok(())
     }
 

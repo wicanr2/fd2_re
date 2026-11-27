@@ -54,11 +54,42 @@ pub(crate) struct NativeCommand6PresentationJob {
 
 impl Game {
     /// 敵方指令 6：前奏 → 施放者 → 前段、逐目標、目標間轉場、尾段。各段底圖以 LUT15 重畫背景與平台，
-    /// 演出亂數與傷害規劃必須一致。原版索引色分支，HD 另期；玩家游標路徑另期。
+    /// 演出亂數與傷害規劃必須一致。原版索引色分支，HD 另期。
     ///
-    /// Go：`native_command6_presentation.go:68`，`func (g *Game) startNativeCommand6PresentationAtCursor(...)` 的敵方分支，
-    /// 與 `nativeCommand6StageBases`（`:383`）。
+    /// Go：`native_command6_presentation.go:68`，`func (g *Game) startNativeCommand6PresentationAtCursor(...)`；AI 與玩家入口
+    /// 共用下方的建立函式，與 `nativeCommand6StageBases`（`:383`）。
     pub(crate) fn execute_native_ai_command6(&mut self, action: &battle::AIPlan) -> Result<()> {
+        let actor = action.u.ok_or_else(|| game_err!("指令 6 缺少施放者"))?;
+        let target = action.target.ok_or_else(|| game_err!("指令 6 缺少目標"))?;
+        let origin = action.native_action_destination;
+        let then = native_ai_damage_command_then(6, actor, target);
+        let job = self.build_native_command6_presentation(actor, Some(origin), origin, then)?;
+        self.begin_native_ai_command_job(actor, origin);
+        self.native_cmd6_presentation = Some(job);
+        Ok(())
+    }
+
+    /// 玩家確認保留游標格；AI 沿用敵方選定的目標格與名單。
+    ///
+    /// Go：`native_command6_presentation.go:68`，`func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, cursor battle.Cell, then func([]battle.NativeCommandDamageResult)) error`
+    pub(crate) fn start_native_command6_presentation_at_cursor(
+        &mut self,
+        actor: UnitIdx,
+        cursor: battle::Cell,
+        then: NativeCommandDamageThen,
+    ) -> Result<()> {
+        let job = self.build_native_command6_presentation(actor, None, cursor, then)?;
+        self.native_cmd6_presentation = Some(job);
+        Ok(())
+    }
+
+    fn build_native_command6_presentation(
+        &mut self,
+        actor_index: UnitIdx,
+        ai_origin: Option<battle::Cell>,
+        cursor: battle::Cell,
+        then: NativeCommandDamageThen,
+    ) -> Result<NativeCommand6PresentationJob> {
         if !self.current_native_system_options().full_presentation_enabled()
             || self.native_cmd6_presentation.is_some()
             || self.native_command_scene.is_none()
@@ -67,10 +98,9 @@ impl Game {
             return Err(game_err!("native command6 presentation context unavailable"));
         }
         let state = self.st.as_ref().ok_or_else(|| game_err!("指令 6 缺少戰場"))?;
-        let actor_index =
-            action.u.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 6 缺少施放者"))?;
-        let confirmed =
-            action.target.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 6 缺少目標"))?;
+        let actor_index = Some(actor_index)
+            .filter(|&index| index < state.units.len())
+            .ok_or_else(|| game_err!("指令 6 缺少施放者"))?;
         let actor = state.units[actor_index].clone();
         let luts = self
             .native_map_assets
@@ -82,7 +112,6 @@ impl Game {
             || !actor.has_native_record_byte6
             || !(0..=255).contains(&actor.battle_fig)
             || self.native_ui_palette.len() != 256
-            || actor.camp != battle::ENEMY
         {
             return Err(game_err!("native command6 raw actor provenance unavailable"));
         }
@@ -93,7 +122,7 @@ impl Game {
         let schedule = figani::build_native_command6_presentation_schedule(side, Some(&effect))?;
         let rng = self.native_rng_state;
         let recorded = std::cell::RefCell::new((Vec::<bool>::new(), Vec::<u16>::new()));
-        let origin = action.native_action_destination;
+        let origin = native_command_plan_origin(&actor, ai_origin)?;
         let mut walk = |count: i64, resolve: &mut dyn FnMut(i64, u16) -> battle::Result<(u16, bool)>| {
             *recorded.borrow_mut() = (vec![false; count as usize], vec![0; count as usize]);
             let mut record = |index: i64, before: u16| {
@@ -105,14 +134,12 @@ impl Game {
             figani::walk_native_command6_rng(rng, schedule, side, count, Some(&mut record))
                 .map_err(|err| battle::BattleError::new(err.error.to_string()))
         };
-        let plan = state.plan_native_ai_command_damage_walk(
-            Some(actor_index),
-            origin,
-            6,
-            &state.native_command_resistances,
-            rng,
-            Some(&mut walk),
-        )?;
+        let resistances = &state.native_command_resistances;
+        let plan = if actor.camp == battle::ENEMY {
+            state.plan_native_ai_command_damage_walk(Some(actor_index), origin, 6, resistances, rng, Some(&mut walk))?
+        } else {
+            state.plan_native_command6_damage_at_cursor(Some(actor_index), cursor, resistances, rng, Some(&mut walk))?
+        };
         let (target_hits, target_numeric_rng) = recorded.into_inner();
         if plan.results.is_empty()
             || plan.damage_stages != figani::NATIVE_COMMAND6_DAMAGE_STAGES
@@ -286,24 +313,6 @@ impl Game {
         if handler.is_empty() {
             return Err(game_err!("native command6 handler frames unavailable"));
         }
-        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
-            let (mut hit, mut damage) = (0, 0);
-            for result in results {
-                if result.native_command_damage.hit {
-                    hit += 1;
-                    damage += result.native_command_damage.damage;
-                }
-                g.award_death_reward(result.target, Some(actor_index));
-            }
-            let units = &mut g.st.as_mut().unwrap().units;
-            let (a, t) = (&units[actor_index], &units[confirmed]);
-            let pose = dir_toward(a.x, a.y, t.x, t.y);
-            units[actor_index].set_map_pose(pose);
-            g.msg = format!("原始指令 6：命中 {hit}，傷害 {damage}");
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor_index), after);
-            g.check_result();
-        });
         let job = NativeCommand6PresentationJob {
             actor: Some(actor_index),
             plan: Some(plan),
@@ -318,11 +327,7 @@ impl Game {
             then: Some(then),
             ..Default::default()
         };
-        self.ai_focus_cursor(actor.x, actor.y);
-        self.ai_focus_cursor(origin.x, origin.y);
-        self.st.as_mut().unwrap().native_experience_accumulator = 0;
-        self.native_cmd6_presentation = Some(job);
-        Ok(())
+        Ok(job)
     }
 
     /// 依階段取目前畫格畫到畫面並標記已呈現；步進由 `step_native_command6_presentation` 推進。

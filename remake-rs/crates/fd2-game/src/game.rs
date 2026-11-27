@@ -373,6 +373,7 @@ pub(crate) use native_class_ui_lifecycle::*;
 pub(crate) use native_command_heal_presentation::*;
 pub(crate) use native_command_locale::*;
 pub(crate) use native_command_modifier_presentation::*;
+pub(crate) use native_command_target_ui::*;
 pub(crate) use native_command0_presentation::*;
 pub(crate) use native_command1_presentation::*;
 pub(crate) use native_command2_presentation::*;

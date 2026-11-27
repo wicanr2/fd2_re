@@ -95,8 +95,39 @@ impl Game {
         let origin = action.native_action_destination;
         self.ai_focus_cursor(x, y);
         self.ai_focus_cursor(origin.x, origin.y);
-
         let id = action.native_command_id;
+        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandHealResult>| {
+            let state = g.st.as_mut().expect("回復指令結算保留戰場");
+            let (a, t) = (&state.units[actor], &state.units[target]);
+            let pose = dir_toward(a.x, a.y, t.x, t.y);
+            state.units[actor].set_map_pose(pose);
+            let total: i64 = results.iter().map(|result| result.restore.actual).sum();
+            g.msg = format!("原始指令 {id}：回復 {total}");
+            let after = g.native_ai_action_after.take();
+            g.finish_successful_unit_action(Some(actor), after);
+            g.check_result();
+        });
+        self.start_native_command_heal_presentation(id, actor, None, Some(origin), then)?;
+        self.st.as_mut().unwrap().native_experience_accumulator = 0;
+        Ok(())
+    }
+
+    /// 回復指令 13～16 的建立：前段轉場、效果、遮罩與數字畫格都在交易前備妥；交易在演出中途以預先算好的
+    /// 結果寫回。玩家以確認的目標、AI 以 0x15311 選定的目標格建目標名單。
+    ///
+    /// Go：`native_command_heal_presentation.go:85`，`func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*battle.Unit, transaction func() ([]battle.NativeCommandHealResult, error), then func([]battle.NativeCommandHealResult)) error`
+    pub(crate) fn start_native_command_heal_presentation(
+        &mut self,
+        id: i64,
+        actor: UnitIdx,
+        confirmed: Option<UnitIdx>,
+        ai_origin: Option<battle::Cell>,
+        then: Box<dyn FnOnce(&mut Game, Vec<battle::NativeCommandHealResult>) + Send>,
+    ) -> Result<()> {
+        if !self.current_native_system_options().full_presentation_enabled() || self.native_heal_presentation.is_some()
+        {
+            return Err(game_err!("原版回復指令演出不可用"));
+        }
         let front = fdother::build_native_command_heal_presentation_schedule(id).map_err(|err| game_err!("{err}"))?;
         let tail = fdother::build_native_command_heal_tail_schedule(id).map_err(|err| game_err!("{err}"))?;
         let (hud, hud_ready) = self.native_map_hud_input();
@@ -118,8 +149,11 @@ impl Game {
             return Err(game_err!("回復指令缺少有效的原版地圖畫面"));
         }
         let mut post = state.clone();
-        let (results, rng) =
-            post.execute_native_ai_command_heal_native(Some(actor), origin, id, self.native_rng_state)?;
+        let rng_before = self.native_rng_state;
+        let (results, rng) = match ai_origin {
+            Some(origin) => post.execute_native_ai_command_heal_native(Some(actor), origin, id, rng_before)?,
+            None => post.execute_native_command_heal_native(Some(actor), confirmed, id, rng_before)?,
+        };
         let mut targets = Vec::with_capacity(results.len());
         for result in &results {
             let index = result.target.ok_or_else(|| game_err!("回復指令缺少原生目標記錄"))?;
@@ -253,17 +287,6 @@ impl Game {
             g.native_rng_state = rng;
             Ok(results)
         });
-        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandHealResult>| {
-            let state = g.st.as_mut().expect("回復指令結算保留戰場");
-            let (a, t) = (&state.units[actor], &state.units[target]);
-            let pose = dir_toward(a.x, a.y, t.x, t.y);
-            state.units[actor].set_map_pose(pose);
-            let total: i64 = results.iter().map(|result| result.restore.actual).sum();
-            g.msg = format!("原始指令 {id}：回復 {total}");
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor), after);
-            g.check_result();
-        });
         self.native_heal_presentation = Some(NativeCommandHealPresentationJob {
             command_id: id,
             front_schedule: front,
@@ -281,7 +304,6 @@ impl Game {
             then: Some(then),
             ..Default::default()
         });
-        self.st.as_mut().unwrap().native_experience_accumulator = 0;
         self.play_sfx(sample);
         Ok(())
     }

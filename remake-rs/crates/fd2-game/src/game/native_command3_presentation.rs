@@ -58,8 +58,38 @@ pub(crate) struct NativeCommand3PresentationJob {
 impl Game {
     /// 敵方指令 3：前奏 → 施放者 → 前段、逐目標、目標間轉場、尾段 → 共用尾段。原版索引色分支，HD 另期。
     ///
-    /// Go：`native_command3_presentation.go:51`，`func (g *Game) startNativeCommand3Presentation(...)` 的敵方分支。
+    /// Go：`native_command3_presentation.go:51`，`func (g *Game) startNativeCommand3Presentation(...)`；AI 與玩家入口共用下方的建立函式。
     pub(crate) fn execute_native_ai_command3(&mut self, action: &battle::AIPlan) -> Result<()> {
+        let actor = action.u.ok_or_else(|| game_err!("指令 3缺少施放者"))?;
+        let target = action.target.ok_or_else(|| game_err!("指令 3缺少目標"))?;
+        let origin = action.native_action_destination;
+
+        let then = native_ai_damage_command_then(3, actor, target);
+        let job = self.build_native_command3_presentation(actor, target, Some(origin), then)?;
+        self.begin_native_ai_command_job(actor, origin);
+        self.native_cmd3_presentation = Some(job);
+        Ok(())
+    }
+
+    /// 玩家確認後的入口：以確認的目標建計畫，完成回呼由呼叫端決定。
+    pub(crate) fn start_native_command3_presentation(
+        &mut self,
+        actor: UnitIdx,
+        confirmed: UnitIdx,
+        then: NativeCommandDamageThen,
+    ) -> Result<()> {
+        let job = self.build_native_command3_presentation(actor, confirmed, None, then)?;
+        self.native_cmd3_presentation = Some(job);
+        Ok(())
+    }
+
+    fn build_native_command3_presentation(
+        &mut self,
+        actor_index: UnitIdx,
+        confirmed: UnitIdx,
+        ai_origin: Option<battle::Cell>,
+        then: NativeCommandDamageThen,
+    ) -> Result<NativeCommand3PresentationJob> {
         if !self.current_native_system_options().full_presentation_enabled()
             || self.native_cmd3_presentation.is_some()
             || self.native_command_scene.is_none()
@@ -68,10 +98,11 @@ impl Game {
             return Err(game_err!("native command3 presentation context unavailable"));
         }
         let state = self.st.as_ref().ok_or_else(|| game_err!("指令 3 缺少戰場"))?;
-        let actor_index =
-            action.u.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 3 缺少施放者"))?;
+        let actor_index = Some(actor_index)
+            .filter(|&index| index < state.units.len())
+            .ok_or_else(|| game_err!("指令 3 缺少施放者"))?;
         let confirmed =
-            action.target.filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 3 缺少目標"))?;
+            Some(confirmed).filter(|&index| index < state.units.len()).ok_or_else(|| game_err!("指令 3 缺少目標"))?;
         let actor = state.units[actor_index].clone();
         let luts = self
             .native_map_assets
@@ -83,7 +114,6 @@ impl Game {
             || !actor.has_native_record_byte6
             || !(0..=255).contains(&actor.battle_fig)
             || self.native_ui_palette.len() != 256
-            || actor.camp != battle::ENEMY
         {
             return Err(game_err!("native command3 raw actor provenance unavailable"));
         }
@@ -92,14 +122,13 @@ impl Game {
         let effect_resource = if side == 0 { 43 } else { 39 };
         let effect = figani::load_separated_archive_resource(&animations, "FDOTHER.DAT", effect_resource)?;
         let schedule = figani::build_native_command3_presentation_schedule(side, Some(&effect))?;
-        let origin = action.native_action_destination;
-        let plan = state.plan_native_ai_command_damage(
-            Some(actor_index),
-            origin,
-            3,
-            &state.native_command_resistances,
-            self.native_rng_state,
-        )?;
+        let origin = native_command_plan_origin(&actor, ai_origin)?;
+        let (resistances, rng) = (&state.native_command_resistances, self.native_rng_state);
+        let plan = if actor.camp == battle::ENEMY {
+            state.plan_native_ai_command_damage(Some(actor_index), origin, 3, resistances, rng)?
+        } else {
+            state.plan_native_command_damage(Some(actor_index), Some(confirmed), 3, resistances, rng)?
+        };
         if plan.results.is_empty()
             || plan.damage_stages != figani::NATIVE_COMMAND3_DAMAGE_STAGES
             || state.native_command_book.len() as i64 != battle::NATIVE_COMMAND_RECORD_COUNT
@@ -265,24 +294,6 @@ impl Game {
         .into_iter()
         .map(image)
         .collect();
-        let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommandDamageResult>| {
-            let (mut hit, mut damage) = (0, 0);
-            for result in results {
-                if result.native_command_damage.hit {
-                    hit += 1;
-                    damage += result.native_command_damage.damage;
-                }
-                g.award_death_reward(result.target, Some(actor_index));
-            }
-            let units = &mut g.st.as_mut().unwrap().units;
-            let (a, t) = (&units[actor_index], &units[confirmed]);
-            let pose = dir_toward(a.x, a.y, t.x, t.y);
-            units[actor_index].set_map_pose(pose);
-            g.msg = format!("原始指令 3：命中 {hit}，傷害 {damage}");
-            let after = g.native_ai_action_after.take();
-            g.finish_successful_unit_action(Some(actor_index), after);
-            g.check_result();
-        });
         let job = NativeCommand3PresentationJob {
             actor: Some(actor_index),
             plan: Some(plan),
@@ -298,11 +309,7 @@ impl Game {
             then: Some(then),
             ..Default::default()
         };
-        self.ai_focus_cursor(actor.x, actor.y);
-        self.ai_focus_cursor(origin.x, origin.y);
-        self.st.as_mut().unwrap().native_experience_accumulator = 0;
-        self.native_cmd3_presentation = Some(job);
-        Ok(())
+        Ok(job)
     }
 
     /// 依階段取目前畫格畫到畫面並標記已呈現；步進由 `step_native_command3_presentation` 推進。
