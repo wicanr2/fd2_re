@@ -262,8 +262,14 @@ impl Game {
             }
             return PresentOwner::NativeCommandPresentation;
         }
-        if self.native_cmd9_player.is_some() || self.native_cmd1012.is_some() {
-            todo!("R8: main.go:9528..9701 玩家指令 9 與 10～12 演出的 drawn 條件與 fail 路徑（第一章沒有）")
+        if self.native_cmd1012.is_some() {
+            if !self.present_native_command1012(None) {
+                self.fail_native_command1012_presentation(&game_err!("draw unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
+        if self.native_cmd9_player.is_some() {
+            todo!("R8: main.go:9528..9701 玩家指令 9 演出的 drawn 條件與 fail 路徑（第一章沒有）")
         }
         if self.native_ai_item_presentation.is_some() {
             if !self.acknowledge_native_ai_item_presentation() {

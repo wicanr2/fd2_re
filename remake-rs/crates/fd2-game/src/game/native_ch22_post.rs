@@ -95,9 +95,8 @@ impl Game {
         {
             return Err(GameError::new("native 0x2189A call differs from recovered ch22/command11-12 contracts"));
         }
-        if self.native_cmd1012.is_some() {
-            return Err(GameError::new("native 0x2189A command10-12 HD prelude is not ported"));
-        }
+        // Go 在 `nativeCmd1012` 存在時另凍結 HD 前奏用的地圖輸入、徑向 LUT 與穩定場景（`hdInput`、`hdRadial`、
+        // `hdSteady`），錯誤只記在工作上不擲出；這些 HD 欄位屬 R6，原版路徑不受影響。
         if self.st.as_ref().is_none_or(|st| !st.has_native_map_view_state)
             || self.m.is_none()
             || !native_map_assets_available(self.native_map_assets.as_ref())

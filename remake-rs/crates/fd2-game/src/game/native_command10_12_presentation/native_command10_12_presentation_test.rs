@@ -2,9 +2,11 @@
 //! `native_command1_presentation_test.rs`。
 
 use super::*;
+use crate::game::native_command_target_ui::native_command_target_ui_test::ordinary_command_test_game;
 use crate::game::native_command1_presentation::native_command1_presentation_test::{
     ACTOR, TARGET, callback_counter, command_record, command_test_state, count, resist, unit,
 };
+use crate::test_support;
 
 /// Go：`native_command10_12_presentation_test.go:180` `nativeCommand10TestPlan`
 fn test_plan() -> (battle::State, battle::NativeCommandDamagePlan) {
@@ -108,4 +110,99 @@ fn test_native_command1012_prelude_cannot_disappear_silently() {
             && !g.load_err.is_empty(),
         "前奏消失未失敗即關閉"
     );
+}
+
+/// Go：`modern_hd_commands10_12_map_test.go:15` `command1012HDTestGame` 與 `modern_hd_player9_map_test.go:40`
+/// `player9MapTestGame`（命中版）：map0 的施放者 `(1,6)`、目標 `(2,6)`。HD 主題屬 R6。
+fn command1012_test_game(id: i64) -> Option<(Game, UnitIdx, UnitIdx)> {
+    let (mut g, actor, target) = ordinary_command_test_game()?;
+    let st = g.st.as_mut().unwrap();
+    let record = battle::NativeCommandRecord {
+        id,
+        damage: 999,
+        hit: 100,
+        selection_mode: 3,
+        effect_mode: 0,
+        mp_cost: 30,
+        target_code: 0,
+    };
+    st.native_command_book[9] = battle::NativeCommandRecord { id: 9, ..record };
+    st.native_command_book[id as usize] = record;
+    assert!(st.units[actor].set_map_placement(1, 6, 3) && st.units[target].set_map_placement(2, 6, 1));
+    st.units[actor].materialize_native_map_presentation().unwrap();
+    st.units[target].materialize_native_map_presentation().unwrap();
+    st.materialize_native_map_view_state(battle::NativeMapViewState {
+        camera_x: 0,
+        camera_y: 0,
+        cursor_x: 2,
+        cursor_y: 6,
+        visible_cursor_x: 2,
+        visible_cursor_y: 6,
+    })
+    .unwrap();
+    (g.cur_x, g.cur_y) = (2, 6);
+    g.compose_native_map_frame().unwrap();
+    Some((g, actor, target))
+}
+
+/// Go：`native_command10_12_presentation_test.go:17` `TestNativeCommand1012FormalPlayerConfirmAndReturn`
+#[test]
+fn test_native_command1012_formal_player_confirm_and_return() {
+    if test_support::input("FD2_ASSET_PACK", "surfaces/BG_000/resource.json").is_none() {
+        return;
+    }
+    if f_child_env(module_path!(), "test_native_command1012_formal_player_confirm_and_return", |_| {
+        vec![("FD2_MUTE", "1".into())]
+    })
+    .is_none()
+    {
+        return;
+    }
+    let Some(spells) = test_support::remake_asset("spells.json") else { return };
+    let book = battle::load_native_command_records(&spells).expect("spells");
+    for id in [10, 11, 12] {
+        let Some((mut g, actor, target)) = command1012_test_game(id) else { return };
+        let st = g.st.as_mut().unwrap();
+        st.native_command_book = book.clone();
+        (st.units[actor].mp, st.units[actor].max_mp) = (150, 150);
+        (st.units[target].hp, st.units[target].max_hp) = (900, 900);
+        for (index, unit) in st.units.iter_mut().enumerate() {
+            unit.has_native_record_byte5 = true;
+            if index != actor && index != target {
+                unit.native_record_byte5 |= 1;
+            }
+        }
+        let (x, y) = (st.units[actor].x, st.units[actor].y);
+        (g.sel, g.cur_x, g.cur_y) = (Some(actor), x, y);
+        g.begin_native_command_target_selection(id).unwrap();
+        g.confirm();
+        let j =
+            g.native_cmd1012.as_ref().unwrap_or_else(|| panic!("command{id} did not enter its map owner: {}", g.msg));
+        let results = &j.plan.as_ref().unwrap().results;
+        assert!(results.len() == 1 && results[0].target == Some(target), "command{id}");
+        let unit = |g: &Game, i: UnitIdx| g.st.as_ref().unwrap().units[i].clone();
+        assert!(unit(&g, actor).mp == 150 && !unit(&g, actor).acted && unit(&g, target).hp == 900);
+        let mut screen = Picture::new_image(640, 400);
+        for step in 0..1024 {
+            if g.native_cmd1012.is_none() {
+                break;
+            }
+            if g.native2189_a.is_some() {
+                assert!(g.draw_native_2189a(Some(&mut screen)), "command{id} prelude did not draw");
+                g.step_native_2189a();
+            } else {
+                assert!(
+                    g.present_native_command1012(Some(&mut screen)),
+                    "command{id} draw failed at {step}: {}",
+                    g.load_err
+                );
+            }
+            g.step_native_command1012_presentation();
+        }
+        assert!(g.native_cmd1012.is_none() && g.native2189_a.is_none(), "command{id}: {}", g.load_err);
+        let a = unit(&g, actor);
+        assert!(a.mp == 150 - book[id as usize].mp_cost && a.acted, "command{id} mp={}", a.mp);
+        assert!(!g.native_command0_targeting && g.sel.is_none());
+        assert_eq!(g.st.as_ref().unwrap().native_map_range_mode, 1);
+    }
 }

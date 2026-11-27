@@ -8657,10 +8657,19 @@ impl Game {
             self.draw_capture_shot_point(screen);
             return;
         }
-        if self.native_cmd9_player.is_some() || self.native_cmd1012.is_some() {
-            // Go main.go:9528..9701 的指令演出分支只剩玩家指令 9 與 10～12（0x2189A 前奏）還沒移植。
+        if self.native_cmd1012.is_some() {
+            // Go main.go:9653：畫不出來就 fail；Go 的 DebugPrint 由 `load_err` 顯示。
             screen.fill(BLACK);
-            todo!("r8:main.go:9528..9701 玩家指令 9 與 10～12 的演出（第一章沒有）");
+            if !self.present_native_command1012(Some(screen)) {
+                self.fail_native_command1012_presentation(&game_err!("draw unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_cmd9_player.is_some() {
+            // Go main.go:9528..9701 的指令演出分支只剩玩家指令 9 還沒移植。
+            screen.fill(BLACK);
+            todo!("r8:main.go:9528..9701 玩家指令 9 的演出（第一章沒有）");
         }
         if self.native_ai_item_presentation.is_some() {
             screen.fill(BLACK);
