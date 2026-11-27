@@ -226,6 +226,18 @@ impl Game {
             self.present_native_command3(None);
             return PresentOwner::NativeCommandPresentation;
         }
+        if self.native_cmd29_presentation.is_some() {
+            if !self.present_native_command29(None) {
+                self.fail_native_command29_presentation(&game_err!("draw unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
+        if self.native_cmd24_presentation.is_some() {
+            if !self.present_native_command24(None) {
+                self.fail_native_command24_presentation(&game_err!("draw unavailable"));
+            }
+            return PresentOwner::NativeCommandPresentation;
+        }
         if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()

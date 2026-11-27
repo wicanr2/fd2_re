@@ -234,6 +234,35 @@ impl Game {
         self.sfx_spawn_intro = s(95, 0);
     }
 
+    /// 取一個指令音效子資源；音效庫或子資源缺漏時回傳空切片。
+    ///
+    /// Go：`audio.go:209`，`func (g *Game) separatedCommandSound(resource, selector int) []byte`
+    pub(crate) fn separated_command_sound(&mut self, resource: i64, selector: i64) -> Vec<u8> {
+        if self.require_separated_command_sounds(resource, &[selector]).is_err() {
+            return Vec::new();
+        }
+        self.separated_command_sfx[&resource][&selector].clone()
+    }
+
+    /// 指令演出建立前確認音效庫與各子資源都在；音效庫還沒載入時先整批載入並安裝。
+    ///
+    /// Go：`audio.go:216`，`func (g *Game) requireSeparatedCommandSounds(resource int, samples ...int) error`
+    pub(crate) fn require_separated_command_sounds(&mut self, resource: i64, samples: &[i64]) -> Result<()> {
+        if self.separated_command_sfx.is_empty() {
+            let banks = load_separated_command_sound_banks()?;
+            self.install_separated_command_sounds(&banks);
+        }
+        let Some(bank) = self.separated_command_sfx.get(&resource) else {
+            return Err(game_err!("separated FDOTHER #{resource} sound bank unavailable"));
+        };
+        for sample in samples {
+            if bank.get(sample).is_none_or(Vec::is_empty) {
+                return Err(game_err!("separated FDOTHER #{resource} sub{sample} unavailable"));
+            }
+        }
+        Ok(())
+    }
+
     /// playRaw 直接播 PCM bytes(nil 安全)。
     ///
     /// Go：`audio.go:240`，`func (g *Game) playRaw(b []byte)`

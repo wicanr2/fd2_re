@@ -6171,3 +6171,8 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 30 章總表改在 `ec0d4a50` 的獨立 worktree 跑（`work/wt-batch-ec0d4a50`；`FD2_REMAKE_ASSETS`、`FD2_ASSET_PACK` 指主工作區，因為 `remake/assets/fonts` 等受 `.gitignore` 排除、worktree 沒有）：第 1～30 章全部通過，`work/rust-parity-all-ec0d4a50/summary.tsv`。第一次在 worktree 跑時漏設素材路徑，30 章都在載字型時失敗，不是重播問題。
 - 玩家指令格與指令 0 玩家入口、指令家族發經驗函式；`todo!` 剩 131 處。fd2-game 483 項通過。見 119「R8 30 章總表與玩家指令格」。
 - 玩家指令 1～8、13～22、25～27、31 接上施放入口（AI 與玩家共用建立函式，補 0x1D6C8 調色盤前奏）。AI 路徑重構在 `0abad3d5` 的 worktree 重跑第 1～30 章全數通過，每章筆數與存檔雜湊和 `ec0d4a50` 相同（`work/rust-parity-all-0abad3d5/summary.tsv`）。第一次重跑漏接 `work/`，29 章回報槽雜湊不符，建連結後重跑；教訓 `rust-batch-worktree-needs-untracked-inputs`。fd2-game 490 項通過，`todo!` 剩 129 處。見 119「R8 玩家指令施放」。
+
+## 2026-11-28 Rust R8：玩家指令 24、28～30
+
+- 移植 0x276EC 衍生打擊的建立函式與原版索引色繪製：指令 24 單體、28 八段受擊、29 範圍、30 直線，加上共用的戰鬥底圖組裝、音效庫檢查與亂數前預檢。HD 分割打擊屬 R6。細節見 119「R8 玩家指令施放：指令 24、28～30」。
+- 移植 Go 測試 20 項，另加指令 24 玩家入口測試。fd2-game 511 項、Clippy 通過，`todo!` 剩 128 處。

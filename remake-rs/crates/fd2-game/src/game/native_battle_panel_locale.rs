@@ -58,4 +58,40 @@ impl Game {
         dst.copy_from_slice(&staged);
         Ok(())
     }
+
+    /// 0x276EC 一族的戰鬥底圖：BG.DAT 層在 (0,50)、狀態框、TAI 平台在 (164,157)，再疊呼叫端給的 FIGANI 畫格。
+    /// 收集 HD 狀態框文字時先寫進暫存副本，整張底圖成功後才交回呼叫端。
+    ///
+    /// Go：`native_battle_panel_locale.go:103`，`func (g *Game) localizedNativeCommand24CapturedBase(background fdother.Frame, panelAssets battle.NativeItemPanelDataAssets, panelRecord []byte, unitIndex, rawChapter int, platform *fdother.Frame, panelText *[]*modernBattlePanelText, overlays ...figani.Frame) ([]byte, error)`
+    #[allow(clippy::too_many_arguments)]
+    pub(crate) fn localized_native_command24_captured_base(
+        &mut self,
+        background: &fdother::Frame,
+        panel_assets: &battle::NativeItemPanelDataAssets,
+        panel_record: &[u8],
+        unit_index: i64,
+        raw_chapter: i64,
+        platform: Option<&fdother::Frame>,
+        panel_text: Option<&mut Vec<ModernBattlePanelText>>,
+        overlays: &[figani::Frame],
+    ) -> Result<Vec<u8>> {
+        let mut staged = panel_text.as_deref().cloned();
+        let mut base = vec![0u8; 320 * 200];
+        let mut background = background.clone();
+        (background.x, background.y) = (0, 50);
+        background.blit(&mut base, 320, -1)?;
+        self.render_battle_panel_text(panel_assets, panel_record, &mut base, unit_index, raw_chapter, staged.as_mut())?;
+        if let Some(platform) = platform {
+            let mut frame = platform.clone();
+            (frame.x, frame.y) = (164, 157);
+            frame.blit(&mut base, 320, -1)?;
+        }
+        for overlay in overlays {
+            overlay.blit_at(&mut base, 320)?;
+        }
+        if let (Some(panel_text), Some(staged)) = (panel_text, staged) {
+            *panel_text = staged;
+        }
+        Ok(base)
+    }
 }

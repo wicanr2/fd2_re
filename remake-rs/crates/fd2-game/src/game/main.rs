@@ -8603,6 +8603,24 @@ impl Game {
             self.draw_capture_shot_point(screen);
             return;
         }
+        if self.native_cmd29_presentation.is_some() {
+            // Go main.go:9675：畫不出來就 fail（指令 28 也掛在這個工作上）；Go 的 DebugPrint 由 `load_err` 顯示。
+            screen.fill(BLACK);
+            if !self.present_native_command29(Some(screen)) {
+                self.fail_native_command29_presentation(&game_err!("draw unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
+        if self.native_cmd24_presentation.is_some() {
+            // Go main.go:9664：畫不出來就 fail；Go 另以 DebugPrint 印一行除錯字，Rust 由 `load_err` 顯示同一失敗。
+            screen.fill(BLACK);
+            if !self.present_native_command24(Some(screen)) {
+                self.fail_native_command24_presentation(&game_err!("draw unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
+        }
         if self.native_cmd6_presentation.is_some()
             || self.native_cmd1_presentation.is_some()
             || self.native_cmd2_presentation.is_some()

@@ -224,7 +224,7 @@ impl Game {
 
     /// 閘門通過後交給各指令的玩家演出入口。回傳 false 代表這個 ID 還沒有玩家入口。
     ///
-    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、25～27、31）
+    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、13～22、24～31）
     pub(crate) fn start_native_player_command(&mut self, id: i64, target: Option<UnitIdx>) -> bool {
         let Some(actor) = self.sel else { return true };
         let cursor = (self.cur_x, self.cur_y);
@@ -294,6 +294,64 @@ impl Game {
                 });
                 if let Err(err) = self.start_native_command2022_presentation(actor, target, id, None, then2022) {
                     self.msg = format!("原始指令 {id}：完整演出不可用 ({err})");
+                }
+                true
+            }
+            24 => {
+                let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommand24Damage>| {
+                    let mut total = 0;
+                    for result in &results {
+                        total += result.damage;
+                        if result.damage > 0 {
+                            g.award_death_reward(result.target, Some(actor));
+                        }
+                    }
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.msg = format!("原始指令 24：傷害 {total}");
+                    g.award_native_command_derived_strike_experience(actor, &results);
+                    g.finish_successful_unit_action(Some(actor), Some(native_player_command_after()));
+                    g.check_result();
+                });
+                if let Err(err) = self.start_native_command24_presentation(actor, target, then) {
+                    self.msg = format!("原始指令 24：indexed 演出不可用 ({err})");
+                }
+                true
+            }
+            28..=30 => {
+                let then = Box::new(move |g: &mut Game, results: Vec<battle::NativeCommand24Damage>| {
+                    let mut total = 0;
+                    for result in &results {
+                        total += result.damage;
+                        if result.damage > 0 {
+                            g.award_death_reward(result.target, Some(actor));
+                        }
+                    }
+                    g.face_native_player_command_actor(actor, cursor);
+                    g.msg = format!("原始指令 {id}：傷害 {total}");
+                    g.award_native_command_derived_strike_experience(actor, &results);
+                    g.finish_successful_unit_action(
+                        Some(actor),
+                        Some(Box::new(|g: &mut Game| {
+                            native_player_command_after()(g);
+                            g.native_command30_saved_cursor = None;
+                        })),
+                    );
+                    g.check_result();
+                });
+                let confirmed = battle::Cell { x: cursor.0, y: cursor.1 };
+                let started = match id {
+                    28 => self.start_native_command28_presentation(actor, target, then),
+                    30 => {
+                        let Some(saved) = self.native_command30_saved_cursor else {
+                            self.msg = String::from("原始指令 30：缺少選取前游標");
+                            return true;
+                        };
+                        self.start_native_command30_presentation_at_cursor(actor, saved, confirmed, then)
+                    }
+                    _ => self.start_native_command29_presentation_at_cursor(actor, confirmed, then),
+                };
+                if let Err(err) = started {
+                    self.msg = format!("原始指令 {id}：indexed 演出不可用 ({err})");
                 }
                 true
             }

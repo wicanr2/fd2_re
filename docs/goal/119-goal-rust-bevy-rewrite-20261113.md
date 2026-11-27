@@ -121,6 +121,27 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 玩家指令施放：指令 24、28～30（RUNTIME-E1，2026-11-28）
+
+這四個指令都走 0x276EC 衍生打擊：九格淡入前奏、施放者特效、BG.DAT 二十格背景滑移、目標受擊。Rust 先前只有步進函式，本輪從 Go 移植建立函式與原版索引色繪製：
+
+| 指令 | 施放者 selector | 目標 | Go 來源 |
+|---|---|---|---|
+| 24 | 32 | 單體 | `native_command24_presentation.go` |
+| 28 | 19 | 確認單位起算的效果範圍，每個目標八段受擊 | `native_command28_presentation.go`，畫格整批預先合成，掛在指令 29 的工作上 |
+| 29 | 34 | 以施放者為中心的效果範圍，逐一滑移到每個目標 | `native_command29_presentation.go` |
+| 30 | 18 | 選取前游標到確認游標的直線 | `native_command30_presentation.go`，共用指令 29 的建立函式 |
+
+共用部分一併移植：戰鬥底圖組裝（`localizedNativeCommand24CapturedBase`）、指令音效庫檢查（`requireSeparatedCommandSounds`、`separatedCommandSound`），以及消耗亂數前的靜態來源預檢（`preflightNativeDerivedStrikeSources`）。HD 背景來源（`modernSplitStrikeScenery`）在原版路徑也照 Go 先跑，背景或平台幾何不合時在消耗亂數前拒收。HD 分割打擊的繪製與 HD 庫 stage 屬 R6。
+
+完成回呼與 Go `main.go:7843`、`8123` 相同：傷害大於 0 才發死亡獎勵、面向游標、發衍生打擊經驗；指令 30 收尾另清掉選取前游標。
+
+還沒接上的玩家指令是 10～12、23、32～35。確認時留在選目標並顯示「玩家演出尚未移植」。10～12 另牽涉 0x2189A 前奏，23 的傳送目的地和物品傳送共用。
+
+驗證：
+- 移植 Go 的 `native_command24_presentation_test.go` 8 項、`native_command28_presentation_test.go` 3 項、`native_command29_presentation_test.go` 5 項、`native_command30_presentation_test.go` 4 項，另寫指令 24 走玩家入口的測試。原版標記的幀位、MP 與 HP 發布次數、晚期失敗整筆回滾、預檢失敗不動亂數都與 Go 的斷言相同；指令 30 的演出結果與純狀態的 `ExecuteNativeCommand30` 逐欄相同。
+- fd2-game 511 項通過；`todo!` 剩 128 處。
+
 ### R8 玩家指令施放：指令 1～8、13～22、25～27、31（RUNTIME-E1，2026-11-27）
 
 Go 的 AI 與玩家共用同一個指令建立函式，差在計畫來源與完成回呼。Rust 先前只移植了敵方分支，指令 3、6、7 甚至明確拒收我方施放者。本輪照 Go 的結構把指令 2、3、5（含 1、4）、6、7、8、回復 13～16、尾段 20～22／25～27 拆成 AI 入口與共用建立函式：
@@ -134,7 +155,7 @@ Go 的 AI 與玩家共用同一個指令建立函式，差在計畫來源與完�
 
 玩家的尾段 20～22、25～27 先播 0x1D6C8 調色盤前奏的八個階段；指令 17～19 用同一個前奏（`startNativeCommandPalettePresentation`，本輪移植原版索引色分支與繪製），八個階段都被畫面承認之後才跑 0x22721／0x22866／0x22997 交易。指令 31 沒有演出，確認即結算。
 
-還沒接上的玩家指令是 10～12、23、24、28～30、32～35：Rust 只有它們的步進函式，建立函式與繪製都要從 Go 移植（10～12 另牽涉 0x2189A 前奏）。確認時留在選目標並顯示「玩家演出尚未移植」。
+指令 24、28～30 接在下一輪，見「R8 玩家指令施放：指令 24、28～30」。
 
 驗證：
 - 移植 Go 測試 `TestNativePlayerFormalCommandEntryAndPresentation`（Go 測 3、4、5、7；Rust 另加 1、2、8，各兩種 +6 值）、`TestPlayerNativeCommand6CursorCentersThroughConfirm`（MP 1071、HP 4、亂數 33552 與 Go 相同）、`…Command13…`（回復 60）、`…Command17…`（八階段前不改 MP／AP，結算後 MP 6、AP 116）、`…Command20…`、`…Command25…`。指令 31 另寫 Rust 測試。
