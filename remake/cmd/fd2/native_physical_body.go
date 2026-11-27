@@ -68,14 +68,17 @@ func (g *Game) prepareNativePhysicalBodyResources(scene *nativePhysicalScene, ac
 	if err != nil {
 		return err
 	}
+	// 主攻 FIGANI byte1=0 時原版 28A6C 不重載 BG0..2，非零旗標反擊經 29CC2 照讀 dword_5410B/F/13
+	// （#321）。讀到的是最後一次寫入後 free 掉的指標，開機後從未寫過則是 BSS 的 0。寫入端只載入
+	// BG.DAT 0／1／2，區塊未被覆用時畫面與一般反擊相同；使用者 2026-11-27 定案重製端取這個可見結果，
+	// 照常載入三層，不重現覆用或空指標造成的損壞與中止（與 Rust 同一定案）。
+	counterReadsStaleLayers := false
 	if g.st.NativePhysicalCounterattackEligible(actor, target) {
 		r.counter, err = figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3+1)
 		if err != nil {
 			return err
 		}
-		if attack.HeaderByte1 == 0 && r.counter.HeaderByte1 != 0 {
-			return errors.New("native physical counter requires unavailable caller BG layers")
-		}
+		counterReadsStaleLayers = attack.HeaderByte1 == 0 && r.counter.HeaderByte1 != 0
 	}
 	r.platform, err = fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", int(scene.selection.TAI))
 	if err != nil {
@@ -84,6 +87,8 @@ func (g *Game) prepareNativePhysicalBodyResources(scene *nativePhysicalScene, ac
 	r.targetBG = scene.backgroundFrame
 	if scene.selection.HasSeparateBackgrounds {
 		r.targetBG = scene.targetBackground
+	}
+	if scene.selection.HasSeparateBackgrounds || counterReadsStaleLayers {
 		for i := range r.layers {
 			r.layers[i], err = fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", i)
 			if err != nil {

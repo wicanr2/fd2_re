@@ -63,20 +63,40 @@ func (p *parityHPLockPolicy) apply(g *Game) error {
 	return nil
 }
 
+// 鎖血與指令傷害演出：原版 oracle 每一步寫回鎖血，原版演出不核對中間 HP；重製端的分段扣血
+// （ApplyNativeCommandDamageStage）會核對目標仍是上一段的 HP。演出進行中先不寫回，演出收尾後的
+// 下一次寫回再復原。演出把鎖血單位打到 0 時，下一次寫回因綁定失效而失敗，不會默默蓋過。
+// 與 Rust parity_update_game 相同（2026-11-27 第 25 章 r7 樣本敵方指令 6 打中鎖血索爾時補上）。
 func parityUpdateGame(g *Game) error {
 	policy := parityHPPolicies[g]
-	if policy != nil {
-		if err := policy.apply(g); err != nil {
-			return err
+	apply := func() error {
+		if policy == nil || parityNativeCommandDamagePresentationActive(g) {
+			return nil
 		}
+		return policy.apply(g)
+	}
+	if err := apply(); err != nil {
+		return err
 	}
 	if err := g.Update(); err != nil {
 		return err
 	}
-	if policy != nil {
-		return policy.apply(g)
-	}
-	return nil
+	return apply()
+}
+
+// 有分段發布 HP 的指令演出進行中（與 Rust native_command_damage_presentation_active 同一組工作）。
+func parityNativeCommandDamagePresentationActive(g *Game) bool {
+	return g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil ||
+		g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil ||
+		g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
+		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil ||
+		g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil ||
+		g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||
+		g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil ||
+		g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil ||
+		g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil ||
+		g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil ||
+		g.nativeCmd35Presentation != nil
 }
 
 func (r *parityReplay) updateHPLocks(action parityAction) {

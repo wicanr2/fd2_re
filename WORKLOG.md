@@ -6117,3 +6117,15 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 22 章 `ch22-sample-r3` 以同組觀測點與 native 近堆重跑（槽 `ce8588c8`）：同樣 0 次命中、來源 0，第 1 回合在 `0x4E6A7` 中止。
 - 第 18 章維持既有結論：釋放後被 FDMUS 覆用。所以 #321 的原版行為分三種，只有「釋放後未覆用」時畫面與一般反擊相同；重製端依使用者定案三種都畫一般反擊背景，程式行為不變，只更新註解。
 - 新教訓 `trace-miss-read-the-value-first` 寫入 `docs/data/fd2-lessons.json`。
+
+## 2026-11-27 Go 例外：#321 同步，第 22、25 章 Rust／Go 同一收據複驗
+
+- 使用者 2026-11-27 要求「golang 有問題也要修正」，記入 AGENTS.md（不含發版或打 tag）。
+- Go `prepareNativePhysicalBodyResources` 改成和 Rust 相同：主攻 byte1=0、反擊 byte1≠0 時照常載入 `BG.DAT` 0..2，取代拒收。
+- Go 第 25 章 r7 樣本原先在敵方指令 6 打中鎖血索爾時中止（`native command damage target publish state changed`）。原因在 Go 重播測具：鎖血每次 `Update` 前後寫回 HP，破壞分段扣血的中間值核對。Rust 測具已在指令傷害演出進行中暫停寫回，Go `parityUpdateGame` 補上同一段（`parityNativeCommandDamagePresentationActive`），遊戲本體不變。
+- 以同一份原版收據、同一個判定器各跑 Rust 與 Go，結果相同（輸出在 `work/go-321-verify/` 與各章 `rust-*-r*`）：
+  - 第 22 章整章（`full-original-r2`）：45 筆，存檔 `3c7298cd` 與原版逐位元組相同。
+  - 第 25 章整章（`original-r4`）：41 筆，存檔 `52984034`，政策 `ch25-opaque-20261016` 接受 9 byte。`chapter_parity.sh` 不帶存檔政策，這章要另以 `--save-policy ch25-opaque-20261016 --oracle-save work/ch25-flow-20261015/state-r4/FD2.SAV` 重判。
+  - 第 22 章 `sample-r3`（31 筆）、第 25 章 `sample-r4`（30 筆）：行為閘門通過；節點與交易閘門因原版在反擊中止而缺後續節點，兩版缺的與原版相同。
+- 回歸：Rust 463 項通過。Go 全套 23 項失敗，都不是這次造成的：22 項 `cmd/fd2` 在改動前的 HEAD 開乾淨 worktree，疊掛同一份 `remake/assets`、`org_game` 對照後同樣失敗或隨素材變動（多數缺現代 HD 主題素材）；`TestReviewedGoCandidatesMatchCurrentInventory` 是 `7d0d483c` 改 `player_chapter_guide.go` 後未重綁字串審查，`tools/rebind_string_review.sh` 因該檔少了 5 筆審查字串而拒絕遷移。
+- 第一次跑 Go 全套時素材根給了相對路徑，docker 把它當成具名 volume 拒絕啟動（exit 125）；`remake_go_test.sh` 的素材根要給絕對路徑。

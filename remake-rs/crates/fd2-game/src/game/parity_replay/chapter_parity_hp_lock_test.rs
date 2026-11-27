@@ -9,7 +9,7 @@ use super::*;
 /// 鎖血與指令傷害演出：原版 oracle 每一步寫回鎖血，原版演出不核對中間 HP；重製端的分段扣血
 /// （`apply_native_command_damage_stage`）會核對目標仍是上一段的 HP。演出進行中先不寫回，演出
 /// 收尾後的下一次寫回再復原。演出把鎖血單位打到 0 時，下一次寫回因綁定失效而失敗，不會默默蓋過。
-/// Go 版同一測具沒有這段，鎖血章遇到敵方法術打中鎖血單位時會同樣失敗。
+/// Go 版同一測具 2026-11-27 補上同一段（`parityNativeCommandDamagePresentationActive`）。
 pub(crate) fn parity_update_game(d: &mut Driver) -> Result<()> {
     let apply = |d: &mut Driver| -> Result<()> {
         match d.hp_policy.as_ref() {

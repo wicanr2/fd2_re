@@ -3,7 +3,7 @@
   "kind": "fd2_counter_stale_bg_layers_evidence",
   "date": "2026-11-27",
   "issue": "https://github.com/wicanr2/fd2_re/issues/321",
-  "status": "RE-CLOSED（原版機制：釋放後使用與開機後空指標兩種來源）；重製端行為為使用者定案，Rust RUNTIME-E1",
+  "status": "RE-CLOSED（原版機制：釋放後使用與開機後空指標兩種來源）；重製端行為為使用者定案，Rust／Go RUNTIME-E1",
   "input": {
     "file": "FD2.EXE",
     "size": 357074,
@@ -168,7 +168,7 @@
   },
   "remake_decision": {
     "decided_by": "使用者 2026-11-27：「用可見結果一樣即可」",
-    "behavior": "Rust prepare_native_physical_body_resources 在主攻 byte1=0、反擊 byte1≠0 時照常載入 BG.DAT 0／1／2；反擊連擊返回用本場背景，不追 dword_54103 的跨場景殘值。Go 凍結，保留拒收。",
+    "behavior": "Rust prepare_native_physical_body_resources 在主攻 byte1=0、反擊 byte1≠0 時照常載入 BG.DAT 0／1／2；反擊連擊返回用本場背景，不追 dword_54103 的跨場景殘值。Go prepareNativePhysicalBodyResources 同步同一行為（使用者 2026-11-27 Go 例外）。",
     "spec": "docs/knowledge-base/56-fd2-remake-sdd.md#2026-11-27-321-零旗標主攻對非零旗標反擊的背景層"
   },
   "ch22_runtime": {
