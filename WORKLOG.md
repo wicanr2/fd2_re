@@ -6105,3 +6105,5 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 22 章：#321 樣本 `ch22-sample-r3` 走過原拒收點，31 筆相同；Go 時代原版 `full-original-r2` 整章 45 筆無分歧，存檔 `3c7298cd` 逐位元組相同。
 - 第 25 章：r7 樣本 30 筆相同；Go 時代原版 `original-r4` 整章 41 筆無分歧，存檔 `52984034` 與原版只差政策 `ch25-opaque-20261016` 已揭露的 9 byte。
 - Rust 遊戲回歸 463 項通過。
+- #321 證據補完：新工具 `tools/fd2_bg_layer_xrefs.py` 以 LE fixup 列出 `dword_54103..54113` 的全部參照（輸出 `docs/data/ida/fd2_bg_layer_xrefs_20261127.txt`）。三組寫入端 `0x278D8`、`0x28D7B`（`sub_28A6C`）、`0x2A2FD` 都只載入 `BG.DAT` 0／1／2，九個 free（`call 0x37416`）後不清空全域。主契約 `docs/data/ida/fd2_counter_stale_bg_layers_20261127.json`，58「不要重做」加一列。
+- 第 25 章原版以 r7 重跑（dosgolem `d1414930`，工作樹乾淨）：adapter 近堆重現 `0x4E6A7` 中止，開機到中止都沒經過 `0x28DC4`，懸空值來自另兩組寫入端之一；native 近堆在這次攻擊前就分岔，沒有經過 `0x29CC2`。第一次重跑把 `0x4E64E`／`0x4E656` 列入觀測，5.9 億步就到 20 萬筆上限，改用輕量觀測點重跑。
