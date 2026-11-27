@@ -480,8 +480,8 @@ impl Game {
         Ok(true)
     }
 
-    /// 第二段：依確認目標算出最終目標名單，套用 HP／MP／旗標／能力值的原始記錄交易。
-    /// 指令傷害物品與傳送物品的演出另期，遇到時失敗即關閉。
+    /// 第二段：依確認目標算出最終目標名單，套用 HP／MP／旗標／能力值的原始記錄交易；
+    /// 指令傷害物品改走 `0x20c6f` 演出，交易在演出發布點才寫回。傳送物品另期，遇到時失敗即關閉。
     ///
     /// Go：`native_item_panel_ui.go:556`，`func (g *Game) applyNativeTargetItem(confirmed *battle.Unit) (bool, error)`
     pub(crate) fn apply_native_target_item(&mut self, confirmed: UnitIdx) -> Result<bool> {
@@ -503,7 +503,38 @@ impl Game {
         let target_indices = targets.iter().map(|&t| t as u8).collect::<Vec<_>>();
         let (item_type, amount) = (row[0x0d], u16::from_le_bytes([row[0x0e], row[0x0f]]));
         if battle::native_item_command_damage_route_for_type(item_type, amount).1 {
-            todo!("R8: native_item_panel_ui.go:603 startNativeTargetItemPresentation（指令傷害物品）");
+            let Some(&first) = targets.first() else {
+                return Err(game_err!("native command-damage item has no final target"));
+            };
+            let item = self.native_item_target_id;
+            let plan = battle::AIPlan {
+                u: Some(actor),
+                target: Some(first),
+                native_action_kind: battle::NATIVE_AI_ACTION_ITEM,
+                native_item_slot: self.native_item_target_raw_slot,
+                native_item_id: item,
+                native_item_target_indices: target_indices,
+                ..Default::default()
+            };
+            let transaction = self.plan_native_ai_item_restore(&plan)?;
+            let then = Box::new(move |g: &mut Game| {
+                let unit = &mut g.st.as_mut().expect("已驗證戰場").units[actor];
+                unit.native_record_byte5 |= 0x80;
+                unit.has_native_record_byte5 = true;
+                g.msg = format!("物品 {item:02X}h：原始傷害演出完成");
+                g.finish_successful_unit_action(
+                    Some(actor),
+                    Some(Box::new(|g: &mut Game| {
+                        g.native_item_targeting = false;
+                        g.native_item_effect_rows = Vec::new();
+                        (g.sel, g.reach, g.moved) = (None, Default::default(), false);
+                    })),
+                );
+                g.check_result();
+            });
+            let job = self.build_native_target_item_presentation(transaction, then)?;
+            self.native_ai_item_presentation = Some(job);
+            return Ok(true);
         }
         let units = &self.st.as_ref().unwrap().units;
         let mut records = native_item_runtime_records(units)?;

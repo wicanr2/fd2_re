@@ -6086,3 +6086,13 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 第 30 章對照原版 `original-full-r2` 重播 57 筆無分歧到 THE END；`ending-flow.json` 的 27 筆 0x2c548 記錄與 6 個文字區塊和 Go `remake-full-r5` 相同，前後存檔皆 `33c3d74d`。
 - `display_list_test` 的 `.pix` 直接存取表加 `ending_preview.rs` 2 處（合成器 `go_image::Rgba` 交給 `write_pixels`，不是畫面目標）。
 - Rust 遊戲回歸 461 項通過，第 28、29 章重播回歸相同。
+
+## 2026-11-27 Rust 道具傷害演出與結局提示補完、第 1 章重播複核
+
+- 在 #321 留言補第 25 章證據：槽 `ecacf8df`、計畫 `ch25-flow-cheat-r7.jsonl`、原版 `0x4E6A7` STOSB 寫 `0160:0025F000` 中止、Rust 前 29 筆無分歧後停在 caller BG 拒收。
+- 第 1 章用目前程式重跑 `tools/rust_parity_ch01.sh`：40 筆檢查點、`FD2.SAV`（`f3942ff2`）與 `hotel-save.json` 和 Go 黃金逐位元組相同，原版閘門判定相同。
+- 敵方 type21 道具演出（`0x1cac7`，Go `startNativeAIItemType21Presentation`）移植為 `build_native_ai_item_type21_presentation`；敵我共用的分派抽成 `build_native_target_item_presentation`（Go `startNativeTargetItemPresentation`）。
+- 我方指令傷害物品接上同一分派：交易在演出發布點才寫回，演出結束後才設 byte+5 bit7、結束行動並清除選取。原先遇到時是 `todo!`。
+- 新增 `native_ai_item_presentation_test.rs`，移植 Go 兩個原版素材測試：敵方 type21（38 格、發布點 16），我方 type24（`0x1cd17`，40 格、發布點 18）與 type21（38 格、發布點 16）。三者都檢查發布前 HP 與 RNG 不變、結束時等於交易結果。
+- 結局：補 `FD2_ENDING_PREFIX` 開發者直接預覽（`new_native_ending_preview`，`FD2_ENDING_CHAPTER` 只收 26 或 29）、除錯模式的蒙太奇證據提示（`native_ending_evidence_overlay`），以及正式路徑等待後備時的三種提示框（`ending.continue_editable`／`terminal_missing`／`montage_requirements`，上一輪漏畫）。`playerAssetPath` 在 Go 沒有呼叫端，不移植。
+- 驗證層級：道具演出為重製端單元測試對照 Go 測試期望值，沒有新的原版收據；結局提示沒有自動測試。Rust 遊戲回歸 463 項通過。

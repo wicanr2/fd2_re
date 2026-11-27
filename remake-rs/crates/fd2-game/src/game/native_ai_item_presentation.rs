@@ -40,18 +40,29 @@ impl Game {
             game.finish_successful_unit_action(Some(actor), after);
             game.check_result();
         });
-        let job = if transaction.restore.is_some() {
-            self.build_native_ai_item_restore_presentation(transaction, after)?
-        } else {
-            match transaction.damage_route.map(|route| route.presentation) {
-                Some(0x1cd17) => self.build_native_ai_item_damage_presentation(transaction, after)?,
-                Some(0x1cac7) => todo!("R8: native_ai_item_presentation.go:233 startNativeAIItemType21Presentation"),
-                _ => return Err(game_err!("敵方道具 {item:02X}h 沒有可用的原版演出")),
-            }
-        };
+        let job = self.build_native_target_item_presentation(transaction, after)?;
         self.native_ai_item_presentation = Some(job);
         self.st.as_mut().expect("已驗證戰場").native_experience_accumulator = 0;
         Ok(())
+    }
+
+    /// 依交易選 `0x20c6f` 呼叫端的演出：回復走指令 33 尾段，指令傷害依路線走 `0x1cd17` 或 `0x1cac7`。
+    /// 敵方與我方道具共用。
+    ///
+    /// Go：`native_ai_item_presentation.go:46`，`func (g *Game) startNativeTargetItemPresentation(plan *battle.AIPlan, then func()) (bool, error)`
+    pub(crate) fn build_native_target_item_presentation(
+        &mut self,
+        transaction: NativeAIItemTransaction,
+        then: Box<dyn FnOnce(&mut Game) + Send>,
+    ) -> Result<NativeAIItemPresentationJob> {
+        if transaction.restore.is_some() {
+            return self.build_native_ai_item_restore_presentation(transaction, then);
+        }
+        match transaction.damage_route.map(|route| route.presentation) {
+            Some(0x1cd17) => self.build_native_ai_item_damage_presentation(transaction, then),
+            Some(0x1cac7) => self.build_native_ai_item_type21_presentation(transaction, then),
+            _ => Err(game_err!("native item indexed presentation unavailable")),
+        }
     }
 
     fn build_native_ai_item_restore_presentation(
@@ -399,6 +410,154 @@ impl Game {
         })
     }
 
+    /// Go：`native_ai_item_presentation.go:233`，`func (g *Game) startNativeAIItemType21Presentation(tx *nativeAIItemTransaction, then func()) (bool, error)`
+    ///
+    /// type21 呼叫端 `0x2111a` 只共用 `0x1cac7` 的畫面契約，不沿用指令 32 的玩家前導或交易擁有者。
+    /// 只移植原版索引色分支；HD 複合地圖屬 R6。
+    fn build_native_ai_item_type21_presentation(
+        &mut self,
+        transaction: NativeAIItemTransaction,
+        then: Box<dyn FnOnce(&mut Game) + Send>,
+    ) -> Result<NativeAIItemPresentationJob> {
+        let Some(route) = transaction.damage_route.filter(|route| {
+            route.item_type == 21
+                && route.presentation == 0x1cac7
+                && transaction.damage.len() == transaction.targets.len()
+        }) else {
+            return Err(game_err!("native AI item type21 presentation context unavailable"));
+        };
+        if !self.current_native_system_options().full_presentation_enabled() {
+            return Err(game_err!("native AI item indexed presentation unavailable"));
+        }
+        if self.native_ai_item_presentation.is_some() || self.atk.is_some() || self.indexed_transition.is_some() {
+            return Err(game_err!("native AI item presentation already active"));
+        }
+        let (hud, hud_ready) = self.native_map_hud_input();
+        let map = self
+            .native_map_assets
+            .as_ref()
+            .filter(|map| native_map_assets_available(Some(map)))
+            .ok_or_else(|| game_err!("native AI item indexed map state unavailable"))?;
+        let state = self
+            .st
+            .as_ref()
+            .filter(|state| state.has_native_map_view_state)
+            .ok_or_else(|| game_err!("native AI item indexed map state unavailable"))?;
+        if self.native_map_work.len() as i64 != indexedmap::NATIVE_UNIT_PRESENT_WORK_SIZE
+            || self.native_map_vga.len() as i64 != indexedmap::NATIVE_MAP_VGA_SIZE
+            || self.native_map_dac.len() != 256 * 3
+        {
+            return Err(game_err!("native AI item indexed map state unavailable"));
+        }
+        let schedule = fdother::build_native_ai_item_type21_tail_schedule(
+            route.command_id,
+            &map.fdother6,
+            &map.command_heal_digits,
+        )?;
+        if transaction.targets.is_empty() {
+            return Err(game_err!("native command heal tail target array unavailable"));
+        }
+        let targets = transaction
+            .targets
+            .iter()
+            .map(|&index| {
+                let unit = &state.units[index];
+                if !unit.has_native_map_presentation || !unit.has_map_selector_slot {
+                    return Err(game_err!("native command heal tail target lacks raw record presentation"));
+                }
+                Ok(indexedmap::NativeCommandHealTailTarget {
+                    record_index: index as i64,
+                    x: i64::from(unit.native_map_presentation.x),
+                    y: i64::from(unit.native_map_presentation.y),
+                    selector_slot: unit.map_selector_slot,
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let results = targets
+            .iter()
+            .zip(&transaction.damage)
+            .map(|(target, result)| battlepresent::NativeAIItemType21TailResult {
+                target_record: target.record_index,
+                hit: result.hit,
+                damage: result.damage,
+            })
+            .collect::<Vec<_>>();
+        let baseline_work = self.native_map_work.clone();
+        let baseline_vga = self.native_map_vga.clone();
+        let mut post = state.clone();
+        for (unit, record) in post.units.iter_mut().zip(transaction.after.as_chunks::<80>().0) {
+            sync_native_item_runtime_record(unit, record);
+        }
+        if !hud_ready {
+            return Err(game_err!("native AI item post-transaction HUD unavailable"));
+        }
+        let mut input = build_native_map_frame_input(
+            Some(map),
+            self.m.as_ref(),
+            Some(&post),
+            NativeMapFrameRuntime { hud, ..Default::default() },
+        )?;
+        let (mut post_transaction_work, mut post_vga) = (baseline_work.clone(), baseline_vga.clone());
+        indexedmap::compose_native_frame(&mut post_transaction_work, &mut post_vga, &mut input)?;
+        let view = state.native_map_view_state;
+        let tail = battlepresent::build_native_ai_item_type21_tail_frames(
+            &baseline_work,
+            &baseline_vga,
+            &post_transaction_work,
+            &post_vga,
+            &map.fdother6,
+            &map.command_heal_digits,
+            &targets,
+            &results,
+            view.camera_x,
+            view.camera_y,
+            &schedule,
+        )?;
+        let palette = color_palette_from_nrgba(&fdother::vga_palette_from_dac(&self.native_map_dac)?);
+        let image = |pix: &Vec<u8>| {
+            Arc::new(Picture::from_indexed(&IndexedFrame {
+                width: 320,
+                height: 200,
+                pix: pix.clone(),
+                palette: palette.clone(),
+            }))
+        };
+        let mut frames = Vec::new();
+        let push = |frames: &mut Vec<NativeCompoundPresentedFrame>, layer: &[Vec<u8>], delay: i64| -> Result<()> {
+            if layer.is_empty() || delay <= 0 {
+                return Err(game_err!("native command32 presented frames unavailable"));
+            }
+            for pix in layer {
+                frames.push(NativeCompoundPresentedFrame { image: Some(image(pix)), delay, ..Default::default() });
+            }
+            Ok(())
+        };
+        push(&mut frames, &tail.effect, schedule.effect_delay_ticks)?;
+        push(&mut frames, &tail.toggle, native_delay_ticks(schedule.toggle_delay_ms))?;
+        let publish_at = frames.len();
+        push(&mut frames, &tail.result, 1)?;
+        frames[0].sound = self
+            .separated_command_sfx
+            .get(&80)
+            .and_then(|bank| bank.get(&schedule.effect_sample))
+            .cloned()
+            .unwrap_or_default();
+        if !os_mute_or_shot(Some(self)) && frames[0].sound.is_empty() {
+            return Err(game_err!("native AI item required raw sample unavailable"));
+        }
+        Ok(NativeAIItemPresentationJob {
+            transaction: Some(transaction),
+            frames,
+            publish_at: publish_at as i64,
+            baseline_work,
+            baseline_vga,
+            post_transaction_work,
+            post_vga,
+            then: Some(then),
+            ..Default::default()
+        })
+    }
+
     pub(crate) fn draw_native_ai_item_presentation(&mut self, screen: &mut Picture) -> bool {
         let Some(job) = self.native_ai_item_presentation.as_mut() else { return false };
         let Some(image) = job.frames.get(job.frame as usize).and_then(|frame| frame.image.as_ref()) else {
@@ -512,3 +671,7 @@ impl Game {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "native_ai_item_presentation_test.rs"]
+mod native_ai_item_presentation_test;

@@ -1,7 +1,6 @@
 //! Go 來源：`remake/cmd/fd2/ending_preview.go`（864 行）。
 //!
 //! 原版索引色的戰役結局（0x2bce5 前綴、0x2c39b 文字、0x2c548 角色蒙太奇、0x2c194 尾段與 THE END 終局）。
-//! `FD2_ENDING_PREFIX` 開發者直接預覽入口（`newNativeEndingPreview`）與除錯 HUD 文字另期。
 
 use super::*;
 
@@ -54,6 +53,25 @@ pub(crate) fn new_native_ending_preview_for_campaign(
         return Err(game_err!("ending: campaign native prefix is not a recovered 0x2bce5 contract"));
     }
     new_native_ending_preview_for_timeline(&prefix.timeline, prefix.chapter)
+}
+
+/// Go：`ending_preview.go:54`，`const nativeEndingTimelinePath`
+pub(crate) const NATIVE_ENDING_TIMELINE_PATH: &str = "assets/endings/native_2bce5.json";
+
+/// 開發者直接預覽（`FD2_ENDING_PREFIX`）：預設第 29 章，`FD2_ENDING_CHAPTER` 只接受已驗證的 26 或 29。
+///
+/// Go：`ending_preview.go:56`，`func newNativeEndingPreview() (*nativeEndingPreview, error)`
+pub(crate) fn new_native_ending_preview() -> Result<NativeEndingPreview> {
+    let mut chapter = 29;
+    if let Ok(raw) = std::env::var("FD2_ENDING_CHAPTER")
+        && !raw.is_empty()
+    {
+        match raw.parse::<i64>() {
+            Ok(value @ (26 | 29)) => chapter = value,
+            _ => return Err(game_err!("ending: FD2_ENDING_CHAPTER must be 26 or 29")),
+        }
+    }
+    new_native_ending_preview_for_timeline(NATIVE_ENDING_TIMELINE_PATH, chapter)
 }
 
 /// Go：`ending_preview.go:77`，`func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativeEndingPreview, error)`
@@ -787,6 +805,56 @@ impl Game {
             options.geo_m.scale(2.0, 2.0);
             screen.draw_image(view, &options);
         }
+        if let Some((message, x)) = self.native_ending_evidence_overlay().filter(|_| self.font.is_some()) {
+            self.draw_native_ending_panel(screen, message, x, 0.78);
+        } else if self.native_ending.as_ref().is_some_and(|p| p.awaiting_campaign_fallback()) && self.font.is_some() {
+            let p = self.native_ending.as_ref().unwrap();
+            let key = if p.montage.as_ref().is_some_and(|montage| montage.ready()) {
+                "ending.terminal_missing"
+            } else if !p.montage_start_error.is_empty() {
+                "ending.montage_requirements"
+            } else {
+                "ending.continue_editable"
+            };
+            let (message, ok) = self.locale_message(key, &[]);
+            if !ok {
+                return;
+            }
+            self.draw_native_ending_panel(screen, &message, 30.0, 0.82);
+        }
         self.draw_capture_shot_point(screen);
+    }
+
+    /// 除錯模式下結局蒙太奇的證據提示；只在 `debug` 開啟時顯示。
+    ///
+    /// Go：`ending_preview.go:810`，`func (g *Game) nativeEndingEvidenceOverlay() (string, float64, bool)`
+    pub(crate) fn native_ending_evidence_overlay(&self) -> Option<(&'static str, f64)> {
+        let p = self.native_ending.as_ref().filter(|_| self.debug)?;
+        if p.running_campaign_montage() {
+            return Some(("角色蒙太奇（來源約束 E1）：任意按鍵會在本輪結束後略過中間角色。", 23.0));
+        }
+        if p.running_campaign_tail() {
+            return Some(("終局蒙太奇（原版資源、來源約束 E1）：完成後將停留在 THE END。", 25.0));
+        }
+        None
+    }
+
+    /// `drawNativeEndingPreview` 兩個提示分支共用的底框與文字（`ending_preview.go:833`..`859`）。
+    fn draw_native_ending_panel(&mut self, screen: &mut Picture, message: &str, x: f64, scale: f64) {
+        let mut panel = Picture::new_image(LOGICAL_W - 32, 42);
+        panel.fill(ColorRgba { r: 0x10, g: 0x1c, b: 0x40, a: 0xe8 });
+        let mut options = DrawImageOptions::default();
+        options.geo_m.translate(16.0, (LOGICAL_H - 56) as f64);
+        screen.draw_image(&panel, &options);
+        if let Some(font) = self.font.as_mut() {
+            font.draw(
+                screen,
+                message,
+                x,
+                (LOGICAL_H - 44) as f64,
+                scale,
+                ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff },
+            );
+        }
     }
 }

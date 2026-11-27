@@ -9304,7 +9304,18 @@ pub(crate) fn load_game() -> Option<Game> {
         g.shot_turn = n;
     }
     if !env("FD2_ENDING_PREFIX").is_empty() {
-        todo!("R8: ending_preview.go:newNativeEndingPreview（FD2_ENDING_PREFIX 結局預覽）")
+        match new_native_ending_preview() {
+            Ok(preview) => g.native_ending = Some(preview),
+            Err(err) => {
+                g.load_err = format!("native ending: {}", err.message());
+                return Some(g);
+            }
+        }
+        // 直接預覽刻意略過地圖／戰鬥載入；抵達已還原文字分支後，
+        // 0x2c39b owner 仍只使用玩家提供的 DATO、FDOTHER 與 FDTXT 資產。
+        g.portraits = load_portraits();
+        g.font = load_font();
+        return Some(g);
     }
     if let Err(err) = g.load_map("assets") {
         g.load_err = err.message().to_string();
