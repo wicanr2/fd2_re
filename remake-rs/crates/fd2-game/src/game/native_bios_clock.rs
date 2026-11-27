@@ -35,6 +35,17 @@ impl NativeBIOSClock {
         *self = NativeBIOSClock::default();
     }
 
+    /// 戰場快照還原地圖動畫計時：只接受 16 位元有號範圍，之後從這個 low word 繼續累加。
+    ///
+    /// Go：`native_bios_clock.go:40`，`func (c *nativeBIOSClock) RestoreTick(rawTick int) bool`
+    pub(crate) fn restore_tick(&mut self, raw_tick: i64) -> bool {
+        if !(-0x8000..=0x7fff).contains(&raw_tick) {
+            return false;
+        }
+        *self = NativeBIOSClock { elapsed_ticks: u64::from(raw_tick as i16 as u16), ..Default::default() };
+        true
+    }
+
     /// Go：`native_bios_clock.go:48`，`func (c *nativeBIOSClock) Sample(now time.Time) int`
     pub(crate) fn sample(&mut self, now: GameInstant) -> i64 {
         if self.last.is_zero() {

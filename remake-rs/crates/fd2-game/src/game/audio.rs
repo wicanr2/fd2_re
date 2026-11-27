@@ -123,6 +123,19 @@ impl Game {
         self.bgm_cur = track.to_string();
     }
 
+    /// 系統選項關掉音樂時記住目前曲目，重新打開才能接回同一首。
+    ///
+    /// Go：`audio.go:106`，`func (g *Game) muteNativeSystemBGM()`
+    pub(crate) fn mute_native_system_bgm(&mut self) {
+        if !self.bgm_cur.is_empty() {
+            self.native_system_bgm_track = self.bgm_cur.clone();
+        }
+        if let Some(mut bgm) = self.bgm.take() {
+            bgm.closed = true;
+        }
+        self.bgm_cur.clear();
+    }
+
     /// stopBGM is the proven play_bgm(track=-1) operation used by original
     /// cutscene handlers.  Clearing bgmCur allows the following explicit BGM beat
     /// to restart the same track.

@@ -31,6 +31,11 @@ pub(crate) struct NativeSystemEndTurnUIState {
     pub(crate) reward_message: Option<NativeDeathRewardMessageState>,
 }
 
+/// 0x17259：delay(0xC8 ms)，60 Hz 約十二幀。
+///
+/// Go：`action_overlay_runtime.go:12`
+pub(crate) const NATIVE_SYSTEM_END_TURN_DELAY_FRAMES: i64 = 12;
+
 pub(crate) const ACTION_OVERLAY_OPENING: &str = "opening";
 
 pub(crate) const ACTION_OVERLAY_OPEN: &str = "open";
@@ -188,6 +193,358 @@ impl Game {
         fdother::default_native_system_options()
     }
 
+    /// Go：`action_overlay_runtime.go:181`，`func (g *Game) nativeSystemOptionsReady() bool`
+    pub(crate) fn native_system_options_ready(&self) -> bool {
+        if self.current_native_system_options().action_overlay_state().is_err() {
+            return false;
+        }
+        [54usize, 57, 60, 63, 66, 69, 72, 75]
+            .iter()
+            .all(|&index| self.native_action_cells.get(index).is_some_and(Option::is_some))
+    }
+
+    /// 系統選項（0x1728C）切換一格；音樂與 HUD 顯示閘門 A 有立即效果。
+    ///
+    /// Go：`action_overlay_runtime.go:193`，`func (g *Game) toggleNativeSystemOption(selector int) bool`
+    pub(crate) fn toggle_native_system_option(&mut self, selector: i64) -> bool {
+        let Ok(next) = self.current_native_system_options().toggle(selector) else {
+            return false;
+        };
+        self.native_system_options = Some(next);
+        match selector {
+            0 => {
+                if next.music_enabled() {
+                    if !self.native_system_bgm_track.is_empty() {
+                        let track = std::mem::take(&mut self.native_system_bgm_track);
+                        self.play_bgm(&track);
+                    }
+                } else {
+                    self.mute_native_system_bgm();
+                }
+            }
+            3 => {
+                self.restore_native_map_hud_gate_a(next.raw_51aab);
+                if let Some(st) = self.st.as_mut().filter(|st| st.has_native_map_hud_state) {
+                    st.native_map_hud_state.display_gate_a = next.raw_51aab;
+                }
+            }
+            _ => {}
+        }
+        true
+    }
+
+    /// 系統確認框共用的建立程序（Go 各個 `beginNative…` 逐一重複同一段）：先在目前地圖畫面上建好對話框、
+    /// 問句、接受與取消兩組回覆和 10 格開場，全部成功才收起命令框並交給 `after_close`。任何素材缺失回
+    /// false，命令框保持原狀。
+    ///
+    /// HD 確認框（`freezeModernHDSystemConfirmation`，R6）尚未移植：`hd` 留空，HD 介面下也畫原版索引畫格。
+    #[allow(clippy::too_many_arguments)]
+    fn begin_native_system_confirmation<QE, RE>(
+        &mut self,
+        portrait: dato::Frame,
+        portraits: Vec<dato::Frame>,
+        question: impl Fn(&[u8], &dato::Frame, &fdtxt::Strings, &fdtxt::Font) -> std::result::Result<Vec<u8>, QE>,
+        response: impl Fn(
+            &[u8],
+            Option<&fdtxt::Strings>,
+            Option<&fdtxt::Font>,
+            bool,
+        ) -> std::result::Result<Vec<Vec<u8>>, RE>,
+        mut state: NativeSystemEndTurnUIState,
+        after_close: impl FnOnce(&mut Game) + Send + 'static,
+    ) -> bool {
+        let Some(ui) = self.native_preparation_ui.as_ref() else {
+            return false;
+        };
+        let (Some(strings), Some(font)) = (ui.status.strings.as_ref(), ui.status.font.as_ref()) else {
+            return false;
+        };
+        let source = self.native_map_vga.clone();
+        let Ok(dialogue) = campaign::compose_native_preparation_confirmation_dialogue(&source, &ui.dialogue, &portrait)
+        else {
+            return false;
+        };
+        let Ok(question) = question(&dialogue, &portrait, strings, font) else {
+            return false;
+        };
+        let (Ok(accepted), Ok(canceled)) = (
+            response(&question, Some(strings), Some(font), true),
+            response(&question, Some(strings), Some(font), false),
+        ) else {
+            return false;
+        };
+        let frames = match campaign::native_preparation_confirmation_opening_frames(
+            &source,
+            &dialogue,
+            &question,
+            &ui.choices,
+        ) {
+            Ok(frames) if frames.len() == 10 => frames,
+            _ => return false,
+        };
+        (state.portraits, state.source, state.dialogue, state.question) = (portraits, source, dialogue, question);
+        (state.accepted, state.canceled) = (accepted, canceled);
+        // 狀態含不能跨執行緒的欄位，先暫存在 Game，收框延續再取出（Go 由閉包捕捉指標）。
+        self.native_system_confirmation_pending = Some(Box::new(state));
+        self.begin_action_overlay_close(Some(Box::new(move |g: &mut Game| {
+            after_close(g);
+            g.native_system_end_turn_confirm = true;
+            g.native_system_end_turn_ui = g.native_system_confirmation_pending.take();
+            g.reset_native_class_ui_pulse();
+            g.native_class_ui_job = Some(NativeClassUIJob { frames, ..Default::default() });
+        })));
+        true
+    }
+
+    /// 共用 0x117E7→0x16F55 的 Down→END：在收起命令框前建好 0x1956B→0x19953 的整份確認畫面。
+    ///
+    /// Go：`action_overlay_runtime.go:241`，`func (g *Game) beginNativeSystemEndTurn() bool`
+    pub(crate) fn begin_native_system_end_turn(&mut self) -> bool {
+        if !self.native_system_cursor_overlay || !self.native_system_confirmation_context(3) {
+            return false;
+        }
+        let ui = self.native_preparation_ui.as_ref().unwrap();
+        let (portrait, portraits) = (ui.portrait.clone(), ui.portraits.clone());
+        self.begin_native_system_confirmation(
+            portrait,
+            portraits,
+            campaign::compose_native_battle_end_turn_question,
+            campaign::native_battle_end_turn_response_frames,
+            NativeSystemEndTurnUIState::default(),
+            |g| g.native_system_cursor_overlay = false,
+        )
+    }
+
+    /// 巢狀選單 selector3：YES 回覆、停音樂、延遲與收框都結束後才發布離開要求。
+    ///
+    /// Go：`action_overlay_runtime.go:296`，`func (g *Game) beginNativeNestedSystemExit() bool`
+    pub(crate) fn begin_native_nested_system_exit(&mut self) -> bool {
+        if !self.native_system_cursor_overlay
+            || !self.native_system_nested_open
+            || !self.native_system_confirmation_context(3)
+        {
+            return false;
+        }
+        let ui = self.native_preparation_ui.as_ref().unwrap();
+        let (portrait, portraits) = (ui.portrait.clone(), ui.portraits.clone());
+        self.begin_native_system_confirmation(
+            portrait,
+            portraits,
+            campaign::compose_native_battle_exit_question,
+            campaign::native_battle_exit_response_frames,
+            NativeSystemEndTurnUIState { exit_program: true, ..Default::default() },
+            |g| (g.native_system_nested_open, g.native_system_cursor_overlay) = (false, false),
+        )
+    }
+
+    /// 巢狀選單 selector2：讀回目前戰況存檔。Go 先以 `prepareNativeContinueFromCurrentSnapshot` 建好整份候選
+    /// 狀態再開確認框；那條還原鏈（`native_continue_handoff.go`）尚未移植，這裡失敗即關閉，戰場保持不變。
+    ///
+    /// Go：`action_overlay_runtime.go:418`，`func (g *Game) beginNativeNestedCurrentLoad() bool`
+    pub(crate) fn begin_native_nested_current_load(&mut self) -> bool {
+        false
+    }
+
+    /// 外層 selector1 全軍移動：收命令框前預演逐單位尋路與事件，任一未知事件整批不動。
+    ///
+    /// Go：`action_overlay_runtime.go:487`，`func (g *Game) beginNativeSystemGroupMarch() bool`
+    pub(crate) fn begin_native_system_group_march(&mut self) -> bool {
+        if !self.native_system_cursor_overlay || self.m.is_none() || !self.native_system_confirmation_context(1) {
+            return false;
+        }
+        let cell = battle::Cell { x: self.cur_x, y: self.cur_y };
+        let st = self.st.as_mut().unwrap();
+        let Some(leader_fig) = st.units.first().filter(|unit| unit.has_battle_fig).map(|unit| unit.battle_fig) else {
+            return false;
+        };
+        let Ok(plan) = st.plan_native_system_group_march(cell) else {
+            return false;
+        };
+        if !self.preflight_native_system_group_march_events(&plan) {
+            return false;
+        }
+        let portraits = match load_native_separated_portrait(leader_fig) {
+            Ok(portraits) if portraits.len() > 3 => portraits,
+            _ => return false,
+        };
+        self.begin_native_system_confirmation(
+            portraits[0].clone(),
+            portraits,
+            campaign::compose_native_battle_group_march_question,
+            campaign::native_battle_group_march_response_frames,
+            NativeSystemEndTurnUIState { group_march: true, group_march_plan: plan, ..Default::default() },
+            |g| g.native_system_cursor_overlay = false,
+        )
+    }
+
+    /// Go 各確認入口共同的前置條件（環開著、方向正確、不在 AI 回合、戰場未結束、介面與地圖畫面都在）。
+    fn native_system_confirmation_context(&self, direction: i64) -> bool {
+        self.ring
+            && self.ring_sel == direction
+            && self.st.is_some()
+            && !self.ai_busy
+            && self.result.is_empty()
+            && self.native_class_ui.is_some()
+            && self.native_map_vga.len() == 320 * 200
+            && self.native_preparation_ui.as_ref().is_some_and(|ui| ui.portraits.len() > 3)
+    }
+
+    /// 同一方向兩層不同 owner：外層 0x16F55 selector1 是全軍移動；巢狀 0x19DF7 selector1 是存檔。
+    ///
+    /// Go：`action_overlay_runtime.go:552`，`func (g *Game) activateNativeSystemDirectionOne() bool`
+    ///
+    /// 巢狀存檔在有原版目前戰況基底時走 `beginNativeNestedCurrentSave`（`buildNativeCurrentSaveStored` 尚未移植，
+    /// 先回報失敗）；一般劇情進戰沒有基底，改存重製端戰場快照到第一槽（56「#303 戰場JSON快照」）。
+    pub(crate) fn activate_native_system_direction_one(&mut self) -> bool {
+        if !self.native_system_cursor_overlay || !self.ring || self.ring_sel != 1 {
+            return false;
+        }
+        if self.native_system_nested_open {
+            if native_current_save_path().is_empty() || self.native_current_save_plain.is_empty() {
+                self.msg.clear();
+                if let Err(err) = self.save_game_to_slot_from(0, true)
+                    && self.msg.is_empty()
+                {
+                    self.msg = format!("戰場存檔失敗：{err}");
+                }
+                return true;
+            }
+            self.msg = String::from("原版目前戰況存檔來源或資產不完整，未寫入檔案");
+            return true;
+        }
+        if !self.begin_native_system_group_march() {
+            self.msg = String::from("原版全軍移動來源或事件不完整，未執行");
+        }
+        true
+    }
+
+    /// 全軍移動的事件預檢：只有 Game 層取得的演出素材在這裡補驗，避免先移動才發現缺素材。
+    ///
+    /// Go：`action_overlay_runtime.go:578`，`func (g *Game) preflightNativeSystemGroupMarchEvents(plan battle.NativeSystemGroupMarchPlan) bool`
+    ///
+    /// 事件 61 的對白與演出（`event61DialogueActions`）尚未移植，含事件 61 的計畫失敗即關閉。
+    fn preflight_native_system_group_march_events(&mut self, plan: &battle::NativeSystemGroupMarchPlan) -> bool {
+        for step in &plan.steps {
+            for event in &step.events {
+                match event.event_id {
+                    75 => {
+                        if !event75_dialogue_preflight(self, event.text_index) {
+                            return false;
+                        }
+                    }
+                    _ => return false,
+                }
+            }
+        }
+        true
+    }
+
+    /// Go：`action_overlay_runtime.go:613`，`func (g *Game) confirmNativeSystemEndTurn()`
+    pub(crate) fn confirm_native_system_end_turn(&mut self) {
+        if self.native_system_end_turn_confirm {
+            self.finish_native_system_end_turn_choice(true);
+        }
+    }
+
+    /// Go：`action_overlay_runtime.go:620`，`func (g *Game) cancelNativeSystemEndTurn()`
+    pub(crate) fn cancel_native_system_end_turn(&mut self) {
+        if self.native_system_end_turn_confirm {
+            self.finish_native_system_end_turn_choice(false);
+        }
+    }
+
+    /// 確認框收合 4 格 → 回覆畫格 → 停留延遲（`step_native_system_end_turn` 收框後執行結果）。
+    ///
+    /// Go：`action_overlay_runtime.go:627`，`func (g *Game) finishNativeSystemEndTurnChoice(accepted bool)`
+    ///
+    /// 寶箱問句走 `finish_native_treasure_choice`；死亡獎勵與原版目前戰況存檔兩支的入口尚未移植，不會走到這裡。
+    fn finish_native_system_end_turn_choice(&mut self, accepted: bool) {
+        let (Some(state), Some(ui)) = (self.native_system_end_turn_ui.as_ref(), self.native_preparation_ui.as_ref())
+        else {
+            self.native_system_end_turn_confirm = false;
+            return;
+        };
+        let frames = match campaign::native_class_confirmation_closing_frames(&state.question, &ui.choices) {
+            Ok(frames) if frames.len() == 4 => frames,
+            _ => return,
+        };
+        self.native_system_end_turn_confirm = false;
+        self.native_class_ui_job = Some(NativeClassUIJob {
+            frames,
+            after: Some(Box::new(move |g: &mut Game| {
+                let Some(state) = g.native_system_end_turn_ui.as_mut() else {
+                    return;
+                };
+                state.accepted_outcome = accepted;
+                let response = if accepted { state.accepted.clone() } else { state.canceled.clone() };
+                g.native_class_ui_job = Some(NativeClassUIJob {
+                    frames: response,
+                    after: Some(Box::new(move |g: &mut Game| {
+                        if accepted && g.native_system_end_turn_ui.as_ref().is_some_and(|state| state.exit_program) {
+                            g.stop_bgm();
+                        }
+                        g.native_system_end_turn_delay = NATIVE_SYSTEM_END_TURN_DELAY_FRAMES;
+                    })),
+                    ..Default::default()
+                });
+            })),
+            ..Default::default()
+        });
+    }
+
+    /// 全軍移動逐單位走路；每段走完提交該單位，最後結束回合。
+    ///
+    /// Go：`action_overlay_runtime.go:752`，`func (g *Game) startNextNativeSystemGroupMarchStep()`
+    pub(crate) fn start_next_native_system_group_march_step(&mut self) {
+        while self.walk.is_none() {
+            let Some(plan) = self.native_system_group_march.as_ref() else {
+                return;
+            };
+            if self.native_system_group_march_step as usize >= plan.steps.len() {
+                self.native_system_group_march = None;
+                self.native_system_group_march_step = 0;
+                self.end_turn();
+                return;
+            }
+            let step = plan.steps[self.native_system_group_march_step as usize].clone();
+            let units = self.st.as_ref().map_or(0, |st| st.units.len());
+            if step.unit_index < 0 || step.unit_index as usize >= units {
+                self.load_err = String::from("native system group-march runtime unit disappeared");
+                self.native_system_group_march = None;
+                return;
+            }
+            if step.path.len() < 2 {
+                if !self.commit_native_system_group_march_step(&step) {
+                    return;
+                }
+                continue;
+            }
+            let (unit, path, events) = (step.unit_index as UnitIdx, step.path.clone(), step.events.clone());
+            self.walk = Some(WalkAnim {
+                u: Some(unit),
+                path,
+                then: Some(Box::new(move |g: &mut Game| {
+                    if g.commit_native_system_group_march_step(&step) {
+                        g.start_next_native_system_group_march_step();
+                    }
+                })),
+                native_event_selector: Some(1),
+                native_group_march_events: events,
+                ..Default::default()
+            });
+        }
+    }
+
+    fn commit_native_system_group_march_step(&mut self, step: &battle::NativeSystemGroupMarchStep) -> bool {
+        if let Err(err) = self.st.as_mut().unwrap().commit_native_system_group_march_step(step) {
+            self.load_err = format!("native system group-march commit: {err}");
+            self.native_system_group_march = None;
+            return false;
+        }
+        self.native_system_group_march_step += 1;
+        true
+    }
+
     /// Go：`action_overlay_runtime.go:701`，`func (g *Game) stepNativeSystemEndTurn()`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
     pub(crate) fn step_native_system_end_turn(&mut self) {
@@ -242,7 +599,9 @@ impl Game {
                         } else if state.exit_program {
                             g.native_system_exit_requested = true;
                         } else if state.group_march {
-                            todo!("R8: action_overlay_runtime.go:740 startNextNativeSystemGroupMarchStep");
+                            g.native_system_group_march = Some(std::mem::take(&mut state.group_march_plan));
+                            g.native_system_group_march_step = 0;
+                            g.start_next_native_system_group_march_step();
                         } else if !state.save_current {
                             g.end_turn();
                         }

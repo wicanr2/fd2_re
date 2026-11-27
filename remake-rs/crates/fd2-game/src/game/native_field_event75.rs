@@ -90,6 +90,17 @@ fn event75_dialogue_actions(g: &mut Game, text_index: i64, trigger: Option<UnitI
     Some(actions)
 }
 
+/// 全軍移動預檢用（Go 以 BattleFig 0 的探針單位呼叫 `event75DialogueActions`）：探針一定帶 BattleFig，
+/// 結果只取決於對白能否轉成動作。
+pub(crate) fn event75_dialogue_preflight(g: &mut Game, text_index: i64) -> bool {
+    let (line, count) = match text_index {
+        0 => (0usize, 1usize),
+        1 => (1, 5),
+        _ => return false,
+    };
+    ch29_story_dialogue_actions(g, 0, line, count, "event75").is_some()
+}
+
 /// `assets/story/ch29.json` 第 `scene_index` 幕的 `line..line+count` 句轉成對白動作；有 speaker_slot 的句子或
 /// 越界時回 `None`（失敗即關閉）。Go 的 event75／event76DialogueActions 共用這段迴圈。
 pub(crate) fn ch29_story_dialogue_actions(

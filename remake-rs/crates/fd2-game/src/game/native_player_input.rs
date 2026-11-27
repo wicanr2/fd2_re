@@ -5,6 +5,39 @@
 use super::*;
 
 impl Game {
+    /// 空游標時 Esc／Z／Numpad5：從 `native_next_player_index` 起依原生記錄順序找下一個可行動的我方單位，
+    /// 把游標逐格移過去（`step_native_player_focus`）。記錄 +5 的 0x85 位元任一成立或 +6 不是 2 的跳過。
+    ///
+    /// Go：`native_player_input.go:12`，`func (g *Game) cycleNativePlayerUnit()`
+    pub(crate) fn cycle_native_player_unit(&mut self) {
+        let Some(st) = self.st.as_ref() else { return };
+        if !st.has_native_map_view_state || self.sel.is_some() || st.units.is_empty() {
+            return;
+        }
+        let records = match battle::native_ai_scoring_records(&st.units) {
+            Ok(records) => records,
+            Err(err) => {
+                self.load_err = format!("native player cycle: {}", err.message());
+                return;
+            }
+        };
+        let count = st.units.len() as i64;
+        if self.native_next_player_index < 0 || self.native_next_player_index >= count {
+            self.load_err = String::from("native player cycle: index outside runtime records");
+            return;
+        }
+        for offset in 0..count {
+            let i = (self.native_next_player_index + offset) % count;
+            let r = &records[(i * 0x50) as usize..((i + 1) * 0x50) as usize];
+            if r[5] & 0x85 == 0 && r[6] == 2 {
+                if self.begin_native_player_focus(Some(i as UnitIdx)) {
+                    self.native_next_player_index = (i + 1) % count;
+                }
+                return;
+            }
+        }
+    }
+
     /// Go：`native_player_input.go:38`，`func (g *Game) beginNativePlayerFocus(u *battle.Unit) bool`
     pub(crate) fn begin_native_player_focus(&mut self, u: Option<UnitIdx>) -> bool {
         let ok = self.st.as_ref().is_some_and(|st| st.has_native_map_view_state)

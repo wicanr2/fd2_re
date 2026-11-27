@@ -237,6 +237,28 @@ impl Game {
     ///
     /// Go：`settings.go:181`，`func (g *Game) applyFontScale(scale float64)`
     /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    /// F7 與工具列的字級循環；HD 標題介面以新字級重建失敗時還原。
+    ///
+    /// Go：`settings.go:202`，`func (g *Game) cycleFontScale()`。Go 以 `setInterfaceMode` 重建 HD 介面，Rust 目前只有
+    /// HD 標題介面需要依字級重建（`enable_hd_title_interface`）。
+    pub(crate) fn cycle_font_scale(&mut self) {
+        let current = normalize_font_scale(self.font_scale);
+        let index = FONT_SCALES.iter().position(|&scale| scale == current);
+        let next = index.map_or(FONT_SCALES[0], |i| FONT_SCALES[(i + 1) % FONT_SCALES.len()]);
+        self.apply_font_scale(next);
+        if self.hd_title_menu.is_some()
+            && let Err(err) = self.enable_hd_title_interface()
+        {
+            self.apply_font_scale(current);
+            self.msg = format!("字級切換失敗：{err}");
+            return;
+        }
+        let mut configured = load_settings();
+        configured.font_scale = next;
+        save_settings(&configured);
+        self.msg = format!("字級：{:.0}%", next * 100.0);
+    }
+
     pub(crate) fn apply_font_scale(&mut self, scale: f64) {
         self.font_scale = normalize_font_scale(scale);
         let scale = self.font_scale;

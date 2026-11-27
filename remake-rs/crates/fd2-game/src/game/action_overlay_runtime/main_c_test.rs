@@ -750,3 +750,153 @@ fn terrain_at_and_equipped_weapon_gates() {
     assert!(native_command_action_blocked(None));
     assert!(native_command_allowed_after_move(0x22) && !native_command_allowed_after_move(9));
 }
+
+/// Go：`native_player_input_test.go:21` `TestNativePlayerCycleRawOrderSkipsEachGateAndWraps`
+#[test]
+fn test_native_player_cycle_raw_order_skips_each_gate_and_wraps() {
+    let mut st = battle::State::default();
+    (st.w, st.h) = (30, 30);
+    st.units = (0..5).map(|i| native_neutral_test_unit(7 + i, 14 + i)).collect();
+    st.units[1].native_record_byte5 = 1;
+    st.units[2].native_record_byte5 = 4;
+    st.units[3].native_record_byte5 = 0x80;
+    st.units[4].native_record_byte6 = 0;
+    st.materialize_native_map_view_state(battle::NativeMapViewState {
+        cursor_x: 1,
+        cursor_y: 1,
+        visible_cursor_x: 1,
+        visible_cursor_y: 1,
+        ..Default::default()
+    })
+    .expect("view");
+    let mut g = Game { st: Some(st), native_next_player_index: 1, ..Default::default() };
+    g.cycle_native_player_unit();
+    assert!(
+        g.load_err.is_empty()
+            && g.native_player_focus == Some(battle::Cell { x: 7, y: 14 })
+            && g.native_next_player_index == 1,
+        "cycle failed: {} target={:?} next={}",
+        g.load_err,
+        g.native_player_focus,
+        g.native_next_player_index
+    );
+    g.native_player_focus = None;
+    g.st.as_mut().unwrap().units[0].native_record_byte5 = 0x80;
+    g.cycle_native_player_unit();
+    assert!(g.native_player_focus.is_none() && g.native_next_player_index == 1, "no candidate changed state");
+    g.st.as_mut().unwrap().units[0].native_record_byte5 = 0;
+    g.sel = Some(0);
+    g.cycle_native_player_unit();
+    assert!(g.native_player_focus.is_none(), "selection cancellation was bypassed");
+}
+
+/// Go：`native_action_overlay_test.go:271` `TestSystemOptionsOverlayUsesExactCellsAndReturnsAfterFourClosePresents`
+#[test]
+fn test_system_options_overlay_uses_exact_cells_and_returns_after_four_close_presents() {
+    let mut g = Game {
+        native_system_cursor_overlay: true,
+        native_system_options_open: true,
+        native_action_cells: vec![None; 76],
+        ..Default::default()
+    };
+    for index in [54, 57, 60, 63, 66, 69, 72, 75] {
+        g.native_action_cells[index] = Some(Arc::new(Picture::new_image(1, 1)));
+    }
+    assert!(g.native_system_options_ready(), "complete 0x1728c cell bank was rejected");
+    g.begin_action_overlay_open(0);
+    while g.action_overlay_blocks_input() {
+        g.mark_action_overlay_drawn();
+        g.step_action_overlay_lifecycle();
+    }
+    assert!(g.toggle_native_system_option(0), "music option toggle failed");
+    let state = g.native_action_overlay_state();
+    assert_eq!(state.cell_index(0).ok(), Some(57), "toggled music cell");
+    g.begin_action_overlay_close(Some(Box::new(|g: &mut Game| {
+        g.native_system_options_open = false;
+        g.native_system_cursor_overlay = false;
+    })));
+    for present in 0..4 {
+        assert!(g.native_system_options_open, "system options closed before present {present}");
+        g.mark_action_overlay_drawn();
+        g.step_action_overlay_lifecycle();
+    }
+    assert!(
+        !g.ring && !g.native_system_options_open && !g.native_system_cursor_overlay,
+        "system options did not return to field"
+    );
+}
+
+/// Go：`native_system_info_ui_test.go:77` `nativeSystemInfoRuntimeTestGame`
+fn native_system_info_runtime_test_game() -> Option<Game> {
+    test_support::input("FD2_ASSET_PACK", "ui")?;
+    let mut unit = battle::Unit::default();
+    (unit.native_record_byte5, unit.has_native_record_byte5) = (0x80, true);
+    (unit.native_record_byte6, unit.has_native_record_byte6) = (0, true);
+    (unit.battle_fig, unit.has_battle_fig) = (1, true);
+    (unit.native_record_race, unit.has_native_record_race) = (1, true);
+    let mut st = battle::State::default();
+    (st.units, st.native_round_counter) = (vec![unit], 3);
+    Some(Game {
+        st: Some(st),
+        handler_chapter: 0,
+        gold: 123,
+        native_map_vga: vec![0; fdother::NATIVE_SYSTEM_INFO_BYTES],
+        native_map_dac: vec![0; 256 * 3],
+        native_system_info_assets: load_native_system_info_assets().expect("system info assets"),
+        ..Default::default()
+    })
+}
+
+/// Go：`native_system_info_ui_test.go:95` `TestPrepareNativeSystemInfoUIRunsTwelveOpenWaitTwelveClose`
+#[test]
+fn test_prepare_native_system_info_ui_runs_twelve_open_wait_twelve_close() {
+    let Some(mut g) = native_system_info_runtime_test_game() else { return };
+    let state = g.prepare_native_system_info_ui().expect("prepare");
+    assert!(state.opening.len() == 12 && state.closing.len() == 12);
+    assert_eq!(state.steady.len(), fdother::NATIVE_SYSTEM_INFO_BYTES);
+    g.native_system_info_ui = Some(state);
+    for _ in 0..12 {
+        g.native_system_info_ui.as_mut().unwrap().drawn = true;
+        g.step_native_system_info_ui();
+    }
+    assert_eq!(g.native_system_info_ui.as_ref().map(|s| s.phase.as_str()), Some("steady"));
+    let phase = g.native_fdother_palette_phase;
+    g.native_system_info_ui.as_mut().unwrap().drawn = true;
+    g.step_native_system_info_ui();
+    assert_eq!(g.native_fdother_palette_phase, (phase + 1) & 15);
+    g.close_native_system_info_ui();
+    for _ in 0..12 {
+        g.native_system_info_ui.as_mut().unwrap().drawn = true;
+        g.step_native_system_info_ui();
+    }
+    assert!(g.native_system_info_ui.is_none(), "closing did not restore battlefield");
+}
+
+/// Go：`native_system_info_ui_test.go:126` `TestPrepareNativeSystemInfoUIFailsBeforePublicationWithoutRawCount`
+#[test]
+fn test_prepare_native_system_info_ui_fails_before_publication_without_raw_count() {
+    let Some(mut g) = native_system_info_runtime_test_game() else { return };
+    g.st.as_mut().unwrap().units[0].has_native_record_race = false;
+    assert!(g.prepare_native_system_info_ui().is_err(), "missing provenance published state");
+}
+
+/// Go：`native_system_info_ui_test.go:134` `TestNestedSystemOverlayUsesRuntimeSaveAndFD2SAVGates`
+#[test]
+fn test_nested_system_overlay_uses_runtime_save_and_fd2sav_gates() {
+    let Some(_dir) =
+        f_child_env(module_path!(), "test_nested_system_overlay_uses_runtime_save_and_fd2sav_gates", |dir| {
+            vec![("FD2_NATIVE_SAVE", dir.join("missing-FD2.SAV").into_os_string())]
+        })
+    else {
+        return;
+    };
+    let Some(mut g) = native_system_info_runtime_test_game() else { return };
+    g.native_action_cells = vec![None; NATIVE_ACTION_OVERLAY_CELL_COUNT as usize];
+    for index in [36, 41, 44, 45] {
+        g.native_action_cells[index] = Some(Arc::new(Picture::new_image(1, 1)));
+    }
+    let state = g.native_nested_system_overlay_state().expect("nested system overlay was rejected");
+    for (direction, want) in [36, 41, 44, 45].into_iter().enumerate() {
+        assert_eq!(state.cell_index(direction as i64).ok(), Some(want), "direction {direction}");
+    }
+}

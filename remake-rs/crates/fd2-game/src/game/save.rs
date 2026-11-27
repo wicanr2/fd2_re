@@ -468,12 +468,19 @@ impl Game {
             }
             return Err(game_err!("save transient postbattle node blocked"));
         }
-        let snapshot: Option<BattleSnapshot> = None;
+        let mut snapshot: Option<BattleSnapshot> = None;
         if battle_node {
             // 戰鬥中只在我方可操作的地圖待機存快照；其他時刻存節點邊界會讓讀檔
             // 回到本戰開頭，與玩家按 F5 的意圖不符，所以拒絕並明示原因。
-            let _ = from_system_menu;
-            todo!("R8: battle_snapshot.go:captureBattleSnapshot（第一章受控流程不在戰鬥中存檔）");
+            match self.capture_battle_snapshot(from_system_menu) {
+                Ok(snap) => snapshot = Some(snap),
+                Err(err) => {
+                    if let (message, true) = self.locale_message("save.battle_busy", &[]) {
+                        self.msg = message;
+                    }
+                    return Err(err);
+                }
+            }
         }
         self.capture_native_map_hud_persistence();
         let mut d = self.build_save_data();
@@ -517,7 +524,6 @@ impl Game {
     /// Go：`save.go:223`，`func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool`
     /// （F 組補移植，原標 `r8`）
     ///
-    /// 存檔帶 `battle_snapshot` 時的驗證與還原（`battle_snapshot.go`）留給 R8，停在 `todo!()`。
     pub(crate) fn load_json_game_from_slot(&mut self, slot: i64, in_hotel: bool) -> bool {
         if self.camp.is_none() {
             return false;
@@ -552,8 +558,10 @@ impl Game {
             }
             return false;
         }
-        if d.battle_snapshot.is_some() && !in_hotel {
-            self.msg = "目前無法還原戰場中途存檔".into();
+        if let Some(snap) = d.battle_snapshot.as_ref().filter(|_| !in_hotel)
+            && let Err(err) = self.validate_battle_snapshot_node(snap, &d.node)
+        {
+            self.msg = err.message().to_string();
             return false;
         }
         if in_hotel {
@@ -646,6 +654,13 @@ impl Game {
         let (message, ok) = self.locale_message("save.loaded", &[(slot + 1).into(), node.into()]);
         if ok {
             self.msg = message;
+        }
+        if let Some(snap) = d.battle_snapshot.take().filter(|_| self.load_err.is_empty())
+            && let Err(err) = self.apply_battle_snapshot(&snap)
+        {
+            // 套用失敗時回到剛正常進場的本戰開頭，不發布半套狀態。
+            let (message, ok) = self.locale_message("save.battle_restore_failed", &[err.message().to_string().into()]);
+            self.msg = if ok { message } else { err.message().to_string() };
         }
         self.load_err.is_empty()
     }

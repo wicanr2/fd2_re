@@ -108,25 +108,8 @@ impl Game {
                     self.native_system_bgm_track = track;
                 }
             }
-            ToolbarAction::Font => {
-                let previous = self.font_scale;
-                let index = FONT_SCALES.iter().position(|&scale| scale == previous).unwrap_or(2);
-                self.apply_font_scale(FONT_SCALES[(index + 1) % FONT_SCALES.len()]);
-                if self.hd_title_menu.is_some() && self.enable_hd_title_interface().is_err() {
-                    self.apply_font_scale(previous);
-                    return;
-                }
-                let mut settings = load_settings();
-                settings.font_scale = self.font_scale;
-                save_settings(&settings);
-            }
-            ToolbarAction::Speed => {
-                let speed = normalize_player_speed(self.player_speed) % 4 + 1;
-                self.set_player_speed_at(speed, self.virtual_now);
-                let mut settings = load_settings();
-                settings.game_speed = speed;
-                save_settings(&settings);
-            }
+            ToolbarAction::Font => self.cycle_font_scale(),
+            ToolbarAction::Speed => self.cycle_player_speed(),
             ToolbarAction::Fullscreen => self.fullscreen_toggle_requested = true,
             ToolbarAction::Controls => self.open_controls_panel(),
             ToolbarAction::Locale => {

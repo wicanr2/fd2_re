@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_rust_parity_chapters",
+  "note": "Rust 逐章受控重播的輸入（R8）。第 1 章走 tools/rust_parity_ch01.sh，輸入寫在該腳本。槽與原版目錄在本機 work/，不入版控；tools/rust_parity_all.sh 先核對槽雜湊再重播。原版目錄須含以 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A 錄的 eip-trace.jsonl（或 .gz）。來源：WORKLOG 各章 Rust 重播段落。",
+  "chapters": [
+    {
+      "chapter": 2,
+      "slot": "work/ch02-flow-20261017/input/FD2.SAV",
+      "slot_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+      "oracle": "work/ch02-flow-20261017/original-full-r2"
+    },
+    {
+      "chapter": 3,
+      "slot": "work/ch03-flow-20261017/input/FD2.SAV",
+      "slot_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+      "oracle": "work/ch03-flow-20261017/original-full-r3"
+    },
+    {
+      "chapter": 4,
+      "slot": "work/parity-slot-ch04/FD2.SAV",
+      "slot_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+      "oracle": "work/parity-slot-ch04/sample-r13"
+    },
+    {
+      "chapter": 5,
+      "slot": "work/parity-slot-ch05/FD2.SAV",
+      "slot_sha256": "c01e220e69532604cb2f78e5a8be2b7977e92f2c9faec37b20d143c28bd0d99a",
+      "oracle": "work/parity-slot-ch05/sample-r5"
+    },
+    {
+      "chapter": 6,
+      "slot": "work/parity-slot-ch06/FD2.SAV",
+      "slot_sha256": "bb658c94da6576730029842608af85e4540af017c2117663e27c47b48255e49a",
+      "oracle": "work/parity-slot-ch06/sample-r4"
+    },
+    {
+      "chapter": 7,
+      "slot": "work/parity-slot-ch07/FD2.SAV",
+      "slot_sha256": "85b080cb71d69add3cf404e881836e511a546876873a8b43e8dc4d6a77e0f348",
+      "oracle": "work/parity-slot-ch07/sample-r6"
+    },
+    {
+      "chapter": 8,
+      "slot": "work/parity-slot-ch08/FD2.SAV",
+      "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+      "oracle": "work/parity-slot-ch08/sample-r1"
+    },
+    {
+      "chapter": 9,
+      "slot": "work/parity-slot-ch09/FD2.SAV",
+      "slot_sha256": "93be4185fda3e460c558fc935620ac987f7c6c830c2934b1c4e77d789602d900",
+      "oracle": "work/parity-slot-ch09/sample-r3"
+    },
+    {
+      "chapter": 10,
+      "slot": "work/parity-slot-ch10/FD2.SAV",
+      "slot_sha256": "257f751c56c1f272f99b90f0247fb866721d066432e280ef3dc1e761fc953157",
+      "oracle": "work/parity-slot-ch10/sample-r1"
+    },
+    {
+      "chapter": 11,
+      "slot": "work/parity-slot-ch11/FD2.SAV",
+      "slot_sha256": "70e8c773e7d770f7360f884a565f5cc85a67f18d88e0b33a868795e67f51dd87",
+      "oracle": "work/parity-slot-ch11/sample-r1"
+    },
+    {
+      "chapter": 12,
+      "slot": "work/parity-slot-ch12/FD2.SAV",
+      "slot_sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+      "oracle": "work/parity-slot-ch12/sample-r5"
+    },
+    {
+      "chapter": 13,
+      "slot": "work/parity-slot-ch13/FD2.SAV",
+      "slot_sha256": "f20afb229914534828b45dc677fafd46a47c0686b4d65b1602856222d9fb9571",
+      "oracle": "work/parity-slot-ch13/sample-r2"
+    },
+    {
+      "chapter": 14,
+      "slot": "work/parity-slot-ch14/FD2.SAV",
+      "slot_sha256": "561dc7452cb701c85942a48dfeaf4c42a4c997181df3f4cf496e29c73692589c",
+      "oracle": "work/parity-slot-ch14/sample-r1"
+    },
+    {
+      "chapter": 15,
+      "slot": "work/parity-slot-ch15/FD2.SAV",
+      "slot_sha256": "c78fc28e831b343191f9cc1fc7f87d0ddb62db3d70b7f1728563c41b2bfaf4a4",
+      "oracle": "work/parity-slot-ch15/sample-r2"
+    },
+    {
+      "chapter": 16,
+      "slot": "work/parity-slot-ch16/FD2.SAV",
+      "slot_sha256": "11d1d099cb01c822687618fbf26e673b380c8414e813b84b840c3f988686df91",
+      "oracle": "work/parity-slot-ch16/sample-r1"
+    },
+    {
+      "chapter": 17,
+      "slot": "work/parity-slot-ch17/FD2.SAV",
+      "slot_sha256": "da6087c33924f7160120e740a8d1db64967dcb59bae2837b1f2968ad2616dc37",
+      "oracle": "work/parity-slot-ch17/sample-r2"
+    },
+    {
+      "chapter": 18,
+      "slot": "work/parity-slot-ch18/FD2.SAV",
+      "slot_sha256": "ac9fdbe5e1260fec0c3cf14c1cbe75cec52007a724cac0db41bf50bb1f087248",
+      "oracle": "work/parity-slot-ch18/sample-r1"
+    },
+    {
+      "chapter": 19,
+      "slot": "work/parity-slot-ch19/FD2.SAV",
+      "slot_sha256": "a55cdde9d31daf9734d6cf68fdce1041fd340e39a90ae3b33f5a536d2fbeef1b",
+      "oracle": "work/parity-slot-ch19/sample-r1"
+    },
+    {
+      "chapter": 20,
+      "slot": "work/parity-slot-ch20/FD2.SAV",
+      "slot_sha256": "caf5d963c16dc8bbd7566fb7d7726f7f1bee4e12077e38aef07d6bd2f3cba172",
+      "oracle": "work/parity-slot-ch20/sample-r1"
+    },
+    {
+      "chapter": 21,
+      "slot": "work/parity-slot-ch21/FD2.SAV",
+      "slot_sha256": "0cc81b8b5f0b125611986244357dd86232cb01a307857a72da1f6ecd2005479f",
+      "oracle": "work/parity-slot-ch21/sample-r1"
+    },
+    {
+      "chapter": 22,
+      "slot": "work/parity-slot-ch22/go-era-slot/FD2.SAV",
+      "slot_sha256": "22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd",
+      "oracle": "work/parity-slot-ch22/full-original-r2"
+    },
+    {
+      "chapter": 23,
+      "slot": "work/parity-slot-ch23/FD2.SAV",
+      "slot_sha256": "3d507974f79fab7082e81e6fa050c371d38e8609b5fcc9d8c199d3b6f42f18ff",
+      "oracle": "work/parity-slot-ch23/sample-r2"
+    },
+    {
+      "chapter": 24,
+      "slot": "work/parity-slot-ch24/FD2.SAV",
+      "slot_sha256": "722cf1e1df85d3838dd17d2629c4f6e45b114ceabd5fb74e2808ed748e71bcfa",
+      "oracle": "work/parity-slot-ch24/sample-r2"
+    },
+    {
+      "chapter": 25,
+      "slot": "work/ch25-flow-20261015/input/FD2.SAV",
+      "slot_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+      "oracle": "work/parity-slot-ch25/old-r4-oracle"
+    },
+    {
+      "chapter": 26,
+      "slot": "work/parity-slot-ch26/FD2-boost.SAV",
+      "slot_sha256": "327f7405c47f3b08df25743ec97789e308f6cddbf0655741c9c1f95b948bb872",
+      "oracle": "work/parity-slot-ch26/sample-r1"
+    },
+    {
+      "chapter": 27,
+      "slot": "work/parity-slot-ch27/FD2.SAV",
+      "slot_sha256": "9d87927fdd1fa324609e8537c67aec5cdcd4c3ba5fe0e28a3d22f48ab26a8082",
+      "oracle": "work/parity-slot-ch27/sample-r1"
+    },
+    {
+      "chapter": 28,
+      "slot": "work/parity-slot-ch28/boost/FD2.SAV",
+      "slot_sha256": "3ecd2a2a2b842edf5b7ad6d45a7c41d86e4e254830566e2507446a488aa5dd82",
+      "oracle": "work/parity-slot-ch28/sample-r1"
+    },
+    {
+      "chapter": 29,
+      "slot": "work/ch29-flow-20261017/input-ap5000/FD2.SAV",
+      "slot_sha256": "aad6a138b35d9b45b4a3941e39880e34106f77767d0b5cc05fd90c372cc35dcf",
+      "oracle": "work/ch29-flow-20261017/original-r7"
+    },
+    {
+      "chapter": 30,
+      "slot": "work/ch30-flow-20261017/input/FD2.SAV",
+      "slot_sha256": "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+      "oracle": "work/ch30-flow-20261017/original-full-r2"
+    }
+  ]
+}

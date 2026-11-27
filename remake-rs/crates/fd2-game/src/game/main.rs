@@ -773,6 +773,8 @@ pub struct Game {
     pub(crate) native_system_exit_requested: bool,
     pub(crate) native_system_group_march: Option<battle::NativeSystemGroupMarchPlan>,
     pub(crate) native_system_group_march_step: i64,
+    /// 系統確認框建好、等命令框收合時暫存的狀態（`begin_native_system_confirmation`）。
+    pub(crate) native_system_confirmation_pending: Option<Box<NativeSystemEndTurnUIState>>,
     /// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
     pub(crate) frame: i64,
     pub(crate) shot_path: String,
@@ -5535,7 +5537,7 @@ impl Game {
         let esc = just(Key::Escape) || just(Key::Backspace);
         if let Some(info) = self.native_system_info_ui.as_ref() {
             if info.phase == "steady" && input.any_just_pressed() {
-                todo!("R8: main.go:5619 closeNativeSystemInfoUI（第一章重播沒有執行到）");
+                self.close_native_system_info_ui();
             }
             return true;
         }
@@ -5574,7 +5576,8 @@ impl Game {
                 return true;
             }
             if esc {
-                todo!("R8: main.go:5641 cancelNativeSystemEndTurn（第一章重播沒有執行到）");
+                self.cancel_native_system_end_turn();
+                return true;
             }
             if let Some(state) = self.native_system_end_turn_ui.as_mut() {
                 if just(Key::ArrowLeft) {
@@ -5585,7 +5588,11 @@ impl Game {
                 }
             }
             if enter {
-                todo!("R8: main.go:5652 cancelNativeSystemEndTurn／confirmNativeSystemEndTurn（第一章重播沒有執行到）");
+                if self.native_system_end_turn_ui.as_ref().is_some_and(|state| state.choice == 1) {
+                    self.cancel_native_system_end_turn();
+                } else {
+                    self.confirm_native_system_end_turn();
+                }
             }
             return true;
         }
@@ -5607,8 +5614,8 @@ impl Game {
                 })));
                 return true;
             }
-            if enter {
-                todo!("R8: main.go:5678 toggleNativeSystemOption（第一章重播沒有執行到）");
+            if enter && !self.toggle_native_system_option(self.ring_sel) {
+                self.msg = String::from("原版系統設定值無效，未變更");
             }
             return true;
         }
@@ -5630,11 +5637,28 @@ impl Game {
                 })));
                 return true;
             }
-            if enter && (0..=3).contains(&self.ring_sel) {
-                todo!(
-                    "R8: main.go:5704 巢狀系統選單（activateNativeSystemDirectionOne、prepareNativeSystemInfoUI、\
-                     beginNativeNestedSystemExit、beginNativeNestedCurrentLoad；第一章重播沒有執行到）"
-                );
+            if enter {
+                let selector = self.ring_sel;
+                match selector {
+                    1 => {
+                        self.activate_native_system_direction_one();
+                    }
+                    0 => match self.prepare_native_system_info_ui() {
+                        Ok(state) => self.begin_action_overlay_close(Some(Box::new(move |g: &mut Game| {
+                            g.native_system_nested_open = false;
+                            g.native_system_cursor_overlay = false;
+                            g.native_system_info_ui = Some(state);
+                        }))),
+                        Err(_) => self.msg = String::from("原版戰場資訊來源不完整，未開啟畫面"),
+                    },
+                    3 if !self.begin_native_nested_system_exit() => {
+                        self.msg = String::from("原版離場確認資產不完整，未離開遊戲");
+                    }
+                    2 if !self.begin_native_nested_current_load() => {
+                        self.msg = String::from("原版目前戰況讀檔來源或資產不完整，保留目前戰場");
+                    }
+                    _ => {}
+                }
             }
             return true;
         }
@@ -5654,11 +5678,37 @@ impl Game {
                 })));
                 return true;
             }
-            if enter && (0..=3).contains(&self.ring_sel) {
-                todo!(
-                    "R8: main.go:5753 系統游標選單（nativeNestedSystemOverlayState、beginNativeSystemEndTurn、\
-                     nativeSystemOptionsReady、activateNativeSystemDirectionOne；第一章重播沒有執行到）"
-                );
+            if enter {
+                let selector = self.ring_sel;
+                match selector {
+                    0 => {
+                        if self.native_nested_system_overlay_state().is_none() {
+                            self.msg = String::from("原版巢狀系統選單圖格或狀態不完整");
+                            return true;
+                        }
+                        self.begin_action_overlay_close(Some(Box::new(|g: &mut Game| {
+                            g.native_system_nested_open = true;
+                            g.begin_action_overlay_open(0);
+                        })));
+                    }
+                    3 if !self.begin_native_system_end_turn() => {
+                        self.msg = String::from("原版 END 確認資產不完整，未結束回合");
+                    }
+                    2 => {
+                        if !self.native_system_options_ready() {
+                            self.msg = String::from("原版系統設定圖格不完整，未開啟選單");
+                            return true;
+                        }
+                        self.begin_action_overlay_close(Some(Box::new(|g: &mut Game| {
+                            g.native_system_options_open = true;
+                            g.begin_action_overlay_open(0);
+                        })));
+                    }
+                    1 => {
+                        self.activate_native_system_direction_one();
+                    }
+                    _ => {}
+                }
             }
             return true;
         }
@@ -7618,10 +7668,10 @@ impl Game {
         }
         if global && self.player_font_requested {
             // 全域：切換字級
-            todo!("R8: settings.go:cycleFontScale（F7 字級切換）")
+            self.cycle_font_scale();
         }
         if global && self.player_speed_requested {
-            todo!("R8: player_game_clock.go:cyclePlayerSpeed（F8 遊戲速度）")
+            self.cycle_player_speed();
         }
         let physical = input.physical();
         if self.native_ending.is_none() && physical.is_pressed(Key::Control) && physical.is_just_pressed(Key::F12) {
@@ -7883,11 +7933,11 @@ impl Game {
         }
         if !native_modifier_held(&input) && just(Key::F5) {
             // 快速存檔:節點進度;戰鬥中可操作時附戰場快照(battle_snapshot.go)
-            todo!("R8: save.go:saveGame（F5 快速存檔）")
+            self.save_game();
         }
         if !native_modifier_held(&input) && just(Key::F9) {
             // 快速讀檔
-            todo!("R8: save.go:loadGame（F9 快速讀檔）")
+            self.load_game();
         }
         let dialogue_advance = native_battle_dialogue_advance_input(enter_or_space, just(Key::Escape));
         if self.native_level_up_dialogue.is_some() {
@@ -8008,12 +8058,13 @@ impl Game {
         if cancel {
             if self.sel.is_some() && self.moved {
                 // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
-                todo!("R8: returnPlayerAttackTargetToRing（攻擊目標退回指令環）")
+                self.return_player_attack_target_to_ring();
             } else if self.sel.is_none() && st_has_view(self) && just(Key::Escape) {
-                todo!("R8: cycleNativePlayerUnit（ESC 輪流選我方單位）")
+                self.cycle_native_player_unit();
             } else {
                 if self.native_move_plan.is_some() {
-                    todo!("R8: restorePlayerMovementCursor／clearNativePlayerMovement（取消移動）")
+                    self.restore_player_movement_cursor();
+                    self.clear_native_player_movement();
                 }
                 (self.sel, self.reach) = (None, BTreeMap::new());
                 self.msg.clear();
@@ -8021,7 +8072,7 @@ impl Game {
         }
         if self.sel.is_none() && st_has_view(self) {
             if just(Key::Z) || just(Key::Numpad5) {
-                todo!("R8: cycleNativePlayerUnit（Z／Numpad5 輪流選我方單位）")
+                self.cycle_native_player_unit();
             }
             if just(Key::Home) {
                 let (x, y) = (self.cur_x, self.cur_y);

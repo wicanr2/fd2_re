@@ -331,3 +331,91 @@ fn test_native_preparation_confirmation_mouth_wait_shows_both_frames() {
         "formal confirmation wait does not show both mouth frames {seen:?}"
     );
 }
+
+/// 跑完目前的原版開合工作（每格都先標成已畫）。
+fn finish_native_class_ui_job(g: &mut Game) {
+    for _ in 0..64 {
+        let Some(job) = g.native_class_ui_job.as_mut() else {
+            return;
+        };
+        job.drawn = true;
+        g.step_native_class_ui_lifecycle(GameInstant(0));
+    }
+    panic!("原版開合工作沒有結束");
+}
+
+/// Go：`native_confirmation_mouth_test.go:59` `TestNativeConfirmationMouthENDWaitAndCallerPortrait` 的流程部分：
+/// 系統游標選單 Down→END 收合四格後建立確認框；取消時收合、回覆、停留延遲、收框都走完，不結束回合。
+/// Go 測試後半的嘴型共用（另一個呼叫端頭像）由 `test_native_preparation_confirmation_mouth_wait_shows_both_frames`
+/// 涵蓋同一個合成器。
+#[test]
+fn test_native_system_end_turn_confirmation_cancel_keeps_turn() {
+    if !asset_pack_ready("ui/fdother_010_town_label/resource.json") {
+        return;
+    }
+    let Some(_dir) = f_child_env(module_path!(), "test_native_system_end_turn_confirmation_cancel_keeps_turn", |dir| {
+        vec![("FD2_NATIVE_SAVE", "".into()), ("XDG_DATA_HOME", dir.as_os_str().to_owned())]
+    }) else {
+        return;
+    };
+    let mut g = new_preparation_record_test_game();
+    g.camp = None;
+    let mut st = battle::State::default();
+    (st.w, st.h) = (24, 24);
+    g.st = Some(st);
+    (g.ring, g.ring_sel, g.native_system_cursor_overlay) = (true, 3, true);
+    g.native_map_vga = vec![0; 320 * 200];
+    g.native_confirmation_mouth_rng = Some(battle::GoMathRand::new(177));
+    assert!(g.begin_native_system_end_turn(), "normal END refused");
+    assert!(g.native_system_end_turn_ui.is_none(), "END state published before the overlay closed");
+    for _ in 0..4 {
+        g.mark_action_overlay_drawn();
+        g.step_action_overlay_lifecycle();
+    }
+    assert!(!g.native_system_cursor_overlay && g.native_system_end_turn_confirm, "overlay did not hand over to END");
+    assert!(g.native_system_end_turn_ui.as_ref().is_some_and(|state| state.portraits.len() >= 4));
+    finish_native_class_ui_job(&mut g);
+    assert!(g.native_system_end_turn_confirm, "opening frames consumed the confirmation");
+    g.cancel_native_system_end_turn();
+    assert!(!g.native_system_end_turn_confirm, "cancel kept the confirmation open");
+    finish_native_class_ui_job(&mut g);
+    finish_native_class_ui_job(&mut g);
+    assert_eq!(g.native_system_end_turn_delay, NATIVE_SYSTEM_END_TURN_DELAY_FRAMES);
+    for _ in 0..NATIVE_SYSTEM_END_TURN_DELAY_FRAMES {
+        g.step_native_system_end_turn();
+    }
+    finish_native_class_ui_job(&mut g);
+    let state = g.st.as_ref().unwrap();
+    assert!(g.native_system_end_turn_ui.is_none() && state.turn == 0 && !g.ai_busy, "cancel committed the turn");
+}
+
+/// Go：`native_confirmation_mouth_test.go:122` `TestNativeConfirmationMouthMissingFrameFailsBeforeENDMutation`
+#[test]
+fn test_native_confirmation_mouth_missing_frame_fails_before_end_mutation() {
+    if !asset_pack_ready("ui/fdother_010_town_label/resource.json") {
+        return;
+    }
+    let Some(_dir) =
+        f_child_env(module_path!(), "test_native_confirmation_mouth_missing_frame_fails_before_end_mutation", |dir| {
+            vec![("FD2_NATIVE_SAVE", "".into()), ("XDG_DATA_HOME", dir.as_os_str().to_owned())]
+        })
+    else {
+        return;
+    };
+    let mut g = new_preparation_record_test_game();
+    g.camp = None;
+    let mut st = battle::State::default();
+    (st.w, st.h) = (24, 24);
+    g.st = Some(st);
+    (g.ring, g.ring_sel, g.native_system_cursor_overlay) = (true, 3, true);
+    g.native_map_vga = vec![0; 320 * 200];
+    g.native_preparation_ui.as_mut().unwrap().portraits.truncate(1);
+    assert!(
+        !g.begin_native_system_end_turn()
+            && g.ring
+            && g.native_system_cursor_overlay
+            && g.native_system_end_turn_ui.is_none()
+            && g.action_overlay_phase.is_empty(),
+        "missing DATO3 changed END owner"
+    );
+}

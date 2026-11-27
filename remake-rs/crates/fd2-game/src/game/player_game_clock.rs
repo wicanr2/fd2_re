@@ -55,6 +55,17 @@ impl Game {
     /// Go：`player_game_clock.go:35`，`func (g *Game) setPlayerSpeedAt(speed int, now time.Time)`
     ///
     /// R5 階段 4（r5w）移植，只給 `player_battle_speed.go` 的測試用；F8 的 `cyclePlayerSpeed` 仍是 `r8`。
+    /// F8 與工具列的遊戲速度循環 1→2→3→4→1，並寫回設定。
+    ///
+    /// Go：`player_game_clock.go:41`，`func (g *Game) cyclePlayerSpeed()`
+    pub(crate) fn cycle_player_speed(&mut self) {
+        let next = normalize_player_speed(self.player_speed) % 4 + 1;
+        self.set_player_speed_at(next, self.virtual_now);
+        let mut configured = load_settings();
+        configured.game_speed = self.player_speed;
+        save_settings(&configured);
+    }
+
     pub(crate) fn set_player_speed_at(&mut self, speed: i64, now: GameInstant) {
         self.player_clock.sample(now);
         self.player_speed = normalize_player_speed(speed);

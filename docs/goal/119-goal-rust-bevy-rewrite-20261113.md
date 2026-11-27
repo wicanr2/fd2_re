@@ -121,6 +121,25 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 一般玩家路徑補移植：系統選單、戰場快照與快捷鍵（RUNTIME-E1，2026-11-27）
+
+30 章受控重播都通過，只代表樣本走到的函式已移植。產品碼仍留著 `todo!()` 樁，一般玩家走到就會中止；剩下多少一律以 [`tools/rust_todo_inventory.py`](../../tools/rust_todo_inventory.py) 現場產生，不在文件寫死。本輪從 151 處降到 134 處（R8 84→68、R6 65→64），照 Go 補上：
+
+- 地圖操作：取消移動、選攻擊目標時 Esc 退回指令環、空游標 Esc／Z／Numpad5 輪流選我方單位（`cycleNativePlayerUnit`）。
+- 系統游標選單（0x16F55）與巢狀選單（0x19DF7）：結束回合確認、系統選項切換（含音樂與 HUD 閘門 A）、離開遊戲確認、全軍移動、戰場資訊畫面。確認框共用一段建立程序，問句、兩組回覆與 10 格開場全部建好才收起命令框。
+- 戰場快照（`battle_snapshot.go`，56「#303 戰場JSON快照」）：戰鬥中 F5 與巢狀選單存檔附快照，F9／LOAD 先正常進場再套用。Rust 的 `Game` 不能複製，能預先驗的都在複本上做；寫回後的視角或可操作檢查失敗時重新進入同一個戰鬥節點，結果與 Go 保留剛進場的狀態相同。
+- 快捷鍵：F5、F9、F7 字級、F8 速度；工具列的字級與速度改呼叫同一個方法。
+
+仍失敗即關閉、顯示 Go 的同一句訊息，不中止的有：
+
+- 巢狀選單讀回目前戰況（`prepareNativeContinueFromCurrentSnapshot` 未移植）。
+- 有原版目前戰況基底時的原版存檔（`buildNativeCurrentSaveStored` 未移植）。
+- 含事件 61 的全軍移動（`event61DialogueActions` 未移植）。
+
+HD 介面下的系統確認框與戰場資訊先畫原版索引畫格（HD 版屬 R6）；非繁中語系的戰場資訊目前仍是原版中文。
+
+驗證：照 Go 移植 `TestNativePlayerCycleRawOrderSkipsEachGateAndWraps`、`TestSystemOptionsOverlayUsesExactCellsAndReturnsAfterFourClosePresents`、`TestPrepareNativeSystemInfoUIRunsTwelveOpenWaitTwelveClose`、`TestPrepareNativeSystemInfoUIFailsBeforePublicationWithoutRawCount`、`TestNestedSystemOverlayUsesRuntimeSaveAndFD2SAVGates`、`TestNativeConfirmationMouthMissingFrameFailsBeforeENDMutation`；新增 END 確認取消不結束回合、快照來回與阻擋、版本／節點／地圖不符時不改狀態。fd2-game 480 項與 Clippy 通過。Go 的第一關快照整合測試要先補 `fastForwardShotCampaign`，尚未移植。
+
 ### R6 HD 載入、記憶體與繪製尖峰（RUNTIME-E1，2026-11-27）
 
 使用者要求 Rust 版優化圖片讀取與記憶體，載入或切換原版／HD 不要久等。先量再改，畫面結果不變：
