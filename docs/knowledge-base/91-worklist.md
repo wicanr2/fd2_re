@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 37 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 35 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -69,20 +69,6 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 IDA 9.4列出[0x53EC8]的直接寫入端時，函式0x1ECC7（由0x1E856呼叫）在0x1F024／0x1F03C以mov覆寫累計，不是累加。呼叫情境與覆寫值的來源未查。證據見docs/data/ida/fd2_command_experience_writers_20261114.json的not_resolved。
 
 怎樣算做完：以IDA直接指令與caller閉合0x1ECC7覆寫的情境與數值來源，寫入證據檔並登記58；若屬玩家可達路徑，重製端依規格接線。
-
-### 第22章重建槽第1回合零旗標主攻／非零旗標反擊，原版0x4E6BD越界寫入
-
-`ch22-zero-flag-counter-caller-bg` · RE待解 · [#321](https://github.com/wicanr2/fd2_re/issues/321) · 仍未完成 · 要人判
-
-依 #193 結案留言另開的窄題：可比的原版正常狀態再次觸發零旗標主攻（FIGANI byte1=0）對非零旗標反擊（byte1≠0）。
-
-輸入：由第21章槽重建的第22章槽（SHA-256前綴 ce8588c8，24人），計畫 docs/data/parity-plans/ch22-sample-r3.jsonl（只把選人右鍵改7次）。dosgolem d1414930、工作樹乾淨。第1回合敵方階段 record 48（camp 0）出手時，原版以 adapter 近堆在 0x4E6BD STOSB 寫 0160:00291001 中止（seq 684）；改用 native 近堆重跑，同一次行動在 0x4E6A7 STOSB 寫 0160:002A1017 中止（seq 683）。兩種近堆都失敗，因此不是 #192 的近堆模式問題。
-
-Rust 重播同一份原版收據到這一步前 30 筆檢查點無分歧，停在 native_physical_body 的既有拒收「native physical counter requires unavailable caller BG layers」。重製端照 #193 保留失敗即關閉，沒有猜補背景。
-
-既有線索見 docs/data/ida/fd2_ch18_oracle_stosb_20261003.json 的 lifetime_lead：28A6C 只依主攻 byte1 載入 BG0..2，反擊 2939D 仍進 29C90，可能消費前一場已釋放的 5410B 指標（假說）。
-
-怎樣算做完：以同源原版收據定位這次反擊讀到的 BG 指標、header 與 payload 來源（writer／consumer、raw bytes、推論等級），寫入 IDA 證據檔；判定原版在實機上的可見結果後，再決定重製端的正式行為與規格。第22章章重播在此之前維持 BLOCKED。
 
 ## data — 可編輯資料還沒就緒
 
@@ -376,25 +362,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
-
-### P1 戰鬥中存檔：F5讀檔回到章首，戰鬥選單存檔無反應
-
-`battle-midsave-json-snapshot` · 缺陷 · [#303](https://github.com/wicanr2/fd2_re/issues/303) · **可能已完成，回去確認** · 已經出現在 remake/cmd/fd2/save.go
-
-使用者2026-11-12以v.1.1.9 Windows完整版回報：即時存檔讀回後回到每一章開頭，戰鬥中無法正常存檔。
-
-程式根因（已證實，讀碼）：
-
-| 現象 | 根因 | 位置 |
-|---|---|---|
-| F5／F9回章首 | 自有JSON只記戰役節點，戰鬥中存檔依設計回到該戰節點 | `remake/cmd/fd2/save.go` 檔頭與 `saveGameToSlot` |
-| 戰鬥選單存檔無反應 | 原版戰況寫入端要求 `FD2_NATIVE_SAVE`，正式包未設定 | `remake/cmd/fd2/native_current_save.go` `buildNativeCurrentSaveStored` |
-| 同上 | 一般劇情進戰從未物化原版戰場控制影像，只有標題CONTINUE進戰才設 `HasNativeFieldControlState` | `remake/internal/campaign/native_continue_field_boundary.go` |
-| 失敗無提示 | 錯誤只寫 `loadErr`，一般遊玩不顯示 | `remake/cmd/fd2/action_overlay_runtime.go` `beginNativeNestedCurrentSave` |
-
-使用者2026-11-12定案：戰中完整還原，採重製自有JSON戰場快照，不走原版FD2.SAV current snapshot。原版FD2.SAV寫入端0x30012只由整備與酒店呼叫，戰鬥中不得寫原版章節槽。規格先於`56`立READY契約再實作。
-
-怎樣算做完：一般劇情進戰後於我方可操作狀態F5，新程序F9與標題LOAD回到同一回合、單位位置／HP／MP／狀態、敵軍、事件旗標、寶箱與鏡頭；繼續遊玩至戰後節點無分歧。演出、AI回合或對話中F5明示拒絕並有玩家可見提示。戰鬥選單存檔在正式包有可見結果。原版FD2.SAV章節槽不在戰鬥中寫入。既有節點存檔可照常讀取。
 
 ### Rust改寫R5：Bevy外殼與原版美術
 
