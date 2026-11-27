@@ -91,11 +91,14 @@ impl Game {
         let animations = separated_asset_path("animations");
         r.actor_idle = Some(figani::load_separated_resource(&animations, actor_fig * 3)?);
         r.target_idle = Some(figani::load_separated_resource(&animations, target_fig * 3)?);
+        // 主攻 FIGANI byte1=0 時原版 28A6C 不重載 BG0..2，`dword_5410B/F/13` 仍是上一個非零旗標場景
+        // free 掉的指標，非零旗標反擊經 29CC2 照讀（#321，原版 use-after-free）。那三個指標固定來自
+        // `BG.DAT` 0／1／2，記憶體未被覆用時畫面與一般反擊相同；使用者 2026-11-27 定案重製端取這個
+        // 可見結果，照常載入三層，不重現覆用後的損壞或中止。
+        let mut counter_reads_stale_layers = false;
         if counter_eligible {
             let counter = figani::load_separated_resource(&animations, target_fig * 3 + 1)?;
-            if attack.header_byte1 == 0 && counter.header_byte1 != 0 {
-                return Err(game_err!("native physical counter requires unavailable caller BG layers"));
-            }
+            counter_reads_stale_layers = attack.header_byte1 == 0 && counter.header_byte1 != 0;
             r.counter = Some(counter);
         }
         r.platform = fdother::load_separated_single_frame(
@@ -106,6 +109,8 @@ impl Game {
         r.target_bg = scene.background_frame.clone();
         if scene.selection.has_separate_backgrounds {
             r.target_bg = scene.target_background.clone();
+        }
+        if scene.selection.has_separate_backgrounds || counter_reads_stale_layers {
             for (i, layer) in r.layers.iter_mut().enumerate() {
                 *layer = fdother::load_separated_single_frame(separated_asset_path("surfaces"), "BG.DAT", i as i64)?;
             }

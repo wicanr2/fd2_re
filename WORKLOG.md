@@ -6096,3 +6096,12 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 新增 `native_ai_item_presentation_test.rs`，移植 Go 兩個原版素材測試：敵方 type21（38 格、發布點 16），我方 type24（`0x1cd17`，40 格、發布點 18）與 type21（38 格、發布點 16）。三者都檢查發布前 HP 與 RNG 不變、結束時等於交易結果。
 - 結局：補 `FD2_ENDING_PREFIX` 開發者直接預覽（`new_native_ending_preview`，`FD2_ENDING_CHAPTER` 只收 26 或 29）、除錯模式的蒙太奇證據提示（`native_ending_evidence_overlay`），以及正式路徑等待後備時的三種提示框（`ending.continue_editable`／`terminal_missing`／`montage_requirements`，上一輪漏畫）。`playerAssetPath` 在 Go 沒有呼叫端，不移植。
 - 驗證層級：道具演出為重製端單元測試對照 Go 測試期望值，沒有新的原版收據；結局提示沒有自動測試。Rust 遊戲回歸 463 項通過。
+
+## 2026-11-27 #303 結案、#321 反擊背景層定案與第 22、25 章重播
+
+- #303：Go `14c33d3b` 已完成戰場 JSON 快照（56「2026-11-13 #303 戰場JSON快照」，RUNTIME-E1），Rust `save.rs` 有同欄位；使用者確認後關閉，Windows 實機屬人工驗證。
+- #321：使用者 2026-11-27 定案反擊「可見結果一樣即可」。原版 `sub_28A6C` 只在主攻 byte1≠0 時載入 `BG.DAT` 0／1／2 到 `dword_5410B/F/13`，byte1=0 時這三個全域是上一場已 free 的指標，非零旗標反擊照讀（釋放後使用）。Rust `native_physical_body.rs` 改為這個組合照常載入三層，取代拒收；Go 凍結不改。規格見 56「2026-11-27 #321」。
+- 原版連擊返回另讀 `dword_54103`，主攻 byte1=0 時也是前一場的懸空值；重製端用本場背景，不追跨場景殘值。
+- 第 22 章：#321 樣本 `ch22-sample-r3` 走過原拒收點，31 筆相同；Go 時代原版 `full-original-r2` 整章 45 筆無分歧，存檔 `3c7298cd` 逐位元組相同。
+- 第 25 章：r7 樣本 30 筆相同；Go 時代原版 `original-r4` 整章 41 筆無分歧，存檔 `52984034` 與原版只差政策 `ch25-opaque-20261016` 已揭露的 9 byte。
+- Rust 遊戲回歸 463 項通過。
