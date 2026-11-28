@@ -121,6 +121,27 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 後備介面與小型流程缺口（RUNTIME-E1，2026-11-28）
+
+這一輪補的是缺原版素材時才會走的 TTF 後備介面，以及幾個只有晚期章節走得到的小流程。
+
+流程缺口：
+- 指令環在巢狀系統選單開著時，改用 `nativeNestedSystemOverlayState`；圖格或紀錄缺件時四向都不可用。
+- 近似戰後節點按確認後前進（`continueApproximatePostbattle`）。
+- 第 28 章戰後對話在戰場還沒有原生視圖時，以圖塊對齊的戰鬥鏡頭與游標物化視圖（`materializeInheritedNativeDialogueView`），不對齊或為負值就回錯。
+- 戰鬥事件出錯時，原生章節結果進行中就以 `failNativeChapterResult` 擋住啟動。
+
+後備介面：
+- 戰場物品：原版面板畫不出來時改用八格 TTF 清單，Enter 只顯示訊息、不使用物品（0x20c6f 的效果／目標表未閉合）。
+- 原生指令格：依 0x1CEED 的四列配置畫官方指令名稱，名稱以 1.0 倍起每次縮 0.02 放進 138 像素寬，縮到 0.6 倍以下仍放不進就回錯。
+- 戰役介面：流程結束的 GAME OVER、choice 與城鎮的後備選單、ending 結語，以及商店、酒店、整備的後備版面。
+- TTF 後備商店的輸入：Rust 原本在原生商店沒有啟動時只接受 Esc 離店，Go `main.go:5242` 的買賣流程沒有移植也沒有標記。現在補上買（選收件人、裝備類先詢問是否裝備，Esc 不裝備也成交、最後扣錢）、Tab 切到賣（選人、選道具，得 75% 價格）與逐層退回。Go 的 `shopReceiverIDs`／`shopSellIDs` 補名冊其餘成員時走 map，順序不固定；Rust 的名冊是 `BTreeMap`，依編號遞增。
+
+驗證：
+- 移植 Go 的 `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary` 與 `TestOfficialCommandNamesFitNativeGridCell`（四語系各 35 個指令名放得進格子），並在 `TestNestedSystemOverlayUsesRuntimeSaveAndFD2SAVGates` 補上指令環狀態的分派。另補重製端測試：章節結果失敗、繼承視圖的對齊檢查、後備物品清單、後備商店買賣、六種戰役後備版面以真字型畫出。
+- fd2-game 561 項、Clippy 通過；`todo!` 從 120 降到 107。
+- 在提交 `e9e30299`（流程缺口）與 `de96dfce`（含其後三個後備介面提交）的獨立 worktree 各重跑第 1～30 章，全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-e9e30299/summary.tsv`、`work/rust-parity-all-de96dfce/summary.tsv`）。
+
 ### R8 玩家指令 9 演出（RUNTIME-E1，2026-11-28）
 
 玩家指令 9 的地圖演出照 Go `startNativeCommand9PlayerPresentation` 移植（主證據 `docs/data/ida/fd2_command9_player_ai_presentation_ida.txt`）。開演出前先合成全部畫格，計畫、聲音或素材任一不合就不開：

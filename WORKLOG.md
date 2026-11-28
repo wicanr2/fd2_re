@@ -6242,3 +6242,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 移植 `startNativeCommand9PlayerPresentation` 與 `drawNativeCommand9PlayerPresentation`，派送接上 id 9；選單照 Go 仍擋下指令 9（沒有玩家取得途徑的證據）。細節見 119「R8 玩家指令 9 演出」。
 - 移植 Go 測試的原版索引色部分，另補一項端到端測試。fd2-game 553 項、Clippy 通過，`todo!` 淨變化 0。PORTING.json 補標 2 個函式。
 - 在提交 `a302e345`（含天空之鑰 `9d67beec` 與玩家指令 9）的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-a302e345/summary.tsv`）。
+
+## 2026-11-28 Rust R8：後備介面與小型流程缺口
+
+- 接上巢狀系統選單狀態、近似戰後前進、第 28 章繼承視圖、章節結果失敗，以及後備物品清單、原生指令格名稱、六種戰役後備版面與 TTF 後備商店的買賣輸入。細節見 119「R8 後備介面與小型流程缺口」。
+- 查出既有的靜默差異：Rust 在原生商店沒有啟動時只接受 Esc，Go 的後備商店買賣流程沒有移植也沒有標記；本輪補上。
+- 移植 Go 測試 2 項並擴充 1 項，另補 7 項重製端測試。fd2-game 561 項、Clippy 通過，`todo!` 從 120 降到 107。
+- 在提交 `e9e30299`（流程缺口）與 `de96dfce`（含其後三個後備介面提交）的獨立 worktree 各重跑第 1～30 章，全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-e9e30299/summary.tsv`、`work/rust-parity-all-de96dfce/summary.tsv`）。
