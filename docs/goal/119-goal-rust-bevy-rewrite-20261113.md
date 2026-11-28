@@ -121,6 +121,75 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 玩家指令 9 演出（RUNTIME-E1，2026-11-28）
+
+玩家指令 9 的地圖演出照 Go `startNativeCommand9PlayerPresentation` 移植（主證據 `docs/data/ida/fd2_command9_player_ai_presentation_ida.txt`）。開演出前先合成全部畫格，計畫、聲音或素材任一不合就不開：
+
+1. 指令調色盤閃爍：依 `native_command_palette_flash.json` 的指令 9 相位改 DAC 第 0 色，底圖是目前地圖畫面。
+2. 效果：目標身上疊 FDOTHER#6 的 27 格。效果段結束時才扣 MP、寫入傷害並推進亂數。
+3. 數字：FDOTHER#5 的 22 格傷害數字；沒命中且目標在鏡頭內時寫 MISS 四個字。
+4. 停 500 ms，交回基準畫面，續行一次。
+
+派送分支接上 id 9。Go 的指令選單（`nativeCommandTargetSupported`）刻意不放行指令 9：目前只有敵方來源，沒有玩家取得途徑的證據（`docs/data/fd2-hd1-feedback-20261104.json`），Rust 照同樣做法，這條演出只由測試直接呼叫。HD 地圖凍結與 HD 幀屬 R6。
+
+驗證：
+- 移植 Go `TestModernHDPlayer9NativeSourcesMatchFullVGA` 的原版索引色部分：命中與不中各一次，27 格效果的圖層來源都是 FDOTHER#6 第 87 格起、位置 (24,−6)；MISS 依序寫 116、117、118、118 四個字形；每一格都與不經合成器的逐位元組重組相同。另補一項端到端測試，以正式呈現與 stepper 走完四段，確認 MP 與 HP 只在效果段結束時寫入，續行一次並交回基準畫面。
+- fd2-game 553 項、Clippy 通過；`todo!` 移除 2 處、新增 HD 2 處。
+- 在提交 `a302e345`（含天空之鑰 `9d67beec` 與玩家指令 9）的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-a302e345/summary.tsv`）。
+
+### R8 第二十章天空之鑰演出（RUNTIME-E1，2026-11-28）
+
+第 21 戰（map20）勝利後，隊伍湊齊六件材料（道具 0xD1～0xD6）時進入天空之鑰的成功臂，handler 在 0x242C9 呼叫 0x24336。這段演出的參數是寫死的原版契約（`IsRecoveredContract`），被改過就在動任何狀態前拒收。流程如下：
+
+1. 預檢：FDOTHER#34 的 101 格逐格試解、ANI #0 的 96 格畫面與調色盤快照都要完整，並先算出捲動終點驗一次。
+2. 捲動：鏡頭與絕對游標每步同移一格，先走 X 再走 Y，直到鏡頭在 (14,8)；每步重繪地圖。
+3. FDOTHER#34：以第 0 格疊在地圖上當底，播第 1～68 格，每格等 3 個 BIOS tick，並推進一次 0x4DFCC 的調色盤相位。
+4. ANI #0：96 格各帶自己的調色盤，每格 15 ms。
+5. 白閃與還原：以地圖調色盤為基準整盤加 63 停 100 ms，再還原停 500 ms。
+6. 尾段：換回地圖調色盤播第 69～100 格，最後一格的畫面與調色盤交回地圖，接著續行後面的 beat。
+
+每一格都要畫過才推進。任何一步失敗都還原鏡頭、游標、地圖時鐘、畫面、調色盤與調色盤相位。本輪移植 `native_ch20_sky_key.go` 的 15 個函式，接上 beat、`Update`、`Draw` 與呈現回報。Go 的還原是閉包；快照含不能跨執行緒的 `NativeFrameInput`，Rust 改存快照結構再還原。HD 的天空之鑰世界凍結、預檢與 HD 幀屬 R6。
+
+驗證：
+- 移植 Go 的 `native_ch20_sky_key_test.go` 六項：分離素材符合契約、ANI 不完整時拒收、改過的 payload 在動狀態前拒收、演出失敗時完整還原地圖交易，以及第 21 戰兩臂的端到端測試。成功臂從勝利經過全部六個階段、相鄰兩段 ACTING、26 段原生對話、JOIN 24／23 到 `town_ch22`，天空之鑰（0x64）進入持續隊伍，存讀檔後隊伍不變；FirstFrames 的調色盤相位剛好推進 68 次。材料不足臂只播 14 段對話、不開演出也不給天空之鑰，同樣 JOIN 24／23 並存讀檔。這兩項以 `ch21.json` 的出戰順序建持續隊伍投影、直接進第 21 戰勝利邊界，屬 RUNTIME-E1，不代表一般玩家路徑。
+- 測試 helper `tick` 補上 `stepNativeCh20SkyKey`，與 Go 相同。
+- fd2-game 551 項、Clippy 通過；`todo!` 淨減 2 處（移除 4 處，新增 HD 2 處）。演出畫不出來時 Go 另印一行除錯字，Rust 照其他指令演出的做法由 `load_err` 顯示同一失敗。
+- 在提交 `a302e345`（含天空之鑰 `9d67beec` 與玩家指令 9）的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-a302e345/summary.tsv`）。
+
+### R8 地圖事件 61（RUNTIME-E1，2026-11-28）
+
+第 26 章的地圖事件 61 是把控制中樞（道具 0xD0）放進機兵頭部、讓渥德加入。單位行動結束時停在 selector1 為 61 的格子上，`planNativeFieldEvent61` 先驗原版事件狀態與觸發者道具；驗不過就停止寫入並回錯。驗過之後：
+
+1. 觸發者沒有控制中樞：只播 `ch26.json` 第 0 幕第 10 句（FDTXT2），不寫任何狀態。
+2. 有控制中樞：先播第 11 句（FDTXT3），收框後以中性戰術重繪為底，把 FDOTHER#45 的 59 格逐格疊上去。每一格要畫過、且 BIOS tick 前進到計畫的延遲才換下一格。
+3. 最後一格之後才提交：消耗控制中樞、事件狀態 12 設為 1、渥德的記錄寫進持續隊伍（JOIN 31），接著播第 1 幕的十句（FDTXT4），播完才結束行動。
+
+全軍移動走到 selector1 事件格時暫停，交給事件 61 或 75 的擁有者，事件結束才續走；全軍移動的預檢也補上事件 61 的對白與圖格表。
+
+本輪移植 `event61DialogueActions`、`beginNativeFieldEvent61` 後半、`beginNativeFieldEvent61Presentation`、`stepNativeFieldEvent61Tick`、`persistNativeFieldEvent61Join`、`drawNativeFieldEvent61`、`beginNativeSystemGroupMarchFieldEvent`，以及 `preflightNativeSystemGroupMarchEvents` 的事件 61 分支。Go 的走行續行以指標比對 `g.walk == walk`；Rust 的走行沒有身分，改以「同一個單位、仍停在全軍移動事件」判斷。HD 的 `modernHDFieldEvent61` 凍結、HD 世界與 HD HUD 屬 R6。
+
+驗證：
+- 移植 Go 的 `native_field_event61_test.go` 六項，從 `loadGame` 進第 26 章戰場：缺控制中樞只播 FDTXT2、攻擊後等全螢幕演出結束才觸發、使用道具後觸發、59 格演出後提交並寫入渥德、全軍移動暫停與續走、缺圖格表時兩個擁有者都拒收且不寫狀態。Go 在載入後才把 `FD2_ASSET_PACK` 換成空目錄；Rust 不能在行程中改環境變數，改由父行程組一份少了事件 61 圖格表的素材包給子行程。
+- fd2-game 545 項、Clippy 通過；`todo!` 淨減 1 處（移除 5 處，新增 HD 3 處與演出畫不出來時的除錯字 1 處）。
+- 在提交 `27974569` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-27974569/summary.tsv`）。
+
+### R8 死亡獎勵滿欄替換（RUNTIME-E1，2026-11-28）
+
+敵人死亡掉落的物品要給擊殺者，擊殺者八格道具欄已滿時，行動收尾開原版 0x1AA56 的丟棄提示。流程如下：
+
+1. 以目前地圖畫面為底，對話框展開並問要丟哪一件（FDTXT#0x1B1）。
+2. 選「否」或按 Esc：問句下方寫放棄訊息（FDTXT#0x1B2），停留後收框，道具欄不變。
+3. 選「是」：對話框收起，開擊殺者的八格物品面板。方向鍵走原版選擇器，Enter 先在複本上試換，成功才記下這一格並收面板；面板收完才真正丟棄舊物品、把獎勵接在尾端。
+4. 在選擇器按 Esc：面板收完後另開一個對話框顯示放棄訊息（0x1AB1F），道具欄不變。
+5. 同一次行動有多筆獎勵時依序接手，全部結束才完成擊殺者的行動。
+
+本輪移植 `runPendingNativeDeathRewards` 在物品面板之後的部分、`handleNativeDeathRewardItemInput`、`finishNativeDeathRewardItemClose`、`beginNativeDeathRewardSelectorCancel`、`finishNativeDeathRewardUI`，以及 `finishNativeSystemEndTurnChoice` 的死亡獎勵分支。HD 的 `modernHDFullReward` 凍結與綁定屬 R6，忠實模式下 `hd` 是 `None`。
+
+驗證：
+- 移植 Go 的 `native_death_reward_ui_test.go` 四項：選「否」與 Esc 不動道具欄、丟棄只在面板收完後提交、選擇器取消與兩筆獎勵循序接手、缺來源時失敗即關閉。前三項從 `loadGame` 進第一章戰場，以正式 `draw` 與 `update` 推進，環境變數在子行程設。
+- fd2-game 539 項、Clippy 通過；`todo!` 淨減 3 處（移除 4 處，新增 HD 主題底圖 1 處）。
+- 在提交 `89566a73` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-89566a73/summary.tsv`）。
+
 ### R8 戰場玩家狀態面板（RUNTIME-E1，2026-11-28）
 
 在地圖上對單位按確認時，`inspectNativePlayerUnit` 讀該單位的原始記錄：+7 為 0x79 或 +0x1F 為 10 的特殊記錄直接吃掉確認鍵；非強制檢視且 +6 為 2、+5 bit7 為 0、+0x26 為 0 時照常選取；其餘情況開原版 0x17AED 的狀態面板。

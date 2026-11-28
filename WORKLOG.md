@@ -6215,3 +6215,30 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - HD 面板預檢屬 R6；`NativePlayerStatusState` 因面板素材型別沒有 `PartialEq`，`save_test` 改比 `steady`。
 - 移植 Go 測試 2 項與閘門測試第三段，另補 1 項。fd2-game 535 項、Clippy 通過，`todo!` 淨減 1 處。PORTING.json 補標 10 個函式。
 - 在提交 `39a4de7c` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-39a4de7c/summary.tsv`）。
+
+## 2026-11-28 Rust R8：死亡獎勵滿欄替換
+
+- 接上 0x1AA56 丟棄提示、擊殺者八格選擇器、0x1AB1F 放棄對話與多筆獎勵循序接手。細節見 119「R8 死亡獎勵滿欄替換」。
+- HD 的 `modernHDFullReward` 凍結屬 R6，忠實模式下 `hd` 是 `None`。結束回合狀態另存一份提示複本，只有 `g.native_death_reward_ui` 的 `selected` 會改。
+- 移植 Go 測試 4 項。fd2-game 539 項、Clippy 通過，`todo!` 淨減 3 處。PORTING.json 補標 4 個函式；PORTING.md 註明敵方法術與丟棄提示已補移植。
+- 在提交 `89566a73` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-89566a73/summary.tsv`）。
+
+## 2026-11-28 Rust R8：地圖事件 61
+
+- 接上第 26 章事件 61：FDTXT2／FDTXT3 對白、FDOTHER#45 的 59 格演出、提交後寫入 JOIN 31 與 FDTXT4，以及全軍移動在 selector1 事件格的暫停與續走。細節見 119「R8 地圖事件 61」。
+- event61／75／76 共用的對白迴圈抽成 `story_dialogue_actions`；全軍移動預檢與 `beginNativeSystemGroupMarchFieldEvent` 一併移植。HD 屬 R6。
+- 移植 Go 測試 6 項；缺圖格表那項改由父行程組少一項的素材包。fd2-game 545 項、Clippy 通過，`todo!` 淨減 1 處。PORTING.json 補標 7 個函式。
+- 在提交 `27974569` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-27974569/summary.tsv`）。
+
+## 2026-11-28 Rust R8：第二十章天空之鑰演出
+
+- 接上 0x24336：捲動到 (14,8)、FDOTHER#34 首段、ANI #0、白閃與還原、尾段，失敗時還原地圖交易。細節見 119「R8 第二十章天空之鑰演出」。
+- Go 的還原閉包改存 `NativeCh20SkyKeySnapshot`（`NativeFrameInput` 不能跨執行緒）。HD 屬 R6。
+- 移植 Go 測試 6 項，含第 21 戰成功與材料不足兩臂到 `town_ch22` 存讀檔。fd2-game 551 項、Clippy 通過，`todo!` 淨減 2 處。PORTING.json 補標 15 個函式。
+- 在提交 `a302e345`（含天空之鑰 `9d67beec` 與玩家指令 9）的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-a302e345/summary.tsv`）。
+
+## 2026-11-28 Rust R8：玩家指令 9 演出
+
+- 移植 `startNativeCommand9PlayerPresentation` 與 `drawNativeCommand9PlayerPresentation`，派送接上 id 9；選單照 Go 仍擋下指令 9（沒有玩家取得途徑的證據）。細節見 119「R8 玩家指令 9 演出」。
+- 移植 Go 測試的原版索引色部分，另補一項端到端測試。fd2-game 553 項、Clippy 通過，`todo!` 淨變化 0。PORTING.json 補標 2 個函式。
+- 在提交 `a302e345`（含天空之鑰 `9d67beec` 與玩家指令 9）的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-a302e345/summary.tsv`）。
