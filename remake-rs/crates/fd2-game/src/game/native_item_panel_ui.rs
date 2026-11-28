@@ -323,7 +323,10 @@ impl Game {
                 return true;
             }
             if self.native_death_reward_ui.is_some() {
-                todo!("R8: native_item_panel_ui.go:180 finishNativeDeathRewardItemClose");
+                self.item_open = false;
+                self.clear_native_item_panel();
+                self.finish_native_death_reward_item_close();
+                return true;
             }
             self.item_open = false;
             self.begin_action_overlay_open(self.ring_sel);
@@ -880,7 +883,16 @@ impl Game {
             return true;
         }
         if self.native_death_reward_ui.is_some() {
-            todo!("R8: main.go:5806 handleNativeDeathRewardItemInput（死亡獎勵物品）");
+            let input = &self.tick_input;
+            let input = NativeDeathRewardInput {
+                up: input.is_just_pressed(Key::ArrowUp),
+                down: input.is_just_pressed(Key::ArrowDown),
+                left: input.is_just_pressed(Key::ArrowLeft),
+                right: input.is_just_pressed(Key::ArrowRight),
+                confirm: enter,
+                cancel: esc,
+            };
+            return self.handle_native_death_reward_item_input(input);
         }
         if esc {
             self.begin_native_item_panel_close();

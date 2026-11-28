@@ -457,7 +457,7 @@ impl Game {
     ///
     /// Go：`action_overlay_runtime.go:627`，`func (g *Game) finishNativeSystemEndTurnChoice(accepted bool)`
     ///
-    /// 寶箱問句走 `finish_native_treasure_choice`；死亡獎勵與原版目前戰況存檔兩支的入口尚未移植，不會走到這裡。
+    /// 寶箱問句走 `finish_native_treasure_choice`；原版目前戰況存檔一支的入口尚未移植，不會走到這裡。
     fn finish_native_system_end_turn_choice(&mut self, accepted: bool) {
         let (Some(state), Some(ui)) = (self.native_system_end_turn_ui.as_ref(), self.native_preparation_ui.as_ref())
         else {
@@ -475,6 +475,35 @@ impl Game {
                 let Some(state) = g.native_system_end_turn_ui.as_mut() else {
                     return;
                 };
+                // 死亡獎勵問句選「是」：收起對話框，開殺手的八格物品面板讓玩家挑要丟的那一格。
+                if accepted && let Some(prompt) = state.death_reward.as_ref() {
+                    let killer = prompt.killer;
+                    let closing = match campaign::native_class_list_closing_frames(&state.source, &state.dialogue) {
+                        Ok(closing) if closing.len() == 5 => closing,
+                        _ => {
+                            g.load_err = String::from("native death reward: dialogue close frames unavailable");
+                            return;
+                        }
+                    };
+                    let restore = state.source.clone();
+                    g.native_class_ui_job = Some(NativeClassUIJob {
+                        frames: closing,
+                        restore,
+                        redraw_native_map_after_restore: true,
+                        after: Some(Box::new(move |g: &mut Game| {
+                            g.native_system_end_turn_ui = None;
+                            g.native_system_end_turn_delay = 0;
+                            g.sel = killer;
+                            g.item_sel = 0;
+                            g.item_anim_step = 0;
+                            g.item_closing = false;
+                            g.item_open = true;
+                        })),
+                        ..Default::default()
+                    });
+                    g.bind_native_system_end_turn_hd(FULL_REWARD_BLANK_CLOSING);
+                    return;
+                }
                 state.accepted_outcome = accepted;
                 let response = if accepted { state.accepted.clone() } else { state.canceled.clone() };
                 g.native_class_ui_job = Some(NativeClassUIJob {
@@ -587,7 +616,8 @@ impl Game {
                         return;
                     }
                     if state.death_reward.is_some() {
-                        todo!("R8: action_overlay_runtime.go:723 finishNativeDeathRewardUI");
+                        g.finish_native_death_reward_ui();
+                        return;
                     }
                     if accepted {
                         if state.load_current {
@@ -646,7 +676,7 @@ impl Game {
     /// Go `bindModernHDFullReward(kind)` 與 `bindModernHDSystemConfirmation(kind)`（`modern_hd_full_reward.go:62`、
     /// `modern_hd_system_confirmation.go:329`，兩者都標 `r8`）：把 HD 外框接到同一個 `nativeClassUIJob`。兩者只在
     /// HD 狀態存在時動作，忠實模式下 `hd` 是 nil、沒有效果。Go 以指標共用 job，Rust 的 job 不能共用，HD 分支在 R6。
-    fn bind_native_system_end_turn_hd(&mut self, _kind: FullRewardPhase) {
+    pub(crate) fn bind_native_system_end_turn_hd(&mut self, _kind: FullRewardPhase) {
         if self.native_death_reward_ui.as_ref().is_some_and(|p| p.hd.is_some()) {
             todo!("R6: modern_hd_full_reward.go:62 bindModernHDFullReward");
         }
