@@ -224,7 +224,7 @@ impl Game {
 
     /// 閘門通過後交給各指令的玩家演出入口。回傳 false 代表這個 ID 還沒有玩家入口。
     ///
-    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、10～22、24～35）
+    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、10～35）
     pub(crate) fn start_native_player_command(&mut self, id: i64, target: Option<UnitIdx>) -> bool {
         let Some(actor) = self.sel else { return true };
         let cursor = (self.cur_x, self.cur_y);
@@ -302,6 +302,13 @@ impl Game {
                 });
                 if let Err(err) = self.start_native_command2022_presentation(actor, target, id, None, then2022) {
                     self.msg = format!("原始指令 {id}：完整演出不可用 ({err})");
+                }
+                true
+            }
+            23 => {
+                match self.begin_native_command23_destination(target) {
+                    Ok(()) => self.msg = String::from("傳送術：選擇目的地"),
+                    Err(err) => self.msg = format!("傳送術：{}", err.message()),
                 }
                 true
             }

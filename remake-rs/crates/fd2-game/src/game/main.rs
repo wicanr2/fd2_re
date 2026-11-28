@@ -7323,7 +7323,24 @@ impl Game {
             return;
         }
         if self.native_item_relocating {
-            todo!("R8: main.go:7562 物品／傳送術目的地確認（applyNativeRelocationDestination；第一章重播沒有執行到）");
+            let item_id = self.native_item_target_id;
+            match self.apply_native_relocation_destination(self.cur_x, self.cur_y) {
+                Err(err) if self.native_command23_relocating => self.msg = format!("傳送術：{}", err.message()),
+                Err(err) => self.msg = format!("物品 {item_id:02X}h：{}", err.message()),
+                Ok(true) if self.native_command23_relocating => self.msg = String::from("傳送術：演出進行中"),
+                Ok(true) => {
+                    let key = if self.native_modifier_presentation.is_some() || self.native_unit_present.is_some() {
+                        "battle.item.relocation_presenting"
+                    } else {
+                        "battle.item.relocation_complete"
+                    };
+                    if let (message, true) = self.locale_message(key, &[localization::FormatArg::Int(item_id)]) {
+                        self.msg = message;
+                    }
+                }
+                Ok(false) => {}
+            }
+            return;
         }
         if self.native_command0_targeting {
             let Some((id, target)) = self.native_command_target_confirmation() else {

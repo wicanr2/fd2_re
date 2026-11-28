@@ -481,7 +481,7 @@ impl Game {
     }
 
     /// 第二段：依確認目標算出最終目標名單，套用 HP／MP／旗標／能力值的原始記錄交易；
-    /// 指令傷害物品改走 `0x20c6f` 演出，交易在演出發布點才寫回。傳送物品另期，遇到時失敗即關閉。
+    /// 指令傷害物品改走 `0x20c6f` 演出，交易在演出發布點才寫回。傳送物品只換到目的地選擇，回傳 false。
     ///
     /// Go：`native_item_panel_ui.go:556`，`func (g *Game) applyNativeTargetItem(confirmed *battle.Unit) (bool, error)`
     pub(crate) fn apply_native_target_item(&mut self, confirmed: UnitIdx) -> Result<bool> {
@@ -563,7 +563,17 @@ impl Game {
         } else if let (route, true) = battle::native_item_marker_application_route_for_type(item_type) {
             next_rng = battle::apply_native_item_marker_application(&mut records, &target_indices, route, rng)?.1;
         } else if battle::native_item_relocation_route_for_type(item_type, amount).1 {
-            todo!("R8: native_item_panel_ui.go:686 傳送物品目的地（applyNativeRelocationDestination）");
+            // 0x1bbdc：第二段改用模式 6 的目的地選擇器，物品與 MP 都等目的地確認後才動。
+            let Some(&first) = target_indices.first() else {
+                return Err(game_err!("native relocation has no target"));
+            };
+            self.native_movement_cost_rows =
+                battle::load_native_movement_cost_rows(&asset_path("assets/data/native_movement_cost_rows.json"))?;
+            self.native_item_relocation_unit = i64::from(first);
+            (self.native_item_targeting, self.native_item_relocating) = (false, true);
+            let target = &self.st.as_ref().unwrap().units[usize::from(first)];
+            (self.cur_x, self.cur_y) = (target.x, target.y);
+            return Ok(false);
         } else {
             return Ok(false);
         }
@@ -582,6 +592,233 @@ impl Game {
                 (g.sel, g.reach, g.moved) = (None, Default::default(), false);
             })),
         );
+        Ok(true)
+    }
+
+    /// 傳送術（指令 23）選定目標後進入目的地選擇：沿用物品傳送的模式 6 選擇器，MP 等目的地確認後才扣。
+    ///
+    /// Go：`native_item_panel_ui.go:721`，`func (g *Game) beginNativeCommand23Destination(target *battle.Unit) error`
+    pub(crate) fn begin_native_command23_destination(&mut self, target: Option<UnitIdx>) -> Result<()> {
+        let unavailable = || game_err!("native command23 target/MP context unavailable");
+        let (Some(st), Some(sel), Some(target)) = (self.st.as_ref(), self.sel, target) else {
+            return Err(unavailable());
+        };
+        if !self.native_command0_targeting
+            || self.native_command_target_id != 23
+            || st.native_command_book.len() != 36
+            || st.units[sel].mp < st.native_command_book[23].mp_cost
+        {
+            return Err(unavailable());
+        }
+        let candidates = self.native_command_target_units_for(23)?;
+        // Go 以指標相等在候選與 `st.Units` 裡找；Rust 的單位就是 `st.units` 的索引。
+        if !candidates.contains(&target) || st.native_terrain_move_codes.len() as i64 != st.w * st.h {
+            return Err(game_err!("native command23 target/terrain unavailable"));
+        }
+        let rows = battle::load_native_movement_cost_rows(&asset_path("assets/data/native_movement_cost_rows.json"))?;
+        if !self.reset_native_target_field() || !self.st.as_mut().unwrap().materialize_native_map_range_mode(1) {
+            return Err(game_err!("native command23 destination field unavailable"));
+        }
+        (self.native_movement_cost_rows, self.native_item_relocation_unit) = (rows, target as i64);
+        (self.native_command0_targeting, self.native_item_relocating, self.native_command23_relocating) =
+            (false, true, true);
+        let unit = &self.st.as_ref().unwrap().units[target];
+        (self.cur_x, self.cur_y) = (unit.x, unit.y);
+        Ok(())
+    }
+
+    /// 0x115b6 模式 6 的 Enter 判定：目的地不能有其他在場記錄，且目標的移動成本列在該地形不是 20。
+    ///
+    /// Go：`native_item_panel_ui.go:755`，`func (g *Game) nativeRelocationDestinationAllowed(x, y int) (bool, error)`
+    pub(crate) fn native_relocation_destination_allowed(&self, x: i64, y: i64) -> Result<bool> {
+        let Some(st) = self.st.as_ref().filter(|st| {
+            self.native_item_relocating
+                && (0..st.w).contains(&x)
+                && (0..st.h).contains(&y)
+                && st.native_terrain_move_codes.len() as i64 == st.w * st.h
+        }) else {
+            return Err(game_err!("native relocation terrain provenance is unavailable"));
+        };
+        let records = native_item_runtime_records(&st.units)?;
+        Ok(battle::native_relocation_destination_allowed(
+            &records,
+            st.units.len() as i64,
+            self.native_item_relocation_unit,
+            x as u8,
+            y as u8,
+            i64::from(st.native_terrain_move_codes[(y * st.w + x) as usize]),
+            &self.native_movement_cost_rows,
+        )?)
+    }
+
+    /// 全圖逐格跑一次模式 6 判定。Go 的正式路徑沒有呼叫端，只有測試用它核對可落點。
+    ///
+    /// Go：`native_item_panel_ui.go:772`，`func (g *Game) nativeRelocationDestinations() map[battle.Cell]bool`
+    #[cfg(test)]
+    pub(crate) fn native_relocation_destinations(&self) -> BTreeSet<battle::Cell> {
+        let Some(st) = self.st.as_ref() else { return BTreeSet::new() };
+        let mut result = BTreeSet::new();
+        for y in 0..st.h {
+            for x in 0..st.w {
+                if matches!(self.native_relocation_destination_allowed(x, y), Ok(true)) {
+                    result.insert(battle::Cell { x, y });
+                }
+            }
+        }
+        result
+    }
+
+    /// 確認傳送目的地：先在複本記錄上跑 0x2218A 交易，再預算 0x22253 消失與出現兩段演出；
+    /// 全部成功才開 0x1D6C8 調色盤前奏。前奏八個階段畫完才接消失段，出現段結束時才把記錄寫回。
+    /// 原版索引色分支；HD 的 `unitPresent`／`hdNext` 預檢串接屬 R6。
+    ///
+    /// Go：`native_item_panel_ui.go:797`，`func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error)`
+    pub(crate) fn apply_native_relocation_destination(&mut self, x: i64, y: i64) -> Result<bool> {
+        if !self.native_relocation_destination_allowed(x, y)? {
+            return Ok(false);
+        }
+        let st = self.st.as_ref().unwrap();
+        let records = native_item_runtime_records(&st.units)?;
+        // Go 以指標相等在 `st.Units` 裡找；Rust 的 `sel` 就是索引，只要在範圍內。
+        let Some(source_unit) = self.sel.filter(|&sel| sel < st.units.len()) else {
+            return Err(game_err!("native relocation source is absent"));
+        };
+        let mut planned = records;
+        let command23 = self.native_command23_relocating;
+        let target_slot = self.native_item_relocation_unit;
+        let targets = [target_slot as u8];
+        let relocation = if command23 {
+            battle::apply_native_command23_relocation(
+                &mut planned,
+                source_unit as i64,
+                &targets,
+                x as u8,
+                y as u8,
+                &st.native_command_book,
+            )?
+        } else {
+            let row = self
+                .native_item_row(self.native_item_target_id)
+                .map_err(|_| game_err!("native relocation item row unavailable"))?;
+            let (route, ok) =
+                battle::native_item_relocation_route_for_type(row[0x0d], u16::from_le_bytes([row[0x0e], row[0x0f]]));
+            if !ok {
+                return Err(game_err!("native relocation route is unavailable"));
+            }
+            battle::apply_native_item_relocation(
+                &mut planned,
+                source_unit as i64,
+                &targets,
+                x as u8,
+                y as u8,
+                route,
+                &self.native_command_book,
+            )?
+        };
+        if self.native_unit_present.is_some()
+            || self.native2189_a.is_some()
+            || self.transition_reveal.is_some()
+            || self.indexed_transition.is_some()
+            || self.native_palette_ramp.is_some()
+            || self.native_palette_pulse.is_some()
+            || self.native_ch20_sky_key.is_some()
+            || self.native_ch23_loop.is_some()
+        {
+            return Err(game_err!("native relocation presentation is already active"));
+        }
+        let slot = usize::try_from(target_slot)
+            .ok()
+            .filter(|&slot| slot < st.units.len())
+            .ok_or_else(|| game_err!("native relocation target is absent"))?;
+        let before_target = st.units[slot].clone();
+        let disappear = campaign::NativeUnitPresent {
+            slot: target_slot,
+            new_x: 0xff,
+            new_y: 0xff,
+            visual_x: before_target.x,
+            visual_y: before_target.y,
+            ..Default::default()
+        };
+        let (before_work, before_vga) = (self.native_map_work.clone(), self.native_map_vga.clone());
+        let mut disappear_job =
+            self.build_native_unit_present_job(&disappear, self.st.as_ref(), &before_work, &before_vga, None)?;
+        let mut off_map = clone_native_unit_present_state(self.st.as_ref())
+            .map_err(|_| game_err!("native relocation off-map preflight failed"))?;
+        if !off_map.units[slot].set_native_map_coordinates_raw(0xff, 0xff) {
+            return Err(game_err!("native relocation off-map preflight failed"));
+        }
+        let last = disappear_job.vga_frames.len() - 1;
+        let appear = campaign::NativeUnitPresent {
+            slot: target_slot,
+            new_x: x,
+            new_y: y,
+            visual_x: x,
+            visual_y: y,
+            ..Default::default()
+        };
+        let (last_work, last_vga) = (disappear_job.work_frames[last].clone(), disappear_job.vga_frames[last].clone());
+        let mut appear_job =
+            self.build_native_unit_present_job(&appear, Some(&off_map), &last_work, &last_vga, None)?;
+
+        let actor = source_unit;
+        let rollback =
+            move || native_relocation_rollback(slot, before_target.clone(), before_work.clone(), before_vga.clone());
+        disappear_job.rollback = Some(rollback());
+        appear_job.rollback = Some(rollback());
+        let then_rollback = rollback();
+        appear_job.then =
+            Some(Box::new(move |g: &mut Game| {
+                let Some(st) = g.st.as_mut().filter(|st| {
+                    st.units.len() * 80 == planned.len() && actor < st.units.len() && slot < st.units.len()
+                }) else {
+                    then_rollback(g);
+                    g.load_err = String::from("native command 23 relocation state changed during presentation");
+                    return;
+                };
+                for (index, unit) in st.units.iter_mut().enumerate() {
+                    sync_native_item_runtime_record(unit, &planned[index * 80..(index + 1) * 80]);
+                }
+                let unit = &mut st.units[actor];
+                (unit.native_record_byte5, unit.has_native_record_byte5) = (unit.native_record_byte5 | 0x80, true);
+                if command23 {
+                    // 0x2218A 已把 10 × L 加進 [0x53EC8]；玩家路徑接著 0x11959／0x1196D 發放。
+                    g.award_native_player_command_experience(actor, Ok(relocation.accumulator_delta), &[slot]);
+                }
+                g.finish_successful_unit_action(
+                    Some(actor),
+                    Some(Box::new(|g: &mut Game| {
+                        g.reset_native_target_field();
+                        if let Some(st) = g.st.as_mut() {
+                            st.materialize_native_map_range_mode(1);
+                        }
+                        (g.native_item_relocating, g.native_command23_relocating) = (false, false);
+                        g.native_command_target_id = 0;
+                        g.native_movement_cost_rows = Vec::new();
+                        g.native_item_effect_rows = Vec::new();
+                        (g.sel, g.reach, g.moved) = (None, Default::default(), false);
+                    })),
+                );
+                g.msg = if command23 {
+                    String::from("傳送術：完成")
+                } else {
+                    format!("物品 {:02X}h：原始移位效果完成", g.native_item_target_id)
+                };
+            }));
+        disappear_job.then = Some(Box::new(move |g: &mut Game| {
+            g.native_unit_present = Some(appear_job);
+            g.publish_native_unit_present_frame();
+        }));
+        let mut disappear_job = Some(disappear_job);
+        self.start_native_command_palette_presentation(
+            23,
+            |_| Ok(()),
+            Box::new(move |g: &mut Game| {
+                g.native_unit_present = disappear_job.take();
+                g.publish_native_unit_present_frame();
+                Ok(())
+            }),
+            Box::new(|_| {}),
+        )?;
         Ok(true)
     }
 
@@ -750,3 +987,21 @@ impl Game {
         true
     }
 }
+
+/// 傳送演出失敗或狀態變動時，把目標單位與地圖 work／VGA 還原到確認目的地前。
+fn native_relocation_rollback(
+    slot: usize,
+    before_target: battle::Unit,
+    before_work: Vec<u8>,
+    before_vga: Vec<u8>,
+) -> Box<dyn FnOnce(&mut Game) + Send> {
+    Box::new(move |g: &mut Game| {
+        if let Some(unit) = g.st.as_mut().and_then(|st| st.units.get_mut(slot)) {
+            *unit = before_target;
+        }
+        (g.native_map_work, g.native_map_vga) = (before_work, before_vga);
+    })
+}
+
+#[cfg(test)]
+mod native_item_panel_ui_test;

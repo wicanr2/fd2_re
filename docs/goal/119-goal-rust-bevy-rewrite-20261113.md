@@ -121,13 +121,30 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 玩家指令施放：指令 23 與傳送物品（RUNTIME-E1，2026-11-28）
+
+傳送術（指令 23）和傳送物品（type 23）共用同一段目的地流程。選定目標後換成模式 6 的目的地選擇器，游標移到目標身上，Esc 退回指令格或物品面板。確認目的地時依序做：
+
+1. 0x115b6 的落點判定：目的地不能有其他在場記錄，目標的移動成本列在該地形不是 20。
+2. 在記錄複本上跑 0x2218A 交易，扣 MP、算經驗累加值。
+3. 預算 0x22253 的消失段與出現段兩份演出。
+
+三步都成功才開 0x1D6C8 調色盤前奏。前奏八個階段畫完才接消失段，出現段結束時才把記錄寫回，指令 23 再發經驗。任何一步失敗都不動 MP、行動旗標與目標座標。本輪移植 Go 的 `beginNativeCommand23Destination`、`nativeRelocationDestinationAllowed`、`applyNativeRelocationDestination`，以及 `applyNativeTargetItem` 的傳送分支。HD 的 `unitPresent`／`hdNext` 預檢串接屬 R6。
+
+指令 0～35 中只剩 9 沒有玩家入口，和 Go 一樣不在選目標白名單裡；繪製段的 `todo!` 也只剩它的演出工作。
+
+驗證：
+- 移植 Go 的 `TestNativeCommand23FormalConfirmCancelAndFullPresentation`、`TestNativeCommand23InsufficientMPOrMissingArtIsAtomic`、`TestNativeRelocationUsesSeparateDestinationCursorAndMode6Legality`，以及三者共用的 `completeNativeUnitPresentGame` 合成測具。正式確認走完 96 個演出階段，中途目標確實離開地圖。
+- fd2-game 522 項、Clippy 通過；`todo!` 剩 126 處。
+- 在提交 `9274f12f` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-9274f12f/summary.tsv`）。
+
 ### R8 玩家指令施放：指令 10～12（RUNTIME-E1，2026-11-28）
 
 指令 10～12 在地圖畫面上演出：三種取樣面依原版順序輪播 60 格，再播傷害數字，扣血在結果段才寫入。指令 11、12 先跑 0x2189A 的十次半徑前奏（第 22 章戰後也用同一段），前奏收尾才進主段並播主音效。本輪從 Go 移植建立函式與原版索引色繪製（`native_command10_12_presentation.go`）。
 
 `start_native_2189a` 先前在 `native_cmd1012` 存在時直接拒收。Go 在這個情況只多凍結 HD 前奏用的地圖輸入、徑向 LUT 與穩定場景，錯誤也只記在工作上不擲出，所以原版路徑拿掉這道拒收；HD 欄位屬 R6。
 
-繪製段剩下的 `todo!` 只剩玩家指令 9 的演出工作。還沒接上的玩家指令是 23：確認時留在選目標並顯示「玩家演出尚未移植」。23 的傳送目的地和物品傳送共用 `applyNativeRelocationDestination`。指令 9 和 Go 一樣不在選目標白名單裡。
+繪製段剩下的 `todo!` 只剩玩家指令 9 的演出工作。指令 9 和 Go 一樣不在選目標白名單裡。指令 23 接在下一輪，見「R8 玩家指令施放：指令 23 與傳送物品」。
 
 驗證：移植 Go 的 `TestNativeCommand1012FormalPlayerConfirmAndReturn`（10、11、12 各走一次正式確認，11、12 經 0x2189A 前奏，結束時 MP 扣掉法術表的消耗、選取與範圍模式都還原）。步進、回滾與前奏消失的測試先前已移植。fd2-game 519 項通過；`todo!` 剩 128 處。
 
