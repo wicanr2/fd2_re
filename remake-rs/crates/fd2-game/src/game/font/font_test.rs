@@ -245,6 +245,38 @@ fn test_official_battle_names_fit_native_panel_rectangle() {
     }
 }
 
+/// Go：`native_shop_locale_test.go:109` `TestOfficialCommandNamesFitNativeGridCell`。
+#[test]
+fn test_official_command_names_fit_native_grid_cell() {
+    let Some(display_font) = real_font() else { return };
+    if crate::test_support::remake_asset("locales").is_none() {
+        return;
+    }
+    for locale_id in ["zh-Hant", "zh-Hans", "ja", "en"] {
+        let catalog = load_official_locale_entities(locale_id).unwrap().unwrap();
+        let mut g = Game {
+            locale_id: locale_id.to_string(),
+            locale_entities: Some(catalog),
+            font: Some(display_font.clone()),
+            ..Default::default()
+        };
+        let mut count = 0;
+        for command_id in (0..=35).filter(|&id| id != 31) {
+            let (name, scale) = g
+                .localized_native_command_label(command_id)
+                .unwrap_or_else(|e| panic!("{locale_id} command {command_id}: {}", e.message()));
+            count += 1;
+            // Go 以 `localizedNativeCommandNameWidth`（140）驗格子寬度。
+            let width = g.font.as_mut().unwrap().width(&name, scale);
+            assert!(
+                width <= 140.0 && scale >= LOCALIZED_NATIVE_COMMAND_MIN_SCALE,
+                "{locale_id} command {command_id} {name:?} does not fit at scale {scale:.3}"
+            );
+        }
+        assert_eq!(count, 35, "{locale_id} command count");
+    }
+}
+
 /// `Font::draw` 的位置：字畫在 `(round(x), round(y)+ascent)` 的基線上，覆蓋範圍不超出 `BoundString`
 /// 平移後的外框，顏色照 `ColorScale.ScaleWithColor`（不透明處等於 `clr`）。
 #[test]

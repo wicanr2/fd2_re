@@ -11625,15 +11625,24 @@ impl Game {
     ///
     /// Go：`main.go:10617`，`func (g *Game) drawNativeCommandGrid(screen *ebiten.Image)`
     ///
-    /// R5 階段 2 r5h。開場與第一章只走到守門（`nativeCommandOpen` 都是 false）；格子文字要
-    /// `localizedNativeCommandLabel`（`native_command_locale.go`，`r8`），守門之後標 `todo!("r8:…")`。
+    /// 未選中的格子用介面調色盤 0xCD 色，選中的用 0xC9；名稱放不進格子就寫 `load_err` 停止。
     pub(crate) fn draw_native_command_grid(&mut self, screen: &mut Picture) {
         if !self.native_command_open || self.sel.is_none() || self.font.is_none() || self.native_ui_palette.len() < 0xce
         {
             return;
         }
-        let _ = screen;
-        todo!("r8:main.go:10621..10634 localizedNativeCommandLabel 與格子文字（開場與第一章沒有走到）")
+        let ids = self.st.as_ref().expect("g.sel 指向 g.st.Units").units[self.sel.unwrap()].native_command_ids();
+        for cell in battle::native_command_grid(&ids, self.native_command_sel) {
+            let (label, scale) = match self.localized_native_command_label(cell.command_id) {
+                Ok(label) => label,
+                Err(err) => {
+                    self.load_err = format!("native command locale: {}", err.message());
+                    return;
+                }
+            };
+            let c = self.native_ui_palette[if cell.selected { 0xc9 } else { 0xcd }];
+            self.font.as_mut().unwrap().draw(screen, &label, (cell.x * 2) as f64, (cell.y * 2) as f64, scale, c);
+        }
     }
 
     /// drawCampaignUI campaign 節點 UI:choice 選單 / ending 結語 / game over。
