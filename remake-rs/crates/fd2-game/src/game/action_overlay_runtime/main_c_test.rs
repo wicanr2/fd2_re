@@ -108,10 +108,15 @@ fn native_neutral_test_unit(x: u8, y: u8) -> battle::Unit {
     u
 }
 
-/// Go：`native_player_input_test.go:72` `TestNativePlayerStatusGatesAndFailedResourcesDoNotSelect` 的前兩段。
-/// 第三段（`t.Setenv("FD2_ASSET_PACK", 空目錄)` 後走 `beginNativePlayerStatus`）的受測函式是 `r8`，見 PORTING.md。
+/// Go：`native_player_input_test.go:72` `TestNativePlayerStatusGatesAndFailedResourcesDoNotSelect`。
+/// Go 以 `t.Setenv("FD2_ASSET_PACK", 空目錄)` 的第三段在子行程執行。Go 失敗時回 `(true, err)`，Rust 的
+/// `Result<bool>` 只能回 `Err`；呼叫端（`confirm`）同樣把它當成已消費。
 #[test]
 fn test_native_player_status_gates_and_failed_resources_do_not_select() {
+    let name = "test_native_player_status_gates_and_failed_resources_do_not_select";
+    let Some(dir) = f_child_env(module_path!(), name, |d| vec![("FD2_ASSET_PACK", d.into())]) else {
+        return;
+    };
     let mut st = battle::State::default();
     st.units = vec![native_neutral_test_unit(7, 14)];
     let mut g = Game { st: Some(st), ..Default::default() };
@@ -120,6 +125,100 @@ fn test_native_player_status_gates_and_failed_resources_do_not_select() {
     g.st.as_mut().unwrap().units[0].battle_fig = 0x79;
     let handled = g.inspect_native_player_unit(0, true);
     assert!(matches!(handled, Ok(true)) && g.native_player_status.is_none(), "special record did not reject");
+    g.st.as_mut().unwrap().units[0].battle_fig = 0;
+    g.st.as_mut().unwrap().units[0].native_record_byte5 = 0x80;
+    assert_eq!(std::env::var_os("FD2_ASSET_PACK").as_deref(), Some(dir.as_os_str()));
+    let handled = g.inspect_native_player_unit(0, false);
+    assert!(
+        handled.is_err() && g.native_player_status.is_none() && g.sel.is_none(),
+        "missing status resources did not fail closed: {:?}",
+        handled.map_err(|e| e.message().to_string())
+    );
+}
+
+/// 重製端補充：用分離素材包的真實面板資源開啟玩家狀態。Go 沒有對應測試；本項只核對 0x17AED
+/// 排程的幀數、穩定幀與頁別次序，不代表與原版逐像素一致。
+#[test]
+fn test_native_player_status_opens_from_separated_assets_and_closes() {
+    if test_support::input("FD2_ASSET_PACK", "surfaces/BG_000/resource.json").is_none() {
+        return;
+    }
+    let (assets, field, mut state) = complete_native_map_frame_fixture();
+    {
+        let n = native_neutral_test_unit(0, 0);
+        let u = &mut state.units[0];
+        (u.native_identity, u.has_native_identity, u.battle_fig) = (n.native_identity, true, 0);
+        (u.native_record_race, u.native_record_class) = (n.native_record_race, n.native_record_class);
+        (u.lv, u.mv, u.exp, u.dx) = (n.lv, n.mv, n.exp, n.dx);
+        (u.hp, u.max_hp, u.mp, u.max_mp) = (n.hp, n.max_hp, n.mp, n.max_mp);
+        (u.ap, u.dp, u.hit, u.ev) = (n.ap, n.dp, n.hit, n.ev);
+        (u.inventory_slots, u.native_inventory_flags) = (n.inventory_slots.clone(), n.native_inventory_flags.clone());
+    }
+    let unit = state.units[0].clone();
+    let mut g = Game {
+        m: Some(field),
+        st: Some(state),
+        native_map_assets: Some(assets),
+        native_ui_palette: load_native_ui_palette(),
+        // 地圖幀的輔助時序：測試以截圖模式的虛擬時鐘提供。
+        shot_path: String::from("player-status-test"),
+        virtual_now: VIRTUAL_CLOCK_ORIGIN,
+        ..Default::default()
+    };
+    if let Err(err) = g.begin_native_player_status(&unit) {
+        panic!("status did not open: {}", err.message());
+    }
+    let s = g.native_player_status.as_ref().unwrap();
+    assert!(s.phase == "opening" && s.frames.len() == 12 && s.steady.len() == 64000 && s.source.len() == 64000);
+    assert!(s.frames[11] == s.steady && s.frames[0] != s.steady, "opening schedule does not end on the steady frame");
+    assert!(s.commands.is_empty() == unit.native_command_ids().is_empty(), "command page presence mismatch");
+    for _ in 0..12 {
+        g.native_player_status.as_mut().unwrap().drawn = true;
+        g.step_native_player_status();
+    }
+    let s = g.native_player_status.as_ref().unwrap();
+    assert!(s.phase == "status" && s.frames.is_empty(), "status page not steady: {}", s.phase);
+    // 沒有指令頁時確認鍵直接關閉；有指令頁時先捲到指令頁。
+    let pages = if s.commands.is_empty() { 1 } else { 2 };
+    for page in 0..pages {
+        g.advance_native_player_status();
+        let n = g.native_player_status.as_ref().unwrap().frames.len();
+        assert_eq!(n, if page + 1 < pages { 14 } else { 12 }, "page {page} transition frames");
+        for _ in 0..n {
+            g.native_player_status.as_mut().unwrap().drawn = true;
+            g.step_native_player_status();
+        }
+    }
+    assert!(g.native_player_status.is_none() && g.load_err.is_empty(), "status did not close: {:?}", g.load_err);
+}
+
+/// Go：`native_player_input_test.go:90` `TestNativePlayerStatusTwoPagesWaitForDrawAndRestore`
+#[test]
+fn test_native_player_status_two_pages_wait_for_draw_and_restore() {
+    let s = NativePlayerStatusState {
+        source: vec![0; 64000],
+        status: vec![0; 64000],
+        commands: vec![0; 64000],
+        phase: String::from("status"),
+        ..Default::default()
+    };
+    let mut g = Game { native_player_status: Some(s), ..Default::default() };
+    g.advance_native_player_status();
+    assert_eq!(g.native_player_status.as_ref().unwrap().frames.len(), 14, "command transition missing");
+    g.step_native_player_status();
+    assert_eq!(g.native_player_status.as_ref().unwrap().frame, 0, "undrawn frame advanced");
+    for _ in 0..14 {
+        g.native_player_status.as_mut().unwrap().drawn = true;
+        g.step_native_player_status();
+    }
+    let s = g.native_player_status.as_ref().unwrap();
+    assert!(s.phase == "commands" && s.frames.is_empty(), "command page not steady");
+    g.advance_native_player_status();
+    for _ in 0..12 {
+        g.native_player_status.as_mut().unwrap().drawn = true;
+        g.step_native_player_status();
+    }
+    assert!(g.native_player_status.is_none(), "status did not close");
 }
 
 /// Go：`native_player_input_test.go:49` `TestNativePlayerFocusUsesRawBattleViewAndXFirstSafeBand`

@@ -8072,7 +8072,7 @@ impl Game {
         }
         if self.native_player_status.is_some() {
             if enter_or_space || just(Key::Escape) {
-                todo!("R8: advanceNativePlayerStatus（玩家狀態面板翻頁）")
+                self.advance_native_player_status();
             }
             return Ok(());
         }

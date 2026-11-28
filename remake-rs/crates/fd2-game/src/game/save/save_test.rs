@@ -445,7 +445,8 @@ fn campaign_load_rejects_out_of_range_native_system_option_without_mutation() {
     }
     if g.gold != 7
         || g.native_system_options.is_some()
-        || g.native_player_status.as_ref() != Some(&status)
+        // `NativePlayerStatusState` 沒有 `PartialEq`（面板素材型別沒有實作）；測具只設了 `steady`。
+        || g.native_player_status.as_ref().map(|s| &s.steady) != Some(&status.steady)
         || g.msg != "存檔 native 系統設定超出原始布林範圍"
     {
         panic!(

@@ -127,12 +127,89 @@ impl Game {
         if !force && r[6] == 2 && r[5] & 0x80 == 0 && r[0x26] == 0 {
             return Ok(false);
         }
-        todo!("R8: native_player_input.go:111 beginNativePlayerStatus（第一章重播沒有執行到）")
+        self.begin_native_player_status(&unit)?;
+        Ok(true)
+    }
+
+    /// 開戰場玩家狀態面板：合成能力值／指令兩頁，以目前地圖畫面為底建 12 幀開啟排程。
+    ///
+    /// Go：`native_player_input.go:124`，`func (g *Game) beginNativePlayerStatus(u *battle.Unit) error`
+    pub(crate) fn begin_native_player_status(&mut self, u: &battle::Unit) -> Result<()> {
+        let prepared = self.prepare_native_unit_status_data(Some(u));
+        let (Some((data, status, commands)), 256) = (prepared, self.native_ui_palette.len()) else {
+            return Err(game_err!("native player status: panel resources unavailable"));
+        };
+        if self.modern_hd_interface_enabled() {
+            todo!("R6: modern_hd_item_panel_chrome.go:98 preflightModernHDItemPanel（HD 狀態面板）");
+        }
+        self.compose_native_map_frame().map_err(|err| err.wrap("native player status: "))?;
+        let source = self.native_map_vga.clone();
+        let frames = native_church_panel_frames(&source, &status, true)?;
+        let steady = native_church_panel_frame(&source, &status, 0)?;
+        let text = snapshot_native_status_transition(&source, Some(&data), NATIVE_STATUS_OPENING, false);
+        self.native_player_status = Some(NativePlayerStatusState {
+            source,
+            status,
+            commands,
+            steady,
+            data: Some(data),
+            frames,
+            phase: String::from("opening"),
+            text,
+            ..Default::default()
+        });
+        Ok(())
+    }
+
+    /// 確認鍵：能力值頁且有指令時捲到指令頁（下半部 7 步收起、7 步展開），否則關閉面板。演出期間不收。
+    ///
+    /// Go：`native_player_input.go:174`，`func (g *Game) advanceNativePlayerStatus()`
+    pub(crate) fn advance_native_player_status(&mut self) {
+        let Some(s) = self.native_player_status.as_ref() else {
+            return;
+        };
+        if !s.frames.is_empty() {
+            return;
+        }
+        if s.phase == "status" && !s.commands.is_empty() {
+            let mut frames = Vec::with_capacity(14);
+            let steps = (0..=6).map(|i| (&s.status, i)).chain((0..=6).rev().map(|i| (&s.commands, i)));
+            for (panel, i) in steps {
+                match native_church_bottom_panel_frame(&s.source, panel, i) {
+                    Ok(frame) => frames.push(frame),
+                    Err(err) => {
+                        self.load_err = err.message().to_string();
+                        return;
+                    }
+                }
+            }
+            // Go 忽略 `nativeChurchPanelFrame` 的錯誤（`s.steady, _ = …`），錯誤時 steady 變成 nil。
+            let steady = native_church_panel_frame(&s.source, &s.commands, 0).unwrap_or_default();
+            let text = snapshot_native_status_transition(&s.source, s.data.as_ref(), NATIVE_STATUS_TO_COMMANDS, false);
+            let s = self.native_player_status.as_mut().unwrap();
+            (s.frames, s.steady, s.text) = (frames, steady, text);
+            (s.phase, s.frame, s.drawn) = (String::from("transition"), 0, false);
+            return;
+        }
+        let panel = if s.phase == "commands" { &s.commands } else { &s.status };
+        let frames = match native_church_panel_frames(&s.source, panel, false) {
+            Ok(frames) => frames,
+            Err(err) => {
+                self.load_err = err.message().to_string();
+                return;
+            }
+        };
+        let commands = s.phase == NATIVE_PLAYER_STATUS_COMMANDS;
+        let text = snapshot_native_status_transition(&s.source, s.data.as_ref(), NATIVE_STATUS_CLOSING, commands);
+        let s = self.native_player_status.as_mut().unwrap();
+        (s.text, s.frames) = (text, frames);
+        (s.phase, s.frame, s.drawn) = (String::from("closing"), 0, false);
     }
 }
 
 /// Go：`native_player_input.go:114`
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+/// 不 derive `Debug`／`PartialEq`：`NativeUnitStatusData` 帶的面板素材沒有實作。
+#[derive(Clone, Default)]
 pub(crate) struct NativePlayerStatusState {
     pub(crate) data: Option<NativeUnitStatusData>,
     pub(crate) text: Option<NativeStatusTransitionText>,

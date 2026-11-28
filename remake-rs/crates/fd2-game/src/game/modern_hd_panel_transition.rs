@@ -15,4 +15,26 @@ pub(crate) struct NativeStatusTransitionKind(pub(crate) u8);
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub(crate) struct NativeStatusTransitionText {
     pub(crate) kind: NativeStatusTransitionKind,
+    pub(crate) commands: bool,
+}
+
+/// Go：`modern_hd_panel_transition.go:14`..`17`
+pub(crate) const NATIVE_STATUS_OPENING: NativeStatusTransitionKind = NativeStatusTransitionKind(0);
+pub(crate) const NATIVE_STATUS_CLOSING: NativeStatusTransitionKind = NativeStatusTransitionKind(1);
+pub(crate) const NATIVE_STATUS_TO_COMMANDS: NativeStatusTransitionKind = NativeStatusTransitionKind(2);
+
+/// HD 狀態轉場文字的快照。只有 HD 繪製（R6）讀它；忠實模式只保留種類與頁別，`source`／`data` 的
+/// 複本隨 HD 欄位在 R6 補上。輸入不完整時與 Go 相同回 `None`。
+///
+/// Go：`modern_hd_panel_transition.go:27`，`func snapshotNativeStatusTransition(source []byte, data *nativeUnitStatusData, kind nativeStatusTransitionKind, commands bool) *nativeStatusTransitionText`
+pub(crate) fn snapshot_native_status_transition(
+    source: &[u8],
+    data: Option<&NativeUnitStatusData>,
+    kind: NativeStatusTransitionKind,
+    commands: bool,
+) -> Option<NativeStatusTransitionText> {
+    if source.len() != 64000 || data.is_none() {
+        return None;
+    }
+    Some(NativeStatusTransitionText { kind, commands })
 }
