@@ -60,6 +60,7 @@ pub(crate) use std::sync::{Arc, LazyLock, RwLock};
 
 // ---- 每個 Go 檔一個子模組（產生器輸出，依檔名排序）----
 mod action_overlay_runtime;
+mod ai_spell_execute;
 mod assets;
 mod assets_glob_native;
 mod audio;
@@ -269,6 +270,7 @@ mod title;
 mod title_menu_state;
 
 pub(crate) use action_overlay_runtime::*;
+pub(crate) use ai_spell_execute::*;
 pub(crate) use assets::*;
 pub(crate) use assets_glob_native::*;
 pub(crate) use audio::*;

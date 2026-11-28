@@ -751,7 +751,7 @@ pub(crate) mod f_test_env;
 pub(crate) use f_test_env::f_child_env;
 
 #[cfg(test)]
-mod save_test;
+pub(crate) mod save_test;
 
 #[cfg(test)]
 mod golden_save_test;

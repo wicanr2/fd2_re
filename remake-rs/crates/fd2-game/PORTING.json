@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 829,
+      "ported": 836,
       "r6": 59,
-      "r8": 1034
+      "r8": 1027
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -799,13 +799,13 @@
           "name": "executeAISpell",
           "recv": "Game",
           "rust": "fd2_game::game::Game::execute_ai_spell",
-          "status": "r8",
+          "status": "ported",
           "go_line": 14
         },
         {
           "name": "actorDisplayName",
           "rust": "fd2_game::game::actor_display_name",
-          "status": "r8",
+          "status": "ported",
           "go_line": 107
         }
       ],
@@ -1962,7 +1962,7 @@
           "name": "localizedSpellResult",
           "recv": "Game",
           "rust": "fd2_game::game::Game::localized_spell_result",
-          "status": "r8",
+          "status": "ported",
           "go_line": 213
         }
       ],
@@ -16425,28 +16425,28 @@
           "name": "beginNativeCommand23Destination",
           "recv": "Game",
           "rust": "fd2_game::game::Game::begin_native_command23_destination",
-          "status": "r8",
+          "status": "ported",
           "go_line": 721
         },
         {
           "name": "nativeRelocationDestinationAllowed",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_relocation_destination_allowed",
-          "status": "r8",
+          "status": "ported",
           "go_line": 755
         },
         {
           "name": "nativeRelocationDestinations",
           "recv": "Game",
           "rust": "fd2_game::game::Game::native_relocation_destinations",
-          "status": "r8",
+          "status": "ported",
           "go_line": 772
         },
         {
           "name": "applyNativeRelocationDestination",
           "recv": "Game",
           "rust": "fd2_game::game::Game::apply_native_relocation_destination",
-          "status": "r8",
+          "status": "ported",
           "go_line": 797
         },
         {

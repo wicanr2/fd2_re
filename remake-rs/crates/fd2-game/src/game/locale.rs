@@ -963,6 +963,33 @@ impl Game {
             }
         }
     }
+
+    /// 法術結算訊息：命中數與總量，有落空時接上落空字尾。
+    ///
+    /// Go：`locale.go:213`，`func (g *Game) localizedSpellResult(actor, spell string, hitN, total int, healing bool, missN int) (string, bool)`
+    pub(crate) fn localized_spell_result(
+        &mut self,
+        actor: &str,
+        spell: &str,
+        hit_n: i64,
+        total: i64,
+        healing: bool,
+        miss_n: i64,
+    ) -> (String, bool) {
+        let key = if healing { "battle.spell.result_heal" } else { "battle.spell.result_damage" };
+        let (message, ok) = self.locale_message(key, &[actor.into(), spell.into(), hit_n.into(), total.into()]);
+        if !ok {
+            return (String::new(), false);
+        }
+        if miss_n == 0 {
+            return (message, true);
+        }
+        let (suffix, ok) = self.locale_message("battle.spell.miss_suffix", &[miss_n.into()]);
+        if !ok {
+            return (String::new(), false);
+        }
+        (message + &suffix, true)
+    }
 }
 
 #[cfg(test)]

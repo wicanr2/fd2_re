@@ -7289,8 +7289,9 @@ impl Game {
             }
             return;
         };
-        if self.cast_sp.is_some() {
-            todo!("R8: main.go:7475 施法目標確認（CastArea、localizedSpellResult；第一章重播沒有執行到）");
+        if let Some(sp) = self.cast_sp.clone() {
+            self.confirm_cast_spell(sel, sp);
+            return;
         }
         if self.native_item_targeting {
             let item_id = self.native_item_target_id;
@@ -7533,6 +7534,103 @@ impl Game {
             self.reset_native_target_field();
             self.finish_selected_wait();
         }
+    }
+
+    /// 施法目標選擇：游標是施放中心（範圍法術可指空地，單體法術要有合法單位），以 CastArea 結算。
+    ///
+    /// Go：`main.go:7484`..`7543`，`confirm` 的 `g.castSp != nil` 分支。Go 的 `g.rng` 為 nil 時 CastArea
+    /// 擲骰會 panic；Rust 在扣 MP 前停下並保留選目標狀態（失敗即關閉）。
+    fn confirm_cast_spell(&mut self, sel: UnitIdx, sp: battle::Spell) {
+        let (cur_x, cur_y) = (self.cur_x, self.cur_y);
+        let st = self.st.as_ref().unwrap();
+        if !st.in_cast_range(sel, &sp, cur_x, cur_y) {
+            return;
+        }
+        if sp.range == 0 {
+            // 單體：中心格需有合法目標
+            let ok_camp = st.unit_at(cur_x, cur_y).is_some_and(|t| {
+                let camp = st.units[t].camp;
+                (sp.target == 0 && camp != battle::OWN) || (sp.target == 1 && camp == battle::OWN)
+            });
+            if !ok_camp {
+                return;
+            }
+        }
+        let Some(rng) = self.rng.as_mut() else {
+            self.load_err = String::from("施法：決定性亂數來源不可用");
+            return;
+        };
+        let results = self.st.as_mut().unwrap().cast_area(Some(sel), cur_x, cur_y, &sp, rng);
+        if results.is_empty() {
+            if let (message, true) = self.locale_message("battle.spell.blocked", &[]) {
+                self.msg = message;
+            }
+            return;
+        }
+        // 訊息彙總 + 單體攻擊接全螢幕演出
+        let (mut hit_n, mut miss_n, mut total) = (0, 0, 0);
+        let mut first: Option<&battle::CastResult> = None;
+        for result in &results {
+            if result.missed {
+                miss_n += 1;
+                continue;
+            }
+            hit_n += 1;
+            total += result.amount;
+            if first.is_none() {
+                first = Some(result);
+            }
+        }
+        let first = first.map(|r| (r.target, r.amount));
+        for result in &results {
+            self.award_death_reward(result.target, Some(sel));
+        }
+        let actor_name = self.st.as_ref().unwrap().units[sel].name.clone();
+        if let (message, true) =
+            self.localized_spell_result(&actor_name, &sp.name, hit_n, total, sp.target == 1, miss_n)
+        {
+            self.msg = message;
+        }
+        if sp.target == 0
+            && let Some((Some(tgt), amount)) = first
+            && amount > 0
+        {
+            // 攻擊法術演出(首目標)
+            let units = &self.st.as_ref().unwrap().units;
+            let (a, t) = (&units[sel], &units[tgt]);
+            let nm = if t.name.is_empty() { t.cls_name.clone() } else { t.name.clone() };
+            let terrain = self.terrain_at(t.x, t.y);
+            self.atk = self.new_atk_anim(
+                a.battle_fig,
+                t.battle_fig,
+                &a.name,
+                &nm,
+                a.hp,
+                a.max_hp,
+                a.lv,
+                a.mp,
+                a.max_mp,
+                t.lv,
+                t.mp,
+                t.max_mp,
+                t.hp + amount,
+                t.hp,
+                t.max_hp,
+                terrain,
+                true,
+            );
+        }
+        let actor = sel;
+        let unit = &mut self.st.as_mut().unwrap().units[actor];
+        let (ux, uy) = (unit.x, unit.y);
+        unit.set_map_pose(dir_toward(ux, uy, cur_x, cur_y));
+        (self.cast_sp, self.sel, self.reach, self.moved) = (None, None, BTreeMap::new(), false);
+        if let Some(atk) = self.atk.as_mut() {
+            atk.after = Some(Box::new(move |g: &mut Game| g.finish_successful_unit_action(Some(actor), None)));
+        } else {
+            self.finish_successful_unit_action(Some(actor), None);
+        }
+        self.check_result();
     }
 
     /// checkResult 檢查勝負(失敗條件:索爾死;勝利:敵全滅,doc28 第1章)。
@@ -10972,7 +11070,11 @@ impl Game {
             st.has_native_map_range_mode_state = true;
         }
         if plan.spell_id >= 0 {
-            todo!("R8: ai_spell_execute.go:executeAISpell（第一章重播沒有敵方法術）");
+            if let Err(err) = self.execute_ai_spell(plan) {
+                self.load_err = format!("敵方 AI 法術：{}", err.message());
+                self.ai_busy = false;
+            }
+            return;
         }
         if plan.native_action_kind == battle::NATIVE_AI_ACTION_ITEM
             || plan.native_action_kind == battle::NATIVE_AI_ACTION_COMMAND
@@ -11265,6 +11367,10 @@ mod main_a_test;
 #[cfg(test)]
 #[path = "main/main_b_test.rs"]
 mod main_b_test;
+
+#[cfg(test)]
+#[path = "main/main_cast_spell_test.rs"]
+mod main_cast_spell_test;
 
 #[cfg(test)]
 #[path = "main/main_d_test.rs"]
