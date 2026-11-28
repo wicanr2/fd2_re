@@ -224,6 +224,12 @@ impl Font {
         let measure = self.measure.0.as_ref().expect("font.go:Width：face_for 成功時已注入 TextMeasure");
         rect_dx(&measure.bound_string(&face, s)) as f64
     }
+    /// LineHeight 一行高(像素,含行距)。
+    ///
+    /// Go：`font.go:287`，`func (f *Font) LineHeight(scale float64) float64`
+    pub(crate) fn line_height(&self, scale: f64) -> f64 {
+        self.base * 1.3 * scale
+    }
 
     /// Wrap 依實際 glyph 寬度切行。斷點以 textSegments 為單位：繁中每個字都能斷，
     /// 英文與日文譯文裡的拉丁單字整串搬，不會斷在單字中間。明示換行仍保留。這是

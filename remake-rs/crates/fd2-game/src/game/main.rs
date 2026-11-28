@@ -11651,22 +11651,49 @@ impl Game {
     ///
     /// R5 階段 2 r5c。第一章走到的分支（階段 0 覆蓋率）只有各節點的原生呈現：城鎮 `drawNativeTown`、商店
     /// `drawNativeShop`、酒店 `drawNativeHotel`、整備 `drawNativePreparation`、教會 `drawNativeChurchUIJob`，各自成立就
-    /// return；其他節點型別（戰場、故事等）沒有分支。原生呈現不成立時的 TTF 後備版面（`fillBox`＋`Font.Draw`）、流程
-    /// 結束的 GAME OVER、`choice` 選單、教會的其餘子畫面與 `ending` 結語都沒有走到，`todo!("r8:…")`；分支表見
-    /// `PORTING.md`「R5 階段 2：r5c」。Go 的 `fillBox` 閉包只在後備分支使用，這裡不建立。
+    /// return；其他節點型別（戰場、故事等）沒有分支。流程結束的 GAME OVER、`choice`／城鎮後備選單與 `ending` 結語
+    /// 已在 R8 移植；商店、酒店與整備的 TTF 後備版面仍是 `todo!("r8:…")`，分支表見 `PORTING.md`「R5 階段 2：r5c」。
+    /// Go 的 `fillBox` 閉包寫成 `fill_campaign_box`。
     pub(crate) fn draw_campaign_ui(&mut self, screen: &mut Picture) {
         if self.camp.is_none() || self.font.is_none() {
             return;
         }
-        let Some(node_type) = self.camp.as_ref().unwrap().node().map(|n| n.r#type.clone()) else {
-            todo!("r8:main.go:10652 流程結束的 GAME OVER（fillBox＋TTF；開場與第一章沒有走到）");
+        let Some(node) = self.camp.as_ref().unwrap().node().cloned() else {
+            // 流程結束（無敗北路線的 game over）。
+            fill_campaign_box(screen, 0.0, LOGICAL_H as f64 / 2.0 - 40.0, LOGICAL_W as f64, 80.0);
+            let (x, y) = (LOGICAL_W as f64 / 2.0 - 90.0, LOGICAL_H as f64 / 2.0 - 20.0);
+            let red = ColorRgba { r: 0xff, g: 0x70, b: 0x70, a: 0xff };
+            self.font.as_mut().unwrap().draw(screen, "GAME OVER", x, y, 2.0, red);
+            return;
         };
+        let node_type = node.r#type.clone();
         match node_type.as_str() {
             "choice" | "town" => {
                 if node_type == "town" && self.draw_native_town(screen) {
                     return;
                 }
-                todo!("r8:main.go:10660..10679 choice／town 的 TTF 後備選單（開場與第一章沒有走到）");
+                let vis = self.camp.as_ref().unwrap().visible();
+                fill_campaign_box(screen, 160.0, 120.0, 320.0, 60.0 + vis.len() as f64 * 28.0);
+                let mut title = node.prompt.clone();
+                if node_type == "town" && !node.town.is_empty() {
+                    let (message, ok) = self.locale_message(
+                        "postbattle.preparation.title",
+                        &[localization::FormatArg::Str(node.town.clone())],
+                    );
+                    if !ok {
+                        return;
+                    }
+                    title = message;
+                }
+                let font = self.font.as_mut().unwrap();
+                font.draw(screen, &title, 176.0, 130.0, 1.1, ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff });
+                for (i, option) in vis.iter().enumerate() {
+                    let (mut c, mut pre) = (ColorRgba { r: 0xd0, g: 0xd8, b: 0xe8, a: 0xff }, "　");
+                    if i as i64 == self.camp_sel {
+                        (c, pre) = (ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff }, "▶");
+                    }
+                    font.draw(screen, &format!("{pre}{}", option.label), 190.0, 162.0 + i as f64 * 28.0, 1.0, c);
+                }
             }
             "shop" => {
                 if self.draw_native_shop(screen) {
@@ -11695,7 +11722,34 @@ impl Game {
                 }
                 self.draw_native_church_service(screen);
             }
-            "ending" => todo!("r8:main.go:11099..11122 ending 結語（開場與第一章沒有走到）"),
+            "ending" => {
+                // Ending 是獨立頁，不可讓上一張 battle map／HUD 從半透明框後露出。
+                screen.fill(ColorRgba { r: 0, g: 0, b: 0, a: 0xff });
+                let (scale, max_width) = (1.2, 560.0);
+                let font = self.font.as_mut().unwrap();
+                let lines = font.wrap(&node.text, scale, max_width);
+                let line_h = font.line_height(scale);
+                let panel_h = 70.0 + line_h * lines.len() as f64;
+                let panel_y = (LOGICAL_H as f64 - panel_h) / 2.0;
+                fill_campaign_box(screen, 24.0, panel_y, LOGICAL_W as f64 - 48.0, panel_h);
+                let (title, ok) = self.locale_message("ending.title", &[]);
+                if !ok {
+                    return;
+                }
+                let font = self.font.as_mut().unwrap();
+                let center = LOGICAL_W as f64 / 2.0;
+                let x = center - font.width(&title, 1.35) / 2.0;
+                font.draw(screen, &title, x, panel_y + 18.0, 1.35, ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff });
+                for (i, line) in lines.iter().enumerate() {
+                    let x = center - font.width(line, scale) / 2.0;
+                    let y = panel_y + 55.0 + i as f64 * line_h;
+                    font.draw(screen, line, x, y, scale, ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff });
+                }
+                if !self.ending_notice.is_empty() {
+                    let (y, c) = ((LOGICAL_H - 30) as f64, ColorRgba { r: 0xd0, g: 0xd8, b: 0xe8, a: 0xff });
+                    self.font.as_mut().unwrap().draw(screen, &self.ending_notice, 28.0, y, 0.9, c);
+                }
+            }
             _ => {}
         }
     }
@@ -12097,4 +12151,13 @@ pub(crate) fn blit_phase_banner_glyph(dst: &mut [u8], cell: &fdother::LMI1Entry,
         }
     }
     true
+}
+
+/// Go `drawCampaignUI` 的 `fillBox` 閉包：深藍半透明底框。
+fn fill_campaign_box(screen: &mut Picture, x: f64, y: f64, w: f64, h: f64) {
+    let mut boxed = Picture::new_image(w as i64, h as i64);
+    boxed.fill(ColorRgba { r: 0x10, g: 0x1c, b: 0x40, a: 0xe8 });
+    let mut op = DrawImageOptions::default();
+    op.geo_m.translate(x, y);
+    screen.draw_image(&boxed, &op);
 }

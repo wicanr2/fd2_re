@@ -88,3 +88,44 @@ fn test_materialize_inherited_native_dialogue_view_requires_tile_aligned_camera(
     g.m = None;
     assert!(g.materialize_inherited_native_dialogue_view().is_err(), "missing map accepted");
 }
+
+/// Rust 補充：`drawCampaignUI` 的 TTF 後備版面（流程結束的 GAME OVER、choice 選單、ending 結語）以真字型畫出，
+/// 不經原生呈現。
+#[test]
+fn test_campaign_ui_ttf_fallbacks_draw_game_over_choice_and_ending() {
+    if !crate::test_support::cjk_font_available()
+        || crate::test_support::remake_asset("locales/zh-Hant/pack.json").is_none()
+    {
+        return;
+    }
+    let option = |label: &str| campaign::ChoiceOption {
+        label: label.to_string(),
+        to: String::from("end"),
+        ..Default::default()
+    };
+    let choice = campaign::Node {
+        r#type: String::from("choice"),
+        prompt: String::from("要往哪裡？"),
+        options: vec![option("北"), option("南")],
+        ..Default::default()
+    };
+    let ending = campaign::Node { r#type: String::from("ending"), text: String::from("完"), ..Default::default() };
+    let nodes = BTreeMap::from([(String::from("pick"), choice), (String::from("end"), ending)]);
+    let runner = |start: &str| {
+        let c = campaign::Campaign { start: start.to_string(), nodes: nodes.clone(), ..Default::default() };
+        campaign::new_runner(&c)
+    };
+    let mut g = Game { font: Some(load_font().unwrap()), ..Default::default() };
+    crate::game::save::save_test::attach_official_locale(&mut g);
+    let mut painted = |start: &str| {
+        g.camp = Some(runner(start));
+        let mut screen = Picture::new_image(LOGICAL_W, LOGICAL_H);
+        g.draw_campaign_ui(&mut screen);
+        assert!(g.load_err.is_empty(), "{start}: {}", g.load_err);
+        screen.read_pixels().chunks(4).filter(|p| p[3] != 0 && p[..3] != [0, 0, 0]).count()
+    };
+    assert!(painted("pick") > 0, "choice fallback drew nothing");
+    assert!(painted("end") > 0, "ending fallback drew nothing");
+    // 起點不在節點表裡：`node()` 是 `None`，即流程結束。
+    assert!(painted("gone") > 0, "GAME OVER fallback drew nothing");
+}
