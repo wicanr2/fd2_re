@@ -62,7 +62,7 @@ impl Game {
             "cutscene" => {
                 if self.approximate_postbattle {
                     if advance {
-                        todo!("R8: main.go:continueApproximatePostbattle（第一章沒有執行到）")
+                        self.continue_approximate_postbattle();
                     }
                     return true;
                 }

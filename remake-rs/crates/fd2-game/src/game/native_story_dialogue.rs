@@ -361,7 +361,7 @@ impl Game {
             && native0.source_dat == "FDTXT_028"
             && native0.string_index == 7;
         if self.st.as_ref().is_some_and(|st| !st.has_native_map_view_state) && ch28_inherited {
-            todo!("R8: native_story_dialogue.go:materializeInheritedNativeDialogueView（第一章沒有執行到）")
+            self.materialize_inherited_native_dialogue_view()?;
         }
         if self.st.is_none() && self.story_native_map_state.is_none() && self.story_native_map_source.is_some() {
             let source = self.story_native_map_source.clone();
@@ -992,7 +992,39 @@ impl Game {
     }
 }
 
-/// Go：`native_story_dialogue.go:339`，`func nativeStoryOpeningFrameIndex(tick, count int) int`
+impl Game {
+    /// materializeInheritedNativeDialogueView 保留戰鬥控制器的現行視圖。raw ch27_post 在呼叫對話前沒有另寫
+    /// 鏡頭／游標，因此只有完整圖塊對齊的 controller 狀態可以成為 indexed source；這不是章節專用的座標後備值。
+    ///
+    /// Go：`native_story_dialogue.go:336`，`func (g *Game) materializeInheritedNativeDialogueView() error`
+    pub(crate) fn materialize_inherited_native_dialogue_view(&mut self) -> Result<()> {
+        let (Some(_), Some(m)) = (self.st.as_ref(), self.m.as_ref().filter(|m| m.tile_w > 0 && m.tile_h > 0)) else {
+            return Err(game_err!("native story dialogue: inherited battle view is unavailable"));
+        };
+        if self.cam_x < 0.0 || self.cam_y < 0.0 {
+            return Err(game_err!("native story dialogue: inherited battle camera is negative"));
+        }
+        // Go `int(g.camX)/g.m.TileW`：先截成整數再整除。
+        let (camera_x, camera_y) = (self.cam_x as i64 / m.tile_w, self.cam_y as i64 / m.tile_h);
+        if (camera_x * m.tile_w) as f64 != self.cam_x || (camera_y * m.tile_h) as f64 != self.cam_y {
+            return Err(game_err!("native story dialogue: inherited battle camera is not tile-aligned"));
+        }
+        let view = battle::NativeMapViewState {
+            camera_x,
+            camera_y,
+            cursor_x: self.cur_x,
+            cursor_y: self.cur_y,
+            visible_cursor_x: self.cur_x - camera_x,
+            visible_cursor_y: self.cur_y - camera_y,
+        };
+        if let Err(err) = self.st.as_mut().unwrap().materialize_native_map_view_state(view) {
+            return Err(game_err!("native story dialogue: inherited battle view: {err}"));
+        }
+        Ok(())
+    }
+}
+
+/// Go：`native_story_dialogue.go:359`，`func nativeStoryOpeningFrameIndex(tick, count int) int`
 pub(crate) fn native_story_opening_frame_index(tick: i64, count: i64) -> i64 {
     if count <= 0 {
         return -1;

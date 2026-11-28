@@ -5279,6 +5279,21 @@ impl Game {
         }
     }
 
+    /// 近似戰後節點按確認後直接前進到下一個節點。
+    ///
+    /// Go：`main.go:5038`，`func (g *Game) continueApproximatePostbattle() bool`
+    /// Go 檢查接收者是否為 nil；Rust 的 `self` 不會是 null，該分支不移植。
+    pub(crate) fn continue_approximate_postbattle(&mut self) -> bool {
+        if !self.approximate_postbattle || self.camp.is_none() {
+            return false;
+        }
+        self.approximate_postbattle = false;
+        self.msg = String::new();
+        self.camp.as_mut().unwrap().advance("");
+        self.enter_node();
+        true
+    }
+
     /// campInput 處理 campaign 節點的輸入。回傳 true = 已攔截(擋掉戰場一般輸入)。
     ///
     /// Go：`main.go:5044`，`func (g *Game) campInput() bool`
@@ -9373,7 +9388,9 @@ impl Game {
             };
         }
         if self.native_system_nested_open {
-            todo!("R8: main.go:10525 nativeNestedSystemOverlayState（第一章重播沒有執行到）");
+            return self
+                .native_nested_system_overlay_state()
+                .unwrap_or(fdother::ActionOverlayState { availability: [-1, -1, -1, -1], ..Default::default() });
         }
         if self.native_system_cursor_overlay {
             return fdother::native_continue_action_overlay_state();
@@ -10578,12 +10595,12 @@ impl Game {
         self.advance_battle_event();
     }
 
-    /// R4 B 組隨呼叫端補移植（原標 `r8`）：Go `main.go:12892`，`func (g *Game) finishBattleEventWithError(message string)`。
-    /// 戰鬥事件的錯誤路徑；`failNativeChapterResult` 是 `r8`，有原生章節結果時停在 `todo!`。
+    /// R4 B 組隨呼叫端補移植（原標 `r8`）：Go `main.go:12921`，`func (g *Game) finishBattleEventWithError(message string)`。
+    /// 戰鬥事件的錯誤路徑；有原生章節結果時一併以 `fail_native_chapter_result` 擋住啟動。
     pub(crate) fn finish_battle_event_with_error(&mut self, message: &str) {
         self.load_err = format!("battle event: {message}");
         if self.native_chapter_result.is_some() {
-            todo!("R8: native_chapter_result.go:failNativeChapterResult（第一章沒有執行到）")
+            self.fail_native_chapter_result(message);
         }
         (self.battle_event, self.battle_event_delay, self.cam_pan) = (None, 0, None);
     }
@@ -11400,6 +11417,10 @@ pub(crate) mod main_b_test;
 #[cfg(test)]
 #[path = "main/main_cast_spell_test.rs"]
 mod main_cast_spell_test;
+
+#[cfg(test)]
+#[path = "main/main_postbattle_test.rs"]
+mod main_postbattle_test;
 
 #[cfg(test)]
 #[path = "main/main_d_test.rs"]

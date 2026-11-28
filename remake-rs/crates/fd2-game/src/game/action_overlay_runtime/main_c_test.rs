@@ -998,6 +998,11 @@ fn test_nested_system_overlay_uses_runtime_save_and_fd2sav_gates() {
     for (direction, want) in [36, 41, 44, 45].into_iter().enumerate() {
         assert_eq!(state.cell_index(direction as i64).ok(), Some(want), "direction {direction}");
     }
+    // Rust 補充：巢狀選單開著時，指令環狀態（Go `nativeActionOverlayState`）就是這份；圖格缺件時四向都不可用。
+    g.native_system_nested_open = true;
+    assert_eq!(g.native_action_overlay_state(), state, "nested open must use the nested overlay state");
+    g.native_action_cells[41] = None;
+    assert_eq!(g.native_action_overlay_state().availability, [-1, -1, -1, -1], "missing cell must disable all");
 }
 
 /// Go：`native_action_overlay_test.go:592` `TestNativeCommandTargetFieldMaterializeAndReset`（Go 的施法者不在
