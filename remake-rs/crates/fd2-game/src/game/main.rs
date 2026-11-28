@@ -2395,7 +2395,12 @@ impl Game {
                     self.load_err = String::from("beat native_ch20_sky_key_sequence:缺少原版 0x242c9 payload");
                     return;
                 }
-                todo!("R8: native_ch20_sky_key.go:startNativeCh20SkyKeySequence（第一章沒有執行到）")
+                let spec = b.native_ch20_sky_key.unwrap();
+                if let Err(err) =
+                    self.start_native_ch20_sky_key_sequence(spec, Some(Box::new(|g: &mut Game| g.beat_advance())))
+                {
+                    self.load_err = format!("beat native_ch20_sky_key_sequence: {}", err.message());
+                }
             }
             "native_palette_fade_out" => {
                 if !b.native_palette_fade.as_ref().is_some_and(|f| f.start == 0 && f.end == 63 && f.delay_ms == 2) {
@@ -7835,7 +7840,9 @@ impl Game {
             return self.shot_termination();
         }
         if self.native_ch20_sky_key.is_some() {
-            todo!("R8: native_ch20_sky_key.go:stepNativeCh20SkyKey（第二十章天空之鑰）")
+            // Go `main.go:8558`。
+            self.step_native_ch20_sky_key();
+            return self.shot_termination();
         }
         if self.native_ch23_loop.is_some() {
             self.step_native_ch23_loop();
@@ -8603,7 +8610,12 @@ impl Game {
         }
         if self.native_ch20_sky_key.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_ch20_sky_key.go:drawNativeCh20SkyKey／failNativeCh20SkyKey");
+            // Go main.go:9432：畫不出來就 fail；Go 另以 DebugPrint 印一行除錯字，Rust 由 `load_err` 顯示同一失敗。
+            if !self.draw_native_ch20_sky_key(Some(screen)) {
+                self.fail_native_ch20_sky_key("presentation unavailable");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_ch23_loop.is_some() {
             screen.fill(BLACK);
@@ -11379,7 +11391,7 @@ mod main_a_test;
 
 #[cfg(test)]
 #[path = "main/main_b_test.rs"]
-mod main_b_test;
+pub(crate) mod main_b_test;
 
 #[cfg(test)]
 #[path = "main/main_cast_spell_test.rs"]

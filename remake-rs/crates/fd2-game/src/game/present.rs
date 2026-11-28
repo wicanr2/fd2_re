@@ -135,7 +135,11 @@ impl Game {
             return PresentOwner::NativeEnding;
         }
         if self.native_ch20_sky_key.is_some() {
-            todo!("R8: main.go:9417 drawNativeCh20SkyKey／failNativeCh20SkyKey（第二十章）")
+            // Go `main.go:9432`；畫不出來時 Draw 呼叫 failNativeCh20SkyKey。
+            if !self.draw_native_ch20_sky_key(None) {
+                self.fail_native_ch20_sky_key("presentation unavailable");
+            }
+            return PresentOwner::NativeCh20SkyKey;
         }
         if self.native_ch23_loop.is_some() {
             if !self.draw_native_ch23_loop(None) {

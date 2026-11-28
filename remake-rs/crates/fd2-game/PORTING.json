@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 858,
+      "ported": 873,
       "r6": 59,
-      "r8": 1005
+      "r8": 990
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -12009,103 +12009,103 @@
         {
           "name": "validateNativeCh20SkyKeyAssets",
           "rust": "fd2_game::game::validate_native_ch20_sky_key_assets",
-          "status": "r8",
+          "status": "ported",
           "go_line": 55
         },
         {
           "name": "loadNativeCh20SkyKeyANI",
           "rust": "fd2_game::game::load_native_ch20_sky_key_ani",
-          "status": "r8",
+          "status": "ported",
           "go_line": 84
         },
         {
           "name": "startNativeCh20SkyKeySequence",
           "recv": "Game",
           "rust": "fd2_game::game::Game::start_native_ch20_sky_key_sequence",
-          "status": "r8",
+          "status": "ported",
           "go_line": 88
         },
         {
           "name": "snapshotNativeCh20SkyKeyState",
           "rust": "fd2_game::game::snapshot_native_ch20_sky_key_state",
-          "status": "r8",
+          "status": "ported",
           "go_line": 161
         },
         {
           "name": "refreshPalette",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::refresh_palette",
-          "status": "r8",
+          "status": "ported",
           "go_line": 193
         },
         {
           "name": "advancePan",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::advance_pan",
-          "status": "r8",
+          "status": "ported",
           "go_line": 202
         },
         {
           "name": "beginFirstFrames",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::begin_first_frames",
-          "status": "r8",
+          "status": "ported",
           "go_line": 236
         },
         {
           "name": "prepareFDFrame",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::prepare_fd_frame",
-          "status": "r8",
+          "status": "ported",
           "go_line": 249
         },
         {
           "name": "prepareANIFrame",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::prepare_ani_frame",
-          "status": "r8",
+          "status": "ported",
           "go_line": 267
         },
         {
           "name": "beginFlash",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::begin_flash",
-          "status": "r8",
+          "status": "ported",
           "go_line": 274
         },
         {
           "name": "beginRestore",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::begin_restore",
-          "status": "r8",
+          "status": "ported",
           "go_line": 284
         },
         {
           "name": "beginTail",
           "recv": "nativeCh20SkyKeyJob",
           "rust": "fd2_game::game::NativeCh20SkyKeyJob::begin_tail",
-          "status": "r8",
+          "status": "ported",
           "go_line": 294
         },
         {
           "name": "failNativeCh20SkyKey",
           "recv": "Game",
           "rust": "fd2_game::game::Game::fail_native_ch20_sky_key",
-          "status": "r8",
+          "status": "ported",
           "go_line": 300
         },
         {
           "name": "stepNativeCh20SkyKey",
           "recv": "Game",
           "rust": "fd2_game::game::Game::step_native_ch20_sky_key",
-          "status": "r8",
+          "status": "ported",
           "go_line": 308
         },
         {
           "name": "drawNativeCh20SkyKey",
           "recv": "Game",
           "rust": "fd2_game::game::Game::draw_native_ch20_sky_key",
-          "status": "r8",
+          "status": "ported",
           "go_line": 370
         }
       ],

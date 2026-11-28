@@ -11,7 +11,7 @@ use super::*;
 use crate::test_support;
 
 /// Go `newBeatTestGame`（`beatrunner_test.go:18`）。
-fn new_beat_test_game(beats: Vec<campaign::Beat>) -> Game {
+pub(crate) fn new_beat_test_game(beats: Vec<campaign::Beat>) -> Game {
     let c = campaign::Campaign {
         start: String::from("cs"),
         nodes: BTreeMap::from([
@@ -60,7 +60,6 @@ fn new_beat_test_game(beats: Vec<campaign::Beat>) -> Game {
 
 impl Game {
     /// Go 測試 helper `(*Game).tick`（`beatrunner_test.go:57`）：手動跑 `Update` 裡 BeatRunner 相關的步驟。
-    /// `stepNativeCh20SkyKey` 是 `r8`（第一章沒有天空之鑰 job），沒有 job 時 Go 也不做事，這裡省略。
     pub(crate) fn tick(&mut self, n: i64) {
         for _ in 0..n {
             self.step_native_spawn_intro();
@@ -69,6 +68,7 @@ impl Game {
             self.step_focus_unit();
             self.step_fade();
             self.step_native_palette_ramp();
+            self.step_native_ch20_sky_key();
             self.step_cam_pan();
             if self.beat_delay > 0 {
                 self.beat_delay -= 1;
