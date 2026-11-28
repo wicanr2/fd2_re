@@ -224,7 +224,7 @@ impl Game {
 
     /// 閘門通過後交給各指令的玩家演出入口。回傳 false 代表這個 ID 還沒有玩家入口。
     ///
-    /// Go：`main.go:7631`..`8193`（逐一補移植；目前接上指令 0～8、10～35）
+    /// Go：`main.go:7631`..`8193`（指令 0～35 都已接上）
     pub(crate) fn start_native_player_command(&mut self, id: i64, target: Option<UnitIdx>) -> bool {
         let Some(actor) = self.sel else { return true };
         let cursor = (self.cur_x, self.cur_y);
@@ -246,6 +246,13 @@ impl Game {
                 };
                 if let Err(err) = started {
                     self.msg = format!("原始指令 {id}：indexed 演出不可用 ({err})");
+                }
+                true
+            }
+            9 => {
+                let then = native_player_damage_command_then(id, actor, cursor);
+                if let Err(err) = self.start_native_command9_player_presentation(actor, target, then) {
+                    self.msg = format!("原始指令 9：indexed 演出不可用 ({err})");
                 }
                 true
             }

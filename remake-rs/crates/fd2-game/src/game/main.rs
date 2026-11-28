@@ -8803,9 +8803,13 @@ impl Game {
             return;
         }
         if self.native_cmd9_player.is_some() {
-            // Go main.go:9528..9701 的指令演出分支只剩玩家指令 9 還沒移植。
+            // Go main.go:9631：畫不出來就 fail；Go 另以 DebugPrint 印一行除錯字，Rust 由 `load_err` 顯示同一失敗。
             screen.fill(BLACK);
-            todo!("r8:main.go:9528..9701 玩家指令 9 的演出（第一章沒有）");
+            if !self.present_native_command9_player(Some(screen)) {
+                self.fail_native_command9_player_presentation(&game_err!("draw unavailable"));
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_ai_item_presentation.is_some() {
             screen.fill(BLACK);
