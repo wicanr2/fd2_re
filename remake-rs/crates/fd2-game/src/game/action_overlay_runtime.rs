@@ -421,12 +421,29 @@ impl Game {
     /// 全軍移動的事件預檢：只有 Game 層取得的演出素材在這裡補驗，避免先移動才發現缺素材。
     ///
     /// Go：`action_overlay_runtime.go:578`，`func (g *Game) preflightNativeSystemGroupMarchEvents(plan battle.NativeSystemGroupMarchPlan) bool`
-    ///
-    /// 事件 61 的對白與演出（`event61DialogueActions`）尚未移植，含事件 61 的計畫失敗即關閉。
-    fn preflight_native_system_group_march_events(&mut self, plan: &battle::NativeSystemGroupMarchPlan) -> bool {
+    pub(crate) fn preflight_native_system_group_march_events(
+        &mut self,
+        plan: &battle::NativeSystemGroupMarchPlan,
+    ) -> bool {
         for step in &plan.steps {
             for event in &step.events {
                 match event.event_id {
+                    61 => {
+                        if event61_dialogue_actions(self, 0, 10, 2).is_none() {
+                            return false;
+                        }
+                        if event.presentation {
+                            if event61_dialogue_actions(self, 1, 0, 10).is_none() {
+                                return false;
+                            }
+                            let frames = fdother::load_separated_event61_frames(separated_asset_path(
+                                "animations/fdother_045_event61",
+                            ));
+                            if !frames.is_ok_and(|frames| frames.len() == 59) {
+                                return false;
+                            }
+                        }
+                    }
                     75 => {
                         if !event75_dialogue_preflight(self, event.text_index) {
                             return false;
@@ -519,6 +536,40 @@ impl Game {
             })),
             ..Default::default()
         });
+    }
+
+    /// 全軍移動走到 selector1 事件格時暫停，交給既有的事件 61／75 擁有者；事件結束才續走。
+    ///
+    /// Go：`action_overlay_runtime.go:790`，`func (g *Game) beginNativeSystemGroupMarchFieldEvent( walk *walkAnim, event battle.NativeSystemGroupMarchEvent, ) bool`
+    /// Go 收 `walk` 指標並要求它就是 `g.walk`；Rust 一律對 `self.walk` 操作。
+    pub(crate) fn begin_native_system_group_march_field_event(
+        &mut self,
+        event: &battle::NativeSystemGroupMarchEvent,
+    ) -> bool {
+        let Some(unit) = self.walk.as_ref().and_then(|w| w.u) else {
+            return false;
+        };
+        let before_err = self.load_err.clone();
+        let resume = move |g: &mut Game| {
+            // Go 比對 `g.walk == walk` 的指標。Rust 的走行沒有身分，以「同一個單位、仍停在全軍移動事件」代替：
+            // 事件期間只有這個續行會解除暫停，別的走行不會帶著暫停旗標開始。
+            if !g.walk.as_ref().is_some_and(|w| w.u == Some(unit) && w.native_group_march_paused) {
+                return;
+            }
+            if g.load_err != before_err {
+                g.walk = None;
+                g.native_system_group_march = None;
+                return;
+            }
+            let w = g.walk.as_mut().unwrap();
+            w.native_group_march_event += 1;
+            w.native_group_march_paused = false;
+        };
+        match event.event_id {
+            61 => self.begin_native_field_event61(Some(unit), Some(Box::new(resume))),
+            75 => self.begin_native_field_event75(Some(unit), Some(Box::new(resume))),
+            _ => false,
+        }
     }
 
     /// 全軍移動逐單位走路；每段走完提交該單位，最後結束回合。

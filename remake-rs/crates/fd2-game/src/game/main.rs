@@ -6295,10 +6295,16 @@ impl Game {
             }
             if planned {
                 let w = self.walk.as_mut().unwrap();
+                let event = w.native_group_march_events[w.native_group_march_event as usize];
                 w.seg += 1;
                 w.tick = 0;
                 w.native_group_march_paused = true;
-                todo!("R8: action_overlay_runtime.go:beginNativeSystemGroupMarchFieldEvent（第一章沒有執行到）")
+                if !self.begin_native_system_group_march_field_event(&event) {
+                    self.load_err = String::from("native system group-march field event owner rejected runtime state");
+                    self.walk = None;
+                    self.native_system_group_march = None;
+                }
+                return false;
             }
         }
         let w = self.walk.as_mut().unwrap();
@@ -7813,8 +7819,11 @@ impl Game {
             return Ok(());
         }
         if self.native_field_event61.is_some() {
-            // Go：`g.stepNativeFieldEvent61Tick(g.nativeFieldEvent61.clock.Sample(g.gameNow()))`（`r8`）。
-            todo!("R8: native_field_event61.go:stepNativeFieldEvent61Tick（地圖事件 61）")
+            // Go `main.go:8538`。
+            let now = self.game_now();
+            let tick = self.native_field_event61.as_mut().unwrap().clock.sample(now);
+            self.step_native_field_event61_tick(tick);
+            return self.shot_termination();
         }
         if self.native_end_turn_recovery.is_some() {
             let now = self.game_now();
@@ -8830,7 +8839,11 @@ impl Game {
         }
         if self.native_field_event61.is_some() {
             screen.fill(BLACK);
-            todo!("r8:native_field_event61.go:drawNativeFieldEvent61");
+            if !self.draw_native_field_event61(Some(screen)) {
+                todo!("r8:main.go:9773 ebitenutil.DebugPrint（事件 61 演出畫不出來）");
+            }
+            self.draw_capture_shot_point(screen);
+            return;
         }
         if self.native_end_turn_recovery.is_some() {
             screen.fill(BLACK);

@@ -110,7 +110,20 @@ pub(crate) fn ch29_story_dialogue_actions(
     count: usize,
     tag: &str,
 ) -> Option<Vec<battle::Action>> {
-    let lines = load_story_script_with_identity_at("assets/story/ch29.json", "", Some(&scene_index)).ok()?;
+    story_dialogue_actions(g, "assets/story/ch29.json", scene_index, line, count, tag)
+}
+
+/// `path` 第 `scene_index` 幕的 `line..line+count` 句轉成對白動作；有 speaker_slot 的句子或越界時回 `None`。
+/// Go 的 event61／75／76DialogueActions 各自寫同一段迴圈，只差故事檔與錯誤前綴。
+pub(crate) fn story_dialogue_actions(
+    g: &mut Game,
+    path: &str,
+    scene_index: i64,
+    line: usize,
+    count: usize,
+    tag: &str,
+) -> Option<Vec<battle::Action>> {
+    let lines = load_story_script_with_identity_at(path, "", Some(&scene_index)).ok()?;
     if count == 0 || line + count > lines.len() {
         return None;
     }

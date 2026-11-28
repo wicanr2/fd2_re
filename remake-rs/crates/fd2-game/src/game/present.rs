@@ -322,7 +322,9 @@ impl Game {
             return PresentOwner::NativeTurnStagingIndexed;
         }
         if self.native_field_event61.is_some() {
-            todo!("R8: main.go:9755 drawNativeFieldEvent61")
+            // Go `main.go:9770`；畫不出來時 Go 只印除錯字，沒有狀態改寫。
+            self.draw_native_field_event61(None);
+            return PresentOwner::NativeFieldEvent61;
         }
         if self.native_end_turn_recovery.is_some() {
             // Go `native_end_turn_recovery.go:162`；畫不出來時 Draw 呼叫 cancelNativeEndTurnRecovery（main.go:9768）。
