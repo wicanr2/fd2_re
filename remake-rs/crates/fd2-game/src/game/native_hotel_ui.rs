@@ -164,7 +164,7 @@ impl Game {
                 }
                 if r#in.enter {
                     if self.native_hotel_mode == "loadslots" {
-                        todo!("R8: native_hotel_ui.go:confirmNativeHotelLoadSlot（酒店讀檔）");
+                        self.confirm_native_hotel_load_slot(self.native_hotel_slot_sel);
                     } else if self.save_game_to_slot(self.native_hotel_slot_sel).is_ok() {
                         self.native_hotel_mode = String::from("saved");
                     }
@@ -186,6 +186,38 @@ impl Game {
             }
             _ => false,
         }
+    }
+
+    /// 酒店服務 2 的四槽讀檔：原版 FD2.SAV 槽走章節槽復原（本章需整備時拒收並顯示 0x1DF），
+    /// 其餘走 JSON 槽，成功後留在讀出的酒店並保持服務 2。
+    ///
+    /// Go：`native_hotel_ui.go:259`，`func (g *Game) confirmNativeHotelLoadSlot(slot int) bool`
+    pub(crate) fn confirm_native_hotel_load_slot(&mut self, slot: i64) -> bool {
+        let (confirmable, native) = native_load_slot_confirmable(slot);
+        if !confirmable {
+            return false;
+        }
+        if native {
+            let path = std::env::var("FD2_NATIVE_SAVE").unwrap_or_default();
+            return match self.restore_native_chapter_slot(&path, slot, true) {
+                Ok(()) => true,
+                Err(err) if err.is(&ERR_NATIVE_HOTEL_PREPARATION_SLOT) => {
+                    self.native_hotel_mode = String::from("load_blocked");
+                    false
+                }
+                Err(err) => {
+                    self.msg = err.message().to_string();
+                    false
+                }
+            };
+        }
+        if !self.load_json_game_from_slot(slot, true) {
+            return false;
+        }
+        self.native_hotel_mode = String::from("loaded");
+        self.native_hotel_prompt_return = true;
+        self.hotel_sel = NATIVE_HOTEL_SERVICE_LOAD;
+        true
     }
 }
 

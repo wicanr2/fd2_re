@@ -25,9 +25,9 @@
     "types_hd": 87,
     "vars": 19,
     "functions_by_status": {
-      "ported": 836,
+      "ported": 837,
       "r6": 59,
-      "r8": 1027
+      "r8": 1026
     },
     "status_updated": "2026-11-15 階段 2 整合：本體不是單一 todo!() 的標 ported，整個本體是 todo!(\"R5/R6/R8: …\") 的依標記標 r5／r6／r8；R5 階段 1：開場與第一章執行到的非 HD 繪圖函式標 r5、HD 檔的 r8 改 r6（tools/rust_r5_skeleton.sh）；R5 階段 2：移植完成的 r5 函式改 ported（tools/rust_r5_mark_ported.py）；R5 階段 4：外殼移植的函式改 ported（tools/rust_r5_mark_ported.py --stage4）；R8 逐章重播：章重播用到的函式移植後改 ported，統計重算（2026-11-26）"
   },
@@ -16131,7 +16131,7 @@
           "name": "confirmNativeHotelLoadSlot",
           "recv": "Game",
           "rust": "fd2_game::game::Game::confirm_native_hotel_load_slot",
-          "status": "r8",
+          "status": "ported",
           "go_line": 260
         }
       ],
