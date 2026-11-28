@@ -5379,10 +5379,7 @@ impl Game {
                 if !self.native_shop_mode.is_empty() {
                     return self.handle_native_shop_input(&input, enter);
                 }
-                if just(Key::Escape) {
-                    self.leave_shop();
-                }
-                true
+                self.legacy_shop_input(&input, enter)
             }
             "hotel" => {
                 if !self.native_hotel_mode.is_empty() {
@@ -5487,6 +5484,207 @@ impl Game {
         self.camp.as_mut().unwrap().advance("");
         self.native_town_hub_return = true;
         self.enter_node();
+    }
+
+    /// 原生商店沒有啟動（缺原版素材）時的 TTF 後備商店：買、賣與購買後的裝備詢問。
+    ///
+    /// Go：`main.go:5242..5386`（`campInput` 的 `shop` 分支在 `handleNativeShopInput` 之後）
+    fn legacy_shop_input(&mut self, input: &TickInput, enter: bool) -> bool {
+        let just = |k: Key| input.is_just_pressed(k);
+        let goods = self.camp.as_ref().unwrap().shop_goods();
+        if self.shop_equip_prompt {
+            // Original ESC at the equip prompt means "leave it unequipped";
+            // the purchase still completes and money is deducted last.
+            if enter || just(Key::Escape) {
+                let mut u = self.party_roster.get(&self.shop_equip_unit).cloned().unwrap_or_default();
+                if enter {
+                    if let Err(err) = campaign::equip_item(Some(&mut u), self.shop_equip_slot, &self.shop_item_stats) {
+                        self.msg = err.to_string();
+                        return true;
+                    }
+                    while u.equipped.len() < u.inventory.len() {
+                        u.equipped.push(false);
+                    }
+                    u.equipped[self.shop_equip_slot as usize] = true;
+                }
+                self.gold = campaign::finalize_good(self.gold, &self.shop_pending);
+                self.party_roster.insert(self.shop_equip_unit, u);
+                self.shop_equip_prompt = false;
+                self.shop_purchase_success_message();
+            }
+            return true;
+        }
+        if just(Key::Tab) {
+            self.shop_mode = String::from(if self.shop_mode == "sell" { "buy" } else { "sell" });
+            self.shop_sell_picking = false;
+            (self.shop_sell_unit_sel, self.shop_sell_slot_sel) = (0, 0);
+            return true;
+        }
+        if self.shop_mode == "sell" {
+            let ids = self.shop_sell_ids();
+            if self.shop_sell_picking {
+                let id = ids[self.shop_sell_unit_sel as usize];
+                let mut u = self.party_roster.get(&id).cloned().unwrap_or_default();
+                if just(Key::ArrowUp) && self.shop_sell_slot_sel > 0 {
+                    self.shop_sell_slot_sel -= 1;
+                }
+                if just(Key::ArrowDown) && self.shop_sell_slot_sel < u.inventory.len() as i64 - 1 {
+                    self.shop_sell_slot_sel += 1;
+                }
+                if just(Key::Escape) {
+                    self.shop_sell_picking = false;
+                    return true;
+                }
+                if enter && (self.shop_sell_slot_sel as usize) < u.inventory.len() {
+                    let item_id = u.inventory[self.shop_sell_slot_sel as usize];
+                    match self.shop_item_prices.get(&item_id).copied() {
+                        None => self.msg = format!("物品 {item_id:02X}h 沒有價格資料"),
+                        Some(price) => {
+                            match campaign::sell_slot(self.gold, Some(&mut u), self.shop_sell_slot_sel, price) {
+                                Err(err) => self.msg = err.to_string(),
+                                Ok(gold) => {
+                                    campaign::recompute_equipment(Some(&mut u), &self.shop_item_stats);
+                                    let remaining = u.inventory.len() as i64;
+                                    self.gold = gold;
+                                    self.party_roster.insert(id, u);
+                                    let args = [localization::FormatArg::Int(item_id), (price * 3 / 4).into()];
+                                    if let (message, true) = self.locale_message("shop.sell.success", &args) {
+                                        self.msg = message;
+                                    }
+                                    if remaining == 0 {
+                                        self.shop_sell_picking = false;
+                                    }
+                                    if self.shop_sell_slot_sel >= remaining && self.shop_sell_slot_sel > 0 {
+                                        self.shop_sell_slot_sel -= 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            if just(Key::ArrowUp) && self.shop_sell_unit_sel > 0 {
+                self.shop_sell_unit_sel -= 1;
+            }
+            if just(Key::ArrowDown) && self.shop_sell_unit_sel < ids.len() as i64 - 1 {
+                self.shop_sell_unit_sel += 1;
+            }
+            if just(Key::Escape) {
+                self.shop_mode = String::from("buy");
+                return true;
+            }
+            if enter && !ids.is_empty() {
+                self.shop_sell_picking = true;
+                self.shop_sell_slot_sel = 0;
+            }
+            return true;
+        }
+        if self.shop_picking {
+            if just(Key::ArrowUp) && self.shop_recipient_sel > 0 {
+                self.shop_recipient_sel -= 1;
+            }
+            if just(Key::ArrowDown) && self.shop_recipient_sel < self.shop_recipients.len() as i64 - 1 {
+                self.shop_recipient_sel += 1;
+            }
+            if just(Key::Escape) {
+                self.shop_picking = false;
+                return true;
+            }
+            if enter && !self.shop_recipients.is_empty() {
+                let id = self.shop_recipients[self.shop_recipient_sel as usize];
+                let mut u = self.party_roster.get(&id).cloned().unwrap_or_default();
+                match campaign::reserve_good(self.gold, Some(&mut u), &self.shop_pending) {
+                    Err(err) => self.msg = err.to_string(),
+                    Ok(slot) => {
+                        self.party_roster.insert(id, u);
+                        self.shop_picking = false;
+                        if self.shop_item_types.get(&self.shop_pending.id).copied().unwrap_or(0) < 0x20 {
+                            (self.shop_equip_prompt, self.shop_equip_unit, self.shop_equip_slot) = (true, id, slot);
+                            if let (message, true) = self.locale_message("shop.purchase.equip_prompt", &[]) {
+                                self.msg = message;
+                            }
+                        } else {
+                            self.gold = campaign::finalize_good(self.gold, &self.shop_pending);
+                            self.shop_purchase_success_message();
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        if just(Key::ArrowUp) && self.shop_sel > 0 {
+            self.shop_sel -= 1;
+        }
+        if just(Key::ArrowDown) && self.shop_sel < goods.len() as i64 - 1 {
+            self.shop_sel += 1;
+        }
+        if enter && (self.shop_sel as usize) < goods.len() {
+            // 購買
+            let good = goods[self.shop_sel as usize].clone();
+            self.shop_recipients = self.shop_receiver_ids(&good);
+            self.shop_pending = good;
+            self.shop_recipient_sel = 0;
+            if self.shop_recipients.is_empty() {
+                if let (message, true) = self.locale_message("shop.recipient.none", &[]) {
+                    self.msg = message;
+                }
+            } else {
+                self.shop_picking = true;
+            }
+        }
+        if just(Key::Escape) {
+            // 離店
+            self.leave_shop();
+        }
+        true
+    }
+
+    fn shop_purchase_success_message(&mut self) {
+        let args = [localization::FormatArg::Str(self.shop_pending.name.clone()), self.shop_pending.price.into()];
+        if let (message, true) = self.locale_message("shop.purchase.success", &args) {
+            self.msg = message;
+        }
+    }
+
+    /// 能收這件商品的隊員：先依加入順序，再補名冊裡其餘的人；裝備類（type < 0x20）只留職業可裝備的。
+    ///
+    /// Go：`main.go:4990`，`func (g *Game) shopReceiverIDs(good campaign.Good) []int`
+    /// Go 補名冊其餘的人時走 map，順序不固定；Rust 的名冊是 `BTreeMap`，依編號遞增。
+    pub(crate) fn shop_receiver_ids(&self, good: &campaign::Good) -> Vec<i64> {
+        let item_type = self.shop_item_types.get(&good.id).copied();
+        self.shop_roster_order()
+            .into_iter()
+            .filter(|id| {
+                let Some(u) = self.party_roster.get(id) else { return false };
+                !matches!(item_type, Some(t) if t < 0x20 && !campaign::can_equip(u.class_id, t, &self.shop_equip_types))
+            })
+            .collect()
+    }
+
+    /// 有道具可賣的隊員，順序同 `shop_receiver_ids`。
+    ///
+    /// Go：`main.go:5016`，`func (g *Game) shopSellIDs() []int`
+    pub(crate) fn shop_sell_ids(&self) -> Vec<i64> {
+        self.shop_roster_order()
+            .into_iter()
+            .filter(|id| self.party_roster.get(id).is_some_and(|u| !u.inventory.is_empty()))
+            .collect()
+    }
+
+    fn shop_roster_order(&self) -> Vec<i64> {
+        let mut ids = self.party_join_order.clone();
+        for &id in self.party_roster.keys() {
+            if !ids.contains(&id) {
+                ids.push(id);
+            }
+        }
+        ids
+    }
+
+    /// Go：`main.go:4692`，`func (g *Game) preparationSelected() int`
+    pub(crate) fn preparation_selected(&self) -> i64 {
+        self.party_deploy.values().filter(|&&selected| selected).count() as i64
     }
 
     /// leaveShop is the campaign boundary for the shop's Escape/leave action. It
@@ -11652,7 +11850,7 @@ impl Game {
     /// R5 階段 2 r5c。第一章走到的分支（階段 0 覆蓋率）只有各節點的原生呈現：城鎮 `drawNativeTown`、商店
     /// `drawNativeShop`、酒店 `drawNativeHotel`、整備 `drawNativePreparation`、教會 `drawNativeChurchUIJob`，各自成立就
     /// return；其他節點型別（戰場、故事等）沒有分支。流程結束的 GAME OVER、`choice`／城鎮後備選單與 `ending` 結語
-    /// 已在 R8 移植；商店、酒店與整備的 TTF 後備版面仍是 `todo!("r8:…")`，分支表見 `PORTING.md`「R5 階段 2：r5c」。
+    /// 以及商店、酒店、整備的 TTF 後備版面已在 R8 移植（`draw_legacy_*`），分支表見 `PORTING.md`「R5 階段 2：r5c」。
     /// Go 的 `fillBox` 閉包寫成 `fill_campaign_box`。
     pub(crate) fn draw_campaign_ui(&mut self, screen: &mut Picture) {
         if self.camp.is_none() || self.font.is_none() {
@@ -11699,19 +11897,19 @@ impl Game {
                 if self.draw_native_shop(screen) {
                     return;
                 }
-                todo!("r8:main.go:10685..10764 商店的 TTF 後備版面（開場與第一章沒有走到）");
+                self.draw_legacy_shop(screen);
             }
             "hotel" => {
                 if self.draw_native_hotel(screen) {
                     return;
                 }
-                todo!("r8:main.go:10769..10794 酒店的 TTF 後備版面（開場與第一章沒有走到）");
+                self.draw_legacy_hotel(screen, &node);
             }
             "preparation" => {
                 if self.draw_native_preparation(screen) {
                     return;
                 }
-                todo!("r8:main.go:10799..10889 整備的 TTF 後備版面（開場與第一章沒有走到）");
+                self.draw_legacy_preparation(screen, &node);
             }
             "church" => {
                 if self.draw_native_church_ui_job(screen) {
@@ -12160,4 +12358,199 @@ fn fill_campaign_box(screen: &mut Picture, x: f64, y: f64, w: f64, h: f64) {
     let mut op = DrawImageOptions::default();
     op.geo_m.translate(x, y);
     screen.draw_image(&boxed, &op);
+}
+
+const CAMPAIGN_TITLE: ColorRgba = ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff };
+const CAMPAIGN_TEXT: ColorRgba = ColorRgba { r: 0xd0, g: 0xd8, b: 0xe8, a: 0xff };
+const CAMPAIGN_SELECTED: ColorRgba = ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff };
+
+/// 清單列的前綴與顏色：選中的一列是箭頭與白色。
+fn campaign_row(selected: bool) -> (&'static str, ColorRgba) {
+    if selected { ("▶", CAMPAIGN_SELECTED) } else { ("　", CAMPAIGN_TEXT) }
+}
+
+impl Game {
+    fn campaign_text(&mut self, screen: &mut Picture, text: &str, x: f64, y: f64, scale: f64, c: ColorRgba) {
+        self.font.as_mut().unwrap().draw(screen, text, x, y, scale, c);
+    }
+
+    /// Go `locale_message` 只取字串、忽略 `ok`（`title, _ := g.localeMessage(...)`）的寫法。
+    fn campaign_message(&mut self, key: &str, args: &[localization::FormatArg]) -> String {
+        self.locale_message(key, args).0
+    }
+
+    /// 商店的 TTF 後備版面：裝備詢問、賣出（選人、選道具）、購買選收件人與商品清單。
+    ///
+    /// Go：`main.go:10699..10778`（`drawCampaignUI` 的 `shop` 分支）
+    fn draw_legacy_shop(&mut self, screen: &mut Picture) {
+        if self.shop_equip_prompt {
+            fill_campaign_box(screen, 150.0, 150.0, 340.0, 120.0);
+            let name = self.party_roster.get(&self.shop_equip_unit).map(|u| u.name.clone()).unwrap_or_default();
+            let title =
+                self.campaign_message("shop.purchase.equip_prompt.title", &[localization::FormatArg::Str(name)]);
+            let controls = self.campaign_message("shop.purchase.equip_prompt.controls", &[]);
+            self.campaign_text(screen, &title, 170.0, 170.0, 1.1, CAMPAIGN_TITLE);
+            self.campaign_text(screen, &controls, 170.0, 210.0, 1.0, CAMPAIGN_SELECTED);
+            return;
+        }
+        if self.shop_mode == "sell" {
+            let ids = self.shop_sell_ids();
+            if self.shop_sell_picking && (self.shop_sell_unit_sel as usize) < ids.len() {
+                let u = self.party_roster.get(&ids[self.shop_sell_unit_sel as usize]).cloned().unwrap_or_default();
+                fill_campaign_box(screen, 140.0, 60.0, 360.0, 76.0 + u.inventory.len() as f64 * 28.0);
+                let title =
+                    self.campaign_message("shop.sell.item_title", &[localization::FormatArg::Str(u.name.clone())]);
+                self.campaign_text(screen, &title, 156.0, 70.0, 1.0, CAMPAIGN_TITLE);
+                for (i, &id) in u.inventory.iter().enumerate() {
+                    let (pre, c) = campaign_row(i as i64 == self.shop_sell_slot_sel);
+                    let price = self.shop_item_prices.get(&id).copied().unwrap_or(0);
+                    let flag = if u.equipped.get(i).copied().unwrap_or(false) {
+                        self.campaign_message("shop.item.equipped_label", &[])
+                    } else {
+                        String::new()
+                    };
+                    let line = format!("{pre}{id:02X}h{flag}  +{} G", price * 3 / 4);
+                    self.campaign_text(screen, &line, 156.0, 100.0 + i as f64 * 28.0, 1.0, c);
+                }
+                return;
+            }
+            fill_campaign_box(screen, 140.0, 60.0, 360.0, 76.0 + ids.len() as f64 * 30.0);
+            let title = self.campaign_message("shop.sell.roster_title", &[]);
+            self.campaign_text(screen, &title, 156.0, 70.0, 1.0, CAMPAIGN_TITLE);
+            for (i, id) in ids.iter().enumerate() {
+                let u = self.party_roster.get(id).cloned().unwrap_or_default();
+                let (pre, c) = campaign_row(i as i64 == self.shop_sell_unit_sel);
+                let args = [localization::FormatArg::Str(u.name.clone()), (u.inventory.len() as i64).into()];
+                let row = self.campaign_message("shop.sell.inventory_count", &args);
+                self.campaign_text(screen, &format!("{pre}{row}"), 156.0, 100.0 + i as f64 * 30.0, 1.0, c);
+            }
+            return;
+        }
+        if self.shop_picking {
+            let recipients = self.shop_recipients.clone();
+            fill_campaign_box(screen, 140.0, 60.0, 360.0, 76.0 + recipients.len() as f64 * 30.0);
+            let pending = localization::FormatArg::Str(self.shop_pending.name.clone());
+            let title = self.campaign_message("shop.purchase.recipient_title", &[pending]);
+            self.campaign_text(screen, &title, 156.0, 70.0, 1.0, CAMPAIGN_TITLE);
+            for (i, id) in recipients.iter().enumerate() {
+                let u = self.party_roster.get(id).cloned().unwrap_or_default();
+                let (pre, c) = campaign_row(i as i64 == self.shop_recipient_sel);
+                let args = [localization::FormatArg::Str(u.name.clone()), (u.inventory.len() as i64).into()];
+                let row = self.campaign_message("shop.purchase.recipient_inventory", &args);
+                self.campaign_text(screen, &format!("{pre}{row}"), 156.0, 100.0 + i as f64 * 30.0, 1.0, c);
+            }
+            return;
+        }
+        let goods = self.camp.as_ref().unwrap().shop_goods();
+        fill_campaign_box(screen, 140.0, 60.0, 360.0, 76.0 + goods.len() as f64 * 30.0);
+        let title = self.campaign_message("shop.panel.title_controls", &[self.gold.into()]);
+        self.campaign_text(screen, &title, 156.0, 70.0, 1.0, CAMPAIGN_TITLE);
+        for (i, good) in goods.iter().enumerate() {
+            let (pre, mut c) = campaign_row(i as i64 == self.shop_sel);
+            if self.gold < good.price {
+                c = ColorRgba { r: 0x80, g: 0x80, b: 0x90, a: 0xff };
+            }
+            let line = format!("{pre}{}  {} G", good.name, good.price);
+            self.campaign_text(screen, &line, 156.0, 100.0 + i as f64 * 30.0, 1.0, c);
+        }
+    }
+
+    /// 酒店的 TTF 後備版面：四個原版 selector 與已解出的路由位址。
+    ///
+    /// Go：`main.go:10779..10807`（`drawCampaignUI` 的 `hotel` 分支）
+    fn draw_legacy_hotel(&mut self, screen: &mut Picture, node: &campaign::Node) {
+        fill_campaign_box(screen, 140.0, 105.0, 360.0, 210.0);
+        let mut title = node.text.clone();
+        if title.is_empty() {
+            let (message, ok) = self.locale_message("hotel.title.fallback", &[]);
+            if !ok {
+                return;
+            }
+            title = message;
+        }
+        self.campaign_text(screen, &title, 166.0, 122.0, 1.1, CAMPAIGN_TITLE);
+        for i in 0..4 {
+            let (pre, c) = campaign_row(i == self.hotel_sel);
+            let mut label = format!("raw selector {i}");
+            if self.hotel_has_route && i64::from(self.hotel_route.selector) == i {
+                label = format!("raw selector {i} → {:05X}", self.hotel_route.primary);
+            }
+            self.campaign_text(screen, &format!("{pre}{label}"), 176.0, 154.0 + i as f64 * 28.0, 1.0, c);
+        }
+        let (controls, ok) = self.locale_message("hotel.controls", &[]);
+        if !ok {
+            return;
+        }
+        self.campaign_text(screen, &controls, 176.0, 286.0, 0.85, CAMPAIGN_TEXT);
+    }
+
+    /// 整備的 TTF 後備版面：存檔詢問、出戰名冊（兩欄）、確認框與存檔提示。
+    ///
+    /// Go：`main.go:10808..10900`（`drawCampaignUI` 的 `preparation` 分支）
+    fn draw_legacy_preparation(&mut self, screen: &mut Picture, node: &campaign::Node) {
+        let h = (118.0 + self.prep_ids.len().div_ceil(2) as f64 * 24.0).max(170.0);
+        fill_campaign_box(screen, 64.0, 42.0, 512.0, h);
+        let Some(title) = self.locale_message_ok("preparation.title", &[]) else { return };
+        self.campaign_text(screen, &title, 84.0, 56.0, 1.2, CAMPAIGN_TITLE);
+        if !self.prep_selecting && !self.prep_confirm {
+            let mut prompt = node.prompt.clone();
+            if prompt.is_empty() {
+                let Some(message) = self.locale_message_ok("preparation.save_prompt", &[]) else { return };
+                prompt = message;
+            }
+            self.campaign_text(screen, &prompt, 184.0, 120.0, 1.0, CAMPAIGN_TITLE);
+            if !self.draw_legacy_yes_no(screen, 158.0) {
+                return;
+            }
+        } else {
+            let args = [self.preparation_selected().into(), self.prep_limit.into()];
+            let Some(controls) = self.locale_message_ok("preparation.deploy.controls", &args) else { return };
+            self.campaign_text(screen, &controls, 84.0, 82.0, 1.0, CAMPAIGN_TEXT);
+            for (i, &id) in self.prep_ids.clone().iter().enumerate() {
+                let x = if i % 2 == 1 { 320.0 } else { 88.0 };
+                let y = 108.0 + (i / 2) as f64 * 24.0;
+                let (prefix, c) = campaign_row(i as i64 == self.prep_sel);
+                let mark = if self.party_deploy.get(&id).copied().unwrap_or(false) { "■" } else { "□" };
+                let Some(mut name) = self.locale_message_ok("preparation.unknown_character", &[id.into()]) else {
+                    return;
+                };
+                if let Some(u) = self.party_roster.get(&id).filter(|u| !u.name.is_empty()) {
+                    name = u.name.clone();
+                }
+                self.campaign_text(screen, &format!("{prefix}{mark} {name}"), x, y, 0.95, c);
+            }
+        }
+        if self.prep_confirm {
+            fill_campaign_box(screen, 154.0, 174.0, 332.0, 92.0);
+            let Some(confirm) = self.locale_message_ok("preparation.enter_confirm", &[]) else { return };
+            self.campaign_text(screen, &confirm, 184.0, 190.0, 1.0, CAMPAIGN_TITLE);
+            if !self.draw_legacy_yes_no(screen, 222.0) {
+                return;
+            }
+        }
+        let Some(hint) = self.locale_message_ok("preparation.save_hint", &[]) else { return };
+        self.campaign_text(screen, &hint, 84.0, 88.0 + h - 24.0, 0.9, CAMPAIGN_TEXT);
+    }
+
+    /// 整備的是／否兩個選項，`prep_confirm_sel` 為 0 時「是」變白。回傳 false 表示語系缺字（Go 直接 return）。
+    fn draw_legacy_yes_no(&mut self, screen: &mut Picture, y: f64) -> bool {
+        let (Some(yes), Some(no)) =
+            (self.locale_message_ok("common.yes", &[]), self.locale_message_ok("common.no", &[]))
+        else {
+            return false;
+        };
+        let (yes_color, no_color) = if self.prep_confirm_sel == 0 {
+            (CAMPAIGN_SELECTED, CAMPAIGN_TEXT)
+        } else {
+            (CAMPAIGN_TEXT, CAMPAIGN_SELECTED)
+        };
+        self.campaign_text(screen, &yes, 240.0, y, 0.95, yes_color);
+        self.campaign_text(screen, &no, 370.0, y, 0.95, no_color);
+        true
+    }
+
+    fn locale_message_ok(&mut self, key: &str, args: &[localization::FormatArg]) -> Option<String> {
+        let (message, ok) = self.locale_message(key, args);
+        ok.then_some(message)
+    }
 }

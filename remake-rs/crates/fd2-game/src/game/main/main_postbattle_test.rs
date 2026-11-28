@@ -129,3 +129,111 @@ fn test_campaign_ui_ttf_fallbacks_draw_game_over_choice_and_ending() {
     // 起點不在節點表裡：`node()` 是 `None`，即流程結束。
     assert!(painted("gone") > 0, "GAME OVER fallback drew nothing");
 }
+
+/// Go `main.go:5242..5386` 的 TTF 後備商店：原生商店沒有啟動時，買（選收件人，裝備類先問要不要裝備，Esc 不裝備
+/// 也成交、最後扣錢）、Tab 切到賣（選人、選道具，賣 75%）、Esc 離店。Rust 補充測試。
+#[test]
+fn test_legacy_shop_buys_with_equip_prompt_and_sells_at_three_quarters() {
+    let good = |id: i64, name: &str, price: i64| campaign::Good { id, name: name.to_string(), price };
+    let shop = campaign::Node {
+        r#type: String::from("shop"),
+        goods: vec![good(0x01, "短劍", 100), good(0x40, "藥草", 30)],
+        next: String::from("town"),
+        ..Default::default()
+    };
+    let c = campaign::Campaign {
+        start: String::from("shop"),
+        nodes: BTreeMap::from([
+            (String::from("shop"), shop),
+            (String::from("town"), campaign::Node { r#type: String::from("town"), ..Default::default() }),
+        ]),
+        ..Default::default()
+    };
+    let mut hero = battle::Unit::default();
+    (hero.name, hero.class_id) = (String::from("索爾"), 1);
+    let mut g = Game {
+        camp: Some(campaign::new_runner(&c)),
+        gold: 500,
+        shop_mode: String::from("buy"),
+        party_join_order: vec![0],
+        party_members: BTreeMap::from([(0, true)]),
+        party_roster: BTreeMap::from([(0, hero)]),
+        shop_item_types: BTreeMap::from([(0x01, 0x00), (0x40, 0x30)]),
+        shop_item_prices: BTreeMap::from([(0x01, 100), (0x40, 30)]),
+        shop_equip_types: BTreeMap::from([(1, vec![0x00])]),
+        ..Default::default()
+    };
+    let press = |g: &mut Game, key: Key| {
+        g.tick_input = TickInput { pressed: [key].into(), ..Default::default() };
+        g.camp_input()
+    };
+    // 買短劍：選收件人 → 裝備詢問 → Esc 不裝備，成交扣錢。
+    assert!(press(&mut g, Key::Enter) && g.shop_picking && g.shop_recipients == [0]);
+    assert!(press(&mut g, Key::Enter) && g.shop_equip_prompt && g.gold == 500, "money deducted before the prompt");
+    assert!(press(&mut g, Key::Escape) && !g.shop_equip_prompt && g.gold == 400);
+    assert!(*g.party_roster[&0].inventory == [0x01] && !g.party_roster[&0].equipped.first().copied().unwrap_or(false));
+    // 買藥草：不是裝備，直接成交。
+    press(&mut g, Key::ArrowDown);
+    press(&mut g, Key::Enter);
+    assert!(press(&mut g, Key::Enter) && !g.shop_equip_prompt && g.gold == 370);
+    assert_eq!(*g.party_roster[&0].inventory, [0x01, 0x40]);
+    // Tab 切到賣：選索爾、賣第一格短劍得 75 G。
+    assert!(press(&mut g, Key::Tab) && g.shop_mode == "sell");
+    assert!(press(&mut g, Key::Enter) && g.shop_sell_picking);
+    assert!(press(&mut g, Key::Enter) && g.gold == 445, "gold={}", g.gold);
+    assert_eq!(*g.party_roster[&0].inventory, [0x40]);
+    // Esc 退回選人，再 Esc 回到買，再 Esc 離店。
+    press(&mut g, Key::Escape);
+    press(&mut g, Key::Escape);
+    assert_eq!(g.shop_mode, "buy");
+    press(&mut g, Key::Escape);
+    assert_eq!(g.camp.as_ref().unwrap().node_id(), "town");
+}
+
+/// Rust 補充：商店、酒店與整備的 TTF 後備版面以真字型畫出。
+#[test]
+fn test_campaign_ui_ttf_fallbacks_draw_shop_hotel_and_preparation() {
+    if !crate::test_support::cjk_font_available()
+        || crate::test_support::remake_asset("locales/zh-Hant/pack.json").is_none()
+    {
+        return;
+    }
+    let node = |kind: &str| campaign::Node {
+        r#type: kind.to_string(),
+        goods: vec![campaign::Good { id: 1, name: String::from("短劍"), price: 100 }],
+        ..Default::default()
+    };
+    let nodes = BTreeMap::from([
+        (String::from("shop"), node("shop")),
+        (String::from("hotel"), node("hotel")),
+        (String::from("preparation"), node("preparation")),
+    ]);
+    let mut g = Game {
+        font: Some(load_font().unwrap()),
+        prep_ids: vec![0, 1, 2],
+        party_deploy: BTreeMap::from([(0, true)]),
+        party_join_order: vec![0],
+        party_roster: BTreeMap::from([(0, {
+            let mut u = battle::Unit::default();
+            u.name = String::from("索爾");
+            u
+        })]),
+        ..Default::default()
+    };
+    crate::game::save::save_test::attach_official_locale(&mut g);
+    for (start, setup) in [
+        ("shop", (|g: &mut Game| g.shop_mode = String::from("buy")) as fn(&mut Game)),
+        ("shop", |g: &mut Game| (g.shop_mode, g.shop_sell_picking) = (String::from("sell"), false)),
+        ("hotel", |_: &mut Game| {}),
+        ("preparation", |g: &mut Game| (g.prep_selecting, g.prep_confirm) = (false, false)),
+        ("preparation", |g: &mut Game| (g.prep_selecting, g.prep_confirm) = (true, true)),
+    ] {
+        let c = campaign::Campaign { start: start.to_string(), nodes: nodes.clone(), ..Default::default() };
+        g.camp = Some(campaign::new_runner(&c));
+        setup(&mut g);
+        let mut screen = Picture::new_image(LOGICAL_W, LOGICAL_H);
+        g.draw_campaign_ui(&mut screen);
+        let painted = screen.read_pixels().chunks(4).filter(|p| p[3] != 0 && p[..3] != [0, 0, 0]).count();
+        assert!(painted > 0 && g.load_err.is_empty(), "{start} fallback drew nothing: {}", g.load_err);
+    }
+}
