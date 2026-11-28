@@ -121,6 +121,28 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 酒店讀檔（RUNTIME-E1，2026-11-28）
+
+酒店服務 2 的四槽讀檔接上 `confirmNativeHotelLoadSlot`（Go `native_hotel_ui.go:259`）。有 `FD2_NATIVE_SAVE` 時走原版章節槽復原：該章在戰間 gate 表標成要整備（第 22～24、27～29 章）就切到 `load_blocked` 顯示 0x1DF，不寫任何隊伍狀態；其他錯誤只顯示訊息。沒有原版存檔時走 JSON 槽，成功後留在讀出的那間酒店並保持服務 2，Esc 再沿已編寫的邊回城鎮。復原與 JSON 讀檔本身早已移植，本輪只接上分派。
+
+驗證：移植 Go 的 `TestNativeHotelLoadPublishesAtHotelThenReturnsThroughAuthoredTown`、`TestNativeHotelLoadRejectsEveryPreparationGateBeforeRosterPublication`、`TestNativeHotelLoadRejectsTamperAndMissingAuthoredReturn`、`TestNativeHotelLoadUsesJSONBoundaryReader` 與 `writeNativeRestoreFixture` 測具，Go 以 `t.Setenv` 設的環境變數改在子行程設。在提交 `9e624301` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-9e624301/summary.tsv`）。
+
+### R8 可編輯法術後備：玩家施法確認與 AI 法術（RUNTIME-E1，2026-11-28）
+
+這條路徑是重製端的可編輯法術後備，不是原版指令流程。玩家側在單位沒有原生指令列、或缺官方實體名稱與介面調色盤時，才從指令環開 `spells` 清單（Go `main.go:6071`）；AI 側由正規化規劃器給出 `spell_id`。兩邊都走 `SpellBook`／`CastArea` 交易，不含原版 0x1598A 的命令評分與索引色法術演出。
+
+本輪移植的範圍：
+- `confirm` 的施法分支（Go `main.go:7484`..`7543`）：施法距離與單體法術的陣營閘門、`CastArea` 結算、死亡獎勵、結果訊息，攻擊法術以首個命中目標接全螢幕攻擊演出。
+- `executeAISpell` 與 `actorDisplayName`（`ai_spell_execute.go`）：目標、距離、法術列、MP 任一不合就在扣 MP 前回錯；`CastArea` 沒有結果時退回 MP。`ai_step_act` 失敗時寫 `load_err` 並停住 AI。
+- `localizedSpellResult`（`locale.go:213`）。
+
+Go 的 `g.rng` 為 nil 時，玩家施法會在 `CastArea` 擲骰處 panic。Rust 改在扣 MP 前寫 `load_err` 並保留選目標狀態，屬失敗即關閉的差異。
+
+驗證：
+- 移植 Go 的 `ai_spell_consumer_test.go` 三項與 `TestOfficialLocalesCoverSystemAndSaveMessages`，另補玩家施法確認兩項重製端測試（射程外、陣營不符、封咒、缺亂數都不動 MP 與行動旗標）。
+- fd2-game 528 項、Clippy 通過；`todo!` 再減 2 處。
+- 在提交 `86fec1b3` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-86fec1b3/summary.tsv`）。
+
 ### R8 玩家指令施放：指令 23 與傳送物品（RUNTIME-E1，2026-11-28）
 
 傳送術（指令 23）和傳送物品（type 23）共用同一段目的地流程。選定目標後換成模式 6 的目的地選擇器，游標移到目標身上，Esc 退回指令格或物品面板。確認目的地時依序做：

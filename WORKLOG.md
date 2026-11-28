@@ -6195,3 +6195,16 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 移植傳送目的地流程：目的地選擇器、0x115b6 落點判定、0x2218A 交易預算、0x22253 消失／出現兩段演出，接在 0x1D6C8 調色盤前奏之後。物品傳送與傳送術共用。細節見 119「R8 玩家指令施放：指令 23 與傳送物品」。
 - 移植 Go 測試 3 項與共用的合成測具。fd2-game 522 項、Clippy 通過，`todo!` 剩 126 處。
 - 在 `9274f12f` 的 worktree 重跑第 1～30 章全數通過，每章筆數與存檔雜湊和 `0abad3d5` 相同（`work/rust-parity-all-9274f12f/summary.tsv`）。
+
+## 2026-11-28 Rust R8：可編輯法術後備的玩家施法確認與 AI 法術
+
+- 移植 `confirm` 的施法分支、`executeAISpell`、`actorDisplayName`、`localizedSpellResult`，玩家與 AI 都走 `SpellBook`／`CastArea` 交易。這是重製端後備路徑，不是原版指令流程。細節見 119「R8 可編輯法術後備」。
+- Go 缺亂數時玩家施法會 panic，Rust 改為扣 MP 前寫 `load_err`。
+- 移植 Go 測試 4 項，另補 2 項。fd2-game 528 項、Clippy 通過，`todo!` 再減 2 處。PORTING.json 補標本輪與上一輪的 7 個函式。
+- 在提交 `86fec1b3` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-86fec1b3/summary.tsv`）。
+
+## 2026-11-28 Rust R8：酒店讀檔
+
+- 接上 `confirmNativeHotelLoadSlot`：原版槽走章節槽復原，要整備的章拒收並顯示 0x1DF；JSON 槽讀完留在酒店服務 2。細節見 119「R8 酒店讀檔」。
+- 移植 Go 測試 4 項與 `writeNativeRestoreFixture`。PORTING.json 補標 1 個函式。
+- 在提交 `9e624301` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-9e624301/summary.tsv`）。
