@@ -121,6 +121,21 @@ R1 到 R3 彼此有相依但可以按 crate 平行；R4 之後必須依序。每
 
 ## 進度
 
+### R8 戰場玩家狀態面板（RUNTIME-E1，2026-11-28）
+
+在地圖上對單位按確認時，`inspectNativePlayerUnit` 讀該單位的原始記錄：+7 為 0x79 或 +0x1F 為 10 的特殊記錄直接吃掉確認鍵；非強制檢視且 +6 為 2、+5 bit7 為 0、+0x26 為 0 時照常選取；其餘情況開原版 0x17AED 的狀態面板。
+
+- 開啟：以目前地圖畫面為底，面板 12 幀由小到大展開；停在能力值頁。
+- 確認鍵：單位有指令列時，下半部先收 7 步再展開 7 步，換成指令頁；再按一次（或沒有指令列時）面板 12 幀收起，回到地圖。
+- 每一幀都等畫過才推進（`drawn`），與 Go 相同。
+
+本輪移植 `prepareNativeUnitStatusData`、`nativeUnitStatusData.compose`、0x17AED 面板幀合成（`native_church_status_ui.go` 的幀與區域函式）、`beginNativePlayerStatus` 與 `advanceNativePlayerStatus`。素材全部讀分離素材包，缺件時回錯誤、不開面板也不選取單位。HD 面板預檢（`preflightModernHDItemPanel`）屬 R6，`snapshotNativeStatusTransition` 只留忠實模式用到的轉場種類與頁別，`source`／`data` 複本隨 HD 欄位補。教會的狀態檢視在 Rust 走 `native_church_panels.rs` 的既有實作，Go 的 `beginNativeChurchStatus` 等教會入口仍是 `r8`。
+
+驗證：
+- 移植 Go 的 `TestNativePlayerStatusTwoPagesWaitForDrawAndRestore`、`TestNativeChurchPanelLifecycleMatches17AEDSchedules`，以及 `TestNativePlayerStatusGatesAndFailedResourcesDoNotSelect` 先前未移植的第三段（空素材包要失敗即關閉，在子行程設 `FD2_ASSET_PACK`）。另補一項用分離素材包真實資源開啟、翻頁到關閉的重製端測試。
+- fd2-game 535 項、Clippy 通過；`todo!` 淨減 1 處（移除 2 處，新增 HD 預檢 1 處）。
+- 在提交 `39a4de7c` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-39a4de7c/summary.tsv`）。
+
 ### R8 酒店讀檔（RUNTIME-E1，2026-11-28）
 
 酒店服務 2 的四槽讀檔接上 `confirmNativeHotelLoadSlot`（Go `native_hotel_ui.go:259`）。有 `FD2_NATIVE_SAVE` 時走原版章節槽復原：該章在戰間 gate 表標成要整備（第 22～24、27～29 章）就切到 `load_blocked` 顯示 0x1DF，不寫任何隊伍狀態；其他錯誤只顯示訊息。沒有原版存檔時走 JSON 槽，成功後留在讀出的那間酒店並保持服務 2，Esc 再沿已編寫的邊回城鎮。復原與 JSON 讀檔本身早已移植，本輪只接上分派。

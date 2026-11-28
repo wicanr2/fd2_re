@@ -6208,3 +6208,10 @@ R4 階段 2 收尾清理子代理 worktree 時，以「路徑含 `agent-`」的�
 - 接上 `confirmNativeHotelLoadSlot`：原版槽走章節槽復原，要整備的章拒收並顯示 0x1DF；JSON 槽讀完留在酒店服務 2。細節見 119「R8 酒店讀檔」。
 - 移植 Go 測試 4 項與 `writeNativeRestoreFixture`。PORTING.json 補標 1 個函式。
 - 在提交 `9e624301` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-9e624301/summary.tsv`）。
+
+## 2026-11-28 Rust R8：戰場玩家狀態面板
+
+- 移植 0x17AED 狀態面板：資料準備、能力值／指令兩頁合成、12 幀開關與 7＋7 步翻頁，接上 `beginNativePlayerStatus`／`advanceNativePlayerStatus`。細節見 119「R8 戰場玩家狀態面板」。
+- HD 面板預檢屬 R6；`NativePlayerStatusState` 因面板素材型別沒有 `PartialEq`，`save_test` 改比 `steady`。
+- 移植 Go 測試 2 項與閘門測試第三段，另補 1 項。fd2-game 535 項、Clippy 通過，`todo!` 淨減 1 處。PORTING.json 補標 10 個函式。
+- 在提交 `39a4de7c` 的獨立 worktree 重跑第 1～30 章全數通過，每章筆數與存檔 SHA-256 和 `0abad3d5` 相同（`work/rust-parity-all-39a4de7c/summary.tsv`）。
