@@ -371,3 +371,38 @@ fn test_native_relocation_uses_separate_destination_cursor_and_mode6_legality() 
         g.load_err
     );
 }
+
+/// Rust 補充：Go `main.go:5896..5917` 缺原版面板時的後備清單。上下鍵在 0..7 之間移動，Enter 只顯示訊息，
+/// 不使用物品也不動道具欄；TTF 繪製沒有字型時不畫。
+#[test]
+fn test_fallback_item_list_moves_within_eight_cells_and_never_uses_items() {
+    if test_support::remake_asset("locales/zh-Hant/pack.json").is_none() {
+        return;
+    }
+    let mut unit = battle::Unit::default();
+    (unit.camp, unit.on_field) = (battle::OWN, true);
+    *unit.inventory = vec![0x20];
+    let mut st = battle::State::default();
+    st.units.push(unit);
+    let mut g = Game { st: Some(st), sel: Some(0), item_open: true, ..Default::default() };
+    crate::game::save::save_test::attach_official_locale(&mut g);
+    let press = |g: &mut Game, key: Key| g.tick_input = TickInput { pressed: [key].into(), ..Default::default() };
+    press(&mut g, Key::ArrowUp);
+    assert!(g.native_item_panel_input(false, false) && g.item_sel == 0, "moved above the first cell");
+    for _ in 0..10 {
+        press(&mut g, Key::ArrowDown);
+        g.native_item_panel_input(false, false);
+    }
+    assert_eq!(g.item_sel, 7, "fallback list must stop at the eighth cell");
+    g.tick_input = TickInput::default();
+    g.native_item_panel_input(true, false);
+    let (empty, _) = g.locale_message("battle.item.empty_slot", &[]);
+    assert_eq!(g.msg, empty);
+    g.item_sel = 0;
+    g.native_item_panel_input(true, false);
+    let (unverified, _) = g.locale_message("battle.item.effect_unverified", &[localization::FormatArg::Int(0x20)]);
+    assert!(g.msg == unverified && g.msg.contains("20h"), "msg={:?}", g.msg);
+    assert!(g.item_open && *g.st.as_ref().unwrap().units[0].inventory == [0x20], "fallback mutated the inventory");
+    let mut screen = Picture::new_image(LOGICAL_W, LOGICAL_H);
+    g.draw_item_menu(&mut screen);
+}

@@ -11579,17 +11579,45 @@ impl Game {
     ///
     /// Go：`main.go:10577`，`func (g *Game) drawItemMenu(screen *ebiten.Image)`
     ///
-    /// R5 階段 2 r5h。開場與第一章只走到守門（`itemOpen` 都是 false）；守門之後先呼叫的
-    /// `drawNativeItemPanel`（`native_item_panel_ui.go`）與後備用的 `nativeItemMenuSlot` 都是 `r8`，整段標
-    /// `todo!("r8:…")`。
+    /// 原版面板畫不出來時退回 TTF 清單：八格依序列出物品編號或空格標籤，選中的一格加箭頭。
     pub(crate) fn draw_item_menu(&mut self, screen: &mut Picture) {
-        if !self.item_open || self.sel.is_none() {
+        let Some(sel) = self.sel.filter(|_| self.item_open) else {
             return;
-        }
+        };
         if self.draw_native_item_panel(screen) {
             return;
         }
-        todo!("r8:main.go:10594..10609 TTF 後備物品清單（缺原版素材時）")
+        if self.font.is_none() {
+            return;
+        }
+        let name = self.st.as_ref().expect("g.sel 指向 g.st.Units").units[sel].name.clone();
+        let (title, title_ok) = self.locale_message("battle.item.title", &[localization::FormatArg::Str(name)]);
+        let (empty_label, empty_ok) = self.locale_message("battle.item.empty_label", &[]);
+        if !title_ok || !empty_ok {
+            return;
+        }
+        let mut boxed = Picture::new_image(250, 270);
+        boxed.fill(ColorRgba { r: 0x10, g: 0x1c, b: 0x40, a: 0xee });
+        let mut op = DrawImageOptions::default();
+        op.geo_m.translate(18.0, 42.0);
+        screen.draw_image(&boxed, &op);
+        let title_color = ColorRgba { r: 0xff, g: 0xe0, b: 0x90, a: 0xff };
+        self.font.as_mut().unwrap().draw(screen, &title, 32.0, 52.0, 1.0, title_color);
+        for slot in 0..8 {
+            let (occupied, item_id) = self.native_item_menu_slot(sel, slot);
+            let (mut c, label) = if occupied {
+                (ColorRgba { r: 0xd0, g: 0xd8, b: 0xe8, a: 0xff }, format!("{item_id:02X}h"))
+            } else {
+                (ColorRgba { r: 0x80, g: 0x88, b: 0x98, a: 0xff }, empty_label.clone())
+            };
+            let mut pre = "　";
+            if slot == self.item_sel {
+                pre = "▶";
+                c = ColorRgba { r: 0xff, g: 0xff, b: 0xff, a: 0xff };
+            }
+            let line = format!("{pre}[{}] {label}", slot + 1);
+            self.font.as_mut().unwrap().draw(screen, &line, 32.0, 82.0 + slot as f64 * 25.0, 1.0, c);
+        }
     }
 
     /// drawNativeCommandGrid renders the recovered 0x1ceed four-row layout only

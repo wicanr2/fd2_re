@@ -902,7 +902,24 @@ impl Game {
             return false;
         };
         if self.native_item_panel.is_none() {
-            todo!("R8: main.go:5896 缺原版素材時的後備物品清單");
+            // Go `main.go:5896..5917`：缺原版素材的後備清單只能看，不使用物品（0x20c6f 的效果／目標表未閉合）。
+            let input = &self.tick_input;
+            if input.is_just_pressed(Key::ArrowUp) && self.item_sel > 0 {
+                self.item_sel -= 1;
+            }
+            if input.is_just_pressed(Key::ArrowDown) && self.item_sel < 7 {
+                self.item_sel += 1;
+            }
+            if enter {
+                let (occupied, item_id) = self.native_item_menu_slot(actor, self.item_sel);
+                let key = if occupied { "battle.item.effect_unverified" } else { "battle.item.empty_slot" };
+                let args: Vec<localization::FormatArg> =
+                    if occupied { vec![localization::FormatArg::Int(item_id)] } else { Vec::new() };
+                if let (message, true) = self.locale_message(key, &args) {
+                    self.msg = message;
+                }
+            }
+            return true;
         }
         let raw_slots = native_item_raw_slots(&self.st.as_ref().unwrap().units[actor]);
         if raw_slots.is_empty() {
